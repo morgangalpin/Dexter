@@ -1,80 +1,92 @@
-# Specs Directory
+# Dexter HDI — Specification
+
+This directory is the **specification of the Dexter HDI robot arm**: the authoritative design of
+record from which all hardware, firmware, gateware, documentation, and build artifacts are derived.
+It describes the robot — what it is, what it must do, and how it is built — not the process by which
+this information was recovered. Where a design decision has been made, the specification states it as
+the design; where a decision is still required to complete the robot, the specification records it as
+work remaining (see [Design status](#design-status) and
+[009-Design-Completion.md](009-Design-Completion.md)).
+
+## Design identity and versioning
+
+This specification describes **Dexter HDI — Design Revision A** (short form: *HDI Rev A*), the baseline
+design of record maintained in this repository. Revision A is the reference point from which successive
+revisions are derived: a new revision is authored by copying this set, recording the intended changes as
+deltas against Revision A, and re-deriving the affected artifacts. The versioning model, the relationship
+to the predecessor Dexter generations (Dexter 1 → HD → HDI), and the forward roadmap are defined in
+[010-Versioning-and-Roadmap.md](010-Versioning-and-Roadmap.md).
+
+## Specification map
+
+Read top to bottom for a full picture; each document is self-contained and cross-links the others.
+
+| # | Document | Scope |
+|---|---|---|
+| — | [README.md](README.md) | This map, the design-status scheme, and the specs workflow |
+| 001 | [Overview](001-Overview.md) | What Dexter HDI is; system decomposition; how the specification is organized |
+| 002 | [Requirements](002-Requirements.md) | Capabilities the robot must deliver: degrees of freedom, workspace, precision, motion limits, environment, interfaces |
+| 003 | [Kinematics](003-Kinematics.md) | Coordinate frames, joint conventions, link lengths, the Denavit–Hartenberg model, and motion commands |
+| 004 | [Mechanical Architecture](004-Mechanical-Architecture.md) | Joint-by-joint mechanical design: drivetrains, structure, and the design intent behind each subassembly |
+| 005 | [Electronics and Control](005-Electronics-and-Control.md) | Sensing, actuation, the FPGA joint-servo loop, boards, power, and the control-command interface |
+| 006 | [Firmware and Calibration](006-Firmware-and-Calibration.md) | Firmware parameters, the calibration model, and the factory calibration and bring-up procedure |
+| 007 | [Bill of Materials](007-Bill-of-Materials.md) | The parts that realize the design in 004–006, organized by subassembly |
+| 008 | [Assembly](008-Assembly.md) | The procedure that builds the parts in 007 into the robot in 004 |
+| 009 | [Design Completion](009-Design-Completion.md) | The open design decisions (`[TBD]` items) that must be closed to make Revision A fully buildable |
+| 010 | [Versioning and Roadmap](010-Versioning-and-Roadmap.md) | Generation lineage, the revision model for successive versions, and the forward roadmap |
+
+Documents 002–005 specify the robot (requirements → kinematics → mechanics → electronics/control).
+Documents 006–008 are **derived artifacts**: firmware configuration, the parts list, and the build
+procedure all follow from the design in 002–005 and must be regenerated when it changes. Document 009
+is the live list of decisions still owed on Revision A; document 010 governs how the whole set evolves.
+
+## Design status
+
+Every requirement, design decision, and procedure carries one of three status markers. The marker
+describes the **maturity of the design**, not the confidence of an observer.
+
+- **`[Specified]`** — The design is defined and traceable to validated evidence: a physical unit, factory
+  calibration data, released firmware, or a CAD model. It is safe to build to.
+- **`[Provisional]`** — The design is defined by this specification and is the current design of record,
+  but has not yet been validated on a physical build. It may change once verified. Treat it as a
+  first-issue engineering design: buildable, but confirm before committing irreversible work
+  (cutting carbon fiber, ordering long-lead parts).
+- **`[TBD]`** — A design decision required to complete Revision A has not yet been made. `[TBD]` items
+  block a complete build and are collected in [009-Design-Completion.md](009-Design-Completion.md) with
+  the requirement each must satisfy.
+
+Each `[Specified]` and `[Provisional]` item cites its **source of record** (a file, CAD assembly, factory
+document, or measurement) so the design remains traceable. Provenance is traceability metadata, not the
+organizing narrative of the specification.
+
+---
+
+# Specs Directory (workflow)
 
 Specification files are the source of truth. All code, documentation, and artifacts are derived from specs.
 Project specification files are contained in the `specs/` directory in the project root.
-Finer-grained feature spec files are contained in a `specs/` directory a feature's subdirectory.
-Copy the contents of this file into the `specs/README.md` file.
+Finer-grained feature spec files are contained in a `specs/` directory in a feature's subdirectory.
 
 ## File Naming
-- `<number>-<descriptive-name>.md` where number is 3-digit prefix (001, 002) and name is kebab-case.
+- `<number>-<descriptive-name>.md` where number is a 3-digit prefix (001, 002) and name is kebab-case.
 - Use decimal notation for related specs (001-Overview.md, 001.1-Architecture.md, 001.2-Stack.md).
 
 ## Workflow
-1. Update/create spec files with requirements, behavior, edge cases, interfaces.
-2. Generate/update code, tests, documentation from spec.
-3. Verify code matches spec and tests validate requirements.
+1. Update/create spec files with requirements, behavior, edge cases, and interfaces.
+2. Generate/update code, tests, documentation, and build artifacts from the spec.
+3. Verify the artifacts match the spec and that tests validate the requirements.
 
-## Code Examples
-Use pseudocode (not language-specific syntax) to keep specs implementation-agnostic.
+For this hardware project the "artifacts" derived from the spec are the firmware configuration
+([006](006-Firmware-and-Calibration.md)), the bill of materials ([007](007-Bill-of-Materials.md)), the
+assembly procedure ([008](008-Assembly.md)), and the CAD/build files they reference — not application code.
+When the design in 002–005 changes, regenerate those derived documents to match.
 
 ## Diagrams
 - Use Mermaid for all diagrams.
-- Can be inlined as mermaid code blocks.
-
-# Development Rules
+- May be inlined as mermaid code blocks.
 
 ## Documentation Standards
-
-- Update spec files during implementation with details, clarifications, and behavioral requirements discovered.
-- Record refactoring/architectural change instructions in `/specs/*.md` for consistency across iterations.
-- Correct grammar and punctuation required in all documentation and code comments.
-- Use neutral statements: "Ensure the home directory is the current working directory" (not "Ensure we're running from...").
-
-## Testing Requirements
-
-- >90% code coverage per file
-- Unit tests for all functions/methods
-- Integration tests for API endpoints and critical paths
-- Test actual code (don't copy code into tests)
-- Individual tests complete in seconds
-- Test termination functions using injected function parameters
-- Test long-running loops/IO with parameters for iteration control, mock IO, or reduced sleep times
-
-## Bug Fixing
-
-1. Create failing unit test with buggy code.
-2. Fix application code.
-3. Run unmodified test to verify fix.
-
-## Code Quality
-
-- DRY: Extract common functionality into reusable functions/modules.
-- Function Size: <25 lines; break larger functions into smaller ones.
-- SOLID Principles: Follow clean architecture and dependency inversion.
-- Testability: Use dependency injection and mocks; design for isolation.
-
-## Notes for This Project
-
-Dexter is primarily a hardware project (mechanical assembly, electronics, firmware, gateware) rather than an
-application codebase, so the general-purpose Rust/API/Makefile rules in the parent CLAUDE.md apply only where
-relevant (e.g., any tooling scripts added to this fork). The specs in this directory currently focus on:
-
-- Consolidating the Bill of Materials (previously split across multiple spreadsheets of unclear currency).
-- Consolidating assembly instructions (previously split across a wiki page, a YouTube series, and tribal knowledge).
-- Documenting firmware defaults and the factory calibration procedure (previously buried in a `.make_ins` config
-  file and un-cross-referenced onboarding PDFs).
-
-**Target generation: Dexter HDI**, not Dexter HD. This was a deliberate change from an earlier draft of this spec
-set — see [001-Overview.md](001-Overview.md#generation-decision-this-spec-set-targets-dexter-hdi) for why. Because
-no structured HDI BOM, assembly video series, or PBS spreadsheet exists upstream, this spec set marks every section
-as one of three things: **VERIFIED** (transcribed from a named upstream source), **FORK PROPOSAL** (this fork's own
-design/procedure, written to close a gap upstream never published — not verified against a physical build), or
-**OPEN QUESTION** (a gap this fork judged too risky to guess at, e.g. the harmonic drive components, left as a
-call-to-action instead). Consult [001-Overview.md](001-Overview.md#verification-status) before treating any
-FORK PROPOSAL content as more authoritative than a first draft.
-
-All specs are derived from the original Haddington Dynamics wiki, BOM spreadsheets, upstream git branches
-(including the `Stable_Conedrive` "Dexter HDI" development branch), factory calibration PDFs shipped in this
-repo's tree, the `cfry/dde` sibling repo, and community reports, cross-checked against each other. None has been
-verified against a physical build by this fork's maintainer yet — see the "Verification status" note at the top
-of each spec.
+- Update spec files during design and build with details, clarifications, and behavioral requirements discovered.
+- Record architectural decisions in `specs/*.md` for consistency across revisions.
+- Correct grammar and punctuation are required in all documentation and comments.
+- Use neutral statements describing the robot ("The base is bolted to a rigid surface"), not the author's process.
