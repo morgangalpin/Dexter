@@ -61,7 +61,20 @@ relevant (e.g., any tooling scripts added to this fork). The specs in this direc
 
 - Consolidating the Bill of Materials (previously split across multiple spreadsheets of unclear currency).
 - Consolidating assembly instructions (previously split across a wiki page, a YouTube series, and tribal knowledge).
+- Documenting firmware defaults and the factory calibration procedure (previously buried in a `.make_ins` config
+  file and un-cross-referenced onboarding PDFs).
 
-Both are derived from the original Haddington Dynamics wiki, BOM spreadsheets, and community reports, cross-checked
-against each other. Neither has been verified against a physical build by this fork's maintainer yet — see the
-"Verification status" note at the top of each spec.
+**Target generation: Dexter HDI**, not Dexter HD. This was a deliberate change from an earlier draft of this spec
+set — see [001-Overview.md](001-Overview.md#generation-decision-this-spec-set-targets-dexter-hdi) for why. Because
+no structured HDI BOM, assembly video series, or PBS spreadsheet exists upstream, this spec set marks every section
+as one of three things: **VERIFIED** (transcribed from a named upstream source), **FORK PROPOSAL** (this fork's own
+design/procedure, written to close a gap upstream never published — not verified against a physical build), or
+**OPEN QUESTION** (a gap this fork judged too risky to guess at, e.g. the harmonic drive components, left as a
+call-to-action instead). Consult [001-Overview.md](001-Overview.md#verification-status) before treating any
+FORK PROPOSAL content as more authoritative than a first draft.
+
+All specs are derived from the original Haddington Dynamics wiki, BOM spreadsheets, upstream git branches
+(including the `Stable_Conedrive` "Dexter HDI" development branch), factory calibration PDFs shipped in this
+repo's tree, the `cfry/dde` sibling repo, and community reports, cross-checked against each other. None has been
+verified against a physical build by this fork's maintainer yet — see the "Verification status" note at the top
+of each spec.

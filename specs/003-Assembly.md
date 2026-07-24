@@ -1,29 +1,27 @@
-# 003 - Assembly (Dexter HD)
+# 003 - Assembly (Dexter HDI)
 
 ## Verification status
-This spec rewrites the upstream wiki's `HD-Build-Notes.md` page — a transcribed, informally-punctuated build log —
-into corrected, numbered procedures, cross-referenced against the [Bill of Materials](002-Bill-of-Materials.md) and
-against the [Haddington Dynamics assembly video series](https://www.youtube.com/watch?v=AYD2PSslqfU&list=PLEJQ7hsad17fC2tqTDGNFI_LPk1kX2aE6)
-(11 parts, one per subassembly below). Corrections made during this rewrite:
+No HDI-equivalent of the HD assembly video series (11 parts, one per subassembly) or the wiki's `HD-Build-Notes`
+page exists in any source consulted for this spec set. This spec is built the same way
+[002-Bill-of-Materials.md](002-Bill-of-Materials.md) was: sections with no known HDI-specific difference are
+**inherited from the HD-sourced procedure** (itself a rewrite of the wiki's `HD-Build-Notes.md`, cross-referenced
+against the [assembly video series](https://www.youtube.com/watch?v=AYD2PSslqfU&list=PLEJQ7hsad17fC2tqTDGNFI_LPk1kX2aE6)),
+and sections with a confirmed or proposed HDI difference are marked **FORK PROPOSAL** or cite a specific wiki/PDF
+source. See [001-Overview.md](001-Overview.md#verification-status) for what each marking means, and
+[002-Bill-of-Materials.md](002-Bill-of-Materials.md) for the parts each section consumes.
 
-- Standardized bearing names (source text mixed "M128" and "MR128" for the same part — the BOM confirms MR128).
-- Corrected an apparent typo: source text names a part "Biff Body B" once; every other reference (including the
-  BOM) calls it **Diff Body B**.
-- Corrected an apparent typo in the gripper section: source text says "Dynamic Static Finger" where context and
-  the BOM indicate this should be the **Dynamic Finger**.
-- Removed first-person build-log phrasing ("we will," "you will") in favor of direct imperative steps.
-- Added explicit tooling/consumables lists per section where the source only mentioned them inline.
-
-**This has not been verified by physically building a Dexter.** Steps marked **VERIFY** describe something the
-source text left ambiguous or that could not be cross-checked against a second source — confirm these against the
-video series or by test-fitting before committing epoxy. If you build from this spec, please correct this file
-with what you learn (see [specs/README.md](README.md) workflow) so the next builder doesn't hit the same ambiguity.
+**This has not been verified by physically building a Dexter HDI.** Steps marked **VERIFY** describe something the
+HD source text left ambiguous and that could not be cross-checked against an HDI-specific source. Steps marked
+**FORK PROPOSAL** are this fork's own procedure, written to cover a part ([002.2 Base](002-Bill-of-Materials.md#0022-base))
+that has no HD equivalent to inherit from. If you build from this spec, please correct this file with what you
+learn (see [specs/README.md](README.md) workflow) so the next builder doesn't hit the same ambiguity — this
+applies with extra force to the FORK PROPOSAL sections, which are first drafts, not transcriptions.
 
 ## Assembly order
 
 ```mermaid
 flowchart TD
-    A[003.1 Glue Rig Assembly] --> B[003.2 Base]
+    A[003.1 Glue Rig Assembly] --> B[003.2 Base - FORK PROPOSAL]
     A --> C[003.3 Harmonic Drive Motors]
     B --> D[003.4 Main Pivot]
     C --> D
@@ -38,7 +36,12 @@ flowchart TD
     E --> J[003.10 Wire Harness]
     I --> J
     J --> K[003.11 Tool Interface / Gripper]
+    K --> L[003.12 Firmware Configuration and Calibration]
 ```
+
+[003.12](#00312-firmware-configuration-and-calibration) is new relative to the HD-targeted draft of this spec: HDI
+requires a factory-style calibration pass before first use if built from raw parts (see
+[004-Firmware-and-Calibration.md](004-Firmware-and-Calibration.md)), which HD assembly did not.
 
 ## General tools and consumables (whole build)
 Not itemized per-section upstream; collected here from context across all sections:
@@ -50,16 +53,23 @@ Not itemized per-section upstream; collected here from context across all sectio
 - A short length of aluminum strake (used as a drift/punch to seat bearings without marring them)
 - Bearing press or arbor press (for harmonic drive flex spline pressing, described in 003.3)
 - Wave-generator depth-setting tool (**VERIFY**: upstream refers to a "Wave Gen Tool" without describing how to
-  make or obtain one — likely a shop-made depth gauge; confirm via the video series before this step)
+  make or obtain one — likely a shop-made depth gauge; confirm via the HD video series before this step, since no
+  HDI-specific source addresses it either)
 - Cordless drill with a small chuck (used to ream holes and as an improvised reamer using cut-off pin stock)
 - Soldering iron, solder, heat-shrink tubing, wire strippers
 - Phillips head screwdriver (final base-clamp installation)
 - Small flathead screwdriver or hobby knife (used in place of a wrench on M2 nuts too small for standard tools)
+- **A grounded anti-static wrist strap** — the factory HDI calibration procedure ([003.12](#00312-firmware-configuration-and-calibration))
+  explicitly requires this whenever handling the FPGA board; not called out in the HD-sourced build notes for
+  earlier sections, but apply the same precaution throughout, since the FPGA board is present from
+  [003.10](#00310-wire-harness) onward.
+- WinSCP and PuTTY (or equivalent SSH/SCP clients) — required for [003.12](#00312-firmware-configuration-and-calibration)
 
 ---
 
 ## 003.1 Glue Rig Assembly
-Parts: [002.1](002-Bill-of-Materials.md#0021-glue-rig-assembly). Video: Part 1 of the assembly series.
+Parts: [002.1](002-Bill-of-Materials.md#0021-glue-rig-assembly). Inherited from HD (Video: Part 1 of the HD
+assembly series — no HDI-specific jigging source exists).
 
 This builds two epoxy jigs ("glue rigs") used to hold parts square while adhesive cures for later subassemblies —
 it is tooling, not a robot part.
@@ -76,18 +86,39 @@ it is tooling, not a robot part.
 8. Allow the epoxy to cure per the manufacturer's recommended time before removing from the rig.
 
 ## 003.2 Base
-Parts: [002.2](002-Bill-of-Materials.md#0022-base). Video: Part 2 of the assembly series.
+Parts: [002.2](002-Bill-of-Materials.md#0022-base). **FORK PROPOSAL — this entire section is a new procedure, not
+a transcription.** No HD video or build note applies, because the HD procedure below (epoxying feet to aluminum
+strakes, then to the Base Mount Bottom) builds a structure the [002.2 Base BOM](002-Bill-of-Materials.md#0022-base)
+proposes to remove entirely for HDI, in favor of a bolted baseplate and a doubled Base Clamp. Steps 1-5 below
+describe that proposed procedure at the level of detail the undesigned Base Mounting Plate part allows; steps 6+
+(Base Long, Base Clamp) are adapted from the HD procedure since those parts are unchanged.
 
-1. Epoxy the 6 feet to the 6 aluminum strakes (165mm x 20mm x 5mm).
-2. Immediately epoxy each aluminum strake assembly into the Base Mount Bottom.
-3. Set the base mount on a flat surface; push opposing legs together so they bottom out evenly. Let cure.
-4. Epoxy the 133mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — these two parts
-   slide together and lock in place.
-5. When epoxying the Base Long, leave the 133mm CF strakes protruding about 1/4" (6mm) so the Base Code Disk has a
-   surface to rest against once installed.
+1. **(FORK PROPOSAL, blocked on the Base Mounting Plate design — see [002.2](002-Bill-of-Materials.md#0022-base))**
+   Bolt the Base Mounting Plate to the Base Mount Bottom in place of the HD Feet, using the fastener pattern the
+   plate's final design specifies.
+2. Epoxy the 133mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — these two parts
+   slide together and lock in place. (Unchanged from HD — inherited procedure.)
+3. When epoxying the Base Long, leave the 133mm CF strakes protruding about 1/4" (6mm) so the Base Code Disk has a
+   surface to rest against once installed. (Unchanged from HD — inherited procedure.)
+4. **(FORK PROPOSAL)** Bolt the assembled Base Mounting Plate to the target work surface using the bolt pattern
+   and fastener size the plate's final design specifies. Unlike the HD procedure's foot-mounting options (clamp,
+   screw, or hot-glue, owner's choice, described in wiki `Dexter-Setup.md`), this is not optional for HDI under
+   this proposal — the plate is the sole mounting method, so confirm the target surface can take the full
+   dynamic load of the arm before finishing this step.
+5. **VERIFY**: this fork could not determine whether the Base Mounting Plate is intended to be removable from the
+   work surface independent of the rest of the base assembly (as the HD Feet were, being separate small parts) or
+   whether it is meant to stay bolted to the work surface as a permanent fixture with the rest of the base
+   docking onto it. Confirm intent before finalizing the plate design in
+   [002.2](002-Bill-of-Materials.md#0022-base).
+6. Assemble the (now doubled) Base Clamp, per part: place an M3 washer on the hex side and thread in an M3 x 20mm
+   bolt from the other side. Repeat for the second clamp. (Adapted from HD's single-clamp procedure — see step 18
+   of the inherited Main Pivot mounting sequence in [003.4](#0034-main-pivot), where the clamp is actually
+   installed; assembling both clamps here is a FORK PROPOSAL doubling of that single inherited step.)
 
 ## 003.3 Harmonic Drive Motors
-Parts: [002.3](002-Bill-of-Materials.md#0023-harmonic-drive-motors). Video: Part 3 of the assembly series.
+Parts: [002.3](002-Bill-of-Materials.md#0023-harmonic-drive-motors). Inherited from HD (Video: Part 3 of the HD
+assembly series) — confirmed unchanged for HDI via the identical J1-J3 `AxisCal` firmware values (see
+[004-Firmware-and-Calibration.md](004-Firmware-and-Calibration.md)).
 Builds 2 of the robot's 3 harmonic-drive motor assemblies (base + pivot motors); repeat for the external gear
 motor in [003.8](#0038-external-gear).
 
@@ -100,7 +131,7 @@ motor in [003.8](#0038-external-gear).
    have been pushed down into the attachment nubs during pressing. Remove any found before proceeding.
 6. Secure the Flex Spline Attach to the motor with 4x M3 x 10mm bolts.
    **VERIFY**: the BOM does not list a distinct M3x10mm bolt row for this subassembly — confirm quantity/size
-   against the video before ordering only what's in [002.3](002-Bill-of-Materials.md#0023-harmonic-drive-motors).
+   against the HD video before ordering only what's in [002.3](002-Bill-of-Materials.md#0023-harmonic-drive-motors).
 7. Tighten the M2 bolts into the Flex Spline Cap until approximately 1/4" of thread shows through the opposite side.
 8. Press M3 nuts into the Wave Gen Coupler, insert M3 x 8mm hex bolts to hold them in place, then cover the nut
    heads with a small amount of epoxy to lock them in. Let cure.
@@ -112,7 +143,8 @@ motor in [003.8](#0038-external-gear).
 
 ## 003.4 Main Pivot
 Parts: [002.4](002-Bill-of-Materials.md#0024-main-pivot). Consumes 2x harmonic drive motor assemblies from
-[003.3](#0033-harmonic-drive-motors) and the Base assembly from [003.2](#0032-base). Video: Part 4.
+[003.3](#0033-harmonic-drive-motors) and the Base assembly from [003.2](#0032-base). Inherited from HD (Video:
+Part 4), adapted only where it touches the doubled Base Clamp from [003.2](#0032-base).
 
 1. Epoxy the 126mm CF strakes to the short end of the Main Pivot body, and the 146mm CF strakes to the long end.
    Apply epoxy to both the body's holes and the strake ends before joining.
@@ -148,12 +180,15 @@ Parts: [002.4](002-Bill-of-Materials.md#0024-main-pivot). Consumes 2x harmonic d
     rods.
 17. Once aligned, add a #6 washer and M3 nut onto each all-thread rod and tighten, for all 3 rods, keeping the
     notch aligned throughout.
-18. Assemble the Base Clamp: place an M3 washer on the hex side and thread in an M3 x 20mm bolt from the other side.
-19. Remove the Base Long from the Base Mount, slide the Base Clamp onto the Base Mount, then reinstall the Base
-    Long and tighten the clamp to secure it in place.
+18. **FORK PROPOSAL, adapted from HD's single-clamp step**: slide both assembled Base Clamps (see
+    [003.2](#0032-base) step 6) onto the Base Mount in sequence, stacked. Remove the Base Long from the Base
+    Mount, slide both Base Clamps on, then reinstall the Base Long and tighten both clamps to secure it in place.
+    **VERIFY**: this fork could not determine the exact stacking order or spacing between the two clamps — the
+    wiki's `Dynamics.md` note that the double clamp "affects... overall height of every z measurements" implies
+    they stack rather than sit side by side, but gives no further detail.
 
 ## 003.5 Arm Body
-Parts: [002.5](002-Bill-of-Materials.md#0025-arm-body). Video: Part 5.
+Parts: [002.5](002-Bill-of-Materials.md#0025-arm-body). Inherited from HD (Video: Part 5).
 
 1. Press a 6810 bearing into the Arm Body until seated about 1.5" (38mm) down.
 2. Slide the Arm Body over the Pivot Motor and snap into place. If the bearing pushes back out, tap it back into
@@ -180,7 +215,9 @@ Parts: [002.5](002-Bill-of-Materials.md#0025-arm-body). Video: Part 5.
 11. Once seated, place the M3 washer, then the M2 washer, then the M2 nut, and tighten.
 
 ## 003.6 Differential
-Parts: [002.6](002-Bill-of-Materials.md#0026-differential). Video: Part 6.
+Parts: [002.6](002-Bill-of-Materials.md#0026-differential). Inherited from HD (Video: Part 6) as a working
+substitute for the undocumented HDI differential redesign — see the gap note in
+[002.6](002-Bill-of-Materials.md#0026-differential) before starting this section.
 
 1. Insert one 6705 bearing and one 6703 bearing into Diff Body A; press until seated.
 2. Insert one 6703 bearing into the End Arm Hub; press until seated.
@@ -222,7 +259,7 @@ Parts: [002.6](002-Bill-of-Materials.md#0026-differential). Video: Part 6.
 24. Place a second Diff Keeper (or similar clamping part) on top of the epoxied one and clamp tightly until cured.
 
 ## 003.7 End Arm Hub
-Parts: [002.7](002-Bill-of-Materials.md#0027-end-arm-hub). Video: Part 7.
+Parts: [002.7](002-Bill-of-Materials.md#0027-end-arm-hub). Inherited from HD (Video: Part 7).
 
 1. Insert a 6810 bearing into each Axis Intersection half.
 2. Press the New Belt Pulley into the Axis Intersection half on the Arm Body side.
@@ -271,7 +308,8 @@ Parts: [002.7](002-Bill-of-Materials.md#0027-end-arm-hub). Video: Part 7.
 
 ## 003.8 External Gear
 Parts: [002.8](002-Bill-of-Materials.md#0028-external-gear). Builds the 3rd harmonic-drive motor of the robot —
-follow [003.3](#0033-harmonic-drive-motors) steps 1-11 for the drive itself, then continue here. Video: Part 8.
+follow [003.3](#0033-harmonic-drive-motors) steps 1-11 for the drive itself, then continue here. Inherited from HD
+(Video: Part 8) — confirmed unchanged for HDI via the identical J1-J3 `AxisCal` firmware values.
 
 1. Place 4 M3 nuts into the hex-shaped nut holders on the External Gear Motor End Cap.
 2. Screw M3 x 10mm bolts into those nuts from the underside of the End Cap.
@@ -304,15 +342,17 @@ follow [003.3](#0033-harmonic-drive-motors) steps 1-11 for the drive itself, the
 ## 003.9 Belts
 Parts: [002.7](002-Bill-of-Materials.md#0027-end-arm-hub) and [002.8](002-Bill-of-Materials.md#0028-external-gear)
 (GT2 belts and pulleys are listed against those subassemblies in the BOM; there is no separate PBS letter for
-belts). Video: Part 9.
+belts). Inherited from HD (Video: Part 9). See the OPEN QUESTION on J4/J5 pulley ratios in
+[002.5](002-Bill-of-Materials.md#0025-arm-body) — this section builds the HD-specified pulleys as-is pending that
+question being resolved.
 
 1. Slide the 2 16T x 5mm GT2 pulleys onto the external motors.
 2. Before tightening the set screws, confirm the belts will line up with the belt directors above.
 3. Tighten one set screw against the flat side of each external motor shaft.
 
 ## 003.10 Wire Harness
-Parts: [002.10](002-Bill-of-Materials.md#00210-wire-harness). Video: Part 10 (upstream notes this video also
-covers the remaining parts list for this section — check it before starting).
+Parts: [002.10](002-Bill-of-Materials.md#00210-wire-harness). Inherited from HD (Video: Part 10 — upstream notes
+this video also covers the remaining parts list for this section), with one confirmed wiring change.
 
 1. Snip the M2 connection on the back of the Motor Control Board to break it (side cutters or wire cutters).
 2. Place the FPGA board on top of the Motor Control Board and snap into place.
@@ -326,9 +366,16 @@ covers the remaining parts list for this section — check it before starting).
    bracket, and screw in the M3 x 20mm bolts without over-tightening (an M3 nut can back up a stripped hole if this
    happens).
 7. Connect the power wires to the power connector: black to negative (-), red to positive (+).
+8. **HDI wiring difference (VERIFIED, wiki `End-Effectors.md` — see full quote in
+   [002.10](002-Bill-of-Materials.md#00210-wire-harness))**: when wiring the White signal wire between the Motor
+   Control PCB and Tool Interface, connect it to the **2nd ground terminal** (labeled "-" on the small screw
+   terminal near the top of the motor board) — **not** to a servo-power tap as on HD. Double-check this connection
+   before first power-on: on an HD harness, White can carry 6-8.75V; wiring it as ground on HDI while it is still
+   tapped for power elsewhere in the harness would short a power rail to ground.
 
 ## 003.11 Tool Interface / Gripper
-Parts: [002.11](002-Bill-of-Materials.md#00211-tool-interface--gripper). Video: Part 11.
+Parts: [002.11](002-Bill-of-Materials.md#00211-tool-interface--gripper). Inherited from HD (Video: Part 11) —
+confirmed cross-generation compatible (see [002.11](002-Bill-of-Materials.md#00211-tool-interface--gripper)).
 
 1. Dry-fit the 25mm CF strake in the Span Mount's triangular top slot to confirm it will slide in once epoxy is
    applied.
@@ -419,3 +466,29 @@ Parts: [002.11](002-Bill-of-Materials.md#00211-tool-interface--gripper). Video: 
 47. Slide the Dynamic Finger into the Parallel Static Finger and close fully.
 48. Cut two pieces of yoga mat to fit the inside faces of the Parallel Static Finger and Dynamic Finger, and
     hot-glue them in place as grip pads.
+
+## 003.12 Firmware Configuration and Calibration
+Parts/config: [004-Firmware-and-Calibration.md](004-Firmware-and-Calibration.md). **New relative to an HD build —
+HDI's optical encoders and index-pulse mapping must be brought up before first use, and the procedure differs
+enough from HD's that it is documented as its own spec rather than folded into this one.**
+
+1. Set `Firmware/Defaults.make_ins` per [004.1](004-Firmware-and-Calibration.md#0041-firmware-defaults-defaultsmake_ins),
+   using the HDI `AxisCal`/`Interpolation` values (already the active, uncommented defaults in this repo) and the
+   correct `LinkLengths` for the physical build.
+2. **If this is a from-scratch build** (new opto boards, new code disks, new harmonic drives — no factory
+   calibration data exists for this specific robot): run the full factory calibration procedure in
+   [004.3](004-Firmware-and-Calibration.md#0043-factory-calibration-procedure-from-scratch-builds-only) before
+   proceeding. Read [004.2](004-Firmware-and-Calibration.md#0042-calibration-policy-do-not-calibrate-an-hdi-in-the-field)
+   first — this is the one point in the entire build where getting a step wrong is hard to recover from.
+3. **If reusing an already-calibrated HDI unit's electronics** (e.g. rebuilding a mechanical failure around
+   existing opto boards/FPGA with intact `AdcCenters.txt`/`HiMem.dta`/`post_cal_info.JSON`): skip step 2 entirely.
+   Recalibrating a unit that already has valid factory data is explicitly against upstream guidance (see
+   [004.2](004-Firmware-and-Calibration.md#0042-calibration-policy-do-not-calibrate-an-hdi-in-the-field)) and this
+   spec does not recommend it as a verification step.
+4. Confirm `RunDexRun` is configured per
+   [004.3 step 17](004-Firmware-and-Calibration.md#0043-factory-calibration-procedure-from-scratch-builds-only)
+   so the robot finds its home position and starts PhUI on boot, per
+   [004.4](004-Firmware-and-Calibration.md#0044-boot-sequence-and-phui).
+5. Power-cycle and observe the boot sequence described in
+   [004.4](004-Firmware-and-Calibration.md#0044-boot-sequence-and-phui): OS load, then (unlike HD/Dexter 1) a
+   minute or two of home-finding, then PhUI. The robot will not respond to DDE until PhUI is exited.
