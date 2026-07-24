@@ -58,11 +58,16 @@ brought up incrementally around the circle.
 
 The base fixes the robot to the world and provides the J1 rotation axis.
 
-- **Mounting — `[Provisional]`.** Dexter HDI uses a **bolted base**: a rigid plate bolted to the Base Mount
-  Bottom and through to a stable work surface, replacing HD's six free-standing legs. The mount must react
-  the arm's full dynamic load (REQ-ENV-5). The base plate's material, thickness, and bolt pattern are a
-  design-completion item — printed Onyx is likely under-strength for a load-bearing bolted plate; metal is
-  the design intent. See [009-Design-Completion.md](009-Design-Completion.md#base-plate).
+- **Mounting.** Dexter HDI uses a **bolted base**: a rigid metal plate bolted to the Base Mount Bottom and
+  through to a stable work surface, replacing HD's six free-standing legs (the CAD base part is modeled as
+  `BaseMountBottom_Bolted` / `HDI-110-001`). The mount must react the arm's full dynamic load (REQ-ENV-5).
+  The Rev A plate is **6061-T6 aluminium, 9.5 mm (3/8″) thick, ≈200 × 200 mm** (`[Specified]`), with the
+  **robot-side bolt pattern matching the existing Base Mount Bottom holes** (transfer coordinates from CAD —
+  `[Provisional]`) and **4 × M6 through-holes** for bolting to the work surface (`[Specified]`). A stability
+  analysis (worst-case overturning ≈45 N·m) shows a resting plate would tip, so **the plate must be bolted
+  down**; the design intent is a permanent bench fixture onto which the robot base bolts and can be removed
+  as a unit. Printed Onyx is under-strength for this load-bearing plate. See
+  [009-Design-Completion.md](009-Design-Completion.md#base-plate).
 - **Double base clamp — `[Provisional]`.** The base-to-pivot joint uses a **doubled** (stacked) base clamp
   rather than HD's single clamp. This adds height at the base and is consistent with the +6.6 mm L1 delta
   ([003](003-Kinematics.md#link-lengths)); the exact stacking/spacing is to be confirmed on build.
@@ -84,11 +89,13 @@ motor shaft and the printed joint output. J1 and J2 are built as the base and pi
 drive is the **External Gear** assembly, in which the harmonic motor turns an external gear ring at the
 elbow. All three are the same reduction (identical `AxisCal`), unchanged from HD.
 
-- **Strain-wave component set — `[TBD]`.** The flex spline, wave generator, and circular gear are not yet
-  committed to an orderable part. The design requirement (a bare 52:1 component set matching the printed
-  coupler/attach interfaces, historically a special-order Cone Drive item) and sourcing are the highest-risk,
-  longest-lead design-completion item: see [009-Design-Completion.md](009-Design-Completion.md#strain-wave-component-set).
-  Three sets are required (J1, J2, J3).
+- **Strain-wave component set — `[Provisional]`.** The flex spline, wave generator, and circular gear are
+  identified to a specific part — the **HanZhen "number 14" 52:1 component set** (`Hardware/README.md`;
+  9–12 wk lead, contact direct) or the **Cone Drive** equivalent that HDI's CAD is built around (the stator
+  holders are modeled as `HDI-311-006B_J2StatorHolder_ConeDrive`). Only the live procurement quote is open;
+  it is the highest-risk, longest-lead item — resolve it first. See
+  [009-Design-Completion.md](009-Design-Completion.md#strain-wave-component-set). Three sets are required
+  (J1, J2, J3).
 
 *Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note (Cone Drive).*
 
@@ -98,9 +105,11 @@ The **Main Pivot** is the printed shoulder housing carrying the J2 encoder disk 
 short/long ends are stiffened with bonded CF strakes and it mounts onto the base via a pressed bearing and
 all-thread tie rods. The **Arm Body** forms the L2 span (J2→J3, 339 mm) as a 1" CF square tube bonded into
 a printed body, and additionally carries the **belt directors** — printed, bearing-guided pulleys that route
-the J4/J5 drive belts along the arm to the differential. Because L2 is +18.4 mm vs HD, the Arm Body tube
-length is HDI-specific (`[Provisional]`; confirm before cutting, see
-[007](007-Bill-of-Materials.md) and [009](009-Design-Completion.md#link-member-lengths)).
+the J4/J5 drive belts along the arm to the differential. Because L2 is +18.4 mm vs HD, the Arm Body
+tube is cut **282.4 mm** (264 mm + 18.41 mm — the link delta falls entirely in the tube if the HDI socket
+seat matches HD) (`[Provisional]`; the HDI printed body is renumbered, so confirm the socket seat depth
+against the HDI CAD before cutting — see [007](007-Bill-of-Materials.md) and
+[009](009-Design-Completion.md#link-member-lengths)).
 
 ## Wrist and differential (J4–J5)
 
@@ -110,26 +119,32 @@ common produce pitch, driven in opposition produce yaw. The inputs are two plain
 that run forward along the arm through the belt directors to the differential's input pulleys. The
 end-effector wiring bundle passes through the differential's hollow bore.
 
-- **Belt reduction, not microstep oscillation — `[Specified]` (principle), `[TBD]` (ratio).** HDI obtains
-  wrist resolution from this **physical pulley reduction**, which is the defining HDI change from HD (HD
-  oscillated the motor across microsteps in firmware instead). Firmware reflects this: `Interpolation` = 1
-  and the J4/J5 `AxisCal` differs from HD ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)).
-  The exact HDI pulley tooth counts are not derivable from the firmware constants alone and are a
-  design-completion item ([009](009-Design-Completion.md#wrist-reduction-ratio)); Rev A builds the wrist
-  with the HD-specified GT2 pulleys as the provisional starting point and verifies resolution empirically.
-- **HDI differential detail — `[Provisional]`.** The differential is described as significantly revised on
-  HDI relative to HD, and a distinct HDI differential CAD assembly exists (`HDI_DiffSkins`,
-  `HDI-210-...MainPivot` references in `dde`). Rev A specifies the differential *function* and builds the HD
-  differential geometry as a working substitute pending recovery/derivation of the HDI detail design; an
-  incorrect flex/pivot geometry risks binding a joint that also carries the tool wiring through its bore.
-  See [009-Design-Completion.md](009-Design-Completion.md#differential-detail-design).
+- **Belt reduction, not microstep oscillation — `[Specified]` (principle + net ratio), `[Provisional]`
+  (tooth split).** HDI obtains wrist resolution from this **physical pulley reduction**, the defining HDI
+  change from HD (HD oscillated the motor across microsteps in firmware instead). The **net wrist reduction
+  is 13.5:1**, derivable from the J4/J5 `AxisCal` (86400 / 6400;
+  [006](006-Firmware-and-Calibration.md#drive-constants-axiscal)), with `Interpolation` = 1. ⚠️ **HD's
+  16T→90T pulleys give only 5.625:1** — reusing them unchanged against HDI firmware causes a **2.4× wrist
+  error**, so the driven side must be re-toothed (and/or the differential revised) to net 13.5:1, or
+  `AxisCal` set to the as-built ratio. The exact HDI tooth-count split is a design-completion item
+  ([009](009-Design-Completion.md#wrist-reduction-ratio)); the 16T motor pulley is retained.
+- **HDI differential detail — `[Provisional]`.** The differential is significantly revised on HDI. The HDI
+  CAD in `dde` (`HDIMeterModel.gltf`) is a kinematic/outer-skin model — it carries the HDI differential
+  *covers* (`HDI-940-001_DiffCover`) and Link4–7 kinematic frames but **not** the mechanism internals
+  (700-series Split Gear, Diff Body, Diff Gear Shaft/Axle). Rev A specifies the differential *function* and
+  builds the HD differential geometry as a working substitute pending recovery of the HDI detail design from
+  the **OnShape CAD** (linked in `Hardware/README.md`) or a physical unit; an incorrect flex/pivot geometry
+  risks binding a joint that also carries the tool wiring through its bore. See
+  [009-Design-Completion.md](009-Design-Completion.md#differential-detail-design).
 
 ### End Arm Hub (J3–J4 region)
 
 The **End Arm Hub** is the printed structure at the elbow/wrist transition: it houses the **axis
 intersection** (where the J3 and downstream axes meet), the internal and external pulleys that transfer the
 belt drives across the elbow, and the L3 span (J3→J4, 307.5 mm, a 0.75" CF tube). Because L3 is −22.7 mm vs
-HD, this tube length is HDI-specific (`[Provisional]`; confirm before cutting).
+HD, this tube is cut **214.3 mm** (237 mm − 22.70 mm — the link delta falls entirely in the tube if the HDI
+socket seat matches HD) (`[Provisional]`; the HDI printed body is renumbered, so confirm the socket seat
+depth against the HDI CAD before cutting).
 
 ## Tool interface (roll + grip)
 
@@ -144,10 +159,10 @@ dynamic fingers with replaceable grip pads). `[Specified]`.
 
 | Subassembly | Joints | Drive | Status | Open item |
 |---|---|---|---|---|
-| Base | J1 support | — | `[Provisional]` | Base plate ([009](009-Design-Completion.md#base-plate)), double clamp detail |
-| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` ratio / `[TBD]` component set | Strain-wave set ([009](009-Design-Completion.md#strain-wave-component-set)) |
+| Base | J1 support | — | `[Provisional]` | Base plate — design specified, CAD hole transfer ([009](009-Design-Completion.md#base-plate)); double clamp detail |
+| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` ratio / `[Provisional]` component set | Strain-wave set — part identified, procurement ([009](009-Design-Completion.md#strain-wave-component-set)) |
 | Main Pivot | J2 | — | `[Specified]` | — |
-| Arm Body (L2) | J3 support | belt routing | `[Provisional]` | L2 tube length ([009](009-Design-Completion.md#link-member-lengths)) |
-| End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` | L3 tube length |
-| Differential | J4, J5 | belt → differential | `[Provisional]` | Ratio + detail design ([009](009-Design-Completion.md)) |
+| Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length 282.4 mm | Confirm HDI socket seat vs CAD ([009](009-Design-Completion.md#link-member-lengths)) |
+| End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length 214.3 mm | Confirm HDI socket seat vs CAD |
+| Differential | J4, J5 | belt → differential | `[Specified]` net 13.5:1 / `[Provisional]` detail | Tooth split + detail design ([009](009-Design-Completion.md)) |
 | Tool interface | roll, grip | Dynamixel | `[Specified]` | — |

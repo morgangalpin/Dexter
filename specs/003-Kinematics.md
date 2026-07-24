@@ -87,9 +87,11 @@ firmware is **L5 first, L1 last**.
 **Design notes.**
 - L5 is essentially identical across generations, consistent with the tool interface being cross-generation
   compatible ([004](004-Mechanical-Architecture.md#tool-interface)).
-- The L2 (+18.4 mm) and L3 (−22.7 mm) deltas are far larger than build tolerance and drive the CF
-  strake/tube cut lengths in [004](004-Mechanical-Architecture.md) and [007](007-Bill-of-Materials.md);
-  they are not carried over from HD unchanged.
+- The L2 (+18.4 mm) and L3 (−22.7 mm) deltas are far larger than build tolerance and drive the CF tube cut
+  lengths in [004](004-Mechanical-Architecture.md) and [007](007-Bill-of-Materials.md). If the HDI printed sockets
+  keep HD's seat depth, the full link delta falls in the tube: Arm Body **282.4 mm**, End Arm Hub
+  **214.3 mm** — confirm against the HDI CAD, as the printed bodies are renumbered for HDI
+  ([DC-5](009-Design-Completion.md#link-member-lengths)). Not carried over from HD unchanged.
 - **Discrepancy to resolve:** an alternate HDI link-length set appears in the wiki (`set-parameter-oplet.md`)
   with L4 = 50.95 mm and L5 = 82.55 mm, differing from the firmware file above (L4 = 59.50 mm). Rev A treats
   the firmware file as authoritative; reconciling the two against a physical measurement is a

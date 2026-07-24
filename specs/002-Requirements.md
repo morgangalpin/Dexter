@@ -60,8 +60,8 @@ the output, not the motor shaft. This is the defining performance requirement of
 |---|---|---|---|---|
 | REQ-STR-1 | Lightweight, stiff structure | 3D-printed Onyx / carbon-fiber body stiffened by bonded pultruded CF strakes and tubes | `[Specified]` | [004](004-Mechanical-Architecture.md) |
 | REQ-STR-2 | Base-joint reduction | 52:1 strain-wave (harmonic) drive, backlash-free, on J1–J3 | `[Specified]` (ratio) | [004](004-Mechanical-Architecture.md#base-joints-j1-j3-strain-wave-drive) |
-| REQ-STR-3 | Wrist reduction | Belt/pulley reduction driving the J4/J5 differential | `[Provisional]` (ratio [TBD]) | [004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5) |
-| REQ-STR-4 | Rigid mounting | Bolted base to a stable work surface; doubled base clamp at the base-pivot joint | `[Provisional]` (plate [TBD]) | [004](004-Mechanical-Architecture.md#base-j1) |
+| REQ-STR-3 | Wrist reduction | Belt/pulley reduction driving the J4/J5 differential, **net 13.5:1** | `[Provisional]` (net ratio specified; tooth split [open](009-Design-Completion.md#wrist-reduction-ratio)) | [004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5) |
+| REQ-STR-4 | Rigid mounting | Bolted base to a stable work surface; doubled base clamp at the base-pivot joint | `[Provisional]` (plate design [specified](009-Design-Completion.md#base-plate), CAD hole transfer open) | [004](004-Mechanical-Architecture.md#base-j1) |
 | REQ-STR-5 | Fabricability | Buildable with desktop CF-capable 3D printing and off-the-shelf components, except the strain-wave set | `[Specified]` | [007](007-Bill-of-Materials.md) |
 
 ## 5. Electrical and control requirements
@@ -72,7 +72,7 @@ the output, not the motor shaft. This is the defining performance requirement of
 | REQ-CTL-2 | Onboard motion computation | ARM-core firmware (DexRun) runs trajectory generation and onboard kinematics | `[Specified]` | [006](006-Firmware-and-Calibration.md) |
 | REQ-CTL-3 | Actuation, J1–J5 | 0.9°/step NEMA-17 steppers, 16× microstepping, via the Motor Control PCB | `[Specified]` | [005](005-Electronics-and-Control.md#actuation) |
 | REQ-CTL-4 | Actuation, tool axes | Dynamixel smart servos on the tool interface serial bus | `[Specified]` | [005](005-Electronics-and-Control.md#actuation) |
-| REQ-CTL-5 | Power | Single DC supply feeding motor and logic rails | `[Provisional]` (rating [TBD]) | [005](005-Electronics-and-Control.md#power), [009](009-Design-Completion.md) |
+| REQ-CTL-5 | Power | Single DC supply feeding motor and logic rails, **36 V / 4 A** (board rated 38 V) | `[Specified]` | [005](005-Electronics-and-Control.md#power), [009](009-Design-Completion.md#power-supply) |
 | REQ-CTL-6 | Calibration retained per unit | Factory-recorded encoder centers and index mapping stored on the robot; not re-calibrated in the field | `[Specified]` | [006](006-Firmware-and-Calibration.md#calibration-model) |
 
 ## 6. Interface requirements

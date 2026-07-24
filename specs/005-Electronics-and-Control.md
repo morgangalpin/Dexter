@@ -70,20 +70,32 @@ internal control, commanded over the tool interface serial bus. *Source: wiki `H
 | **Optical boards (×5)** | LED + phototransistor opto pickups, one per joint encoder | `[Specified]` | `Hardware/Opto/` gerbers/BOM |
 
 - **Motor Control PCB — `[Provisional]`.** No HDI-specific Motor Control PCB design exists; the HDI upstream
-  branch omits the board entirely. Rev A reuses the HD Motor Control PCB (the revision with the D3/D4 power
-  fix), because its connector pinout (J19–J21) is generic, not HD-specific, and the one known HDI difference
-  is a wiring-harness reassignment (below), not a board change. An HDI-native board is a roadmap item
-  ([010](010-Versioning-and-Roadmap.md#roadmap)); see [009](009-Design-Completion.md#motor-control-pcb).
+  branch omits the board entirely. Rev A reuses the HD "green" Motor Control PCB (`09051-00135-A`, the
+  revision with the D3/D4 power fix). Its gerbers/BOM (`Hardware/Motor PCB/`) show **6 × Allegro A4983
+  stepper drivers** (`Z1–Z6` on `MOT1–MOT6` = 5 arm joints + 1 spare/External), `TPS54541` bucks, an
+  `LTC3786` boost (the 38 V rail ceiling), the `PDS760` power Schottkys (the "D3/D4 fix"), and per-channel
+  3.0 A thermal fuses. The connector set is generic, not HD-specific — `J1–J6/J24` 4-pin motor screw
+  terminals, `J7–J13` 6-pin opto headers, `J14–J17` 3-pin tool headers, `J19–J21` power — which is why the
+  reuse is viable and the one known HDI difference is a wiring-harness reassignment (below), not a board
+  change. An HDI-native board is a roadmap item ([010](010-Versioning-and-Roadmap.md#roadmap)); the residual
+  Rev A step is a physical power-on test, see [009](009-Design-Completion.md#motor-control-pcb).
 - **Gateware.** The FPGA logic (the servo loop and interconnect) is authored in a graphical logic tool
   (Viva/Azido) and deployed as a bitstream; it is largely a compiled artifact rather than edited source.
   Operating "modes" (follow/helping-hand/keep-position, etc.) are FPGA configurations selected at runtime.
 
 ## Power
 
-A single DC supply feeds the motor and logic rails through the Motor Control PCB. The **voltage/current
-rating is `[TBD]`** — it must be sized to the stepper driver supply rail and total motor current; confirm
-against the Motor Control PCB schematic before selecting (REQ-CTL-5, [009](009-Design-Completion.md#power-supply)).
-Servo power for the tool (6–8.75 V range referenced in the tool wiring) is derived on the tool side.
+A single DC supply feeds the motor and logic rails through the Motor Control PCB. The supply is
+**36 V DC, 4 A (≈144 W)** — a standard laptop-style DC brick. The "green" Motor Control PCB is **rated for
+38 V** (the ceiling is set by the `LTC3786` boost controller); 36 V sits just under that with margin, and the
+board's 50 V-rated input capacitors and PDS760 (60 V) power Schottkys support it. The motor rail feeds six
+A4983 stepper drivers (≈2 A/phase, fused at 3.0 A per channel); the TPS54541 bucks derive the logic rails.
+
+**Under-voltage is a failure mode, not just a slowdown:** a 12 V or 24 V brick causes the arm to grind/buzz,
+stall mid-motion, and fail to find home. Use a 36 V / 4 A supply. `[Specified]` — *Source: wiki
+`Troubleshooting.md`; Motor PCB BOM (`Hardware/Motor PCB/09011-00135-A.BOM`).* (REQ-CTL-5;
+[DC-8](009-Design-Completion.md#power-supply) closed.) Servo power for the tool (6–8.75 V range referenced in
+the tool wiring) is derived on the tool side.
 
 ## Command interface
 
@@ -132,6 +144,6 @@ power-on. `[Specified]` — *Source: wiki `End-Effectors.md` ("Version 2 Wiring"
 | Stepper actuation J1–J5 | `[Specified]` | — |
 | Dynamixel tool actuation | `[Specified]` | — |
 | MicroZed FPGA/SoC | `[Specified]` | Confirm exact module P/N |
-| Motor Control PCB | `[Provisional]` | HDI-native board ([009](009-Design-Completion.md#motor-control-pcb)) |
-| Power supply | `[TBD]` | Rating ([009](009-Design-Completion.md#power-supply)) |
+| Motor Control PCB | `[Provisional]` | HDI power-on test / HDI-native board ([009](009-Design-Completion.md#motor-control-pcb)) |
+| Power supply | `[Specified]` — 36 V, 4 A | Closed ([009](009-Design-Completion.md#power-supply)) |
 | Tool interface wiring | `[Specified]` | — |

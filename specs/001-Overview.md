@@ -125,11 +125,15 @@ The full generation lineage and the model for deriving future revisions from Rev
 Revision A is a **buildable specification with a bounded set of open decisions**. The mechanical
 architecture, kinematics, electronics, control model, firmware configuration, and calibration procedure are
 specified and, in most areas, traceable to a physical HDI unit, released firmware, factory calibration
-documentation, or CAD. A small number of decisions remain open (`[TBD]`) and must be closed before a
-from-scratch unit is fully buildable — most importantly the strain-wave component set, the wrist reduction
-ratio, the differential detail design, and the bolted-base plate. These are collected, each with the
-requirement it must satisfy, in [009-Design-Completion.md](009-Design-Completion.md). No `[TBD]` item is a
-gap in what is known about the robot; each is a design task owned by this project to complete Revision A.
+documentation, or CAD. A small number of decisions remain open and must be closed before a from-scratch unit
+is fully buildable — the highest-risk being the strain-wave component set (part now identified: HanZhen #14 /
+Cone Drive; procurement open) and the differential detail design; the wrist reduction is resolved to a fixed
+net **13.5:1** (tooth split open), the power supply is closed at **36 V / 4 A**, the bolted-base plate is
+resolved to a design of record (CAD hole transfer pending), and the L2/L3 cut lengths are computed
+(282.4 / 214.3 mm, pending an HDI socket-seat check). These are collected, each
+with the requirement it must satisfy and its current state, in
+[009-Design-Completion.md](009-Design-Completion.md). No open item is a gap in what is known about the robot;
+each is a design task owned by this project to complete Revision A.
 
 ## 7. Task programming
 

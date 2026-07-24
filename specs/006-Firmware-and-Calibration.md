@@ -45,20 +45,33 @@ changes described in [001](001-Overview.md#5-design-lineage).
 `AxisCal` is the per-joint conversion between motor steps and joint angle:
 `AxisCal = gear_ratio × motor_steps_per_rev × microstepping`.
 
-| Joints | Value | Derivation | Meaning |
-|---|---|---|---|
-| J1, J2, J3 | −332800 | 52 × 400 × 16 | 52:1 strain-wave, 0.9°/step (400-step) motor, 16× microstepping. **Identical to HD** — the base-joint reduction is unchanged. |
-| J4, J5 | −86400 | belt reduction (HDI) | HDI resolves the wrist through a **physical pulley reduction** (vs HD's −36000 with microstep oscillation). |
+| Joints | Value | Derivation | Net reduction | Meaning |
+|---|---|---|---|---|
+| J1, J2, J3 | −332800 | 52 × 400 × 16 | **52:1** | 52:1 strain-wave, 0.9°/step (400-step) motor, 16× microstepping. **Identical to HD** — the base-joint reduction is unchanged. |
+| J4, J5 | −86400 | 13.5 × 400 × 16 | **13.5:1** | HDI resolves the wrist through a **physical pulley reduction** of 13.5:1 (vs HD's −36000 = 5.625:1 = 90T/16T belt, plus microstep oscillation). |
 
 - **`Interpolation`** = 1 for all joints on HDI. HD used 16 on J4/J5 to sub-divide microsteps for the
   oscillation trick; HDI sets 1 because the belt reduction supplies wrist resolution physically.
-- The J4/J5 `AxisCal` (86400) and `Interpolation` (1) do **not** algebraically pin the HDI pulley tooth
-  counts by themselves — deriving the exact wrist reduction is a design-completion item
-  ([009](009-Design-Completion.md#wrist-reduction-ratio)). Rev A builds the wrist with the provisional HD
-  pulley set and the firmware values above, and verifies resolution empirically.
+- **The net wrist reduction *is* derivable — 13.5:1.** `AxisCal = gear_ratio × 400 × 16`, so
+  86400 / 6400 = **13.5:1**. What is *not* pinned by the firmware alone is the *decomposition into tooth
+  counts*; that is the design-completion item ([009](009-Design-Completion.md#wrist-reduction-ratio)).
+- ⚠️ **The HD 16T→90T pulleys give 5.625:1, not 13.5:1.** Reusing the HD driven pulley set unchanged against
+  the HDI `AxisCal` would produce a **2.4× wrist-scale error**. The wrist must net 13.5:1 (revised
+  differential and/or re-toothed pulleys), or `AxisCal` must be set to the as-built ratio — see
+  [009](009-Design-Completion.md#wrist-reduction-ratio) and
+  [004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5).
 
-`[Specified]` (J1–J3), `[Provisional]` (J4/J5 realization). *Source: `Firmware/Defaults.make_ins`; wiki
-`Hardware.md`, `set-parameter-oplet.md`.*
+`[Specified]` (J1–J3; J4/J5 net ratio 13.5:1), `[Provisional]` (J4/J5 tooth-count realization). *Source:
+`Firmware/Defaults.make_ins`, `Firmware/AxisCal.txt`; wiki `Hardware.md`, `Joints.md`, `Firmware.md`,
+`set-parameter-oplet.md`.*
+
+> **AxisCal.txt vs Defaults.make_ins — base-joint note.** `AxisCal.txt` is a derived runtime file
+> (`−(gear_ratio × microstep × steps) / 1 296 000` per joint, plus a trailing `ANGLE_END_RATIO` term
+> `−round(ratio_J4 / ratio_J3 × 2²⁴)`). The copy in this repo encodes **50:1** on J1–J3 (line value
+> −0.24691 = 50, and the trailing term −4 529 848 = −round(13.5 / 50 × 2²⁴)), while `Defaults.make_ins`
+> and the physical Cone Drive #14 set specify **52:1**. `Defaults.make_ins` (52:1) is authoritative; the
+> sampled `AxisCal.txt` appears stale/mis-generated and **must be regenerated to 52:1 on a real build** (a
+> 50:1 file would give ≈4 % base-joint scale error). Both files agree J4/J5 = 13.5:1.
 
 ## Calibration model
 
@@ -76,8 +89,11 @@ recorded values are overwritten incorrectly. Operationally:
   Do not save calibration on such a unit.
 - A **from-scratch build** (new opto boards, new code disks, new drives) has no recorded calibration and
   **must run the full factory procedure once** before first use — this is unavoidable for a new build and is
-  the single most consequential bring-up step. Obtaining the calibration job files/bundle for this is a
-  design-completion item ([009](009-Design-Completion.md#from-scratch-calibration-files)).
+  the single most consequential bring-up step. The calibration **engine** (`dde/low_level_dexter/`:
+  `Calibrate_Encoders_Function.dde`, `calibrate_optical.js`, `calibrate_build_tables.js`, `calibrate_ui.js`,
+  `ViewEye*.js`) and `PHUI2RCP.js` (`Firmware/dde_apps/`) are in the public repos; the two HDI job
+  wrappers (`Setup_Find_Index_Home_HDI*.dde`, `Find_Index_Pulses_HDI.dde`) are not yet, and reconstructing
+  them is a design-completion item ([009](009-Design-Completion.md#from-scratch-calibration-files)).
 
 `[Specified]` — *Source: wiki `Encoder-Calibration.md`, `Dexter-Setup.md`; factory calibration PDFs.*
 

@@ -15,22 +15,23 @@ totals below carry no slack, and several rows depend on `[Provisional]`/`[TBD]` 
 | # | Subassembly | PBS | Status |
 |---|---|---|---|
 | [007.1](#0071-glue-rig-assembly) | Glue Rig (tooling) | F | `[Provisional]` |
-| [007.2](#0072-base) | Base | A | `[Provisional]` — bolted base + double clamp; plate `[TBD]` ([DC-4](009-Design-Completion.md#base-plate)) |
-| [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | `[Specified]` except strain-wave set `[TBD]` ([DC-1](009-Design-Completion.md#strain-wave-component-set)) |
+| [007.2](#0072-base) | Base | A | `[Provisional]` — bolted base + double clamp; plate design specified, CAD hole transfer ([DC-4](009-Design-Completion.md#base-plate)) |
+| [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | `[Specified]` except strain-wave set `[Provisional]` — part identified ([DC-1](009-Design-Completion.md#strain-wave-component-set)) |
 | [007.4](#0074-main-pivot) | Main Pivot (J2) | C | `[Specified]` |
-| [007.5](#0075-arm-body) | Arm Body (L2) | B | `[Provisional]` — L2 tube length ([DC-5](009-Design-Completion.md#link-member-lengths)) |
+| [007.5](#0075-arm-body) | Arm Body (L2) | B | `[Provisional]` — L2 tube 282.4 mm, confirm socket seat ([DC-5](009-Design-Completion.md#link-member-lengths)) |
 | [007.6](#0076-differential) | Differential (J4/J5) | H | `[Provisional]` — HD substitute ([DC-2](009-Design-Completion.md#differential-detail-design)) |
-| [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | `[Provisional]` — L3 tube length ([DC-5](009-Design-Completion.md#link-member-lengths)) |
-| [007.8](#0078-external-gear) | External Gear (J3 drive) | G | `[Specified]` except strain-wave set `[TBD]` ([DC-1](009-Design-Completion.md#strain-wave-component-set)) |
-| [007.9](#0079-external-gear-mount--differential-motors) | Ex Gear Mount + Diff Motors (J4/J5) | I | `[Specified]` |
-| [007.10](#00710-wire-harness) | Wire Harness | J | `[Provisional]` — HD PCB reuse ([DC-7](009-Design-Completion.md#motor-control-pcb)); PSU `[TBD]` ([DC-8](009-Design-Completion.md#power-supply)) |
+| [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | `[Provisional]` — L3 tube 214.3 mm, confirm socket seat ([DC-5](009-Design-Completion.md#link-member-lengths)) |
+| [007.8](#0078-external-gear) | External Gear (J3 drive) | G | `[Specified]` except strain-wave set `[Provisional]` — part identified ([DC-1](009-Design-Completion.md#strain-wave-component-set)) |
+| [007.9](#0079-external-gear-mount--differential-motors) | Ex Gear Mount + Diff Motors (J4/J5) | I | `[Specified]` motor pulley; driven set nets 13.5:1 ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)) |
+| [007.10](#00710-wire-harness) | Wire Harness | J | `[Provisional]` — HD PCB reuse ([DC-7](009-Design-Completion.md#motor-control-pcb)); PSU 36 V/4 A `[Specified]` ([DC-8](009-Design-Completion.md#power-supply)) |
 | [007.11](#00711-tool-interface--gripper) | Tool Interface / Gripper | K–O | `[Specified]` |
 
 ## Strain-wave component set (applies to 007.3 and 007.8)
 
 Each 52:1 strain-wave drive (J1, J2, J3 — three total) requires a **flex spline**, a **wave generator**, and
-a **circular/stator gear**. These are `[TBD]` — not yet committed to an orderable part number. Historically a
-special-order 52:1 "component gear set" (Cone Drive / originally HanZhen), long lead time. This is the
+a **circular/stator gear**. `[Provisional]` — the part is identified but not yet quoted: the **HanZhen
+"number 14" 52:1 component set** (not listed on their site — contact direct; 9–12 wk lead) or the **Cone
+Drive** equivalent that the HDI CAD stator holders (`HDI-311-006B_..._ConeDrive`) are cut to. This is the
 highest-risk, longest-lead item in the build; resolve [DC-1](009-Design-Completion.md#strain-wave-component-set)
 before ordering anything else. The identical J1–J3 `AxisCal`
 ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)) confirms the same 52:1 gearing on all three.
@@ -65,8 +66,9 @@ consistent with the +6.6 mm L1 delta ([003](003-Kinematics.md#link-lengths)).
 | #110-001 | Base Mount Bottom | 3D print | 1 | |
 | #110-002 | Base Stator Holder | 3D print | 1 | |
 | #110-003 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | dragonplate.com pID=697 |
-| — | **Base Mounting Plate** | Machine (metal) | 1 | `[TBD]` [DC-4](009-Design-Completion.md#base-plate). Replaces HD's 6 feet + aluminum strakes; bolts to Base Mount Bottom and to the work surface. Material/thickness/bolt pattern undefined; printed Onyx likely under-strength |
-| — | Base mounting bolts (to work surface) | Off the shelf | 4–6 (TBD) | Depends on the plate design ([DC-4](009-Design-Completion.md#base-plate)) |
+| — | **Base Mounting Plate** | Machine (metal) | 1 | **6061-T6 aluminium, 9.5 mm (3/8″), ≈200 × 200 mm** ([DC-4](009-Design-Completion.md#base-plate)). Replaces HD's 6 feet + aluminium strakes; robot-side pattern matches the Base Mount Bottom holes (transfer from CAD); 4 × M6 work-surface through-holes. Onyx under-strength |
+| — | M6 bolts + washers/nuts (plate to work surface) | Off the shelf | 4 | Through-bolt to bench (or T-slot clamp) ([DC-4](009-Design-Completion.md#base-plate)) |
+| — | Robot-side bolts (Base Mount Bottom to plate) | Off the shelf | per CAD pattern | Match the existing Base Mount Bottom hole size (M3/M4); count from CAD transfer |
 | #120-001 | Base Long | 3D print | 1 | |
 | #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | dragonplate.com pID=697 |
 | #120-003 | 107 mm M3 all-thread | Fabricate | 3 | |
@@ -125,7 +127,7 @@ L2 span (J2→J3) plus belt-director sub-unit. `[Provisional]` — the L2 tube l
 | #200-001 | Arm Body (printed) | 3D print | 1 | Also referenced by the glue rig |
 | #200-002 | Pivot Stator Holder | 3D print | 1 | |
 | #200-003 | Stator Balancer | 3D print | 4 | |
-| #200-005 | 1" CF square tube | Fabricate | 1 | **This span is L2 (+18.4 mm vs HD). `[Provisional]`: ~282 mm (264 mm + 18.4 mm) as a starting point; confirm before cutting — [DC-5](009-Design-Completion.md#link-member-lengths).** |
+| #200-005 | 1" CF square tube | Fabricate | 1 | **This span is L2 (+18.4 mm vs HD). Cut length `[Provisional]`: 282.4 mm (264 mm + 18.41 mm; delta falls in the tube if the HDI socket seat matches HD). HDI printed body is renumbered — confirm socket seat vs HDI CAD before cutting — [DC-5](009-Design-Completion.md#link-member-lengths).** |
 | #200-006 | Calibration Arrows | 3D print | 2 | |
 | #620-006 | 6810 bearing | Off the shelf | 1 | |
 | #210-001 | Belt Director Caps | 3D print | 3 | |
@@ -139,9 +141,9 @@ L2 span (J2→J3) plus belt-director sub-unit. `[Provisional]` — the L2 tube l
 | #660-001 | M2 nut | Off the shelf | 1 | |
 | #670-001 | M2 washer | Off the shelf | 1 | |
 
-The belt directors are part of the J4/J5 drive path whose reduction ratio is `[TBD]`
-([DC-3](009-Design-Completion.md#wrist-reduction-ratio)); Rev A builds them as specified and verifies wrist
-resolution empirically.
+The belt directors are part of the J4/J5 drive path whose **net reduction must be 13.5:1**
+([DC-3](009-Design-Completion.md#wrist-reduction-ratio)); the tooth-count split across the directors and
+End Arm Hub pulleys is the open part. Verify wrist resolution empirically after build.
 
 ## 007.6 Differential
 J4/J5 wrist. `[Provisional]` — the HD differential is built as a working substitute pending the HDI
@@ -187,7 +189,7 @@ HDI-specific.
 | #410-006 | M3 × 107 mm all-thread | Fabricate | 4 | |
 | #420-001 | End Arm Hub (printed) | 3D print | 1 | Also referenced by the glue rig |
 | #420-002 | End Arm Hub Cap | 3D print | 1 | |
-| #420-003 | 0.75" CF square tube | Fabricate | 1 | **This span is L3 (−22.7 mm vs HD). `[Provisional]`: ~214 mm (237 mm − 22.7 mm) as a starting point; confirm before cutting — [DC-5](009-Design-Completion.md#link-member-lengths).** |
+| #420-003 | 0.75" CF square tube | Fabricate | 1 | **This span is L3 (−22.7 mm vs HD). Cut length `[Provisional]`: 214.3 mm (237 mm − 22.70 mm; delta falls in the tube if the HDI socket seat matches HD). HDI printed body is renumbered — confirm socket seat vs HDI CAD before cutting — [DC-5](009-Design-Completion.md#link-member-lengths).** |
 | #421-001 | Internal Outer Pulley | 3D print | 1 | |
 | #421-002 | Internal Inner Pulley | 3D print | 1 | |
 | #421-003 | 113 × 8 × 6 mm stainless steel rod | Fabricate | 1 | |
@@ -249,7 +251,7 @@ Mounts the two plain **J4/J5 (angle + rotate) steppers** that drive the differen
 | #610-001 | NEMA-17 stepper (angle + rotate) | Off the shelf | 2 | Plain steppers, no strain-wave drive |
 | #642-004 | M3 × 8 mm bolts | Off the shelf | 8 | |
 | #670-002 | M3 washers | Off the shelf | 8 | |
-| #6A0-001 | 16T × 5 mm GT2 pulley | Off the shelf | 2 | Provisional wrist ratio ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)) |
+| #6A0-001 | 16T × 5 mm GT2 pulley (motor) | Off the shelf | 2 | Motor pulley (retained). The **driven** side must net **13.5:1** — do not reuse the HD 90T set, which gives 5.625:1 and a 2.4× wrist error ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)) |
 
 ## 007.10 Wire Harness
 Electronics and connectorization ([005](005-Electronics-and-Control.md)). `[Provisional]` — reuses the HD
@@ -281,7 +283,7 @@ change; the power supply rating is `[TBD]` ([DC-8](009-Design-Completion.md#powe
 | #830-001/002 | Solder jigs (6-pin holder, LED rig) | 3D print | 2 / 1 | |
 | #840-001 | Power connector wires | Off the shelf | 244 cm | Red + black, 24 AWG |
 | #840-002 | Power connector | Off the shelf | 1 | |
-| #650-001 | **Power Supply** | Off the shelf | 1 | `[TBD]` rating ([DC-8](009-Design-Completion.md#power-supply)) — size to the Motor Control PCB rail |
+| #650-001 | **Power Supply** | Off the shelf | 1 | **36 V DC, 4 A (≈144 W)** laptop-style brick with matching barrel/DC plug ([DC-8](009-Design-Completion.md#power-supply)). Board rated 38 V; do not substitute a 12/24 V brick (stalls, home-find failure) |
 
 ## 007.11 Tool Interface / Gripper
 2-axis roll + grip; cross-generation compatible. `[Specified]`.
@@ -342,7 +344,8 @@ Base Mounting Plate hardware). No slack included — order in excess.
 | MR85 bearing | 3 |
 | 6705 / 6807 bearing | 1 / 2 |
 | NEMA-17 stepper (0.9°/step) | 5 |
-| Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each — `[TBD]` |
+| Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each — `[Provisional]` (HanZhen #14 / Cone Drive) |
+| Power supply, 36 V / 4 A DC brick | 1 |
 | Dynamixel XL-320 servo | 2 |
 | Optical Board | 5 |
 | 6-pin connector | 10 |
@@ -355,8 +358,14 @@ Base Mounting Plate hardware). No slack included — order in excess.
   before cutting.
 - **Bearings** — standard metric trade sizes (68xx/67xx/MRxxx); source by ID/OD/width from any supplier.
 - **Strain-wave sets** — the long-lead, high-risk item ([DC-1](009-Design-Completion.md#strain-wave-component-set));
-  start vendor contact first.
-- **Motor Control / Opto PCBs** — fabricate from gerbers in `Hardware/Motor PCB/` and `Hardware/Opto/`.
+  the part is the **HanZhen "number 14" 52:1 set** (email direct; 9–12 wk lead) or the Cone Drive
+  equivalent — start vendor contact first.
+- **Motor Control / Opto PCBs** — fabricate from gerbers in `Hardware/Motor PCB/` (`09051-00135-A`) and
+  `Hardware/Opto/`.
 - **MicroZed** — confirm the SoM part number (wiki `MicroZed`) before ordering.
-- **Power supply** — size to the Motor Control PCB rail ([DC-8](009-Design-Completion.md#power-supply)).
-- **Base Mounting Plate** — not sourceable until designed ([DC-4](009-Design-Completion.md#base-plate)).
+- **Power supply** — a **36 V / 4 A** laptop-style DC brick ([DC-8](009-Design-Completion.md#power-supply));
+  the board is rated 38 V. Do not use a 12/24 V brick.
+- **Base Mounting Plate** — 6061-T6 aluminium, 9.5 mm, ≈200 × 200 mm; transfer the robot-side hole pattern
+  from the Base Mount Bottom CAD ([DC-4](009-Design-Completion.md#base-plate)).
+- **Wrist driven pulleys** — must net 13.5:1, not the HD 90/16 (5.625:1)
+  ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)).
