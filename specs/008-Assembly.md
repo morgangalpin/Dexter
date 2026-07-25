@@ -1,9 +1,9 @@
-# 008 — Assembly (Dexter HDI Rev A)
+# 008 — Assembly
 
 This document is the procedure that builds the parts in [007-Bill-of-Materials.md](007-Bill-of-Materials.md)
 into the robot specified in [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md). It is a
 **derived artifact** — regenerate it when the mechanical design changes. Steps for `[Provisional]`
-subassemblies (the bolted base, the differential substitute, HDI-specific link lengths) are the current
+subassemblies (the bolted base, the differential substitute, the revised link lengths) are the current
 procedure of record; confirm the corresponding [009-Design-Completion.md](009-Design-Completion.md) item
 before committing irreversible work (cutting CF, pressing strain-wave splines). A from-scratch build ends
 with the firmware/calibration bring-up in [008.12](#00812-firmware-configuration-and-calibration).
@@ -60,12 +60,12 @@ parts) that hold parts square while adhesive cures.
 7. Cure per the epoxy manufacturer's time before removing.
 
 ## 008.2 Base
-Parts: [007.2](007-Bill-of-Materials.md#0072-base). `[Provisional]` — the bolted base replaces HD's
-foot/strake base. Steps 1–5 depend on the Base Mounting Plate design
+Parts: [007.2](007-Bill-of-Materials.md#0072-base). `[Provisional]` — the bolted base replaces the
+previous version's foot/strake base. Steps 1–5 depend on the Base Mounting Plate design
 ([DC-4](009-Design-Completion.md#base-plate)); steps 6+ (Base Long, Base Clamp) are established.
 
 1. **(Blocked on [DC-4](009-Design-Completion.md#base-plate))** Bolt the Base Mounting Plate to the Base
-   Mount Bottom in place of the HD feet, per the plate's final bolt pattern.
+   Mount Bottom in place of the previous version's feet, per the plate's final bolt pattern.
 2. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
    parts slide together and lock.
 3. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
@@ -157,8 +157,9 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 11. Place the M3 washer, then M2 washer, then M2 nut, and tighten.
 
 ## 008.6 Differential
-Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Provisional]` — builds the HD differential as
-a working substitute pending [DC-2](009-Design-Completion.md#differential-detail-design).
+Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Provisional]` — builds the previous
+version's differential as a working substitute pending
+[DC-2](009-Design-Completion.md#differential-detail-design).
 
 1. Insert one 6705 and one 6703 bearing into Diff Body A; press to seat.
 2. Insert one 6703 into the End Arm Hub; press to seat.
@@ -256,7 +257,8 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 
 ## 008.9 Belts
 Parts: GT2 belts/pulleys from [007.7](007-Bill-of-Materials.md#0077-end-arm-hub) and
-[007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the provisional HD wrist pulleys pending
+[007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the provisional wrist pulleys carried over
+from the previous version, pending
 [DC-3](009-Design-Completion.md#wrist-reduction-ratio); verify J4/J5 resolution empirically after
 calibration.
 
@@ -265,7 +267,7 @@ calibration.
 3. Tighten one set screw against the flat of each motor shaft.
 
 ## 008.10 Wire Harness
-Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the HD Motor Control Board
+Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the previous version's Motor Control Board
 ([DC-7](009-Design-Completion.md#motor-control-pcb)).
 
 1. Snip the M2 connection on the back of the Motor Control Board to break it.
@@ -277,8 +279,9 @@ Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the HD Motor 
 6. Hold the Motor Control Board with the brackets on the opposite side of the 1" CF tube and screw in the
    M3 × 20 mm bolts without over-tightening (an M3 nut can back up a stripped hole).
 7. Connect the power wires: black to negative (−), red to positive (+).
-8. **HDI wiring:** connect the White signal wire to the **2nd ground terminal** (labeled "−" near the top of
-   the motor board) — **not** a servo-power tap as on HD. Double-check before first power-on: on an HD
+8. **Tool-interface wiring:** connect the White signal wire to the **2nd ground terminal** (labeled "−"
+   near the top of the motor board) — **not** a servo-power tap as on the previous version. Double-check
+   before first power-on: on an older
    harness White can carry 6–8.75 V, so wiring it as ground while tapped for power elsewhere shorts a rail
    ([005](005-Electronics-and-Control.md#tool-interface-wiring)).
 
@@ -359,7 +362,7 @@ Config: [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md). Requ
 from-scratch build.
 
 1. Set `Defaults.make_ins` per [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) —
-   HDI `AxisCal`/`Interpolation` (already the active defaults) and the correct `LinkLengths` for the physical
+   the `AxisCal`/`Interpolation` values (already the active defaults) and the correct `LinkLengths` for the physical
    build.
 2. **From-scratch build:** run the full factory calibration procedure
    ([006](006-Firmware-and-Calibration.md#factory-calibration-procedure)) — new opto boards/code

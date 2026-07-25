@@ -1,6 +1,6 @@
-# 003 — Kinematics (Dexter HDI Rev A)
+# 003 — Kinematics
 
-This document specifies the geometry and motion model of Dexter HDI: coordinate conventions, joint
+This document specifies the geometry and motion model of Dexter: coordinate conventions, joint
 definitions and travel limits, link lengths, the Denavit–Hartenberg model, and the command set that drives
 motion. It implements the kinematic requirements in [002-Requirements.md](002-Requirements.md#2-kinematic-and-workspace-requirements)
 and is the reference for the mechanical link dimensions in
@@ -9,7 +9,7 @@ and is the reference for the mechanical link dimensions in
 
 ## Coordinate frame
 
-Dexter HDI uses a right-handed world frame anchored at the base:
+Dexter uses a right-handed world frame anchored at the base:
 
 - **Z** is up/down.
 - **X** is right/left from the operator's point of view (facing the robot's front).
@@ -66,7 +66,7 @@ Travel is bounded in firmware, expressed as arcseconds from center. The degree e
 | J5 | ±684010 | **±190.0°** | REQ-WS-5 |
 
 `[Specified]` — *Source: `Firmware/Defaults.make_ins` (`J*BoundryHigh/Low`).* These are the firmware
-constants of record for Rev A; the physical range must not be commanded beyond them (and the mechanical
+constants of record; the physical range must not be commanded beyond them (and the mechanical
 range must accommodate them — confirm on build).
 
 ## Link lengths
@@ -74,7 +74,7 @@ range must accommodate them — confirm on build).
 Link lengths define the distances between joint axes used by both onboard and host kinematics. The order in
 firmware is **L5 first, L1 last**.
 
-| Link | Span | Rev A value | HD value | HD→HDI delta |
+| Link | Span | Value | Previous version | Delta |
 |---|---|---|---|---|
 | L1 | Base mount → J2 axis | 235.20 mm | 228.60 mm | +6.60 mm |
 | L2 | J2 → J3 axis | 339.09 mm | 320.68 mm | +18.42 mm |
@@ -85,16 +85,16 @@ firmware is **L5 first, L1 last**.
 `[Specified]` — *Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`).*
 
 **Design notes.**
-- L5 is essentially identical across generations, consistent with the tool interface being cross-generation
+- L5 is essentially identical across versions, consistent with the tool interface being cross-version
   compatible ([004](004-Mechanical-Architecture.md#tool-interface)).
 - The L2 (+18.4 mm) and L3 (−22.7 mm) deltas are far larger than build tolerance and drive the CF tube cut
-  lengths in [004](004-Mechanical-Architecture.md) and [007](007-Bill-of-Materials.md). If the HDI printed sockets
-  keep HD's seat depth, the full link delta falls in the tube: Arm Body **282.4 mm**, End Arm Hub
-  **214.3 mm** — confirm against the HDI CAD, as the printed bodies are renumbered for HDI
-  ([DC-5](009-Design-Completion.md#link-member-lengths)). Not carried over from HD unchanged.
-- **Discrepancy to resolve:** an alternate HDI link-length set appears in the wiki (`set-parameter-oplet.md`)
-  with L4 = 50.95 mm and L5 = 82.55 mm, differing from the firmware file above (L4 = 59.50 mm). Rev A treats
-  the firmware file as authoritative; reconciling the two against a physical measurement is a
+  lengths in [004](004-Mechanical-Architecture.md) and [007](007-Bill-of-Materials.md). If the printed sockets
+  keep the previous version's seat depth, the full link delta falls in the tube: Arm Body **282.4 mm**, End Arm Hub
+  **214.3 mm** — confirm against the CAD model, as the printed bodies are renumbered
+  ([DC-5](009-Design-Completion.md#link-member-lengths)). Not carried over from the previous version unchanged.
+- **Discrepancy to resolve:** an alternate link-length set appears in the wiki (`set-parameter-oplet.md`)
+  with L4 = 50.95 mm and L5 = 82.55 mm, differing from the firmware file above (L4 = 59.50 mm). This
+  specification treats the firmware file as authoritative; reconciling the two against a physical measurement is a
   [009](009-Design-Completion.md) item. Getting L2/L3/L4 wrong shifts where the links land relative to
   encoder zero and shows up as a Cartesian-accuracy error, not an assembly failure.
 
@@ -195,6 +195,6 @@ position from `a`/`M` is summed with the PID offset from `P`/`C`. *Source: wiki 
 The reachable envelope is bounded by the joint travel limits above, the link lengths, configuration
 constraints, and singularity avoidance — it is not a simple sphere. Maximum reach from the base axis is
 ≈ 0.79 m (derived: L2 + L3 + L4 + L5), and reliable motion is available around the nominal working point
-`[0, 0.5, 0.075]` m. The HDI motion envelope is documented as measured side-view and top-view profiles
+`[0, 0.5, 0.075]` m. The motion envelope is documented as measured side-view and top-view profiles
 (wiki `Kinematics.md`); characterizing the envelope on a physical build closes REQ-WS-6/WS-8
 ([009](009-Design-Completion.md)).

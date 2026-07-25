@@ -1,6 +1,6 @@
-# 005 — Electronics and Control (Dexter HDI Rev A)
+# 005 — Electronics and Control
 
-This document specifies how Dexter HDI senses, actuates, and is commanded: the optical encoders, the
+This document specifies how Dexter senses, actuates, and is commanded: the optical encoders, the
 stepper and servo actuation, the FPGA joint-servo loop, the controller boards, power, and the command
 interface. It implements the electrical/control and interface requirements
 ([002](002-Requirements.md#5-electrical-and-control-requirements)) and drives the firmware configuration in
@@ -65,20 +65,21 @@ internal control, commanded over the tool interface serial bus. *Source: wiki `H
 
 | Board | Role | Status | Source of record |
 |---|---|---|---|
-| **Motor Control PCB** | Stepper drivers, power distribution, opto/tool connectors, FPGA carrier interface | `[Provisional]` — reuse the HD board | `Hardware/Motor PCB/` gerbers (D3/D4-corrected revision) |
+| **Motor Control PCB** | Stepper drivers, power distribution, opto/tool connectors, FPGA carrier interface | `[Provisional]` — reuse the previous version's board | `Hardware/Motor PCB/` gerbers (D3/D4-corrected revision) |
 | **MicroZed FPGA/SoC** | Xilinx Zynq module: FPGA fabric (joint servo, gateware) + ARM core (DexRun, Linux) | `[Specified]` | wiki `MicroZed.md` for the exact module part number |
 | **Optical boards (×5)** | LED + phototransistor opto pickups, one per joint encoder | `[Specified]` | `Hardware/Opto/` gerbers/BOM |
 
-- **Motor Control PCB — `[Provisional]`.** No HDI-specific Motor Control PCB design exists; the HDI upstream
-  branch omits the board entirely. Rev A reuses the HD "green" Motor Control PCB (`09051-00135-A`, the
-  revision with the D3/D4 power fix). Its gerbers/BOM (`Hardware/Motor PCB/`) show **6 × Allegro A4983
-  stepper drivers** (`Z1–Z6` on `MOT1–MOT6` = 5 arm joints + 1 spare/External), `TPS54541` bucks, an
+- **Motor Control PCB — `[Provisional]`.** No Motor Control PCB design of this version's own exists; the
+  upstream branch omits the board entirely. The previous version's "green" Motor Control PCB is reused
+  (`09051-00135-A`, the revision with the D3/D4 power fix). Its gerbers/BOM (`Hardware/Motor PCB/`) show
+  **6 × Allegro A4983 stepper drivers** (`Z1–Z6` on `MOT1–MOT6` = 5 arm joints + 1 spare/External),
+  `TPS54541` bucks, an
   `LTC3786` boost (the 38 V rail ceiling), the `PDS760` power Schottkys (the "D3/D4 fix"), and per-channel
-  3.0 A thermal fuses. The connector set is generic, not HD-specific — `J1–J6/J24` 4-pin motor screw
-  terminals, `J7–J13` 6-pin opto headers, `J14–J17` 3-pin tool headers, `J19–J21` power — which is why the
-  reuse is viable and the one known HDI difference is a wiring-harness reassignment (below), not a board
-  change. An HDI-native board is a roadmap item ([010](010-Versioning-and-Roadmap.md#roadmap)); the residual
-  Rev A step is a physical power-on test, see [009](009-Design-Completion.md#motor-control-pcb).
+  3.0 A thermal fuses. The connector set is generic rather than tied to the previous version — `J1–J6/J24`
+  4-pin motor screw terminals, `J7–J13` 6-pin opto headers, `J14–J17` 3-pin tool headers, `J19–J21` power —
+  which is why the reuse is viable and the one known difference is a wiring-harness reassignment (below),
+  not a board change. A purpose-built board is a roadmap item ([011](011-Roadmap.md)); the residual step
+  here is a physical power-on test, see [009](009-Design-Completion.md#motor-control-pcb).
 - **Gateware.** The FPGA logic (the servo loop and interconnect) is authored in a graphical logic tool
   (Viva/Azido) and deployed as a bitstream; it is largely a compiled artifact rather than edited source.
   Operating "modes" (follow/helping-hand/keep-position, etc.) are FPGA configurations selected at runtime.
@@ -99,7 +100,7 @@ the tool wiring) is derived on the tool side.
 
 ## Command interface
 
-Dexter HDI is commanded over the network by the **oplet protocol**: single-letter command primitives sent
+Dexter is commanded over the network by the **oplet protocol**: single-letter command primitives sent
 over a socket to DexRun (e.g. `a` move-all, `M`/`T` Cartesian moves, `S` set-parameter, `g` get-status,
 `r` read, `w` write). The motion oplets are specified in [003](003-Kinematics.md#motion-commands).
 
@@ -108,7 +109,7 @@ over a socket to DexRun (e.g. `a` move-all, `M`/`T` Cartesian moves, `S` set-par
 | **Socket / oplet protocol** | Raw TCP socket to DexRun carrying oplets; the lowest-level control interface | REQ-IF-1 |
 | **DDE** | Dexter Development Environment: JavaScript kinematics/motion API, GUI + onboard Job Engine for headless runs | REQ-IF-2, REQ-PRG-1 |
 | **Onboard web server** | Node.js web server / editor for browser access without installed software | REQ-IF-5 |
-| **PhUI** | Physical teach-and-replay; the **default HDI startup job** — the robot does not accept DDE control until PhUI is exited ([006](006-Firmware-and-Calibration.md#boot-and-phui)) | REQ-PRG-2 |
+| **PhUI** | Physical teach-and-replay; the **default startup job** — the robot does not accept DDE control until PhUI is exited ([006](006-Firmware-and-Calibration.md#boot-and-phui)) | REQ-PRG-2 |
 | **Scratch** | Block-coding extension for simple fixed motions | REQ-PRG-3 |
 | **SSH / USB console** | Service and calibration access | REQ-IF-3 |
 
@@ -118,21 +119,21 @@ over a socket to DexRun (e.g. `a` move-all, `M`/`T` Cartesian moves, `S` set-par
 ## Tool interface wiring
 
 The tool interface connects to the Motor Control PCB through **6 conductors** (REQ-IF-4). Five assignments
-are common across generations; **the White conductor differs on HDI** and this difference is
+are common across versions; **the White conductor changed with this version** and the difference is
 safety-relevant.
 
-| Wire | Assignment (HDI) | Note |
+| Wire | Assignment | Note |
 |---|---|---|
 | Black | Ground | |
 | Red | +5 V logic | |
 | Yellow | Unregulated supply power | |
 | Blue | Servo data bus | |
 | Green | Auxiliary / return serial data | |
-| **White** | **Second ground** (2nd-from-top "−" screw terminal) | **On HD this same wire can carry regulated servo power (6–8.75 V)** |
+| **White** | **Second ground** (2nd-from-top "−" screw terminal) | **On the previous version this same wire can carry regulated servo power (6–8.75 V)** |
 
-**Safety.** On HD, White may carry 6–8.75 V; on HDI, the same physical wire and terminal are a second
-ground. Connecting an HD harness to an HDI-configured board (or vice versa) without re-checking this
-assignment shorts a power rail to ground. Verify the White assignment against the board before first
+**Safety.** On the previous version, White may carry 6–8.75 V; here the same physical wire and terminal are
+a second ground. Connecting an older harness to a board configured for this version (or vice versa) without
+re-checking this assignment shorts a power rail to ground. Verify the White assignment against the board before first
 power-on. `[Specified]` — *Source: wiki `End-Effectors.md` ("Version 2 Wiring").*
 
 ## Design-status summary
@@ -144,6 +145,6 @@ power-on. `[Specified]` — *Source: wiki `End-Effectors.md` ("Version 2 Wiring"
 | Stepper actuation J1–J5 | `[Specified]` | — |
 | Dynamixel tool actuation | `[Specified]` | — |
 | MicroZed FPGA/SoC | `[Specified]` | Confirm exact module P/N |
-| Motor Control PCB | `[Provisional]` | HDI power-on test / HDI-native board ([009](009-Design-Completion.md#motor-control-pcb)) |
+| Motor Control PCB | `[Provisional]` | Power-on test / purpose-built board ([009](009-Design-Completion.md#motor-control-pcb)) |
 | Power supply | `[Specified]` — 36 V, 4 A | Closed ([009](009-Design-Completion.md#power-supply)) |
 | Tool interface wiring | `[Specified]` | — |

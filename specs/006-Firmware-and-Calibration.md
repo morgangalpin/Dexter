@@ -1,6 +1,6 @@
-# 006 — Firmware and Calibration (Dexter HDI Rev A)
+# 006 — Firmware and Calibration
 
-This document specifies the firmware configuration and the calibration model of Dexter HDI: the
+This document specifies the firmware configuration and the calibration model of Dexter: the
 `Defaults.make_ins` parameters that describe the physical robot to the firmware, the drive constants, and
 the factory calibration and bring-up procedure. It is a **derived artifact** — its values follow from the
 kinematics ([003](003-Kinematics.md)) and electronics/control ([005](005-Electronics-and-Control.md)) design
@@ -10,7 +10,7 @@ the factory calibration documentation) unless noted.
 ## Firmware defaults: `Defaults.make_ins`
 
 `Defaults.make_ins` describes the physical robot to the DexRun firmware and sets default operational values;
-it is the firmware configuration of record. The HDI configuration:
+it is the firmware configuration of record:
 
 ```
 ; AxisCal is the gear ratio times the steps per revolution times the microstepping mode
@@ -37,7 +37,7 @@ S, ServoSet2X, 3, 35, 1020; Span goal torque
 
 `[Specified]` — *Source: `Firmware/Defaults.make_ins`.* Link lengths and joint boundaries are specified in
 kinematic terms in [003](003-Kinematics.md#link-lengths) and [003](003-Kinematics.md#joint-travel-limits).
-The HD values are retained (commented) in the source file for reference; the deltas are the HD→HDI design
+The previous version's values are retained (commented) in the source file for reference; the deltas are the design
 changes described in [001](001-Overview.md#5-design-lineage).
 
 ## Drive constants (`AxisCal`)
@@ -47,16 +47,16 @@ changes described in [001](001-Overview.md#5-design-lineage).
 
 | Joints | Value | Derivation | Net reduction | Meaning |
 |---|---|---|---|---|
-| J1, J2, J3 | −332800 | 52 × 400 × 16 | **52:1** | 52:1 strain-wave, 0.9°/step (400-step) motor, 16× microstepping. **Identical to HD** — the base-joint reduction is unchanged. |
-| J4, J5 | −86400 | 13.5 × 400 × 16 | **13.5:1** | HDI resolves the wrist through a **physical pulley reduction** of 13.5:1 (vs HD's −36000 = 5.625:1 = 90T/16T belt, plus microstep oscillation). |
+| J1, J2, J3 | −332800 | 52 × 400 × 16 | **52:1** | 52:1 strain-wave, 0.9°/step (400-step) motor, 16× microstepping. **Identical to the previous version** — the base-joint reduction is unchanged. |
+| J4, J5 | −86400 | 13.5 × 400 × 16 | **13.5:1** | The wrist is resolved through a **physical pulley reduction** of 13.5:1 (versus the previous version's −36000 = 5.625:1 = 90T/16T belt, plus microstep oscillation). |
 
-- **`Interpolation`** = 1 for all joints on HDI. HD used 16 on J4/J5 to sub-divide microsteps for the
-  oscillation trick; HDI sets 1 because the belt reduction supplies wrist resolution physically.
+- **`Interpolation`** = 1 for all joints. The previous version used 16 on J4/J5 to sub-divide microsteps for the
+  oscillation trick; 1 is correct here because the belt reduction supplies wrist resolution physically.
 - **The net wrist reduction *is* derivable — 13.5:1.** `AxisCal = gear_ratio × 400 × 16`, so
   86400 / 6400 = **13.5:1**. What is *not* pinned by the firmware alone is the *decomposition into tooth
   counts*; that is the design-completion item ([009](009-Design-Completion.md#wrist-reduction-ratio)).
-- ⚠️ **The HD 16T→90T pulleys give 5.625:1, not 13.5:1.** Reusing the HD driven pulley set unchanged against
-  the HDI `AxisCal` would produce a **2.4× wrist-scale error**. The wrist must net 13.5:1 (revised
+- ⚠️ **The previous version's 16T→90T pulleys give 5.625:1, not 13.5:1.** Reusing that driven pulley set unchanged against
+  this `AxisCal` would produce a **2.4× wrist-scale error**. The wrist must net 13.5:1 (revised
   differential and/or re-toothed pulleys), or `AxisCal` must be set to the as-built ratio — see
   [009](009-Design-Completion.md#wrist-reduction-ratio) and
   [004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5).
@@ -75,13 +75,13 @@ changes described in [001](001-Overview.md#5-design-lineage).
 
 ## Calibration model
 
-Dexter HDI's precision depends on mapping each joint's raw optical-encoder readings to true joint position.
+Dexter's precision depends on mapping each joint's raw optical-encoder readings to true joint position.
 This mapping — the encoder **eye centers** and **index-pulse mapping** — is established once and **recorded
 onto the specific robot** (`AdcCenters.txt`, `HiMem.dta`, `post_cal_info.JSON`). Once recorded, the mapping
 removes the effect of imperfect code-disk slots, so the joint always returns to the exact commanded position
 (REQ-CTL-6, REQ-PRE-1).
 
-**Policy: an HDI is calibrated at the factory and is not re-calibrated in the field.** Recalibration is
+**Policy: a robot is calibrated at the factory and is not re-calibrated in the field.** Recalibration is
 complex, the eye calibration affects the movement calibration, and there is no simple recovery if the
 recorded values are overwritten incorrectly. Operationally:
 
@@ -91,7 +91,7 @@ recorded values are overwritten incorrectly. Operationally:
   **must run the full factory procedure once** before first use — this is unavoidable for a new build and is
   the single most consequential bring-up step. The calibration **engine** (`dde/low_level_dexter/`:
   `Calibrate_Encoders_Function.dde`, `calibrate_optical.js`, `calibrate_build_tables.js`, `calibrate_ui.js`,
-  `ViewEye*.js`) and `PHUI2RCP.js` (`Firmware/dde_apps/`) are in the public repos; the two HDI job
+  `ViewEye*.js`) and `PHUI2RCP.js` (`Firmware/dde_apps/`) are in the public repos; the two job
   wrappers (`Setup_Find_Index_Home_HDI*.dde`, `Find_Index_Pulses_HDI.dde`) are not yet, and reconstructing
   them is a design-completion item ([009](009-Design-Completion.md#from-scratch-calibration-files)).
 
@@ -99,7 +99,7 @@ recorded values are overwritten incorrectly. Operationally:
 
 ## Factory calibration procedure
 
-For **from-scratch builds only.** Transcribed from the factory HDI calibration documentation
+For **from-scratch builds only.** Transcribed from the factory calibration documentation
 (`DDE/InitialCalibration/HDI CAL INSTRUCTIONS- STEP {1,2,3}.pdf`). Requires WinSCP/PuTTY (or equivalent
 SCP/SSH), DDE, and a grounded anti-static wrist strap whenever handling the FPGA board.
 
@@ -157,7 +157,7 @@ SCP/SSH), DDE, and a grounded anti-static wrist strap whenever handling the FPGA
 
 ## Boot and PhUI
 
-On power-up, Dexter HDI loads Ubuntu 16.04 from microSD, then — unlike Dexter 1/HD — spends a minute or two
+On power-up, Dexter loads Ubuntu 16.04 from microSD, then — unlike earlier versions — spends a minute or two
 **finding its home position via the index eyes**, then (if `RunDexRun` is configured per Step 3.10) enters
 **PhUI** and waits for physical commands. **While in any startup mode, including PhUI, the robot does not
 respond to DDE or other control software** — only the web interface, SSH, or console work in that window. To

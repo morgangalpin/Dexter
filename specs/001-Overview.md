@@ -1,6 +1,6 @@
-# 001 — Dexter HDI Overview
+# 001 — Overview
 
-**Dexter HDI — Design Revision A.** Dexter HDI is an open, high-precision robotic arm: a five-axis
+Dexter is an open, high-precision robotic arm: a five-axis
 carbon-fiber-and-3D-printed manipulator with a two-axis end effector, driven by stepper motors through
 strain-wave and belt reductions, and closed-loop controlled by an FPGA that reads a high-resolution
 optical encoder on the output side of every joint. It is designed to deliver near-industrial positioning
@@ -12,7 +12,7 @@ follow; see the [specification map](README.md#specification-map).
 
 ## 1. Purpose
 
-Dexter HDI exists to position and orient a tool or gripper in three-dimensional space with high
+Dexter exists to position and orient a tool or gripper in three-dimensional space with high
 repeatability, under program control or by direct physical demonstration, using an actuation and sensing
 architecture that is open, reproducible, and largely fabricable with desktop 3D printing and off-the-shelf
 components. Its distinguishing design goal is **precision through output-side sensing and fast local
@@ -26,12 +26,12 @@ corrects to the commanded position in real time.
 |---|---|
 | Degrees of freedom | 5 arm joints (J1–J5) plus a 2-axis tool interface (roll, grip) = **5 + 2** |
 | Base joints (J1–J3) | Strain-wave ("harmonic") reduction, **52:1**, driven by 0.9°/step NEMA-17 steppers at 16× microstepping |
-| Wrist joints (J4–J5) | Differential pair driven through **belt/pulley reduction** (the HDI change from HD's microstep-oscillation scheme) |
+| Wrist joints (J4–J5) | Differential pair driven through **belt/pulley reduction** (replacing the previous version's microstep-oscillation scheme) |
 | Position sensing | Custom **optical encoder on the output side of each joint** (~10⁶ counts/revolution), measuring true joint angle after the drivetrain |
 | Control | **FPGA joint-servo loop** with encoder-to-motor response on the order of **200 ns**, running locally on each joint |
 | Structure | 3D-printed body (Onyx / carbon-fiber-reinforced) stiffened by bonded pultruded carbon-fiber strakes and tubes |
 | Mounting | **Bolted base** (rigid mount to a work surface), with a doubled base clamp at the base-to-pivot joint |
-| Tool interface | Cross-generation-compatible 2-axis interface (roll + grip) using Dynamixel smart servos |
+| Tool interface | Cross-version-compatible 2-axis interface (roll + grip) using Dynamixel smart servos |
 | Programming | Scripting (DDE / JavaScript kinematics API), physical teach-and-replay (PhUI), and block coding (Scratch) |
 
 These characteristics are specified in detail in [002-Requirements.md](002-Requirements.md),
@@ -40,11 +40,11 @@ and [005-Electronics-and-Control.md](005-Electronics-and-Control.md).
 
 ## 3. System decomposition
 
-Dexter HDI is one physical machine realized by five cooperating subsystems.
+Dexter is one physical machine realized by five cooperating subsystems.
 
 ```mermaid
 graph TD
-    Dexter[Dexter HDI]
+    Dexter[Dexter]
     Dexter --> Mech[Mechanical structure & drivetrains]
     Dexter --> Elec[Electronics & sensing]
     Dexter --> Gate[Gateware - FPGA]
@@ -90,58 +90,59 @@ graph TD
 
 ## 4. Conventions
 
-Dexter HDI uses a right-handed world frame with **Z up, X to the operator's right, Y pointing out from the
+Dexter uses a right-handed world frame with **Z up, X to the operator's right, Y pointing out from the
 base**. The five arm joints are numbered J1 (base rotation) through J5 (wrist yaw); the tool interface adds
 a roll axis and a grip axis. Positive joint directions, link-length definitions, joint travel limits, and
 the full Denavit–Hartenberg model are specified in [003-Kinematics.md](003-Kinematics.md).
 
 ## 5. Design lineage
 
-Dexter HDI is the third generation in the Dexter line and the subject of this specification. Its design
-inherits directly from Dexter HD and shares HD's core architecture (52:1 strain-wave base joints, output-side
-optical encoders, FPGA joint servo, Onyx/CF body, cross-generation tool interface). HDI's deliberate
-departures from HD are load-bearing enough to affect the whole machine and are specified as HDI's design,
-not as annotations on HD's:
+Dexter is a line of numbered versions, each a distinct machine rather than a variant of the last. The design
+specified here inherits its core architecture from the previous version — 52:1 strain-wave base joints,
+output-side optical encoders, the FPGA joint servo, the Onyx/CF body, and the cross-version tool interface —
+and departs from it in four ways load-bearing enough to affect the whole machine. Each is specified here as
+the design, not as an annotation on its predecessor:
 
-- **Belt-reduced wrist (J4/J5).** HDI resolves the wrist through a physical pulley reduction; HD obtained
-  extra wrist resolution by oscillating the motor across microsteps in firmware. This changes the firmware
-  drive constants and the wrist drivetrain (see
+- **Belt-reduced wrist (J4/J5).** The wrist is resolved through a physical pulley reduction; the previous
+  version obtained extra wrist resolution by oscillating the motor across microsteps in firmware. This
+  changes the firmware drive constants and the wrist drivetrain (see
   [005-Electronics-and-Control.md](005-Electronics-and-Control.md) and
   [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md)).
-- **Bolted base and doubled base clamp.** HDI mounts to a rigid surface via a bolted base rather than
+- **Bolted base and doubled base clamp.** The robot mounts to a rigid surface via a bolted base rather than
   free-standing legs, and doubles the base clamp at the base-to-pivot joint (see
   [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md#base-j1)).
-- **Factory-recorded calibration.** HDI's optical-encoder centers and index mapping are calibrated once and
-  recorded onto the specific robot; a fielded HDI is not recalibrated (see
+- **Factory-recorded calibration.** Optical-encoder centers and index mapping are calibrated once and
+  recorded onto the specific robot; a fielded unit is not recalibrated (see
   [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md#calibration-model)).
-- **Revised link geometry.** HDI's link lengths differ measurably from HD's, changing several structural
-  member lengths (see [003-Kinematics.md](003-Kinematics.md#link-lengths)).
+- **Revised link geometry.** Link lengths differ measurably from the previous version's, changing several
+  structural member lengths (see [003-Kinematics.md](003-Kinematics.md#link-lengths)).
 
-The full generation lineage and the model for deriving future revisions from Revision A are in
-[010-Versioning-and-Roadmap.md](010-Versioning-and-Roadmap.md).
+The version line and the model for deriving future revisions are in
+[010-Versioning.md](010-Versioning.md); these four departures are recorded as the opening section of
+[CHANGES.md](../CHANGES.md).
 
-## 6. Design maturity of Revision A
+## 6. Design maturity
 
-Revision A is a **buildable specification with a bounded set of open decisions**. The mechanical
+This is a **buildable specification with a bounded set of open decisions**. The mechanical
 architecture, kinematics, electronics, control model, firmware configuration, and calibration procedure are
-specified and, in most areas, traceable to a physical HDI unit, released firmware, factory calibration
+specified and, in most areas, traceable to a physical unit, released firmware, factory calibration
 documentation, or CAD. A small number of decisions remain open and must be closed before a from-scratch unit
 is fully buildable — the highest-risk being the strain-wave component set (part now identified: HanZhen #14 /
 Cone Drive; procurement open) and the differential detail design; the wrist reduction is resolved to a fixed
 net **13.5:1** (tooth split open), the power supply is closed at **36 V / 4 A**, the bolted-base plate is
 resolved to a design of record (CAD hole transfer pending), and the L2/L3 cut lengths are computed
-(282.4 / 214.3 mm, pending an HDI socket-seat check). These are collected, each
+(282.4 / 214.3 mm, pending a socket-seat check). These are collected, each
 with the requirement it must satisfy and its current state, in
 [009-Design-Completion.md](009-Design-Completion.md). No open item is a gap in what is known about the robot;
-each is a design task owned by this project to complete Revision A.
+each is a design task owned by this project to complete the current design.
 
 ## 7. Task programming
 
-Dexter HDI is commanded three ways, specified in [005](005-Electronics-and-Control.md#command-interface) and
+Dexter is commanded three ways, specified in [005](005-Electronics-and-Control.md#command-interface) and
 [003](003-Kinematics.md#motion-commands): **scripting** (DDE / JavaScript against the kinematics and motion
 API, run interactively or headless via the onboard Job Engine), **physical teach-and-replay** (PhUI —
-the operator moves the tool by hand to record and replay a pose sequence; on HDI, PhUI is the default
+the operator moves the tool by hand to record and replay a pose sequence; PhUI is the default
 startup behavior), and **Scratch** block coding for simple fixed motions. Generalized task learning (a
-policy that adapts across object positions and tasks) is **not** part of Revision A; if required, it is new
+policy that adapts across object positions and tasks) is **not** part of the current design; if required, it is new
 work layered on the socket/oplet protocol and is tracked in
-[010-Versioning-and-Roadmap.md](010-Versioning-and-Roadmap.md#roadmap), not recovered from the base design.
+[011-Roadmap.md](011-Roadmap.md), not recovered from the base design.
