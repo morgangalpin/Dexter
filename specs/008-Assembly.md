@@ -40,10 +40,9 @@ flowchart TD
 - **Grounded anti-static wrist strap** whenever handling the FPGA board (present from 008.10 onward)
 - WinSCP and PuTTY (or equivalent) for 008.12
 
-**Conventions** (per [004](004-Mechanical-Architecture.md#materials-and-construction-methods)): epoxy both
-mating surfaces of CF-to-printed joints and wipe excess before cure; tighten every multi-bolt interface in a
-cross/star pattern, never sequentially; bring set screws up incrementally around the circle; do not
-over-torque printed threads or aluminum motor bodies.
+**Conventions.** The bonding, tightening, and torque conventions in
+[004 § Materials and construction methods](004-Mechanical-Architecture.md#materials-and-construction-methods)
+apply to every step below and are not repeated per step.
 
 ---
 
@@ -60,22 +59,20 @@ parts) that hold parts square while adhesive cures.
 7. Cure per the epoxy manufacturer's time before removing.
 
 ## 008.2 Base
-Parts: [007.2](007-Bill-of-Materials.md#0072-base). `[Provisional]` — the bolted base replaces the
-previous version's foot/strake base. Steps 1–5 depend on the Base Mounting Plate design
-([DC-4](009-Design-Completion.md#base-plate)); steps 6+ (Base Long, Base Clamp) are established.
+Parts: [007.2](007-Bill-of-Materials.md#0072-base). `[Provisional]` — steps 1 and 4 wait on the plate's
+robot-side hole pattern ([DC-4](009-Design-Completion.md#base-plate)); the remaining steps are established.
 
 1. **(Blocked on [DC-4](009-Design-Completion.md#base-plate))** Bolt the Base Mounting Plate to the Base
-   Mount Bottom in place of the previous version's feet, per the plate's final bolt pattern.
+   Mount Bottom, per the plate's final robot-side bolt pattern.
 2. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
    parts slide together and lock.
 3. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
    to rest against.
 4. **(Blocked on [DC-4](009-Design-Completion.md#base-plate))** Bolt the assembled Base Mounting Plate to the
-   work surface per the plate's bolt pattern. This is the sole mounting method — confirm the surface can take
-   the arm's full dynamic load.
-5. Confirm whether the plate stays fixed to the surface with the base docking onto it, or is removed as a
-   unit ([DC-4](009-Design-Completion.md#base-plate)).
-6. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
+   work surface through its 4 × M6 holes. This is the sole mounting method, and the plate must be bolted
+   down rather than left resting — see
+   [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
+5. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
    other side. Assemble **both** clamps (the clamps are installed later, in [008.4](#0084-main-pivot) step
    18).
 
@@ -129,7 +126,7 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
 15. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
 16. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
 17. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
-18. Install **both** Base Clamps (from [008.2](#0082-base) step 6), stacked: remove the Base Long, slide both
+18. Install **both** Base Clamps (from [008.2](#0082-base) step 5), stacked: remove the Base Long, slide both
     clamps onto the Base Mount, reinstall the Base Long, and tighten both clamps. Confirm the stacking
     order/spacing against a physical build.
 
@@ -157,8 +154,7 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 11. Place the M3 washer, then M2 washer, then M2 nut, and tighten.
 
 ## 008.6 Differential
-Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Provisional]` — builds the previous
-version's differential as a working substitute pending
+Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Provisional]` —
 [DC-2](009-Design-Completion.md#differential-detail-design).
 
 1. Insert one 6705 and one 6703 bearing into Diff Body A; press to seat.
@@ -257,8 +253,7 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 
 ## 008.9 Belts
 Parts: GT2 belts/pulleys from [007.7](007-Bill-of-Materials.md#0077-end-arm-hub) and
-[007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the provisional wrist pulleys carried over
-from the previous version, pending
+[007.8](007-Bill-of-Materials.md#0078-external-gear). `[Provisional]` — the driven pulleys are set by
 [DC-3](009-Design-Completion.md#wrist-reduction-ratio); verify J4/J5 resolution empirically after
 calibration.
 
@@ -280,10 +275,9 @@ Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the previous 
    M3 × 20 mm bolts without over-tightening (an M3 nut can back up a stripped hole).
 7. Connect the power wires: black to negative (−), red to positive (+).
 8. **Tool-interface wiring:** connect the White signal wire to the **2nd ground terminal** (labeled "−"
-   near the top of the motor board) — **not** a servo-power tap as on the previous version. Double-check
-   before first power-on: on an older
-   harness White can carry 6–8.75 V, so wiring it as ground while tapped for power elsewhere shorts a rail
-   ([005](005-Electronics-and-Control.md#tool-interface-wiring)).
+   near the top of the motor board). Verify this assignment against the board before first power-on — the
+   cross-version hazard it guards against is specified in
+   [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring).
 
 ## 008.11 Tool Interface / Gripper
 Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
@@ -362,16 +356,14 @@ Config: [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md). Requ
 from-scratch build.
 
 1. Set `Defaults.make_ins` per [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) —
-   the `AxisCal`/`Interpolation` values (already the active defaults) and the correct `LinkLengths` for the physical
-   build.
-2. **From-scratch build:** run the full factory calibration procedure
-   ([006](006-Firmware-and-Calibration.md#factory-calibration-procedure)) — new opto boards/code
-   disks/drives have no factory calibration record. Read the
-   [calibration model](006-Firmware-and-Calibration.md#calibration-model) first; this is the one step
-   hardest to recover from if done wrong.
-3. **Reusing an already-calibrated unit's electronics:** skip step 2 — recalibrating a unit with valid
-   factory data is against policy ([006](006-Firmware-and-Calibration.md#calibration-model)).
-4. Configure `RunDexRun` per [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) step 3.10
+   the `AxisCal`/`Interpolation` values (already the active defaults) and the correct `LinkLengths` for the
+   physical build.
+2. Determine whether this build needs calibration, per the policy in
+   [006 § Calibration model](006-Firmware-and-Calibration.md#calibration-model). A **from-scratch build**
+   runs the full [factory calibration procedure](006-Firmware-and-Calibration.md#factory-calibration-procedure);
+   a build reusing an already-calibrated unit's electronics does not. This is the one step hardest to
+   recover from if done wrong — read that section before starting.
+3. Configure `RunDexRun` per [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) step 3.10
    so the robot finds home and starts PhUI on boot.
-5. Power-cycle and observe boot ([006](006-Firmware-and-Calibration.md#boot-and-phui)): OS load → a minute or
-   two of home-finding → PhUI. The robot does not respond to DDE until PhUI is exited.
+4. Power-cycle and confirm the boot sequence completes as specified in
+   [006 § Boot and PhUI](006-Firmware-and-Calibration.md#boot-and-phui).

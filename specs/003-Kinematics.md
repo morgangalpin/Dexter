@@ -28,16 +28,20 @@ output-side optical encoder whose code disk has the slot count shown (relevant t
 
 | Joint | Name | Motion | Axis | Encoder slots | Drive |
 |---|---|---|---|---|---|
-| J1 | Base | Base rotation (yaw about Z) | Vertical | 200 | 52:1 strain-wave |
-| J2 | Pivot | Shoulder lift (pitch) | Horizontal | 180 | 52:1 strain-wave |
-| J3 | End | Elbow (pitch) | Horizontal | 157 | 52:1 strain-wave |
-| J4 | Angle | Wrist pitch (differential DiffA1 with J5) | — | 115 | Belt reduction → differential |
-| J5 | Rotate | Wrist yaw (differential DiffA2 with J4) | — | 100 | Belt reduction → differential |
-| Roll | Tool roll | End-effector rotation | Tool axis | — | Dynamixel servo |
-| Grip | Tool grip | Gripper open/close | — | — | Dynamixel servo |
+| J1 | Base | Base rotation (yaw about Z) | Vertical | 200 | Strain-wave |
+| J2 | Pivot | Shoulder lift (pitch) | Horizontal | 180 | Strain-wave |
+| J3 | End | Elbow (pitch) | Horizontal | 157 | Strain-wave |
+| J4 | Angle | Wrist pitch (differential DiffA1 with J5) | — | 115 | Belt → differential |
+| J5 | Rotate | Wrist yaw (differential DiffA2 with J4) | — | 100 | Belt → differential |
+| Roll | Tool roll | End-effector rotation | Tool axis | — | Smart servo |
+| Grip | Tool grip | Gripper open/close | — | — | Smart servo |
+
+Drivetrain ratios and hardware for each joint are specified in
+[004](004-Mechanical-Architecture.md); the encoder slot counts above are the per-joint code-disk figures
+those drivetrains are read through ([005](005-Electronics-and-Control.md#sensing)).
 
 J4 and J5 are not independent single-axis joints: they are the two outputs of a **differential** (see
-[004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5)). Together they form the wrist. A
+[004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)). Together they form the wrist. A
 non-arm "External" (J6) channel exists on the controller but is not an arm joint.
 
 ### Positive joint directions and encoder notes
@@ -86,17 +90,16 @@ firmware is **L5 first, L1 last**.
 
 **Design notes.**
 - L5 is essentially identical across versions, consistent with the tool interface being cross-version
-  compatible ([004](004-Mechanical-Architecture.md#tool-interface)).
-- The L2 (+18.4 mm) and L3 (−22.7 mm) deltas are far larger than build tolerance and drive the CF tube cut
-  lengths in [004](004-Mechanical-Architecture.md) and [007](007-Bill-of-Materials.md). If the printed sockets
-  keep the previous version's seat depth, the full link delta falls in the tube: Arm Body **282.4 mm**, End Arm Hub
-  **214.3 mm** — confirm against the CAD model, as the printed bodies are renumbered
-  ([DC-5](009-Design-Completion.md#link-member-lengths)). Not carried over from the previous version unchanged.
-- **Discrepancy to resolve:** an alternate link-length set appears in the wiki (`set-parameter-oplet.md`)
-  with L4 = 50.95 mm and L5 = 82.55 mm, differing from the firmware file above (L4 = 59.50 mm). This
-  specification treats the firmware file as authoritative; reconciling the two against a physical measurement is a
-  [009](009-Design-Completion.md) item. Getting L2/L3/L4 wrong shifts where the links land relative to
-  encoder zero and shows up as a Cartesian-accuracy error, not an assembly failure.
+  compatible ([004](004-Mechanical-Architecture.md#tool-interface-roll--grip)).
+- The L2 (+18.4 mm) and L3 (−22.7 mm) deltas are far larger than build tolerance, so the structural members
+  spanning those links are not carried over from the previous version unchanged. The deltas are converted
+  into carbon-fiber tube cut lengths in [DC-5](009-Design-Completion.md#link-member-lengths), which is where
+  those lengths are derived and where the remaining check on them is tracked.
+- **Discrepancy to resolve:** an alternate link-length set in the wiki disagrees with the firmware file above
+  on L4 and L5. This specification treats the firmware file as authoritative; the two candidate sets and the
+  measurement that settles them are in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
+- Getting L2/L3/L4 wrong shifts where the links land relative to encoder zero and shows up as a
+  Cartesian-accuracy error, not an assembly failure.
 
 ### Link masses (for dynamics)
 

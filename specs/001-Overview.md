@@ -24,19 +24,20 @@ corrects to the commanded position in real time.
 
 | Characteristic | Design |
 |---|---|
-| Degrees of freedom | 5 arm joints (J1–J5) plus a 2-axis tool interface (roll, grip) = **5 + 2** |
-| Base joints (J1–J3) | Strain-wave ("harmonic") reduction, **52:1**, driven by 0.9°/step NEMA-17 steppers at 16× microstepping |
-| Wrist joints (J4–J5) | Differential pair driven through **belt/pulley reduction** (replacing the previous version's microstep-oscillation scheme) |
-| Position sensing | Custom **optical encoder on the output side of each joint** (~10⁶ counts/revolution), measuring true joint angle after the drivetrain |
-| Control | **FPGA joint-servo loop** with encoder-to-motor response on the order of **200 ns**, running locally on each joint |
-| Structure | 3D-printed body (Onyx / carbon-fiber-reinforced) stiffened by bonded pultruded carbon-fiber strakes and tubes |
-| Mounting | **Bolted base** (rigid mount to a work surface), with a doubled base clamp at the base-to-pivot joint |
-| Tool interface | Cross-version-compatible 2-axis interface (roll + grip) using Dynamixel smart servos |
-| Programming | Scripting (DDE / JavaScript kinematics API), physical teach-and-replay (PhUI), and block coding (Scratch) |
+| Degrees of freedom | **5 arm joints** plus a **2-axis tool interface** |
+| Base joints (J1–J3) | Strain-wave ("harmonic") reduction driven by stepper motors |
+| Wrist joints (J4–J5) | Differential pair driven through a belt/pulley reduction |
+| Position sensing | Custom **optical encoder on the output side of each joint**, measuring true joint angle after the drivetrain |
+| Control | **FPGA joint-servo loop** running locally on each joint |
+| Structure | 3D-printed body stiffened by bonded pultruded carbon fiber |
+| Mounting | **Bolted base** — a rigid mount to a work surface |
+| Tool interface | Cross-version-compatible 2-axis interface (roll + grip) using smart servos |
+| Programming | Scripting, physical teach-and-replay, and block coding |
 
-These characteristics are specified in detail in [002-Requirements.md](002-Requirements.md),
-[003-Kinematics.md](003-Kinematics.md), [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md),
-and [005-Electronics-and-Control.md](005-Electronics-and-Control.md).
+Each characteristic is specified with its values, ratios, and part choices in the documents that follow:
+[002-Requirements.md](002-Requirements.md) (targets), [003-Kinematics.md](003-Kinematics.md) (joints and
+geometry), [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md) (structure and drivetrains), and
+[005-Electronics-and-Control.md](005-Electronics-and-Control.md) (sensing, actuation, and control).
 
 ## 3. System decomposition
 
@@ -52,7 +53,7 @@ graph TD
     Dexter --> Ctrl[Control software & interfaces]
 
     Mech --> M1[3D-printed body + bonded CF strakes/tubes]
-    Mech --> M2[Strain-wave drives J1-J3, 52:1]
+    Mech --> M2[Strain-wave drives J1-J3]
     Mech --> M3[Belt-reduced differential wrist J4-J5]
     Mech --> M4[Bolted base]
     Mech --> M5[2-axis tool interface / gripper]
@@ -62,7 +63,7 @@ graph TD
     Elec --> E3[MicroZed FPGA/SoC carrier]
     Elec --> E4[Power distribution]
 
-    Gate --> G1[Per-joint servo loop, ~200ns]
+    Gate --> G1[Per-joint servo loop]
     Firm --> F1[DexRun position/motion firmware on ARM core]
     Firm --> F2[Onboard kinematics + Job Engine + web server]
 
@@ -90,36 +91,24 @@ graph TD
 
 ## 4. Conventions
 
-Dexter uses a right-handed world frame with **Z up, X to the operator's right, Y pointing out from the
-base**. The five arm joints are numbered J1 (base rotation) through J5 (wrist yaw); the tool interface adds
-a roll axis and a grip axis. Positive joint directions, link-length definitions, joint travel limits, and
-the full Denavit–Hartenberg model are specified in [003-Kinematics.md](003-Kinematics.md).
+Dexter uses a right-handed world frame anchored at the base. The five arm joints are numbered J1 through J5
+from the base outward; the tool interface adds a roll axis and a grip axis. The frame definition, joint
+names and positive directions, link-length definitions, joint travel limits, and the full
+Denavit–Hartenberg model are specified in [003-Kinematics.md](003-Kinematics.md).
 
 ## 5. Design lineage
 
 Dexter is a line of numbered versions, each a distinct machine rather than a variant of the last. The design
-specified here inherits its core architecture from the previous version — 52:1 strain-wave base joints,
-output-side optical encoders, the FPGA joint servo, the Onyx/CF body, and the cross-version tool interface —
-and departs from it in four ways load-bearing enough to affect the whole machine. Each is specified here as
-the design, not as an annotation on its predecessor:
-
-- **Belt-reduced wrist (J4/J5).** The wrist is resolved through a physical pulley reduction; the previous
-  version obtained extra wrist resolution by oscillating the motor across microsteps in firmware. This
-  changes the firmware drive constants and the wrist drivetrain (see
-  [005-Electronics-and-Control.md](005-Electronics-and-Control.md) and
-  [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md)).
-- **Bolted base and doubled base clamp.** The robot mounts to a rigid surface via a bolted base rather than
-  free-standing legs, and doubles the base clamp at the base-to-pivot joint (see
-  [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md#base-j1)).
-- **Factory-recorded calibration.** Optical-encoder centers and index mapping are calibrated once and
-  recorded onto the specific robot; a fielded unit is not recalibrated (see
-  [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md#calibration-model)).
-- **Revised link geometry.** Link lengths differ measurably from the previous version's, changing several
-  structural member lengths (see [003-Kinematics.md](003-Kinematics.md#link-lengths)).
+specified here develops the previous version's architecture — strain-wave base joints, output-side optical
+encoders, the FPGA joint servo, the printed-and-bonded-carbon-fiber body, and the cross-version tool
+interface — and departs from it in four ways load-bearing enough to affect the whole machine: the
+**belt-reduced wrist**, the **bolted base and doubled base clamp**, **factory-recorded calibration**, and
+**revised link geometry**. Each is specified as the design in the document that owns it, not as an
+annotation on its predecessor.
 
 The version line and the model for deriving future revisions are in
-[010-Versioning.md](010-Versioning.md); these four departures are recorded as the opening section of
-[CHANGES.md](../CHANGES.md).
+[010-Versioning.md](010-Versioning.md); the four departures are recorded, with what each replaced and why,
+as the opening section of [CHANGES.md](../CHANGES.md).
 
 ## 6. Design maturity
 
@@ -127,22 +116,17 @@ This is a **buildable specification with a bounded set of open decisions**. The 
 architecture, kinematics, electronics, control model, firmware configuration, and calibration procedure are
 specified and, in most areas, traceable to a physical unit, released firmware, factory calibration
 documentation, or CAD. A small number of decisions remain open and must be closed before a from-scratch unit
-is fully buildable — the highest-risk being the strain-wave component set (part now identified: HanZhen #14 /
-Cone Drive; procurement open) and the differential detail design; the wrist reduction is resolved to a fixed
-net **13.5:1** (tooth split open), the power supply is closed at **36 V / 4 A**, the bolted-base plate is
-resolved to a design of record (CAD hole transfer pending), and the L2/L3 cut lengths are computed
-(282.4 / 214.3 mm, pending a socket-seat check). These are collected, each
-with the requirement it must satisfy and its current state, in
+is fully buildable — the highest-risk and longest-lead being the strain-wave component set, followed by the
+differential detail design. Every open decision is collected, with the requirement it must satisfy, its
+priority, its current state, and what closing it requires, in
 [009-Design-Completion.md](009-Design-Completion.md). No open item is a gap in what is known about the robot;
 each is a design task owned by this project to complete the current design.
 
 ## 7. Task programming
 
 Dexter is commanded three ways, specified in [005](005-Electronics-and-Control.md#command-interface) and
-[003](003-Kinematics.md#motion-commands): **scripting** (DDE / JavaScript against the kinematics and motion
-API, run interactively or headless via the onboard Job Engine), **physical teach-and-replay** (PhUI —
-the operator moves the tool by hand to record and replay a pose sequence; PhUI is the default
-startup behavior), and **Scratch** block coding for simple fixed motions. Generalized task learning (a
-policy that adapts across object positions and tasks) is **not** part of the current design; if required, it is new
-work layered on the socket/oplet protocol and is tracked in
-[011-Roadmap.md](011-Roadmap.md), not recovered from the base design.
+[003](003-Kinematics.md#motion-commands): **scripting** against the kinematics and motion API, **physical
+teach-and-replay**, and **block coding** for simple fixed motions. Generalized task learning (a policy that
+adapts across object positions and tasks) is **not** part of the current design; if required, it is new
+work layered on the command protocol and is tracked in [011-Roadmap.md](011-Roadmap.md), not recovered from
+the base design.

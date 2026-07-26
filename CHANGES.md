@@ -2,9 +2,7 @@
 
 The design history of the Dexter specification, one section per revision, newest first. Each section
 records what changed in that revision and why, so the file read top to bottom is the history of the design
-and read bottom to top is how the current machine came to be. This file, together with
-[specs/010-Versioning.md](specs/010-Versioning.md), is the only place a version and revision are written
-down: every other document takes its identity from the branch or tag it is read at.
+and read bottom to top is how the current machine came to be.
 
 - **What a version and a revision are**, how each is branched and tagged, and the procedure for authoring
   the next one: [specs/010-Versioning.md](specs/010-Versioning.md).
@@ -14,8 +12,8 @@ down: every other document takes its identity from the branch or tag it is read 
 Each change is a `CR-<version><revision-letter><n>` entry in the format defined in
 [010 §5](specs/010-Versioning.md#5-change-record-format). Change IDs are permanent: once published they are
 not renumbered or reused, so a superseded change is amended by a later entry rather than edited away.
-Statuses (`[Specified]`, `[Provisional]`, `[TBD]`) carry the meaning defined in
-[specs/README.md](specs/README.md#design-status) and are recorded as of the revision's release.
+Statuses carry the meaning defined in [specs/README.md](specs/README.md#design-status) and are recorded as
+of the revision's release.
 
 ---
 
@@ -43,8 +41,8 @@ anything version 3 does not independently specify
   `[Provisional]` for the tooth-count realization, which remains open in
   [009](specs/009-Design-Completion.md).
 - **Re-derive:** 006 (drive constants), 007 (pulley part numbers), 008 (wrist assembly).
-- **Note:** Reusing version 2's driven pulley set unchanged against the new `AxisCal` produces a **2.4×
-  wrist-scale error**. The driven side must be re-toothed to net 13.5:1.
+- **Note:** Version 2's driven pulley set is not compatible with the new `AxisCal`; see
+  [DC-3](specs/009-Design-Completion.md#wrist-reduction-ratio) before reusing wrist pulleys.
 
 ### CR-3A2: Bolted base and doubled base clamp
 

@@ -15,14 +15,14 @@ ratios); values marked **measure** require characterization on a physical build 
 
 | ID | Requirement | Target | Status | Specified in |
 |---|---|---|---|---|
-| REQ-DOF-1 | Position and orient a tool in 3D space with an articulated arm | **5 arm axes** (J1 base rotation, J2 shoulder pitch, J3 elbow pitch, J4 wrist pitch, J5 wrist yaw) | `[Specified]` | [003](003-Kinematics.md), [004](004-Mechanical-Architecture.md) |
-| REQ-DOF-2 | Provide an actuated end effector | **2 tool axes** (roll, grip) via a cross-version tool interface | `[Specified]` | [004](004-Mechanical-Architecture.md#tool-interface), [005](005-Electronics-and-Control.md) |
-| REQ-MOT-1 | Move to commanded joint angles | Coordinated point-to-point, trapezoidal-ramped J1–J5 | `[Specified]` | [003](003-Kinematics.md#motion-commands) |
-| REQ-MOT-2 | Move the tool tip to a Cartesian pose | Onboard inverse kinematics: position + direction + configuration | `[Specified]` | [003](003-Kinematics.md#inverse-kinematics) |
-| REQ-MOT-3 | Move in a straight Cartesian line | Coordinated linear interpolation (`T` move) | `[Specified]` | [003](003-Kinematics.md#motion-commands) |
-| REQ-PRG-1 | Be programmable by script | JavaScript kinematics/motion API (DDE), runnable headless via onboard Job Engine | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
-| REQ-PRG-2 | Be teachable by physical demonstration | PhUI record-and-replay of a pose sequence; default startup behavior | `[Specified]` | [006](006-Firmware-and-Calibration.md#boot-and-phui) |
-| REQ-PRG-3 | Be programmable by block coding | Scratch extension for simple fixed motions | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
+| REQ-DOF-1 | Position and orient a tool in 3D space with an articulated arm | **5 arm axes** | `[Specified]` | [003](003-Kinematics.md#joint-definitions), [004](004-Mechanical-Architecture.md) |
+| REQ-DOF-2 | Provide an actuated end effector | **2 tool axes** (roll, grip) via a cross-version tool interface | `[Specified]` | [004](004-Mechanical-Architecture.md#tool-interface-roll--grip), [005](005-Electronics-and-Control.md) |
+| REQ-MOT-1 | Move to commanded joint angles | Coordinated point-to-point, ramped across all arm joints | `[Specified]` | [003](003-Kinematics.md#motion-commands) |
+| REQ-MOT-2 | Move the tool tip to a Cartesian pose | Onboard inverse kinematics | `[Specified]` | [003](003-Kinematics.md#inverse-kinematics) |
+| REQ-MOT-3 | Move in a straight Cartesian line | Coordinated linear interpolation | `[Specified]` | [003](003-Kinematics.md#motion-commands) |
+| REQ-PRG-1 | Be programmable by script | Kinematics/motion API, runnable interactively or headless | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
+| REQ-PRG-2 | Be teachable by physical demonstration | Record-and-replay of a pose sequence, by hand | `[Specified]` | [006](006-Firmware-and-Calibration.md#boot-and-phui) |
+| REQ-PRG-3 | Be programmable by block coding | Block-coding extension for simple fixed motions | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
 
 ## 2. Kinematic and workspace requirements
 
@@ -43,7 +43,7 @@ ratios); values marked **measure** require characterization on a physical build 
 |---|---|---|---|---|
 | REQ-PRE-1 | Output-side joint position sensing | Optical encoder **after** the drivetrain on every arm joint | `[Specified]` | [005](005-Electronics-and-Control.md#sensing) |
 | REQ-PRE-2 | Encoder angular resolution | ≈ 10⁶ counts/rev ⇒ ≈ 1.3 arcsec/count (derived) | `[Specified]` (architecture) | [005](005-Electronics-and-Control.md#sensing) |
-| REQ-PRE-3 | Commanded step resolution, J1–J3 | 332800 steps/joint-rev ⇒ ≈ 3.9 arcsec/step (derived: 52 × 400 × 16) | `[Specified]` | [006](006-Firmware-and-Calibration.md#drive-constants-axiscal) |
+| REQ-PRE-3 | Commanded step resolution, J1–J3 | ≈ 3.9 arcsec/step (derived from the base-joint drive constant) | `[Specified]` | [006](006-Firmware-and-Calibration.md#drive-constants-axiscal) |
 | REQ-PRE-4 | Theoretical tip resolution at 0.5 m | ≈ 3 µm (derived from REQ-PRE-2 at 0.5 m radius) | `[Provisional]` derived | [003](003-Kinematics.md) |
 | REQ-PRE-5 | End-to-end positioning repeatability | To be characterized on a physical build | `[TBD]` — **measure** ([009](009-Design-Completion.md)) | — |
 | REQ-PRE-6 | Rated payload at the tool tip | To be characterized on a physical build | `[TBD]` — **measure** ([009](009-Design-Completion.md)) | — |
@@ -58,10 +58,10 @@ the output, not the motor shaft. This is the defining performance requirement of
 
 | ID | Requirement | Target | Status | Specified in |
 |---|---|---|---|---|
-| REQ-STR-1 | Lightweight, stiff structure | 3D-printed Onyx / carbon-fiber body stiffened by bonded pultruded CF strakes and tubes | `[Specified]` | [004](004-Mechanical-Architecture.md) |
-| REQ-STR-2 | Base-joint reduction | 52:1 strain-wave (harmonic) drive, backlash-free, on J1–J3 | `[Specified]` (ratio) | [004](004-Mechanical-Architecture.md#base-joints-j1-j3-strain-wave-drive) |
-| REQ-STR-3 | Wrist reduction | Belt/pulley reduction driving the J4/J5 differential, **net 13.5:1** | `[Provisional]` (net ratio specified; tooth split [open](009-Design-Completion.md#wrist-reduction-ratio)) | [004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5) |
-| REQ-STR-4 | Rigid mounting | Bolted base to a stable work surface; doubled base clamp at the base-pivot joint | `[Provisional]` (plate design [specified](009-Design-Completion.md#base-plate), CAD hole transfer open) | [004](004-Mechanical-Architecture.md#base-j1) |
+| REQ-STR-1 | Lightweight, stiff structure | 3D-printed body stiffened by bonded pultruded carbon fiber | `[Specified]` | [004](004-Mechanical-Architecture.md#materials-and-construction-methods) |
+| REQ-STR-2 | Base-joint reduction | **52:1** strain-wave (harmonic) drive on J1–J3 | `[Specified]` (ratio) | [004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive) |
+| REQ-STR-3 | Wrist reduction | Belt/pulley reduction driving the J4/J5 differential, **net 13.5:1** | `[Provisional]` — [DC-3](009-Design-Completion.md#wrist-reduction-ratio) | [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) |
+| REQ-STR-4 | Rigid mounting | Bolted base to a stable work surface; doubled base clamp at the base-pivot joint | `[Provisional]` — [DC-4](009-Design-Completion.md#base-plate) | [004](004-Mechanical-Architecture.md#base-j1) |
 | REQ-STR-5 | Fabricability | Buildable with desktop CF-capable 3D printing and off-the-shelf components, except the strain-wave set | `[Specified]` | [007](007-Bill-of-Materials.md) |
 
 ## 5. Electrical and control requirements
@@ -69,30 +69,30 @@ the output, not the motor shaft. This is the defining performance requirement of
 | ID | Requirement | Target | Status | Specified in |
 |---|---|---|---|---|
 | REQ-CTL-1 | Fast local closed-loop control | FPGA joint-servo loop, encoder→motor response ≈ 200 ns | `[Specified]` | [005](005-Electronics-and-Control.md#control-architecture) |
-| REQ-CTL-2 | Onboard motion computation | ARM-core firmware (DexRun) runs trajectory generation and onboard kinematics | `[Specified]` | [006](006-Firmware-and-Calibration.md) |
-| REQ-CTL-3 | Actuation, J1–J5 | 0.9°/step NEMA-17 steppers, 16× microstepping, via the Motor Control PCB | `[Specified]` | [005](005-Electronics-and-Control.md#actuation) |
-| REQ-CTL-4 | Actuation, tool axes | Dynamixel smart servos on the tool interface serial bus | `[Specified]` | [005](005-Electronics-and-Control.md#actuation) |
-| REQ-CTL-5 | Power | Single DC supply feeding motor and logic rails, **36 V / 4 A** (board rated 38 V) | `[Specified]` | [005](005-Electronics-and-Control.md#power), [009](009-Design-Completion.md#power-supply) |
-| REQ-CTL-6 | Calibration retained per unit | Factory-recorded encoder centers and index mapping stored on the robot; not re-calibrated in the field | `[Specified]` | [006](006-Firmware-and-Calibration.md#calibration-model) |
+| REQ-CTL-2 | Onboard motion computation | Firmware runs trajectory generation and onboard kinematics on the robot | `[Specified]` | [006](006-Firmware-and-Calibration.md) |
+| REQ-CTL-3 | Actuation, J1–J5 | Microstepped stepper motors via the Motor Control PCB | `[Specified]` | [005](005-Electronics-and-Control.md#actuation) |
+| REQ-CTL-4 | Actuation, tool axes | Smart servos on the tool interface serial bus | `[Specified]` | [005](005-Electronics-and-Control.md#actuation) |
+| REQ-CTL-5 | Power | Single DC supply feeding motor and logic rails, **36 V / 4 A** | `[Specified]` | [005](005-Electronics-and-Control.md#power) |
+| REQ-CTL-6 | Calibration retained per unit | Calibration recorded onto the individual robot and retained; not re-established in the field | `[Specified]` | [006](006-Firmware-and-Calibration.md#calibration-model) |
 
 ## 6. Interface requirements
 
 | ID | Requirement | Target | Status | Specified in |
 |---|---|---|---|---|
-| REQ-IF-1 | Network command interface | Ethernet/Wi-Fi socket carrying the oplet command protocol | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
-| REQ-IF-2 | Host development environment | DDE (Dexter Development Environment) over the network | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
+| REQ-IF-1 | Network command interface | Ethernet/Wi-Fi socket carrying the command protocol | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
+| REQ-IF-2 | Host development environment | Development environment reaching the robot over the network | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
 | REQ-IF-3 | Service/console access | SSH and USB serial console for setup and calibration | `[Specified]` | [006](006-Firmware-and-Calibration.md) |
-| REQ-IF-4 | Tool electrical interface | 6-conductor interface to the tool (ground, +5 V logic, unregulated supply, servo data, aux serial, 2nd ground) | `[Specified]` | [005](005-Electronics-and-Control.md#tool-interface-wiring) |
-| REQ-IF-5 | Web interface | Onboard Node.js web server / editor | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
+| REQ-IF-4 | Tool electrical interface | **6-conductor** interface to the tool | `[Specified]` | [005](005-Electronics-and-Control.md#tool-interface-wiring) |
+| REQ-IF-5 | Web interface | Onboard web server / editor | `[Specified]` | [005](005-Electronics-and-Control.md#command-interface) |
 
 ## 7. Environmental and operational requirements
 
 | ID | Requirement | Target | Status | Specified in |
 |---|---|---|---|---|
-| REQ-ENV-1 | Operating platform | Ubuntu 16.04 LTS on the MicroZed SoC, booting DexRun from microSD | `[Specified]` | [006](006-Firmware-and-Calibration.md) |
+| REQ-ENV-1 | Operating platform | Linux on the onboard SoC, booting the motion firmware from microSD | `[Specified]` | [006](006-Firmware-and-Calibration.md) |
 | REQ-ENV-2 | First-use bring-up | A from-scratch build runs the factory calibration procedure once before first use | `[Specified]` | [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) |
-| REQ-ENV-3 | Startup behavior | Boots, finds home via index eyes, then enters PhUI (does not accept DDE control until PhUI is exited) | `[Specified]` | [006](006-Firmware-and-Calibration.md#boot-and-phui) |
-| REQ-ENV-4 | Maintenance | Strain-wave lubricant replaced at 100 h and 2000 h; belts adjusted as needed | `[Specified]` | [006](006-Firmware-and-Calibration.md#maintenance) |
+| REQ-ENV-3 | Startup behavior | Boots, finds home, then enters the physical teach interface before accepting network control | `[Specified]` | [006](006-Firmware-and-Calibration.md#boot-and-phui) |
+| REQ-ENV-4 | Maintenance | Scheduled strain-wave lubricant replacement; belts adjusted as needed | `[Specified]` | [006](006-Firmware-and-Calibration.md#maintenance) |
 | REQ-ENV-5 | Mounting environment | Rigid work surface able to react the arm's full dynamic load through the bolted base | `[Provisional]` | [004](004-Mechanical-Architecture.md#base-j1) |
 
 ## 8. Traceability

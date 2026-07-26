@@ -47,19 +47,16 @@ changes described in [001](001-Overview.md#5-design-lineage).
 
 | Joints | Value | Derivation | Net reduction | Meaning |
 |---|---|---|---|---|
-| J1, J2, J3 | −332800 | 52 × 400 × 16 | **52:1** | 52:1 strain-wave, 0.9°/step (400-step) motor, 16× microstepping. **Identical to the previous version** — the base-joint reduction is unchanged. |
-| J4, J5 | −86400 | 13.5 × 400 × 16 | **13.5:1** | The wrist is resolved through a **physical pulley reduction** of 13.5:1 (versus the previous version's −36000 = 5.625:1 = 90T/16T belt, plus microstep oscillation). |
+| J1, J2, J3 | −332800 | 52 × 400 × 16 | **52:1** | Strain-wave base joints, 0.9°/step (400-step) motor at 16× microstepping. **Identical to the previous version** — the base-joint reduction is unchanged. |
+| J4, J5 | −86400 | 13.5 × 400 × 16 | **13.5:1** | The wrist is resolved through a **physical pulley reduction**, not microstep oscillation. |
 
 - **`Interpolation`** = 1 for all joints. The previous version used 16 on J4/J5 to sub-divide microsteps for the
   oscillation trick; 1 is correct here because the belt reduction supplies wrist resolution physically.
 - **The net wrist reduction *is* derivable — 13.5:1.** `AxisCal = gear_ratio × 400 × 16`, so
-  86400 / 6400 = **13.5:1**. What is *not* pinned by the firmware alone is the *decomposition into tooth
-  counts*; that is the design-completion item ([009](009-Design-Completion.md#wrist-reduction-ratio)).
-- ⚠️ **The previous version's 16T→90T pulleys give 5.625:1, not 13.5:1.** Reusing that driven pulley set unchanged against
-  this `AxisCal` would produce a **2.4× wrist-scale error**. The wrist must net 13.5:1 (revised
-  differential and/or re-toothed pulleys), or `AxisCal` must be set to the as-built ratio — see
-  [009](009-Design-Completion.md#wrist-reduction-ratio) and
-  [004](004-Mechanical-Architecture.md#wrist-and-differential-j4-j5).
+  86400 / 6400 = **13.5:1**. What the firmware alone does *not* pin is the decomposition of that ratio into
+  tooth counts, and the wrist hardware must be built to match it — both are
+  [DC-3](009-Design-Completion.md#wrist-reduction-ratio). ⚠️ Do not run this `AxisCal` against an as-built
+  wrist of a different ratio without reading that item first.
 
 `[Specified]` (J1–J3; J4/J5 net ratio 13.5:1), `[Provisional]` (J4/J5 tooth-count realization). *Source:
 `Firmware/Defaults.make_ins`, `Firmware/AxisCal.txt`; wiki `Hardware.md`, `Joints.md`, `Firmware.md`,
@@ -69,7 +66,7 @@ changes described in [001](001-Overview.md#5-design-lineage).
 > (`−(gear_ratio × microstep × steps) / 1 296 000` per joint, plus a trailing `ANGLE_END_RATIO` term
 > `−round(ratio_J4 / ratio_J3 × 2²⁴)`). The copy in this repo encodes **50:1** on J1–J3 (line value
 > −0.24691 = 50, and the trailing term −4 529 848 = −round(13.5 / 50 × 2²⁴)), while `Defaults.make_ins`
-> and the physical Cone Drive #14 set specify **52:1**. `Defaults.make_ins` (52:1) is authoritative; the
+> and the physical component set specify **52:1**. `Defaults.make_ins` (52:1) is authoritative; the
 > sampled `AxisCal.txt` appears stale/mis-generated and **must be regenerated to 52:1 on a real build** (a
 > 50:1 file would give ≈4 % base-joint scale error). Both files agree J4/J5 = 13.5:1.
 
@@ -89,11 +86,9 @@ recorded values are overwritten incorrectly. Operationally:
   Do not save calibration on such a unit.
 - A **from-scratch build** (new opto boards, new code disks, new drives) has no recorded calibration and
   **must run the full factory procedure once** before first use — this is unavoidable for a new build and is
-  the single most consequential bring-up step. The calibration **engine** (`dde/low_level_dexter/`:
-  `Calibrate_Encoders_Function.dde`, `calibrate_optical.js`, `calibrate_build_tables.js`, `calibrate_ui.js`,
-  `ViewEye*.js`) and `PHUI2RCP.js` (`Firmware/dde_apps/`) are in the public repos; the two job
-  wrappers (`Setup_Find_Index_Home_HDI*.dde`, `Find_Index_Pulses_HDI.dde`) are not yet, and reconstructing
-  them is a design-completion item ([009](009-Design-Completion.md#from-scratch-calibration-files)).
+  the single most consequential bring-up step. The procedure depends on a set of calibration job files;
+  which of them are available and which must be reconstructed is
+  [DC-10](009-Design-Completion.md#from-scratch-calibration-files).
 
 `[Specified]` — *Source: wiki `Encoder-Calibration.md`, `Dexter-Setup.md`; factory calibration PDFs.*
 
@@ -167,5 +162,6 @@ pushes back and returns home. `[Specified]` — *Source: wiki `Dexter-Setup.md`,
 ## Maintenance
 
 Run the robot through several training series and stress-test for ~36 hours after build. Replace the
-strain-wave (Cone Drive) lubricant at **100 hours** and again at **2000 hours**. Adjust belts as needed
+strain-wave drive lubricant at **100 hours** and again at **2000 hours**, using the lubricant specified by
+the drive vendor ([DC-1](009-Design-Completion.md#strain-wave-component-set)). Adjust belts as needed
 (REQ-ENV-4). `[Specified]` — *Source: factory calibration documentation (Step 3 maintenance note).*

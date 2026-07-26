@@ -9,16 +9,17 @@ chain, and the joint-by-joint drivetrain and structure. It implements the struct
 
 ## Structural philosophy
 
-Dexter is built as a **3D-printed body stiffened by bonded pultruded carbon fiber**. Printed parts
-(Onyx / carbon-fiber-reinforced nylon) form the complex joint housings, motor mounts, and pulleys; straight
-structural spans are carbon-fiber square tubes and flat "strakes" epoxy-bonded into printed sockets. This
-yields a light, stiff arm at low cost and with desktop fabrication.
+Dexter is built as a **3D-printed body stiffened by bonded pultruded carbon fiber**. Printed parts form the
+complex joint housings, motor mounts, and pulleys; straight structural spans are carbon-fiber square tubes
+and flat "strakes" epoxy-bonded into printed sockets. This yields a light, stiff arm at low cost and with
+desktop fabrication. The materials themselves are specified in the table below.
 
-The design deliberately **tolerates drivetrain compliance**. Because every arm joint is measured by an
-optical encoder on its *output* (after the reduction) and corrected by a fast local servo loop
-([005](005-Electronics-and-Control.md#control-architecture)), the mechanics need not be perfectly stiff or
-zero-backlash: the loop closes on true joint position. This is what allows a mostly-printed arm to reach
-high precision (REQ-PRE-1).
+The design deliberately **tolerates drivetrain compliance**: because the position loop closes on the
+joint's true output angle rather than on the motor shaft, the mechanics need not be perfectly stiff or
+zero-backlash. This is what allows a mostly-printed arm to reach high precision, and it is the reasoning
+behind REQ-PRE-1 — stated in full in
+[002](002-Requirements.md#3-precision-and-performance-requirements) and realized as described in
+[005](005-Electronics-and-Control.md#control-architecture).
 
 ## Kinematic chain
 
@@ -41,8 +42,9 @@ wrist; a two-axis tool interface acts at the end. Structural link spans L1–L5 
 
 | Element | Design |
 |---|---|
-| Printed body | Onyx / CF-reinforced nylon; CF reinforcement ("CF" parts) on the highest-load housings |
-| Structural spans | Pultruded carbon-fiber square tubes (1", 0.75") and flat strakes, epoxy-bonded into printed sockets |
+| Printed body | **Onyx / carbon-fiber-reinforced nylon**, printed on a desktop CF-capable printer; CF reinforcement ("CF" parts) on the highest-load housings |
+| Structural spans | **Pultruded carbon fiber** — square tubes (1", 0.75") and flat strakes, epoxy-bonded into printed sockets |
+| Load-bearing metal | The [base mounting plate](#base-mounting-plate) only — the one part of the robot not printed or bonded |
 | Reductions J1–J3 | 52:1 strain-wave (harmonic) drives |
 | Reduction J4–J5 | GT2 timing belts + printed/bonded pulleys driving a differential |
 | Bearings | Standard metric ball bearings (trade sizes 68xx, 67xx, MRxxx) at every rotating interface |
@@ -58,61 +60,69 @@ brought up incrementally around the circle.
 
 The base fixes the robot to the world and provides the J1 rotation axis.
 
-- **Mounting.** Dexter uses a **bolted base**: a rigid metal plate bolted to the Base Mount Bottom and
-  through to a stable work surface, replacing the previous version's six free-standing legs (the CAD base
-  part is modeled as `BaseMountBottom_Bolted` / `HDI-110-001`). The mount must react the arm's full dynamic
-  load (REQ-ENV-5).
-  The plate is **6061-T6 aluminium, 9.5 mm (3/8″) thick, ≈200 × 200 mm** (`[Specified]`), with the
-  **robot-side bolt pattern matching the existing Base Mount Bottom holes** (transfer coordinates from CAD —
-  `[Provisional]`) and **4 × M6 through-holes** for bolting to the work surface (`[Specified]`). A stability
-  analysis (worst-case overturning ≈45 N·m) shows a resting plate would tip, so **the plate must be bolted
-  down**; the design intent is a permanent bench fixture onto which the robot base bolts and can be removed
-  as a unit. Printed Onyx is under-strength for this load-bearing plate. See
-  [009-Design-Completion.md](009-Design-Completion.md#base-plate).
-- **Double base clamp — `[Provisional]`.** The base-to-pivot joint uses a **doubled** (stacked) base clamp
-  rather than the previous version's single clamp. This adds height at the base and is consistent with the
-  +6.6 mm L1 delta ([003](003-Kinematics.md#link-lengths)); the exact stacking/spacing is to be confirmed on
-  build.
-- **Base rotation drive.** J1 is driven by a strain-wave base motor (see below); the base structure carries
-  the Base Code Disk and stator for the J1 encoder and reduction.
+**Mounting.** Dexter uses a **bolted base**: a rigid metal plate bolted to the Base Mount Bottom
+(`BaseMountBottom_Bolted` / `HDI-110-001`) and through to a stable work surface. The mount must react the
+arm's full dynamic load (REQ-ENV-5).
 
-*Source: wiki `Dynamics.md` (bolted base, double clamp); L1 firmware delta.*
+### Base mounting plate
+
+| Property | Design | Status |
+|---|---|---|
+| Material | **6061-T6 aluminium**. Steel is an acceptable alternative and adds desirable mass. Printed Onyx is **not** acceptable for a load-bearing plate | `[Specified]` |
+| Thickness | **9.5 mm (3/8″)** in aluminium — stiff against deflection under the arm's overturning moment and thick enough to tap the robot-side holes (≈6 mm if steel) | `[Specified]` |
+| Footprint | **≈200 × 200 mm** — square, or the base's bolt-circle diameter plus clearance | `[Specified]` |
+| Robot-side bolt pattern | Matches the existing mounting holes on `HDI-110-001_BaseMountBottom`; exact coordinates transfer from CAD | `[Provisional]` — [DC-4](009-Design-Completion.md#base-plate) |
+| Work-surface bolt pattern | **4 × M6 clearance holes** near the plate corners, for through-bolting to a bench or T-slot clamping | `[Specified]` |
+
+**Stability rationale.** The worst-case static overturning moment — the arm fully extended, moving-link mass
+lumped near mid-reach plus payload at full reach, with a ×2 dynamic factor — is ≈ **45 N·m**. A plate that
+merely *rests* on the bench would need impractical mass to resist that (a 250 × 250 × 10 mm steel plate at
+≈4.9 kg supplies only ≈6 N·m of restoring moment, so it tips). **The plate must therefore be bolted to the
+work surface**, at which point the moment reacts as trivial bolt tension (≈300 N at the far bolt, well
+within an M6's capacity). **Design intent: the plate is a permanent bench fixture; the robot base bolts onto
+it and can be removed as a unit while the plate stays fixed.**
+
+**Double base clamp — `[Provisional]`.** The base-to-pivot joint uses a **doubled** (stacked) base clamp.
+This adds height at the base and is consistent with the +6.6 mm L1 delta
+([003](003-Kinematics.md#link-lengths)); the exact stacking and spacing is to be confirmed on build.
+
+**Base rotation drive.** J1 is driven by a strain-wave base motor (see below); the base structure carries
+the Base Code Disk and stator for the J1 encoder and reduction.
+
+*Source: wiki `Dynamics.md` (bolted base, double clamp); L1 firmware delta; CAD part
+`HDI-110-001_BaseMountBottom`.*
 
 ## Base joints J1–J3: strain-wave drive
 
 J1 (base rotation), J2 (shoulder pitch), and J3 (elbow pitch) each use a **52:1 strain-wave reduction**
-driven by a **0.9°/step NEMA-17 stepper at 16× microstepping**, giving 332800 commanded steps per joint
-revolution ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The strain-wave principle gives
-a high ratio, compact, near-zero-backlash reduction — the reason these joints hold position precisely.
+driven by a microstepped stepper motor ([005](005-Electronics-and-Control.md#actuation)); the resulting
+commanded step resolution is derived in
+[006](006-Firmware-and-Calibration.md#drive-constants-axiscal). The strain-wave principle gives a high
+ratio, compact, near-zero-backlash reduction — the reason these joints hold position precisely.
 
 Each drive comprises the **strain-wave component set** — a flex spline, a wave generator, and a circular
 ("stator") gear — plus printed adapters (Wave Gen Coupler, Flex Spline Attach/Cap) that couple it to the
 motor shaft and the printed joint output. J1 and J2 are built as the base and pivot motor assemblies; J3's
 drive is the **External Gear** assembly, in which the harmonic motor turns an external gear ring at the
-elbow. All three are the same reduction (identical `AxisCal`), unchanged from the previous version.
+elbow. All three are the same reduction (identical `AxisCal`), unchanged from the previous version, so
+**three identical component sets are required**.
 
-- **Strain-wave component set — `[Provisional]`.** The flex spline, wave generator, and circular gear are
-  identified to a specific part — the **HanZhen "number 14" 52:1 component set** (`Hardware/README.md`;
-  9–12 wk lead, contact direct) or the **Cone Drive** equivalent that the CAD model is built around (the stator
-  holders are modeled as `HDI-311-006B_J2StatorHolder_ConeDrive`). Only the live procurement quote is open;
-  it is the highest-risk, longest-lead item — resolve it first. See
-  [009-Design-Completion.md](009-Design-Completion.md#strain-wave-component-set). Three sets are required
-  (J1, J2, J3).
+The printed adapter interfaces are cut to a specific commercial component set, and its procurement is the
+build's longest-lead, highest-risk item — the vendor options, lead time, and what remains to close are in
+[DC-1](009-Design-Completion.md#strain-wave-component-set). `[Provisional]`.
 
-*Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note (Cone Drive).*
+*Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note.*
 
 ### Main Pivot (J2) and Arm Body (J3 support / L2)
 
 The **Main Pivot** is the printed shoulder housing carrying the J2 encoder disk and the J2 pivot motor; its
 short/long ends are stiffened with bonded CF strakes and it mounts onto the base via a pressed bearing and
-all-thread tie rods. The **Arm Body** forms the L2 span (J2→J3, 339 mm) as a 1" CF square tube bonded into
+all-thread tie rods. The **Arm Body** forms the L2 span (J2→J3) as a 1" CF square tube bonded into
 a printed body, and additionally carries the **belt directors** — printed, bearing-guided pulleys that route
-the J4/J5 drive belts along the arm to the differential. Because L2 is +18.4 mm versus the previous
-version, the Arm Body tube is cut **282.4 mm** (264 mm + 18.41 mm — the link delta falls entirely in the
-tube if the socket seat matches the previous version's) (`[Provisional]`; the printed body is renumbered,
-so confirm the socket seat depth
-against the CAD model before cutting — see [007](007-Bill-of-Materials.md) and
-[009](009-Design-Completion.md#link-member-lengths)).
+the J4/J5 drive belts along the arm to the differential. The L2 link length is specified in
+[003](003-Kinematics.md#link-lengths); the tube cut length that realizes it is derived in
+[DC-5](009-Design-Completion.md#link-member-lengths) and listed in
+[007.5](007-Bill-of-Materials.md#0075-arm-body). `[Provisional]`.
 
 ## Wrist and differential (J4–J5)
 
@@ -123,33 +133,25 @@ that run forward along the arm through the belt directors to the differential's 
 end-effector wiring bundle passes through the differential's hollow bore.
 
 - **Belt reduction, not microstep oscillation — `[Specified]` (principle + net ratio), `[Provisional]`
-  (tooth split).** The wrist obtains its resolution from this **physical pulley reduction**, the defining
-  change from the previous version (which oscillated the motor across microsteps in firmware instead). The
-  **net wrist reduction is 13.5:1**, derivable from the J4/J5 `AxisCal` (86400 / 6400;
-  [006](006-Firmware-and-Calibration.md#drive-constants-axiscal)), with `Interpolation` = 1. ⚠️ **The
-  previous version's 16T→90T pulleys give only 5.625:1** — reusing them unchanged against this firmware
-  causes a **2.4× wrist
-  error**, so the driven side must be re-toothed (and/or the differential revised) to net 13.5:1, or
-  `AxisCal` set to the as-built ratio. The exact tooth-count split is a design-completion item
-  ([009](009-Design-Completion.md#wrist-reduction-ratio)); the 16T motor pulley is retained.
+  (tooth split).** The wrist obtains its resolution from a **physical pulley reduction** rather than from
+  firmware microstep oscillation. The **net wrist reduction is 13.5:1**, fixed by the J4/J5 drive constant
+  ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The 16T motor pulley is retained; the
+  **driven side must be toothed to net 13.5:1**, and the tooth-count split that realizes it — along with the
+  scale error that results from getting it wrong — is [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
 - **Differential detail — `[Provisional]`.** The differential is significantly revised from the previous
-  version. The CAD model in `dde` (`HDIMeterModel.gltf`) is a kinematic/outer-skin model — it carries the
-  differential *covers* (`HDI-940-001_DiffCover`) and Link4–7 kinematic frames but **not** the mechanism
-  internals (700-series Split Gear, Diff Body, Diff Gear Shaft/Axle). This specification defines the
-  differential *function* and builds the previous version's differential geometry as a working substitute,
-  pending recovery of the detail design from
-  the **OnShape CAD** (linked in `Hardware/README.md`) or a physical unit; an incorrect flex/pivot geometry
-  risks binding a joint that also carries the tool wiring through its bore. See
-  [009-Design-Completion.md](009-Design-Completion.md#differential-detail-design).
+  version. This specification defines the differential's *function*, and the build uses the previous
+  version's differential geometry as a working substitute until the detail design is recovered; an incorrect
+  flex/pivot geometry risks binding a joint that also carries the tool wiring through its bore. The recovery
+  sources and what closing this requires are in
+  [DC-2](009-Design-Completion.md#differential-detail-design).
 
 ### End Arm Hub (J3–J4 region)
 
 The **End Arm Hub** is the printed structure at the elbow/wrist transition: it houses the **axis
 intersection** (where the J3 and downstream axes meet), the internal and external pulleys that transfer the
-belt drives across the elbow, and the L3 span (J3→J4, 307.5 mm, a 0.75" CF tube). Because L3 is −22.7 mm
-versus the previous version, this tube is cut **214.3 mm** (237 mm − 22.70 mm — the link delta falls
-entirely in the tube if the socket seat matches the previous version's) (`[Provisional]`; the printed body
-is renumbered, so confirm the socket seat depth against the CAD model before cutting).
+belt drives across the elbow, and the L3 span (J3→J4) as a 0.75" CF tube. As with the Arm Body, the L3 link
+length is specified in [003](003-Kinematics.md#link-lengths) and its tube cut length is derived in
+[DC-5](009-Design-Completion.md#link-member-lengths). `[Provisional]`.
 
 ## Tool interface (roll + grip)
 
@@ -163,12 +165,15 @@ dynamic fingers with replaceable grip pads). `[Specified]`.
 
 ## Design-status summary
 
+Open items are summarized here by which subassembly they block; each item's state, priority, and definition
+of done is in [009-Design-Completion.md](009-Design-Completion.md).
+
 | Subassembly | Joints | Drive | Status | Open item |
 |---|---|---|---|---|
-| Base | J1 support | — | `[Provisional]` | Base plate — design specified, CAD hole transfer ([009](009-Design-Completion.md#base-plate)); double clamp detail |
-| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` ratio / `[Provisional]` component set | Strain-wave set — part identified, procurement ([009](009-Design-Completion.md#strain-wave-component-set)) |
+| Base | J1 support | — | `[Provisional]` | [DC-4](009-Design-Completion.md#base-plate); double clamp detail |
+| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` ratio / `[Provisional]` component set | [DC-1](009-Design-Completion.md#strain-wave-component-set) |
 | Main Pivot | J2 | — | `[Specified]` | — |
-| Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length 282.4 mm | Confirm socket seat vs CAD ([009](009-Design-Completion.md#link-member-lengths)) |
-| End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length 214.3 mm | Confirm socket seat vs CAD |
-| Differential | J4, J5 | belt → differential | `[Specified]` net 13.5:1 / `[Provisional]` detail | Tooth split + detail design ([009](009-Design-Completion.md)) |
-| Tool interface | roll, grip | Dynamixel | `[Specified]` | — |
+| Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
+| End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
+| Differential | J4, J5 | belt → differential | `[Specified]` net ratio / `[Provisional]` detail | [DC-2](009-Design-Completion.md#differential-detail-design), [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
+| Tool interface | roll, grip | smart servos | `[Specified]` | — |

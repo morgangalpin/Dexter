@@ -11,15 +11,9 @@ work remaining (see [Design status](#design-status) and
 ## Design identity and versioning
 
 **No document in this set states its own version and revision.** Which design a document belongs to is
-determined by the git branch or tag it is read at: `main` carries the latest development design, a released
-revision is frozen at a tag such as `version-3-rev-a`, and a revision under development lives on a branch
-such as `version-3/rev-b`. A new revision is authored on its own branch, taken from the previous revision's
-tag, recording the intended changes as deltas against it and re-deriving the affected artifacts — the spec
-set is never copied.
-
-The version line, the branch and tag scheme, and the procedure for deriving the next revision are defined in
-[010-Versioning.md](010-Versioning.md); the forward roadmap is [011-Roadmap.md](011-Roadmap.md); the
-recorded history of each revision, and the only place a version and revision are written down, is
+determined by the git branch or tag it is read at. The version line, the branch and tag scheme, and the
+procedure for deriving the next revision are defined in [010-Versioning.md](010-Versioning.md); the forward
+roadmap is [011-Roadmap.md](011-Roadmap.md); the recorded history of each revision is
 [CHANGES.md](../CHANGES.md) in the repository root.
 
 ## Specification map
