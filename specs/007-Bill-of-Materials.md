@@ -10,6 +10,16 @@ Status markers per [README.md](README.md#design-status). Open design items (`[TB
 [009-Design-Completion.md](009-Design-Completion.md). Order fasteners and bearings in excess — the aggregate
 totals below carry no slack, and several rows depend on `[Provisional]`/`[TBD]` items being finalized.
 
+**To order or fabricate parts, use the derived lists rather than this document:**
+
+| Document | Scope |
+|---|---|
+| [007.1 — Parts Catalog and Sourcing](007.1-Parts-Catalog.md) | Every purchased and fabricated item, **de-duplicated across the whole robot**, with full product specifications and supplier links (Canadian first) |
+| [007.2 — 3D Printed Parts](007.2-Printed-Parts.md) | Every printed part, **de-duplicated**, with print quantities and model-file sources |
+
+This document remains the by-subassembly view and the source those two are generated from. The regeneration
+procedures are in each derived document.
+
 ## Subassembly summary
 
 | # | Subassembly | PBS | Status |
@@ -61,12 +71,12 @@ robot-side hole pattern is open ([DC-4](009-Design-Completion.md#base-plate)).
 | #100-003 | Pivot Skirt | 3D print | 1 | |
 | #110-001 | Base Mount Bottom | 3D print | 1 | |
 | #110-002 | Base Stator Holder | 3D print | 1 | |
-| #110-003 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | dragonplate.com pID=697 |
+| #110-003 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | — | **Base Mounting Plate** | Machine (metal) | 1 | Material, thickness, footprint, and hole patterns per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
 | — | M6 bolts + washers/nuts (plate to work surface) | Off the shelf | 4 | Through-bolt to bench, or T-slot clamp |
 | — | Robot-side bolts (Base Mount Bottom to plate) | Off the shelf | per CAD pattern | Size and count from the CAD hole transfer ([DC-4](009-Design-Completion.md#base-plate)) |
 | #120-001 | Base Long | 3D print | 1 | |
-| #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | dragonplate.com pID=697 |
+| #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #120-003 | 107 mm M3 all-thread | Fabricate | 3 | |
 | #620-006 | 6810 bearing | Off the shelf | 2 | one per Base row |
 | #660-002 | M3 nuts | Off the shelf | 7 (+ clamp hardware) | Recompute against the doubled clamp |
@@ -108,8 +118,8 @@ J2 shoulder structure ([004](004-Mechanical-Architecture.md#main-pivot-j2-and-ar
 |---|---|---|---|---|
 | #300-001 | Main Pivot (printed body) | 3D print | 1 | |
 | #300-002 | Pivot Code Disk | 3D print | 1 | |
-| #300-003 | 126 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | dragonplate.com pID=697. Unchanged in length — the L1 delta is attributed to the doubled Base Clamp ([004](004-Mechanical-Architecture.md#base-j1)), not to these strakes |
-| #300-004 | 146 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | dragonplate.com pID=697 |
+| #300-003 | 126 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock. Unchanged in length — the L1 delta is attributed to the doubled Base Clamp ([004](004-Mechanical-Architecture.md#base-j1)), not to these strakes |
+| #300-004 | 146 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #660-002 | M3 nuts | Off the shelf | 5 | |
 
 Also consumes the two motor assemblies from [007.3](#0073-harmonic-drive-motors), a 6810 bearing, and the
@@ -152,13 +162,13 @@ parts list realizes the previous version's differential, built as a working subs
 | #710-002 | Split Gear Bottom | 3D print | 1 | |
 | #710-003 | Diff Keeper | 3D print | 2 | |
 | #710-004 | Rotate Code Disk | 3D print | 1 | |
-| #710-005 | 25 × 5.6 × 2.5 mm CF strake | Fabricate | 3 | dragonplate.com carbon-strip-rectangle-092 |
+| #710-005 | 25 × 5.6 × 2.5 mm CF strake | Fabricate | 3 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #710-006 | AXK0819 thrust bearing (1/4") | Off the shelf | 1 | |
 | #710-007 | AS thrust races | Off the shelf | 2 | |
 | #720-001 | Diff Gear Shaft | 3D print | 1 | |
 | #720-002 | Diff Gear Axle | 3D print | 1 | |
 | #720-003 | Diff End Pulley | 3D print | 1 | |
-| #720-005 | 60 × 4.4 × 1.5 mm CF strake | Fabricate | 5 | dragonplate.com pID=693 |
+| #720-005 | 60 × 4.4 × 1.5 mm CF strake | Fabricate | 5 | Cut from [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) — .057″ × .177″ stock |
 | #720-006 | 96 × 8 × 6 mm CF rod | Fabricate | 1 | |
 | #730-001 | Diff Body A | 3D print | 1 | |
 | #730-002 | Diff Body B | 3D print | 1 | |
@@ -180,8 +190,8 @@ specific to this version.
 | #410-001 | Axis Intersection Half | 3D print | 2 | Also referenced by the glue rig |
 | #410-002 | New Belt Pulley | 3D print | 1 | |
 | #410-003 | End Arm Code Disk | 3D print | 1 | |
-| #410-004 | 45 × 5.6 × 2.5 mm CF strake | Fabricate | 2 | dragonplate.com pID=695 |
-| #410-005 | 48 × 5.6 × 2.5 mm CF strake | Fabricate | 2 | dragonplate.com pID=695 |
+| #410-004 | 45 × 5.6 × 2.5 mm CF strake | Fabricate | 2 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
+| #410-005 | 48 × 5.6 × 2.5 mm CF strake | Fabricate | 2 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #410-006 | M3 × 107 mm all-thread | Fabricate | 4 | |
 | #420-001 | End Arm Hub (printed) | 3D print | 1 | Also referenced by the glue rig |
 | #420-002 | End Arm Hub Cap | 3D print | 1 | |
@@ -189,7 +199,7 @@ specific to this version.
 | #421-001 | Internal Outer Pulley | 3D print | 1 | |
 | #421-002 | Internal Inner Pulley | 3D print | 1 | |
 | #421-003 | 113 × 8 × 6 mm stainless steel rod | Fabricate | 1 | |
-| #421-004 | 81 × 4.4 × 1.5 mm CF strake | Fabricate | 3 | dragonplate.com carbon-strip-rectangle-057 |
+| #421-004 | 81 × 4.4 × 1.5 mm CF strake | Fabricate | 3 | Cut from [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) — .057″ × .177″ stock |
 | #421-005 | 90 cm × 6 mm GT2 belt | Off the shelf | 2 | |
 | #421-006 | Pulley Spacer | 3D print | 2 | |
 | #430-001 | External Outer Pulley | 3D print | 1 | |
@@ -213,7 +223,7 @@ strain-wave set (`[TBD]`, see above).
 | #510-002 | 132 cm × 9 mm GT2 belt | Off the shelf | 2 | |
 | #511-001 | Ex Gear Motor End Cap | 3D print | 1 | |
 | #511-002 | Ex Gear Stator Holder | 3D print | 1 | |
-| #511-003 | 73 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | dragonplate.com carbon-strip-rectangle-125 |
+| #511-003 | 73 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #610-001 | NEMA-17 stepper | Off the shelf | 1 | |
 | #620-006 | 6810 bearing | Off the shelf | 2 | |
 | #630-001/2/3 | **Flex Spline / Wave Generator / Stator Gear** | Special order | 1 each | `[TBD]` [DC-1](009-Design-Completion.md#strain-wave-component-set) |
@@ -301,7 +311,7 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #670-001 | M2 washers | Off the shelf | 6 | |
 | #912-001 | Span Mount | 3D print | 1 | |
 | #912-002 | Span Driver | 3D print | 1 | |
-| #912-003 | 28 × 5.6 × 2.5 mm CF strake | Fabricate | 1 | dragonplate.com pID=695 |
+| #912-003 | 28 × 5.6 × 2.5 mm CF strake | Fabricate | 1 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #920-001 | Static Finger | 3D print | 1 | |
 | #920-002 | Dynamic Finger | 3D print | 1 | |
 | #920-003 | Finger Cap | 3D print | 1 | |
@@ -319,48 +329,79 @@ gripper wire cover. Two pieces of yoga mat provide the finger grip pads.
 Totals reflect the current design and exclude the Base Mounting Plate's robot-side hardware, whose count
 depends on [DC-4](009-Design-Completion.md#base-plate). No slack included — order in excess.
 
-| Part | Total |
-|---|---|
-| M2 nuts | 43 |
-| M3 nuts | 43 (+ doubled-clamp hardware) |
-| M2 washers | 22 |
-| M3 washers | 16 |
-| M2 × 12 mm bolts | 22 |
-| M2 × 16 mm bolts | 5 |
-| M2 × 20 mm bolts | 17 |
-| M3 × 12 mm socket head screws | 22 |
-| M3 × 6 mm set screws | 9 |
-| M3 × 8 mm bolts | 10 |
-| M3 × 8 mm hex cap bolt | 6 |
-| #6 washers | 14 |
-| 6703 bearing | 12 |
-| 6810 bearing | 7 |
-| MR128 bearing | 15 |
-| MR85 bearing | 3 |
-| 6705 / 6807 bearing | 1 / 2 |
-| NEMA-17 stepper (0.9°/step) | 5 |
-| Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each — `[Provisional]` |
-| Power supply, 36 V / 4 A DC brick | 1 |
-| Dynamixel XL-320 servo | 2 |
-| Optical Board | 5 |
-| 6-pin connector | 10 |
-| 1" #19 finishing nail | 11 |
+These totals were **re-derived from the subassembly tables above** when
+[007.1](007.1-Parts-Catalog.md) was generated; eight lines were corrected in the process, and the causes
+are recorded in [007.1 § Corrections to 007](007.1-Parts-Catalog.md#corrections-to-007). The two most
+common failure modes were forgetting that
+[007.3 is quoted *per motor* and built twice](#0073-harmonic-drive-motors), and aggregating by `PBS #`
+where one PBS number covers two different fastener sizes. Aggregate by **size**, not by PBS number.
+
+| Part | Total | Catalog |
+|---|---|---|
+| M2 nuts | 41 | [C-604](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 nuts | 43 (+ doubled-clamp hardware) | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
+| M2 washers | 20 | [C-605](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 washers | 16 | [C-613](007.1-Parts-Catalog.md#6-fasteners) |
+| M2 × 12 mm bolts | 20 | [C-601](007.1-Parts-Catalog.md#6-fasteners) |
+| M2 × 16 mm bolts | 5 | [C-602](007.1-Parts-Catalog.md#6-fasteners) |
+| M2 × 20 mm bolts | 17 | [C-603](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 6 mm set screws | 9 | [C-606](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 8 mm bolts | 8 | [C-607](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 8 mm hex cap bolt | 6 | [C-608](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 10 mm bolts | 3 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 12 mm socket head screws | 22 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 20 mm bolts | 6 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
+| #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
+| 1" #19 finishing nail | 11 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |
+| 6703 bearing (17 × 23 × 4) | 10 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
+| 6705 bearing (25 × 32 × 4) | 1 | [C-403](007.1-Parts-Catalog.md#4-bearings) |
+| 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
+| 6810 bearing (50 × 65 × 7) | 8 | [C-401](007.1-Parts-Catalog.md#4-bearings) |
+| MR85 bearing (5 × 8 × 2.5) | 3 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
+| MR128 bearing (8 × 12 × 3.5) | 12 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
+| AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
+| NEMA-17 stepper (0.9°/step) | 5 | [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) |
+| Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each — `[Provisional]` | [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| Power supply, 36 V / 4 A DC brick | 1 | [C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc) |
+| Dynamixel XL-320 servo | 2 | [C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) |
+| Optical Board | 5 | [C-703](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
+| 6-pin connector | 10 | [C-708](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
+| 3D printed parts | 109 pieces / 70 distinct | [007.2](007.2-Printed-Parts.md#totals) |
 
 ## Sourcing notes
 
-- **CF strakes/tubes** — pultruded carbon fiber from Dragonplate.com (pIDs in the tables) or any equivalent
-  supplier of matching cross-section. Confirm the L2/L3 cut lengths
-  ([DC-5](009-Design-Completion.md#link-member-lengths)) before cutting.
+Full product specifications and supplier links for every item are in
+[007.1-Parts-Catalog.md](007.1-Parts-Catalog.md). The notes below are the ones that change *what you order*,
+not merely where from.
+
+- **CF strakes/tubes** — the legacy `pID=###` DragonPlate references in earlier revisions are dead links.
+  The three strip cross-sections are now resolved to current stock:
+  **.125″ × .500″** ([C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500)),
+  **.092″ × .220″** ([C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220)), and
+  **.057″ × .177″** ([C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177)).
+  **The metric dimensions in the tables above are nominal descriptions of imperial pultrusions** — actual
+  stock differs by up to 0.16 mm. Order by cross-section, not by the metric label. Confirm the L2/L3 cut
+  lengths ([DC-5](009-Design-Completion.md#link-member-lengths)) before cutting.
 - **Bearings** — standard metric trade sizes (68xx/67xx/MRxxx); source by ID/OD/width from any supplier.
+  Note that `#710-006` is an **8 mm bore** AXK0819, not the 1/4″ implied by its description in
+  [007.6](#0076-differential) — see [C-407](007.1-Parts-Catalog.md#4-bearings).
+- **NEMA-17 steppers** — "NEMA 17" is a frame size only. The **0.9°/step** angle is non-negotiable
+  (`AxisCal` assumes 400 steps/rev) and a Ø5 mm shaft with a flat is required. Full requirements in
+  [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step).
 - **Strain-wave sets** — the long-lead, high-risk item; start vendor contact before anything else on this
   list ([DC-1](009-Design-Completion.md#strain-wave-component-set)).
 - **Motor Control / Opto PCBs** — fabricate from gerbers in `Hardware/Motor PCB/` (`09051-00135-A`) and
   `Hardware/Opto/`.
-- **MicroZed** — confirm the SoM part number (wiki `MicroZed`) before ordering.
+- **MicroZed** — the module is Avnet **`AES-Z7MB-7Z020-SOM-G`**: the Zynq **7020** commercial version,
+  **not** the 7010 ([C-701](007.1-Parts-Catalog.md#7-electronics-and-wiring)). Powering a MicroZed with no
+  SD card fitted destroys it.
 - **Power supply** — a 36 V / 4 A laptop-style DC brick; see
   [005 § Power](005-Electronics-and-Control.md#power) for what may and may not be substituted.
 - **Base Mounting Plate** — machined to
   [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate), with the robot-side hole
   pattern transferred per [DC-4](009-Design-Completion.md#base-plate).
-- **Wrist driven pulleys** — do not order until [DC-3](009-Design-Completion.md#wrist-reduction-ratio) fixes
-  the tooth counts.
+- **Wrist driven pulleys** — printed, not purchased ([007.2](007.2-Printed-Parts.md#end-arm-hub-and-pulleys--0077)).
+  Do not print or commit belt lengths until [DC-3](009-Design-Completion.md#wrist-reduction-ratio) fixes the
+  tooth counts.
+- **3D printed parts** — model files are not held in this repository. Sources, print quantities, and the
+  material of record are in [007.2](007.2-Printed-Parts.md#model-file-sources).

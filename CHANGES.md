@@ -96,3 +96,36 @@ anything version 3 does not independently specify
   rather than implicit in what the sources did not cover.
 - **Status:** `[Specified]`.
 - **Re-derive:** n/a — this change defines the derivation order rather than following from it.
+
+### CR-3A6: Parts catalog and printed-parts list added; BOM made orderable
+
+- **Affects:** [007](specs/007-Bill-of-Materials.md), new [007.1](specs/007.1-Parts-Catalog.md) and
+  [007.2](specs/007.2-Printed-Parts.md), [009](specs/009-Design-Completion.md),
+  [specs/README.md](specs/README.md)
+- **Was:** [007](specs/007-Bill-of-Materials.md) listed parts by subassembly with generic descriptions
+  ("NEMA-17 stepper", "6810 bearing") and no supplier links. Carbon fiber referenced dead DragonPlate
+  `pID=###` identifiers that could not be resolved to any current product. Parts recurring across
+  subassemblies had to be summed by hand, and the aggregate table's totals disagreed with the sum of its own
+  rows in eight places.
+- **Now:** Two derived documents make the design orderable.
+  [007.1](specs/007.1-Parts-Catalog.md) is the de-duplicated purchase list for one robot — every bought or
+  fabricated item once, with the full specification needed to order correctly and at least one supplier link
+  (Canadian first, then US, then elsewhere). [007.2](specs/007.2-Printed-Parts.md) is the de-duplicated
+  print list — 109 pieces across 70 distinct parts — with model-file sources. Both carry a regeneration
+  procedure. The three carbon fiber cross-sections are resolved to current DragonPlate stock
+  (**.125″ × .500″**, **.092″ × .220″**, **.057″ × .177″**), and the metric dimensions in
+  [007](specs/007-Bill-of-Materials.md) are recorded as nominal descriptions of imperial pultrusions rather
+  than independent specifications. The MicroZed is pinned to `AES-Z7MB-7Z020-SOM-G`, and the AXK0819 thrust
+  bearing's conflicting "1/4″" descriptor is corrected to its true 8 mm bore.
+- **Driver:** A bill of materials that cannot be ordered from is not a buildable design. Generic part
+  descriptions admit wrong parts — "NEMA 17" alone matches over a hundred motors, most of them 1.8°, which
+  would silently halve every joint's resolution.
+- **Status:** `[Specified]` for the catalog structure and the resolved carbon fiber, MicroZed, and bearing
+  identities; `[Provisional]` for five part identities that could not be pinned from the design record,
+  collected as [DC-11](specs/009-Design-Completion.md#procurement-data).
+- **Re-derive:** 007.1 and 007.2 whenever 007 changes; both documents state the procedure.
+- **Note:** Eight aggregate quantities in [007](specs/007-Bill-of-Materials.md) were corrected against the
+  sum of its own subassembly rows — most caused by
+  [007.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors) being quoted per motor and built twice.
+  Anyone who ordered against the previous aggregate table should re-check
+  [Corrections to 007](specs/007.1-Parts-Catalog.md#corrections-to-007).

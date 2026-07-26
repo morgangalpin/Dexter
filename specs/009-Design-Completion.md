@@ -23,6 +23,7 @@ cutting/committing structure; **P3** are refinements or characterizations.
 | DC-8 | [Power supply rating](#power-supply) | P2 | Power | — | `[Specified]` ✔ closed |
 | DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | Instrumented build | `[TBD]` |
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
+| DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 
 **Completion progress.** DC-8 is closed. Every other item except DC-6 and DC-9 has been narrowed to the
 single remaining gap named in the table above — in each case a procurement action, a CAD or measurement
@@ -225,3 +226,32 @@ Haddington Dynamics.
 **Definition of done:** obtain or reconstruct the two missing job wrappers, verify they drive the engine
 through [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) end-to-end on a new unit, and
 confirm the resulting `post_cal_info.JSON` gives correct home-finding. `[Provisional]`.
+
+## Procurement data
+**DC-11 · P2 · Requirement: buildability · Specified in [007.1](007.1-Parts-Catalog.md), [007.2](007.2-Printed-Parts.md)**
+
+**Open:** five part identities that the parts catalog could not pin from the design record. Everything else
+in [007.1](007.1-Parts-Catalog.md) resolves to an orderable product with a supplier link; these five do not,
+and each is `[Provisional]` there.
+
+| # | Item | What is open | Consequence if wrong |
+|---|---|---|---|
+| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"* — no manufacturer part number. The recommended `17HM19-2004S` is 0.46 N·m with a 24 mm shaft: it meets every stated requirement but is not a proven identity match | Body or shaft length mismatch against the printed Motor End Cap; five motors ordered wrong |
+| b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) | No size, voltage, or part number anywhere in the design record — only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`) | Fan does not fit the bracket, or fouls the MicroZed USB connector |
+| c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) | [007.5](007-Bill-of-Materials.md#0075-arm-body) types them "Fabricate"; [008.5](008-Assembly.md) treats them as printed bodies that accept pressed MR128 bearings and printed caps | Three parts either printed that should be machined, or absent from the print list |
+| d | **Print parameters** ([007.2 § Material](007.2-Printed-Parts.md#material)) | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment | Bearing bores and CF strake slots out of tolerance; press and bond fits fail |
+| e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) | `HDI-311-006C_J2StatorHolderCap_ConeDrive` is in the CAD model but has no BOM row; `HDI-610-006_MotorShaftCoupler` is instanced 4× where the BOM calls for 3 | A missing printed part discovered mid-assembly |
+
+**Also open: the model archives are off-repository.** Every printed part's geometry lives in Thingiverse
+archives and an OnShape document outside this repository
+([007.2 § Model file sources](007.2-Printed-Parts.md#model-file-sources)). That is a single point of failure
+for the whole build, and it is why [007.2](007.2-Printed-Parts.md) can give per-*archive* links but not
+per-*part* ones.
+
+**Definition of done:** (a) a confirmed stepper part number verified against the printed Motor End Cap
+envelope; (b) fan size, voltage, and part number specified against the Fan Bracket; (c) the Belt Director
+type settled and the affected rows corrected in [007](007-Bill-of-Materials.md)/[007.2](007.2-Printed-Parts.md);
+(d) a published print profile validated on a bearing bore and a strake slot; (e) both CAD-vs-BOM mismatches
+adjudicated against the model set; and the STL set mirrored into `Hardware/STL/` so
+[007.2](007.2-Printed-Parts.md) can carry per-part model links. None of these blocks starting the long-lead
+items in [DC-1](#strain-wave-component-set). `[Provisional]`.

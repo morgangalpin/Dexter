@@ -30,6 +30,8 @@ Read top to bottom for a full picture; each document is self-contained and cross
 | 005 | [Electronics and Control](005-Electronics-and-Control.md) | Sensing, actuation, the FPGA joint-servo loop, boards, power, and the control-command interface |
 | 006 | [Firmware and Calibration](006-Firmware-and-Calibration.md) | Firmware parameters, the calibration model, and the factory calibration and bring-up procedure |
 | 007 | [Bill of Materials](007-Bill-of-Materials.md) | The parts that realize the design in 004–006, organized by subassembly |
+| 007.1 | [Parts Catalog and Sourcing](007.1-Parts-Catalog.md) | Every purchased and fabricated part, de-duplicated across the whole robot, with product specifications and supplier links |
+| 007.2 | [3D Printed Parts](007.2-Printed-Parts.md) | Every printed part, de-duplicated, with print quantities and model-file sources |
 | 008 | [Assembly](008-Assembly.md) | The procedure that builds the parts in 007 into the robot in 004 |
 | 009 | [Design Completion](009-Design-Completion.md) | The open design decisions (`[TBD]` items) that must be closed to make the current design fully buildable |
 | 010 | [Versioning](010-Versioning.md) | Version lineage, design identity, the git branch and tag model for versions and revisions, and the procedure for deriving the next one |
@@ -38,7 +40,8 @@ Read top to bottom for a full picture; each document is self-contained and cross
 
 Documents 002–005 specify the robot (requirements → kinematics → mechanics → electronics/control).
 Documents 006–008 are **derived artifacts**: firmware configuration, the parts list, and the build
-procedure all follow from the design in 002–005 and must be regenerated when it changes. Document 009
+procedure all follow from the design in 002–005 and must be regenerated when it changes. 007.1 and 007.2
+are derived one step further — from 007 — and each carries its own regeneration procedure. Document 009
 is the live list of decisions still owed on the current revision; document 010 governs how the whole set evolves,
 and 011 is what is intended beyond the current revision.
 
