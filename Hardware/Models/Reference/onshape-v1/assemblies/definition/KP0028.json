@@ -1,0 +1,251 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ -1.0, 0.0, 6.050715484207101E-15, 3.323730842307375E-4, 0.0, -1.0, 0.0, 0.00200000000000014, 6.10622663543836E-15, 0.0, 1.0, -2.0816681711721697E-16, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M6gCkazgSPyuIHD0v" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.07193, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, 0.0155, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M8fNjEkyX6X3xVNUA" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.10293, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, 0.0155, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MD8qqD0oO5cbHT3nG" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -0.0152646680918949, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, -0.0368521687325765, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "ME379xv1O4v52qXho" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MGJ8AMdPrRKfm9kex" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -0.0335515503443358, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, 0.021572804679538, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MK8VEZj3dX5E5htDj" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0152646680918949, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, 0.0368521687325765, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MMv/hycuowy2Gu6Ct" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.032384666728655004, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, -0.023287889408959803, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MWVok/YyoOfcUCN16" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.10293, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, -0.0155, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "McY9T2H+08GkV2HAD" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.07193, 0.0, 1.0, 0.0, 0.0067, 0.0, 0.0, 1.0, -0.0155, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MooIwC9C1bARPCFpl" ]
+    }, {
+      "transform" : [ -1.0, 0.0, 6.050715484207101E-15, 3.323730842307375E-4, 0.0, -1.0, 0.0, 0.01350000000000014, 6.10622663543836E-15, 0.0, 1.0, -2.0816681711721697E-16, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MrjhzABLQzohRUNlf" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M6gCkazgSPyuIHD0v",
+      "name" : "KP0040-01_PivotPhotoLight <1>",
+      "suppressed" : false,
+      "partId" : "KF/G",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MrjhzABLQzohRUNlf",
+      "name" : "KP0039-01_PivotPhotoInterupter <1>",
+      "suppressed" : false,
+      "partId" : "KFDH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "McY9T2H+08GkV2HAD",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MD8qqD0oO5cbHT3nG",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M8fNjEkyX6X3xVNUA",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MooIwC9C1bARPCFpl",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MWVok/YyoOfcUCN16",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <5>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMv/hycuowy2Gu6Ct",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <6>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MK8VEZj3dX5E5htDj",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <7>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "ME379xv1O4v52qXho",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <8>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MGJ8AMdPrRKfm9kex",
+      "name" : "KP0028-01_ArmBodyBottom <1>",
+      "suppressed" : false,
+      "partId" : "KFHH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "db97123a7ba02bcdf0c19637",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KF/G",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFHH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "JFD",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFDH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

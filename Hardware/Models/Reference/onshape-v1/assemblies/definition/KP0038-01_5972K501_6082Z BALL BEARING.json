@@ -1,0 +1,449 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M/95MDAd74UgVioTA" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M/gSMpMhI0r/9U0cB" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M/nEkGmltKFH2t9mq" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M09lKrCrXutwsfFWU" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M8Cw41vfbyzen/Y8x" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M8hLAX1b9v0AgGdou" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MCAKR/oxPo/D2qX9s" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MD3AZMBCMPLwKTNIm" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MF5D0FkaKyxguKRsz" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MLF8+SrDW3wcvc3xZ" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MOonS6f81Vt0xQdAx" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MPwqvqPoxdx/bdJaO" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MWYzlLz62a9zNRwS3" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MWaDlkKt3DYIKcfrE" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MbUduNuUO+SNklkPq" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MrbI9L/W0MSQUGO3p" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M8Cw41vfbyzen/Y8x",
+      "name" : "Part 71 <1>",
+      "suppressed" : false,
+      "partId" : "KFbE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M/gSMpMhI0r/9U0cB",
+      "name" : "Part 72 <1>",
+      "suppressed" : false,
+      "partId" : "KFfE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MWYzlLz62a9zNRwS3",
+      "name" : "Part 73 <1>",
+      "suppressed" : false,
+      "partId" : "KFjE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MLF8+SrDW3wcvc3xZ",
+      "name" : "Part 74 <1>",
+      "suppressed" : false,
+      "partId" : "KFnE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MPwqvqPoxdx/bdJaO",
+      "name" : "Part 75 <1>",
+      "suppressed" : false,
+      "partId" : "KFrE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MF5D0FkaKyxguKRsz",
+      "name" : "Part 76 <1>",
+      "suppressed" : false,
+      "partId" : "KFvE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MCAKR/oxPo/D2qX9s",
+      "name" : "Part 77 <1>",
+      "suppressed" : false,
+      "partId" : "KFzE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M8hLAX1b9v0AgGdou",
+      "name" : "Part 78 <1>",
+      "suppressed" : false,
+      "partId" : "KF3E",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MWaDlkKt3DYIKcfrE",
+      "name" : "Part 79 <1>",
+      "suppressed" : false,
+      "partId" : "KF7E",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MbUduNuUO+SNklkPq",
+      "name" : "Part 80 <1>",
+      "suppressed" : false,
+      "partId" : "KF/E",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MOonS6f81Vt0xQdAx",
+      "name" : "Part 81 <1>",
+      "suppressed" : false,
+      "partId" : "KFDF",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MD3AZMBCMPLwKTNIm",
+      "name" : "Part 82 <1>",
+      "suppressed" : false,
+      "partId" : "KFHF",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M09lKrCrXutwsfFWU",
+      "name" : "Part 83 <1>",
+      "suppressed" : false,
+      "partId" : "KFLF",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MrbI9L/W0MSQUGO3p",
+      "name" : "Part 84 <1>",
+      "suppressed" : false,
+      "partId" : "KFPF",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M/nEkGmltKFH2t9mq",
+      "name" : "Part 85 <1>",
+      "suppressed" : false,
+      "partId" : "KFTF",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M/95MDAd74UgVioTA",
+      "name" : "Part 86 <1>",
+      "suppressed" : false,
+      "partId" : "KFXF",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "c5ec70ac1204fb1ca355925a",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KFzE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFvE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KF7E",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFXF",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFrE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KF3E",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFTF",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFnE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KF/E",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFPF",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFjE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFLF",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFfE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFHF",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFbE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFDF",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

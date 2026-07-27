@@ -1,0 +1,125 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M2lAknSCzkDWVR9ty" ]
+    }, {
+      "transform" : [ -1.0, 0.0, 5.5511151231257796E-17, 5.42101086242752E-20, 0.0, -1.0, 0.0, 0.009, 1.6653345369377348E-16, 0.0, 1.0, -1.517883041479705E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M6cYbrE3nOXr9+zMn" ]
+    }, {
+      "transform" : [ -1.0, 0.0, 4.35862707138659E-17, 0.0, 0.0, -1.0, 0.0, 0.009, 1.546085731763815E-16, 0.0, 1.0, -1.382357769919018E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MKMoIOE8l002E6K4S" ]
+    }, {
+      "transform" : [ -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.109999999999988E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MrLV7p901sJ4tBQnw" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "name" : "KP0045-01_MainESocketMaSM <1>",
+      "suppressed" : false,
+      "id" : "MrLV7p901sJ4tBQnw",
+      "partId" : "KFDE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "name" : "KP0043-01_PConnectCoverCapB <1>",
+      "suppressed" : false,
+      "id" : "M6cYbrE3nOXr9+zMn",
+      "partId" : "KFHE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "name" : "KP0042-01_PConnectCoverCapA <1>",
+      "suppressed" : false,
+      "id" : "MKMoIOE8l002E6K4S",
+      "partId" : "KFLE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "name" : "KP0041-01_PConnectCover <1>",
+      "suppressed" : false,
+      "id" : "M2lAknSCzkDWVR9ty",
+      "partId" : "KFPE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "a3911cf091060307655c47e7",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KFPE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFLE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFHE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFDE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

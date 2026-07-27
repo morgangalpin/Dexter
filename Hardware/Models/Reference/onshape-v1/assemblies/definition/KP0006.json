@@ -1,0 +1,80 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "mateStatuses" : null,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "hidden" : false,
+      "path" : [ "M6vSP75//2ZUaEqVv" ]
+    }, {
+      "mateStatuses" : null,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -0.0035, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "hidden" : false,
+      "path" : [ "MQH6nLgPrvviPfPci" ]
+    }, {
+      "mateStatuses" : null,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -0.068, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "hidden" : false,
+      "path" : [ "Mad3cK3bsRlJcnDb6" ]
+    } ],
+    "parametricInstances" : [ ],
+    "patterns" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MQH6nLgPrvviPfPci",
+      "name" : "KP0026-01_NSK6810Z <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "Mad3cK3bsRlJcnDb6",
+      "name" : "KP0007-01_BaseCodeDiskRafted <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M6vSP75//2ZUaEqVv",
+      "name" : "KP0006-01_BaseLite <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "02d3ca1a3397b2a45cc85301",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

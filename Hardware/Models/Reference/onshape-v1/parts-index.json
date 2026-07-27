@@ -1,0 +1,982 @@
+[
+ {
+  "file": "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT",
+  "name": "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT",
+  "partId": "JFD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0093-01_ToolInterface",
+  "name": "KP0093-01_ToolInterface",
+  "partId": "JFH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0080-01_ToolShaft16iDB",
+  "name": "KP0080-01_ToolShaft16iDB",
+  "partId": "JFL",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0062-01_B678ZZ_2_03",
+  "name": "KP0062-01_B678ZZ_2_03",
+  "partId": "JFP",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0075-01_ToolShaftEndCap",
+  "name": "KP0075-01_ToolShaftEndCap",
+  "partId": "JFT",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0094-01_diffKeeper",
+  "name": "KP0094-01_diffKeeper",
+  "partId": "JFX",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0087-01_SideDifferentialGear",
+  "name": "KP0087-01_SideDifferentialGear",
+  "partId": "JFb",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0092-01_SideDifferentialGear2",
+  "name": "KP0092-01_SideDifferentialGear2",
+  "partId": "JFf",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0056-01_SB6703ZZ_2_03",
+  "name": "KP0056-01_SB6703ZZ_2_03",
+  "partId": "JFj",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0091-01_SmallDifferentialShaft",
+  "name": "KP0091-01_SmallDifferentialShaft",
+  "partId": "JFn",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0090-01_PhotoDDiffA1",
+  "name": "KP0090-01_PhotoDDiffA1",
+  "partId": "JFr",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0079-01_DiffA2CodeDiskEndStopFilled",
+  "name": "KP0079-01_DiffA2CodeDiskEndStopFilled",
+  "partId": "JFv",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0077-01_DiffBodySmallB",
+  "name": "KP0077-01_DiffBodySmallB",
+  "partId": "JFz",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0089-01_DiffA1CodeDiskFine",
+  "name": "KP0089-01_DiffA1CodeDiskFine",
+  "partId": "JF3",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0086-01_OutterFrontDifferentialGear",
+  "name": "KP0086-01_OutterFrontDifferentialGear",
+  "partId": "JF7",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 16",
+  "name": "Part 16",
+  "partId": "JF/",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 17",
+  "name": "Part 17",
+  "partId": "KFDB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 18",
+  "name": "Part 18",
+  "partId": "KFHB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 19",
+  "name": "Part 19",
+  "partId": "KFLB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 20",
+  "name": "Part 20",
+  "partId": "KFPB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 21",
+  "name": "Part 21",
+  "partId": "KFTB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 22",
+  "name": "Part 22",
+  "partId": "KFXB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 23",
+  "name": "Part 23",
+  "partId": "KFbB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 24",
+  "name": "Part 24",
+  "partId": "KFfB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 25",
+  "name": "Part 25",
+  "partId": "KFjB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 26",
+  "name": "Part 26",
+  "partId": "KFnB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0088-01_InnerFrontDifferentialGear",
+  "name": "KP0088-01_InnerFrontDifferentialGear",
+  "partId": "KFrB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0068-01_EndArmTubeFitting",
+  "name": "KP0068-01_EndArmTubeFitting",
+  "partId": "KFvB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0076-01_ToolShaftSpacer",
+  "name": "KP0076-01_ToolShaftSpacer",
+  "partId": "KFzB",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0073-01_EndAxisHubShim",
+  "name": "KP0073-01_EndAxisHubShim",
+  "partId": "KF3B",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0081-01_LargeWristShaft",
+  "name": "KP0081-01_LargeWristShaft",
+  "partId": "KF7B",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0078-01_ToolShaft16iIDBelt",
+  "name": "KP0078-01_ToolShaft16iIDBelt",
+  "partId": "KF/B",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0082-01_SmallWristShaft",
+  "name": "KP0082-01_SmallWristShaft",
+  "partId": "KFDC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0072-01_8mmShaftEndPullyBelt",
+  "name": "KP0072-01_8mmShaftEndPullyBelt",
+  "partId": "KFHC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0071-01_EndAxisHubHalf",
+  "name": "KP0071-01_EndAxisHubHalf",
+  "partId": "KFLC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0083-01_PhotoDDiffA2Tall",
+  "name": "KP0083-01_PhotoDDiffA2Tall",
+  "partId": "KFPC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0070-01_EndAxisHubC",
+  "name": "KP0070-01_EndAxisHubC",
+  "partId": "KFTC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0057-01_BigThreadPullySpacer",
+  "name": "KP0057-01_BigThreadPullySpacer",
+  "partId": "KFXC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0055-01_17mmShaftPullyLargeBelt",
+  "name": "KP0055-01_17mmShaftPullyLargeBelt",
+  "partId": "KFbC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0054-01_8mmShaftPullyLargeBelt",
+  "name": "KP0054-01_8mmShaftPullyLargeBelt",
+  "partId": "KFfC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0051-01_MidArmCodeDiskRaftedCamber",
+  "name": "KP0051-01_MidArmCodeDiskRaftedCamber",
+  "partId": "KFjC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0069-01_ForarmBeam",
+  "name": "KP0069-01_ForarmBeam",
+  "partId": "KFnC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0061-01_SmallElbowShaft",
+  "name": "KP0061-01_SmallElbowShaft",
+  "partId": "KFrC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0065-01_17mmShaftPullyBelt",
+  "name": "KP0065-01_17mmShaftPullyBelt",
+  "partId": "KFvC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0063-01_8mmShaftPullyBelt",
+  "name": "KP0063-01_8mmShaftPullyBelt",
+  "partId": "KFzC",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0066-01_EndArmHubBottom",
+  "name": "KP0066-01_EndArmHubBottom",
+  "partId": "KF3C",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0060-01_LargeElbowShaft",
+  "name": "KP0060-01_LargeElbowShaft",
+  "partId": "KF7C",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0064-01_16mmShaftEndCap",
+  "name": "KP0064-01_16mmShaftEndCap",
+  "partId": "KF/C",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0067-01_EndArmHubTop",
+  "name": "KP0067-01_EndArmHubTop",
+  "partId": "KFDD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0050-01_NewBeltPully",
+  "name": "KP0050-01_NewBeltPully",
+  "partId": "KFHD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0046-01_1InTubeInterfaceB",
+  "name": "KP0046-01_1InTubeInterfaceB",
+  "partId": "KFLD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0053-01_CompositeBarShoulder",
+  "name": "KP0053-01_CompositeBarShoulder",
+  "partId": "KFPD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0059-01_PCBSpacer",
+  "name": "KP0059-01_PCBSpacer",
+  "partId": "KFTD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0049-01_MainHubPhotoIntTRM",
+  "name": "KP0049-01_MainHubPhotoIntTRM",
+  "partId": "KFXD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0058-01_PCBBracket",
+  "name": "KP0058-01_PCBBracket",
+  "partId": "KFbD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0052-01_B6807ZZ_2_03",
+  "name": "KP0052-01_B6807ZZ_2_03",
+  "partId": "KFfD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0048-01_AxisInterSectionHalfSM_B",
+  "name": "KP0048-01_AxisInterSectionHalfSM_B",
+  "partId": "KFjD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0047-01_AxisInterSectionHalfSM",
+  "name": "KP0047-01_AxisInterSectionHalfSM",
+  "partId": "KFnD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0044-01_MainESocketFemSM",
+  "name": "KP0044-01_MainESocketFemSM",
+  "partId": "KFrD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER",
+  "name": "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER",
+  "partId": "KFvD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0026-01_NSK6810Z",
+  "name": "KP0026-01_NSK6810Z",
+  "partId": "KFzD",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0034-01_MotorEndCapEndAxis",
+  "name": "KP0034-01_MotorEndCapEndAxis",
+  "partId": "KF3D",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0030-01_ArmBodyIntersection",
+  "name": "KP0030-01_ArmBodyIntersection",
+  "partId": "KF7D",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0029-01_ArmBodyBackIntersection",
+  "name": "KP0029-01_ArmBodyBackIntersection",
+  "partId": "KF/D",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0045-01_MainESocketMaSM",
+  "name": "KP0045-01_MainESocketMaSM",
+  "partId": "KFDE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0043-01_PConnectCoverCapB",
+  "name": "KP0043-01_PConnectCoverCapB",
+  "partId": "KFHE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0042-01_PConnectCoverCapA",
+  "name": "KP0042-01_PConnectCoverCapA",
+  "partId": "KFLE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0041-01_PConnectCover",
+  "name": "KP0041-01_PConnectCover",
+  "partId": "KFPE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "_SET-SCREW#5-40-0.25",
+  "name": "_SET-SCREW#5-40-0.25",
+  "partId": "KFTE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "_GPA16MR2060-K-PUA_b",
+  "name": "_GPA16MR2060-K-PUA_b",
+  "partId": "KFXE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 71",
+  "name": "Part 71",
+  "partId": "KFbE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 72",
+  "name": "Part 72",
+  "partId": "KFfE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 73",
+  "name": "Part 73",
+  "partId": "KFjE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 74",
+  "name": "Part 74",
+  "partId": "KFnE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 75",
+  "name": "Part 75",
+  "partId": "KFrE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 76",
+  "name": "Part 76",
+  "partId": "KFvE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 77",
+  "name": "Part 77",
+  "partId": "KFzE",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 78",
+  "name": "Part 78",
+  "partId": "KF3E",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 79",
+  "name": "Part 79",
+  "partId": "KF7E",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 80",
+  "name": "Part 80",
+  "partId": "KF/E",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 81",
+  "name": "Part 81",
+  "partId": "KFDF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 82",
+  "name": "Part 82",
+  "partId": "KFHF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 83",
+  "name": "Part 83",
+  "partId": "KFLF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 84",
+  "name": "Part 84",
+  "partId": "KFPF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 85",
+  "name": "Part 85",
+  "partId": "KFTF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 86",
+  "name": "Part 86",
+  "partId": "KFXF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 87",
+  "name": "Part 87",
+  "partId": "KFbF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 88",
+  "name": "Part 88",
+  "partId": "KFfF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 89",
+  "name": "Part 89",
+  "partId": "KFjF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 90",
+  "name": "Part 90",
+  "partId": "KFnF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 91",
+  "name": "Part 91",
+  "partId": "KFrF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 92",
+  "name": "Part 92",
+  "partId": "KFvF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 93",
+  "name": "Part 93",
+  "partId": "KFzF",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 94",
+  "name": "Part 94",
+  "partId": "KF3F",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 95",
+  "name": "Part 95",
+  "partId": "KF7F",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 96",
+  "name": "Part 96",
+  "partId": "KF/F",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW",
+  "name": "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW",
+  "partId": "KFDG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0023-01_CamLeverCSF-14-XXX-2A-R",
+  "name": "KP0023-01_CamLeverCSF-14-XXX-2A-R",
+  "partId": "KFHG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0024-01_WGCouplerSetScrTr",
+  "name": "KP0024-01_WGCouplerSetScrTr",
+  "partId": "KFLG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0022-01_FlexSplineAttatchLGHS",
+  "name": "KP0022-01_FlexSplineAttatchLGHS",
+  "partId": "KFPG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "CSF-14-2A-R FLEXSPLINE-1-solid1",
+  "name": "CSF-14-2A-R FLEXSPLINE-1-solid1",
+  "partId": "KFTG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "14 WG BEARING-1-solid1",
+  "name": "14 WG BEARING-1-solid1",
+  "partId": "KFXG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW",
+  "name": "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW",
+  "partId": "KFbG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0009-01_GearCSF-14-XXX-2A-R",
+  "name": "KP0009-01_GearCSF-14-XXX-2A-R",
+  "partId": "KFfG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0035-01_PivotStatorHolder",
+  "name": "KP0035-01_PivotStatorHolder",
+  "partId": "KFjG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0037-01_ExternalGearBeltGuideRing",
+  "name": "KP0037-01_ExternalGearBeltGuideRing",
+  "partId": "KFnG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0032-01_ExternalGearBelt",
+  "name": "KP0032-01_ExternalGearBelt",
+  "partId": "KFrG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0036-01_RearStatorZen",
+  "name": "KP0036-01_RearStatorZen",
+  "partId": "KFvG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 109",
+  "name": "Part 109",
+  "partId": "KFzG",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 110",
+  "name": "Part 110",
+  "partId": "KF3G",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 111",
+  "name": "Part 111",
+  "partId": "KF7G",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0040-01_PivotPhotoLight",
+  "name": "KP0040-01_PivotPhotoLight",
+  "partId": "KF/G",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0039-01_PivotPhotoInterupter",
+  "name": "KP0039-01_PivotPhotoInterupter",
+  "partId": "KFDH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0028-01_ArmBodyBottom",
+  "name": "KP0028-01_ArmBodyBottom",
+  "partId": "KFHH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0033-01_MotorEndCapBase",
+  "name": "KP0033-01_MotorEndCapBase",
+  "partId": "KFLH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0014-01_PivotWireCover",
+  "name": "KP0014-01_PivotWireCover",
+  "partId": "KFPH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0018-01_SlipRingBrushB",
+  "name": "KP0018-01_SlipRingBrushB",
+  "partId": "KFTH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0017-01_SlipRingBrushA",
+  "name": "KP0017-01_SlipRingBrushA",
+  "partId": "KFXH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0016-01_PivotSkirtV2",
+  "name": "KP0016-01_PivotSkirtV2",
+  "partId": "KFbH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW",
+  "name": "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW",
+  "partId": "KFfH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0015-01_BasePhotoInterrupterV2",
+  "name": "KP0015-01_BasePhotoInterrupterV2",
+  "partId": "KFjH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0025-01_MainPivotBar",
+  "name": "KP0025-01_MainPivotBar",
+  "partId": "KFnH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0020-01_PivotCodeDisk",
+  "name": "KP0020-01_PivotCodeDisk",
+  "partId": "KFrH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0013-01_MainPivotV2",
+  "name": "KP0013-01_MainPivotV2",
+  "partId": "KFvH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0021-01_MotorEndCapPivot",
+  "name": "KP0021-01_MotorEndCapPivot",
+  "partId": "KFzH",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 126",
+  "name": "Part 126",
+  "partId": "KF3H",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 127",
+  "name": "Part 127",
+  "partId": "KF7H",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 128",
+  "name": "Part 128",
+  "partId": "KF/H",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "Part 129",
+  "name": "Part 129",
+  "partId": "KFDI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0027-01_SlipRing",
+  "name": "KP0027-01_SlipRing",
+  "partId": "KFHI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0019-01_SlipRingBracketV2",
+  "name": "KP0019-01_SlipRingBracketV2",
+  "partId": "KFLI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD",
+  "name": "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD",
+  "partId": "KFPI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0010-01_StatorBracketBar",
+  "name": "KP0010-01_StatorBracketBar",
+  "partId": "KFTI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0005-01_BotBaseStatorBracket",
+  "name": "KP0005-01_BotBaseStatorBracket",
+  "partId": "KFXI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0007-01_BaseCodeDiskRafted",
+  "name": "KP0007-01_BaseCodeDiskRafted",
+  "partId": "KFbI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0006-01_BaseLite",
+  "name": "KP0006-01_BaseLite",
+  "partId": "KFfI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0004-01_FootBar",
+  "name": "KP0004-01_FootBar",
+  "partId": "KFjI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0001-01_BaseMountBottom",
+  "name": "KP0001-01_BaseMountBottom",
+  "partId": "KFnI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0003-01_FootPadBare",
+  "name": "KP0003-01_FootPadBare",
+  "partId": "KFrI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ },
+ {
+  "file": "KP0002-01_Foot",
+  "name": "KP0002-01_Foot",
+  "partId": "KFvI",
+  "elementId": "9b5403d60ad20f74044dd125",
+  "bodyType": "solid"
+ }
+]

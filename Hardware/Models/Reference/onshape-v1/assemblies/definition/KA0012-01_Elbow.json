@@ -1,0 +1,330 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 1.0, 0.0, 0.0, 0.15875, 0.0, 1.0, 0.0, 0.025, 0.0, 0.0, 1.0, -2.82570170602897E-5, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M3lz5ThMQ3GkDQ7jH" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "ME/QDqVrhEU/KqsFG" ]
+    }, {
+      "transform" : [ 0.924153940919125, 0.0, -0.382020278890598, 5.274006253526751E-21, 0.0, 1.0, 0.0, -0.02675, 0.382020278890598, 0.0, 0.924153940919125, 6.114840862218441E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MZ7qkR7Qjw9tKgmNH" ]
+    }, {
+      "transform" : [ -0.494285029836202, -0.0, -0.86929989605419, 5.274006253526751E-21, 0.0, -1.0, 0.0, -0.00175, -0.86929989605419, 0.0, 0.494285029836202, 6.11484086221848E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbGpAJHbmwTIy8p2c" ]
+    }, {
+      "transform" : [ 0.0, -1.0, 0.0, 0.0575, 1.0, 0.0, 0.0, 0.036, 0.0, 0.0, 1.0, -0.009979257017060289, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MeCn7m2V632wzmcyd" ]
+    }, {
+      "transform" : [ -0.2152270107261135, -0.0, -0.976564044931976, 5.274006253526751E-21, 0.0, -1.0, 0.0, -0.01525, -0.976564044931976, 0.0, 0.2152270107261135, 6.11484086221848E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MeVBz0ay3e30OelE0" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 5.274006253526751E-21, 0.0, 1.0, 0.0, -0.02275, 0.0, 0.0, 1.0, 6.11484086221848E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MxywrwNCQzQJI0xXE" ]
+    }, {
+      "transform" : [ 0.924153940919125, 0.0, -0.382020278890598, 5.274006253526751E-21, 0.0, 1.0, 0.0, -0.02675, 0.382020278890598, 0.0, 0.924153940919125, 6.114840862218441E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "MPoDQtckt1gqOTjjz" ]
+    }, {
+      "transform" : [ 0.924153940919125, 0.0, -0.382020278890598, -0.09719263763281348, 0.0, 1.0, 0.0, -0.006273795083669549, 0.382020278890598, 0.0, 0.924153940919125, 0.05328947363550251, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "MhCFdEWGkILf3U/gZ" ]
+    }, {
+      "transform" : [ -0.7073344023762334, 0.0, -0.7068790867008703, -0.011924479965152973, 0.0, -1.0, 0.0, -0.04722620491633045, -0.7068790867008703, 0.0, 0.7073344023762334, 0.11019974404658553, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "Mv9H5wRg/oysIknnq" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MZ7qkR7Qjw9tKgmNH", "MyDAH4J2ihvVhcvIn" ]
+    }, {
+      "transform" : [ 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0305, 0.0, 0.0, 1.0, -2.48272051069613E-34, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MZ7qkR7Qjw9tKgmNH", "MzyFhEdMQGGJZt15i" ]
+    }, {
+      "transform" : [ 0.924153940919125, 0.0, -0.382020278890598, 5.274006253526751E-21, 0.0, 1.0, 0.0, -0.05524999999999995, 0.382020278890598, 0.0, 0.924153940919125, 6.114840862218441E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "MhCFdEWGkILf3U/gZ", "MP3I0CpHAaaFNDgK0" ]
+    }, {
+      "transform" : [ 0.0, 0.924153940919125, -0.382020278890598, 5.274006253526751E-21, -1.0, 0.0, 0.0, -0.06574999999999995, 0.0, 0.382020278890598, 0.924153940919125, 6.114840862218441E-20, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "MhCFdEWGkILf3U/gZ", "MW3DLkFnBpe3e6diG" ]
+    }, {
+      "transform" : [ -0.7073344023762334, 0.0, -0.7068790867008703, 4.365578099536125E-17, 0.0, -1.0, 0.0, 0.001749999999999953, -0.7068790867008703, 0.0, 0.7073344023762334, -4.196190712143209E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "Mv9H5wRg/oysIknnq", "MP3I0CpHAaaFNDgK0" ]
+    }, {
+      "transform" : [ 0.0, -0.7073344023762334, -0.7068790867008703, 4.365578099536125E-17, 1.0, 0.0, 0.0, 0.012249999999999952, 0.0, -0.7068790867008703, 0.7073344023762334, -4.196190712143209E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MXsJ2bWuefG3LCiOD", "Mv9H5wRg/oysIknnq", "MW3DLkFnBpe3e6diG" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M3lz5ThMQ3GkDQ7jH",
+      "name" : "KP0069-01_ForarmBeam <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MeCn7m2V632wzmcyd",
+      "name" : "KP0068-01_EndArmTubeFitting <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MxywrwNCQzQJI0xXE",
+      "name" : "KP0061-01_SmallElbowShaft <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MXsJ2bWuefG3LCiOD",
+      "name" : "KP0060 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "37f0a3aecb72df9912026f2e",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MeVBz0ay3e30OelE0",
+      "name" : "KP0065-01_17mmShaftPullyBelt <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MbGpAJHbmwTIy8p2c",
+      "name" : "KP0063-01_8mmShaftPullyBelt <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MZ7qkR7Qjw9tKgmNH",
+      "name" : "KP0067 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "ba0e69d39dcf3a1f04390681",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "ME/QDqVrhEU/KqsFG",
+      "name" : "KP0066-01_EndArmHubBottom <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "1454661b23c3c9d543fe5ca3",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MP3I0CpHAaaFNDgK0",
+      "name" : "KP0064-01_16mmShaftEndCap <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MW3DLkFnBpe3e6diG",
+      "name" : "KP0062-01_B678ZZ_2_03 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "371679a3314165c3a979dcea",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MzyFhEdMQGGJZt15i",
+      "name" : "KP0062-01_B678ZZ_2_03 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MyDAH4J2ihvVhcvIn",
+      "name" : "KP0067-01_EndArmHubTop <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "ba0e69d39dcf3a1f04390681",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "type" : "Assembly",
+      "id" : "Mv9H5wRg/oysIknnq",
+      "name" : "KP0064 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "371679a3314165c3a979dcea",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MhCFdEWGkILf3U/gZ",
+      "name" : "KP0064 <2>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "371679a3314165c3a979dcea",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MPoDQtckt1gqOTjjz",
+      "name" : "KP0060-01_LargeElbowShaft <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "37f0a3aecb72df9912026f2e",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

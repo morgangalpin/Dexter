@@ -1,0 +1,62 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.9069736640966151, -0.0, -0.42118733674596703, 8.82675522884518E-18, 0.0, -1.0, 0.0, -0.031, -0.42118733674596703, 0.0, 0.9069736640966151, 2.015490981178095E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MLq0MaitOF1/sYS+S" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 8.82675522884518E-18, 0.0, 1.0, 0.0, -0.04025, 0.0, 0.0, 1.0, 2.015490981178095E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Mz1AhTfvcae/PzO+m" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "Mz1AhTfvcae/PzO+m",
+      "type" : "Part",
+      "name" : "KP0082-01_SmallWristShaft <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MLq0MaitOF1/sYS+S",
+      "type" : "Part",
+      "name" : "KP0072-01_8mmShaftEndPullyBelt <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "7242d4832a79bd50892fb9e4",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

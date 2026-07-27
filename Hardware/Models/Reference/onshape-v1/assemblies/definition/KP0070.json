@@ -1,0 +1,152 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, -1.748153589457055E-31, 2.7755575615628904E-16, -0.0280863463401771, -1.748153589457055E-31, -1.0, -2.1208836611276803E-31, -0.0325, 2.7755575615628904E-16, 2.120883661127675E-31, -1.0, 3.469446951953615E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MABab374AetsV8Zu9" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, -0.013590169943749501, 0.0, 1.0, 0.0, -0.0207, 0.0, 0.0, 1.0, -0.008675, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MFIe1EFK3RyMSBdSo" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MG9DnZNVbqKWt2+ny" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.965925826289069, -4.73622144765022E-17, 0.258819045102519, 0.0107833784130949, 5.55111512312587E-17, 1.0, 5.5511151231253994E-17, -0.0207, -0.258819045102519, 2.8953558518800345E-17, 0.965925826289069, 0.0107833784130949, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MQ6SrGYOTb+nqufiI" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.707106781186548, 2.259488018100645E-16, 0.707106781186548, 0.0107833784130949, -1.1102230246251239E-16, 1.0, -1.6653345369378048E-16, -0.0207, -0.707106781186547, 3.650251289884965E-17, 0.707106781186548, -0.0107833784130949, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MWHV+2G98qxMfeupP" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, -0.013590169943749501, 0.0, 1.0, 0.0, -0.0207, 0.0, 0.0, 1.0, 0.008675, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Map2RnduzEaP/TM53" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.0, 1.0, 8.21730109605221E-32, -6.519396681328789E-33, -1.0, 6.752403730318089E-63, -8.21730109605221E-32, -0.016, -8.21730109605221E-32, -8.21730109605221E-32, 1.0, -1.5344832733645799E-33, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MqG0JIXzXHQ+ZSZKc" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "MABab374AetsV8Zu9",
+      "type" : "Part",
+      "name" : "KP0083-01_PhotoDDiffA2Tall <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MWHV+2G98qxMfeupP",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MQ6SrGYOTb+nqufiI",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Map2RnduzEaP/TM53",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MFIe1EFK3RyMSBdSo",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MqG0JIXzXHQ+ZSZKc",
+      "type" : "Part",
+      "name" : "KP0056-01_SB6703ZZ_2_03 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MG9DnZNVbqKWt2+ny",
+      "type" : "Part",
+      "name" : "KP0070-01_EndAxisHubC <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9643e661cd354f28e5b90d1c",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

@@ -1,0 +1,107 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ -0.43301270189222, 0.5, -0.75, 0.619684787188647, -0.8660254037844389, -1.1934897514720419E-15, 0.5, -0.1794774610303465, 0.25, 0.8660254037844389, 0.4330127018922195, 0.21111420510373952, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M47jbqBqMxkh3MeMh" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.628809787188652, 0.0, 1.0, 0.0, -0.1757274610303465, 0.0, 0.0, 1.0, 0.226919168722816, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MDyqtRQBBjHh7rSuQ" ]
+    }, {
+      "transform" : [ 3.4416913763379853E-15, -1.0, 3.5527136788005E-15, 0.647059787188664, -0.8660254037844389, -1.204235324494274E-15, 0.5, -0.1794774610303465, -0.5, -4.797585986382691E-15, -0.8660254037844389, 0.226919168722816, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MM8MiRN0gpbFlYGa2" ]
+    }, {
+      "transform" : [ 0.4330127018922165, 0.500000000000008, 0.75, 0.619684787188646, -0.8660254037844389, -1.1934897514720419E-15, 0.5, -0.1794774610303465, 0.250000000000005, -0.8660254037844339, 0.433012701892226, 0.242724132341892, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mh1U7L635DvLGsttM" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "Mh1U7L635DvLGsttM",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MM8MiRN0gpbFlYGa2",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M47jbqBqMxkh3MeMh",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MDyqtRQBBjHh7rSuQ",
+      "type" : "Part",
+      "name" : "KP0093-01_ToolInterface <1>",
+      "suppressed" : false,
+      "partId" : "JFH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "b03fb46577fe162df32757e9",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "JFD",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "JFH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

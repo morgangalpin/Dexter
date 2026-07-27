@@ -1,0 +1,167 @@
+{
+  "btType" : "BTFeatureListResponse-2457",
+  "isComplete" : true,
+  "serializationVersion" : "1.2.0",
+  "rollbackIndex" : 1,
+  "features" : [ {
+    "btType" : "BTMFeature-134",
+    "namespace" : "",
+    "name" : "Import 1",
+    "suppressed" : false,
+    "parameters" : [ {
+      "btType" : "BTMParameterForeignId-146",
+      "libraryRelationType" : "DEFAULT",
+      "foreignName" : "",
+      "nodeId" : "M8CKa1fcVN70k3O4/",
+      "parameterId" : "foreignId",
+      "foreignId" : "589eb21afb258f0f71a59f68",
+      "parameterName" : "",
+      "locationInfo" : null
+    }, {
+      "btType" : "BTMParameterBoolean-144",
+      "libraryRelationType" : "DEFAULT",
+      "value" : false,
+      "nodeId" : "MSUbiADwJzbhDjGG6",
+      "parameterId" : "flatten",
+      "parameterName" : ""
+    }, {
+      "btType" : "BTMParameterBoolean-144",
+      "libraryRelationType" : "DEFAULT",
+      "value" : false,
+      "nodeId" : "MGUsH8Zz8hs9E9atH",
+      "parameterId" : "specifyUnits",
+      "parameterName" : ""
+    }, {
+      "btType" : "BTMParameterBoolean-144",
+      "libraryRelationType" : "DEFAULT",
+      "value" : true,
+      "nodeId" : "MyVb+O1enUAcRmxT4",
+      "parameterId" : "yAxisIsUp",
+      "parameterName" : ""
+    }, {
+      "btType" : "BTMParameterBoolean-144",
+      "libraryRelationType" : "DEFAULT",
+      "value" : true,
+      "nodeId" : "MWtP7G+VbsFe4l2Jl",
+      "parameterId" : "allowFaultyParts",
+      "parameterName" : ""
+    }, {
+      "btType" : "BTMParameterQuantity-147",
+      "libraryRelationType" : "DEFAULT",
+      "isInteger" : false,
+      "value" : 0.0,
+      "units" : "",
+      "expression" : "100.0",
+      "nodeId" : "MSd4jg09ThSOnQicP",
+      "parameterId" : "maxAssembliesToCreate",
+      "parameterName" : ""
+    }, {
+      "btType" : "BTMParameterEnum-145",
+      "namespace" : "",
+      "nodeId" : "M+54tR+tEZ9Tjw9CR",
+      "libraryRelationType" : "DEFAULT",
+      "enumName" : "FeatureScriptVersionNumber",
+      "value" : "V708_SM_BOOLEAN",
+      "parameterId" : "asVersion",
+      "parameterName" : ""
+    } ],
+    "featureId" : "FySTAIf0X314JXI",
+    "nodeId" : "MTvSEJ79xNQTgeHeN",
+    "featureType" : "importForeign",
+    "returnAfterSubfeatures" : false,
+    "subFeatures" : [ ],
+    "parameterLibraries" : [ ],
+    "suppressionState" : null
+  } ],
+  "sourceMicroversion" : "958568a84148485cee263479",
+  "microversionSkew" : false,
+  "rejectMicroversionSkew" : false,
+  "libraryVersion" : 2180,
+  "featureStates" : {
+    "Origin" : {
+      "btType" : "BTFeatureState-1688",
+      "featureStatus" : "OK",
+      "inactive" : false
+    },
+    "Top" : {
+      "btType" : "BTFeatureState-1688",
+      "featureStatus" : "OK",
+      "inactive" : false
+    },
+    "Front" : {
+      "btType" : "BTFeatureState-1688",
+      "featureStatus" : "OK",
+      "inactive" : false
+    },
+    "Right" : {
+      "btType" : "BTFeatureState-1688",
+      "featureStatus" : "OK",
+      "inactive" : false
+    },
+    "FySTAIf0X314JXI" : {
+      "btType" : "BTFeatureState-1688",
+      "featureStatus" : "WARNING",
+      "inactive" : false
+    }
+  },
+  "imports" : [ {
+    "btType" : "BTMImport-136",
+    "namespace" : "",
+    "nodeId" : "MSE/29qqyl8BWqKIM",
+    "path" : "onshape/std/geometry.fs",
+    "version" : "2180.0"
+  } ],
+  "defaultFeatures" : [ {
+    "btType" : "BTMFeature-134",
+    "namespace" : "",
+    "name" : "Origin",
+    "suppressed" : false,
+    "parameters" : [ ],
+    "featureId" : "Origin",
+    "nodeId" : "M9dZ3EVadspNHG70k",
+    "featureType" : "origin",
+    "returnAfterSubfeatures" : false,
+    "subFeatures" : [ ],
+    "parameterLibraries" : [ ],
+    "suppressionState" : null
+  }, {
+    "btType" : "BTMFeature-134",
+    "namespace" : "",
+    "name" : "Top",
+    "suppressed" : false,
+    "parameters" : [ ],
+    "featureId" : "Top",
+    "nodeId" : "MTmYYgEx5e1eOrc4u",
+    "featureType" : "defaultPlane",
+    "returnAfterSubfeatures" : false,
+    "subFeatures" : [ ],
+    "parameterLibraries" : [ ],
+    "suppressionState" : null
+  }, {
+    "btType" : "BTMFeature-134",
+    "namespace" : "",
+    "name" : "Front",
+    "suppressed" : false,
+    "parameters" : [ ],
+    "featureId" : "Front",
+    "nodeId" : "MIpesrV0ioYjVpOsd",
+    "featureType" : "defaultPlane",
+    "returnAfterSubfeatures" : false,
+    "subFeatures" : [ ],
+    "parameterLibraries" : [ ],
+    "suppressionState" : null
+  }, {
+    "btType" : "BTMFeature-134",
+    "namespace" : "",
+    "name" : "Right",
+    "suppressed" : false,
+    "parameters" : [ ],
+    "featureId" : "Right",
+    "nodeId" : "Mc67i6ADab/kTc8La",
+    "featureType" : "defaultPlane",
+    "returnAfterSubfeatures" : false,
+    "subFeatures" : [ ],
+    "parameterLibraries" : [ ],
+    "suppressionState" : null
+  } ]
+}

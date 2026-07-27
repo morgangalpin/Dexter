@@ -1,0 +1,1094 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ" ]
+    }, {
+      "transform" : [ 1.0749615977623099E-17, -1.0, 4.333781450497605E-16, 0.0585, 1.0, 1.0749615977622899E-17, -4.333781450497605E-16, -0.0375, 4.333781450497605E-16, 4.333781450497605E-16, 1.0, -2.6076121782081897E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MEp7jPpLvL2gSPRpJ" ]
+    }, {
+      "transform" : [ 3.140457515356615E-16, 1.0, -2.9884349882980403E-16, 0.0655, 0.707106781186547, -1.0749615977622899E-17, 0.707106781186548, -0.0375, 0.707106781186548, -4.333781450497605E-16, -0.707106781186547, -2.7592945289756097E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MLmwGM3YxRxAsVIvt" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -3.469446951953615E-18, 0.0, 1.0, 0.0, -0.0013975906934861001, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MknoAvdr2uifX6Dk0" ]
+    }, {
+      "transform" : [ -1.0, -0.0, -4.28850477329429E-16, 0.0, 0.0, 1.0, 0.0, -0.064, 4.28850477329429E-16, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Ml9LgKLQXFW/N1mRd" ]
+    }, {
+      "transform" : [ -3.140457515356615E-16, 1.0, 2.9884349882980403E-16, 0.0555, -0.707106781186547, -1.0749615977622899E-17, -0.707106781186549, -0.0375, -0.707106781186549, -4.333781450497605E-16, 0.707106781186547, -2.4286128663675296E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0035, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "M3xIyi5SH8D0Yob3Y" ]
+    }, {
+      "transform" : [ 0.0, -1.0, 1.0474444016529402E-14, 0.0224955, -1.0, 0.0, 0.0, 0.0025, 0.0, -1.0474444016529402E-14, -1.0, 4.99999999971141E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "M9uyeyZSGbcI+zmEK" ]
+    }, {
+      "transform" : [ 0.353553390593274, 0.707106781186547, 0.612372435695795, -0.022132442251138952, -0.8660254037844389, 2.7755575615628898E-17, 0.5, -0.015, 0.3535533905932735, -0.707106781186548, 0.612372435695794, 0.022132442251138952, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MCAvDnhs1tkmhxoCJ" ]
+    }, {
+      "transform" : [ 0.0, 0.0, 1.0, -4.99999999970906E-4, -1.0, 0.0, 0.0, 0.0025, 0.0, -1.0, 0.0, 0.0224955, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MCkEONPNzlhFjN/SJ" ]
+    }, {
+      "transform" : [ 0.0, 1.0, 0.0, -0.0313, -1.0, 0.0, 4.6286252608496196E-11, -0.015, 4.6286252608496196E-11, 0.0, 1.0, 6.2005481464792096E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MFR/i1g24ruRPPDzN" ]
+    }, {
+      "transform" : [ 0.5, 4.2282091451704294E-17, 0.8660254037844389, -0.008462, 0.8660254037844389, 6.61452988844171E-17, -0.5, -0.015, -1.1102230246251559E-16, 1.0, 2.7755575615628898E-17, -0.0313, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MMI4MYOxn9P9J0fa5" ]
+    }, {
+      "transform" : [ 0.5, -9.070381091855499E-17, 0.8660254037844399, 0.015533, 0.8660254037844399, -2.681259114135745E-16, -0.5, -0.015, 2.7755575615628904E-16, 1.0, -5.5511151231257796E-17, -0.0313, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MQJ+ihiV0gBlTOulK" ]
+    }, {
+      "transform" : [ 1.803548397933535E-17, 1.0, 4.2847106462783203E-16, 0.0483, -0.999115279749817, 4.93113297384286E-32, 0.04205541309327065, -0.0375, 0.04205541309327065, -4.28850477329426E-16, 0.999115279749817, -2.25148077271549E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MTeMdwGDzi0GFk0wB" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MWnX3ZnwgppIrK822" ]
+    }, {
+      "transform" : [ 0.0, -6.982962677686271E-15, -1.0, 4.99999999971063E-4, -1.0, 0.0, 0.0, 0.0025, 0.0, 1.0, -6.982962677686271E-15, -0.0224955, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MaZIOiY0BSugCdQUY" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+" ]
+    }, {
+      "transform" : [ 0.0, 1.0, -3.4914813388431353E-15, -0.0224955, -1.0, 0.0, 0.0, 0.0025, 0.0, 3.4914813388431353E-15, 1.0, -4.99999999970984E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MlkPuv8E+l6STdtqb" ]
+    }, {
+      "transform" : [ -0.353553390593274, 0.707106781186547, -0.612372435695795, -0.022132442251138952, -0.8660254037844379, 8.754528716685441E-16, 0.5, -0.015, 0.353553390593275, 0.707106781186548, 0.612372435695793, -0.022132442251138952, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "My4tj7FV6nZYMM8/D" ]
+    }, {
+      "transform" : [ 1.636532989250285E-29, 5.75495534560742E-13, -1.0, 7.03886699851866E-15, 1.0, 2.347471974965815E-16, 1.514612938024345E-28, 0.015, 2.347471974965815E-16, -1.0, -5.75495534560742E-13, 5.18001110330021E-5, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE", "M9WCy/XbJ2tCfuQRK" ]
+    }, {
+      "transform" : [ 0.49999999999942396, -0.707106781186955, 0.5, -0.0215667568261017, 0.707106781186955, -2.7755575615628898E-17, -0.70710678118614, -0.015, 0.5, 0.70710678118614, 0.500000000000576, 0.02156675682608395, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE", "MMtlfmpe8Wt0st2Dn" ]
+    }, {
+      "transform" : [ -1.0, 5.75495534560742E-13, -1.514612938024345E-28, 7.0672634411295105E-15, 1.51461293802434E-28, 0.0, -1.0, -0.003, -5.75495534560742E-13, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE", "MNNhp8fa5KQniQTuF" ]
+    }, {
+      "transform" : [ -0.6421054435462851, -0.707106781186141, -0.2961428698598095, -0.02156698275256435, 0.418809262955592, -2.7755575615628898E-17, -0.908074226736226, -0.015, 0.6421054435455461, -0.707106781186955, 0.29614286985946847, -0.02156698275259625, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE", "MbmqUbGoLSbxrR9cP" ]
+    }, {
+      "transform" : [ -2.9143354396410355E-15, -1.0, -2.27595720048157E-15, -0.0305, 0.6497282406846779, -5.5511151231257796E-17, -0.76016656941541, -0.015, 0.76016656941541, -3.75394160201381E-15, 0.6497282406846789, -8.13450522186062E-15, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE", "MhkvJ11bBuajRV1pF" ]
+    }, {
+      "transform" : [ 1.0, 5.75495534560742E-13, 1.6365329892503249E-29, -0.047833042972396295, -1.514612938024345E-28, 2.347471974965815E-16, 1.0, 0.01, 5.75495534560742E-13, -1.0, 2.347471974965815E-16, -0.003948199888994535, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mcn+PSefZNO47HvcE", "Ms7YWoEjqSH1phaCp" ]
+    }, {
+      "transform" : [ 0.9820818503191361, 1.734723475976805E-18, -0.188454873308549, 0.015532999999999996, 0.188454873308549, 0.0, 0.9820818503191371, -0.0149975906934861, -3.469446951953615E-18, -1.0, -2.7755575615628898E-17, -0.0281739394817117, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MknoAvdr2uifX6Dk0", "M8rGM/W3FBwDiSFmu" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -0.008462000000000004, 0.0, 1.224646799147352E-16, 1.0, -0.0149975906934861, 0.0, -1.0, 1.224646799147352E-16, -0.0281739394817117, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MknoAvdr2uifX6Dk0", "MSZ4BlwDoIWrqrvin" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -1.0408340855860846E-17, 0.0, 0.0, -1.0, -0.013000000000000001, 0.0, 1.0, 0.0, -0.0345, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MknoAvdr2uifX6Dk0", "MtquWf+Gc8M7mEw+z" ]
+    }, {
+      "transform" : [ 3.1404575153566085E-16, -1.0, 2.988434988298047E-16, 0.1236495, 0.7071067811865486, 1.0749615977622899E-17, -0.7071067811865475, -0.0375, 0.7071067811865475, 4.333781450497605E-16, 0.7071067811865486, -4.331556177116922E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "M09m8nPNCMfkyXrdR" ]
+    }, {
+      "transform" : [ -3.140457515356615E-16, 1.0, 2.9884349882980403E-16, 0.1396495, -0.707106781186547, -1.0749615977622899E-17, -0.707106781186549, -0.033257359312880715, -0.707106781186549, -4.333781450497605E-16, 0.707106781186547, 0.004242640687119231, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MBYXjNoT0jylEBXuG" ]
+    }, {
+      "transform" : [ -2.3493519697071555E-16, 1.0, 2.615893719079811E-16, 0.1396495, -0.8102759661880179, -5.0001927444717395E-17, -0.5860485121711992, -0.041742640687119296, -0.5860485121711992, -3.548735221155718E-16, 0.8102759661880179, -0.0042426406871193395, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MDCvfoLUKzsY7/5oz" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne" ]
+    }, {
+      "transform" : [ 1.0, 4.2139334819536054E-16, 1.0178318597460451E-16, 0.14055, -1.0749615977622899E-17, 0.2588190451025191, -0.9659258262890689, -0.0375, -4.333781450497605E-16, 0.9659258262890689, 0.2588190451025191, -5.67730427783162E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJvNzuEZCULxrDU2y" ]
+    }, {
+      "transform" : [ -3.140457515356615E-16, 2.9884349882980403E-16, -1.0, 0.1436495, -0.707106781186547, -0.707106781186549, 1.0749615977622899E-17, -0.0375, -0.707106781186549, 0.707106781186547, 4.333781450497605E-16, -5.1983124672164434E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MLlSIcQvj6zNNdPnr" ]
+    }, {
+      "transform" : [ 3.1404575153566144E-16, -1.0, 2.988434988298041E-16, 0.1162, 0.7071067811865471, 1.0749615977622899E-17, -0.7071067811865489, -0.0375, 0.7071067811865489, 4.333781450497605E-16, 0.7071067811865471, -4.813891260150236E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MfO0Rb85fzEevHX4G" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0085, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MolqfTOlapbmz5ThX" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "M9avtf6ahZBX66yyX" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "ML4KJ06UXLNnxgxGt" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MLPZ1MlkVcM0SE+Eg" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MRM83S8CA6UFJ/NFP" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MbGQlwDJa1svdeRUo" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MdRw7prLNncM//pbh" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MgArUFnafCr0EXh1H" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MiujOJ2x/HSic3NqL" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MoQs/F+b5ueu8+0fR" ]
+    }, {
+      "transform" : [ -3.157447858004354E-16, -2.9704780943523995E-16, 1.0, 0.046200000000000005, -0.7030630425888198, 0.7111275259373333, -1.0749615977622899E-17, -0.02946193549395711, -0.7111275259373333, -0.7030630425888198, -4.333781450497605E-16, 0.010438789541873958, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJuC+jqKb8q5mymne", "MraEGMd6wpqB6wD/9" ]
+    }, {
+      "transform" : [ 1.0, 4.2139334819536054E-16, 1.0178318597460451E-16, 0.14055, -1.0749615977622899E-17, 0.2588190451025191, -0.9659258262890689, -0.0375, -4.333781450497605E-16, 0.9659258262890689, 0.2588190451025191, -5.67730427783162E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJvNzuEZCULxrDU2y", "MD/mj2ADG3OEzIYD1" ]
+    }, {
+      "transform" : [ 1.0, 4.2139334819536054E-16, 1.0178318597460451E-16, 0.14055, -1.0749615977622899E-17, 0.2588190451025191, -0.9659258262890689, -0.0375, -4.333781450497605E-16, 0.9659258262890689, 0.2588190451025191, -5.67730427783162E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MnUW1PSTVjYo5U583", "MJvNzuEZCULxrDU2y", "MEdrthuma/AKWrGsA" ]
+    }, {
+      "transform" : [ -1.0, 0.0, -2.27595720048157E-15, -6.778626059167459E-18, 0.0, -1.0, 0.0, 0.0681495, -2.1649348980190553E-15, 0.0, 1.0, 8.07778752372434E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "M09m8nPNCMfkyXrdR" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -0.006, 0.0, 1.0, 0.0, 0.0841495, 0.0, 0.0, 1.0, -3.469446951953615E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MBYXjNoT0jylEBXuG" ]
+    }, {
+      "transform" : [ 0.9873505073845701, -2.7755575615628898E-17, -0.1585527532634885, 0.006, 2.7755575615628898E-17, 1.0, -8.326672684688669E-17, 0.0841495, 0.1585527532634885, 8.326672684688669E-17, 0.9873505073845701, 2.2117724318704297E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MDCvfoLUKzsY7/5oz" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne" ]
+    }, {
+      "transform" : [ 0.0, -0.8660254037844379, 0.5, -1.574455631237035E-18, 1.0, 0.0, 0.0, 0.08505, 0.0, 0.5, 0.8660254037844379, 4.60834057177073E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJvNzuEZCULxrDU2y" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -6.778626059167459E-18, 0.0, 0.0, -1.0, 0.0881495, 0.0, 1.0, 0.0, 8.07778752372434E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MLlSIcQvj6zNNdPnr" ]
+    }, {
+      "transform" : [ -1.0, 0.0, -2.220446049250315E-16, -1.734723475976805E-18, 0.0, -1.0, 0.0, 0.0607, -1.1102230246251559E-16, 0.0, 1.0, 1.734723475976805E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MfO0Rb85fzEevHX4G" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "M9avtf6ahZBX66yyX" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "ML4KJ06UXLNnxgxGt" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MLPZ1MlkVcM0SE+Eg" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MRM83S8CA6UFJ/NFP" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MbGQlwDJa1svdeRUo" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MdRw7prLNncM//pbh" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MgArUFnafCr0EXh1H" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MiujOJ2x/HSic3NqL" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MoQs/F+b5ueu8+0fR" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MraEGMd6wpqB6wD/9" ]
+    }, {
+      "transform" : [ 0.0, -0.8660254037844379, 0.5, -1.574455631237035E-18, 1.0, 0.0, 0.0, 0.08505, 0.0, 0.5, 0.8660254037844379, 4.60834057177073E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJvNzuEZCULxrDU2y", "MD/mj2ADG3OEzIYD1" ]
+    }, {
+      "transform" : [ 0.0, -0.8660254037844379, 0.5, -1.574455631237035E-18, 1.0, 0.0, 0.0, 0.08505, 0.0, 0.5, 0.8660254037844379, 4.60834057177073E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MA0V+MfgcRQDbJ3TQ", "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJvNzuEZCULxrDU2y", "MEdrthuma/AKWrGsA" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MEp7jPpLvL2gSPRpJ",
+      "name" : "KP0026-01_NSK6810Z <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MnUW1PSTVjYo5U583",
+      "name" : "KA0008-01_HarmonicGearSet <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "122d155d3c39bd2cd61e4093",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MLmwGM3YxRxAsVIvt",
+      "name" : "KP0033-01_MotorEndCapBase <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "Mcn+PSefZNO47HvcE",
+      "name" : "KP0016 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "fb308abb1b29da195b0535fa",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "Ml9LgKLQXFW/N1mRd",
+      "name" : "KP0014-01_PivotWireCover <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MknoAvdr2uifX6Dk0",
+      "name" : "KP0015 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "ffac423b777e6fc42a932690",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MA0V+MfgcRQDbJ3TQ",
+      "name" : "KP0013 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "fb1f2f02b218e28f89a7f141",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "7659db2940dbf059953eb9f2",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M3xIyi5SH8D0Yob3Y",
+      "name" : "KP0026-01_NSK6810Z <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M9uyeyZSGbcI+zmEK",
+      "name" : "KP0025-01_MainPivotBar <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MaZIOiY0BSugCdQUY",
+      "name" : "KP0025-01_MainPivotBar <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MlkPuv8E+l6STdtqb",
+      "name" : "KP0025-01_MainPivotBar <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MCkEONPNzlhFjN/SJ",
+      "name" : "KP0025-01_MainPivotBar <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MbHcyqwtDadSzquF+",
+      "name" : "KP0021 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "41b07344696c9ff0ac8cd527",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MQJ+ihiV0gBlTOulK",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMI4MYOxn9P9J0fa5",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "My4tj7FV6nZYMM8/D",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MCAvDnhs1tkmhxoCJ",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MFR/i1g24ruRPPDzN",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MTeMdwGDzi0GFk0wB",
+      "name" : "KP0020-01_PivotCodeDisk <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MWnX3ZnwgppIrK822",
+      "name" : "KP0013-01_MainPivotV2 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "fb1f2f02b218e28f89a7f141",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MbmqUbGoLSbxrR9cP",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MhkvJ11bBuajRV1pF",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMtlfmpe8Wt0st2Dn",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M9WCy/XbJ2tCfuQRK",
+      "name" : "KP0018-01_SlipRingBrushB <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "Ms7YWoEjqSH1phaCp",
+      "name" : "KP0017-01_SlipRingBrushA <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MNNhp8fa5KQniQTuF",
+      "name" : "KP0016-01_PivotSkirtV2 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "fb308abb1b29da195b0535fa",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "type" : "Assembly",
+      "id" : "MI4bt+LAaE5yHXp8w",
+      "name" : "KA0008-01_HarmonicGearSet <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "122d155d3c39bd2cd61e4093",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MolqfTOlapbmz5ThX",
+      "name" : "KP0021-01_MotorEndCapPivot <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "41b07344696c9ff0ac8cd527",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MEdrthuma/AKWrGsA",
+      "name" : "CSF-14-2A-R FLEXSPLINE-1-solid1 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MD/mj2ADG3OEzIYD1",
+      "name" : "14 WG BEARING-1-solid1 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "df65c1bf3ced0141d7b012e9",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MDCvfoLUKzsY7/5oz",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MBYXjNoT0jylEBXuG",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MLlSIcQvj6zNNdPnr",
+      "name" : "KP0023-01_CamLeverCSF-14-XXX-2A-R <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M09m8nPNCMfkyXrdR",
+      "name" : "KP0024-01_WGCouplerSetScrTr <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MJvNzuEZCULxrDU2y",
+      "name" : "KP0008-01_GearCupCSF-14-XXX-2A-R <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "df65c1bf3ced0141d7b012e9",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MfO0Rb85fzEevHX4G",
+      "name" : "KP0022-01_FlexSplineAttatchLGHS <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MJuC+jqKb8q5mymne",
+      "name" : "NEMA17-48H <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "887039d413616b79e11638c6",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "122d155d3c39bd2cd61e4093",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MoQs/F+b5ueu8+0fR",
+      "name" : "Part 87 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MgArUFnafCr0EXh1H",
+      "name" : "Part 88 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MdRw7prLNncM//pbh",
+      "name" : "Part 89 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MLPZ1MlkVcM0SE+Eg",
+      "name" : "Part 90 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MraEGMd6wpqB6wD/9",
+      "name" : "Part 91 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MiujOJ2x/HSic3NqL",
+      "name" : "Part 92 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "ML4KJ06UXLNnxgxGt",
+      "name" : "Part 93 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MRM83S8CA6UFJ/NFP",
+      "name" : "Part 94 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M9avtf6ahZBX66yyX",
+      "name" : "Part 95 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MbGQlwDJa1svdeRUo",
+      "name" : "Part 96 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "887039d413616b79e11638c6",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M8rGM/W3FBwDiSFmu",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MSZ4BlwDoIWrqrvin",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MtquWf+Gc8M7mEw+z",
+      "name" : "KP0015-01_BasePhotoInterrupterV2 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "ffac423b777e6fc42a932690",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

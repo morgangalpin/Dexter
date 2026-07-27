@@ -1,0 +1,262 @@
+[
+ {
+  "id": "6843c182cbf9181dbb307455",
+  "name": "KA0006-01_Main",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "3f5cc2aeda20df1c7d4419fa",
+  "name": "KP0032-01_ExternalGearBelt Drawing 1",
+  "type": "APPLICATION"
+ },
+ {
+  "id": "7466b916870a3442929ccd4f",
+  "name": "KP0046-01_1InTubeInterfaceB Drawing 2",
+  "type": "APPLICATION"
+ },
+ {
+  "id": "100ad71f3e764501a7d1e0be",
+  "name": "KP0046-01_1InTubeInterfaceB Drawing 1",
+  "type": "APPLICATION"
+ },
+ {
+  "id": "7659db2940dbf059953eb9f2",
+  "name": "KA0005-01_SecondSection",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "e40c8b9e3c99be5135f8be6b",
+  "name": "KA0010-01_SixSection",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "cdfc85a12cfa287a5384eff4",
+  "name": "KA0015-01_DifferentialSet",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "fb1f2f02b218e28f89a7f141",
+  "name": "KP0013",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "1454661b23c3c9d543fe5ca3",
+  "name": "KA0012-01_Elbow",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "5b3879bf3d2362c744044bf6",
+  "name": "KA0014-01_Differential",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "7181c2addff92c3bc9f2e2b2",
+  "name": "KA0004-01_BottomSection",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "c8a5d32686e7602de85bc684",
+  "name": "KA0007-01_ThirdSection",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "f8dbf9d3162d5b31c2057d00",
+  "name": "KA0013-01_FifthSection",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "bd400011a396ae27348fa3b0",
+  "name": "KA0001-01_BaseMount",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "bd60a4c8088f4987f313eab6",
+  "name": "KA0003-01_StatorBracket",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "41b07344696c9ff0ac8cd527",
+  "name": "KP0021",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "a9b30447e980e7ca53560c9a",
+  "name": "KP0032",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "122d155d3c39bd2cd61e4093",
+  "name": "KA0008-01_HarmonicGearSet",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "37f0a3aecb72df9912026f2e",
+  "name": "KP0060",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "ca3f784fbfc5a4af335f2c41",
+  "name": "KP0081",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "d917ce655b1fbfee4708cf34",
+  "name": "KP0086",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "5abf46929344bc7360a12f6c",
+  "name": "KA0011-01_FourthSection",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "94fe7b48a47120ee310865be",
+  "name": "KA0002-01_Foot",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "02d3ca1a3397b2a45cc85301",
+  "name": "KP0006",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "d415e6e7a50b24e6ee61c3b7",
+  "name": "KP0005",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "504ed948faa8b4796db58a8b",
+  "name": "5415K220_WORM-DRIVE CLAMPS FOR FIRM HOSE AND TUBE",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "ffac423b777e6fc42a932690",
+  "name": "KP0015",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "fb308abb1b29da195b0535fa",
+  "name": "KP0016",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "b141301801f20e3302bc57a1",
+  "name": "KP0036",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "df65c1bf3ced0141d7b012e9",
+  "name": "KP0008-01_GearCupCSF-14-XXX-2A-R",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "db97123a7ba02bcdf0c19637",
+  "name": "KP0028",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "6e46508f7f406b7f660d8864",
+  "name": "KP0031-01_ArmBodyTop",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "821fbbd77d0d7b9e16e3e193",
+  "name": "KP0035",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "887039d413616b79e11638c6",
+  "name": "NEMA17-48H",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "c5ec70ac1204fb1ca355925a",
+  "name": "KP0038-01_5972K501_6082Z BALL BEARING",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "ab6977246dcbc37a8d050c25",
+  "name": "KA0009-01_Gt2x16_GPA16MR2060-K-PUA_2_031",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "a3911cf091060307655c47e7",
+  "name": "KP0041",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "7a888d52e8332ca2236642e4",
+  "name": "KP0047",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "800159cb8d5b46f6d54c857e",
+  "name": "KP0048",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "371679a3314165c3a979dcea",
+  "name": "KP0064",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "ba0e69d39dcf3a1f04390681",
+  "name": "KP0067",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "d447b39a483a21dc1ceb5bfd",
+  "name": "KP0050",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "187b6b0604e496db8d3cd4bc",
+  "name": "KP0078",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "9643e661cd354f28e5b90d1c",
+  "name": "KP0070",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "2ee75c26618328831b3e94fd",
+  "name": "KP0071",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "7242d4832a79bd50892fb9e4",
+  "name": "KP0082",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "45169476da2a9f18e37aac9c",
+  "name": "KP0088",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "24edf6cb7745551e9a1ea722",
+  "name": "6655K540_STEEL THRUST BALL BEARING",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "22ad2c63ce19c2942707629c",
+  "name": "KP0077",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "5ae2cc94d119b880207ab720",
+  "name": "KP0075",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "b03fb46577fe162df32757e9",
+  "name": "KP0093",
+  "type": "ASSEMBLY"
+ },
+ {
+  "id": "9b5403d60ad20f74044dd125",
+  "name": "KA0006-01_Main parts",
+  "type": "PARTSTUDIO"
+ }
+]
