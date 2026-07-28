@@ -1,0 +1,305 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 0.923879532511287, 0.0, -0.3826834323650895, -4.85722573273506E-17, 0.0, 1.0, 0.0, -0.07326, 0.3826834323650895, 0.0, 0.923879532511287, -3.469446951953615E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M7bJhHNYsiFpTc2rn" ]
+    }, {
+      "transform" : [ 0.5, 0.0, 0.8660254037844399, -0.00287157622884111, 0.0, 1.0, 0.0, -0.073, -0.8660254037844399, 0.0, 0.5, 0.02181178695022385, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MAg5rRP4NL7Q0Xj6g" ]
+    }, {
+      "transform" : [ -0.130526192220042, -0.0, -0.9914448613738119, 0.002871576228840905, 0.0, 1.0, 0.0, -0.07731, 0.9914448613738119, 0.0, -0.130526192220042, -0.021811786950223903, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MBN0TnjbCHvOa1Xre" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -0.02032534971524835, 0.0, 1.0, 0.0, -0.073, 0.0, 0.0, 1.0, 0.00841903551203196, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MR6dT0BPSMDReNTy8" ]
+    }, {
+      "transform" : [ 0.793353340291243, 0.0, -0.608761429008711, -0.0174537734864074, 0.0, 1.0, 0.0, -0.07731, 0.608761429008711, 0.0, 0.793353340291243, -0.01339275143819164, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MWvqhUm+bgSooPaBD" ]
+    }, {
+      "transform" : [ -0.49999999999999195, -0.0, -0.8660254037844429, 0.00287157622884096, 0.0, 1.0, 0.0, -0.073, 0.8660254037844429, 0.0, -0.49999999999999195, -0.021811786950223903, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MZe9kOtSdlP/gmA7V" ]
+    }, {
+      "transform" : [ 0.50000000000001, 0.0, -0.8660254037844329, -0.01745377348640735, 0.0, 1.0, 0.0, -0.073, 0.8660254037844329, 0.0, 0.50000000000001, -0.013392751438191701, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MdifYesFCTThwOrt+" ]
+    }, {
+      "transform" : [ 0.0, 0.608761429008727, 0.7933533402912301, -4.0501339320694696E-17, -1.0, 0.0, 0.0, -0.083, 0.0, -0.7933533402912301, 0.608761429008727, -2.21835079660795E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MeuYZuQ8OuuKKcT3A" ]
+    }, {
+      "transform" : [ -0.5, 0.0, 0.8660254037844369, 0.01745377348640725, 0.0, 1.0, 0.0, -0.073, -0.8660254037844369, -0.0, -0.5, 0.0133927514381918, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MojtlKcv5ZUK70wm5" ]
+    }, {
+      "transform" : [ -1.0, -0.0, -6.982962677686271E-15, 0.020325349715248298, 0.0, 1.0, 0.0, -0.073, 6.982962677686271E-15, 0.0, -1.0, -0.008419035512032111, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MpQSWAmNAasJKRwTJ" ]
+    }, {
+      "transform" : [ 0.130526192220049, 0.0, 0.9914448613738109, -0.002871576228841055, 0.0, 1.0, 0.0, -0.07731, -0.9914448613738109, 0.0, 0.130526192220049, 0.021811786950223903, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MqoVg+c9QK2g8Jzwk" ]
+    }, {
+      "transform" : [ 0.923879532511287, 0.0, 0.3826834323650905, -0.02032534971524835, 0.0, 1.0, 0.0, -0.07731, -0.3826834323650905, 0.0, 0.923879532511287, 0.008419035512032021, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Mr6tGUJoy4N025wbM" ]
+    }, {
+      "transform" : [ -0.793353340291238, 0.0, 0.608761429008717, 0.0174537734864073, 0.0, 1.0, 0.0, -0.07731, -0.608761429008717, -0.0, -0.793353340291238, 0.01339275143819176, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MtRVeDzWMY8e+B3f5" ]
+    }, {
+      "transform" : [ -0.923879532511284, -0.0, -0.3826834323650965, 0.02032534971524825, 0.0, 1.0, 0.0, -0.07731, 0.3826834323650965, 0.0, -0.923879532511284, -0.00841903551203217, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MvbGnWcUH7DdPCbiV" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "MdifYesFCTThwOrt+",
+      "type" : "Part",
+      "name" : "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW <1>",
+      "suppressed" : false,
+      "partId" : "KFbG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MZe9kOtSdlP/gmA7V",
+      "type" : "Part",
+      "name" : "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW <2>",
+      "suppressed" : false,
+      "partId" : "KFbG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MpQSWAmNAasJKRwTJ",
+      "type" : "Part",
+      "name" : "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW <3>",
+      "suppressed" : false,
+      "partId" : "KFbG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MojtlKcv5ZUK70wm5",
+      "type" : "Part",
+      "name" : "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW <4>",
+      "suppressed" : false,
+      "partId" : "KFbG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MAg5rRP4NL7Q0Xj6g",
+      "type" : "Part",
+      "name" : "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW <5>",
+      "suppressed" : false,
+      "partId" : "KFbG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MWvqhUm+bgSooPaBD",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MBN0TnjbCHvOa1Xre",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MvbGnWcUH7DdPCbiV",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MtRVeDzWMY8e+B3f5",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MqoVg+c9QK2g8Jzwk",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <5>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MR6dT0BPSMDReNTy8",
+      "type" : "Part",
+      "name" : "M3-16_92005A126_METRIC PAN HEAD PHILLIPS MACHINE SCREMW <6>",
+      "suppressed" : false,
+      "partId" : "KFbG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mr6tGUJoy4N025wbM",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <6>",
+      "suppressed" : false,
+      "partId" : "JFD",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MeuYZuQ8OuuKKcT3A",
+      "type" : "Part",
+      "name" : "KP0009-01_GearCSF-14-XXX-2A-R <1>",
+      "suppressed" : false,
+      "partId" : "KFfG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M7bJhHNYsiFpTc2rn",
+      "type" : "Part",
+      "name" : "KP0035-01_PivotStatorHolder <1>",
+      "suppressed" : false,
+      "partId" : "KFjG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "821fbbd77d0d7b9e16e3e193",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KFbG",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "JFD",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFjG",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFfG",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

@@ -1,0 +1,89 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9820818503191361, 1.734723475976805E-18, -0.188454873308549, 0.015533, 0.188454873308549, 0.0, 0.9820818503191371, -0.0136, -3.469446951953615E-18, -1.0, -2.7755575615628898E-17, -0.0281739394817117, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M8rGM/W3FBwDiSFmu" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, -0.008462, 0.0, 1.224646799147352E-16, 1.0, -0.0136, 0.0, -1.0, 1.224646799147352E-16, -0.0281739394817117, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MSZ4BlwDoIWrqrvin" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, -6.93889390390723E-18, 0.0, 0.0, -1.0, -0.0116024093065139, 0.0, 1.0, 0.0, -0.0345, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MtquWf+Gc8M7mEw+z" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M8rGM/W3FBwDiSFmu",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "KFfH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MSZ4BlwDoIWrqrvin",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "KFfH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MtquWf+Gc8M7mEw+z",
+      "name" : "KP0015-01_BasePhotoInterrupterV2 <1>",
+      "suppressed" : false,
+      "partId" : "KFjH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "ffac423b777e6fc42a932690",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KFjH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFfH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

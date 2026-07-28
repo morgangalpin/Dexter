@@ -1,0 +1,62 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "mateStatuses" : null,
+      "fixed" : false,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MEsVVqBHRr1dyuBsD" ]
+    }, {
+      "mateStatuses" : null,
+      "fixed" : false,
+      "hidden" : false,
+      "transform" : [ -1.0, -0.0, -3.88578058618805E-16, 0.0, 0.0, -1.0, 0.0, 0.0, -3.88578058618805E-16, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MgKuqeN5ZUMV4Yt0j" ]
+    } ],
+    "parametricInstances" : [ ],
+    "patterns" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "MgKuqeN5ZUMV4Yt0j",
+      "type" : "Part",
+      "name" : "KP0003-01_FootPadBare <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479",
+      "fullConfiguration" : "default"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MEsVVqBHRr1dyuBsD",
+      "type" : "Part",
+      "name" : "KP0002-01_Foot <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479",
+      "fullConfiguration" : "default"
+    } ],
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "94fe7b48a47120ee310865be",
+    "documentMicroversion" : "958568a84148485cee263479",
+    "fullConfiguration" : "default"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479",
+    "fullConfiguration" : "default"
+  } ],
+  "partStudioFeatures" : [ ]
+}

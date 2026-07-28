@@ -1,0 +1,161 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 1.636532989250285E-29, 5.75495534560742E-13, -1.0, 7.03886699851866E-15, 1.0, 2.347471974965815E-16, 1.514612938024345E-28, 0.015, 2.347471974965815E-16, -1.0, -5.75495534560742E-13, 5.18001110330021E-5, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M9WCy/XbJ2tCfuQRK" ]
+    }, {
+      "transform" : [ 0.49999999999942396, -0.707106781186955, 0.5, -0.0215667568261017, 0.707106781186955, -2.7755575615628898E-17, -0.70710678118614, -0.015, 0.5, 0.70710678118614, 0.500000000000576, 0.02156675682608395, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MMtlfmpe8Wt0st2Dn" ]
+    }, {
+      "transform" : [ -1.0, 5.75495534560742E-13, -1.514612938024345E-28, 7.0672634411295105E-15, 1.51461293802434E-28, 0.0, -1.0, -0.003, -5.75495534560742E-13, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MNNhp8fa5KQniQTuF" ]
+    }, {
+      "transform" : [ -0.6421054435462851, -0.707106781186141, -0.2961428698598095, -0.02156698275256435, 0.418809262955592, -2.7755575615628898E-17, -0.908074226736226, -0.015, 0.6421054435455461, -0.707106781186955, 0.29614286985946847, -0.02156698275259625, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbmqUbGoLSbxrR9cP" ]
+    }, {
+      "transform" : [ -2.9143354396410355E-15, -1.0, -2.27595720048157E-15, -0.0305, 0.6497282406846779, -5.5511151231257796E-17, -0.76016656941541, -0.015, 0.76016656941541, -3.75394160201381E-15, 0.6497282406846789, -8.13450522186062E-15, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MhkvJ11bBuajRV1pF" ]
+    }, {
+      "transform" : [ 1.0, 5.75495534560742E-13, 1.6365329892503249E-29, -0.047833042972396295, -1.514612938024345E-28, 2.347471974965815E-16, 1.0, 0.01, 5.75495534560742E-13, -1.0, 2.347471974965815E-16, -0.003948199888994535, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "Ms7YWoEjqSH1phaCp" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MbmqUbGoLSbxrR9cP",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "KFDG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MhkvJ11bBuajRV1pF",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "KFDG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMtlfmpe8Wt0st2Dn",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <3>",
+      "suppressed" : false,
+      "partId" : "KFDG",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M9WCy/XbJ2tCfuQRK",
+      "name" : "KP0018-01_SlipRingBrushB <1>",
+      "suppressed" : false,
+      "partId" : "KFTH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "Ms7YWoEjqSH1phaCp",
+      "name" : "KP0017-01_SlipRingBrushA <1>",
+      "suppressed" : false,
+      "partId" : "KFXH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MNNhp8fa5KQniQTuF",
+      "name" : "KP0016-01_PivotSkirtV2 <1>",
+      "suppressed" : false,
+      "partId" : "KFbH",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "fb308abb1b29da195b0535fa",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KFbH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFXH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFTH",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFDG",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

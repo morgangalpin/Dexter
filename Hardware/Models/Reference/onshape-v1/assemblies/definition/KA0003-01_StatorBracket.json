@@ -1,0 +1,960 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -2.60208521396521E-18, 1.0, 6.982962677686271E-15, 0.030778975863201, 1.0, 2.60208521396521E-18, 1.817026393327835E-32, -0.025, 0.0, 6.982962677686271E-15, -1.0, -0.01777024999999975, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M2mstbt5ybdazjyFP" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -1.0, 0.0, 6.982962677686271E-15, 2.412390911424015E-16, 0.0, 1.0, 0.0, -0.068, -6.982962677686271E-15, -0.0, -1.0, -0.0355405, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M3SUaP3czqU8x5XxC" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M6ifjvBawhhOE8lx1" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -2.60208521396521E-18, 0.49999999999999195, 0.8660254037844429, 0.03077897586320065, 1.0, 1.301042606982584E-18, 2.25347189810575E-18, -0.025, 0.0, 0.8660254037844429, -0.49999999999999195, 0.0177702500000003, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M7VvEke5CcPgvYgg/" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9899148171992289, 0.002591953452541375, 0.1416401654429872, -0.010891500812717739, -0.026694704016793, 0.985333865839519, 0.16853654086637748, -0.0343866332980291, -0.13912601290510962, -0.17061786133652052, 0.975465785112978, -0.0161524793622428, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -2.60208521396521E-18, 0.5, -0.8660254037844369, 1.87447713601019E-16, 1.0, 1.301042606982616E-18, -2.2534718981057348E-18, -0.025, -7.70371977754894E-34, -0.8660254037844369, -0.5, -0.0355405, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MBJCPqnYwD8FCLwWQ" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 9.67218651723162E-17, 0.5, -0.8660254037844399, -0.017909012701892102, -1.0, -7.853697667832379E-17, -1.6653345369377348E-16, -0.009, -1.4649150114523399E-16, 0.8660254037844399, 0.5, -0.0300193199130738, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MGRORrAur5qD7tJSl" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -9.672186517231719E-17, -0.49999999999999195, 0.8660254037844439, 0.0179090127018919, -1.0, -7.853697667832379E-17, -1.6653345369377348E-16, -0.009, 1.464915011452332E-16, -0.8660254037844429, -0.49999999999999195, 0.0300193199130739, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MIyX09WqtNE9Dpx7p" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.49999999999999195, 0.0, 0.8660254037844429, 0.030778975863201, 0.0, 1.0, 0.0, -0.0701, -0.8660254037844429, -0.0, -0.49999999999999195, -0.0177702499999997, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MMaHxTzSGPJzBAos/" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 7.85044288441309E-17, -1.0, 7.03847382891753E-15, 0.034952, -1.0, -7.853697667832379E-17, -1.6653345369377348E-16, -0.009, 1.570093429132565E-16, -7.010718253301901E-15, -1.0, -4.999999999996981E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MOO3344iurkLpcEyR" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.50000000000001, 0.0, 0.8660254037844329, 0.03077897586320065, 0.0, 1.0, 0.0, -0.0701, -0.8660254037844329, 0.0, 0.50000000000001, 0.017770250000000352, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MQ2Q4c14m/RRK906o" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.5, 0.0, -0.8660254037844399, -0.0307789758632009, 0.0, 1.0, 0.0, -0.068, 0.8660254037844399, 0.0, 0.5, 0.01777025, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MW8b2qDdxZriEj5ol" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -2.60208521396521E-18, -0.50000000000001, 0.8660254037844329, -4.35383066405004E-16, 1.0, -1.30104260698263E-18, 2.2534718981057248E-18, -0.025, 0.0, 0.8660254037844329, 0.50000000000001, 0.0355405, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MWRpgtdQkEhJ+RoIe" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.5, -0.0, -0.8660254037844369, -0.03077897586320075, 0.0, 1.0, 0.0, -0.068, 0.8660254037844369, 0.0, -0.5, -0.01777025, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MWaYmxpH7ZvnpmEMg" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -1.75226294016448E-16, 0.50000000000001, 0.8660254037844329, -0.0170429872981082, -1.0, -7.853697667832379E-17, -1.6653345369377348E-16, -0.009, -1.0517841768023839E-17, -0.8660254037844329, 0.50000000000001, 0.030519319913073502, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MY59dvDnHuNffqjYO" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -2.60208521396521E-18, -0.5, -0.8660254037844399, -0.0307789758632008, 1.0, -1.3010426069826E-18, -2.25347189810574E-18, -0.025, 0.0, -0.8660254037844399, 0.5, -0.01777025, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Mbp/6KYf2IjBqZKWv" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 2.0166160408230501E-19, 0.0, 1.0, 0.0, -0.0545, 0.0, 0.0, 1.0, -3.691998005033665E-33, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "McyzOxPBfGaUXb/IB" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.5, -0.0, -0.8660254037844369, -0.03077897586320075, 0.0, 1.0, 0.0, -0.0701, 0.8660254037844369, 0.0, -0.5, -0.01777025, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MdYnC+GFgXC6kqSHB" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.49999999999999195, 0.0, 0.8660254037844429, 0.030778975863201, 0.0, 1.0, 0.0, -0.068, -0.8660254037844429, -0.0, -0.49999999999999195, -0.0177702499999997, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MhKM2OPlUElra9nQ7" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -7.8504428844132E-17, 1.0, -5.5511151231257796E-17, -0.034952, -1.0, -7.853697667832379E-17, -1.6653345369377348E-16, -0.009, -1.5700934291325598E-16, 2.7755575615628898E-17, 1.0, 4.99999999999942E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Mhthnxu6rdK85t5jY" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.75226294016448E-16, -0.5, -0.8660254037844359, 0.017042987298108, -1.0, -7.8504428844132E-17, -1.5700934291325598E-16, -0.009, 1.0517841768022599E-17, 0.8660254037844359, -0.5, -0.030519319913073602, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Ml/X00QQOrQ/kkehx" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -1.0, 0.0, 6.982962677686271E-15, 2.4470853809435503E-16, 0.0, 1.0, 0.0, -0.0701, -6.982962677686271E-15, -0.0, -1.0, -0.0355405, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Mlv1rMGGnMWSQq4Lk" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 2.016616040823045E-19, 0.0, 1.0, 0.0, -0.001, 0.0, 0.0, 1.0, -4.304881325117115E-33, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MqoACsPwygh0UFnmJ" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.50000000000001, 0.0, 0.8660254037844329, 0.03077897586320065, 0.0, 1.0, 0.0, -0.068, -0.8660254037844329, 0.0, 0.50000000000001, 0.017770250000000352, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MtgHgZBdfs+Fy4F1M" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 6.93889390390723E-18, 0.0, 1.0, 0.0, -0.068, 0.0, 0.0, 1.0, 0.0355405, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MtonVbEyl3wRzTZV3" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.5, 0.0, -0.8660254037844399, -0.0307789758632009, 0.0, 1.0, 0.0, -0.0701, 0.8660254037844399, 0.0, 0.5, 0.01777025, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "Mx1nix2CPRmFVzwGw" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -2.60208521396521E-18, -1.0, 0.0, -0.03077897586320085, 1.0, -2.60208521396521E-18, 0.0, -0.025, 0.0, 0.0, 1.0, 0.01777025, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MxlTP20i+BgDOVVDV" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 3.469446951953615E-18, 0.0, 1.0, 0.0, -0.0701, 0.0, 0.0, 1.0, 0.0355405, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MyaAMs2yNQc6VcxyL" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M6ifjvBawhhOE8lx1", "M6vSP75//2ZUaEqVv" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -0.0035, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M6ifjvBawhhOE8lx1", "MQH6nLgPrvviPfPci" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -0.068, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M6ifjvBawhhOE8lx1", "Mad3cK3bsRlJcnDb6" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.499999999999999, -1.5265566588595902E-16, -0.8660254037844386, -1.0408340855860843E-17, -2.7755575615628914E-17, 0.9999999999999996, -1.1102230246251565E-16, 0.02169999999999995, 0.8660254037844384, 8.326672684688674E-17, 0.4999999999999989, 0.03554049999999996, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "M8eJcKWBtlk4DcWKu" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9899496684811371, -6.938893903907228E-18, 0.14142013249210958, 0.010999999999999954, -5.2583805365546965E-18, 0.9999999999999996, 5.551115123125783E-17, 0.006999999999999965, -0.1414201324921095, 5.551115123125783E-17, 0.9899496684811373, 0.019052558883257634, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "M9aOtdujr1jcCFbYs" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.499999999999999, 4.163336342344337E-17, -0.8660254037844386, -0.030778975863200803, -2.7755575615628914E-17, 0.9999999999999996, -1.3877787807814457E-17, 0.021699999999999955, 0.8660254037844384, 5.551115123125783E-17, 0.4999999999999989, 0.017770249999999984, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MDpuiGdG810ZquYE7" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.499999999999999, -1.5265566588595902E-16, -0.8660254037844386, 0.03077897586320083, -2.7755575615628914E-17, 0.9999999999999996, -1.3877787807814457E-17, 0.021700000000000032, 0.8660254037844384, 8.326672684688674E-17, 0.4999999999999989, 0.017770249999999984, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MFErPA664jTOvEMHK" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.499999999999999, -1.0408340855860843E-16, -0.8660254037844386, 6.071532165918825E-17, -2.7755575615628914E-17, 0.9999999999999996, -1.3877787807814457E-17, 0.02170000000000004, 0.8660254037844384, 8.326672684688674E-17, 0.4999999999999989, -0.035540499999999975, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MFIsHwm2lY+7A9yki" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.499999999999999, 5.551115123125783E-17, -0.8660254037844386, 0.011000000000000017, 2.7755575615628914E-17, -0.9999999999999996, -1.3877787807814457E-17, 0.010579999999999978, -0.8660254037844384, -8.326672684688674E-17, 0.4999999999999989, 0.019052558883257593, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MGuTD0eXH06hIrmrf" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 6.938893903907228E-18, -7.438494264988549E-15, -0.9999999999999997, -6.938893903907228E-18, -0.9999999999999996, 1.1102230246251565E-16, 6.245004513516506E-17, 0.022999999999999965, -5.551115123125783E-17, 0.9999999999999994, -7.188694084447889E-15, -2.0816681711721685E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MItWqZ8EQijDb94hg" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9968002827341482, 4.163336342344337E-17, -0.07993244861207285, -0.022, -7.632783294297951E-17, 0.9999999999999996, 1.6653345369377348E-16, 0.006999999999999999, 0.07993244861207272, 5.551115123125783E-17, 0.9968002827341482, -2.255140518769849E-16, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MNC03Lx6gCYGS95rv" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.499999999999999, 5.551115123125783E-17, -0.8660254037844386, -0.010999999999999961, 2.7755575615628914E-17, -0.9999999999999996, -1.3877787807814457E-17, 0.010580000000000006, -0.8660254037844384, -8.326672684688674E-17, 0.4999999999999989, -0.01905255888325766, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MS4eNgqcvdpSIS7a8" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9999200723104068, 4.163336342344337E-17, 0.012643140066849884, -0.011000000000000107, 0.0, 0.9999999999999996, 2.7755575615628914E-17, 0.006999999999999965, -0.012643140066849773, 5.551115123125783E-17, 0.9999200723104071, 0.019052558883257558, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MV59L/OYBFA+M7Dyj" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.49999999999999917, 9.020562075079397E-17, -0.8660254037844386, 0.030778975863200893, 1.3877787807814457E-16, 0.9999999999999996, 8.326672684688674E-17, 0.021700000000000018, 0.8660254037844394, 5.551115123125783E-17, 0.49999999999999883, -0.017770249999999994, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MaFrgOVwdLATQ5wdB" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.499999999999999, -1.942890293094024E-16, -0.8660254037844386, -0.021999999999999936, 2.7755575615628914E-17, -0.9999999999999996, 1.8041124150158794E-16, 0.010579999999999992, -0.8660254037844384, -2.7755575615628914E-17, 0.49999999999999883, -5.551115123125783E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MbrU+FnFJDiaTFLTt" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.499999999999999, -1.942890293094024E-16, -0.8660254037844386, 0.011000000000000086, 2.220446049250313E-16, -0.9999999999999996, 1.8041124150158794E-16, 0.010579999999999999, -0.8660254037844385, -2.7755575615628914E-17, 0.49999999999999883, -0.019052558883257673, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "Mc3ku1q9DsyY/u/i9" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.499999999999999, -1.0408340855860843E-16, -0.8660254037844386, -0.030778975863200803, -2.7755575615628914E-17, 0.9999999999999996, -1.3877787807814457E-17, 0.02169999999999994, 0.8660254037844384, 8.326672684688674E-17, 0.4999999999999989, -0.017770249999999967, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "Mc6cRxvCoOG50kH5C" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9897189984476339, -1.0408340855860843E-16, -0.14302553657236244, 0.010999999999999965, 1.0408340855860843E-16, 0.9999999999999996, -2.220446049250313E-16, 0.007000000000000013, 0.1430255365723624, 8.326672684688674E-17, 0.9897189984476334, -0.019052558883257707, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "McAcpbWEyAkeMvwcY" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9944997728976115, -5.551115123125783E-17, -0.10473873069021819, 0.021999999999999985, 5.551115123125783E-17, 0.9999999999999996, -8.326672684688674E-17, 0.006999999999999985, 0.1047387306902183, 8.326672684688674E-17, 0.9944997728976122, 1.0061396160665481E-16, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "McZRFna3tSSLu1M+V" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.499999999999999, -1.457167719820518E-16, -0.8660254037844386, 0.021999999999999985, 2.220446049250313E-16, -0.9999999999999996, -1.3877787807814457E-17, 0.010579999999999985, -0.8660254037844385, -5.551115123125783E-17, 0.4999999999999989, 2.0816681711721685E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MfhJLcsihfzG95RcX" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.499999999999999, 3.5388358909926865E-16, -0.8660254037844386, -0.011000000000000038, -3.3306690738754696E-16, -0.9999999999999996, -2.220446049250313E-16, 0.010579999999999999, -0.8660254037844384, -1.1102230246251565E-16, 0.4999999999999989, 0.019052558883257614, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MhOqhK70Og9RFWi2G" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.49999999999999956, 6.938893903907228E-18, -0.8660254037844386, 3.9898639947466563E-17, 2.7755575615628914E-17, -0.9999999999999996, -2.7755575615628914E-17, 1.3877787807814457E-17, -0.8660254037844384, -5.551115123125783E-17, 0.49999999999999933, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MuJbhpSC35DOieKEL" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.9910991506954623, 1.942890293094024E-16, -0.13312578071407927, -0.011000000000000095, -1.8041124150158794E-16, 0.9999999999999996, -1.6653345369377348E-16, 0.006999999999999985, 0.13312578071407882, 2.7755575615628914E-17, 0.991099150695462, -0.019052558883257638, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MAMm+6v9P4s45Ld7l", "MuodQBIMp7mM4rbe/" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "McyzOxPBfGaUXb/IB",
+      "type" : "Part",
+      "name" : "KP0027-01_SlipRing <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MqoACsPwygh0UFnmJ",
+      "type" : "Part",
+      "name" : "KP0019-01_SlipRingBracketV2 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MQ2Q4c14m/RRK906o",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MMaHxTzSGPJzBAos/",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mlv1rMGGnMWSQq4Lk",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MdYnC+GFgXC6kqSHB",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mx1nix2CPRmFVzwGw",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MtgHgZBdfs+Fy4F1M",
+      "type" : "Part",
+      "name" : "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MhKM2OPlUElra9nQ7",
+      "type" : "Part",
+      "name" : "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M3SUaP3czqU8x5XxC",
+      "type" : "Part",
+      "name" : "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MWaYmxpH7ZvnpmEMg",
+      "type" : "Part",
+      "name" : "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MW8b2qDdxZriEj5ol",
+      "type" : "Part",
+      "name" : "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MyaAMs2yNQc6VcxyL",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <6>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MtonVbEyl3wRzTZV3",
+      "type" : "Part",
+      "name" : "M4-Washer_90965A150_TYPE 316 STAINLESS STEEL FLAT WASHER <6>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MWRpgtdQkEhJ+RoIe",
+      "type" : "Part",
+      "name" : "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M7VvEke5CcPgvYgg/",
+      "type" : "Part",
+      "name" : "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M2mstbt5ybdazjyFP",
+      "type" : "Part",
+      "name" : "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MBJCPqnYwD8FCLwWQ",
+      "type" : "Part",
+      "name" : "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mbp/6KYf2IjBqZKWv",
+      "type" : "Part",
+      "name" : "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MxlTP20i+BgDOVVDV",
+      "type" : "Part",
+      "name" : "KP0011-01_M3 96 LOW-STRENGTH STEEL FULLY THREADED STUD <6>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MY59dvDnHuNffqjYO",
+      "type" : "Part",
+      "name" : "KP0010-01_StatorBracketBar <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MIyX09WqtNE9Dpx7p",
+      "type" : "Part",
+      "name" : "KP0010-01_StatorBracketBar <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MOO3344iurkLpcEyR",
+      "type" : "Part",
+      "name" : "KP0010-01_StatorBracketBar <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Ml/X00QQOrQ/kkehx",
+      "type" : "Part",
+      "name" : "KP0010-01_StatorBracketBar <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MGRORrAur5qD7tJSl",
+      "type" : "Part",
+      "name" : "KP0010-01_StatorBracketBar <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mhthnxu6rdK85t5jY",
+      "type" : "Part",
+      "name" : "KP0010-01_StatorBracketBar <6>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "id" : "MAMm+6v9P4s45Ld7l",
+      "type" : "Assembly",
+      "name" : "KP0005 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "d415e6e7a50b24e6ee61c3b7",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "id" : "M6ifjvBawhhOE8lx1",
+      "type" : "Assembly",
+      "name" : "KP0006 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "02d3ca1a3397b2a45cc85301",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "bd60a4c8088f4987f313eab6",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "MQH6nLgPrvviPfPci",
+      "type" : "Part",
+      "name" : "KP0026-01_NSK6810Z <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mad3cK3bsRlJcnDb6",
+      "type" : "Part",
+      "name" : "KP0007-01_BaseCodeDiskRafted <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M6vSP75//2ZUaEqVv",
+      "type" : "Part",
+      "name" : "KP0006-01_BaseLite <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "02d3ca1a3397b2a45cc85301",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "id" : "McZRFna3tSSLu1M+V",
+      "type" : "Part",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "McAcpbWEyAkeMvwcY",
+      "type" : "Part",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MuodQBIMp7mM4rbe/",
+      "type" : "Part",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MNC03Lx6gCYGS95rv",
+      "type" : "Part",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MV59L/OYBFA+M7Dyj",
+      "type" : "Part",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M9aOtdujr1jcCFbYs",
+      "type" : "Part",
+      "name" : "M3-16_91290A120_BLACK-OXIDE CLASS 12.9 SOCKET HEAD CAP SCREW <6>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MbrU+FnFJDiaTFLTt",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MS4eNgqcvdpSIS7a8",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mc3ku1q9DsyY/u/i9",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MfhJLcsihfzG95RcX",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MGuTD0eXH06hIrmrf",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MhOqhK70Og9RFWi2G",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <6>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "M8eJcKWBtlk4DcWKu",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <7>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MFErPA664jTOvEMHK",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <8>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MaFrgOVwdLATQ5wdB",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <9>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MFIsHwm2lY+7A9yki",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <10>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "Mc6cRxvCoOG50kH5C",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <11>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MDpuiGdG810ZquYE7",
+      "type" : "Part",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <12>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MItWqZ8EQijDb94hg",
+      "type" : "Part",
+      "name" : "KP0009-01_GearCSF-14-XXX-2A-R <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "id" : "MuJbhpSC35DOieKEL",
+      "type" : "Part",
+      "name" : "KP0005-01_BotBaseStatorBracket <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "d415e6e7a50b24e6ee61c3b7",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

@@ -1,0 +1,89 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 0.0, 1.0, 0.0, 0.0123963177362715, 0.0, 0.0, -1.0, 2.53682263718207E-4, -1.0, 0.0, 0.0, 7.98138007555046E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M52CboX73YRxg2noK" ]
+    }, {
+      "transform" : [ 0.0, 1.0, 0.0, 0.01239631773627152, -0.8660254037844389, 0.0, 0.5, 0.00143823589443735, 0.5, 0.0, 0.8660254037844389, -6.83902357565248E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MMvjMbSnsrz5cxrFj" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -2.536822637182085E-4, 0.0, 1.0, 0.0, 2.536822637182065E-4, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MuHsp+T6/Mr4REdsf" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMvjMbSnsrz5cxrFj",
+      "name" : "_SET-SCREW#5-40-0.25 <1>",
+      "suppressed" : false,
+      "partId" : "KFTE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M52CboX73YRxg2noK",
+      "name" : "_SET-SCREW#5-40-0.25 <2>",
+      "suppressed" : false,
+      "partId" : "KFTE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MuHsp+T6/Mr4REdsf",
+      "name" : "_GPA16MR2060-K-PUA_b <1>",
+      "suppressed" : false,
+      "partId" : "KFXE",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "ab6977246dcbc37a8d050c25",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "KFXE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KFTE",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

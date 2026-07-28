@@ -1,0 +1,670 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0035, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M3xIyi5SH8D0Yob3Y" ]
+    }, {
+      "transform" : [ 0.0, -1.0, 1.0474444016529402E-14, 0.0224955, -1.0, 0.0, 0.0, 0.0025, 0.0, -1.0474444016529402E-14, -1.0, 4.99999999971141E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "M9uyeyZSGbcI+zmEK" ]
+    }, {
+      "transform" : [ 0.353553390593274, 0.707106781186547, 0.612372435695795, -0.022132442251138952, -0.8660254037844389, 2.7755575615628898E-17, 0.5, -0.015, 0.3535533905932735, -0.707106781186548, 0.612372435695794, 0.022132442251138952, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MCAvDnhs1tkmhxoCJ" ]
+    }, {
+      "transform" : [ 0.0, 0.0, 1.0, -4.99999999970906E-4, -1.0, 0.0, 0.0, 0.0025, 0.0, -1.0, 0.0, 0.0224955, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MCkEONPNzlhFjN/SJ" ]
+    }, {
+      "transform" : [ 0.0, 1.0, 0.0, -0.0313, -1.0, 0.0, 4.6286252608496196E-11, -0.015, 4.6286252608496196E-11, 0.0, 1.0, 6.2005481464792096E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MFR/i1g24ruRPPDzN" ]
+    }, {
+      "transform" : [ 0.5, 4.2282091451704294E-17, 0.8660254037844389, -0.008462, 0.8660254037844389, 6.61452988844171E-17, -0.5, -0.015, -1.1102230246251559E-16, 1.0, 2.7755575615628898E-17, -0.0313, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MMI4MYOxn9P9J0fa5" ]
+    }, {
+      "transform" : [ 0.5, -9.070381091855499E-17, 0.8660254037844399, 0.015533, 0.8660254037844399, -2.681259114135745E-16, -0.5, -0.015, 2.7755575615628904E-16, 1.0, -5.5511151231257796E-17, -0.0313, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MQJ+ihiV0gBlTOulK" ]
+    }, {
+      "transform" : [ 1.803548397933535E-17, 1.0, 4.2847106462783203E-16, 0.0483, -0.999115279749817, 4.93113297384286E-32, 0.04205541309327065, -0.0375, 0.04205541309327065, -4.28850477329426E-16, 0.999115279749817, -2.25148077271549E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MTeMdwGDzi0GFk0wB" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MWnX3ZnwgppIrK822" ]
+    }, {
+      "transform" : [ 0.0, -6.982962677686271E-15, -1.0, 4.99999999971063E-4, -1.0, -0.0, 0.0, 0.0025, 0.0, 1.0, -6.982962677686271E-15, -0.0224955, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MaZIOiY0BSugCdQUY" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+" ]
+    }, {
+      "transform" : [ 0.0, 1.0, -3.4914813388431353E-15, -0.0224955, -1.0, 0.0, 0.0, 0.0025, 0.0, 3.4914813388431353E-15, 1.0, -4.99999999970984E-4, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MlkPuv8E+l6STdtqb" ]
+    }, {
+      "transform" : [ -0.353553390593274, 0.707106781186547, -0.612372435695795, -0.022132442251138952, -0.8660254037844379, 8.754528716685441E-16, 0.5, -0.015, 0.353553390593275, 0.707106781186548, 0.612372435695793, -0.022132442251138952, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "My4tj7FV6nZYMM8/D" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0085, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MolqfTOlapbmz5ThX" ]
+    }, {
+      "transform" : [ -1.0, 0.0, -2.27595720048157E-15, -6.778626059167459E-18, 0.0, -1.0, 0.0, 0.0681495, -2.1649348980190553E-15, 0.0, 1.0, 8.07778752372434E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "M09m8nPNCMfkyXrdR" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -0.006, 0.0, 1.0, 0.0, 0.0841495, 0.0, 0.0, 1.0, -3.469446951953615E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MBYXjNoT0jylEBXuG" ]
+    }, {
+      "transform" : [ 0.9873505073845701, -2.7755575615628898E-17, -0.1585527532634885, 0.006, 2.7755575615628898E-17, 1.0, -8.326672684688669E-17, 0.0841495, 0.1585527532634885, 8.326672684688669E-17, 0.9873505073845701, 2.2117724318704297E-17, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MDCvfoLUKzsY7/5oz" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne" ]
+    }, {
+      "transform" : [ 0.0, -0.8660254037844379, 0.5, -1.574455631237035E-18, 1.0, 0.0, 0.0, 0.08505, 0.0, 0.5, 0.8660254037844379, 4.60834057177073E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJvNzuEZCULxrDU2y" ]
+    }, {
+      "transform" : [ 1.0, 0.0, 0.0, -6.778626059167459E-18, 0.0, 0.0, -1.0, 0.0881495, 0.0, 1.0, 0.0, 8.07778752372434E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MLlSIcQvj6zNNdPnr" ]
+    }, {
+      "transform" : [ -1.0, 0.0, -2.220446049250315E-16, -1.734723475976805E-18, 0.0, -1.0, 0.0, 0.0607, -1.1102230246251559E-16, 0.0, 1.0, 1.734723475976805E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MfO0Rb85fzEevHX4G" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "M9avtf6ahZBX66yyX" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "ML4KJ06UXLNnxgxGt" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MLPZ1MlkVcM0SE+Eg" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MRM83S8CA6UFJ/NFP" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MbGQlwDJa1svdeRUo" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MdRw7prLNncM//pbh" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MgArUFnafCr0EXh1H" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MiujOJ2x/HSic3NqL" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MoQs/F+b5ueu8+0fR" ]
+    }, {
+      "transform" : [ 0.999983740894901, -0.005702450862498431, 0.0, -0.01306510879227612, 0.0, 0.0, 1.0, -0.0093, -0.005702450862498431, -0.999983740894901, 0.0, 0.00169756895260046, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJuC+jqKb8q5mymne", "MraEGMd6wpqB6wD/9" ]
+    }, {
+      "transform" : [ 0.0, -0.8660254037844379, 0.5, -1.574455631237035E-18, 1.0, 0.0, 0.0, 0.08505, 0.0, 0.5, 0.8660254037844379, 4.60834057177073E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJvNzuEZCULxrDU2y", "MD/mj2ADG3OEzIYD1" ]
+    }, {
+      "transform" : [ 0.0, -0.8660254037844379, 0.5, -1.574455631237035E-18, 1.0, 0.0, 0.0, 0.08505, 0.0, 0.5, 0.8660254037844379, 4.60834057177073E-18, 0.0, 0.0, 0.0, 1.0 ],
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "path" : [ "MbHcyqwtDadSzquF+", "MI4bt+LAaE5yHXp8w", "MJvNzuEZCULxrDU2y", "MEdrthuma/AKWrGsA" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M3xIyi5SH8D0Yob3Y",
+      "name" : "KP0026-01_NSK6810Z <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M9uyeyZSGbcI+zmEK",
+      "name" : "KP0025-01_MainPivotBar <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MaZIOiY0BSugCdQUY",
+      "name" : "KP0025-01_MainPivotBar <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MlkPuv8E+l6STdtqb",
+      "name" : "KP0025-01_MainPivotBar <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MCkEONPNzlhFjN/SJ",
+      "name" : "KP0025-01_MainPivotBar <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MbHcyqwtDadSzquF+",
+      "name" : "KP0021 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "41b07344696c9ff0ac8cd527",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MQJ+ihiV0gBlTOulK",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMI4MYOxn9P9J0fa5",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "My4tj7FV6nZYMM8/D",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <3>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MCAvDnhs1tkmhxoCJ",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <4>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MFR/i1g24ruRPPDzN",
+      "name" : "M3-Nut_90591A250_ZINC PLATED STEEL HEX NUT <5>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MTeMdwGDzi0GFk0wB",
+      "name" : "KP0020-01_PivotCodeDisk <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MWnX3ZnwgppIrK822",
+      "name" : "KP0013-01_MainPivotV2 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "fb1f2f02b218e28f89a7f141",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "type" : "Assembly",
+      "id" : "MI4bt+LAaE5yHXp8w",
+      "name" : "KA0008-01_HarmonicGearSet <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "122d155d3c39bd2cd61e4093",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MolqfTOlapbmz5ThX",
+      "name" : "KP0021-01_MotorEndCapPivot <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "41b07344696c9ff0ac8cd527",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MEdrthuma/AKWrGsA",
+      "name" : "CSF-14-2A-R FLEXSPLINE-1-solid1 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MD/mj2ADG3OEzIYD1",
+      "name" : "14 WG BEARING-1-solid1 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "df65c1bf3ced0141d7b012e9",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MDCvfoLUKzsY7/5oz",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MBYXjNoT0jylEBXuG",
+      "name" : "M3-6_91292A111_TYPE 18-8 SS SOCKET HEAD CAP SCREW <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MLlSIcQvj6zNNdPnr",
+      "name" : "KP0023-01_CamLeverCSF-14-XXX-2A-R <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M09m8nPNCMfkyXrdR",
+      "name" : "KP0024-01_WGCouplerSetScrTr <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MJvNzuEZCULxrDU2y",
+      "name" : "KP0008-01_GearCupCSF-14-XXX-2A-R <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "df65c1bf3ced0141d7b012e9",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MfO0Rb85fzEevHX4G",
+      "name" : "KP0022-01_FlexSplineAttatchLGHS <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MJuC+jqKb8q5mymne",
+      "name" : "NEMA17-48H <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "887039d413616b79e11638c6",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "122d155d3c39bd2cd61e4093",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MoQs/F+b5ueu8+0fR",
+      "name" : "Part 87 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MgArUFnafCr0EXh1H",
+      "name" : "Part 88 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MdRw7prLNncM//pbh",
+      "name" : "Part 89 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MLPZ1MlkVcM0SE+Eg",
+      "name" : "Part 90 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MraEGMd6wpqB6wD/9",
+      "name" : "Part 91 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MiujOJ2x/HSic3NqL",
+      "name" : "Part 92 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "ML4KJ06UXLNnxgxGt",
+      "name" : "Part 93 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MRM83S8CA6UFJ/NFP",
+      "name" : "Part 94 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M9avtf6ahZBX66yyX",
+      "name" : "Part 95 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MbGQlwDJa1svdeRUo",
+      "name" : "Part 96 <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "887039d413616b79e11638c6",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}

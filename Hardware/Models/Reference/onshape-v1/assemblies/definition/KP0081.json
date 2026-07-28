@@ -1,0 +1,169 @@
+{
+  "rootAssembly" : {
+    "occurrences" : [ {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 1.0, 0.0, 0.0, -0.034774236730299904, 0.0, 1.0, 0.0, -0.082735400472302, 0.0, 0.0, 1.0, 0.0247489340836182, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "M2Jkp2vVuNm2nsR12" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.0, -0.98310532316611, -0.183040770219255, -0.034774236730299904, 1.0, 0.0, 0.0, -0.055035400472301994, 0.0, -0.183040770219255, 0.98310532316611, 0.0247489340836182, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MMO9LmTVbvVNU+88M" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.02264440874374955, 0.0, -0.999743582501356, -0.02567062735765945, 0.0, 1.0, 0.0, -0.02835245173225495, 0.999743582501356, 0.0, -0.02264440874374955, 0.00765939747825048, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MOksDS1ZGpRyOxxt4" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.1849882445693235, -0.0, -0.982740733546321, -0.034774236730299904, 0.0, -1.0, 0.0, -0.065035400472302, -0.982740733546321, 0.0, 0.1849882445693235, 0.0247489340836182, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MtA6fJ/EGJuDd/mgp" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ -0.02264440874374955, 0.0, -0.999743582501356, -0.034774236730299904, 0.0, 1.0, 0.0, -0.058535400472302, 0.999743582501356, 0.0, -0.02264440874374955, 0.024748934083618206, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MOksDS1ZGpRyOxxt4", "Mc/oL6LVQSArssY9o" ]
+    }, {
+      "fixed" : false,
+      "mateStatuses" : null,
+      "hidden" : false,
+      "transform" : [ 0.022644408744276992, 0.0, -0.999743582501344, -0.034774236730299904, 0.0, -1.0, 0.0, -0.066535400472302, -0.999743582501344, 0.0, -0.022644408744277103, 0.024748934083618206, 0.0, 0.0, 0.0, 1.0 ],
+      "path" : [ "MOksDS1ZGpRyOxxt4", "MqRIZFX2tAILqBM5T" ]
+    } ],
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MMO9LmTVbvVNU+88M",
+      "name" : "KP0062-01_B678ZZ_2_03 <1>",
+      "suppressed" : false,
+      "partId" : "JFP",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "type" : "Assembly",
+      "id" : "MOksDS1ZGpRyOxxt4",
+      "name" : "KP0078 <1>",
+      "suppressed" : false,
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "187b6b0604e496db8d3cd4bc",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MtA6fJ/EGJuDd/mgp",
+      "name" : "KP0075-01_ToolShaftEndCap <1>",
+      "suppressed" : false,
+      "partId" : "JFT",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "M2Jkp2vVuNm2nsR12",
+      "name" : "KP0081-01_LargeWristShaft <1>",
+      "suppressed" : false,
+      "partId" : "KF7B",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "ca3f784fbfc5a4af335f2c41",
+    "documentMicroversion" : "958568a84148485cee263479"
+  },
+  "subAssemblies" : [ {
+    "patterns" : [ ],
+    "parametricInstances" : [ ],
+    "features" : [ ],
+    "instances" : [ {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "MqRIZFX2tAILqBM5T",
+      "name" : "KP0078-01_ToolShaft16iIDBelt <1>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    }, {
+      "isStandardContent" : false,
+      "type" : "Part",
+      "id" : "Mc/oL6LVQSArssY9o",
+      "name" : "KP0078-01_ToolShaft16iIDBelt <2>",
+      "suppressed" : false,
+      "partId" : "",
+      "fullConfiguration" : "default",
+      "configuration" : "default",
+      "documentId" : "2af8ed0e61a34ebf69284c68",
+      "elementId" : "9b5403d60ad20f74044dd125",
+      "documentMicroversion" : "958568a84148485cee263479"
+    } ],
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "187b6b0604e496db8d3cd4bc",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "parts" : [ {
+    "isStandardContent" : false,
+    "partId" : "",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "JFP",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "KF7B",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  }, {
+    "isStandardContent" : false,
+    "partId" : "JFT",
+    "bodyType" : "solid",
+    "fullConfiguration" : "default",
+    "configuration" : "default",
+    "documentId" : "2af8ed0e61a34ebf69284c68",
+    "elementId" : "9b5403d60ad20f74044dd125",
+    "documentMicroversion" : "958568a84148485cee263479"
+  } ],
+  "partStudioFeatures" : [ ]
+}
