@@ -34,12 +34,14 @@ and are recorded as the opening section of [CHANGES.md](../CHANGES.md).
 
 A design identity has three parts:
 
-- **Version** — a numbered machine and its architecture (version 3). The next version is developed on
-  `main` and comes into being when it is branched ([§3](#3-branch-model)).
+- **Version** — a numbered machine and its architecture (version 3). A version comes into being when its
+  line is branched from the version it develops from ([§3](#3-branch-model)), and that line carries every
+  revision of the machine.
 - **Revision** — a lettered issue of a version's design of record (revision A, B, …). A new revision is a
   change to the *specified design* of the same version: it may change parts, geometry, firmware, or
-  procedure, but stays within that version's architecture. A released revision is frozen by a git tag, which
-  is the canonical way to retrieve it.
+  procedure, but stays within that version's architecture. A revision is carried by its version's line, not
+  by a line of its own ([§3](#3-branch-model)); a released revision is frozen by a git tag, which is the
+  canonical way to retrieve it.
 - **Build/serial** — an individual physical robot built to a revision (e.g. a unit carrying its own factory
   calibration record, analogous to the serialized `HDI-007010` unit whose measured kinematics seed
   [003-Kinematics.md](003-Kinematics.md)). Serials are not spec versions; they are instances. A build record
@@ -47,63 +49,70 @@ A design identity has three parts:
   specification.
 
 A change large enough to break the current architecture (a different reduction principle on the base joints,
-a different sensing method, a different control platform) is the **next version**, developed on `main`, not
-a revision.
+a different sensing method, a different control platform) is the **next version** — a new line branched from
+the current one — not a revision.
 
 **The specification does not state its own version and revision.** Which design a document belongs to is
 determined by the branch or tag it is read at ([§3](#3-branch-model)), so no document carries a version or revision in its
 title or prose. Identity is written down in exactly two places: [CHANGES.md](../CHANGES.md), which records
 each revision and the tag that freezes it, and this document, which defines the scheme. Keeping it out of
-the documents themselves means a revision branch does not begin with a mechanical retitling pass, and no
+the documents themselves means a new revision does not begin with a mechanical retitling pass, and no
 file can disagree with the ref it is read at.
 
 ## 3. Branch model
 
-`main` is the development line. It always holds the latest design of the robot, ahead of any released
-version, and it is where the next version is developed. Releasing a version does not stop `main`; work
-continues there toward the version after it.
+The repository holds one long-lived branch per version and one tag per released revision. There is no
+`main`: every commit belongs to the line of a numbered machine, and the branch a commit sits on is what
+says which machine it describes.
 
-Versions and revisions are carried by git branches and tags. There are no per-revision directories, no
-`specs-rev-b/` trees, and no version or revision suffixes in file names. Every document keeps one path for
-the life of the project. This keeps `git diff` and `git log` the authoritative diff between revisions, and
-keeps cross-document links stable.
+`version-<n>` is the line of version *n*. It is created when the version is opened, carries every revision
+of that machine, and stays open for the life of the design. The newest version line is the development
+line — it always holds the latest design, ahead of any released revision — and is the repository's
+**default branch**; repointing the default is part of opening a new version.
+
+Revisions are not branches. A revision is a stretch of its version's line, frozen at the end by a tag; work
+continues past the tag on the same branch toward the next revision. There are no per-revision directories,
+no `specs-rev-b/` trees, and no version or revision suffixes in file names. Every document keeps one path
+for the life of the project. This keeps `git diff` and `git log` the authoritative diff between revisions,
+and keeps cross-document links stable.
 
 | Object | Name | Role |
 |---|---|---|
-| Development line | `main` | The latest design; where the next version is developed |
-| Revision branch | `version-<n>/rev-<letter>` — e.g. `version-3/rev-a` | Where a revision of version *n* is developed and maintained |
+| Version line | `version-<n>` — e.g. `version-3` | Where version *n* is developed and maintained, across all its revisions |
 | Release tag | `version-<n>-rev-<letter>` — e.g. `version-3-rev-a` | An immutable freeze of a released revision |
 
-`version-<n>/` is a namespace, not a branch: git cannot hold a branch named `version-3` and a branch named
-`version-3/rev-a` at the same time, because the first occupies the ref path the second needs. A version's
-line is therefore its revision branches, the first of which is `version-3/rev-a`.
+Because `version-3` occupies that ref path, git cannot also hold a branch beneath it: `version-3/wrist` and
+`version-3` cannot coexist. A short-lived topic branch is therefore named as a sibling rather than a child —
+`v3-wrist-reduction`, not `version-3/wrist`.
 
 ```mermaid
 graph LR
-    Main["main<br/>development line"]
-    Main -->|"switch -c version-3/rev-a"| RevA["version-3/rev-a"]
-    RevA --> TagA["tag: version-3-rev-a"]
-    TagA -->|"switch -c version-3/rev-b"| RevB["version-3/rev-b<br/>CR-3B1, CR-3B2, ... land here"]
+    V2["version-2<br/>dormant"]
+    V2 -->|"switch -c version-3"| V3["version-3<br/>development line · default branch"]
+    V3 --> TagA["tag: version-3-rev-a"]
+    TagA --> RevB["CR-3B1, CR-3B2, ...<br/>continue on version-3"]
     RevB --> TagB["tag: version-3-rev-b"]
-    Main -.->|"switch -c version-4/rev-a"| V4["version-4/rev-a<br/>future"]
+    TagB -.->|"switch -c version-4"| V4["version-4<br/>future"]
 ```
 
 Rules:
 
-- **A version is created by branching its first revision from `main`**: `git switch -c version-3/rev-a main`.
-- **A later revision branches from the revision it deltas against**, so it starts from exactly the frozen
-  design it changes: `git switch -c version-3/rev-b version-3-rev-a`.
-- **A revision is released by tagging its branch**: `git tag -a version-3-rev-b`. The tag is the release
-  event; there is no release merge.
+- **A version is opened by branching a new line from the one it develops from**: `git switch -c version-4
+  version-3`. The new line becomes the repository's default branch; the previous line stays open but
+  dormant.
+- **A revision is released by tagging its version line**: `git tag -a version-3-rev-b version-3`. The tag is
+  the release event; there is no release branch and no release merge.
 - **A prior revision is retrieved by checking out its tag** (`git switch --detach version-3-rev-a`), not by
   reading an archived copy. Tags are never moved or rewritten once published.
-- **A revision branch stays open after release**, and is where any later work on that released machine
-  happens; `main` is never a work area for a released version. A change made on a revision branch that also
-  belongs in the ongoing design is merged or cherry-picked to `main`.
-- **A single change request may take its own short-lived branch** off the revision branch, named as a
-  sibling of it (`version-3/rev-b-wrist`, not `version-3/rev-b/wrist`, which the ref path forbids for the
-  same reason as above), merged back when complete. This is optional, and appropriate when a change is
-  large enough to want isolated review.
+- **A released revision is never reopened.** An error found in a released revision is corrected as a change
+  in the next revision of the same version, so the tag continues to describe exactly the machines built to
+  it.
+- **A version line stays open after its successor opens**, and is where any later work on that machine
+  happens. A change made on an older line that also belongs in the current design is merged or cherry-picked
+  forward.
+- **A single change request may take its own short-lived branch** off the version line, named as described
+  above, merged back when complete. This is optional, and appropriate when a change is large enough to want
+  isolated review.
 - **Version numbers are assigned in order and never reused.** Revision letters restart at A for each
   version, which is why a tag names both (`version-4-rev-a` is not `version-3-rev-a`).
 
@@ -112,12 +121,13 @@ Rules:
 The specification is written so the next revision is a **delta against the current one**, not a rewrite. To
 author revision B of version 3 (or any successor):
 
-1. **Branch the spec set.** `git switch -c version-3/rev-b version-3-rev-a`. Revision A remains frozen at
-   its tag; nothing is copied.
+1. **Open the revision.** Work continues on `version-3`; there is no branch to create. Revision A remains
+   frozen at its tag, and revision B begins at the first commit past it.
 2. **Open the change set.** Add a new revision section at the top of [CHANGES.md](../CHANGES.md) and record
    each intended change as a delta in the format of [§5](#5-change-record-format): the design item it modifies (by document and
    section), the old design, the new design, and the rationale. The section is opened when the branch is
-   created and filled in as changes land, so it reads as the human-readable diff between revisions.
+   opened at the first commit of the revision and filled in as changes land, so it reads as the
+   human-readable diff between revisions.
 3. **Amend requirements first.** Apply changes that alter *what the robot must do* to
    [002-Requirements.md](002-Requirements.md). Requirements are the root of the derivation; change them
    before touching mechanics.
@@ -126,17 +136,17 @@ author revision B of version 3 (or any successor):
    configuration (006), bill of materials (007), and assembly (008). The dependency order is:
    `002 → 003 → 004 → 005 → {006, 007, 008}`.
 5. **Carry forward open decisions.** Any [009-Design-Completion.md](009-Design-Completion.md) `[TBD]` item
-   still open at the time of branching is inherited by the new revision unless the change set closes it.
+   still open when the revision opens is inherited by it unless the change set closes it.
 6. **Re-mark design status.** A `[Specified]` item whose design the revision changes reverts to
    `[Provisional]` until re-validated on a physical build of the new revision. Do not carry a prior
    revision's validation forward across a design change.
-7. **Release.** `git tag -a version-3-rev-b`, then mark the revision's section in
-   [CHANGES.md](../CHANGES.md) as released with its tag and date. Merge or cherry-pick to `main` any change
-   that also belongs in the ongoing design.
+7. **Release.** `git tag -a version-3-rev-b version-3`, then mark the revision's section in
+   [CHANGES.md](../CHANGES.md) as released with its tag and date.
 
-**Starting a new version** follows the same shape, from `main` rather than from a tag: when the design on
-`main` is ready to be built as a machine, `git switch -c version-4/rev-a main` and tag it `version-4-rev-a`
-once released. Add the version to the table in [§1](#1-version-lineage), and open its first section in
+**Starting a new version** follows the same shape on a new line: when a change departs from the current
+version's architecture ([§2](#2-design-identity)), `git switch -c version-4 version-3`, repoint the
+repository default branch to it, and tag `version-4-rev-a` when its first revision is released. Add the
+version to the table in [§1](#1-version-lineage), and open its first section in
 [CHANGES.md](../CHANGES.md) recording the deltas against the previous version — the same role the version 3
 section plays today.
 
