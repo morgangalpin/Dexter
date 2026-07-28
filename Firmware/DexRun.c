@@ -2211,7 +2211,7 @@ void SendWriteXPacket(unsigned char * data, unsigned char servo, int WAddres, in
 	int len = their_len; //make a copy for us so we can modify ours only. 
 	int i, state = 0;
 	int esc_count = len/3; //might have to escape every 3rd byte.
-	printf("Send %d bytes to addr %d of servo %d\n", len, WAddres, servo);
+	//printf("Send %d bytes to addr %d of servo %d\n", len, WAddres, servo);
 	unsigned char RxBuf[27]; //for a write packet, the return status is always 15 bytes. 16+11 because UnloadUART (ask Kent)
 	unsigned char TxPacket[10 + len + 2 + esc_count]; //packet, data, CRC, and more to deal with 0xFD escaping. 
 	memcpy(TxPacket, dynamixel_header, sizeof(dynamixel_header)); //0-3 are the header
@@ -2238,7 +2238,7 @@ void SendWriteXPacket(unsigned char * data, unsigned char servo, int WAddres, in
 				if (*data != 0xff) state = 0; //could have any number of 0xff's before 0xfd.
 				break;
 			default: state = 0; break;
-			} printf("%02X ", *data); //printf("Copy byte %d state %d\n", i, state);
+			} //printf("%02X ", *data); //printf("Copy byte %d state %d\n", i, state);
 		*TxPacketPtr++ = *data++;
 		}
 	len += 5; //Length to servo starts after ID byte in packet, so includes 2 length bytes, instruction, 2 address bytes, and data (not CRC)
@@ -5731,7 +5731,7 @@ int ParseInput(char *iString)
 							} //this preserves the original function of ServoSet
 						else { //otherwise, d4 is length, p5 points to escaped datastring.
 							d4 = unescape(p5, d4); //nulls, 0x3B (;) can't pass initial parse, esc'd w/ 0x25 (%) 
-							for (i = 0; i<d4; i++) printf("%02X ", p5[i]);
+							//for (i = 0; i<d4; i++) printf("%02X ", p5[i]);
 							//printf("\nsend %d bytes to servo %d at addr %d\n", d4, d2, d3);
 							SendWriteXPacket((unsigned char *)p5, d2, d3, d4); //note that length was changed by unescape
 							}
