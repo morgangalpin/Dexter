@@ -42,6 +42,7 @@ You can debug DexRun.c by [establishing a network connection](https://github.com
 ````
 cd /srv/samba/share
 pkill DexRun
+./pg
 ./DexRun 1 3 1
 ````
 This will show you the printfs with debugging data from the DexRun side. 
