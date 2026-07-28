@@ -157,6 +157,11 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Provisional]` —
 [DC-2](009-Design-Completion.md#differential-detail-design).
 
+⚠️ **Before printing:** `710-002_SplitGearBottom.stl` is defective and must be rescaled and dimension-checked
+first ([DC-11(f)](009-Design-Completion.md#procurement-data)). This subassembly also builds the *previous*
+version's differential as a substitute, which is not confirmed to fit inside the `HDI-940` covers
+([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)).
+
 1. Insert one 6705 and one 6703 bearing into Diff Body A; press to seat.
 2. Insert one 6703 into the End Arm Hub; press to seat.
 3. Insert 2× 6703 into Diff Body B (one each side); press to seat.

@@ -57,6 +57,16 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
 
+## Known defects
+
+**`700-Differential/710-002_SplitGearBottom.stl` is out of scale and must be rescaled and dimension-checked
+before printing.** It is the only defective file in the build set. The measurements, the evidence, and the
+datum to check the rescaled part against are specified in
+[DC-11(f)](../../specs/009-Design-Completion.md#procurement-data).
+
+`720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a defect — it prints normally — but it
+is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd` with no triangle count.
+
 ## Formats, and what can actually be edited
 
 | Format | Where | Editable? |

@@ -158,8 +158,8 @@ parts list realizes the previous version's differential, built as a working subs
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
-| #710-001 | Split Gear Top | 3D print | 1 | |
-| #710-002 | Split Gear Bottom | 3D print | 1 | |
+| #710-001 | Split Gear Top | 3D print | 1 | The dimensional datum for checking `#710-002` |
+| #710-002 | Split Gear Bottom | 3D print | 1 | ⚠️ **Model file defective** — rescale and check before printing ([DC-11(f)](009-Design-Completion.md#procurement-data)) |
 | #710-003 | Diff Keeper | 3D print | 2 | |
 | #710-004 | Rotate Code Disk | 3D print | 1 | |
 | #710-005 | 25 × 5.6 × 2.5 mm CF strake | Fabricate | 3 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |

@@ -11,10 +11,18 @@ specified in the document named in the item's header, and is not repeated here.
 Priority reflects lead time and build-blocking impact. Close **P1** items before ordering; **P2** before
 cutting/committing structure; **P3** are refinements or characterizations.
 
+**Sources of record.** Haddington Dynamics, the originator of this design, is **out of business**. No
+further design files, part identities, or physical units can be obtained from them, and no serialized HDI
+unit is available to measure. Every item below is therefore closed by one of three routes only: a
+**third-party procurement action**, a **decision authored into this specification**, or a **measurement on
+a unit built from it**. Where an item previously named recovery from the originator, that route is gone and
+the item is an authoring task — most consequentially [DC-2](#differential-detail-design), which becomes a
+full detail design.
+
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
 | DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | Vendor quote and availability | `[Provisional]` |
-| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | Detail geometry recovery | `[Provisional]` |
+| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | Detail design, authored here | `[Provisional]` |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | Tooth-count decomposition | `[Provisional]` |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | Socket-seat depth check | `[Provisional]` |
@@ -25,10 +33,10 @@ cutting/committing structure; **P3** are refinements or characterizations.
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 
-**Completion progress.** DC-8 is closed. Every other item except DC-6 and DC-9 has been narrowed to the
-single remaining gap named in the table above — in each case a procurement action, a CAD or measurement
-check, or a physical test, rather than an undecided design. DC-6 and DC-9 are inherently physical (caliper
-measurement / instrumented build) and cannot be closed from the design record alone.
+**Completion progress.** DC-8 is closed. Every other item has been narrowed to the single remaining gap
+named in the table above, and each of those gaps is one of three kinds of work: **procurement** (DC-1,
+DC-11), **design or reconstruction authored here** (DC-2, DC-3, DC-6, DC-10), or **a check on a physical
+build** (DC-4, DC-5, DC-7, DC-9). DC-2 is the largest single piece of work in the set.
 
 ---
 
@@ -56,25 +64,51 @@ longest-lead item — start vendor contact before ordering anything else. If nei
 becomes a drive-redesign task (e.g. cycloidal), which is a new revision, not a completion item.
 `[Provisional]`.
 
+**Updates**
+1. The part number from HanZhen is `XB1-AS-C-32(14)-52`. Unit price is USD 120.
+
 ## Differential detail design
 **DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)**
 
-**Open:** the differential's detail geometry. Its *function* is specified in 004; the build uses the previous
-version's differential geometry as a working substitute until the detail design is recovered.
+**Open:** the differential's detail design. Its *function* and its complete external interface are specified
+in [004](004-Mechanical-Architecture.md#differential-interface); what does not exist anywhere is the
+internal geometry that realizes them. The build uses the previous version's differential as a working
+substitute meanwhile.
 
-**Recovery source narrowed.** The CAD model shipped in `dde` (`HDIMeterModel.gltf`,
-also `dde/sim2/HDIMeterModel.gltf`) is a **kinematic + outer-skin** model: it contains the differential
-*covers* (`HDI-940-001_DiffCover`, `HDI-940-002_DiffCoverCap`) and the `DexterHDI_Link4/5/6/7_KinematicAssembly`
-frames, but **not** the differential mechanism internals (the 700-series Split Gear, Diff Body A/B, Diff Gear
-Shaft/Axle, Diff End Pulley). It therefore confirms the outer envelope and axis frames but is
-insufficient to recover the flex/pivot detail geometry. The remaining recovery source is the **OnShape CAD**
-(linked in `Hardware/README.md`) or direct measurement of a physical differential.
+**There is no source to recover this from.** All three candidate routes are closed, which makes this an
+authoring task rather than a retrieval task:
 
-**Definition of done:** the differential detail geometry (flex/pivot dimensions, pulley integration,
-wiring bore) recovered from the OnShape source or a physical unit and validated, replacing the substitute.
-Until then, build the previous version's differential; an incorrect flex/pivot geometry risks binding a
-joint that also
-routes the tool wiring through its bore. Status `[Provisional]`.
+- **The in-repo CAD model is a kinematic-and-skin model.** `dde/HDIMeterModel.gltf` (and
+  `dde/sim2/HDIMeterModel.gltf`) carries the differential *covers* (`HDI-940-001_DiffCover`,
+  `HDI-940-002_DiffCoverCap`) and the `DexterHDI_Link4/5/6/7_KinematicAssembly` frames, but **not** the
+  mechanism internals (the 700-series Split Gear, Diff Body A/B, Diff Gear Shaft/Axle, Diff End Pulley). It
+  fixes the envelope and the axis frames — which is why those are now specified in
+  [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface) — and nothing else.
+- **The OnShape document cannot yield it.** It is exported to
+  [`Hardware/Models/Reference/onshape-v1/`](../Hardware/Models/Reference/onshape-v1/README.md) and is the
+  **v1** design, not this one. Its Part Studio holds a single `Import 1` feature pointing at foreign CAD
+  that returns `404`: 140 dead solids, no sketches, no editable dimensions, no feature history. It is
+  measurable reference geometry, not a parametric source.
+- **No physical unit is obtainable** — see **Sources of record** above.
+
+**What survives as design input.** Enough to author the part against a closed constraint set:
+
+| Input | Where | What it gives |
+|---|---|---|
+| Interface specification | [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface) | Envelope, axis positions, travel, bevel ratio, encoders, bore |
+| Previous version's mechanism | [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/) — 9 STLs | A complete, built, working precedent at mesh fidelity, with its build procedure in [008.6](008-Assembly.md#0086-differential) |
+| v1 mechanism internals | `Hardware/Models/Reference/onshape-v1/parts-step/` — `SideDifferentialGear`, `SideDifferentialGear2`, `OutterFrontDifferentialGear`, `InnerFrontDifferentialGear`, `SmallDifferentialShaft`, `DiffBodySmallB` | Bevel-gear geometry as measurable B-rep solids |
+| v1 assembly relationships | `…/assemblies/definition/KA0014-01_Differential.json`, `KA0015-01_DifferentialSet.json` | Occurrence transforms for how those solids sit together |
+
+**Definition of done:** a differential design authored to
+[004 § Differential interface](004-Mechanical-Architecture.md#differential-interface), with its **source
+geometry committed to this repository** (`.scad`, per the convention in
+[`Hardware/Models/README.md`](../Hardware/Models/README.md#moving-to-openscad)) rather than as a mesh alone,
+and validated on a build: J4 and J5 move without binding through their full travel, the 6-conductor bundle
+passes the bore and survives J5's full travel, and both code disks read cleanly. Until then, build the previous
+version's differential, accepting the risk stated in
+[004 § Wrist and differential](004-Mechanical-Architecture.md#wrist-and-differential-j4j5).
+Status `[Provisional]`.
 
 ## Wrist reduction ratio
 **DC-3 · P2 · Requirement: REQ-STR-3, REQ-PRE (J4/J5) · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5), [006](006-Firmware-and-Calibration.md#drive-constants-axiscal)**
@@ -105,12 +139,13 @@ is retained; the driven side is what changes. The differential bevels are ≈1:1
 net 5.625:1 equals its
 belt stage alone), so the added 2.4× lives in the belt/pulley stages.
 
-**Definition of done:** the J4/J5 tooth-count decomposition (which pulleys realize the 13.5:1 net,
-recovered from OnShape CAD or measurement) and belt lengths, validated so firmware `AxisCal`/`Interpolation`
-produce correct joint resolution and range with acceptable backlash. Status `[Provisional]`: **the target net
-ratio (13.5:1) is fixed and specified**; only the tooth-count split is open. Do **not** ship the previous
-version's 16T/90T
-driven set against this firmware without re-checking the net ratio.
+**Definition of done:** the J4/J5 tooth-count decomposition — which pulleys realize the 13.5:1 net —
+**chosen here**, since no surviving record states the intended split and none can be obtained (see
+**Sources of record** above); plus the belt lengths that follow from it, validated so firmware
+`AxisCal`/`Interpolation` produce correct joint resolution and range with acceptable backlash. Status
+`[Provisional]`: **the target net ratio (13.5:1) is fixed and specified**; only the tooth-count split is
+open. Do **not** ship the previous version's 16T/90T driven set against this firmware without re-checking
+the net ratio.
 
 ## Base plate
 **DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)**
@@ -156,18 +191,28 @@ relative to encoder zero and shows up as a Cartesian-accuracy error, not an asse
 ## Link-length discrepancy (L4)
 **DC-6 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)**
 
-Two link-length sets disagree: the firmware file (`Defaults.make_ins`) gives L4 = 59.50 mm and
-L5 = 82.44 mm; the wiki gives L4 = 50.95 mm and L5 = 82.55 mm. This specification treats the firmware file as
-authoritative.
+Link-length records disagree on L4, and no unit exists to arbitrate them:
 
-**State.** This cannot be closed from the design record. The measured DH model of HDI-007010
-([003](003-Kinematics.md#denavithartenberg-model)) does not adjudicate it: the wrist axes intersect
-(`a`≈0 on J4/J5), so L4 is carried in frame `d` offsets (J4 `d` = 39.3 mm, J5 `d` = 55.6 mm) that do not map
-1:1 to either candidate. Resolution requires a **caliper measurement of L4/L5 on a built or serialized unit**.
+| Source | L4 | L5 |
+|---|---|---|
+| `Firmware/Defaults.make_ins` — **authoritative** | 59.50 mm | 82.44 mm |
+| Wiki | 50.95 mm | 82.55 mm |
+| CAD frame separation, per [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface) | 39.50 mm along the arm axis (44.27 mm in 3D) | — |
 
-**Definition of done:** measure L4/L5 physically, set the authoritative values, and update
-[003](003-Kinematics.md#link-lengths) and firmware. Until then the firmware file (L4 = 59.50 mm) stands.
-`[TBD]`.
+**State.** With no serialized unit available to measure (see **Sources of record** above), this stops being
+an arbitration between records and becomes a **design output**: L4 is whatever the differential and End Arm
+Hub authored under [DC-2](#differential-detail-design) place between the J4 and J5 axes. The firmware value
+is the target that design must hit.
+
+The measured DH model of HDI-007010 ([003](003-Kinematics.md#denavithartenberg-model)) does not adjudicate:
+the wrist axes intersect (`a`≈0 on J4/J5), so L4 is carried in frame `d` offsets (J4 `d` = 39.3 mm, J5
+`d` = 55.6 mm) that do not map 1:1 to any candidate. The GLTF figure is **not** decisive either — a
+kinematic-assembly node origin need not sit exactly on the joint axis — but it lands within 0.2 mm of the
+J4 `d` term, and is recorded here so whoever closes this has all three figures rather than two.
+
+**Definition of done:** design the wrist to the firmware L4 (59.50 mm), confirm it by caliper on the first
+build, and update [003](003-Kinematics.md#link-lengths) and firmware if the built value differs. Until then
+the firmware file stands. `[TBD]`.
 
 ## Motor Control PCB
 **DC-7 · P2 · Requirement: REQ-CTL-3, REQ-IF-4 · Specified in [005](005-Electronics-and-Control.md#boards)**
@@ -219,20 +264,20 @@ bundle is recoverable from public repos; two wrappers are not.
 | `Setup_Find_Index_Home_HDI*.dde` | Step 2 eye-calibration job wrapper | **Missing** from the public repo (referenced only) |
 | `Find_Index_Pulses_HDI.dde` | Boot home-finding job wrapper | **Missing** — named in `Firmware/RunDexRun` (commented boot line) but not shipped |
 
-Because the calibration **engine** is public, the two missing `.dde` wrappers are thin jobs over it and can
-be **reconstructed** against `Calibrate_Encoders_Function.dde` / `calibrate_optical.js`, or requested from
-Haddington Dynamics.
+Because the calibration **engine** is public, the two missing `.dde` wrappers are thin jobs over it and must
+be **reconstructed** against `Calibrate_Encoders_Function.dde` / `calibrate_optical.js`. Requesting them
+from the originator is not an option (see **Sources of record** above), so reconstruction is the only route.
 
-**Definition of done:** obtain or reconstruct the two missing job wrappers, verify they drive the engine
+**Definition of done:** reconstruct the two missing job wrappers, verify they drive the engine
 through [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) end-to-end on a new unit, and
 confirm the resulting `post_cal_info.JSON` gives correct home-finding. `[Provisional]`.
 
 ## Procurement data
 **DC-11 · P2 · Requirement: buildability · Specified in [007.1](007.1-Parts-Catalog.md), [007.2](007.2-Printed-Parts.md)**
 
-**Open:** five part identities that the parts catalog could not pin from the design record. Everything else
-in [007.1](007.1-Parts-Catalog.md) resolves to an orderable product with a supplier link; these five do not,
-and each is `[Provisional]` there.
+**Open:** five part identities that the parts catalog could not pin from the design record, plus one
+defective model file. Everything else in [007.1](007.1-Parts-Catalog.md) resolves to an orderable product
+with a supplier link; these five do not, and each is `[Provisional]` there.
 
 | # | Item | What is open | Consequence if wrong |
 |---|---|---|---|
@@ -241,17 +286,22 @@ and each is `[Provisional]` there.
 | c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) | [007.5](007-Bill-of-Materials.md#0075-arm-body) types them "Fabricate"; [008.5](008-Assembly.md) treats them as printed bodies that accept pressed MR128 bearings and printed caps | Three parts either printed that should be machined, or absent from the print list |
 | d | **Print parameters** ([007.2 § Material](007.2-Printed-Parts.md#material)) | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment | Bearing bores and CF strake slots out of tolerance; press and bond fits fail |
 | e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) | `HDI-311-006C_J2StatorHolderCap_ConeDrive` is in the CAD model but has no BOM row; `HDI-610-006_MotorShaftCoupler` is instanced 4× where the BOM calls for 3 | A missing printed part discovered mid-assembly |
+| f | **Defective model file** (`#710-002`, [007.2](007.2-Printed-Parts.md#differential--0076)) | `Hardware/Models/700-Differential/710-002_SplitGearBottom.stl` is **~1000× oversize**: vertices span ±17 405 with Z from 4 000 to 27 368, i.e. ≈34.81 × 34.81 × 23.37 mm at true scale. It is the only such file among the 78 in the build set, and its binary header reads `STLB ASM 217.00.00.5800` where every neighbouring file reads `220.00.00.0000` — a different exporter version, consistent with a unit-setting slip | Sliced as shipped it prints as a 34.8-metre part; rescaled by guess rather than by check, the Split Gear bore and brad holes miss their mates |
 
-**Also open: the model archives are off-repository.** Every printed part's geometry lives in Thingiverse
-archives and an OnShape document outside this repository
-([007.2 § Model file sources](007.2-Printed-Parts.md#model-file-sources)). That is a single point of failure
-for the whole build, and it is why [007.2](007.2-Printed-Parts.md) can give per-*archive* links but not
-per-*part* ones.
+**Largely closed: the model archives are now mirrored** in
+[`Hardware/Models/`](../Hardware/Models/README.md), so the upstream archives are no longer a single point of
+failure ([007.2 § Model file sources](007.2-Printed-Parts.md#model-file-sources)). Two gaps remain:
+[007.2](007.2-Printed-Parts.md) still gives per-*archive* links rather than per-*part* ones, and — more
+seriously — **most of the robot is mesh-only**, so changing an HD part today means re-deriving it from a
+mesh ([`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)).
+That is what makes [DC-2](#differential-detail-design) and the OpenSCAD conversion the same piece of work.
 
 **Definition of done:** (a) a confirmed stepper part number verified against the printed Motor End Cap
 envelope; (b) fan size, voltage, and part number specified against the Fan Bracket; (c) the Belt Director
 type settled and the affected rows corrected in [007](007-Bill-of-Materials.md)/[007.2](007.2-Printed-Parts.md);
 (d) a published print profile validated on a bearing bore and a strake slot; (e) both CAD-vs-BOM mismatches
-adjudicated against the model set; and the STL set mirrored into `Hardware/STL/` so
-[007.2](007.2-Printed-Parts.md) can carry per-part model links. None of these blocks starting the long-lead
-items in [DC-1](#strain-wave-component-set). `[Provisional]`.
+adjudicated against the model set; (f) `710-002_SplitGearBottom.stl` rescaled and dimension-checked against
+its mates — `710-001_SplitGearTop` carries the 44.05 mm bevel OD to check it against; and
+[007.2](007.2-Printed-Parts.md) carrying per-part model links now that the model set is mirrored in
+[`Hardware/Models/`](../Hardware/Models/README.md). None of these blocks starting the long-lead items in
+[DC-1](#strain-wave-component-set). `[Provisional]`.

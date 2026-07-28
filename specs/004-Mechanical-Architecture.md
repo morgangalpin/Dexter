@@ -139,11 +139,40 @@ end-effector wiring bundle passes through the differential's hollow bore.
   **driven side must be toothed to net 13.5:1**, and the tooth-count split that realizes it — along with the
   scale error that results from getting it wrong — is [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
 - **Differential detail — `[Provisional]`.** The differential is significantly revised from the previous
-  version. This specification defines the differential's *function*, and the build uses the previous
-  version's differential geometry as a working substitute until the detail design is recovered; an incorrect
-  flex/pivot geometry risks binding a joint that also carries the tool wiring through its bore. The recovery
-  sources and what closing this requires are in
+  version, and no record of the revised internals survives: the design must be **authored** against the
+  [interface below](#differential-interface), not recovered. The build uses the previous version's
+  differential geometry as a working substitute meanwhile; an incorrect flex/pivot geometry risks binding a
+  joint that also carries the tool wiring through its bore. What closing this requires is in
   [DC-2](009-Design-Completion.md#differential-detail-design).
+
+### Differential interface
+
+The differential's detail design is open, but its **interface is specified**, and this is the constraint set
+any design must satisfy. Envelope and axis figures are taken from the cover bodies and kinematic frames in
+`dde/HDIMeterModel.gltf`, whose mesh vertices are in metres under a ×10 node scale and a ×100 root scale, so
+world units are millimetres.
+
+| Constraint | Value | Source |
+|---|---|---|
+| Outer envelope | `HDI-940-001_DiffCover` measures **78.0 × 73.5 × 50.5 mm**; `HDI-940-002_DiffCoverCap` seats on its +Y face, giving **≈78 mm across × 83 mm tall** stacked | GLTF cover bodies |
+| J4 axis frame | `(0, 877.79, 18.00)` mm; the cover's own origin sits at `(0, 877.79, 0.50)` mm | GLTF `DexterHDI_Link4_KinematicAssembly` |
+| J5 axis frame | `(0, 917.29, −2.00)` mm — **39.50 mm** from J4 along the arm axis | GLTF `DexterHDI_Link5_KinematicAssembly` |
+| Tool frame | `(54.82, 939.84, −2.00)` mm | GLTF `DexterHDI_Link6_KinematicAssembly` |
+| Travel | Full J4 and J5 travel without binding; **J5's is the demanding one** for a mechanism routing wiring through its bore | [003 § Joint travel limits](003-Kinematics.md#joint-travel-limits) |
+| Bevel ratio | **≈1:1** — the net 13.5:1 is realized in the belt stages, not inside the differential | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
+| Encoders | Output-side optical code disks, **J4 = 115 slots, J5 = 100 slots**, read through the Angle and Rotate photointerrupter shrouds (`#824`, `#825`) | [003 § Joint definitions](003-Kinematics.md#joint-definitions), [005 § Sensing](005-Electronics-and-Control.md#sensing) |
+| Through-bore | **6 conductors** pass the hollow centre and must survive J5's full travel | REQ-IF-4, [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) |
+
+**The frame separation agrees with the measured unit.** The 39.50 mm above lands within 0.2 mm of the J4
+`d` term in the HDI-007010 DH set (39.3 mm, [003](003-Kinematics.md#denavithartenberg-model)), so the
+envelope model and the measured kinematics corroborate each other. It does *not* agree with either L4
+candidate in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) — a kinematic-assembly node origin
+need not sit exactly on the joint axis, so treat it as corroboration of the envelope, not as an L4 value.
+
+⚠️ **The substitute does not obviously fit inside the covers.** `730-001_DiffBodyA`'s longest dimension is
+80.98 mm against the cover's widest 78.0 mm. Build the previous version's differential **without** the
+`HDI-940` covers, or re-cut the covers to suit, until
+[DC-2](009-Design-Completion.md#differential-detail-design) replaces it.
 
 ### End Arm Hub (J3–J4 region)
 
