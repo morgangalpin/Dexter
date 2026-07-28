@@ -1290,8 +1290,7 @@ void pos_ori_mat_to_string(struct pos_ori_mat A, char *result){
 	printf("done with pos_ori_mat_to_string\n");
 };
 
-struct pos_ori_mat J_angles_to_pos_ori_mat(struct J_angles angles) {
-	
+struct pos_ori_mat J_angles_to_pos_ori_mat(struct J_angles angles, unsigned char end_point) {	
 	
 	
 	//Code from Forward Kinematics:
@@ -1388,6 +1387,12 @@ struct pos_ori_mat J_angles_to_pos_ori_mat(struct J_angles angles) {
 	result.r0.c3 = U4.x;
 	result.r1.c3 = U4.y;
 	result.r2.c3 = U4.z;
+	
+	if (5 == end_point) {
+		result.r0.c3 = U5.x;
+		result.r1.c3 = U5.y;
+		result.r2.c3 = U5.z;
+		}
 	
 	//printf("\nResult 3 complete\n");
 	
@@ -3099,7 +3104,9 @@ bool ProcessServerSendDataDDE(char *sendBuff,char *recBuff)
 						(float)(getNormalizedInput(ANGLE_MEASURED_ANGLE)),
 						(float)(getNormalizedInput(ROT_MEASURED_ANGLE))
 					);
-					struct pos_ori_mat A = J_angles_to_pos_ori_mat(measured_angles);
+					unsigned char end_point = 4;
+					token = strtok(NULL, delimiters); if (token) end_point = token[0]-'0'; //which point? Single digit 4 or 5
+					struct pos_ori_mat A = J_angles_to_pos_ori_mat(measured_angles, end_point);
 
 					//pos_ori_mat_to_string(measured_pos_ori_mat, mat_string);
 					
@@ -3117,12 +3124,12 @@ bool ProcessServerSendDataDDE(char *sendBuff,char *recBuff)
 					);
 				}else if (strcmp(token, "#measured_angles") == 0) {
 					mat_string_length = sprintf(mat_string
-					, "[%d, %d, %d, %d, %d]"
-					, mapped[BASE_MEASURED_ANGLE]
-					, mapped[PIVOT_MEASURED_ANGLE]
-					, mapped[END_MEASURED_ANGLE]
-					, mapped[ANGLE_MEASURED_ANGLE]
-					, mapped[ROT_MEASURED_ANGLE]
+					, "[%i, %i, %i, %i, %i]"
+					, getNormalizedInput(BASE_MEASURED_ANGLE)
+					, getNormalizedInput(PIVOT_MEASURED_ANGLE)
+					, getNormalizedInput(END_MEASURED_ANGLE)
+					, getNormalizedInput(ANGLE_MEASURED_ANGLE)
+					, getNormalizedInput(ROT_MEASURED_ANGLE)
 					  );
 					//printf("#measured_angles: %s length: %d", mat_string, mat_string_length);
 				}else if(strcmp(token, "#Steps") == 0){
