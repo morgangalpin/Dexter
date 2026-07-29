@@ -21,7 +21,7 @@ full detail design.
 
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
-| DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | Vendor quote and availability | `[Provisional]` |
+| DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
 | DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | Detail design, authored here | `[Provisional]` |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | Tooth-count decomposition | `[Provisional]` |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
@@ -33,39 +33,69 @@ full detail design.
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 
-**Completion progress.** DC-8 is closed. Every other item has been narrowed to the single remaining gap
-named in the table above, and each of those gaps is one of three kinds of work: **procurement** (DC-1,
-DC-11), **design or reconstruction authored here** (DC-2, DC-3, DC-6, DC-10), or **a check on a physical
-build** (DC-4, DC-5, DC-7, DC-9). DC-2 is the largest single piece of work in the set.
+**Completion progress.** DC-1 and DC-8 are closed. Every other item has been narrowed to the single
+remaining gap named in the table above, and each of those gaps is one of three kinds of work:
+**procurement** (DC-11), **design or reconstruction authored here** (DC-2, DC-3, DC-6, DC-10), or **a check
+on a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 is the largest single piece of work in the set.
 
 ---
 
 ## Strain-wave component set
-**DC-1 · P1 · Requirement: REQ-STR-2 · Specified in [004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive)**
+**DC-1 · P1 · Requirement: REQ-STR-2 · Specified in [004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive)** — ✔ **closed**
 
-**Open:** procurement. The part is identified and the printed adapter interfaces are cut to it; what is not
-yet in hand is a live quote and confirmed availability.
+**Closed.** The part is identified, quoted, and dimensionally confirmed against the printed adapters it
+mates to.
 
-**Vendor options.**
+**Vendor and part.** Identified, quoted, and dimensionally confirmed — see
+[C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) for vendor, part number, price, and
+lead time. Start this order before anything else; it carries the longest lead time in the build.
 
-- **Original source — HanZhen (hanzh.com):** request *"the **number 14 component set**"*. It is **not listed
-  on their website** — contact them directly; they reply quickly. Ratio **52:1**, **9–12 week lead time**,
-  bare component set (not a housed unit), not sold retail. *Source: `Hardware/README.md`.*
-- **Later / alternate source — Cone Drive:** the CAD model carries Cone-Drive-specific mounting geometry
-  (`HDI-311-006B_J2StatorHolder_ConeDrive`, `HDI-311-006C_J2StatorHolderCap_ConeDrive`,
-  `HDI-610-002B_StatorGear` in `dde/HDIMeterModel.gltf`), and the maintenance schedule specifies Cone Drive
-  lubricant ([006](006-Firmware-and-Calibration.md#maintenance)). The design is built around the Cone Drive
-  variant of this set.
+*Cone Drive (conedrive.com) remains a viable alternate source — same size-14, 52:1 spec, and the printed
+adapters' `_ConeDrive`-suffixed CAD names and the maintenance schedule's Cone Drive lubricant
+([006](006-Firmware-and-Calibration.md#maintenance)) reflect that this was the design's original target
+vendor. HanZhen is the one actually quoted.*
 
-**Definition of done:** a confirmed price, lead time, and current availability from HanZhen (#14 set) or the
-Cone Drive equivalent, for three bare 52:1 flex-spline / wave-generator / circular-gear sets compatible with
-the printed `_ConeDrive` stator-holder and Wave Gen Coupler interfaces. This is the highest-risk,
-longest-lead item — start vendor contact before ordering anything else. If neither set is procurable, this
-becomes a drive-redesign task (e.g. cycloidal), which is a new revision, not a completion item.
-`[Provisional]`.
+**Interface dimensions, from the datasheet.** These are the mating dimensions the printed adapters are cut
+to:
 
-**Updates**
-1. The part number from HanZhen is `XB1-AS-C-32(14)-52`. Unit price is USD 120.
+| Feature | Value | Mates with |
+|---|---|---|
+| Housing / circular-spline OD | **Ø50h6** | Bore in Pivot / Base / Ex Gear Stator Holder |
+| Mounting bolt circle | **Ø44**, 6 × Ø4.5 clearance holes | Same three Stator Holders |
+| Secondary hole circle | 6 × Ø3.5 | Flex Spline Attach |
+| Wave-generator input bore | **Ø6H7**, retained by 2 × M3 set screws at 90° | Wave Gen Coupler output stub |
+| Other stepped diameters (recorded, not yet tied to a specific printed feature) | Ø38h7, Ø22.5, Ø17, Ø14, Ø11H7 | — |
+| Overall axial length | 28.5 mm | — |
+| Backlash / input speed / mass (all ratios) | ≤0.3 arcmin / 3500 rpm max / 0.1 kg | — |
+
+**Dimensional cross-check against the model set.** The datasheet's key mating diameters were checked
+against the built STL geometry (binary-STL vertex radii, centred on each part's rotation axis) rather than
+taken on faith:
+
+- **Pivot Stator Holder** (`200-002_PivotStatorHolder.stl`), **Base Stator Holder**
+  (`110-002_BaseStatorHolder.stl`), and **Ex Gear Stator Holder** (`511-002_ExGearStatorHolder.stl`) each
+  show a sharp, dominant Ø50.0 mm radial band — matching the housing Ø50h6 exactly — plus a Ø44–45 mm
+  band cluster matching the Ø44 bolt circle.
+- **Wave Gen Coupler** (`630-004_WaveGenCoupler.stl`) is dominated by a Ø5.0 mm bore (the NEMA-17 motor
+  shaft it is reamed onto) with a smaller Ø6.0 mm band consistent with the Ø6H7 wave-generator input stub
+  on its other end.
+- **Flex Spline Attach** (`630-005_FlexSplineAttach.stl`) shows the same Ø44 mm hole-circle cluster and a
+  ~Ø50–51 mm band; **Flex Spline Cap** (`630-006_FlexSplineCap.stl`) is dominated by a Ø23.0 mm band, close
+  to the datasheet's Ø22.5 mm.
+
+No scale or gross dimensional mismatch was found (contrast [DC-11(f)](#procurement-data), where this same
+kind of check caught a ~1000× oversized STL). The printed adapters already align with the actual component
+set.
+
+**Note on the ratio table.** The datasheet's torque table is tabulated at ratios 40/50/60/80/110/120 — 52 is
+not a row (consistent with it being quoted off-catalog, per HanZhen's "not listed, contact directly"
+behaviour). Start/stop torque (11 N·m) and peak torque (24 N·m) are identical at the neighbouring 50 and 60
+rows, so both hold at 52 too; rated (continuous) torque interpolates to **≈4.1–4.2 N·m**. Backlash
+(≤0.3 arcmin), input max speed (3500 rpm), and mass (0.1 kg) are constant across the table regardless of
+ratio.
+
+*Source: `Hardware/Reference/XB1-AS-C-32.pdf` (HanZhen manufacturer drawing); `Hardware/README.md`;
+STL geometry in `Hardware/Models/`.*
 
 ## Differential detail design
 **DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)**
