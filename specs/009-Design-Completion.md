@@ -46,12 +46,9 @@ on a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 is the largest single piece
 **Closed.** The part is identified, quoted, and dimensionally confirmed against the printed adapters it
 mates to.
 
-**Vendor and part.** **HanZhen** (hanzh.com), *"the **number 14 component set**"* — not listed on their
-website, quoted directly. Confirmed part number **`XB1-AS-C-32(14)-52`** (ratio **52:1**), unit price
-**USD 120**. Three sets are required (J1 base, J2 pivot, J3 elbow) — **USD 360** total. Lead time is the
-previously documented **9–12 weeks**; start this order before anything else in
-[007.1](007.1-Parts-Catalog.md#2-strain-wave-drive-components). The vendor's manufacturer drawing is the
-source of record: [`Hardware/Reference/XB1-AS-C-32.pdf`](../Hardware/Reference/XB1-AS-C-32.pdf).
+**Vendor and part.** Identified, quoted, and dimensionally confirmed — see
+[C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) for vendor, part number, price, and
+lead time. Start this order before anything else; it carries the longest lead time in the build.
 
 *Cone Drive (conedrive.com) remains a viable alternate source — same size-14, 52:1 spec, and the printed
 adapters' `_ConeDrive`-suffixed CAD names and the maintenance schedule's Cone Drive lubricant

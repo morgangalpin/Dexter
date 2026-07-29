@@ -96,9 +96,9 @@ Builds the **base (J1)** and **pivot (J2)** motor assemblies — 2 of the 3 stra
 | #311-001 / #312-001 | Motor End Cap (Base / Pivot) | 3D print | 1 | |
 | #610-001 | NEMA-17 stepper, 0.9°/step | Off the shelf | 1 | |
 | #620-006 | 6810 bearing | Off the shelf | 1 | |
-| #630-001 | **Flex Spline** | Special order | 1 | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
-| #630-002 | **Wave Generator** | Special order | 1 | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
-| #630-003 | **Stator Gear** | Special order | 1 | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| #630-001 | **Flex Spline** | Special order | 1 | Part of the strain-wave component set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| #630-002 | **Wave Generator** | Special order | 1 | Part of the strain-wave component set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| #630-003 | **Stator Gear** | Special order | 1 | Part of the strain-wave component set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
 | #630-004 | Wave Gen Coupler | 3D print | 1 | |
 | #630-005 | Flex Spline Attach | 3D print | 1 | |
 | #630-006 | Flex Spline Cap | 3D print | 1 | |
@@ -225,7 +225,7 @@ Builds the **3rd strain-wave drive (J3 elbow)** plus the external gear housing. 
 | #511-003 | 73 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #610-001 | NEMA-17 stepper | Off the shelf | 1 | |
 | #620-006 | 6810 bearing | Off the shelf | 2 | |
-| #630-001/2/3 | **Flex Spline / Wave Generator / Stator Gear** | Special order | 1 each | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| #630-001/2/3 | **Flex Spline / Wave Generator / Stator Gear** | Special order | 1 each | Part of the strain-wave component set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
 | #630-004 | Wave Gen Coupler | 3D print | 1 | |
 | #630-005 | Flex Spline Attach | 3D print | 1 | |
 | #630-006 | Flex Spline Cap | 3D print | 1 | |

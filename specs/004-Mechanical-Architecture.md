@@ -107,12 +107,12 @@ drive is the **External Gear** assembly, in which the harmonic motor turns an ex
 elbow. All three are the same reduction (identical `AxisCal`), unchanged from the previous version, so
 **three identical component sets are required**.
 
-The printed adapter interfaces are cut to a specific commercial component set: **HanZhen
-`XB1-AS-C-32(14)-52`**, confirmed in [DC-1](009-Design-Completion.md#strain-wave-component-set). Its
-mating dimensions — Ø50h6 housing OD into the Stator Holder bore, Ø44 6-hole mounting circle, Ø6H7
-wave-generator input bore onto the Wave Gen Coupler — are specified there, along with a dimensional
-cross-check against the printed adapter geometry. Procurement (9–12 week lead time) is the build's
-longest-lead item; order it before anything else. `[Specified]`.
+The printed adapter interfaces are cut to match the commercial component set specified in
+[C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set); its identity, price, and lead time are
+confirmed there and dimensionally cross-checked against the printed adapter geometry in
+[DC-1](009-Design-Completion.md#strain-wave-component-set). Mating dimensions: Ø50h6 housing OD into the
+Stator Holder bore, Ø44 6-hole mounting circle, Ø6H7 wave-generator input bore onto the Wave Gen Coupler.
+`[Specified]`.
 
 *Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note; HanZhen manufacturer
 drawing (`Hardware/Reference/XB1-AS-C-32.pdf`).*
