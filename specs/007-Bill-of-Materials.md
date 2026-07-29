@@ -26,12 +26,12 @@ procedures are in each derived document.
 |---|---|---|---|
 | [007.1](#0071-glue-rig-assembly) | Glue Rig (tooling) | F | `[Provisional]` |
 | [007.2](#0072-base) | Base | A | `[Provisional]` — [DC-4](009-Design-Completion.md#base-plate) |
-| [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | `[Specified]` except the strain-wave set — [DC-1](009-Design-Completion.md#strain-wave-component-set) |
+| [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | `[Specified]` |
 | [007.4](#0074-main-pivot) | Main Pivot (J2) | C | `[Specified]` |
 | [007.5](#0075-arm-body) | Arm Body (L2) | B | `[Provisional]` — [DC-5](009-Design-Completion.md#link-member-lengths) |
 | [007.6](#0076-differential) | Differential (J4/J5) | H | `[Provisional]` — [DC-2](009-Design-Completion.md#differential-detail-design) |
 | [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | `[Provisional]` — [DC-5](009-Design-Completion.md#link-member-lengths) |
-| [007.8](#0078-external-gear) | External Gear (J3 drive) | G | `[Specified]` except the strain-wave set — [DC-1](009-Design-Completion.md#strain-wave-component-set) |
+| [007.8](#0078-external-gear) | External Gear (J3 drive) | G | `[Specified]` |
 | [007.9](#0079-external-gear-mount--differential-motors) | Ex Gear Mount + Diff Motors (J4/J5) | I | `[Specified]` except the driven pulleys — [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
 | [007.10](#00710-wire-harness) | Wire Harness | J | `[Provisional]` — [DC-7](009-Design-Completion.md#motor-control-pcb) |
 | [007.11](#00711-tool-interface--gripper) | Tool Interface / Gripper | K–O | `[Specified]` |
@@ -39,9 +39,10 @@ procedures are in each derived document.
 ## Strain-wave component set (applies to 007.3 and 007.8)
 
 Each 52:1 strain-wave drive (J1, J2, J3 — three total) requires a **flex spline**, a **wave generator**, and
-a **circular/stator gear**, giving nine special-order parts in all. `[Provisional]` — the part is identified
-but not yet quoted. **Resolve [DC-1](009-Design-Completion.md#strain-wave-component-set) before ordering
-anything else on this list:** it names the vendor options and carries the longest lead time in the build.
+a **circular/stator gear**, giving nine special-order parts in all. `[Specified]` — confirmed as three
+**HanZhen `XB1-AS-C-32(14)-52`** sets, USD 120 each ([DC-1](009-Design-Completion.md#strain-wave-component-set),
+[C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)). **Order this first:** it carries the
+longest lead time in the build (9–12 weeks).
 
 ---
 
@@ -88,17 +89,16 @@ the Base Mounting Plate takes their place.)*
 
 ## 007.3 Harmonic Drive Motors
 Builds the **base (J1)** and **pivot (J2)** motor assemblies — 2 of the 3 strain-wave drives (the 3rd is in
-[007.8](#0078-external-gear)). Quantities are **per motor** (×2). `[Specified]` except the strain-wave set
-(`[TBD]`, see above).
+[007.8](#0078-external-gear)). Quantities are **per motor** (×2). `[Specified]`.
 
 | PBS # | Part | Type | Qty (per motor) | Notes |
 |---|---|---|---|---|
 | #311-001 / #312-001 | Motor End Cap (Base / Pivot) | 3D print | 1 | |
 | #610-001 | NEMA-17 stepper, 0.9°/step | Off the shelf | 1 | |
 | #620-006 | 6810 bearing | Off the shelf | 1 | |
-| #630-001 | **Flex Spline** | Special order | 1 | `[TBD]` [DC-1](009-Design-Completion.md#strain-wave-component-set) |
-| #630-002 | **Wave Generator** | Special order | 1 | `[TBD]` [DC-1](009-Design-Completion.md#strain-wave-component-set) |
-| #630-003 | **Stator Gear** | Special order | 1 | `[TBD]` [DC-1](009-Design-Completion.md#strain-wave-component-set) |
+| #630-001 | **Flex Spline** | Special order | 1 | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| #630-002 | **Wave Generator** | Special order | 1 | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| #630-003 | **Stator Gear** | Special order | 1 | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
 | #630-004 | Wave Gen Coupler | 3D print | 1 | |
 | #630-005 | Flex Spline Attach | 3D print | 1 | |
 | #630-006 | Flex Spline Cap | 3D print | 1 | |
@@ -214,8 +214,7 @@ specific to this version.
 | #670-002 | M3 washers | Off the shelf | 8 | |
 
 ## 007.8 External Gear
-Builds the **3rd strain-wave drive (J3 elbow)** plus the external gear housing. `[Specified]` except the
-strain-wave set (`[TBD]`, see above).
+Builds the **3rd strain-wave drive (J3 elbow)** plus the external gear housing. `[Specified]`.
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
@@ -226,7 +225,7 @@ strain-wave set (`[TBD]`, see above).
 | #511-003 | 73 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #610-001 | NEMA-17 stepper | Off the shelf | 1 | |
 | #620-006 | 6810 bearing | Off the shelf | 2 | |
-| #630-001/2/3 | **Flex Spline / Wave Generator / Stator Gear** | Special order | 1 each | `[TBD]` [DC-1](009-Design-Completion.md#strain-wave-component-set) |
+| #630-001/2/3 | **Flex Spline / Wave Generator / Stator Gear** | Special order | 1 each | Part of the HanZhen `XB1-AS-C-32(14)-52` set — [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
 | #630-004 | Wave Gen Coupler | 3D print | 1 | |
 | #630-005 | Flex Spline Attach | 3D print | 1 | |
 | #630-006 | Flex Spline Cap | 3D print | 1 | |
@@ -361,7 +360,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | MR128 bearing (8 × 12 × 3.5) | 12 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
 | AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
 | NEMA-17 stepper (0.9°/step) | 5 | [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) |
-| Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each — `[Provisional]` | [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
+| Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each | [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
 | Power supply, 36 V / 4 A DC brick | 1 | [C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc) |
 | Dynamixel XL-320 servo | 2 | [C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) |
 | Optical Board | 5 | [C-703](007.1-Parts-Catalog.md#7-electronics-and-wiring) |

@@ -107,11 +107,15 @@ drive is the **External Gear** assembly, in which the harmonic motor turns an ex
 elbow. All three are the same reduction (identical `AxisCal`), unchanged from the previous version, so
 **three identical component sets are required**.
 
-The printed adapter interfaces are cut to a specific commercial component set, and its procurement is the
-build's longest-lead, highest-risk item — the vendor options, lead time, and what remains to close are in
-[DC-1](009-Design-Completion.md#strain-wave-component-set). `[Provisional]`.
+The printed adapter interfaces are cut to a specific commercial component set: **HanZhen
+`XB1-AS-C-32(14)-52`**, confirmed in [DC-1](009-Design-Completion.md#strain-wave-component-set). Its
+mating dimensions — Ø50h6 housing OD into the Stator Holder bore, Ø44 6-hole mounting circle, Ø6H7
+wave-generator input bore onto the Wave Gen Coupler — are specified there, along with a dimensional
+cross-check against the printed adapter geometry. Procurement (9–12 week lead time) is the build's
+longest-lead item; order it before anything else. `[Specified]`.
 
-*Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note.*
+*Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note; HanZhen manufacturer
+drawing (`Hardware/Reference/XB1-AS-C-32.pdf`).*
 
 ### Main Pivot (J2) and Arm Body (J3 support / L2)
 
@@ -200,7 +204,7 @@ of done is in [009-Design-Completion.md](009-Design-Completion.md).
 | Subassembly | Joints | Drive | Status | Open item |
 |---|---|---|---|---|
 | Base | J1 support | — | `[Provisional]` | [DC-4](009-Design-Completion.md#base-plate); double clamp detail |
-| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` ratio / `[Provisional]` component set | [DC-1](009-Design-Completion.md#strain-wave-component-set) |
+| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` | — |
 | Main Pivot | J2 | — | `[Specified]` | — |
 | Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
 | End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
