@@ -154,13 +154,15 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 11. Place the M3 washer, then M2 washer, then M2 nut, and tighten.
 
 ## 008.6 Differential
-Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Provisional]` —
-[DC-2](009-Design-Completion.md#differential-detail-design).
+Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Specified]` —
+[DC-2](009-Design-Completion.md#differential-detail-design); parametric source in
+[`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/).
 
-⚠️ **Before printing:** `710-002_SplitGearBottom.stl` is defective and must be rescaled and dimension-checked
-first ([DC-11(f)](009-Design-Completion.md#procurement-data)). This subassembly also builds the *previous*
-version's differential as a substitute, which is not confirmed to fit inside the `HDI-940` covers
-([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)).
+**Before printing:** choose the parameter set. `config="previous"` builds the previous version's proven
+differential (does not fit the `HDI-940` covers — omit or re-cut them); `config="revised"` fits the covers
+([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)) but is unproven on
+a physical build until the DC-9 checklist passes. The former `710-002` scale defect is resolved
+([DC-11(f)](009-Design-Completion.md#procurement-data)).
 
 1. Insert one 6705 and one 6703 bearing into Diff Body A; press to seat.
 2. Insert one 6703 into the End Arm Hub; press to seat.

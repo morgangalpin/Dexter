@@ -116,8 +116,8 @@ This is a **buildable specification with a bounded set of open decisions**. The 
 architecture, kinematics, electronics, control model, firmware configuration, and calibration procedure are
 specified and, in most areas, traceable to a physical unit, released firmware, factory calibration
 documentation, or CAD. A small number of decisions remain open and must be closed before a from-scratch unit
-is fully buildable — the highest-risk and longest-lead being the strain-wave component set, followed by the
-differential detail design. Every open decision is collected, with the requirement it must satisfy, its
+is fully buildable. The two formerly largest — the strain-wave component set and the differential detail
+design — are closed. Every open decision is collected, with the requirement it must satisfy, its
 priority, its current state, and what closing it requires, in
 [009-Design-Completion.md](009-Design-Completion.md). No open item is a gap in what is known about the robot;
 each is a design task owned by this project to complete the current design.

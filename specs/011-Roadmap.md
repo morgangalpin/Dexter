@@ -12,9 +12,10 @@ branch; it is not deleted until that revision is released.
 1. **Validate the current design on a physical build.** Promote the `[Provisional]` items in 004–008 to
    `[Specified]` by building and measuring one unit; feed corrections back into the specs. This is the
    precondition for every later roadmap item.
-2. **Close the strain-wave and differential open designs** as validated designs (they stand today at
-   `[TBD]`/`[Provisional]`; see [009](009-Design-Completion.md)), so the base joints and wrist are fully
-   specified rather than inherited.
+2. **Validate the strain-wave and differential designs on a build.** Both are now `[Specified]` on paper
+   (DC-1 procurement-confirmed; DC-2 authored as parametric OpenSCAD — see
+   [009](009-Design-Completion.md)); item 1's build promotes them to validated designs, including the
+   differential first-build checklist under DC-9.
 3. **Purpose-built Motor Control PCB.** Replace the board inherited from the previous version (used
    provisionally, see [005](005-Electronics-and-Control.md#boards)) with a board designed to this robot's
    wiring and wrist-drive requirements.

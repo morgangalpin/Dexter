@@ -129,3 +129,41 @@ anything version 3 does not independently specify
   [007.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors) being quoted per motor and built twice.
   Anyone who ordered against the previous aggregate table should re-check
   [Corrections to 007](specs/007.1-Parts-Catalog.md#corrections-to-007).
+
+### CR-3A7: Differential detail design authored as parametric OpenSCAD (DC-2 closed)
+
+- **Affects:** [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [007.2 §Differential](specs/007.2-Printed-Parts.md#differential--0076),
+  [008.6](specs/008-Assembly.md#0086-differential), [009 DC-2/DC-6/DC-9/DC-11(f)](specs/009-Design-Completion.md),
+  new source in [`Hardware/Models/700-Differential/`](Hardware/Models/700-Differential/)
+- **Was:** The differential's internal geometry existed only as the previous version's nine mesh STLs (one
+  of them ~1000× oversize) with no editable source; DC-2 was the largest open item in
+  [009](specs/009-Design-Completion.md).
+- **Now:** Every differential part has parametric OpenSCAD source beside its mesh (BOSL2), with shared
+  dimensions in `diff_params.scad`, assembly placements in `diff_assembly.scad`, and a `render-all.rs`
+  script that renders each part in both configurations, dimensionally verifies each render against its reference
+  mesh using the new sibling `openscad-tools` project (`scadmesh`: bounding boxes, diameter/face bands,
+  cross-sections, tooth counts, scale detection). Measured mechanism facts are now specified: three 20T
+  straight bevels at 1:1:1 (Ø44.055), two 40T GT2 input pulleys, the shaft doubling as the J4 pivot axle,
+  and the axially split output gear. `config="previous"` reproduces the built differential;
+  `config="revised"` narrows Diff Body A from 80.98 to 77.8 mm to fit the HDI-940 cover envelope. The
+  oversize `710-002` STL is corrected in place (exact 1/1000, mate-verified — DC-11(f) closed).
+- **Driver:** DC-2's definition of done: an authored design with source geometry committed, replacing
+  mesh-only geometry that could not be edited or checked.
+- **Status:** `[Specified]` for the authored design and its geometric verification; the physical-build
+  checks (binding, wiring survival, code-disk reads) are DC-9's first-build checklist.
+- **Re-derive:** run `Hardware/Models/700-Differential/render-all.rs` after any `.scad` change; regenerate
+  `PART-INDEX.md`/`MANIFEST.csv` after renders change committed meshes.
+- **Note — three findings the authoring produced, each a requirement on something outside the
+  differential:**
+  (1) the wrist axes intersect, so the firmware L4 = 59.50 mm is an offset **along the J4 axis** that
+  splits **31.0 mm inside the differential + 28.5 mm in the End Arm Hub**
+  ([004](specs/004-Mechanical-Architecture.md#differential-interface)) — the hub standoff is now a
+  dimension the End Arm Hub must hit, checked with [DC-6](specs/009-Design-Completion.md#link-length-discrepancy-l4);
+  (2) **J4 has no code disk.** Counting slots on every code-disk model confirmed J1 = 200, J2 = 180,
+  J3 = 157 and J5 = 100, each matching [003](specs/003-Kinematics.md#joint-definitions) exactly — but no
+  part anywhere carries J4's specified 115
+  ([DC-11(e)](specs/009-Design-Completion.md#the-j4-code-disk-is-missing));
+  (3) the five `#720-005` 60 mm CF strakes listed in [007.6](specs/007-Bill-of-Materials.md#0076-differential)
+  are placed by no assembly step and fit no slot in the differential's geometry. (2) and (3) are recorded
+  as model-vs-BOM discrepancies under [DC-11(e)](specs/009-Design-Completion.md#procurement-data).

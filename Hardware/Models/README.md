@@ -5,8 +5,11 @@ source: everything needed to print one complete robot is here, and nothing else 
 
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
-- **[MANIFEST.csv](MANIFEST.csv)** — every file with its size, SHA-256, and (for STLs) format and
-  triangle count.
+- **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the
+  script that renders and verifies them) with its size, SHA-256, and, for STLs, format and triangle count.
+  Sizes and hashes are of the **repository** bytes, so text files are counted with LF line endings — on a
+  Windows checkout (`core.autocrlf=true`) the working-tree file is larger than its row says. Compare a
+  text file by normalizing CRLF to LF first; binary files compare directly.
 
 ## Layout
 
@@ -29,7 +32,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`400-EndArm/`](400-EndArm/) | 10 | 11 | Axis intersection, hub, internal and external pulleys |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 6 | External gear, stator holder, mount and nut holders |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 3 | Wave gen coupler, flex spline attach and cap |
-| [`700-Differential/`](700-Differential/) | 9 | 10 | Split gears, diff gear shaft and axle, diff bodies |
+| [`700-Differential/`](700-Differential/) | 9 | 22 | Split gears, diff gear shaft and axle, diff bodies — **the OpenSCAD set** |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 10 | Solder jigs and glue-rig jig bodies |
@@ -59,10 +62,10 @@ Not part of a build. Kept because the geometry exists nowhere else.
 
 ## Known defects
 
-**`700-Differential/710-002_SplitGearBottom.stl` is out of scale and must be rescaled and dimension-checked
-before printing.** It is the only defective file in the build set. The measurements, the evidence, and the
-datum to check the rescaled part against are specified in
-[DC-11(f)](../../specs/009-Design-Completion.md#procurement-data).
+**None outstanding.** `700-Differential/710-002_SplitGearBottom.stl` was 1000× out of scale; it is
+corrected in place, dimension-checked against its mates, and now also has parametric source
+([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)). It was the only defective file in the
+build set.
 
 `720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a defect — it prints normally — but it
 is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd` with no triangle count.
@@ -71,6 +74,7 @@ is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd` with no tria
 
 | Format | Where | Editable? |
 |---|---|---|
+| `.scad` | `700-Differential/` | **Yes** — parametric OpenSCAD source, the intended format going forward (see below) |
 | `.stl` | component directories | **No.** Mesh only — printable, not meaningfully modifiable |
 | `.f3d` | `900-ToolInterface/` | **Yes** — Fusion 360 native, with feature history |
 | `.step` | `900-ToolInterface/`, `Reference/onshape-v1/` | **Partly** — B-rep solids. Dimensions can be measured and features cut, but there is no feature tree to drive |
@@ -78,9 +82,10 @@ is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd` with no tria
 | `.dwg` | `400-EndArm/`, `700-Differential/`, `900-ToolInterface/` | **Yes** — 2D profiles |
 | `.skp`/`.skb` | `Reference/covers/` | **Yes** — SketchUp source |
 
-**Most of the robot is mesh-only.** Genuine feature history exists for the tool interface (`.f3d`) and the
-Inventor reference parts. Everything else is either a mesh or a dead solid, so changing an HD part today
-means re-deriving it from an STL. That gap is tracked as
+**Most of the robot is still mesh-only.** Editable source exists for the differential (`.scad`), the tool
+interface (`.f3d`), and the Inventor reference parts. Everything else is a mesh or a dead solid, so
+changing one of those parts today means re-deriving it from an STL — the workflow the differential
+conversion established (see below). That remaining gap is tracked as
 [DC-11](../../specs/009-Design-Completion.md#procurement-data).
 
 ## Moving to OpenSCAD
@@ -92,6 +97,14 @@ depends on no proprietary tool. Two conventions keep the transition legible:
   `100-001_BaseClamp.stl`. Which parts have been converted is then visible from a directory listing.
 - **Treat the STL as output, not source, once a `.scad` exists.** Until then the STL *is* the source of
   record, because for most parts it is the only geometry that exists.
+
+**`700-Differential/` is fully converted** (DC-2,
+[specs/009](../../specs/009-Design-Completion.md#differential-detail-design)): one `.scad` per part,
+shared dimensions in `diff_params.scad`, placements in `diff_assembly.scad`, and `render-all.rs` to render
+both configurations and dimensionally verify each render against its reference STL with `scadmesh`
+(from the standalone `openscad-tools` project, checked out beside this repository's parent — bounding
+boxes, diameter and face-position bands, cross-sections, tooth counts). Use that directory as the template
+for converting the remaining groups.
 
 `Reference/onshape-v1/parts-step/` is the most useful starting material: STEP solids can be measured for
 real dimensions, which an STL cannot give you reliably.

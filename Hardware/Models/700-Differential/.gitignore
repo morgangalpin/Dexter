@@ -1,0 +1,3 @@
+# Rendered output from render-all.rs. The .scad files are the source of
+# record; the reference .stl files beside them are tracked, these are not.
+out/

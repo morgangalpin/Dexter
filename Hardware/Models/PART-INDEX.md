@@ -97,15 +97,15 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #710-001 | Split Gear Top | 1 | `710-001_SplitGearTop.stl` |  |
-| #710-002 | Split Gear Bottom | 1 | `710-002_SplitGearBottom.stl` |  |
-| #710-003 | Diff Keeper | 2 | `710-003_DiffKeeper.stl` |  |
-| #710-004 | Rotate Code Disk | 1 | `710-004_RotateCodeDisk.stl` |  |
-| #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.stl` |  |
-| #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.stl` |  |
-| #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.stl` |  |
-| #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.stl` |  |
-| #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.stl` |  |
+| #710-001 | Split Gear Top | 1 | `710-001_SplitGearTop.stl` | `.scad` source |
+| #710-002 | Split Gear Bottom | 1 | `710-002_SplitGearBottom.stl` | `.scad` source |
+| #710-003 | Diff Keeper | 2 | `710-003_DiffKeeper.stl` | `.scad` source |
+| #710-004 | Rotate Code Disk | 1 | `710-004_RotateCodeDisk.stl` | `.scad` source |
+| #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.stl` | `.scad` source |
+| #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.stl` | `.scad` source |
+| #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.stl` | `.scad` source |
+| #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.stl` | `.scad` source |
+| #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.stl` | `.scad` source |
 
 ## 800-Harness — Wire harness
 
