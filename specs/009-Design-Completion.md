@@ -23,7 +23,7 @@ reference geometry.
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
 | DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
-| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | Four parts do not match their references | `[Provisional]` reopened |
+| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | One part not yet rebuilt (720-001) | `[Provisional]` reopened |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | Tooth-count decomposition | `[Provisional]` |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | Socket-seat depth check | `[Provisional]` |
@@ -38,7 +38,7 @@ reference geometry.
 remaining gap named in the table above, and each of those gaps is one of three kinds of work:
 **procurement** (DC-11), **design or reconstruction authored here** (DC-2, DC-3, DC-6, DC-10), or **a
 check on a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — the largest single piece of work in the set
-— is authored as parametric OpenSCAD source, but four of its seven recreated parts do not yet reproduce
+— is authored as parametric OpenSCAD source, but one of its seven recreated parts does not yet reproduce
 their reference geometry, so it is **reopened**; its physical-build checks remain with DC-9.
 
 ---
@@ -104,10 +104,9 @@ STL geometry in `Hardware/Models/`.*
 **DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — `[Provisional]` — **reopened**
 
 **Reopened 2026-08-06.** This item was closed on a verification that could not detect the defect it was
-meant to catch, and five of the seven recreated parts were the wrong shape — one has since been rebuilt,
-and four remain. The parametric source, the
-parameter sets, and the assembly assertions below all still stand; what failed was the evidence that the
-parts match their references.
+meant to catch, and five of the seven recreated parts were the wrong shape — four have since been rebuilt
+and measure faithful, and 720-001 remains. The parametric source, the parameter sets, and the assembly
+assertions below all still stand; what failed was the evidence that the parts match their references.
 
 **Why the original verification was insufficient.** It rested on `scadmesh compare`, which asks whether
 every reference **diameter and face position** reappears somewhere in the candidate. That is a set of
@@ -123,15 +122,37 @@ would have made it one.
 |---|---|---|---|
 | 710-003 Diff Keeper | 0.023 | −0.8 % | faithful |
 | 710-004 Rotate Code Disk | 0.350 | −1.4 % | faithful (p95 0.011; one localized edge) |
-| 720-002 Diff Gear Axle | 1.31 | −0.06 % | body correct, one feature wrong |
-| 720-003 Diff End Pulley | 1.98 | −4 % | wrong |
+| 720-002 Diff Gear Axle | 0.100 | −0.02 % | **rebuilt, faithful** (was 1.31) |
+| 720-003 Diff End Pulley | 0.030 | −0.02 % | **rebuilt, faithful** (was 1.98 / −4 %) |
 | 710-002 Split Gear Bottom | 0.150 | +0.02 % | **rebuilt, faithful** (was 2.25 / −11 %) |
-| 710-001 Split Gear Top | 3.57 | −11 % | wrong |
-| 720-001 Diff Gear Shaft | 3.82 | −16 % | wrong |
+| 710-001 Split Gear Top | 0.225 | −0.1 % | **rebuilt**, p95 0.010, 0.13 % over tol (was 3.57 / −11 %) |
+| 720-001 Diff Gear Shaft | 3.82 | −16 % | wrong, not yet rebuilt |
 
-Known specific defects: **710-001** aborts CSG normalization and previews as an empty tree, so it is
-invisible in the GUI until a full render, which then reports 5 volumes where a single solid reports 2.
-**720-001** is missing 16 % of its material.
+Known specific defect remaining: **720-001** is missing 16 % of its material, and is the one part not
+yet rebuilt.
+
+**Four of the five are rebuilt and measure faithful.** Each was built the same way — revolve the measured
+meridional profile for the body, build the toothed or belted feature separately, cut the through-work
+last — and each renders as a single clean solid. Two findings generalise beyond the parts themselves:
+
+- **The bevels are recoverable as cones.** Every crown surface on 710-001, 710-002 and 720-002 is a cone,
+  and fitting measured radius against height recovers each one to a few thousandths of a millimetre. The
+  fits corroborate each other across parts, which is what makes them trustworthy rather than merely
+  well-fitted: 720-002's tip cones are 710-001's translated by 15.448 mm, as a 1:1 pair must share; their
+  root-cone slopes agree to 0.07 %; and 710-001's 45° inner cone is the identical equation 710-002 records
+  for its outer cone, the surface the two parts actually mate on. Each crown's four cone intersections
+  then define it outright, and every one was checked against an independent measurement — 710-001's
+  computed apex at z = 24.4103 against a bounding box topping out at 24.410.
+- **Straight bevel teeth are ruled through the gear apex**, so one measured section reproduces a whole
+  tooth when lofted between two scaled copies: the hull between them *is* the ruled surface. 720-002 needs
+  exactly one section. 710-001 needs thirteen, because its tip surface changes direction at the crown ring
+  — below it the skirt cone rises with height while the root cone falls — so no single similarity can
+  follow both.
+
+The residual on 710-001 is a limit of the method rather than slack in the numbers: its worst point is the
+tooth's **root fillet**, which is concave, and a loft through convex hulls cuts the corner across it.
+Going from seven sections to thirteen moved p95 from 0.023 to 0.010 and left the maximum where it was.
+Removing it means a skinned loft that preserves concavity.
 
 **710-002 Split Gear Bottom is rebuilt and now meets the contract below.** Its bevel crown is no longer a
 generated `bevel_gear()` — a 1:1 bevel's teeth stand outside the crown radius, so intersecting one against
@@ -162,6 +183,13 @@ reference tessellates with only 12 facets — that is chord error between two me
 - Each part's body is built from its **measured meridional profile** (`scadmesh profile`) rather than
   from inferred diameters and face heights, so flank curvature is reproduced instead of guessed.
 - Every part previews (F5) as well as renders (F6), and a part modelled as one solid reports one solid.
+  Previewing must be **checked**, not assumed: it fails independently of rendering, so exporting an STL
+  and measuring it will pass a part that shows nothing in the GUI. Run
+  `openscad --preview -o check.png <part>.scad` and require zero warnings. The failure mode is specific
+  and was hit on 710-001: **no cutter may be a module that is internally boolean** — BOSL2's `pie_slice()`
+  and anything taking `rounding=`/`chamfer=` are — because `A - (B - C)` normalizes to `(A - B) | (A & C)`
+  and each one doubles the preview tree. Build cutters from single primitives, and cut each solid before
+  unioning it into an array rather than after.
 - `compare` is retained, but only to name *which* dimension moved once `dist` has failed a part. It no
   longer gates anything.
 - The two documented exception classes still apply and still must be enumerated explicitly rather than

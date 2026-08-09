@@ -204,3 +204,26 @@ anything version 3 does not independently specify
   four. The reference STLs are also now known to be **unmerged assembly exports**, which invalidates
   whole-file volume comparison and the reference-to-candidate distance direction — both recorded in DC-2's
   artifact exception.
+
+### CR-3A10: Four differential parts rebuilt from measured geometry
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [`Hardware/Models/700-Differential/`](Hardware/Models/700-Differential/)
+- **Was:** CR-3A8 found five recreated parts deviating from their references by 1.3–3.8 mm; CR-3A9 fixed
+  one of them.
+- **Now:** 720-003 Diff End Pulley agrees to **0.030 mm**, 720-002 Diff Gear Axle to **0.100 mm**, and
+  710-001 Split Gear Top to **0.225 mm** (RMS 0.012, p95 0.010). All three render as one clean solid, and
+  710-001 now previews, which it previously did not. Only 720-001 Diff Gear Shaft is still wrong.
+- **Driver:** Two things made the bevels tractable. Every crown surface is a **cone**, recoverable to a few
+  thousandths of a millimetre by fitting measured radius against height, and the fits corroborate each
+  other across parts — 720-002's tip cones are 710-001's translated by 15.448 mm, their root slopes agree
+  to 0.07 %, and 710-001's inner cone is the equation 710-002 already recorded for the surface they mate
+  on. And straight bevel teeth are **ruled through the gear apex**, so a hull between two scaled copies of
+  one measured section *is* the tooth's surface exactly.
+- **Consequence:** **DC-2 stays `[Provisional]`** on 720-001 alone. Two verification rules are added to its
+  contract, both learned the hard way: previewing must be checked separately from rendering, because it
+  fails independently and an STL-based check cannot see it; and no cutter may be a module that is
+  internally boolean, since `A - (B - C)` normalizes to `(A - B) | (A & C)` and doubles the preview tree
+  per instance. 710-001's residual 0.225 mm is the tooth root fillet, which is concave and cannot be
+  represented by a loft through convex hulls.

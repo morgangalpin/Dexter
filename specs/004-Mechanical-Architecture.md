@@ -151,8 +151,9 @@ end-effector wiring bundle passes through the differential's hollow bore.
   (binding, wiring survival, code-disk reads) remains in
   [DC-9](009-Design-Completion.md#performance-characterization).
 
-  **The recreated part geometry is not yet trustworthy.** Four of the seven recreated parts deviate from
-  their reference meshes by 1.3–3.8 mm, because the original check compared diameters and face positions
+  **One recreated part is not yet trustworthy.** 720-001 Diff Gear Shaft still deviates from its reference
+  mesh by 3.8 mm and is 16 % short on material; the other six agree within 0.225 mm. The original check
+  missed this because it compared diameters and face positions
   rather than surfaces and could not see shape error. The mechanism facts below were read from the
   reference meshes directly and are unaffected, but the `.scad` shapes are not — see
   [DC-2](009-Design-Completion.md#differential-detail-design) for the per-part measurements and the

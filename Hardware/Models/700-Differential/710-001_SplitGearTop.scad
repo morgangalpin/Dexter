@@ -1,123 +1,1029 @@
 // #710-001 Split Gear Top — parametric source (DC-2).
-// The differential's output bevel gear (20T, meshing both input bevels at
-// 90 deg). It spins on Diff Body B's stub: a 6703 in the Ø23 seat rides the
-// Ø17 journal, an MR128 in the Ø12 seat rides the Ø8 shaft tip (008.6
-// step 5). The Rotate Code Disk (#710-004) mounts over the Ø37 body. The
-// cage windows expose the Split Gear Bottom's four brad holes; the four
-// reamed side holes here carry the 1" #19 locking brads ~6 mm deep
-// (008.6 steps 7-9). Three 25 mm CF strakes bridge into the Bottom
-// through the base slots (step 11).
+// The differential's output bevel: a 20T straight bevel crown carried on a
+// castellated cage whose windows clear the two side gears, over a bearing
+// stack and three CF strake slots.
 //
-// Geometry solved from 710-001_SplitGearTop.stl (scadmesh slice sweeps).
-// Tooth flanks are BOSL2 involute bevel teeth — verified by tooth count and
-// OD rather than vertex match. This part carries the datum bevel OD,
-// BEVEL_OD = 44.055 (the DC-11(f) check datum).
+// Authored in the reference mesh's own coordinates (z -1.000 .. 24.410), so
+// it compares to 710-001_SplitGearTop.stl without alignment.
+//
+// The reference is TWO unmerged solids (scadmesh segment): a cage body of
+// 10895.311 mm³ meshed at 2.52 triangles/mm², and a bevel crown of
+// 2844.032 mm³ at 6.69 — never merged, overlapping between z 15.448 and
+// 18.100. They are measured separately here and unioned into one solid, which
+// is why this file is built body-then-crown-then-cuts. That is also why the
+// reference→candidate direction of `dist` is not meaningful against this
+// file: it flags every surface buried in the overlap.
+//
+// Built in that order:
+//   1. revolve the measured meridional profile   -> the cage, as a full ring
+//   2. build the crown separately and union it   -> the bevel
+//   3. cut the windows, sight slots and strakes  -> the castellation
+//
+// The crown is governed by four cones, fitted from measured radius against
+// height, and every one of them is corroborated by a second part:
+//
+//   skirt (lower tip)   r = -7.464  + 1.44735 z
+//   upper tip           r = 45.432  - 1.14793 z
+//   root                r = 33.5057 - 0.84936 z    apex on the axis at 39.448
+//   inner / top face    r = z - 7.000              45 deg
+//
+// The first two are 720-002's own tip cones translated by +15.448 mm, which is
+// what a 1:1 bevel pair must share; the root cone's slope agrees with
+// 720-002's to 0.07%; and the 45-degree inner cone is the identical equation
+// 710-002 records for its outer cone, the surface these two parts mate on.
+//
+// The four intersections define the crown outright, each checked against an
+// independent measurement rather than assumed:
+//
+//   root ^ skirt   z = 17.8397, r = 18.3057   teeth begin
+//   skirt ^ tip    z = 20.3770, r = 22.0270   tip crown ring, the Ø44.055 datum
+//   root ^ inner   z = 21.9026, r = 14.9026   teeth part company with the ring
+//   inner ^ tip    z = 24.4103, r = 17.4103   the crown's highest point
+//
+// The last is the sharpest check available: the mesh's own bounding box tops
+// out at 24.410.
+//
+// Straight bevel teeth are ruled through the gear apex, so one measured
+// section reproduces the whole tooth exactly when lofted between two scaled
+// copies -- the hull between them IS the ruled surface. See 720-002.
+//
+// Agreement, candidate→reference: 0.225 mm max, 0.012 RMS, 0.010 p95, 0.127%
+// of samples over 0.15. The residual is a known limit of the method, not slack
+// left in the numbers: the worst point sits at r = 17.464 where the root cone
+// is 17.129, which is the tooth's root fillet. A fillet is concave and these
+// sections are convex hulls, so the loft cuts the corner across it and leaves
+// a little material outside the true flank. Adding sections does not help --
+// going from seven to thirteen moved p95 from 0.023 to 0.010 and left the max
+// where it was. Removing it means abandoning hulls for a skinned loft that
+// preserves concavity, which is a larger change than this part warrants.
 
 include <diff_params.scad>
-include <BOSL2/gears.scad>
 
 /* [Hidden] */
-Z0          = -1.0;     // base face
-Z_TOP       = 24.41;    // crown tip truncation plane
-BODY_D      = 37.0;     // main body diameter
-COLLAR      = [38.0, 7.0, 8.0];    // [Ø, z0, z1] code-disk stop collar
-STEP_Z      = [8.759, 10.1];       // body -> cage tube chamfer
-TUBE_D      = 35.0;     // cage tube outer diameter
-CAGE_ID     = 28.0;     // core cavity diameter
-WINDOW_Z    = [11.515, 14.5];      // cage window band
-SLOT_Z      = [11.515, 12.969];    // brad-sight slot band (posts merge above)
-WINDOW_A    = 26.2;     // window angular width, centered between quadrants
-SLOT_A      = 5.8;      // sight slot angular width, centered on quadrants
-RING_Z      = [15.45, 18.4];       // solid ring under the gear
-SEAT_MR128  = 3.5;      // MR128 seat depth (Ø12 from the base)
-SEAT_6703   = [3.9, 8.2];          // 6703 seat span (Ø23)
-BORE_SMALL  = 8.5;      // through-bore between the two seats
-GROOVE      = [[15.9, 28.0], [17.3, 35.06], [18.5, 28.0]];  // mesh clearance
-CROWN_Z     = 21.0;     // gear body cut flat here; tooth toes stay proud
-CROWN_D     = 32.2;     // crown pocket diameter
-SG_APEX     = 39.52;    // bevel pitch-cone apex (virtual, above the part)
-SG_FW       = 6.6;      // bevel face width
-// Tooth envelope trim: rising to the Ø44.055 datum, then declining over
-// the crown-prong region (traced from the reference).
-TIP_TRIM    = [[18.0, 37.2], [20.4, 44.26], [21.9, 38.6], [24.5, 37.0]];
-STRAKE_A    = [90, 210, 330];      // strake slot angles
-STRAKE_R    = 14.25;    // strake slot center radius
-STRAKE_TOP  = 7.5;      // strake slots reach up from the base
-BRAD_R      = 15.67;    // brad hole circle radius
-BRAD_HOLE_Z = [2.98, 8.98];        // reamed 6 mm deep from the cage floor
+Z_BASE = -1.000;    // base face, in the reference frame
+Z_CAGE =  18.100;   // top face of the cage
 
-module split_gear_teeth() {
-    intersection() {
-        up(SG_APEX)
-            bevel_gear(mod=BEVEL_MOD, teeth=BEVEL_TEETH,
-                       mate_teeth=BEVEL_TEETH, face_width=SG_FW,
-                       spiral=0, cutter_radius=0, slices=24, anchor="apex");
-        union() {
-            for (i = [0 : len(TIP_TRIM) - 2])
-                up(TIP_TRIM[i][0])
-                    cyl(d1=TIP_TRIM[i][1], d2=TIP_TRIM[i+1][1],
-                        h=TIP_TRIM[i+1][0] - TIP_TRIM[i][0], anchor=BOTTOM);
+// Meridional outline of the cage, measured (scadmesh profile), taken as a full
+// ring: the windows are cut in step 3 rather than carried here. The profile
+// arrives as two loops because its cutting plane is fixed on the x-z plane and
+// a sight slot sits there, so the cage is severed at that angle between
+// z 11.500 and 12.999; the two loops are rejoined along r = 14.000 and
+// r = 17.500, which is what the sections either side of the gap measure.
+BODY_PROFILE = [
+    [ 5.994, -1.000],   // Ø12 MR128 seat, from the base
+    [ 6.000,  3.000],
+    [ 4.241,  3.000],   // step in to the Ø8.5 through-bore
+    [ 4.241,  4.000],
+    [11.500,  4.000],   // step out to the Ø23 6703 seat
+    [11.490,  8.750],
+    [11.942,  8.750],   // chamfer up into the Ø28 core cavity
+    [11.977,  8.782],
+    [12.100,  8.866],
+    [12.235,  8.931],
+    [12.377,  8.975],
+    [12.525,  8.997],
+    [13.998,  9.000],
+    [14.000, 11.500],   // Ø28 cavity, straight to the top face
+    [13.999, 18.100],
+    [18.497, 18.100],   // cage top face
+    [18.498, 17.000],
+    [18.490, 17.000],
+    [17.490, 16.010],   // chamfer down to the cage tube
+    [17.500, 12.999],
+    [17.500, 11.500],   // Ø35 cage tube, through the window band
+    [17.490,  9.990],
+    [18.490,  9.000],   // chamfer out to the code-disk stop collar
+    [18.500,  9.000],
+    [18.500,  8.000],
+    [18.990,  8.000],   // Ø37.98 collar
+    [18.990,  7.000],
+    [18.500,  7.000],
+    [18.500, -1.000],   // Ø37 body, down to the base
+];
+
+// The crown ring the teeth stand on, bounded outside by the skirt cone up to
+// where the teeth begin and by the root cone above it, and inside by Ø28 and
+// then the 45-degree face.
+CROWN_RING = [
+    [14.000, 15.448],
+    [14.893, 15.448],
+    [18.3057, 17.8397],   // root ^ skirt
+    [14.9026, 21.9026],   // root ^ inner
+    [14.000, 21.001],     // the 45-degree face, back to Ø28
+];
+
+// What bounds the teeth. Its inner edge is the 45-degree face rather than the
+// root cone, so each tooth runs past the root and buries itself in the ring:
+// the union is then an overlap, not a shared face, and the visible root
+// surface belongs to the ring, where it was measured.
+TOOTH_ENVELOPE = [
+    [10.8397, 17.8397],
+    [18.3057, 17.8397],
+    [22.0270, 20.3770],
+    [17.4103, 24.4103],
+];
+
+SLAB = 0.001;           // loft slab thickness
+
+// Castellation, all measured. The windows are STRAIGHT SLOTS, not sectors:
+// their walls run parallel to the slot centreline, 3.500 mm either side of it,
+// which a radial wall does not do. Reading them as sectors put the wall 0.7 mm
+// out at the bore. Width is a constant 7.000 mm at every height sampled
+// between z 11.6 and 14.0, so the ends are square, and the top face sits
+// between the sections at 14.48 (open) and 14.52 (closed).
+WINDOW_W   = 7.000;
+WINDOW_ANG = [45, 135, 225, 315];
+WINDOW_Z   = [11.500, 14.500];
+
+// The four narrow openings on the quadrants are not slots at all: they are the
+// brad holes, drilled radially. Their width through the band is a circular
+// chord -- 0.745, 1.193, 1.494, 1.017 mm at z 11.60, 11.80, 12.20, 12.80 --
+// which fits a Ø1.497 hole on an axis at z = 12.250 to within 0.003 mm. That
+// is the Ø1.5 brad 710-002 is drilled for, and the cage floor at z = 11.500
+// falls tangent to the holes.
+BRAD_D     = 1.497;
+BRAD_ANG   = [0, 90, 180, 270];
+BRAD_Z     = 12.250;
+
+// #710-005 CF strakes, 5.6 x 2.5 mm in section, slotted from the base.
+STRAKE    = [5.6, 2.5];
+STRAKE_R  = [13.000, 15.500];   // measured inner and outer faces
+STRAKE_ANG = [90, 210, 330];
+STRAKE_TOP = 8.000;
+
+
+// Measured tooth sections, hulled. Thirteen are needed where 720-002 took one,
+// for two reasons. The tip surface changes direction at the crown ring -- below
+// it the skirt cone RISES with height while the root cone falls -- so no single
+// similarity about the apex can follow both; and the flanks carry enough
+// curvature that coarser spacing leaves 0.22 mm between sections at z 19.3 to
+// 20.377. The section at z = 20.377 reaches r = 22.0271, the Ø44.055 datum.
+TOOTH_Z = [18.2, 18.7, 19.3, 19.85, 20.377, 20.9, 21.4,
+           21.9, 22.4, 22.9, 23.4, 23.8, 24.2];
+
+TOOTH_SECTIONS = [
+    [
+        [17.5009, -1.8395],
+        [18.0008, -1.8921],
+        [18.7293, -1.8647],
+        [18.7301, -1.8564],
+        [18.7316, -1.8367],
+        [18.7404, -1.7258],
+        [18.8761, -0],
+        [18.7442, 1.6769],
+        [18.7293, 1.8647],
+        [17.5108, 1.7434],
+    ],
+    [
+        [17.0689, -1.8845],
+        [17.5605, -1.9388],
+        [19.3511, -1.8093],
+        [19.4582, -1.8002],
+        [19.4587, -1.7945],
+        [19.4602, -1.7756],
+        [19.468, -1.6776],
+        [19.4759, -1.5764],
+        [19.5999, -0],
+        [19.4846, 1.4662],
+        [19.4697, 1.6561],
+        [19.464, 1.7277],
+        [19.4582, 1.8002],
+        [19.3511, 1.8093],
+        [19.3505, 1.8094],
+        [19.2049, 1.8198],
+        [19.2031, 1.8199],
+        [19.0676, 1.8277],
+        [19.0658, 1.8278],
+        [18.9445, 1.8331],
+        [18.9423, 1.8332],
+        [18.8367, 1.8364],
+        [18.8334, 1.8365],
+        [18.7344, 1.8381],
+        [18.6473, 1.8384],
+        [18.645, 1.8384],
+        [18.5753, 1.8376],
+        [18.5721, 1.8376],
+        [18.5086, 1.836],
+        [18.4569, 1.8341],
+        [18.4166, 1.832],
+        [18.3891, 1.8302],
+        [18.3879, 1.8301],
+        [18.3708, 1.8288],
+        [18.3651, 1.8283],
+        [17.0882, 1.7012],
+    ],
+    [
+        [16.5499, -1.9384],
+        [17.0322, -1.9949],
+        [19.4938, -1.6825],
+        [19.5016, -1.6814],
+        [19.6951, -1.6542],
+        [19.7001, -1.6535],
+        [19.7064, -1.6525],
+        [19.9162, -1.6202],
+        [19.9196, -1.6196],
+        [20.1523, -1.5804],
+        [20.1544, -1.5801],
+        [20.347, -1.5449],
+        [20.3586, -1.3972],
+        [20.4685, -0],
+        [20.347, 1.5449],
+        [20.1544, 1.5801],
+        [20.1523, 1.5804],
+        [19.9196, 1.6196],
+        [19.9162, 1.6202],
+        [19.7064, 1.6525],
+        [19.7001, 1.6535],
+        [19.6951, 1.6542],
+        [19.5016, 1.6814],
+        [19.4938, 1.6825],
+        [19.3003, 1.7069],
+        [19.2931, 1.7078],
+        [19.1295, 1.7262],
+        [19.1194, 1.7273],
+        [18.9512, 1.7439],
+        [18.9429, 1.7446],
+        [18.7953, 1.7572],
+        [18.7868, 1.7578],
+        [18.6631, 1.7666],
+        [18.6516, 1.7674],
+        [18.52, 1.775],
+        [18.5116, 1.7754],
+        [18.4005, 1.7803],
+        [18.3923, 1.7805],
+        [18.3032, 1.7832],
+        [18.2926, 1.7835],
+        [18.1964, 1.7851],
+        [18.1118, 1.7854],
+        [18.1054, 1.7853],
+        [18.047, 1.7847],
+        [18.0388, 1.7846],
+        [17.9771, 1.7831],
+        [17.9269, 1.7812],
+        [17.8878, 1.7792],
+        [17.8626, 1.7775],
+        [17.8599, 1.7774],
+        [17.8433, 1.7761],
+        [17.8378, 1.7756],
+        [16.5811, 1.6505],
+    ],
+    [
+        [16.0934, -1.8195],
+        [16.5791, -1.8744],
+        [18.4375, -1.6965],
+        [18.6012, -1.6803],
+        [18.6223, -1.6779],
+        [18.7608, -1.6623],
+        [18.7771, -1.6605],
+        [18.9653, -1.6367],
+        [18.9856, -1.6339],
+        [19.1507, -1.6107],
+        [19.1661, -1.6085],
+        [19.1854, -1.6055],
+        [19.3651, -1.5778],
+        [19.3796, -1.5756],
+        [19.606, -1.5374],
+        [19.6225, -1.5344],
+        [19.8337, -1.4959],
+        [19.8455, -1.4937],
+        [19.8601, -1.4909],
+        [20.0985, -1.444],
+        [20.1107, -1.4414],
+        [20.3649, -1.3878],
+        [20.6452, -1.3247],
+        [20.9396, -1.2541],
+        [21.0728, -1.2202],
+        [21.0734, -1.2201],
+        [21.1706, -1.1954],
+        [21.173, -1.1659],
+        [21.2647, -0],
+        [21.1713, 1.1881],
+        [21.1707, 1.1954],
+        [20.9396, 1.2541],
+        [20.6452, 1.3247],
+        [20.3649, 1.3878],
+        [20.1107, 1.4414],
+        [20.0985, 1.444],
+        [19.8601, 1.4909],
+        [19.8455, 1.4937],
+        [19.8337, 1.4959],
+        [19.6225, 1.5344],
+        [19.606, 1.5374],
+        [19.3796, 1.5756],
+        [19.3651, 1.5778],
+        [19.1854, 1.6055],
+        [19.1661, 1.6085],
+        [19.1507, 1.6107],
+        [18.9856, 1.6339],
+        [18.9653, 1.6367],
+        [18.7771, 1.6605],
+        [18.7608, 1.6623],
+        [18.6223, 1.6779],
+        [18.6012, 1.6803],
+        [18.4375, 1.6965],
+        [18.4213, 1.6979],
+        [18.2859, 1.7094],
+        [18.27, 1.7105],
+        [18.1665, 1.7179],
+        [18.1461, 1.7193],
+        [18.0181, 1.7267],
+        [18.0035, 1.7274],
+        [17.9018, 1.7318],
+        [17.8881, 1.7323],
+        [17.8143, 1.7345],
+        [17.7968, 1.735],
+        [17.7033, 1.7366],
+        [17.621, 1.7368],
+        [17.6108, 1.7367],
+        [17.5628, 1.7362],
+        [17.5499, 1.736],
+        [17.4899, 1.7346],
+        [17.4411, 1.7327],
+        [17.403, 1.7308],
+        [17.3801, 1.7293],
+        [17.3759, 1.729],
+        [17.3597, 1.7277],
+        [17.3544, 1.7273],
+        [16.1163, 1.604],
+    ],
+    [
+        [15.6426, -1.8216],
+        [16.1235, -1.8776],
+        [18.2758, -1.616],
+        [18.459, -1.5928],
+        [18.4911, -1.5883],
+        [18.629, -1.569],
+        [18.6543, -1.5654],
+        [18.6862, -1.5605],
+        [18.837, -1.5372],
+        [18.8621, -1.5333],
+        [19.0824, -1.4962],
+        [19.1128, -1.4907],
+        [19.2919, -1.458],
+        [19.3156, -1.4537],
+        [19.3447, -1.448],
+        [19.5617, -1.4053],
+        [19.5891, -1.3995],
+        [19.8211, -1.3506],
+        [20.0938, -1.2892],
+        [20.3803, -1.2205],
+        [20.4957, -1.1912],
+        [20.5041, -1.1891],
+        [20.6808, -1.1441],
+        [20.9954, -1.0595],
+        [21.3078, -0.9709],
+        [21.317, -0.9684],
+        [21.3245, -0.9662],
+        [21.6683, -0.8636],
+        [21.9669, -0.7699],
+        [21.967, -0.7686],
+        [22.0271, -0.0066],
+        [22.0271, 0.0066],
+        [21.967, 0.769],
+        [21.9669, 0.7699],
+        [21.6683, 0.8636],
+        [21.3245, 0.9662],
+        [21.317, 0.9684],
+        [21.3078, 0.9709],
+        [20.9954, 1.0595],
+        [20.6808, 1.1441],
+        [20.6666, 1.1477],
+        [20.6494, 1.1521],
+        [20.3803, 1.2205],
+        [20.0938, 1.2892],
+        [19.8211, 1.3506],
+        [19.5891, 1.3995],
+        [19.5617, 1.4053],
+        [19.3447, 1.448],
+        [19.3156, 1.4537],
+        [19.2919, 1.458],
+        [19.1128, 1.4907],
+        [19.0824, 1.4962],
+        [18.8621, 1.5333],
+        [18.837, 1.5372],
+        [18.6862, 1.5605],
+        [18.6543, 1.5654],
+        [18.629, 1.569],
+        [18.4911, 1.5883],
+        [18.459, 1.5928],
+        [18.2758, 1.616],
+        [18.2507, 1.6188],
+        [18.1362, 1.6317],
+        [18.1046, 1.6353],
+        [17.9453, 1.651],
+        [17.9215, 1.6531],
+        [17.7978, 1.6636],
+        [17.7749, 1.6652],
+        [17.6906, 1.6712],
+        [17.6617, 1.6733],
+        [17.5371, 1.6804],
+        [17.5167, 1.6813],
+        [17.4239, 1.6854],
+        [17.4049, 1.686],
+        [17.3457, 1.6878],
+        [17.3218, 1.6885],
+        [17.2307, 1.69],
+        [17.1507, 1.6903],
+        [17.1369, 1.6901],
+        [17.0989, 1.6897],
+        [17.0815, 1.6895],
+        [17.0231, 1.6881],
+        [16.9756, 1.6863],
+        [16.9385, 1.6844],
+        [16.9177, 1.683],
+        [16.9122, 1.6827],
+        [16.8964, 1.6814],
+        [16.8912, 1.681],
+        [15.6709, 1.5595],
+    ],
+    [
+        [15.2237, -1.5666],
+        [15.7192, -1.6176],
+        [16.5599, -1.642],
+        [16.6166, -1.6434],
+        [16.6384, -1.6436],
+        [16.6666, -1.6439],
+        [16.6839, -1.6441],
+        [16.7618, -1.6438],
+        [16.8504, -1.6424],
+        [16.8807, -1.6415],
+        [16.9255, -1.6401],
+        [16.9497, -1.6394],
+        [17.0336, -1.6357],
+        [17.0598, -1.6345],
+        [17.181, -1.6275],
+        [17.2183, -1.6249],
+        [17.2835, -1.6202],
+        [17.3133, -1.6181],
+        [17.4255, -1.6086],
+        [17.4569, -1.6059],
+        [17.6117, -1.5906],
+        [17.6539, -1.5859],
+        [17.7445, -1.5757],
+        [17.7783, -1.5718],
+        [17.9565, -1.5493],
+        [18.0004, -1.5431],
+        [18.1112, -1.5276],
+        [18.1465, -1.5226],
+        [18.1908, -1.5158],
+        [18.313, -1.4969],
+        [18.3486, -1.4914],
+        [18.5629, -1.4553],
+        [18.607, -1.4473],
+        [18.7543, -1.4204],
+        [18.7897, -1.414],
+        [18.8332, -1.4054],
+        [19.0291, -1.3669],
+        [19.0716, -1.3579],
+        [19.2813, -1.3137],
+        [19.5466, -1.2539],
+        [19.8253, -1.1871],
+        [19.9231, -1.1623],
+        [19.9391, -1.1582],
+        [20.1176, -1.1129],
+        [20.4236, -1.0306],
+        [20.6912, -0.9547],
+        [20.72, -0.9465],
+        [20.7437, -0.9398],
+        [21.0781, -0.84],
+        [21.4271, -0.7305],
+        [21.4271, 0.7305],
+        [21.0781, 0.84],
+        [20.7437, 0.9398],
+        [20.72, 0.9465],
+        [20.6912, 0.9547],
+        [20.4236, 1.0306],
+        [20.1176, 1.1129],
+        [20.0885, 1.1202],
+        [20.0532, 1.1292],
+        [19.8253, 1.1871],
+        [19.5466, 1.2539],
+        [19.2813, 1.3137],
+        [19.0716, 1.3579],
+        [19.0291, 1.3669],
+        [18.8332, 1.4054],
+        [18.7897, 1.414],
+        [18.7543, 1.4204],
+        [18.607, 1.4473],
+        [18.5629, 1.4553],
+        [18.3486, 1.4914],
+        [18.313, 1.4969],
+        [18.1908, 1.5158],
+        [18.1465, 1.5226],
+        [18.1112, 1.5276],
+        [18.0004, 1.5431],
+        [17.9565, 1.5493],
+        [17.7783, 1.5718],
+        [17.7445, 1.5757],
+        [17.6539, 1.5859],
+        [17.6117, 1.5906],
+        [17.4569, 1.6059],
+        [17.4255, 1.6086],
+        [17.3133, 1.6181],
+        [17.2835, 1.6202],
+        [17.2183, 1.6249],
+        [17.181, 1.6275],
+        [17.0598, 1.6345],
+        [17.0336, 1.6357],
+        [16.9497, 1.6394],
+        [16.9255, 1.6401],
+        [16.8807, 1.6415],
+        [16.8504, 1.6424],
+        [16.7618, 1.6438],
+        [16.6839, 1.6441],
+        [16.6666, 1.6439],
+        [16.6384, 1.6436],
+        [16.6166, 1.6434],
+        [16.5599, 1.642],
+        [16.5136, 1.6402],
+        [16.4776, 1.6384],
+        [16.4588, 1.6371],
+        [16.4519, 1.6367],
+        [16.4366, 1.6355],
+        [16.4316, 1.635],
+        [15.2289, 1.5154],
+    ],
+    [
+        [14.8009, -1.526],
+        [15.2948, -1.5769],
+        [16.117, -1.5979],
+        [16.1722, -1.5992],
+        [16.1982, -1.5995],
+        [16.217, -1.5997],
+        [16.2377, -1.5999],
+        [16.3135, -1.5997],
+        [16.3997, -1.5983],
+        [16.4362, -1.5972],
+        [16.4671, -1.5962],
+        [16.4963, -1.5953],
+        [16.5717, -1.592],
+        [16.6035, -1.5906],
+        [16.7214, -1.5838],
+        [16.7669, -1.5806],
+        [16.8137, -1.5773],
+        [16.8502, -1.5747],
+        [16.9513, -1.5661],
+        [16.9899, -1.5628],
+        [17.1406, -1.5479],
+        [17.1927, -1.542],
+        [17.2605, -1.5344],
+        [17.3026, -1.5296],
+        [17.476, -1.5077],
+        [17.5312, -1.4999],
+        [17.6162, -1.488],
+        [17.661, -1.4817],
+        [17.7172, -1.4731],
+        [17.812, -1.4584],
+        [17.8577, -1.4514],
+        [18.0662, -1.4163],
+        [18.1235, -1.4058],
+        [18.2403, -1.3845],
+        [18.2869, -1.376],
+        [18.3441, -1.3647],
+        [18.5199, -1.3302],
+        [18.7654, -1.2784],
+        [19.0235, -1.2202],
+        [19.2947, -1.1553],
+        [19.3755, -1.1347],
+        [19.3989, -1.1288],
+        [19.5791, -1.083],
+        [19.8769, -1.0029],
+        [20.1017, -0.9391],
+        [20.1492, -0.9257],
+        [20.1884, -0.9146],
+        [20.5138, -0.8174],
+        [20.8535, -0.7109],
+        [20.8535, 0.7109],
+        [20.5138, 0.8174],
+        [20.1884, 0.9146],
+        [20.1492, 0.9257],
+        [20.1017, 0.9391],
+        [19.8769, 1.0029],
+        [19.5791, 1.083],
+        [19.5358, 1.094],
+        [19.4831, 1.1074],
+        [19.2947, 1.1553],
+        [19.0235, 1.2202],
+        [18.7654, 1.2784],
+        [18.5199, 1.3302],
+        [18.3441, 1.3647],
+        [18.2869, 1.376],
+        [18.2403, 1.3845],
+        [18.1235, 1.4058],
+        [18.0662, 1.4163],
+        [17.8577, 1.4514],
+        [17.812, 1.4584],
+        [17.7172, 1.4731],
+        [17.661, 1.4817],
+        [17.6162, 1.488],
+        [17.5312, 1.4999],
+        [17.476, 1.5077],
+        [17.3026, 1.5296],
+        [17.2605, 1.5344],
+        [17.1927, 1.542],
+        [17.1406, 1.5479],
+        [16.9899, 1.5628],
+        [16.9513, 1.5661],
+        [16.8502, 1.5747],
+        [16.8137, 1.5773],
+        [16.7669, 1.5806],
+        [16.7214, 1.5838],
+        [16.6035, 1.5906],
+        [16.5717, 1.592],
+        [16.4963, 1.5953],
+        [16.4671, 1.5962],
+        [16.4362, 1.5972],
+        [16.3997, 1.5983],
+        [16.3135, 1.5997],
+        [16.2377, 1.5999],
+        [16.217, 1.5997],
+        [16.1982, 1.5995],
+        [16.1722, 1.5992],
+        [16.117, 1.5979],
+        [16.0719, 1.5962],
+        [16.0369, 1.5944],
+        [16.0201, 1.5933],
+        [16.012, 1.5927],
+        [15.997, 1.5916],
+        [15.9921, 1.5911],
+        [14.8063, 1.4731],
+    ],
+    [
+        [14.3782, -1.4854],
+        [14.8705, -1.5362],
+        [15.7278, -1.5551],
+        [15.758, -1.5554],
+        [15.7674, -1.5555],
+        [15.7915, -1.5558],
+        [15.8651, -1.5555],
+        [15.949, -1.5541],
+        [15.9917, -1.5529],
+        [16.0087, -1.5523],
+        [16.043, -1.5513],
+        [16.1098, -1.5484],
+        [16.1471, -1.5467],
+        [16.2619, -1.5401],
+        [16.3154, -1.5363],
+        [16.3439, -1.5343],
+        [16.3871, -1.5312],
+        [16.4771, -1.5235],
+        [16.5229, -1.5196],
+        [16.6695, -1.5051],
+        [16.7316, -1.4982],
+        [16.7766, -1.4931],
+        [16.827, -1.4874],
+        [16.9956, -1.4661],
+        [17.0621, -1.4568],
+        [17.1212, -1.4484],
+        [17.1754, -1.4408],
+        [17.2436, -1.4303],
+        [17.311, -1.4199],
+        [17.3667, -1.4113],
+        [17.5695, -1.3772],
+        [17.64, -1.3643],
+        [17.7263, -1.3486],
+        [17.7841, -1.338],
+        [17.8551, -1.324],
+        [18.0107, -1.2935],
+        [18.2494, -1.2431],
+        [18.5004, -1.1866],
+        [18.7641, -1.1234],
+        [18.828, -1.1071],
+        [18.8588, -1.0993],
+        [19.0406, -1.0531],
+        [19.3302, -0.9752],
+        [19.5123, -0.9236],
+        [19.5785, -0.9048],
+        [19.6332, -0.8893],
+        [19.9496, -0.7948],
+        [20.2799, -0.6913],
+        [20.2799, 0.6913],
+        [19.9496, 0.7948],
+        [19.6332, 0.8893],
+        [19.5785, 0.9048],
+        [19.5123, 0.9236],
+        [19.3302, 0.9752],
+        [19.0406, 1.0531],
+        [18.9832, 1.0677],
+        [18.9131, 1.0855],
+        [18.7641, 1.1234],
+        [18.5004, 1.1866],
+        [18.2494, 1.2431],
+        [18.0107, 1.2935],
+        [17.8551, 1.324],
+        [17.7841, 1.338],
+        [17.7263, 1.3486],
+        [17.64, 1.3643],
+        [17.5695, 1.3772],
+        [17.3667, 1.4113],
+        [17.311, 1.4199],
+        [17.2436, 1.4303],
+        [17.1754, 1.4408],
+        [17.1212, 1.4484],
+        [17.0621, 1.4568],
+        [16.9956, 1.4661],
+        [16.827, 1.4874],
+        [16.7766, 1.4931],
+        [16.7316, 1.4982],
+        [16.6695, 1.5051],
+        [16.5229, 1.5196],
+        [16.4771, 1.5235],
+        [16.3871, 1.5312],
+        [16.3439, 1.5343],
+        [16.3154, 1.5363],
+        [16.2619, 1.5401],
+        [16.1471, 1.5467],
+        [16.1098, 1.5484],
+        [16.043, 1.5513],
+        [16.0087, 1.5523],
+        [15.9917, 1.5529],
+        [15.949, 1.5541],
+        [15.8651, 1.5555],
+        [15.7915, 1.5558],
+        [15.7674, 1.5555],
+        [15.758, 1.5554],
+        [15.7278, 1.5551],
+        [15.6741, 1.5538],
+        [15.6303, 1.5521],
+        [15.5962, 1.5504],
+        [15.5814, 1.5494],
+        [15.572, 1.5488],
+        [15.5574, 1.5476],
+        [15.5527, 1.5472],
+        [14.3837, 1.4309],
+    ],
+    [
+        [13.9628, -1.3718],
+        [15.3847, -1.5115],
+        [15.4168, -1.5114],
+        [15.4983, -1.51],
+        [15.5472, -1.5086],
+        [15.5504, -1.5085],
+        [15.5896, -1.5073],
+        [15.648, -1.5047],
+        [15.6908, -1.5028],
+        [15.8023, -1.4964],
+        [15.8639, -1.492],
+        [15.8741, -1.4913],
+        [15.9239, -1.4877],
+        [16.0029, -1.481],
+        [16.0559, -1.4765],
+        [16.1983, -1.4624],
+        [16.2705, -1.4543],
+        [16.2926, -1.4518],
+        [16.3514, -1.4452],
+        [16.5152, -1.4245],
+        [16.5929, -1.4136],
+        [16.6263, -1.4089],
+        [16.6899, -1.3999],
+        [16.77, -1.3876],
+        [16.81, -1.3814],
+        [16.8758, -1.3713],
+        [17.0728, -1.3381],
+        [17.1564, -1.3228],
+        [17.2123, -1.3126],
+        [17.2813, -1.3],
+        [17.5014, -1.2568],
+        [17.7334, -1.2078],
+        [17.9773, -1.1529],
+        [18.2335, -1.0915],
+        [18.2805, -1.0795],
+        [18.3186, -1.0699],
+        [18.5022, -1.0232],
+        [18.7836, -0.9475],
+        [18.9228, -0.9081],
+        [19.0077, -0.884],
+        [19.0779, -0.8641],
+        [19.3853, -0.7723],
+        [19.7062, -0.6717],
+        [19.7062, 0.6717],
+        [19.3853, 0.7723],
+        [19.0779, 0.8641],
+        [19.0077, 0.884],
+        [18.9228, 0.9081],
+        [18.7836, 0.9475],
+        [18.5022, 1.0232],
+        [18.4305, 1.0414],
+        [18.3431, 1.0636],
+        [18.2335, 1.0915],
+        [17.9773, 1.1529],
+        [17.7334, 1.2078],
+        [17.5014, 1.2568],
+        [17.2813, 1.3],
+        [17.2123, 1.3126],
+        [17.1564, 1.3228],
+        [17.0728, 1.3381],
+        [16.8758, 1.3713],
+        [16.81, 1.3814],
+        [16.77, 1.3876],
+        [16.6899, 1.3999],
+        [16.6263, 1.4089],
+        [16.5929, 1.4136],
+        [16.5152, 1.4245],
+        [16.3514, 1.4452],
+        [16.2926, 1.4518],
+        [16.2705, 1.4543],
+        [16.1983, 1.4624],
+        [16.0559, 1.4765],
+        [16.0029, 1.481],
+        [15.9239, 1.4877],
+        [15.8741, 1.4913],
+        [15.8639, 1.492],
+        [15.8023, 1.4964],
+        [15.6908, 1.5028],
+        [15.648, 1.5047],
+        [15.5896, 1.5073],
+        [15.5504, 1.5085],
+        [15.5472, 1.5086],
+        [15.4983, 1.51],
+        [15.4168, 1.5114],
+        [15.3847, 1.5115],
+        [13.9628, 1.3718],
+    ],
+    [
+        [13.5525, -1.1977],
+        [15.8758, -1.403],
+        [16.0348, -1.3829],
+        [16.1238, -1.3704],
+        [16.1313, -1.3693],
+        [16.2044, -1.359],
+        [16.2963, -1.3449],
+        [16.309, -1.3429],
+        [16.3848, -1.3312],
+        [16.5761, -1.299],
+        [16.6729, -1.2813],
+        [16.6983, -1.2767],
+        [16.7785, -1.2621],
+        [16.9922, -1.22],
+        [17.2174, -1.1726],
+        [17.4542, -1.1192],
+        [17.7029, -1.0596],
+        [17.733, -1.052],
+        [17.7785, -1.0404],
+        [17.9637, -0.9933],
+        [18.2369, -0.9199],
+        [18.3333, -0.8925],
+        [18.4369, -0.8631],
+        [18.5226, -0.8388],
+        [18.8211, -0.7497],
+        [19.1326, -0.652],
+        [19.1326, 0.652],
+        [18.8211, 0.7497],
+        [18.5226, 0.8388],
+        [18.4369, 0.8631],
+        [18.3333, 0.8925],
+        [18.2369, 0.9199],
+        [17.9637, 0.9933],
+        [17.8778, 1.0151],
+        [17.773, 1.0418],
+        [17.7029, 1.0596],
+        [17.4542, 1.1192],
+        [17.2174, 1.1726],
+        [16.9922, 1.22],
+        [16.7785, 1.2621],
+        [16.6983, 1.2767],
+        [16.6729, 1.2813],
+        [16.5761, 1.299],
+        [16.3848, 1.3312],
+        [16.309, 1.3429],
+        [16.2963, 1.3449],
+        [16.2044, 1.359],
+        [16.1313, 1.3693],
+        [16.1238, 1.3704],
+        [16.0348, 1.3829],
+        [15.8758, 1.403],
+        [13.5525, 1.1977],
+    ],
+    [
+        [13.1454, -0.9642],
+        [16.3881, -1.202],
+        [16.483, -1.1833],
+        [16.7014, -1.1373],
+        [16.931, -1.0855],
+        [17.1723, -1.0277],
+        [17.1855, -1.0244],
+        [17.2383, -1.0109],
+        [17.4253, -0.9634],
+        [17.6902, -0.8922],
+        [17.7439, -0.877],
+        [17.8662, -0.8423],
+        [17.9673, -0.8136],
+        [18.2568, -0.7272],
+        [18.559, -0.6324],
+        [18.559, 0.6324],
+        [18.2568, 0.7272],
+        [17.9673, 0.8136],
+        [17.8662, 0.8423],
+        [17.7439, 0.877],
+        [17.6902, 0.8922],
+        [17.4253, 0.9634],
+        [17.3251, 0.9889],
+        [17.203, 1.0199],
+        [17.1723, 1.0277],
+        [16.931, 1.0855],
+        [16.7014, 1.1373],
+        [16.483, 1.1833],
+        [16.3881, 1.202],
+        [13.1454, 0.9642],
+    ],
+    [
+        [12.8188, -0.7531],
+        [16.8062, -0.9874],
+        [16.9945, -0.9395],
+        [17.2529, -0.87],
+        [17.2723, -0.8645],
+        [17.4096, -0.8256],
+        [17.5231, -0.7934],
+        [17.8054, -0.7091],
+        [18.1001, -0.6167],
+        [18.1001, 0.6167],
+        [17.8054, 0.7091],
+        [17.5231, 0.7934],
+        [17.4096, 0.8256],
+        [17.2723, 0.8645],
+        [17.2529, 0.87],
+        [16.9945, 0.9395],
+        [16.883, 0.9679],
+        [12.8199, 0.7349],
+    ],
+    [
+        [12.49, -0.5285],
+        [17.2272, -0.7289],
+        [17.354, -0.6911],
+        [17.6412, -0.601],
+        [17.6412, 0.601],
+        [17.354, 0.6911],
+        [17.2272, 0.7289],
+        [12.49, 0.5285],
+    ],
+];
+
+// One tooth, lofted through the measured sections. The ends are extruded
+// straight past the envelope, which trims them back to the cones.
+module tooth() {
+    up(TOOTH_Z[0] - 0.6) linear_extrude(0.6 + SLAB)
+        polygon(TOOTH_SECTIONS[0]);
+    for (i = [0 : len(TOOTH_Z) - 2])
+        hull() {
+            up(TOOTH_Z[i])     linear_extrude(SLAB)
+                polygon(TOOTH_SECTIONS[i]);
+            up(TOOTH_Z[i + 1]) linear_extrude(SLAB)
+                polygon(TOOTH_SECTIONS[i + 1]);
         }
+    up(TOOTH_Z[len(TOOTH_Z) - 1]) linear_extrude(0.5)
+        polygon(TOOTH_SECTIONS[len(TOOTH_SECTIONS) - 1]);
+}
+// The bevel crown: its ring, plus twenty teeth trimmed to the cone envelope.
+module crown() {
+    rotate_extrude() polygon(CROWN_RING);
+    intersection() {
+        rotate_extrude() polygon(TOOTH_ENVELOPE);
+        zrot_copies(n = BEVEL_TEETH) tooth();
     }
 }
 
+// The castellation, the brad holes and the strake slots. These cut the cage
+// only, never the crown: the windows stop at z = 14.500 and the strakes at
+// 8.000, while the crown ring starts at 15.448.
+//
+// Every tool here is a single primitive. Nothing in this module may be a
+// module that is internally boolean -- BOSL2's pie_slice() and any of its
+// rounded/chamfered relatives are. A difference nested inside a subtrahend
+// cannot be normalized away: A - (B - C) becomes (A - B) | (A & C), so each
+// one doubles the preview tree, and eight of them is 2^8. That is what was
+// pushing this file past the normalizer's limit and emptying the preview,
+// which is a GUI-only failure the F6 render never shows.
 module cage_cuts() {
-    for (q = [45, 135, 225, 315])
-        zrot(q) up(WINDOW_Z[0])
-            pie_slice(ang=WINDOW_A, r=TUBE_D/2 + 1,
-                      h=WINDOW_Z[1] - WINDOW_Z[0], spin=-WINDOW_A/2);
-    for (q = [0, 90, 180, 270])
-        zrot(q) up(SLOT_Z[0])
-            pie_slice(ang=SLOT_A, r=TUBE_D/2 + 1,
-                      h=SLOT_Z[1] - SLOT_Z[0], spin=-SLOT_A/2);
+    for (a = WINDOW_ANG)
+        zrot(a) up(WINDOW_Z[0])
+            translate([12, -WINDOW_W / 2, 0])
+                cube([9, WINDOW_W, WINDOW_Z[1] - WINDOW_Z[0]]);
+    for (a = BRAD_ANG)
+        zrot(a) up(BRAD_Z) yrot(90)
+            cylinder(d = BRAD_D, h = 21);
+    for (a = STRAKE_ANG)
+        zrot(a - 90) up(Z_BASE - epsilon)
+            translate([-STRAKE[0] / 2, STRAKE_R[0], 0])
+                cube([STRAKE[0],
+                      STRAKE_R[1] - STRAKE_R[0],
+                      STRAKE_TOP - Z_BASE + epsilon]);
 }
 
+// Cut the cage BEFORE unioning the crown on, not after. Cutting afterwards is
+// what the shape reads like and it renders correctly, but it will not preview:
+// OpenCSG normalization distributes each cut across every term of the union,
+// and the crown alone is twenty teeth of eight lofted segments each, so the
+// tree passes 200000 elements, normalization aborts, and the part disappears
+// from the GUI until a full F6. Cutting the cage while it is still a single
+// revolved solid keeps the difference at one term and leaves a plain union on
+// top, which needs no distribution at all.
 module split_gear_top() {
-    difference() {
-        union() {
-            up(Z0) cyl(d=BODY_D, h=STEP_Z[0] - Z0, anchor=BOTTOM);
-            up(COLLAR[1]) cyl(d=COLLAR[0], h=COLLAR[2] - COLLAR[1], anchor=BOTTOM);
-            up(STEP_Z[0]) cyl(d1=BODY_D, d2=TUBE_D, h=STEP_Z[1] - STEP_Z[0],
-                              anchor=BOTTOM);
-            up(STEP_Z[1]) cyl(d=TUBE_D, h=RING_Z[0] - STEP_Z[1], anchor=BOTTOM);
-            up(RING_Z[0]) cyl(d1=TUBE_D, d2=BODY_D, h=1.5, anchor=BOTTOM);
-            up(RING_Z[0] + 1.5)
-                cyl(d=BODY_D, h=RING_Z[1] - RING_Z[0] - 1.5, anchor=BOTTOM);
-            split_gear_teeth();
+    union() {
+        difference() {
+            rotate_extrude() polygon(BODY_PROFILE);
+            cage_cuts();
         }
-        // Bore ladder, bottom up: MR128 seat, through-bore, 6703 seat, cavity.
-        up(Z0 - epsilon) cyl(d=BRG_MR128[1], h=SEAT_MR128 - Z0, anchor=BOTTOM);
-        up(SEAT_MR128 - epsilon)
-            cyl(d=BORE_SMALL, h=SEAT_6703[0] - SEAT_MR128 + 2*epsilon, anchor=BOTTOM);
-        up(SEAT_6703[0]) cyl(d=BRG_6703[1], h=SEAT_6703[1] - SEAT_6703[0],
-                             anchor=BOTTOM);
-        // Seat lead-in chamfer (bearing press guide), then the cavity mouth.
-        up(SEAT_6703[1] - epsilon)
-            cyl(d1=BRG_6703[1], d2=25.12, h=STEP_Z[0] - SEAT_6703[1] + epsilon,
-                anchor=BOTTOM);
-        up(STEP_Z[0] - epsilon)
-            cyl(d1=25.12, d2=CAGE_ID, h=8.98 - STEP_Z[0] + epsilon, anchor=BOTTOM);
-        up(8.98 - epsilon)
-            cyl(d=CAGE_ID, h=CROWN_Z - 8.98 + 2*epsilon, anchor=BOTTOM);
-        // Mesh-clearance groove (input gear teeth sweep through here).
-        up(GROOVE[0][0]) cyl(d1=GROOVE[0][1], d2=GROOVE[1][1],
-                             h=GROOVE[1][0] - GROOVE[0][0], anchor=BOTTOM);
-        up(GROOVE[1][0]) cyl(d1=GROOVE[1][1], d2=GROOVE[2][1],
-                             h=GROOVE[2][0] - GROOVE[1][0], anchor=BOTTOM);
-        // Crown pocket: the gear body is cut flat at CROWN_Z; the tooth
-        // toes remain proud as 20 tapering prongs (code-disk end stop).
-        up(CROWN_Z) cyl(d=CROWN_D, h=Z_TOP - CROWN_Z + 1, anchor=BOTTOM);
-        // Truncate the crown tips flat.
-        up(Z_TOP) cyl(d=50, h=3, anchor=BOTTOM);
-        cage_cuts();
-        for (a = STRAKE_A)
-            zrot(a) right(STRAKE_R) up(Z0 - epsilon)
-                cuboid([STRAKE_25[2], STRAKE_25[1], STRAKE_TOP - Z0],
-                       anchor=BOTTOM);
-        for (q = [0, 90, 180, 270])
-            zrot(q) right(BRAD_R) up(BRAD_HOLE_Z[0])
-                cyl(d=BRAD_D + 0.1, h=BRAD_HOLE_Z[1] - BRAD_HOLE_Z[0] + epsilon,
-                    anchor=BOTTOM);
+        crown();
     }
 }
 
