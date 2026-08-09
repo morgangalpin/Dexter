@@ -17,12 +17,13 @@ unit is available to measure. Every item below is therefore closed by one of thr
 **third-party procurement action**, a **decision authored into this specification**, or a **measurement on
 a unit built from it**. Where an item previously named recovery from the originator, that route is gone and
 the item is an authoring task — most consequentially [DC-2](#differential-detail-design), which became a
-full detail design and is now closed as authored OpenSCAD source.
+full detail design, authored as OpenSCAD source that is committed but does not yet reproduce its
+reference geometry.
 
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
 | DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
-| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | — | `[Specified]` ✔ closed |
+| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | Four parts do not match their references | `[Provisional]` reopened |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | Tooth-count decomposition | `[Provisional]` |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | Socket-seat depth check | `[Provisional]` |
@@ -33,11 +34,12 @@ full detail design and is now closed as authored OpenSCAD source.
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, and DC-8 are closed. Every other item has been narrowed to the single
+**Completion progress.** DC-1 and DC-8 are closed. Every other item has been narrowed to the single
 remaining gap named in the table above, and each of those gaps is one of three kinds of work:
-**procurement** (DC-11), **design or reconstruction authored here** (DC-3, DC-6, DC-10), or **a check
-on a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — formerly the largest single piece of work in the
-set — closed as an authored parametric OpenSCAD design; its physical-build checks moved to DC-9.
+**procurement** (DC-11), **design or reconstruction authored here** (DC-2, DC-3, DC-6, DC-10), or **a
+check on a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — the largest single piece of work in the set
+— is authored as parametric OpenSCAD source, but four of its seven recreated parts do not yet reproduce
+their reference geometry, so it is **reopened**; its physical-build checks remain with DC-9.
 
 ---
 
@@ -99,35 +101,99 @@ ratio.
 STL geometry in `Hardware/Models/`.*
 
 ## Differential detail design
-**DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — ✔ **closed**
+**DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — `[Provisional]` — **reopened**
 
-**Closed.** The differential's detail design is authored as **parametric OpenSCAD source** committed to
-[`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one `.scad` beside each mesh
-it replaces (per the [Models README convention](../Hardware/Models/README.md#moving-to-openscad)), shared
-dimensions in `diff_params.scad`, assembly placements in `diff_assembly.scad`, and a `render-all.rs`
-verification script. Two parameter sets are selectable: `config="previous"` reproduces the previous
-version's built differential, `config="revised"` meets the
-[004 interface](004-Mechanical-Architecture.md#differential-interface) (cover envelope, L4 split).
+**Reopened 2026-08-06.** This item was closed on a verification that could not detect the defect it was
+meant to catch, and five of the seven recreated parts were the wrong shape — one has since been rebuilt,
+and four remain. The parametric source, the
+parameter sets, and the assembly assertions below all still stand; what failed was the evidence that the
+parts match their references.
 
-**Verification contract (geometric — how "authored" was checked):**
+**Why the original verification was insufficient.** It rested on `scadmesh compare`, which asks whether
+every reference **diameter and face position** reappears somewhere in the candidate. That is a set of
+one-dimensional histograms, and a solid can satisfy every one of them while being the wrong body: a
+missing boss, a square hole where the reference has a round one, and a dished flank where the reference
+bulges all leave the histograms intact. The check reported ±0.006–0.131 mm agreement on parts deviating
+by up to 3.8 mm. **A dimensional check is not a shape check**, and no amount of tightening its tolerance
+would have made it one.
 
-- The seven rotational parts (Split Gear Top/Bottom, Rotate Code Disk, Diff Keeper, Diff Gear Shaft/Axle,
-  Diff End Pulley) render and pass `scadmesh compare` against their reference STLs within ±0.15 mm on
-  bounding boxes and every detected diameter and face position, with two documented classes of exception,
-  each enumerated as an explicit range in `render-all.rs`:
-  - **Gear zones.** Tooth flanks are BOSL2 involutes and will never match a hand-modeled mesh
-    vertex-for-vertex, so within those bands the check is **tooth count plus outside diameter** (the OD is
-    each bevel's bounding dimension, so the bbox checks still cover it). The pitch cones are not measured
-    by the script; they follow from the 20T-on-20T, 90°-shaft configuration, and the tip envelope was
-    fitted to the reference's measured radius-versus-height profile.
+**Measured state** (`scadmesh dist`, two-sided sampled surface distance against each reference, mm):
+
+| Part | Worst deviation | Volume vs reference | Status |
+|---|---|---|---|
+| 710-003 Diff Keeper | 0.023 | −0.8 % | faithful |
+| 710-004 Rotate Code Disk | 0.350 | −1.4 % | faithful (p95 0.011; one localized edge) |
+| 720-002 Diff Gear Axle | 1.31 | −0.06 % | body correct, one feature wrong |
+| 720-003 Diff End Pulley | 1.98 | −4 % | wrong |
+| 710-002 Split Gear Bottom | 0.150 | +0.02 % | **rebuilt, faithful** (was 2.25 / −11 %) |
+| 710-001 Split Gear Top | 3.57 | −11 % | wrong |
+| 720-001 Diff Gear Shaft | 3.82 | −16 % | wrong |
+
+Known specific defects: **710-001** aborts CSG normalization and previews as an empty tree, so it is
+invisible in the GUI until a full render, which then reports 5 volumes where a single solid reports 2.
+**720-001** is missing 16 % of its material.
+
+**710-002 Split Gear Bottom is rebuilt and now meets the contract below.** Its bevel crown is no longer a
+generated `bevel_gear()` — a 1:1 bevel's teeth stand outside the crown radius, so intersecting one against
+this part cut no slots at all and left the hub solid. The teeth are instead lofted through convex hulls of
+seventeen measured cross-sections, and the body is a revolved measured profile. Four cone surfaces govern
+the crown, three of them 45°, and the tooth's inner face is cut by the same cone that forms the top edge of
+the Ø23 bore, which is why they meet exactly at (r 11.500, z 24.846):
+
+| Surface | Radius as a function of height |
+|---|---|
+| outer tip cone | `r = z − 7.000` |
+| top face | `r = 45.452 − 1.14900 z` |
+| root cone | `r = 33.5244 − 0.84876 z` |
+| inner cone | `r = z − 13.350` |
+
+Agreement: tooth tips within 0.009 mm and the root cone within 0.007 mm over nine heights; candidate-to-
+reference max 0.150 mm, RMS 0.024, p95 0.043. The 0.150 mm worst point is on the Ø8.5 bore, which the
+reference tessellates with only 12 facets — that is chord error between two meshes, not shape error.
+
+**Revised verification contract — what closing DC-2 now requires:**
+
+- Every recreated part agrees with its reference under `scadmesh dist` within ±0.15 mm **in both
+  directions**. Both directions are required, not a formality: candidate-to-reference finds material the
+  model invented, reference-to-candidate finds material it never reproduced, and a model that is a strict
+  subset of its reference passes the first alone. The one exception is an unmerged reference, where the
+  reverse direction is uninterpretable — see the artifact exception below, and account for it explicitly
+  rather than by widening the tolerance.
+- Each part's body is built from its **measured meridional profile** (`scadmesh profile`) rather than
+  from inferred diameters and face heights, so flank curvature is reproduced instead of guessed.
+- Every part previews (F5) as well as renders (F6), and a part modelled as one solid reports one solid.
+- `compare` is retained, but only to name *which* dimension moved once `dist` has failed a part. It no
+  longer gates anything.
+- The two documented exception classes still apply and still must be enumerated explicitly rather than
+  absorbed into a widened tolerance:
+  - **Gear zones.** Tooth flanks are BOSL2 involutes and will never match a hand-modelled mesh
+    vertex-for-vertex, so within those bands the check is **tooth count plus outside diameter**. The pitch
+    cones are not measured; they follow from the 20T-on-20T, 90°-shaft configuration.
   - **Reference-export artifacts.** The STLs are CAD *assembly* exports (`STLB ASM` headers) carrying
-    degenerate internal shells and internal coplanar faces that a clean model must not reproduce.
-- The two housings (Diff Body A/B) are **authored functional redesigns**: every bearing seat, journal,
-  bore, axis position, and span is taken from measurement, while the sculpted shells are replaced with
-  clean parametric bodies; they are verified by interface slice checks in `render-all.rs`.
+    zero-thickness internal shells — `profile` shows these as doubled-back slivers, one measuring 0.003 mm
+    across in 710-002 — which a clean model must not reproduce. They also carry **unmerged solids**: run
+    `scadmesh segment` on a reference before measuring it. 710-002 is two bodies, a turned body and a
+    tooth crown, tessellated at 3.85 and 6.91 triangles/mm² and never merged. Two consequences follow.
+    Its file volume **double-counts** the ≈352 mm³ where they interpenetrate, so a faithful model reads
+    4.8 % light against the file and correct against the merged 7001 mm³ — the volume column above is
+    computed against unmerged files and is a screening signal, not a verdict. And `dist` in the
+    reference-to-candidate direction flags every **buried** surface, because a merged model has no
+    counterpart for them; on this part that is 28 % of reference samples at up to 2.25 mm, none of it a
+    defect. Only the candidate-to-reference direction gates a part whose reference is an assembly export.
+- The two housings (Diff Body A/B) remain **authored functional redesigns** rather than recreations: every
+  bearing seat, journal, bore, axis position, and span is taken from measurement, while the sculpted
+  shells are replaced with clean parametric bodies. They are verified by interface slice checks, not by
+  shape comparison, because there is no reference shape they are meant to match.
 - Tooth counts verified on the renders: three 20T bevels (1:1:1), two 40T GT2 pulleys, 100 encoder slots.
+  These passed and are unaffected — a tooth count is not a shape claim.
 - The assembly is evaluated in both configurations, which fires its assertions: the J4/J5 axes intersect,
-  the L4 split resolves to the firmware's 59.50 mm, and the revised body fits the cover envelope.
+  the L4 split resolves to the firmware's 59.50 mm, and the revised body fits the cover envelope. These
+  also passed and are unaffected, being parameter assertions rather than geometry comparisons.
+
+**Open question carried with this item.** The faithful-recreation stage was premised on the reference
+STLs being trustworthy part geometry. They are artifact-laden assembly exports, so recreating them
+exactly may be the wrong goal; authoring directly to the revised interface and dropping the clone target
+is the alternative. Resolve before rebuilding the remaining parts.
 
 **Physical build validation moved to [DC-9](#performance-characterization):** J4 and J5 move without
 binding through their full travel, the 6-conductor bundle passes the bore and survives J5's full travel,

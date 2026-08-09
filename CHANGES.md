@@ -130,7 +130,7 @@ anything version 3 does not independently specify
   Anyone who ordered against the previous aggregate table should re-check
   [Corrections to 007](specs/007.1-Parts-Catalog.md#corrections-to-007).
 
-### CR-3A7: Differential detail design authored as parametric OpenSCAD (DC-2 closed)
+### CR-3A7: Differential detail design authored as parametric OpenSCAD (superseded by CR-3A8)
 
 - **Affects:** [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
   [007.2 §Differential](specs/007.2-Printed-Parts.md#differential--0076),
@@ -167,3 +167,40 @@ anything version 3 does not independently specify
   (3) the five `#720-005` 60 mm CF strakes listed in [007.6](specs/007-Bill-of-Materials.md#0076-differential)
   are placed by no assembly step and fit no slot in the differential's geometry. (2) and (3) are recorded
   as model-vs-BOM discrepancies under [DC-11(e)](specs/009-Design-Completion.md#procurement-data).
+
+### CR-3A8: DC-2 reopened — the recreated differential parts are the wrong shape
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [`Hardware/Models/700-Differential/`](Hardware/Models/700-Differential/)
+- **Was:** CR-3A7 closed DC-2 on `scadmesh compare`, which checks that every reference **diameter and
+  face position** reappears in the candidate. That is a set of one-dimensional histograms; a solid can
+  satisfy all of them and still be the wrong body.
+- **Now:** Measured with two-sided surface distance (`scadmesh dist`), five of the seven recreated parts
+  deviate from their references by 1.3–3.8 mm and are down to 16 % short on volume — while the old check
+  had reported 0.006–0.131 mm agreement. Only Diff Keeper (0.023 mm) and Rotate Code Disk (0.350 mm max,
+  0.011 mm p95) are faithful. Split Gear Top additionally previews as an empty CSG tree, so it is
+  invisible in the OpenSCAD GUI until a full render.
+- **Driver:** A dimensional check is not a shape check. Closing DC-2 now requires agreement under `dist`
+  in both directions, bodies built from measured meridional profiles rather than inferred dimensions, and
+  parts that preview as well as render.
+- **Consequence:** DC-2 returns to `[Provisional]`. The parametric source, parameter sets, tooth counts,
+  and assembly assertions stand; the part shapes do not. Do not print the 700-series parts from this
+  source.
+
+### CR-3A9: Split Gear Bottom rebuilt from measured geometry
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [`710-002_SplitGearBottom.scad`](Hardware/Models/700-Differential/710-002_SplitGearBottom.scad)
+- **Was:** The part deviated from its reference by up to 2.25 mm (CR-3A8): a generated `bevel_gear()` that
+  cut no tooth slots and left the hub solid, a cylindrical rather than conical cut on the inner tooth
+  faces, and a missing step inside the bottom bore.
+- **Now:** The body is a revolved measured profile and the crown is lofted through convex hulls of
+  seventeen measured cross-sections. Candidate-to-reference distance is 0.150 mm max, 0.024 RMS, 0.043
+  p95; tooth tips agree within 0.009 mm and the root cone within 0.007 mm. The part renders as one solid.
+- **Driver:** A 1:1 bevel's teeth stand outside this crown's radius, so no generated gear could ever cut
+  its slots. The four cone surfaces that do govern it are now recorded in DC-2.
+- **Consequence:** One of the five wrong parts is corrected; **DC-2 stays `[Provisional]`** on the other
+  four. The reference STLs are also now known to be **unmerged assembly exports**, which invalidates
+  whole-file volume comparison and the reference-to-candidate distance direction — both recorded in DC-2's
+  artifact exception.

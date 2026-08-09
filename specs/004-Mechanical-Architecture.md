@@ -142,15 +142,21 @@ end-effector wiring bundle passes through the differential's hollow bore.
   ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The 16T motor pulley is retained; the
   **driven side must be toothed to net 13.5:1**, and the tooth-count split that realizes it — along with the
   scale error that results from getting it wrong — is [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
-- **Differential detail — `[Specified]`.** The differential detail design is **authored** as parametric
+- **Differential detail — `[Provisional]`.** The differential detail design is **authored** as parametric
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
   `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
-  `diff_assembly.scad`, and a `render-all.rs` script that renders and dimensionally verifies every part
-  (see [DC-2](009-Design-Completion.md#differential-detail-design) for the verification contract). Two
+  `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
   parameter sets are selectable: `config="previous"` reproduces the previous version's built differential;
   `config="revised"` meets the [interface below](#differential-interface). Physical build validation
   (binding, wiring survival, code-disk reads) remains in
   [DC-9](009-Design-Completion.md#performance-characterization).
+
+  **The recreated part geometry is not yet trustworthy.** Four of the seven recreated parts deviate from
+  their reference meshes by 1.3–3.8 mm, because the original check compared diameters and face positions
+  rather than surfaces and could not see shape error. The mechanism facts below were read from the
+  reference meshes directly and are unaffected, but the `.scad` shapes are not — see
+  [DC-2](009-Design-Completion.md#differential-detail-design) for the per-part measurements and the
+  revised verification contract.
 
   **Authored mechanism facts** (measured from the built part set, now fixed in `diff_params.scad`): all
   three bevels — Split Gear (output), Diff Gear Shaft, and Diff Gear Axle — are **20T straight bevels at
@@ -238,5 +244,5 @@ of done is in [009-Design-Completion.md](009-Design-Completion.md).
 | Main Pivot | J2 | — | `[Specified]` | — |
 | Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
 | End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
-| Differential | J4, J5 | belt → differential | `[Specified]` net ratio and detail / `[Provisional]` tooth split | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
+| Differential | J4, J5 | belt → differential | `[Specified]` net ratio / `[Provisional]` detail and tooth split | [DC-3](009-Design-Completion.md#wrist-reduction-ratio), [DC-2](009-Design-Completion.md#differential-detail-design) |
 | Tool interface | roll, grip | smart servos | `[Specified]` | — |
