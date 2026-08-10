@@ -227,3 +227,122 @@ anything version 3 does not independently specify
   internally boolean, since `A - (B - C)` normalizes to `(A - B) | (A & C)` and doubles the preview tree
   per instance. 710-001's residual 0.225 mm is the tooth root fillet, which is concave and cannot be
   represented by a loft through convex hulls.
+
+### CR-3A13: Diff Gear Shaft rebuilt to the shared crown; DC-2 closed
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [`Hardware/Models/700-Differential/720-001_DiffGearShaft.scad`](Hardware/Models/700-Differential/720-001_DiffGearShaft.scad)
+- **Was:** CR-3A12 identified 720-001 Diff Gear Shaft's bevel as the previous revision of the shared
+  gear and posed the choice this left open — reproduce the old form faithfully, or cut the shaft to the
+  shared `diff_bevel.scad` crown like the other three, at the cost of an explicit tooth-band exception.
+  DC-2 stayed reopened on this one part pending that decision.
+- **Now:** Cut to the shared crown, for a matched set of four identical bevels. `shaft_bevel_gear()`
+  (a BOSL2-generated `bevel_gear()`, intersected against a stack of trim cylinders) is replaced with the
+  same `bevel_crown(BEVEL_ENVELOPE)` the other three carry, positioned on this shaft's own axis by two
+  numbers measured directly off its mesh rather than assumed from the others:
+  - **Apex** — the shared crown's `z = 0` pitch apex sits at `y = 0.5065` in this shaft's frame. Fitted
+    from eight consecutive one-degree sections of the tip land (`scadmesh apex`, y 14.5..18.5), the
+    apex is constant to five decimals pair to pair and agrees with the v1 STEP `CONICAL_SURFACE` apex
+    (0.5064895, CR-3A12) to 0.0001 mm.
+  - **Phase** — the shared crown centres a tooth on its own +x axis, which has no reason to match
+    wherever this shaft's reference mesh was exported. Measured by clustering the tip-land points of a
+    section at y = 17.0 into 20 teeth: centres sit at 8.97° mod the 18° pitch, constant to ±0.2° across
+    all 20.
+
+  A third difference from the other three parts: this shaft's own face and root cones both carry a
+  **positive** slope in y, where `diff_bevel.scad`'s own frame has material at z ≤ 0 (negative). The two
+  facing bevels were exported in mirrored senses, so the crown is placed `up(apex) zrot(phase)
+  mirror([0,0,1])` rather than plain `up(apex)`.
+- **Driver:** this is the decision CR-3A12 left open, made in favor of one gear definition over two. The
+  cost is measured, not the ~0.17 mm/0.64 mm estimated in CR-3A12 (those were 720-001's *old* form
+  measured against the shared gear's *reference*, a different comparison): `scadmesh dist` against
+  720-001's own reference now reads 1.282 mm max candidate→reference (localized to one point, at the
+  toe-side hand-off described below) and 2.851 mm max reference→candidate, the latter dominated by the
+  reference mesh's own pre-existing degenerate Ø15.5 internal shell (documented in the part's header,
+  present in every cross-section, already excluded from `render-all.rs`'s dimensional check). Both
+  directions therefore fail the ±0.15 mm gate, as anticipated, and are logged here as the explicit
+  exception the decision required — see the updated exception list in 009.
+
+  Independent of the raw `dist` numbers: tooth count is exactly 20 (`render-all.rs`'s own count check,
+  unaffected by the crown swap), and the 20 tooth centres land within 0.3° of the reference's own
+  measured centres at y = 17.0 — the crown is the right shape, correctly clocked, at the right size; what
+  fails the gate is the tooth *form* itself, by design.
+- **Modelling note — a self-intersecting profile fails silently.** The hub polygon connecting the front
+  journal step to the crown's root cone first tried to reach the heel-root corner and then angle back to
+  the measured back-cone's own (closer, smaller) start point. That second edge crosses the first at
+  y = 21.7, and OpenSCAD accepted it without complaint in `--preview`, then reported `Volumes: 3` and
+  `ERROR: The given mesh is not closed!` only at a full render — a simple, non-self-intersecting polygon
+  is worth checking by eye (or by re-deriving the crossing algebraically) before trusting a preview that
+  passed. Ending the profile square at the heel-root corner instead — a harmless overlap with the back
+  cone's own frustum rather than a mitred return — closed it (`scadmesh segment` confirms one watertight
+  solid) at the cost of a small (~1 mm) radial step where the two don't quite line up, which is where
+  most of the 1.282 mm candidate→reference residual lives.
+- **009 DC-2 closed.** The last open part is rebuilt; all seven recreated parts now render as single
+  clean solids from measured geometry. 004's "20T straight bevels at 1:1:1" is `[Specified]` for all
+  three positions.
+
+
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [`Hardware/Models/700-Differential/diff_bevel.scad`](Hardware/Models/700-Differential/diff_bevel.scad)
+- **Was:** CR-3A11 left 720-001 Diff Gear Shaft's bevel as an open question — measurably not the shared
+  gear, but with no way to say whether that was a design difference or a defective reference. The rebuild
+  was blocked on it.
+- **Now:** Settled, from the v1 STEP. Those files carry analytic B-rep surfaces rather than facets, so the
+  designer's cones can be read outright instead of fitted: all four v1 bevels — KP0086 Outter Front,
+  KP0087 and KP0092 Side, KP0088 Inner Front — state **one and the same** `CONICAL_SURFACE`, semi-angle
+  49.80181717642289°, slope 1.1834163, apex 0.5064895, appearing 20 times each as one face per tooth.
+  720-001's mesh reproduces that cone to **1.4 × 10⁻⁵ in slope and 0.0004 mm in apex**; the shared gear's
+  face cone is 1.14792, a 48.94° half-angle found in no v1 file, measured independently on 710-002 and
+  720-002. So v1 ran one gear in all four places, and the revision behind these references re-cut three of
+  them and left the Diff Gear Shaft alone.
+- **Driver:** A section of one gear laid over a section of another, best-fitted for scale, clocking and
+  hand, is congruent only if the tooth form is. 710-001 against 720-002 leaves **0.0000 mm** over 1440
+  angles; 720-001 against 720-002 leaves **0.64 mm max, 0.16 mm rms** at *every* section from y 14 to 19 —
+  flat, so it is a shape difference and not a positioning error. Split by radius: flanks 0.171 max / 0.083
+  rms, tip lands 0.015, and the root land carries the rest, 720-001's being the narrower of the two.
+- **Consequence:** The pair meshes, on a tooth form one revision behind — which is what the previous
+  version was built and run with. **The rebuild now faces a design decision rather than an unknown:**
+  reproduce the old form faithfully, or cut 720-001 from `diff_bevel.scad` like the other three and accept
+  ~0.17 mm against its reference on the flanks, which is outside the 0.15 mm gate and would have to be
+  excused explicitly. DC-2 stays `[Provisional]` on this part until that is chosen.
+- **Tooling:** five additions to `scadmesh`, all measured against parts whose answer is already known —
+  `surfaces` (analytic surfaces of a STEP solid, with faces on one surface collapsed to one row),
+  `apex` (where a ruled surface converges, from how its sections scale), `similar` (are two sections the
+  same shape, allowing for size, clocking and hand), `flank` (one tooth gathered from many sections, with
+  a cubic fitted to it) and the `bezier` fitter under it. The `flank` chain reproduces `diff_bevel.scad`'s
+  measured tooth to **0.0032 mm max, 0.0012 rms**, and its best-fit apex lands on the independently
+  measured face-cone apex, which is what qualifies it to measure the other form.
+
+### CR-3A11: The Split Gear and Diff Gear Axle are one gear, authored once
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [`Hardware/Models/700-Differential/`](Hardware/Models/700-Differential/)
+- **Was:** Each bevel carried its own copy of the tooth geometry — 720-002 one measured section,
+  710-002 seventeen, 710-001 thirteen, some 1400 hand-listed coordinates in total. Nothing tied them
+  together, so nothing stopped an edit to one from putting it out of mesh with the others.
+- **Now:** The crown is defined once in **`diff_bevel.scad`**, in the gear's own frame, and each part
+  intersects it with its own envelope; a part supplies only where the gear's apex sits on its axis.
+  710-001 Split Gear Top improves from 0.225 mm to **0.045 mm** (RMS 0.006, p95 0.010, nothing over
+  tolerance) with an exact bounding box and 56 % fewer triangles; 720-002 Diff Gear Axle to **0.094 mm**;
+  710-002 Split Gear Bottom holds **0.150 mm** while rendering in 1 min 19 s, where the seventeen-section
+  version had not finished after 12. All three preview with zero warnings and render as one solid.
+- **Driver:** The three gears are not similar, they are identical. Sections of 710-001 and 720-002 taken
+  15.4484 mm apart return outlines **0.0001 mm apart over 4088 points**, already clocked alike, and
+  710-002 supplies exactly the material inside the 45° parting cone that 710-001 lacks — its area
+  agreeing with 720-002's whole tooth ring to 0.007 mm² in 858. The Split Gear is that one crown sawn in
+  half. Two further findings follow: the tooth is ruled through the apex, so **one** section drawn with
+  `linear_extrude(scale=)` is the exact surface and no loft through stacked sections is needed; and the
+  flank is a **cubic** — a single Bézier holds 253 measured points to 0.006 mm max, 0.003 RMS.
+- **Consequence:** **DC-2 stays `[Provisional]`** on 720-001 alone, whose bevel is *not* this gear —
+  see CR-3A12, which identifies it. The convex-hull limitation
+  recorded in CR-3A10 is gone — a plain
+  `polygon()` carries the concave root fillet as measured. Two corrections land in DC-2: the tooth-band
+  exemption is **withdrawn** for the bevels, which now meet the ordinary ±0.15 mm surface check; and
+  710-002's 0.150 mm is not chord error as CR-3A9 claimed but a **0.143 mm eccentric wire bore in the
+  reference**, which the model deliberately does not reproduce. One verification rule is added: a feature
+  trimmed to the surface of the blank it stands on shares a face rather than joining to it, which CGAL
+  returns as separate solids with interior surface surviving into the export.

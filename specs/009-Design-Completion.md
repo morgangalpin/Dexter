@@ -23,7 +23,7 @@ reference geometry.
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
 | DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
-| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | One part not yet rebuilt (720-001) | `[Provisional]` reopened |
+| DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | — | `[Specified]` ✔ closed |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | Tooth-count decomposition | `[Provisional]` |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | Socket-seat depth check | `[Provisional]` |
@@ -34,12 +34,12 @@ reference geometry.
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 
-**Completion progress.** DC-1 and DC-8 are closed. Every other item has been narrowed to the single
-remaining gap named in the table above, and each of those gaps is one of three kinds of work:
-**procurement** (DC-11), **design or reconstruction authored here** (DC-2, DC-3, DC-6, DC-10), or **a
-check on a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — the largest single piece of work in the set
-— is authored as parametric OpenSCAD source, but one of its seven recreated parts does not yet reproduce
-their reference geometry, so it is **reopened**; its physical-build checks remain with DC-9.
+**Completion progress.** DC-1, DC-2, and DC-8 are closed. Every other item has been narrowed to the
+single remaining gap named in the table above, and each of those gaps is one of three kinds of work:
+**procurement** (DC-11), **design or reconstruction authored here** (DC-3, DC-6, DC-10), or **a check on
+a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — the largest single piece of work in the set — is
+authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
+measured geometry. Its physical-build checks remain with DC-9.
 
 ---
 
@@ -101,12 +101,14 @@ ratio.
 STL geometry in `Hardware/Models/`.*
 
 ## Differential detail design
-**DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — `[Provisional]` — **reopened**
+**DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — ✔ **closed**
 
-**Reopened 2026-08-06.** This item was closed on a verification that could not detect the defect it was
-meant to catch, and five of the seven recreated parts were the wrong shape — four have since been rebuilt
-and measure faithful, and 720-001 remains. The parametric source, the parameter sets, and the assembly
-assertions below all still stand; what failed was the evidence that the parts match their references.
+**Reopened 2026-08-06, closed 2026-08-09.** This item was originally closed on a verification that could
+not detect the defect it was meant to catch, and five of the seven recreated parts were the wrong shape.
+All five are now rebuilt and measure against their references under the revised contract below —
+faithfully for four of them, and for the fifth (720-001) against an explicit, decided exception rather
+than the ordinary tolerance. The parametric source, the parameter sets, and the assembly assertions below
+all still stand; what failed the first time was the evidence that the parts match their references.
 
 **Why the original verification was insufficient.** It rested on `scadmesh compare`, which asks whether
 every reference **diameter and face position** reappears somewhere in the candidate. That is a set of
@@ -122,55 +124,90 @@ would have made it one.
 |---|---|---|---|
 | 710-003 Diff Keeper | 0.023 | −0.8 % | faithful |
 | 710-004 Rotate Code Disk | 0.350 | −1.4 % | faithful (p95 0.011; one localized edge) |
-| 720-002 Diff Gear Axle | 0.100 | −0.02 % | **rebuilt, faithful** (was 1.31) |
+| 720-002 Diff Gear Axle | 0.094 | −0.02 % | **rebuilt, faithful** (p95 0.028; was 1.31) |
 | 720-003 Diff End Pulley | 0.030 | −0.02 % | **rebuilt, faithful** (was 1.98 / −4 %) |
-| 710-002 Split Gear Bottom | 0.150 | +0.02 % | **rebuilt, faithful** (was 2.25 / −11 %) |
-| 710-001 Split Gear Top | 0.225 | −0.1 % | **rebuilt**, p95 0.010, 0.13 % over tol (was 3.57 / −11 %) |
-| 720-001 Diff Gear Shaft | 3.82 | −16 % | wrong, not yet rebuilt |
+| 710-002 Split Gear Bottom | 0.150 | +0.02 % | **rebuilt, faithful** (p95 0.050; was 2.25 / −11 %) |
+| 710-001 Split Gear Top | 0.045 | −0.1 % | **rebuilt, faithful** (p95 0.010; was 3.57 / −11 %) |
+| 720-001 Diff Gear Shaft | 1.282 / 2.851 | −0.83 % | **rebuilt, cut to the shared crown** — fails ±0.15 mm by design, see CR-3A13 |
 
-Known specific defect remaining: **720-001** is missing 16 % of its material, and is the one part not
-yet rebuilt.
+All seven parts now render as one clean solid from measured geometry. **720-001** is the one part that
+does not meet the ordinary ±0.15 mm gate — not because it is the wrong shape, but because it was
+deliberately cut to a tooth form other than its own reference's (below and [CR-3A13](../CHANGES.md)). Its
+"worst deviation" cell is candidate→reference and reference→candidate respectively, since neither alone
+tells the whole story here: the first is dominated by one localized modelling approximation (below), the
+second by the reference mesh's own pre-existing artifact (next section). Tooth count (20) and tooth
+clocking (within 0.3° of the reference at every position) are unaffected by the tooth-form swap and are
+verified separately, on the render itself rather than against the reference.
 
 **Four of the five are rebuilt and measure faithful.** Each was built the same way — revolve the measured
 meridional profile for the body, build the toothed or belted feature separately, cut the through-work
 last — and each renders as a single clean solid. Two findings generalise beyond the parts themselves:
 
 - **The bevels are recoverable as cones.** Every crown surface on 710-001, 710-002 and 720-002 is a cone,
-  and fitting measured radius against height recovers each one to a few thousandths of a millimetre. The
-  fits corroborate each other across parts, which is what makes them trustworthy rather than merely
-  well-fitted: 720-002's tip cones are 710-001's translated by 15.448 mm, as a 1:1 pair must share; their
-  root-cone slopes agree to 0.07 %; and 710-001's 45° inner cone is the identical equation 710-002 records
-  for its outer cone, the surface the two parts actually mate on. Each crown's four cone intersections
-  then define it outright, and every one was checked against an independent measurement — 710-001's
-  computed apex at z = 24.4103 against a bounding box topping out at 24.410.
-- **Straight bevel teeth are ruled through the gear apex**, so one measured section reproduces a whole
-  tooth when lofted between two scaled copies: the hull between them *is* the ruled surface. 720-002 needs
-  exactly one section. 710-001 needs thirteen, because its tip surface changes direction at the crown ring
-  — below it the skirt cone rises with height while the root cone falls — so no single similarity can
-  follow both.
+  and fitting measured radius against height recovers each one exactly — the four fitted on 720-002 leave
+  a maximum residual of 0.0003 mm over six heights. Each crown's cone intersections then define its every
+  edge outright, so no corner coordinate is measured twice.
+- **The Split Gear and the Diff Gear Axle are one gear.** They do not merely mesh; they are the same
+  20-tooth crown placed twice, and 710-001 and 710-002 are that crown sawn in half along a 45° cone.
+  Sections of 710-001 and of 720-002 taken 15.4484 mm apart return outlines **0.0001 mm apart over 4088
+  points**, already clocked alike, and 710-002 supplies exactly the material inside the parting cone that
+  710-001 lacks — its area agreeing with 720-002's whole tooth ring to 0.007 mm² in 858. The gear is
+  therefore defined once, in `diff_bevel.scad`, and each part intersects it with its own envelope; a part
+  contributes only where its apex sits on its axis. They cannot now drift out of mesh in edit.
+- **The third bevel is the previous revision of the same gear** `[Specified]`. 720-001 Diff Gear Shaft is
+  20T — angular periodicity 1.4198 at n = 20 against ≤0.006 at every other count tried — and at a matched
+  height its root radius agrees with the shared gear's to 0.03 mm, which is what makes the difference easy
+  to miss. It is nonetheless a different tooth form, and the v1 STEP says which one.
 
-The residual on 710-001 is a limit of the method rather than slack in the numbers: its worst point is the
-tooth's **root fillet**, which is concave, and a loft through convex hulls cuts the corner across it.
-Going from seven sections to thirteen moved p95 from 0.023 to 0.010 and left the maximum where it was.
-Removing it means a skinned loft that preserves concavity.
+  The **tip cone** decides it. 720-001's top land runs `r = 1.18343 (y − 0.5068)`, fitted over five
+  sections a millimetre apart and constant to 1 × 10⁻⁵ in slope. The v1 STEP files state that cone
+  analytically — one `CONICAL_SURFACE`, semi-angle 49.80181717642289°, slope 1.1834163, apex 0.5064895 —
+  and state **the same one in all four gears**: KP0086 Outter Front, KP0087 and KP0092 Side, KP0088 Inner
+  Front. 720-001's mesh reproduces it to 1.4 × 10⁻⁵ in slope and 0.0004 mm in apex. The shared gear's face
+  cone is 1.14792, a 48.94° half-angle that appears in no v1 file, and 710-002 and 720-002 measure 1.1478
+  independently of one another. The root cones part the same way: 720-001 runs `r = 0.84175 y` with its
+  apex on the origin, constant to 1 × 10⁻⁴ over y 15..19, against `0.84952` with the apex 0.131 mm beyond
+  the face apex.
 
-**710-002 Split Gear Bottom is rebuilt and now meets the contract below.** Its bevel crown is no longer a
-generated `bevel_gear()` — a 1:1 bevel's teeth stand outside the crown radius, so intersecting one against
-this part cut no slots at all and left the hub solid. The teeth are instead lofted through convex hulls of
-seventeen measured cross-sections, and the body is a revolved measured profile. Four cone surfaces govern
-the crown, three of them 45°, and the tooth's inner face is cut by the same cone that forms the top edge of
-the Ø23 bore, which is why they meet exactly at (r 11.500, z 24.846):
+  So v1 ran one gear in all four places; the revision that produced these meshes re-cut three of them and
+  left the Diff Gear Shaft on the old form. Sections of 720-001 and 720-002 anywhere in the tooth zone,
+  best-fitted for scale, clocking and hand, leave **0.64 mm max and 0.16 mm rms** — against **0.0000 mm**
+  for 710-001 against 720-002. On the flanks alone it is 0.171 max, 0.083 rms; the root land carries the
+  rest, 720-001's being the narrower. The pair therefore still meshes, on a tooth form one revision behind.
 
-| Surface | Radius as a function of height |
-|---|---|
-| outer tip cone | `r = z − 7.000` |
-| top face | `r = 45.452 − 1.14900 z` |
-| root cone | `r = 33.5244 − 0.84876 z` |
-| inner cone | `r = z − 13.350` |
+  **Decided: cut 720-001 from `diff_bevel.scad` like the other three**, for a matched set of four rather
+  than reproducing the old form faithfully — see [CR-3A13](../CHANGES.md) for the rebuild and its actual
+  measured cost, which came in higher than the ~0.17 mm/0.64 mm estimated above (those numbers compared
+  720-001's *old* form against the *shared gear's reference*; the rebuilt part's own `dist` against *its
+  own* reference is reported in the measured-state table). 004's "20T straight bevels at 1:1:1" is now
+  `[Specified]` for all three positions.
+- **Straight bevel teeth are ruled through the gear apex**, so *one* section reproduces the whole tooth:
+  scaling it about the axis by the ratio of heights **is** the surface between them, which
+  `linear_extrude(scale=)` draws exactly and without facets across the flank. Nothing needs a loft through
+  stacked sections. An earlier revision used thirteen on 710-001 because it read the tooth's tip surface
+  off the sections, and that surface changes direction at the crown ring; letting the revolved envelope
+  supply the tip, root and end faces leaves the section responsible for the flanks alone, and those are
+  ruled everywhere. The apex was measured rather than assumed — scaling a section at one height onto a
+  measured section at another and minimising the mismatch locates it to ±0.02 mm on two independent pairs
+  of heights, each agreeing to 0.002 mm, and it lands on the face cone's apex.
+- **The flank is a cubic.** Fitted to 253 measured points — the median over 9 heights × 20 teeth, which
+  agree among themselves to 0.002 mm — a single cubic Bézier holds them to **0.006 mm max, 0.003 RMS**.
+  A bevel tooth flank has no closed form in this plane, so it stays measurement; but four control points
+  carry it, where the polyline it replaced needed several hundred coordinates per part and still rendered
+  as visible facets.
 
-Agreement: tooth tips within 0.009 mm and the root cone within 0.007 mm over nine heights; candidate-to-
-reference max 0.150 mm, RMS 0.024, p95 0.043. The 0.150 mm worst point is on the Ø8.5 bore, which the
-reference tessellates with only 12 facets — that is chord error between two meshes, not shape error.
+Rebuilding the three crowns this way took 710-001 from 0.225 mm to **0.045 mm** with nothing over
+tolerance, made its bounding box exact, and cut its triangle count by 56 %. It also removed the previous
+revision's one acknowledged limitation: the residual then was the tooth's concave **root fillet**, which a
+loft through convex hulls cuts the corner across. A single `polygon()` has no such restriction, so the
+fillet is now carried as measured.
+
+**710-002's 0.150 mm is a defect in the reference, not in the model.** An earlier revision of this section
+attributed it to chord error on the Ø8.5 bore; measurement does not support that. Circle fits at z 6.3,
+6.5, 6.6, 6.7 and 6.9 all centre that bore and its funnel on (−0.039, 0.138) — **0.143 mm off the axis** —
+while every turned surface around them fits the axis to 0.001 mm. It is a clearance hole for wire, so the
+model keeps it concentric, and that eccentricity is the whole of the part's excursion past tolerance
+(0.011 % of samples).
 
 **Revised verification contract — what closing DC-2 now requires:**
 
@@ -190,13 +227,32 @@ reference tessellates with only 12 facets — that is chord error between two me
   and anything taking `rounding=`/`chamfer=` are — because `A - (B - C)` normalizes to `(A - B) | (A & C)`
   and each one doubles the preview tree. Build cutters from single primitives, and cut each solid before
   unioning it into an array rather than after.
+- **A shared face is not a join.** Where a feature is trimmed to the surface of the blank it stands on,
+  CGAL returns the two as separate solids, the blank's face survives the union underneath the feature, and
+  the export carries interior surface — which `dist` then measures against nothing, reading over a
+  millimetre out on geometry that is dimensionally correct. This was hit on 710-002, whose crown envelope
+  was bounded on the root cone: 21 solids, and 8.3 % of samples over tolerance. Trim such a feature to a
+  surface **offset into** the blank (`BEVEL_ROOT_UNDER` offsets 0.35 mm) and let the overlap be buried.
+  The `Volumes:` line of the render log is the cheap check: a part modelled as one solid must report 2.
 - `compare` is retained, but only to name *which* dimension moved once `dist` has failed a part. It no
   longer gates anything.
-- The two documented exception classes still apply and still must be enumerated explicitly rather than
-  absorbed into a widened tolerance:
-  - **Gear zones.** Tooth flanks are BOSL2 involutes and will never match a hand-modelled mesh
-    vertex-for-vertex, so within those bands the check is **tooth count plus outside diameter**. The pitch
-    cones are not measured; they follow from the 20T-on-20T, 90°-shaft configuration.
+- Three documented exception classes apply, and must be enumerated explicitly rather than absorbed into
+  a widened tolerance:
+  - **Gear zones — withdrawn for the bevels.** This exception was written when the teeth were generated
+    by BOSL2 and could not match a reference vertex-for-vertex. They are no longer generated: the bevel
+    crown is measured (`diff_bevel.scad`) and meets the ordinary ±0.15 mm surface check with room to
+    spare, so 710-001, 710-002, and 720-002 are gated on `dist` like any other geometry, with no
+    tooth-band exemption. The exception still stands for the **GT2 pulley** teeth, which are cut with a
+    modelled groove profile. The bevels' 45° pitch cones remain a consequence of the 20T-on-20T,
+    90°-shaft configuration rather than a measurement — but the face cone's apex, measured independently,
+    lands on the pitch apex.
+  - **720-001's tooth form — a decided exception, not a measurement gap.** [CR-3A13](../CHANGES.md) cut
+    this part's crown to the shared gear rather than its own reference's superseded form. Its `dist`
+    against its own reference therefore fails ±0.15 mm on both the tooth zone and the small hub
+    transition the swap required (candidate→reference 1.282 mm, localized to that transition; see
+    CR-3A13) — expected and accepted, not investigated further. What *is* gated on this part: tooth
+    count (20, exact) and tooth clocking (within 0.3° of the reference), both measured on the render
+    directly rather than by surface distance, plus every dimension outside the tooth zone.
   - **Reference-export artifacts.** The STLs are CAD *assembly* exports (`STLB ASM` headers) carrying
     zero-thickness internal shells — `profile` shows these as doubled-back slivers, one measuring 0.003 mm
     across in 710-002 — which a clean model must not reproduce. They also carry **unmerged solids**: run
@@ -208,6 +264,9 @@ reference tessellates with only 12 facets — that is chord error between two me
     reference-to-candidate direction flags every **buried** surface, because a merged model has no
     counterpart for them; on this part that is 28 % of reference samples at up to 2.25 mm, none of it a
     defect. Only the candidate-to-reference direction gates a part whose reference is an assembly export.
+    720-001's own reference carries a similar artifact — a degenerate Ø15.5 internal shell present in
+    every cross-section (see the part's own header) — which is most of its 2.851 mm reference→candidate
+    number and is why that direction does not gate this part either.
 - The two housings (Diff Body A/B) remain **authored functional redesigns** rather than recreations: every
   bearing seat, journal, bore, axis position, and span is taken from measurement, while the sculpted
   shells are replaced with clean parametric bodies. They are verified by interface slice checks, not by
@@ -218,10 +277,13 @@ reference tessellates with only 12 facets — that is chord error between two me
   the L4 split resolves to the firmware's 59.50 mm, and the revised body fits the cover envelope. These
   also passed and are unaffected, being parameter assertions rather than geometry comparisons.
 
-**Open question carried with this item.** The faithful-recreation stage was premised on the reference
-STLs being trustworthy part geometry. They are artifact-laden assembly exports, so recreating them
-exactly may be the wrong goal; authoring directly to the revised interface and dropping the clone target
-is the alternative. Resolve before rebuilding the remaining parts.
+**Resolved in favor of faithful recreation.** This item was carried open while parts remained unrebuilt:
+the faithful-recreation stage was premised on the reference STLs being trustworthy part geometry, and
+they are artifact-laden assembly exports, so recreating them exactly might have been the wrong goal —
+authoring directly to the revised interface and dropping the clone target was the alternative. All seven
+parts are now rebuilt, each documenting its own reference's artifacts explicitly (above) rather than
+being thrown off by them, so the artifacts turned out not to make faithful recreation the wrong goal —
+they made it a goal that needed `dist` and `segment` rather than `compare` to verify correctly.
 
 **Physical build validation moved to [DC-9](#performance-characterization):** J4 and J5 move without
 binding through their full travel, the 6-conductor bundle passes the bore and survives J5's full travel,

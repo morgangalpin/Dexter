@@ -142,7 +142,7 @@ end-effector wiring bundle passes through the differential's hollow bore.
   ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The 16T motor pulley is retained; the
   **driven side must be toothed to net 13.5:1**, and the tooth-count split that realizes it — along with the
   scale error that results from getting it wrong — is [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
-- **Differential detail — `[Provisional]`.** The differential detail design is **authored** as parametric
+- **Differential detail — `[Specified]`.** The differential detail design is **authored** as parametric
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
   `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
   `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
@@ -151,21 +151,39 @@ end-effector wiring bundle passes through the differential's hollow bore.
   (binding, wiring survival, code-disk reads) remains in
   [DC-9](009-Design-Completion.md#performance-characterization).
 
-  **One recreated part is not yet trustworthy.** 720-001 Diff Gear Shaft still deviates from its reference
-  mesh by 3.8 mm and is 16 % short on material; the other six agree within 0.225 mm. The original check
-  missed this because it compared diameters and face positions
-  rather than surfaces and could not see shape error. The mechanism facts below were read from the
-  reference meshes directly and are unaffected, but the `.scad` shapes are not — see
+  **All seven recreated parts now render as one clean solid from measured geometry.** An earlier
+  verification compared diameters and face positions rather than surfaces and could not see shape error;
+  under the revised, surface-based contract, six of the seven agree with their references within
+  0.150 mm and the seventh (720-001 Diff Gear Shaft) was deliberately cut to a tooth form other than its
+  own reference's, an explicit decided exception rather than a defect — see
   [DC-2](009-Design-Completion.md#differential-detail-design) for the per-part measurements and the
   revised verification contract.
 
   **Authored mechanism facts** (measured from the built part set, now fixed in `diff_params.scad`): all
   three bevels — Split Gear (output), Diff Gear Shaft, and Diff Gear Axle — are **20T straight bevels at
-  1:1:1**, outside diameter **44.055 mm** (module ≈ 2.057 at 45° pitch cones); both belt inputs are
+  1:1:1**, outside diameter **44.055 mm** (module ≈ 2.057 at 45° pitch cones), one shared crown definition
+  carried by all three (a rebuild history recorded below). The Split Gear and the Diff Gear Axle are not
+  two similar gears but **one gear placed twice**:
+  sections of the Split Gear Top and the Diff Gear Axle taken
+  15.4484 mm apart agree to 0.0001 mm over 4088 points, already clocked alike. The crown is therefore
+  authored once, in `diff_bevel.scad`, from four measured cones — face `r = −1.14792 z`, root
+  `r = −0.11121 − 0.84952 z`, heel `r = 49.82164 + 1.44761 z` and a 45° inner face, all stated about the
+  gear's own apex — plus one cubic-Bézier tooth flank. **The Diff Gear Shaft's own reference carries the
+  previous revision of that gear.** It is 20T and its root radius agrees at a given height, but its
+  reference's top land ran `r = 1.18343 (y − 0.5068)` where this gear's face cone is `1.14792`, and its
+  root cone `r = 0.84175 y` with the apex on the origin rather than `0.84952` offset 0.131 mm. The v1
+  STEP identifies the form: it states one `CONICAL_SURFACE` of slope 1.1834163 and apex 0.5064895 in
+  **all four** of its bevels, and the Diff Gear Shaft's mesh reproduces that to 1.4 × 10⁻⁵ in slope — so
+  the revision that produced these references re-cut three gears and left this one behind, and it still
+  meshed, on a form one revision old. The Diff Gear Shaft is now rebuilt to the shared crown instead
+  ([CR-3A13](../CHANGES.md)), a matched set of four rather than a faithful copy of its own superseded
+  reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are
   **40T GT2** pulleys (the Diff End Pulley and the shaft's integrated pulley section); the Diff Gear
   Shaft doubles as the **J4 pivot axle** (its Ø25 section rides Diff Body A's 6705, its Ø17 rear journal
-  the 6703); the Split Gear is axially **split** — Top and Bottom each carry part of the tooth faces and
-  clamp together, clocked through the brad windows. The as-built 40T input pulleys give a 40/16 = 2.5:1
+  the 6703); the Split Gear is **split along a 45° cone**, `r = z − 7` in its own frame — the Top half keeps
+  what lies outside that cone and the Bottom half what lies inside it, the teeth running across the joint
+  uninterrupted, which is why the halves must be clocked to each other on assembly by four Ø1.5 brads
+  driven radially at z = 12.250. The as-built 40T input pulleys give a 40/16 = 2.5:1
   belt stage per input — measured data for [DC-3](009-Design-Completion.md#wrist-reduction-ratio)'s
   tooth-count split.
 
@@ -245,5 +263,5 @@ of done is in [009-Design-Completion.md](009-Design-Completion.md).
 | Main Pivot | J2 | — | `[Specified]` | — |
 | Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
 | End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
-| Differential | J4, J5 | belt → differential | `[Specified]` net ratio / `[Provisional]` detail and tooth split | [DC-3](009-Design-Completion.md#wrist-reduction-ratio), [DC-2](009-Design-Completion.md#differential-detail-design) |
+| Differential | J4, J5 | belt → differential | `[Specified]` net ratio and detail / `[Provisional]` tooth split | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
 | Tool interface | roll, grip | smart servos | `[Specified]` | — |
