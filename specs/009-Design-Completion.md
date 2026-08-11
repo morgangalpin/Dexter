@@ -247,12 +247,18 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
     90°-shaft configuration rather than a measurement — but the face cone's apex, measured independently,
     lands on the pitch apex.
   - **720-001's tooth form — a decided exception, not a measurement gap.** [CR-3A13](../CHANGES.md) cut
-    this part's crown to the shared gear rather than its own reference's superseded form. Its `dist`
-    against its own reference therefore fails ±0.15 mm on both the tooth zone and the small hub
-    transition the swap required (candidate→reference 1.282 mm, localized to that transition; see
-    CR-3A13) — expected and accepted, not investigated further. What *is* gated on this part: tooth
-    count (20, exact) and tooth clocking (within 0.3° of the reference), both measured on the render
-    directly rather than by surface distance, plus every dimension outside the tooth zone.
+    this part's crown to the shared gear rather than its own reference's superseded form, so its `dist`
+    against its own reference fails ±0.15 mm in the tooth zone — expected and accepted. [CR-3A14](../CHANGES.md)
+    then cut the crown's *envelope* to this part's own measured surfaces, which is not the same claim as
+    its tooth form and is held to the usual standard: candidate→reference fell 1.282 → **0.568 mm** and
+    reference→candidate 2.851 → **0.456 mm**. What remains sits on the two known consequences of the
+    shared crown: its root cone runs 0.40 mm below this part's, and its shallower face cone forced a
+    choice between the reference's Ø43.500 tip cut and the 0.5990 mm land that cut leaves. The land was
+    kept, so this part's OD is Ø42.715 — **the one dimension outside the tooth zone that the file
+    knowingly does not match**, recorded rather than gated. What *is*
+    gated on this part: tooth count (20, exact) and tooth clocking (within 0.3° of the reference), both
+    measured on the render directly rather than by surface distance, plus every dimension outside the
+    tooth zone.
   - **Reference-export artifacts.** The STLs are CAD *assembly* exports (`STLB ASM` headers) carrying
     zero-thickness internal shells — `profile` shows these as doubled-back slivers, one measuring 0.003 mm
     across in 710-002 — which a clean model must not reproduce. They also carry **unmerged solids**: run
@@ -264,9 +270,15 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
     reference-to-candidate direction flags every **buried** surface, because a merged model has no
     counterpart for them; on this part that is 28 % of reference samples at up to 2.25 mm, none of it a
     defect. Only the candidate-to-reference direction gates a part whose reference is an assembly export.
-    720-001's own reference carries a similar artifact — a degenerate Ø15.5 internal shell present in
-    every cross-section (see the part's own header) — which is most of its 2.851 mm reference→candidate
-    number and is why that direction does not gate this part either.
+    720-001's reference carries a feature that was read as a similar artifact and is not one. What was
+    recorded as a degenerate Ø15.5 internal shell is **twelve Ø0.2 through-holes** on a Ø15.5 circle,
+    30° apart with one on +x, running the full 60.6 mm of the part. They are voids and the mesh is sound:
+    every triangle around a hole has its normal on that hole's own axis, `segment` returns one closed
+    body, and the lateral area over any span is π·0.2·span to three decimals. They were most of the
+    2.851 mm reference→candidate number because the model did not have them; [CR-3A14](../CHANGES.md)
+    reproduces them, behind a `wall_holes` flag. **They are not buildable** — Ø0.2 × 60.6 mm is 303:1,
+    past drilling and far past printing — and no other part in the reference set carries anything like
+    them, so whether the built shaft should have them is open under DC-11.
 - The two housings (Diff Body A/B) remain **authored functional redesigns** rather than recreations: every
   bearing seat, journal, bore, axis position, and span is taken from measurement, while the sculpted
   shells are replaced with clean parametric bodies. They are verified by interface slice checks, not by

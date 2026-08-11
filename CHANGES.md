@@ -228,6 +228,102 @@ anything version 3 does not independently specify
   per instance. 710-001's residual 0.225 mm is the tooth root fillet, which is concave and cannot be
   represented by a loft through convex hulls.
 
+### CR-3A15: Diff Gear Shaft's two rear shoulders corrected
+
+- **Affects:** [`Hardware/Models/700-Differential/720-001_DiffGearShaft.scad`](Hardware/Models/700-Differential/720-001_DiffGearShaft.scad)
+- **Was:** the two shoulders behind the belt pulley were typed `D25B_TOP = 42.90` and
+  `D19B_TOP = 44.03`. Both were read off slice sweeps before `profile` could cut a meridian, and
+  both were wrong — by 0.110 mm and 0.010 mm respectively.
+- **Now:** **42.79** and **44.04**, off the meridional profile: the Ø25 collar ends at y = 42.7902
+  and the Ø19 collar at y = 44.0402, on the same `+0.0402` grid the rest of this shaft's turned
+  faces sit on (`D27_TOP` 28.04, `D25_TOP` 34.04, `PULLEY_TOP` 42.04) and rounded the same way.
+  The corrected pair makes the two collars **0.750 mm and 1.250 mm** long, where the typed pair
+  gave 0.86 and 1.13. Round steps falling out of an independent measurement is the check that
+  these are the designed figures and not a fit. The diameters in this region were already right —
+  the profile reads r = 12.5000, 9.5000, 8.5000 for Ø25 / Ø19 / Ø17 — so the two axial positions
+  were the whole of the error.
+- **Why it is worth a change record at all:** neither error broke the ±0.15 mm tolerance, so
+  nothing flagged them. `D19B_TOP` is the face the **rear 6703's inner race seats against**, so it
+  sets that bearing's axial position on the shaft and thereby the differential's rear end float;
+  a dimension that locates a bearing should come from measurement even when its error is inside
+  tolerance. `D25B_TOP` only terminates the collar behind the belt and carries nothing.
+- **Verified:** the render reads the two faces back at 42.7900 and 44.0400, matching the reference
+  to 0.0002 mm — the rounding, not a residual. The part stays one closed body (`Simple: yes`,
+  `segment` closed, 31592 tris), the bounding box is unmoved at 42.445 × 60.600 × 42.445, and the
+  tooth counts still read 20 and 40. `dist` is unchanged at 0.568 / 0.456 mm with the same two
+  worst points — the shared root cone at y 21.113 and the reference's own tip cut at y 18.885 —
+  because both live in the tooth zone and neither shoulder ever drove the maximum. CR-3A14's
+  tooth-form exception remains the only thing this file knowingly does not match.
+
+### CR-3A14: Diff Gear Shaft's crown envelope, back cone and wall holes cut to measurement
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [`Hardware/Models/700-Differential/720-001_DiffGearShaft.scad`](Hardware/Models/700-Differential/720-001_DiffGearShaft.scad)
+- **Was:** CR-3A13 settled this part's tooth *form* — the shared `diff_bevel.scad` crown, an accepted
+  exception — and in doing so carried the shared gear's *envelope* over with it. The envelope is a
+  separate claim about this part and it was wrong in four ways at once: the teeth ran out to Ø44.055
+  instead of the reference's Ø43.500, their toe was the shared 45° inner cone instead of a plane, their
+  backs sat on the shared heel cone (slope 1.4476) while the ring behind them used a straight-line
+  approximation of its own (slope 1.375) so the two left a step, and the run from that back face down
+  to Ø27 was drawn as one straight taper. A fifth feature was recorded as an export artifact and is not
+  one.
+- **Now:** each of the five measured on 720-001's own mesh and modelled from that measurement.
+  - **The back cone is one 60° cone shared by the teeth and the ring.** `r = 55.4982 - tan(60)·y` holds
+    all 853 reference vertices on it to 0.000014 mm, so the slope is exact and only the intercept is
+    data. Bounding the crown on the same cone the hub turns onto puts the tooth backs *in* the ring's
+    back face instead of standing proud of it, which is what removes the step. The straight
+    `[[21.7, 35.8], [24.9, 27.0]]` taper it replaces was right at its two endpoints and up to 0.710 mm
+    proud in radius in between (at y = 23.785, where the reference has already turned into the fillet).
+  - **The toe is a plane at y = 13.4643**, not a cone: the section at 13.45 is a clean Ø23.0 circle
+    (fit rms 0.001) and 13.50 already carries all 20 teeth. `fit` puts 153.111 mm² of face on that
+    plane and its 600 vertices run r 11.5000 → 15.3345, so the tooth fronts stand on the Ø23 land. That
+    land's own step moves 13.46 → **13.040**, where `fit` reads it (area 131.836 mm² = π(11.5²−9.5²)).
+  - **The tips are blunted by a coaxial cut**, and this is the one place the borrowed tooth form forces
+    a choice. The reference's cut is Ø43.500 — 160 vertices at r = 21.7500 exactly — and the land it
+    leaves on each tooth is a trapezoid 1.298 mm across the toe edge and 1.835 mm across the heel,
+    0.5990 mm axially, with side edges of 0.6564 mm. **The diameter and the land cannot both be held.**
+    The reference's own teeth stand on a 1.18343 face cone and reach Ø44.300 before the cut, so Ø43.500
+    takes 0.40 mm off the radius. The shared crown's 1.14792 face cone leaves its teeth 0.62 mm shorter,
+    crossing the back cone at Ø43.542 unaided, so the same Ø43.500 would take 0.02 mm off them and leave
+    a 0.031 mm land — the reference's diameter with none of the blunting it exists to produce.
+    **Resolved in favour of the land:** the cut is solved from the measured 0.5990 mm span rather than
+    typed as a diameter, landing at **Ø42.715** — 0.414 mm off the radius, against the reference's
+    0.400 mm, so the blunting is comparable. The part's OD is therefore 0.785 mm under the
+    reference's on its largest dimension, recorded here because it is the only dimension outside the
+    tooth zone that this file knowingly does not match. The tip land is clearance over the mating root
+    and does not mesh, so the pair is unaffected.
+  - **The fillet from the back cone to Ø27 is R2.000 exactly** — fitted to 463 vertices with the radius
+    free, rms 0.00000 mm. It is tangent to both surfaces, so neither tangent point is typed.
+  - **The "degenerate Ø15.5 internal shell" is twelve Ø0.2 through-holes** on a Ø15.5 circle, 30° apart
+    with one on +x, running the full 60.6 mm. They are voids, not slivers: every one of the 3864
+    triangles around a single hole has its normal on that hole's own axis, `segment` returns one closed
+    body, and lateral area over any span is π·0.2·span to three decimals. Reproduced behind a
+    `wall_holes` flag because they are **not buildable** — 303:1 aspect ratio, past drilling and far past
+    printing — and no other reference part carries anything like them.
+- **Verified:** `dist` against the reference improves in both directions, candidate→reference
+  1.282 → **0.568 mm** and reference→candidate 2.851 → **0.456 mm**. Neither passes ±0.15 mm and neither
+  is expected to. The worst candidate point (r 17.389, y 21.113) is the shared root cone running 0.40 mm
+  below this part's; the worst reference point (r 21.750, y 18.885) is the reference's own tip cut,
+  0.39 mm further out than the one that holds the land. Both are CR-3A13's tooth-form exception and its
+  direct consequence, and after this change they are the *only* things left.
+  - **The land reads back right.** Measured on the render exactly as on the reference — the cut patch
+    per tooth, all 20 present — the axial span is 0.599..0.605 (the spread is `rotate_extrude` drawing
+    the cut as a 128-gon, whose facets sit 0.0064 mm inside the circumradius), against the reference's
+    0.5990. The patch widens toe-to-heel as the reference's does, 1.455 → 1.923 mm against 1.298 →
+    1.835. The sloping side edge comes out **0.645..0.647 mm against the reference's 0.6564** — the
+    0.010 mm short is the shared flank sweeping slightly less than this part's own, and is the only
+    part of the land not reproduced.
+  - Tooth counts still read 20 and 40 on the render; the surfaces read back at R2.0000 fillet
+    (rms 0.000026 mm), the toe plane at 13.464, and the wall holes spanning y −10.960 → 49.640.
+- **Modelling note — butting sections stop being free once something cuts through them.** The stacked
+  cylinders met their neighbours face to face, which CGAL tolerated while the shaft was solid. With the
+  wall holes cutting through those faces the first render came back `Simple: yes` but not closed, with
+  936 edges at y = 28.04 carrying four triangles each — the hub's top face and the Ø25 base, left
+  coincident. Every section now reaches `epsilon` into its neighbour, always the smaller diameter, so
+  the overlap is buried and no surface moves. **Cost, measured rather than assumed:** the part renders in
+  3m43s with the wall holes and 3m23s without, so the twelve Ø0.2 cuts are worth about 20 s of it and
+  the rest is the crown intersection. `wall_holes = false` is a buildability switch, not a speed one.
+
 ### CR-3A13: Diff Gear Shaft rebuilt to the shared crown; DC-2 closed
 
 - **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
