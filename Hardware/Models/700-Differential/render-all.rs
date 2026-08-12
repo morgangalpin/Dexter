@@ -16,9 +16,15 @@
 //!     ("STLB ASM" headers) carrying degenerate internal shells and internal
 //!     coplanar faces that a clean model must not reproduce;
 //!   - 720-003: the sculpted under-flange web is modeled as a cone.
-//! Diff Body A and B are authored functional redesigns (measured interfaces,
-//! clean shells), so they are verified by interface checks, not by shell
-//! comparison.
+//!
+//! The two differential housings are held to a stricter contract than the
+//! rest. `compare` matches extracted feature planes and diameters, so a body
+//! can satisfy every mating interface while its shell is nothing like the
+//! reference — which is exactly what happened when these two were authored as
+//! functional redesigns: Body A passed its interface checks at 2.43x the
+//! reference's material. They are therefore gated on `dist`, a two-sided
+//! surface distance that measures the surfaces themselves and so catches a
+//! missing feature or a wrong hole shape. See DIST_GATES.
 //!
 //! ```cargo
 //! [dependencies]
@@ -81,6 +87,24 @@ const CLONES: [ClonePart; 7] = [
                          "--ignore-band=25.6,26.8", "--ignore-band=27.15,34.8",
                          "--ignore-plane=6.0,11.8", "--ignore-plane=-2.74,-2.62"] },
 ];
+
+/// A part reproduced closely enough to be gated on two-sided surface
+/// distance. `tol` is the Hausdorff limit in mm; the render must sit inside
+/// it in both directions, with no sampled point over.
+struct DistGate {
+    stem: &'static str,
+    scad: &'static str,
+    reference: &'static str,
+    tol: f64,
+}
+
+/// Body B joins this table when it is rebuilt as a faithful recreation.
+const DIST_GATES: [DistGate; 1] = [DistGate {
+    stem: "730-001",
+    scad: "730-001_DiffBodyA.scad",
+    reference: "730-001_DiffBodyA.stl",
+    tol: 0.15,
+}];
 
 /// Tooth and slot counts, checked on the cross-section of each *render* —
 /// slice positions are in the render's own frame, which need not match the
@@ -224,6 +248,25 @@ fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
+/// Render each gated housing and measure its surface against the reference.
+/// The render is left at `out/<stem>.stl` for the interface checks to reuse.
+fn check_dist_gates(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    for part in &DIST_GATES {
+        let out_stl = format!("out/{}.stl", part.stem);
+        render(part.scad, &out_stl, "previous", ctx)?;
+        let tol = part.tol.to_string();
+        let (ok, report) =
+            sm_json(&["dist", &out_stl, part.reference, "--tol", &tol], ctx)?;
+        let worst = report["hausdorff"].as_f64().unwrap_or(f64::NAN);
+        tally.record(
+            &format!("{} surface vs reference (hausdorff {worst:.3} mm, tol {tol} mm)",
+                     part.stem),
+            ok,
+        );
+    }
+    Ok(())
+}
+
 fn check_counts(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for c in &COUNTS {
         let mut args = vec!["teeth"];
@@ -245,8 +288,10 @@ fn has_diameter(json: &Value, diameter: f64) -> bool {
     })
 }
 
+/// Mating diameters on the housings. 730-001 is already rendered by its
+/// distance gate; these remain as a direct statement of the interfaces the
+/// rest of the assembly depends on, in terms a reader can check by eye.
 fn check_bodies(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    render("730-001_DiffBodyA.scad", "out/730-001.stl", "previous", ctx)?;
     render("730-002_DiffBodyB.scad", "out/730-002.stl", "previous", ctx)?;
     for c in &DIAMS {
         let mut args = vec!["slice"];
@@ -294,6 +339,7 @@ fn context() -> Result<Ctx> {
 
 fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_clones(ctx, tally)?;
+    check_dist_gates(ctx, tally)?;
     check_counts(ctx, tally)?;
     check_bodies(ctx, tally)?;
     check_revised(ctx, tally)?;

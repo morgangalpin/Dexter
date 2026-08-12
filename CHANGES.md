@@ -228,6 +228,58 @@ anything version 3 does not independently specify
   per instance. 710-001's residual 0.225 mm is the tooth root fillet, which is concave and cannot be
   represented by a loft through convex hulls.
 
+### CR-3A16: Diff Body A rebuilt as a faithful recreation
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [`Hardware/Models/700-Differential/730-001_DiffBodyA.scad`](Hardware/Models/700-Differential/730-001_DiffBodyA.scad),
+  [`diff_params.scad`](Hardware/Models/700-Differential/diff_params.scad),
+  [`render-all.rs`](Hardware/Models/700-Differential/render-all.rs)
+- **Was:** Diff Body A was an **authored functional redesign** — every bearing seat, journal, bore and
+  axis position taken from measurement, the sculpted shell replaced with a clean parametric body, and
+  verified by interface slice checks alone on the grounds that there was no reference shape it was meant
+  to match. CR-3A7 established that exception and CR-3A8 left it standing for the two housings when it
+  withdrew the same reasoning everywhere else.
+- **Now:** a **faithful recreation of the reference mesh**, gated on `scadmesh dist` at **±0.15 mm** in
+  both directions — the same contract the other five recreated parts are held to. Cover-envelope fit
+  becomes a minimal delta on top, carried by the existing `config="revised"` branch rather than by the
+  shape of the `previous` body.
+- **Driver:** the redesign preserved every interface and still discarded the part. It rendered
+  **62,023 mm³ against the reference's 25,509 mm³ — 2.43× the material in an identical bounding box.**
+  The reference is a lightweight frame; the authored body was very nearly a billet. On a wrist part that
+  is mass and inertia at the worst point on the arm, and no interface check could have caught it, because
+  interface checks are exactly what it passed.
+- **What the reference actually is.** Three features read as plain round holes from the top and are not.
+  Each was worth 100–190 mm² of section error on its own:
+  - the four code-disk end-stop pockets are **annular sectors R20–R27**, ends closed by **flat planes
+    2.5 mm from the J4 axis** rather than radial faces, all four corners R2. They sit at 30°/−30°/90°/−90°
+    — four of six positions on a 60° pitch, the −X pair omitted where the arm runs. A morphological
+    opening (`offset(r) offset(-r)`) reproduces the corners exactly, since every one is convex;
+  - the two screw clearance holes are **D-shaped**, flat 1.800 mm from the axis facing outboard, with a
+    round tapped hole **coaxial** above;
+  - the belt slot flares into an **hourglass lead-in** over the boxy arm, x −51…−36 exactly: a 6 × 6 waist
+    opening at 45° to a 12.700 × 15.304 mouth, constant in x so it extrudes rather than lofts. This is the
+    two GT2 belts fanning out to their pulleys.
+- **Corrected along the way:** the retaining-screw axes were typed y = ±8.58 with a 0.117 mm offset
+  between clearance and tapped hole. Both were artifacts of fitting a circle to a D-shaped slice loop,
+  whose centroid sits ~0.12 mm off the true axis toward the flat. The axes are **+8.692 / −8.713** and the
+  offset does not exist. The pin-hole floor is **z = 18.652**, not the round-looking 19.0.
+- **Verified:** `dist` **0.016 mm** Hausdorff both directions, **0.000%** of ~200,000 samples per side over
+  tolerance; volume 25,499.7 vs 25,509.0 mm³ (−0.036%); bounding box 81.000 × 60.000 × 22.000; one closed
+  body (`Simple: yes`). The worst residual point sits on the Ø20 waist cylinder — a faceting chord, not
+  geometry. `BODY_A_LEN` is stated as the design dimension **81.0**, not the reference bounding box's
+  80.984: a tessellated circle's extreme vertex falls short of its true radius, and driving the model from
+  that number would misplace the arm's flat tip face.
+- **Harness:** the housings are now gated on `dist` rather than `compare`. Body A is the first entry in
+  the new `DIST_GATES` table; Body B joins it when rebuilt.
+- **This is CR-3A8's finding a second time.** That entry reopened DC-2 because `compare` "is a set of
+  one-dimensional histograms; a solid can satisfy all of them and still be the wrong body," and it
+  rebuilt the seven parts it covered. The two housings were exempted from that correction rather than
+  included in it — they had no clone target, so there was nothing to compare and the exemption looked
+  free. It was not: it left the one measurement that would have caught a 2.43× body switched off on the
+  two largest parts in the set. **A part with no shape contract is not a part that needs less
+  verification; it is a part whose verification silently does nothing.**
+- **Open:** Diff Body B is still an authored redesign and is still verified by interface checks only.
+
 ### CR-3A15: Diff Gear Shaft's two rear shoulders corrected
 
 - **Affects:** [`Hardware/Models/700-Differential/720-001_DiffGearShaft.scad`](Hardware/Models/700-Differential/720-001_DiffGearShaft.scad)

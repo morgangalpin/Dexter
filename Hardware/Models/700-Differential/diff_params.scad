@@ -84,11 +84,16 @@ L4_TARGET      = 59.50;                // firmware L4, J4 -> J5 axis (DC-6)
 
 // ---------------------------------------------------------------------------
 // Diff Body A axis length — the parameter chain that carries L4 and the
-// envelope. "previous" matches the reference STL (80.98 mm longest
-// dimension, exceeds the cover); "revised" trims to fit COVER_ENVELOPE.
-// Derived L4 is computed in diff_assembly.scad from the body geometry.
+// envelope. "previous" reproduces the reference part; "revised" trims to fit
+// COVER_ENVELOPE. Derived L4 is computed in diff_assembly.scad.
+//
+// 81.0 is the design dimension: the Ø60 top plate's R30 plus the arm's flat
+// tip face at x = -51.000, both measured directly. The reference STL's
+// bounding box reads 80.984 because a tessellated circle's extreme vertex
+// falls short of its true radius — that 0.016 mm is faceting, not geometry,
+// and driving the model from it would place the arm's flat face wrongly.
 // ---------------------------------------------------------------------------
-BODY_A_LEN = config == "previous" ? 80.984 : 77.8;
+BODY_A_LEN = config == "previous" ? 81.0 : 77.8;
 
 // Revised-config conformance is asserted where the assembly computes
 // L4 (diff_assembly.scad), not here, so single parts stay renderable.

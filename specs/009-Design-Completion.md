@@ -279,10 +279,18 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
     reproduces them, behind a `wall_holes` flag. **They are not buildable** — Ø0.2 × 60.6 mm is 303:1,
     past drilling and far past printing — and no other part in the reference set carries anything like
     them, so whether the built shaft should have them is open under DC-11.
-- The two housings (Diff Body A/B) remain **authored functional redesigns** rather than recreations: every
-  bearing seat, journal, bore, axis position, and span is taken from measurement, while the sculpted
-  shells are replaced with clean parametric bodies. They are verified by interface slice checks, not by
-  shape comparison, because there is no reference shape they are meant to match.
+- The two housings (Diff Body A/B) were carried as **authored functional redesigns** rather than
+  recreations — every bearing seat, journal, bore, axis position, and span taken from measurement, the
+  sculpted shells replaced with clean parametric bodies, and verified by interface slice checks rather
+  than shape comparison on the grounds that there was no reference shape they were meant to match.
+  **That exception is withdrawn** ([CR-3A16](../CHANGES.md)). Preserving every interface did not preserve
+  the part: the authored Diff Body A rendered 2.43× the reference's material in the same bounding box,
+  which is mass and inertia at the worst point on the arm, and interface checks are what it passed.
+  Both housings are to be faithful recreations gated on `scadmesh dist` at ±0.15 mm, with cover-envelope
+  fit carried as a minimal delta in the `revised` configuration.
+  **Diff Body A is rebuilt and passing** at 0.016 mm Hausdorff, 0.000% of samples over tolerance.
+  **Diff Body B is not yet rebuilt** and remains an authored redesign verified by interface checks; that
+  is the one item keeping this bullet open.
 - Tooth counts verified on the renders: three 20T bevels (1:1:1), two 40T GT2 pulleys, 100 encoder slots.
   These passed and are unaffected — a tooth count is not a shape claim.
 - The assembly is evaluated in both configurations, which fires its assertions: the J4/J5 axes intersect,
