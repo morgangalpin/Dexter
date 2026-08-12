@@ -82,6 +82,36 @@ small rounding that the tessellation renders as one chord per corner. Fitting a 
 returns Ø5.43–5.55 at rms 0.25–0.36 while the area implies Ø4.72 — the area/fit disagreement is what
 identifies it as non-circular.
 
+## Outer shell — a revolve about the J4 axis
+
+`[Specified]` for the radii below. Fitting a circle to each x-section returns the **J4 axis** as its
+centre, (y, z) = (−21.000, 21.000), to within 0.003 mm, with maximum residuals of 0.001–0.011 mm over
+85–116 points. The shell is a surface of revolution about X, not a sculpted freeform, over its whole
+length. It is then **clipped by a flat top at z = 34.000** (the clip is what the earlier freeform
+reading mistook for curvature: fit the whole section including the flat and the residual jumps to 2.7 mm).
+
+| x range | radius about J4 |
+|---|---|
+| 8.3 → 9.2 | **45° chamfer, r = x + 5.500** — exact to 3 decimals at every 0.2 mm station |
+| 9.6 → 28.0 | cylinder **r = 15.500** |
+| 29.0 → 32.7 | cylinder **r = 18.000** |
+| 33 → 38.7 | **45° cone**, r = 18.300 + (x − 33) |
+| 38.7 → 45.5 | cylinder **r = 24.000** |
+
+Two joints in that profile are `[TBD]` and need finer work than the 0.05 mm sampling done so far:
+
+- **x ≈ 9.45 → 9.60**, where the 45° chamfer meets the r = 15.500 cylinder. The measured slope
+  *increases* through the joint (1.31 → 2.39 → 5.26) instead of decreasing to zero, so it is not a
+  tangent fillet from the cone to the cylinder; the profile reaches r = 15.500 at x = 9.60 rather than
+  at the x = 10.000 the chamfer line predicts. Something sits in that 0.4 mm — a step, a bead, or a
+  second surface — and it is worth resolving because a sharp intersection modelled at x = 10 would be
+  wrong by up to 0.6 mm in radius, four times the gate.
+- **x ≈ 28.0 → 29.0**, the step from r = 15.500 to r = 18.000.
+
+Beyond x ≈ 33 the section is no longer a circle about the axis (residual 1.4–1.5 mm, free-fit centre
+drifting to z ≈ 20.75), so the 45° cone and the r = 24.000 band above describe the *outermost* radius
+rather than a full revolve. That region still needs its own decomposition.
+
 ## J4 mating rim
 
 `[Provisional]` — outer radius **29.4925**, inner radius **22.000**, about the X axis at (y, z) =
@@ -107,9 +137,15 @@ Its true outline is `[TBD]`.
 
 ## Open before the rebuild can be gated
 
-1. The sculpted outer shell. A circle fit to the y = −36 outline leaves a 2.7 mm residual, so it is not
-   a simple revolve; it needs its own decomposition.
+1. The two profile joints above (x ≈ 9.5 and x ≈ 28.5), and the shell beyond x ≈ 33 where it stops
+   being a revolve.
 2. The bearing seats — diameter, depth and axis. The existing `render-all.rs` `DIAMS` entries for
-   730-002 check an axis and stations taken from the authored model and are therefore unverified.
+   730-002 check an axis and stations taken from the authored model. Since there is no bore on that
+   axis at all, those checks are unverified and probably meaningless; rewrite them against measurement
+   when the rebuild lands.
 3. The rim outline and the cavity blend, per the `[TBD]`s above.
 4. The wire entry channels: position, diameter, and where they break into the cavity.
+5. The inner wall system. The z = 21 plane contains the J4 axis and so should give the meridian
+   directly, but it cuts inner walls as well — at x 11.4…13.8 the outermost boundary on that plane is
+   r = 11.483, not the r = 15.500 the x-sections show. Per-x-section fitting is the reliable route;
+   max-radius on an axis-containing plane is not.
