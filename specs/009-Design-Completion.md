@@ -290,7 +290,11 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
   fit carried as a minimal delta in the `revised` configuration.
   **Diff Body A is rebuilt and passing** at 0.016 mm Hausdorff, 0.000% of samples over tolerance.
   **Diff Body B is not yet rebuilt** and remains an authored redesign verified by interface checks; that
-  is the one item keeping this bullet open.
+  is the one item keeping this bullet open. Its reference geometry has been measured and is recorded in
+  [730-002 reference geometry](../Hardware/Models/700-Differential/specs/001-DiffBodyB-Reference-Geometry.md),
+  which also lists what is still `[TBD]` before the rebuild can be gated. Two premises of the authored
+  Body B are disproved there: the `TUNNEL_Y` span is the J4 mating rim's diameter rather than a tunnel,
+  and there is no through-bore on the tunnel axis at all — the part is a fork with two solid side walls.
 - Tooth counts verified on the renders: three 20T bevels (1:1:1), two 40T GT2 pulleys, 100 encoder slots.
   These passed and are unaffected — a tooth count is not a shape claim.
 - The assembly is evaluated in both configurations, which fires its assertions: the J4/J5 axes intersect,
