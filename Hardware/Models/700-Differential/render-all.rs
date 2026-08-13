@@ -116,7 +116,11 @@ struct CountCheck {
     expect: u64,
 }
 
-const COUNTS: [CountCheck; 6] = [
+const COUNTS: [CountCheck; 7] = [
+    CountCheck { label: "730-002 115 encoder slots",
+                 args: &["out/730-002.stl", "--axis", "x", "--band", "24.5,28.8",
+                         "--slice-at", "46.35", "--center", "-21,21"],
+                 key: "loops_in_band", expect: 115 },
     CountCheck { label: "710-004 100 encoder slots",
                  args: &["out/710-004.stl", "--band", "21.5,25.5",
                          "--slice-at", "0.6", "--center", "0,0"],
@@ -150,13 +154,17 @@ struct DiamCheck {
     diameter: f64,
 }
 
-const DIAMS: [DiamCheck; 5] = [
+const DIAMS: [DiamCheck; 6] = [
     DiamCheck { label: "730-001 6703 seat Ø23",
                 args: &["out/730-001.stl", "--at=2.0"], diameter: 23.0 },
     DiamCheck { label: "730-001 6705 seat Ø32",
                 args: &["out/730-001.stl", "--at=20.0"], diameter: 32.0 },
+    // Body B's shaft bore is on X, the J4 axis — not on Y. The former y =
+    // −48.5 station sampled the mating rim and could never have found a seat.
     DiamCheck { label: "730-002 6703 seat Ø23",
-                args: &["out/730-002.stl", "--axis", "y", "--at=-48.5"], diameter: 23.0 },
+                args: &["out/730-002.stl", "--axis", "x", "--at=12.0"], diameter: 23.0 },
+    DiamCheck { label: "730-002 shaft land Ø17.5",
+                args: &["out/730-002.stl", "--axis", "x", "--at=17.0"], diameter: 17.5 },
     DiamCheck { label: "730-002 split-gear stub Ø17",
                 args: &["out/730-002.stl", "--at=40"], diameter: 17.0 },
     DiamCheck { label: "730-002 thrust tube Ø8",

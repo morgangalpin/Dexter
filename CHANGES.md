@@ -228,6 +228,65 @@ anything version 3 does not independently specify
   per instance. 710-001's residual 0.225 mm is the tooth root fillet, which is concave and cannot be
   represented by a loft through convex hulls.
 
+### CR-3A17: Diff Body B rebuilt as a faithful recreation (not yet gated)
+
+- **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
+  [`Hardware/Models/700-Differential/730-002_DiffBodyB.scad`](Hardware/Models/700-Differential/730-002_DiffBodyB.scad),
+  [`render-all.rs`](Hardware/Models/700-Differential/render-all.rs)
+- **Was:** an authored functional redesign, the last part still carrying CR-3A7's exception after
+  CR-3A16 withdrew it for Diff Body A. It was verified by interface slice checks only.
+- **Now:** a recreation of the reference mesh, built from measurement throughout. **It does not yet
+  meet the ±0.15 mm contract and so is not in `DIST_GATES`.**
+- **The frame was wrong, not just the shape.** The redesign put the shaft tunnel on **Y**. There is no
+  Y bore at all: the tunnel runs on **X**, on the J4 axis at (y, z) = (−21, 21), and carries both 6703
+  seats. `TUNNEL_Y = [−50.5, 8.5]` was the mating rim's *diameter* read off the bounding box and
+  attributed to a feature that does not exist. The part has two axes, not three.
+- **What the reference actually is:**
+  - the outer shell is **two nested revolves under different top cuts** — an r = 15.5 barrel running to
+    x = 32.7 capped by the chimney, and an r = 18 collar outside it cut by two planes through the axis
+    at **35°**. An x = 30 section shows both: a 250° arc at r = 18 whose ends run in to r = 15.5 along
+    those planes. Treating the shell as one solid under one clip removes the collar's wings and
+    **2500 mm³**;
+  - the chimney base is a **45° cone of revolution about the column axis**, ρ = 47.520 − z, rounded onto
+    the z = 34 face by R1, trimmed by four straight sides — the y flats at |Δy| = 12.460 and the x walls
+    at |Δx| = 10.988 — with the cone's own arcs left at the corners. It is **additive**: at z = 31 its y
+    face stands 0.5 mm proud of the barrel;
+  - the mating rim carries a **J5 encoder track of 115 through-slots** on an exact 360/115 pitch,
+    rectangular, r 24.5–28.8 × 0.8 wide. These were previously dismissed as a tessellation artefact —
+    the same congruent-loop pattern that *is* an artefact elsewhere in this mesh;
+  - the wire bore is a **12-gon, not an octagon**: two chamfers per corner, 45° then 22.5°. Shoelace on
+    the corrected vertices gives 17.4919 mm² against 17.4927 measured;
+  - both ends of the −X face carry an **R1 round**, centres coincident at x = 9.000; and the Ø8 bore's
+    breakthrough into the Ø22 relief is blended **R2**, top and bottom.
+- **Verified:** volume **16,672.2 vs 16,694.3 mm³ (−0.13%)**; bounding box 39.000 × 58.985 × 80.492
+  against 39.000 × 58.994 × 80.500; one closed body (`Simple: yes`). `dist` **0.414 / 0.399 mm**
+  Hausdorff, rms **0.049 / 0.050**, p95 **0.136 / 0.136** — both inside tolerance — p99 0.186 / 0.190,
+  with **1.2%** of ~200,000 samples per side over 0.15 mm. From the authored redesign, that is
+  Hausdorff 18.891 → 0.414 and over-tolerance 92% → 1.2%.
+- **Method note, recorded because it cost five renders.** The R2 breakthrough blend is built as *zone
+  minus rolling balls*, and an over-large zone does not waste geometry — **it cuts, and it cuts a face
+  on the zone's own boundary**. Four successive zone definitions each put the worst `dist` point exactly
+  on whichever bound was loosest. Two numbers generalise: a spurious cavity **0.03 mm deep** scored
+  **0.9 mm**, because the floor of a shallow void in solid material has no reference surface near it —
+  so where a bound must be approximated, take the value that removes *less*; and a faceted
+  `sphere(r)` at `$fn = 32` has its facet planes 0.01 mm shy of r, which against a knife-edge cover is
+  enough to expose a face. The blend is also **truncated flat at z = 32.000**: its own tangency would
+  carry it to 32.67, but the bore stops being Ø8 there, and a blend cannot outlive the wall it is
+  tangent to.
+- **Harness:** the `DIAMS` entry that checked Body B's "6703 seat" at y = −48.5 sampled the mating rim
+  and could never have found a seat; it is replaced by seat and land checks on the X axis, and a
+  115-slot `CountCheck` is added.
+- **Where the measurements live:** in the part file's header and profile comments, not in a document of
+  its own. The recovered dimensions *are* the profiles, so a separate reference-geometry spec restated
+  every number a second time and could drift from the source it described. The
+  `Hardware/Models/700-Differential/specs/` subdirectory is removed; the provenance, the acceptance
+  numbers, the mesh-reading traps and the failed constructions are carried in `730-002_DiffBodyB.scad`.
+- **Open:** the top corner of the −X end face (0.414 mm, the worst candidate point); the encoder track,
+  where the worst *reference* point (0.399 mm) lands at x = 46.875, r = 25.000 on repeated renders even
+  though the track's count, pitch, phase, radial span and width all match measurement; the flat-to-cone
+  fillet where the chimney's y flats meet its cone (≈ R1.5, ~0.10 mm); and the wire bore's lead-in loft
+  (~0.10 mm). Body B joins `DIST_GATES` when these close.
+
 ### CR-3A16: Diff Body A rebuilt as a faithful recreation
 
 - **Affects:** [009 DC-2](specs/009-Design-Completion.md#differential-detail-design),
