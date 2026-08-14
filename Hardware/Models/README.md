@@ -118,8 +118,10 @@ depends on no proprietary tool. Four conventions keep the transition legible:
   difference collapses it to one mesh, removing the fan-out at its source and costing the export
   nothing; `render()` on the array only caps the element count and leaves the frame cost untouched.
   [`730-002_DiffBodyB.scad`](700-Differential/730-002_DiffBodyB.scad) is the worked example — its Ø8
-  bore fillet fans 51 ways, its 115 encoder slots do not fan at all — and the measurements are at that
-  call site.
+  bore fillet multiplies the whole part, its 115 encoder slots merely land on every copy — and the
+  arithmetic and measurements are at that call site. Note which lever is the cheaper one: the fillet's
+  factor is set by how its cutter is built, and rebuilding that cutter as a swept polyhedron rather than
+  a chain of hulled spheres took the factor from 51 to 7 without any `render()` at all.
 
 **`700-Differential/` is fully converted** (DC-2,
 [specs/009](../../specs/009-Design-Completion.md#differential-detail-design)): one `.scad` per part,

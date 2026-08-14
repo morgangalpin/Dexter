@@ -415,20 +415,91 @@ module wire_lead() {
 // ---------------------------------------------------------------------------
 
 // A tube of radius BLEND_R swept along a curve that circles the column axis
-// at radius rc and the J4 axis at radius rx. Note that a faceted sphere is
-// inscribed, not circumscribed: at $fn = 32 its facet planes sit at
-// r * cos(5.625 deg), 0.01 mm shy of r. Here that errs toward removing less,
-// which is the safe direction, but a sphere subtracted from a knife-edge
-// cover needs r / cos(180/$fn) or the shortfall exposes a face.
-module blend_tube(rc, rx, t0, n) {
+// at radius rc and the J4 axis at radius rx. Its centre curve is
+//
+//   p(t) = [COL_XY[0] + rc cos t, COL_XY[1] + rc sin t,
+//           J4_YZ[1] + sz sqrt(rx^2 - (rc sin t)^2)]
+//
+// and it is built as one polyhedron per arc, four in all.
+//
+// This was 48 hulled sphere pairs until the cost was measured. Hulling a
+// chain of balls is the obvious way to sweep one, and it is expensive twice
+// over: the result is a UNION of 48 solids, which multiplies the whole body
+// when preview normalises the tree (see diff_body_b), and CGAL charges 7:49
+// to evaluate the cutter alone against 6.4 s for the sweep — 13424 triangles
+// against 3312.
+//
+// The sweep needs no parallel transport, because the radial direction about
+// the column axis is perpendicular to the tangent everywhere already: the
+// radial component of p is the constant rc, so e_r . p'(t) = 0 identically.
+// Ring point k of station i is therefore just
+// p + BLEND_R (cos a * e_r + sin a * (T x e_r)), with no drift to correct
+// and no seam where the arcs meet. T is taken as a central difference; the
+// frame only needs its direction, and 0.01 deg leaves that right to 1e-8.
+//
+// As with the spheres this ring is inscribed, not circumscribed: at m = 32
+// its facet planes sit at BLEND_R * cos(5.625 deg), 0.01 mm shy of BLEND_R.
+// That errs toward removing less, which is the safe direction here, but a
+// cutter subtracted from a knife-edge cover needs r / cos(180/m) or the
+// shortfall exposes a face.
+//
+// Sides and caps are both triangulated. A quad ring of a curved sweep is not
+// planar and a 32-gon cap is planar only to rounding; left as polygons,
+// OpenSCAD prints "PolySet has nonplanar faces. Attempting alternate
+// construction" once per arc and repairs them on its own terms.
+//
+// WINDING. Check it by volume, always. A polyhedron wound inside out exports
+// with no diagnostic whatever — the isolated test read -98.063 mm3 — and as
+// a difference() cutter an inverted solid silently ADDS material instead of
+// removing it. Wound correctly the same tube reads +98.084 mm3.
+//
+// The sweep has flat ends where the hull chain had hemispheres. That is the
+// entire difference between the two cutters, 132 mm3 of it against the
+// 8 x 2/3 pi 2^3 = 134 the caps would hold, and it falls outside the zone at
+// both ends: t0 = acos(4/6) = 48.19 deg puts the end stations at x = 21 +/- 4
+// with unit tangent (-0.724, 0.648, -0.237), so the cap normal's x component
+// is 0.724 and the absent half-ball reaches no closer than
+// 25 - 2 sqrt(1 - 0.724^2) = 23.62, against a zone bounded at GROOVE_X[1] =
+// 23. Symmetrically, 18.38 against 19. Measured rather than argued: the part
+// exports 16688.936 mm3 against the hull chain's 16688.927, the same bounding
+// box, and `dist` between the two meshes is 0.014 mm max, 0.000 rms.
+function blend_pt(rc, rx, sz, t) =
+    [COL_XY[0] + rc * cos(t),
+     COL_XY[1] + rc * sin(t),
+     J4_YZ[1] + sz * sqrt(rx * rx - pow(rc * sin(t), 2))];
+
+function blend_frame(rc, rx, sz, t, d = 0.01) =
+    let (n = [cos(t), sin(t), 0],
+         tg = unit(blend_pt(rc, rx, sz, t + d) - blend_pt(rc, rx, sz, t - d)))
+    [n, unit(cross(tg, n))];
+
+// Triangle fan over a ring of point indices, wound in the order given.
+function blend_fan(idx) =
+    [for (j = [1 : len(idx) - 2]) [idx[0], idx[j], idx[j + 1]]];
+
+module blend_arc(base, rc, rx, sz, t0, n, m) {
+    step = (180 - 2 * t0) / n;
+    pts = [for (i = [0 : n], k = [0 : m - 1])
+             let (t = base + t0 + step * i,
+                  f = blend_frame(rc, rx, sz, t),
+                  a = 360 * k / m)
+             blend_pt(rc, rx, sz, t)
+                 + BLEND_R * (cos(a) * f[0] + sin(a) * f[1])];
+    polyhedron(points = pts,
+        faces = concat(
+            [for (i = [0 : n - 1], k = [0 : m - 1], half = [0, 1])
+                let (k1 = (k + 1) % m,
+                     a = i * m + k,        b = (i + 1) * m + k,
+                     c = (i + 1) * m + k1, d = i * m + k1)
+                half == 0 ? [a, b, c] : [a, c, d]],
+            blend_fan([for (k = [0 : m - 1]) k]),
+            blend_fan([for (k = [m - 1 : -1 : 0]) n * m + k])),
+        convexity = 4);
+}
+
+module blend_tube(rc, rx, t0, n, m = 32) {
     for (base = [0, 180], sz = [-1, 1])
-        for (i = [0 : n - 1])
-            hull() for (j = [i, i + 1]) {
-                t = base + t0 + (180 - 2 * t0) * j / n;
-                translate([COL_XY[0] + rc * cos(t), COL_XY[1] + rc * sin(t),
-                           J4_YZ[1] + sz * sqrt(rx * rx - pow(rc * sin(t), 2))])
-                    sphere(r = BLEND_R, $fn = 32);
-            }
+        blend_arc(base, rc, rx, sz, t0, n, m);
 }
 
 // The material a rolling ball takes out of the rim is the corner zone less
@@ -549,32 +620,44 @@ module diff_body_b() {
         wire_lead();
         // render() is not cosmetic, and it belongs on the FILLET, not on the
         // slots. Preview normalises the tree to disjunctive normal form, and
-        // this call is a difference nested inside the body's: x - (A - B)
-        // rewrites to (x - A) | (x & B), fanning out to one product per term
-        // of A and of B — 3 for the zone's intersection, 48 for blend_tube's
-        // hulls. That is 51 copies of the whole body, 255 products in all, and
-        // every primitive in the tree is redrawn once per product per frame.
-        // Appending 115 slot cuts to all 255 then overran the normaliser's
-        // element cap outright and preview drew NOTHING ("Normalized tree is
-        // growing past ... Aborting normalization", then "CSG normalization
-        // resulted in an empty tree").
+        // both of these calls are differences nested inside the body's:
+        // x - (A - B) rewrites to (x - A) | (x & B), so each multiplies the
+        // whole body by one product per term of A plus one per term of B. The
+        // fillet's zone is an intersection of 3 and its cutter is 4 swept
+        // arcs, so 7; the slots subtract a union (one product, with 115 cuts
+        // appended) less 2 tie revolves, so 3. Against the body's own
+        // 5-product union that is 5 x 7 x 3 = 105 products, and every
+        // primitive in the tree is redrawn once per product per frame.
+        // Evaluating the fillet to a single mesh takes its factor to 1, and
+        // the tree to 15.
         //
-        // Evaluating the fillet to a single mesh removes the fan-out at its
-        // source: 5 products, compile 3:08 against 1:47, and one 900x900 frame
-        // in under 5 s against 155 s — slower to compile, but faster to first
-        // pixel and the difference between a viewport that turns and one that
-        // does not. Wrapping the slots instead only caps the element count; it
-        // leaves all 255 products, so it fixed the empty tree and left the
-        // model unusable to look at. With the multiplier gone the slots need
-        // no render() of their own — their nested difference costs 15 products,
-        // far under the cap, and collapsing them too buys nothing for 17 s of
-        // extra CGAL. Take this render() off and the overflow comes back.
+        // It was once far worse, which is why this line exists at all. With
+        // blend_tube built as 48 hulled spheres the fillet's factor was 51
+        // rather than 7 — 255 copies of the body before the slots applied
+        // theirs — and appending 115 slot cuts to all of them overran the
+        // normaliser's element cap outright: preview drew NOTHING ("Normalized
+        // tree is growing past ... Aborting normalization", then "CSG
+        // normalization resulted in an empty tree"). Wrapping the SLOTS
+        // instead capped the element count without touching the 255 products,
+        // so it fixed the empty tree and left the model unusable to look at.
         //
-        // F6 and STL export never normalise and are unaffected either way:
-        // same 44226 triangles, same volume, `dist` 0.000 mm both directions.
-        // Of the nine parts here only this one fans out; 710-004 cuts 100
-        // slots by the same construction and previews clean, because it has no
-        // nested difference ahead of them to multiply against.
+        // Sweeping the tube took most of that away by itself, so what this
+        // render() now buys is 3 s and headroom, not usability. With it,
+        // preview compiles in 17 s and a 900x900 frame costs nothing
+        // measurable; without it, 20 s and about a second a frame. Both are
+        // fluid. It stays for the headroom: anything added to this difference
+        // later multiplies against 105 products rather than 15, and 105 is a
+        // long way up the road that emptied the tree once already. For scale,
+        // the hull chain compiled in 5:53 and spent 28 s a frame.
+        //
+        // F6 and STL export never normalise, so the line changes nothing
+        // there — checked on the hull construction, which exported the same
+        // triangles, the same volume and 0.000 mm `dist` with it and without.
+        // The part now exports 43842 triangles in 4:18.6, against 44226 in
+        // 5:08.9 before the sweep. Of the nine parts here only this one fans
+        // out; 710-004 cuts 100 slots by the same construction and previews
+        // clean, because it has no nested difference ahead of them to
+        // multiply against.
         render() bore_groove_blend();
         rim_slots();
     }
