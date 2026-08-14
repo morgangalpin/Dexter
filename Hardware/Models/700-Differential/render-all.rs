@@ -38,6 +38,16 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 /// Absolute paths tried for OpenSCAD before falling back to `$PATH`.
+///
+/// `openscad.exe` is deliberate on Windows, and the choice is not obvious.
+/// That binary is built for the GUI subsystem, so run from an interactive
+/// console it attaches to no terminal and appears to print nothing — which is
+/// why the install also ships `openscad.com`, a wrapper that republishes
+/// everything on stdout. The wrapper is the wrong tool here: this script reads
+/// stdout and stderr apart, and the diagnostics it needs are the stderr ones.
+/// Redirected to a pipe, as `Command::output` does, `openscad.exe` writes
+/// them there correctly. Use `openscad.com` when reading by eye, `.exe` when
+/// reading by program.
 const OPENSCAD_CANDIDATES: [&str; 3] = [
     "C:/Program Files/OpenSCAD/openscad.exe",
     "/usr/bin/openscad",
@@ -127,9 +137,13 @@ struct CountCheck {
 }
 
 const COUNTS: [CountCheck; 7] = [
+    // `--center=-21,21`, not `--center -21,21`. Body B's axes both sit at -21,
+    // and a negative value in the spaced form is read as a flag: clap sees
+    // `-2` and exits 2 before the check runs. That aborted the whole script
+    // here, because the usage text it printed is not JSON.
     CountCheck { label: "730-002 115 encoder slots",
                  args: &["out/730-002.stl", "--axis", "x", "--band", "24.5,28.8",
-                         "--slice-at", "46.35", "--center", "-21,21"],
+                         "--slice-at", "46.35", "--center=-21,21"],
                  key: "loops_in_band", expect: 115 },
     CountCheck { label: "710-004 100 encoder slots",
                  args: &["out/710-004.stl", "--band", "21.5,25.5",
@@ -204,7 +218,15 @@ fn script_dir() -> Result<PathBuf> {
     Ok(PathBuf::from(base))
 }
 
-fn run(exe: &str, args: &[&str], dir: &Path) -> Result<(bool, String)> {
+/// A finished tool run. Both streams are kept: `scadmesh` reports on stdout,
+/// OpenSCAD diagnoses on stderr, and neither can stand in for the other.
+struct Run {
+    ok: bool,
+    stdout: String,
+    stderr: String,
+}
+
+fn run(exe: &str, args: &[&str], dir: &Path) -> Result<Run> {
     let out = Command::new(exe)
         .args(args)
         .current_dir(dir)
@@ -212,26 +234,76 @@ fn run(exe: &str, args: &[&str], dir: &Path) -> Result<(bool, String)> {
         .with_context(|| {
             format!("running {exe} - set $OPENSCAD / $SCADMESH if it is not on PATH")
         })?;
-    let text = String::from_utf8_lossy(&out.stdout).into_owned();
-    Ok((out.status.success(), text))
+    Ok(Run {
+        ok: out.status.success(),
+        stdout: String::from_utf8_lossy(&out.stdout).into_owned(),
+        stderr: String::from_utf8_lossy(&out.stderr).into_owned(),
+    })
 }
 
-fn render(scad: &str, out_stl: &str, config: &str, ctx: &Ctx) -> Result<()> {
+/// The lines on OpenSCAD's stderr that mean the mesh cannot be trusted,
+/// picked out of the cache and timing chatter that surrounds them.
+///
+/// The exit status cannot do this job. OpenSCAD exits 0 for `ERROR: The given
+/// mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron`, which is the
+/// one diagnostic that most directly invalidates an export, and 0 again for
+/// every `WARNING:`. It exits 1 only when the top level object comes out
+/// empty or a script-level assertion fails. So a render that quietly dropped a
+/// subtree, or silently ignored a misspelled variable, used to reach the
+/// measurements as if nothing had happened, and whatever the measurements then
+/// said was reported as a PASS.
+///
+/// `Simple: no` is caught as well as the explicit complaints. It sits in the
+/// summary block rather than in a warning, and it is how a self-intersecting
+/// or non-manifold export announces itself while OpenSCAD exits 0 and writes
+/// the file. A `.csg` export evaluates no geometry and prints no such block,
+/// so the assembly is simply not asked the question.
+///
+/// Nothing here is filtered as benign. These nine parts render clean today,
+/// and the point of the check is to notice the first one that stops.
+fn diagnostics(stderr: &str) -> Vec<&str> {
+    const MARKERS: [&str; 4] = ["ERROR:", "WARNING:", "UI-WARNING:", "TRACE:"];
+    stderr
+        .lines()
+        .map(str::trim)
+        .filter(|line| {
+            MARKERS.iter().any(|m| line.starts_with(m))
+                || line.contains("not a simple polyhedron")
+                || line.contains("top level object is empty")
+                || line.contains("nonplanar faces")
+                || (line.starts_with("Simple:") && line.ends_with("no"))
+        })
+        .collect()
+}
+
+/// Render one configuration of one part, and hold it to rendering silently.
+/// The tally entry is deliberately separate from the measurements that follow:
+/// a part that warns and then measures well has not passed, it has measured a
+/// mesh nobody should be measuring.
+fn render(scad: &str, out_stl: &str, config: &str, ctx: &Ctx,
+          tally: &mut Tally) -> Result<()> {
     let define = format!("config=\"{config}\"");
-    let (ok, _) = run(&ctx.openscad, &["-o", out_stl, "-D", &define, scad], &ctx.dir)?;
-    if !ok {
-        bail!("OpenSCAD failed rendering {scad} ({config})");
+    let r = run(&ctx.openscad, &["-o", out_stl, "-D", &define, scad], &ctx.dir)?;
+    if !r.ok {
+        bail!("OpenSCAD failed rendering {scad} ({config}):\n{}",
+              r.stderr.trim_end());
     }
+    let complaints = diagnostics(&r.stderr);
+    for line in &complaints {
+        println!("      {line}");
+    }
+    tally.record(&format!("{scad} ({config}) renders without diagnostics"),
+                 complaints.is_empty());
     Ok(())
 }
 
 fn sm_json(args: &[&str], ctx: &Ctx) -> Result<(bool, Value)> {
     let mut full: Vec<&str> = args.to_vec();
     full.push("--json");
-    let (ok, text) = run(&ctx.scadmesh, &full, &ctx.dir)?;
-    let json = serde_json::from_str(&text)
+    let r = run(&ctx.scadmesh, &full, &ctx.dir)?;
+    let json = serde_json::from_str(&r.stdout)
         .with_context(|| format!("parsing scadmesh output for {args:?}"))?;
-    Ok((ok, json))
+    Ok((r.ok, json))
 }
 
 struct Ctx {
@@ -256,7 +328,7 @@ impl Tally {
 fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for part in &CLONES {
         let out_stl = format!("out/{}.stl", part.stem);
-        render(part.scad, &out_stl, "previous", ctx)?;
+        render(part.scad, &out_stl, "previous", ctx, tally)?;
         let reference = ref_path(part.reference);
         let mut args = vec!["compare", out_stl.as_str(), reference.as_str()];
         args.extend_from_slice(part.extra);
@@ -272,7 +344,7 @@ fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 fn check_dist_gates(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for part in &DIST_GATES {
         let out_stl = format!("out/{}.stl", part.stem);
-        render(part.scad, &out_stl, "previous", ctx)?;
+        render(part.scad, &out_stl, "previous", ctx, tally)?;
         let tol = part.tol.to_string();
         let reference = ref_path(part.reference);
         let (ok, report) =
@@ -312,7 +384,7 @@ fn has_diameter(json: &Value, diameter: f64) -> bool {
 /// distance gate; these remain as a direct statement of the interfaces the
 /// rest of the assembly depends on, in terms a reader can check by eye.
 fn check_bodies(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    render("730-002_DiffBodyB.scad", "out/730-002.stl", "previous", ctx)?;
+    render("730-002_DiffBodyB.scad", "out/730-002.stl", "previous", ctx, tally)?;
     for c in &DIAMS {
         let mut args = vec!["slice"];
         args.extend_from_slice(c.args);
@@ -323,7 +395,7 @@ fn check_bodies(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 }
 
 fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    render("730-001_DiffBodyA.scad", "out/730-001-revised.stl", "revised", ctx)?;
+    render("730-001_DiffBodyA.scad", "out/730-001-revised.stl", "revised", ctx, tally)?;
     let (ok, _) = sm_json(
         &["bbox", "out/730-001-revised.stl", "--assert-max", "78.0,73.5,50.5"],
         ctx,
@@ -341,7 +413,7 @@ fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 fn check_assembly(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for config in ["previous", "revised"] {
         let out_csg = format!("out/assembly-{config}.csg");
-        let ok = render("diff_assembly.scad", &out_csg, config, ctx).is_ok();
+        let ok = render("diff_assembly.scad", &out_csg, config, ctx, tally).is_ok();
         tally.record(&format!("assembly parameters and assertions ({config})"), ok);
     }
     Ok(())
@@ -357,11 +429,16 @@ fn context() -> Result<Ctx> {
     })
 }
 
+/// Order matters: everything `check_counts` measures has to have been rendered
+/// by an earlier step. Body B is rendered by `check_bodies`, so that has to
+/// come first — run the other way round, the slot count was read off whatever
+/// `out/730-002.stl` a previous run had left behind, which is a stale mesh on
+/// every run that follows an edit and no mesh at all on a clean checkout.
 fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_clones(ctx, tally)?;
     check_dist_gates(ctx, tally)?;
-    check_counts(ctx, tally)?;
     check_bodies(ctx, tally)?;
+    check_counts(ctx, tally)?;
     check_revised(ctx, tally)?;
     check_assembly(ctx, tally)
 }
