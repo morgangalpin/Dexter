@@ -107,13 +107,19 @@ depends on no proprietary tool. Four conventions keep the transition legible:
   gated against, and leaving it in the component directory invites printing the mesh instead of the
   `.scad`. A component directory holding `.scad` files therefore holds no `.stl`, and which groups have
   been converted is visible from a listing of `Reference/meshes/`.
-- **Wrap a large repeated cut in `render()`.** OpenSCAD's *preview* normalizes the tree to disjunctive
-  normal form and abandons the drawing entirely once that grows past its element cap, so a part can
-  export a flawless STL and still preview as an empty tree. An array of cuts is what usually trips it,
-  and a `difference()` nested inside another multiplies whatever follows. `render()` on the offending
-  subtree evaluates it to one mesh and costs the export nothing —
-  [`730-002_DiffBodyB.scad`](700-Differential/730-002_DiffBodyB.scad)'s 115 encoder slots are the worked
-  example, and the arithmetic is at that call site.
+- **Wrap a nested `difference()` in `render()`, not the cut that follows it.** OpenSCAD's *preview*
+  normalizes the tree to disjunctive normal form, and `x - (A - B)` rewrites to `(x - A) | (x & B)` —
+  one copy of the entire part per term of `A` and of `B`. A subtracted union does not multiply, so an
+  array of cuts is rarely the cause even when it is what overflows: it is the nested difference upstream
+  that multiplies, and the array merely lands on every copy. Two symptoms follow, and the second is the
+  one that gets misread. Past the element cap the normalizer gives up and preview draws an empty tree,
+  so a part can export a flawless STL and show nothing. Below the cap it draws, but every primitive is
+  redrawn once per product per frame, and the viewport stops turning. `render()` on the nested
+  difference collapses it to one mesh, removing the fan-out at its source and costing the export
+  nothing; `render()` on the array only caps the element count and leaves the frame cost untouched.
+  [`730-002_DiffBodyB.scad`](700-Differential/730-002_DiffBodyB.scad) is the worked example — its Ø8
+  bore fillet fans 51 ways, its 115 encoder slots do not fan at all — and the measurements are at that
+  call site.
 
 **`700-Differential/` is fully converted** (DC-2,
 [specs/009](../../specs/009-Design-Completion.md#differential-detail-design)): one `.scad` per part,

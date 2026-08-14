@@ -547,24 +547,36 @@ module diff_body_b() {
         translate([COL_XY[0], COL_XY[1], WIRE_POLY_Z[0]])
             linear_extrude(WIRE_POLY_Z[1] - WIRE_POLY_Z[0]) polygon(WIRE_POLY);
         wire_lead();
-        bore_groove_blend();
-        // render() is not cosmetic. Preview normalises the tree to disjunctive
-        // normal form, and bore_groove_blend above is a difference nested in
-        // this one: x - (y - z) rewrites to (x - y) | (x & z), copying the
-        // tree once per term of z — 48 of them, one per hull in blend_tube.
-        // Appending 115 slot cuts to every copy runs past the normaliser's
-        // element cap, so it gives up and preview draws NOTHING ("Normalized
-        // tree is growing past ... Aborting normalization", then "CSG
-        // normalization resulted in an empty tree"). F6 and STL export never
-        // normalise and were never affected — every measurement in this file
-        // predates this line and is unchanged by it: same 44226 triangles,
-        // same volume, `dist` 0.000 mm both ways. Evaluating the slots to one
-        // mesh puts a single leaf under the cap. Collapsing the fillet instead
-        // also clears it, at 4:56 against 2:55, and doing both is slower than
-        // either. Of the nine parts here only this one overflows; 710-004 cuts
-        // 100 slots by the same construction and previews clean, because it
-        // has no nested difference ahead of them to multiply against.
-        render() rim_slots();
+        // render() is not cosmetic, and it belongs on the FILLET, not on the
+        // slots. Preview normalises the tree to disjunctive normal form, and
+        // this call is a difference nested inside the body's: x - (A - B)
+        // rewrites to (x - A) | (x & B), fanning out to one product per term
+        // of A and of B — 3 for the zone's intersection, 48 for blend_tube's
+        // hulls. That is 51 copies of the whole body, 255 products in all, and
+        // every primitive in the tree is redrawn once per product per frame.
+        // Appending 115 slot cuts to all 255 then overran the normaliser's
+        // element cap outright and preview drew NOTHING ("Normalized tree is
+        // growing past ... Aborting normalization", then "CSG normalization
+        // resulted in an empty tree").
+        //
+        // Evaluating the fillet to a single mesh removes the fan-out at its
+        // source: 5 products, compile 3:08 against 1:47, and one 900x900 frame
+        // in under 5 s against 155 s — slower to compile, but faster to first
+        // pixel and the difference between a viewport that turns and one that
+        // does not. Wrapping the slots instead only caps the element count; it
+        // leaves all 255 products, so it fixed the empty tree and left the
+        // model unusable to look at. With the multiplier gone the slots need
+        // no render() of their own — their nested difference costs 15 products,
+        // far under the cap, and collapsing them too buys nothing for 17 s of
+        // extra CGAL. Take this render() off and the overflow comes back.
+        //
+        // F6 and STL export never normalise and are unaffected either way:
+        // same 44226 triangles, same volume, `dist` 0.000 mm both directions.
+        // Of the nine parts here only this one fans out; 710-004 cuts 100
+        // slots by the same construction and previews clean, because it has no
+        // nested difference ahead of them to multiply against.
+        render() bore_groove_blend();
+        rim_slots();
     }
 }
 
