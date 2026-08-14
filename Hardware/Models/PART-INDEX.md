@@ -95,17 +95,23 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 [007.2 §](../../specs/007.2-Printed-Parts.md#differential--0076)
 
+This is the one group whose files are `.scad`, not `.stl`: the source of record is parametric and the
+printable mesh is rendered from it by [`render-all.rs`](700-Differential/render-all.rs) into
+`700-Differential/out/`, which is not tracked. Each part's original mesh is kept as what the render is
+measured against, under [`Reference/meshes/700-Differential/`](Reference/meshes/700-Differential/) on the
+shared stem.
+
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #710-001 | Split Gear Top | 1 | `710-001_SplitGearTop.stl` | `.scad` source |
-| #710-002 | Split Gear Bottom | 1 | `710-002_SplitGearBottom.stl` | `.scad` source |
-| #710-003 | Diff Keeper | 2 | `710-003_DiffKeeper.stl` | `.scad` source |
-| #710-004 | Rotate Code Disk | 1 | `710-004_RotateCodeDisk.stl` | `.scad` source |
-| #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.stl` | `.scad` source |
-| #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.stl` | `.scad` source |
-| #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.stl` | `.scad` source |
-| #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.stl` | `.scad` source |
-| #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.stl` | `.scad` source |
+| #710-001 | Split Gear Top | 1 | `710-001_SplitGearTop.scad` | rendered |
+| #710-002 | Split Gear Bottom | 1 | `710-002_SplitGearBottom.scad` | rendered |
+| #710-003 | Diff Keeper | 2 | `710-003_DiffKeeper.scad` | rendered |
+| #710-004 | Rotate Code Disk | 1 | `710-004_RotateCodeDisk.scad` | rendered |
+| #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.scad` | rendered |
+| #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.scad` | rendered |
+| #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.scad` | rendered |
+| #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.scad` | rendered |
+| #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.scad` | rendered |
 
 ## 800-Harness — Wire harness
 

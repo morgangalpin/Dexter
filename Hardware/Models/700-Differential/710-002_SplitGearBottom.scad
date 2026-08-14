@@ -6,7 +6,7 @@
 //
 // STRUCTURE -- this mirrors how the part was actually authored. The reference
 // STL is an assembly export holding two *unmerged* solids, which
-//   scadmesh segment 710-002_SplitGearBottom.stl
+//   scadmesh segment ../Reference/meshes/700-Differential/710-002_SplitGearBottom.stl
 // separates: a turned body (Ø27, z 4..22, 5732.609 mm3, tessellated at
 // 3.85 tris/mm2) and a tooth crown (Ø34.81, z 18.5..27.368, 1619.975 mm3, at
 // 6.91 tris/mm2). They sum to the 7352.584 mm3 the whole file encloses. The

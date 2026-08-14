@@ -498,8 +498,9 @@ record.
 
 **Differential first-build checklist (moved here from [DC-2](#differential-detail-design)):** J4 and J5
 move without binding through their full travel (J4 ±108.3°, J5 ±190°), the 6-conductor bundle passes the
-bore and survives J5's full travel, and both code disks read cleanly through their shrouds — the J5 disk
-today, and the J4 disk once [DC-11(e)](#the-j4-code-disk-is-missing) supplies one. Print-fit parameters
+bore and survives J5's full travel, and both code disks read cleanly through their shrouds — J5's off
+`#710-004` and J4's off the track on Diff Body B's rim
+([DC-11(e)](#the-j4-code-disk-is-missing)). Print-fit parameters
 (press interference, bevel backlash) tune in
 [`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) if a check fails.
 
@@ -543,37 +544,48 @@ and each is `[Provisional]` there.
 | b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) | No size, voltage, or part number anywhere in the design record — only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`) | Fan does not fit the bracket, or fouls the MicroZed USB connector |
 | c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) | [007.5](007-Bill-of-Materials.md#0075-arm-body) types them "Fabricate"; [008.5](008-Assembly.md) treats them as printed bodies that accept pressed MR128 bearings and printed caps | Three parts either printed that should be machined, or absent from the print list |
 | d | **Print parameters** ([007.2 § Material](007.2-Printed-Parts.md#material)) | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment | Bearing bores and CF strake slots out of tolerance; press and bond fits fail |
-| e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) | `HDI-311-006C_J2StatorHolderCap_ConeDrive` is in the CAD model but has no BOM row; `HDI-610-006_MotorShaftCoupler` is instanced 4× where the BOM calls for 3. **Plus two found while authoring [DC-2](#differential-detail-design):** (i) [007.6](007-Bill-of-Materials.md#0076-differential) lists **5 × `#720-005` 60 × 4.4 × 1.5 mm CF strakes** in the differential, but no step in [008.6](008-Assembly.md#0086-differential) places them and no 4.4 × 1.5 mm slot appears anywhere in the differential's measured geometry (only the three 25 mm `#710-005` strakes, in the Split Gear Bottom, are both slotted and placed); (ii) **the J4 code disk does not exist as a part** — see [the note below](#the-j4-code-disk-is-missing) | Five fabricated parts with no home; a wrist joint with no encoder disk to print |
+| e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) | `HDI-311-006C_J2StatorHolderCap_ConeDrive` is in the CAD model but has no BOM row; `HDI-610-006_MotorShaftCoupler` is instanced 4× where the BOM calls for 3. **Plus two found while authoring [DC-2](#differential-detail-design):** (i) [007.6](007-Bill-of-Materials.md#0076-differential) lists **5 × `#720-005` 60 × 4.4 × 1.5 mm CF strakes** in the differential, but no step in [008.6](008-Assembly.md#0086-differential) places them and no 4.4 × 1.5 mm slot appears anywhere in the differential's measured geometry (only the three 25 mm `#710-005` strakes, in the Split Gear Bottom, are both slotted and placed); (ii) **resolved — the J4 code disk is not a part at all**, its 115-slot track being cut into `#730-002`'s mating rim, so the BOM is not short a row — see [the note below](#the-j4-code-disk-is-missing) | Five fabricated parts with no home |
 | f | **Defective model file** (`#710-002`, [007.2](007.2-Printed-Parts.md#differential--0076)) — ✔ **closed** | The file was **~1000× oversize** (exporter unit slip; its header read `STLB ASM 217.00.00.5800` vs neighbours' `220.00.00.0000`). The factor was detected as **exactly 1/1000** (`scadmesh scale --ref-dim 23.0`, zero residual against the 6703 seat), applied in place, and the corrected part verified against its mates: Ø23.000 6703 seat, Ø12.000 MR128 seat, Ø28.06 press bore receiving the Split Gear Top's Ø28.00, brad circle matching the Top's windows. Old SHA-256 `c20e30d1…a853af`, corrected `e746f42f…9cb3662`. The part now also has parametric source (`710-002_SplitGearBottom.scad`, [DC-2](#differential-detail-design)) | — |
 
 ### The J4 code disk is missing
 
-Every arm joint carries an output-side optical code disk whose slot count is specified in
-[003 § Joint definitions](003-Kinematics.md#joint-definitions). Four of the five exist as parts, and each
-one's slot count was **counted on its model** while closing [DC-2](#differential-detail-design) and agrees
-exactly with the specification:
+**Closed — it was never missing.** J4 is read off a feature integrated into another part, which was one of
+the two possibilities this item was opened to decide between. Every arm joint carries an output-side
+optical code disk whose slot count is specified in
+[003 § Joint definitions](003-Kinematics.md#joint-definitions), and each count was **counted on its model**
+while closing [DC-2](#differential-detail-design):
 
 | Joint | Slots specified | Part | Slots counted |
 |---|---|---|---|
 | J1 Base | 200 | `#100-002` Base Code Disc | **200** ✔ |
 | J2 Pivot | 180 | `#300-002` Pivot Code Disk | **180** ✔ |
 | J3 End | 157 | `#410-003` End Arm Code Disk | **157** ✔ |
-| J4 Angle | **115** | **none — no BOM row, no model file** | — |
+| J4 Angle | **115** | `#730-002` Diff Body B — the track on its mating rim, not a disk | **115** ✔ |
 | J5 Rotate | 100 | `#710-004` Rotate Code Disk | **100** ✔ |
 
-The four that exist match their joints one-for-one, which is what makes the fifth's absence a gap rather
-than a naming confusion: **no part in [007](007-Bill-of-Materials.md) or
-[`Hardware/Models/`](../Hardware/Models/README.md) carries 115 slots.** J4 nevertheless has a
-photointerrupter shroud (`#824`) and a firmware slot count, so the disk is expected to exist physically.
-The v1 reference set holds a candidate — `KP0089-01_DiffA1CodeDiskFine` in
-[`Reference/onshape-v1/parts-step/`](../Hardware/Models/Reference/onshape-v1/) (DiffA1 is J4's differential
-name in [003](003-Kinematics.md#joint-definitions)) — so this is recoverable by measurement rather than
-from nothing.
+Four of the five are separate printed disks; J4's is a ring of 115 radial slots cut clean through Diff Body
+B's Ø58.985 mating rim, on an exact 360/115 pitch, r 24.500–28.800, 0.800 mm wide, first slot at 2.270°.
+Body B pivots on the J4 axis inside Diff Body A, so a track on that rim reads J4 directly and needs no part
+of its own. The earlier reading here — that no part carries 115 slots — was measured on the *disks*; the
+track had been found on Body B's rim and recorded in
+[`730-002_DiffBodyB.scad`](../Hardware/Models/700-Differential/730-002_DiffBodyB.scad) during DC-2, but
+labelled there as J5's, which is `#710-004`'s 100.
 
-**What closing it requires:** decide whether the J4 disk is a missing BOM row (add the part, with its
-model), or whether J4 is read off a feature integrated into another part; then add the row, the model, and
-the assembly step. Until it is closed, the "both code disks read cleanly" item in the
-[DC-9 differential checklist](#performance-characterization) cannot be run.
+**The candidate nominated here was the wrong part.** `KP0089-01_DiffA1CodeDiskFine` in
+[`Reference/onshape-v1/parts-step/`](../Hardware/Models/Reference/onshape-v1/) measures **99 slots on a
+3.600° pitch — a 100-count pattern**, so it is v1's ancestor of `#710-004`, J5's disk, not J4's. The v1
+part that does carry the 115 pattern is `KP0079-01_DiffA2CodeDiskEndStopFilled`, a combined code disk and
+end stop; it is superseded and has no HD equivalent as a part, its track having moved onto Body B's rim.
+Its other revision is kept as
+[`Reference/superseded/DiffA2CodeDiskEndStop.dwg`](../Hardware/Models/Reference/superseded/). The A1/A2
+names in that set do not follow [003](003-Kinematics.md#joint-definitions)'s DiffA1 = J4, DiffA2 = J5: the
+part named A2 carries J4's count and the part named A1 carries J5's. Trust the counts, not the v1 names.
+
+**What this leaves open:** v1 gave J4 a hard end stop — `KP0079`'s slotted arc spans 287°, closed by two
+tabs — and Body B's track runs the full 360° with no such feature, so **the HD design has no modelled
+mechanical limit for J4**. Whether that limit moved to another part or was dropped is not settled here.
+The "both code disks read cleanly" item in the
+[DC-9 differential checklist](#performance-characterization) is now runnable.
 
 **Largely closed: the model archives are now mirrored** in
 [`Hardware/Models/`](../Hardware/Models/README.md), so the upstream archives are no longer a single point of

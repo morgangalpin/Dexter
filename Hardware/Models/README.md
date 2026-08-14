@@ -1,7 +1,9 @@
 # Models
 
 Model files for the robot's printed parts, organized by **arm component**. This directory is the build
-source: everything needed to print one complete robot is here, and nothing else is.
+source: everything needed to print one complete robot is here, and nothing else is. Most parts are meshes
+you can print directly; `700-Differential/` is parametric `.scad` and is rendered first — see
+[Moving to OpenSCAD](#moving-to-openscad).
 
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
@@ -32,11 +34,11 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`400-EndArm/`](400-EndArm/) | 10 | 11 | Axis intersection, hub, internal and external pulleys |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 6 | External gear, stator holder, mount and nut holders |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 3 | Wave gen coupler, flex spline attach and cap |
-| [`700-Differential/`](700-Differential/) | 9 | 22 | Split gears, diff gear shaft and axle, diff bodies — **the OpenSCAD set** |
+| [`700-Differential/`](700-Differential/) | 9 | 13 | Split gears, diff gear shaft and axle, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 10 | Solder jigs and glue-rig jig bodies |
-| [`Reference/`](#reference) | — | 214 | Not printed for a build. See below |
+| [`Reference/`](#reference) | — | 224 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -59,27 +61,30 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
+| [`Reference/meshes/`](Reference/meshes/) | 9 | The original meshes of parts that now have parametric source. `700-Differential/` only so far; a group's meshes move here when its `.scad` files land, and `render-all.rs` measures each render against them |
+| [`Reference/superseded/`](Reference/superseded/) | 1 | Earlier revisions of parts the build no longer uses. `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
 
-**None outstanding.** `700-Differential/710-002_SplitGearBottom.stl` was 1000× out of scale; it is
-corrected in place, dimension-checked against its mates, and now also has parametric source
+**None outstanding.** `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of
+scale; it is corrected in place, dimension-checked against its mates, and now also has parametric source
 ([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)). It was the only defective file in the
 build set.
 
-`720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a defect — it prints normally — but it
-is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd` with no triangle count.
+`Reference/meshes/700-Differential/720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a
+defect — it prints normally — but it is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd`
+with no triangle count.
 
 ## Formats, and what can actually be edited
 
 | Format | Where | Editable? |
 |---|---|---|
 | `.scad` | `700-Differential/` | **Yes** — parametric OpenSCAD source, the intended format going forward (see below) |
-| `.stl` | component directories | **No.** Mesh only — printable, not meaningfully modifiable |
+| `.stl` | component directories, `Reference/meshes/` | **No.** Mesh only — printable, not meaningfully modifiable |
 | `.f3d` | `900-ToolInterface/` | **Yes** — Fusion 360 native, with feature history |
 | `.step` | `900-ToolInterface/`, `Reference/onshape-v1/` | **Partly** — B-rep solids. Dimensions can be measured and features cut, but there is no feature tree to drive |
 | `.ipt` | `Reference/inventor/` | **Yes** — Inventor native, with feature history |
-| `.dwg` | `400-EndArm/`, `700-Differential/`, `900-ToolInterface/` | **Yes** — 2D profiles |
+| `.dwg` | `400-EndArm/`, `900-ToolInterface/`, `Reference/superseded/` | **Partly** — B-rep solids, not 2D profiles as previously recorded here. Each of the three holds one ACIS `3DSOLID` (`421-002` adds six lines and an arc beside it). Reading one needs the [ODA File Converter](https://www.opendesign.com/guestfiles/oda_file_converter); FreeCAD drives it once its path is set, and `ODAFileConverter in/ out/ ACAD2000 DXF 0 1 "*.dwg"` writes the solid as ASCII-encoded SAT in the DXF's group 1 and 3 records |
 | `.skp`/`.skb` | `Reference/covers/` | **Yes** — SketchUp source |
 
 **Most of the robot is still mesh-only.** Editable source exists for the differential (`.scad`), the tool
@@ -91,12 +96,24 @@ conversion established (see below). That remaining gap is tracked as
 ## Moving to OpenSCAD
 
 `.scad` is the intended parametric format going forward: it is text, so it diffs and merges in Git, and it
-depends on no proprietary tool. Two conventions keep the transition legible:
+depends on no proprietary tool. Four conventions keep the transition legible:
 
-- **Share the stem.** A rewritten part sits beside the mesh it replaces — `100-001_BaseClamp.scad` next to
-  `100-001_BaseClamp.stl`. Which parts have been converted is then visible from a directory listing.
+- **Share the stem.** A rewritten part keeps its mesh's name — `100-001_BaseClamp.scad` for
+  `100-001_BaseClamp.stl` — so the two stay findable from each other after they are separated.
 - **Treat the STL as output, not source, once a `.scad` exists.** Until then the STL *is* the source of
   record, because for most parts it is the only geometry that exists.
+- **Move the mesh to `Reference/meshes/<group>/` when the group is converted**, keeping its stem and
+  group directory. It stops being the build source at that point and becomes only what the render is
+  gated against, and leaving it in the component directory invites printing the mesh instead of the
+  `.scad`. A component directory holding `.scad` files therefore holds no `.stl`, and which groups have
+  been converted is visible from a listing of `Reference/meshes/`.
+- **Wrap a large repeated cut in `render()`.** OpenSCAD's *preview* normalizes the tree to disjunctive
+  normal form and abandons the drawing entirely once that grows past its element cap, so a part can
+  export a flawless STL and still preview as an empty tree. An array of cuts is what usually trips it,
+  and a `difference()` nested inside another multiplies whatever follows. `render()` on the offending
+  subtree evaluates it to one mesh and costs the export nothing —
+  [`730-002_DiffBodyB.scad`](700-Differential/730-002_DiffBodyB.scad)'s 115 encoder slots are the worked
+  example, and the arithmetic is at that call site.
 
 **`700-Differential/` is fully converted** (DC-2,
 [specs/009](../../specs/009-Design-Completion.md#differential-detail-design)): one `.scad` per part,
@@ -105,6 +122,12 @@ both configurations and dimensionally verify each render against its reference S
 (from the standalone `openscad-tools` project, checked out beside this repository's parent — bounding
 boxes, diameter and face-position bands, cross-sections, tooth counts). Use that directory as the template
 for converting the remaining groups.
+
+**Printing the differential therefore takes one command first**: `rust-script render-all.rs` writes the
+nine meshes into `700-Differential/out/`, which is deliberately untracked — a rendered mesh is a build
+artifact, and tracking it would leave two copies of the same geometry to disagree. Everything the render
+is checked against is under
+[`Reference/meshes/700-Differential/`](Reference/meshes/700-Differential/).
 
 `Reference/onshape-v1/parts-step/` is the most useful starting material: STEP solids can be measured for
 real dimensions, which an STL cannot give you reliably.

@@ -20,7 +20,8 @@
 // enclosing -0.815 mm3 apiece on inverted normals. Strip them before
 // measuring anything:
 //
-//   scadmesh segment 730-002_DiffBodyB.stl --out out/730-002-ref.stl --keep 0
+//   scadmesh segment ../Reference/meshes/700-Differential/730-002_DiffBodyB.stl \
+//       --out out/730-002-ref.stl --keep 0
 //
 // which takes 20032 triangles and 16689.421 mm3 to 19480 and 16694.312.
 // That 16694.312 - 6 x 0.815 = 16689.42 is the arithmetic confirming the
@@ -47,27 +48,38 @@
 //   - The single mirror plane is y = -21, verified to 0.3% on a section-area
 //     sweep. The bore system is symmetric about x = 21 as well.
 //
-// WHERE THIS STANDS. Volume 16672.2 mm3 (-0.13%), bounding box 39.000 x
-// 58.985 x 80.492, hausdorff 0.414 mm, rms 0.049 / 0.050, p95 0.136 both
-// ways, 1.2% of points outside tolerance. That FAILS the 0.15 mm gate on
-// max, so 730-002 is deliberately absent from render-all.rs's DIST_GATES;
-// add it there when, and only when, it passes. (Quote the volume to one
-// decimal: OpenSCAD's tessellation is not bit-stable run to run, and two
-// renders of this file differed by 8 triangles and 0.004 mm3.) Four
-// residuals are known, the first two undiagnosed:
+// WHERE THIS STANDS. Volume 16688.9 mm3 (-0.03%), bounding box 39.000 x
+// 58.985 x 80.492, hausdorff 0.414 mm, rms 0.049 / 0.045, p95 0.136 both
+// ways, 1.2% of candidate points and 0.5% of reference points outside
+// tolerance. That FAILS the 0.15 mm gate on max, so 730-002 is deliberately
+// absent from render-all.rs's DIST_GATES; add it there when, and only when,
+// it passes. (Quote the volume to one decimal: OpenSCAD's tessellation is
+// not bit-stable run to run, and two renders of this file differed by 8
+// triangles and 0.004 mm3.) Three residuals are known, the first
+// undiagnosed:
 //   1. The top corner of the -X end face, at (8.001, -22.554, 34.000) where
-//      the z = 34 clip meets it — 0.414 mm, the worst candidate point.
-//   2. Somewhere in the encoder track: the worst REFERENCE point is 0.399 mm
-//      and lands at x = 46.875, r = 25.000 about the J4 axis, on two
-//      independent renders that disagree about which of the 115 slots it
-//      picks. The track itself measures right — 115 loops, pitch 3.130,
-//      first angle 2.270, r 24.500..28.803, width 0.801, all matching the
-//      reference — so it is not slot placement. Suspect the slot walls'
-//      corner treatment rather than their position.
-//   3. The junction where a chimney y flat meets the chimney cone is
-//      filleted, radius about 1.5; modelled here as a sharp intersection,
-//      which costs about 0.10 mm locally.
-//   4. The wire bore's lead-in loft, about 0.10 mm.
+//      the z = 34 clip meets it — 0.414 mm, the worst candidate point, and
+//      the only thing now holding the gate.
+//   2. The chimney base's straight sides meeting the chimney cone. Both
+//      junctions are filleted on the reference, radius about 1.5, and are
+//      modelled here as sharp intersections. This is now the worst REFERENCE
+//      point, 0.332 mm at (32.346, -32.469, 30.915) — the top of the
+//      z 30.22..30.91 band over which an x wall shows before the cone
+//      becomes the tighter bound. An earlier note here put the cost of this
+//      simplification at about 0.10 mm; that was measured on a y flat and
+//      understates the x wall by 3x.
+//   3. The wire bore's lead-in loft, about 0.10 mm.
+//
+// The encoder track used to be listed here as a fourth, undiagnosed residual
+// — the worst reference point at x = 46.875, r = 25.000 about the J4 axis.
+// It was the tie rings: the track had been modelled as a plain through
+// cuboid, so the slots ran 24.500..28.800 the whole depth of the rim instead
+// of closing to the 25.000..28.574 read slit over the last 0.250 mm. Adding
+// them took that side from 0.399 to 0.332 mm, its p99 from 0.190 to 0.139,
+// its share of out-of-tolerance points from 1.16% to 0.53%, and the volume
+// from -0.13% to -0.03%. See the track's own comment below. The lesson is
+// the general one for this file: a section taken at one depth is not the
+// feature. Sweep the depth before believing a cut is prismatic.
 //
 // READING THE MESH — two traps particular to this reference. Where a curved
 // surface runs nearly parallel to a section plane its tessellation breaks
@@ -106,14 +118,34 @@ CONE_ANG  = 35.0;         // axis at this angle, rather than by the chimney
 RIM_OD    = 29.4925;      // mating rim, against Diff Body A's Ø60 plate
 RIM_X     = [45.700, 47.000];
 
-// J5 encoder track, cut clean through the rim. 115 radial slots on an exact
-// 360/115 pitch; each is a true rectangle (its sides hold a constant
-// perpendicular offset from the radius over the whole 4.3 mm length, so it is
-// a cuboid cut, not a wedge). Same construction as 710-004's disk.
+// J4 encoder track. 115 radial slots on an exact 360/115 pitch; each is a true
+// rectangle (its sides hold a constant perpendicular offset from the radius
+// over the whole 4.3 mm length, so it is a cuboid cut, not a wedge). Same
+// construction as 710-004's disk, which carries J5's 100.
 SLOTS      = 115;
 SLOT_R     = [24.500, 28.800];
 SLOT_W     = 0.800;
 SLOT_PHASE = 2.270;       // angle of the first slot, from +y toward +z
+
+// The track is NOT cut clean through. Over the last 0.250 mm to the mating
+// face the slots are bridged at both ends by thin rings that tie the 115 teeth
+// together, leaving a read slit of r 25.000..28.574 where the body of the slot
+// is 24.500..28.800. Section the reference either side of the step and the
+// slots measure differently — r 24.500..28.800 over a length of 4.300 at
+// x = 45.75, 46.00, 46.35 and 46.70, and r 25.000..28.574 over 3.574 at 46.80,
+// 46.85, 46.90 and 46.99, on all 115 slots at every position. `planes --axis x`
+// puts the step at 46.750 exactly. The ends of the slit are cylindrical, not
+// flat: across one slit the radial reading falls 28.5740 -> 28.5712 from the
+// centre to the side wall, which is r*cos(v/r) for r = 28.574 and not a chord,
+// so the ties are stated here as revolves and cut back out of the slot.
+//
+// Only the slit edges — 25.000 and 28.574 — are geometry. Each ring is run a
+// millimetre past the slot on its other side rather than stopped on SLOT_R:
+// ended flush it shares a face with the cuboid it is cut out of, and the
+// difference sheds a sliver per slot instead of closing (231 loops of
+// 0.007 mm2 where there should be 115 of 2.86).
+TIE_X      = 46.750;      // where the ties start; they overrun the RIM_X[1] face
+TIE_R      = [[SLOT_R[0] - 1, 25.000], [28.574, SLOT_R[1] + 1]];
 
 // Wire bore blends.
 WIRE_R    = 4.000;        // Ø8 conductor bore below the tube
@@ -468,13 +500,22 @@ module bore_groove_blend() {
 }
 
 module rim_slots() {
-    translate([0, J4_YZ[0], J4_YZ[1]])
-        for (i = [0 : SLOTS - 1])
-            xrot(SLOT_PHASE + i * 360 / SLOTS)
-                translate([(RIM_X[0] + RIM_X[1]) / 2,
-                           (SLOT_R[0] + SLOT_R[1]) / 2, 0])
-                    cube([RIM_X[1] - RIM_X[0] + 2, SLOT_R[1] - SLOT_R[0],
-                          SLOT_W], center = true);
+    difference() {
+        translate([0, J4_YZ[0], J4_YZ[1]])
+            for (i = [0 : SLOTS - 1])
+                xrot(SLOT_PHASE + i * 360 / SLOTS)
+                    translate([(RIM_X[0] + RIM_X[1]) / 2,
+                               (SLOT_R[0] + SLOT_R[1]) / 2, 0])
+                        cube([RIM_X[1] - RIM_X[0] + 2, SLOT_R[1] - SLOT_R[0],
+                              SLOT_W], center = true);
+        // The ties are put back at $fn 512, not the file's 128. A revolve is
+        // inscribed, so at 128 the slit edge ripples 25 x (1 - cos(180/128)) =
+        // 0.007 mm inside its radius and the slit measures that much long —
+        // small against the 0.15 gate, but this feature exists to be measured.
+        for (r = TIE_R)
+            j4_revolve([[r[0], TIE_X], [r[1], TIE_X],
+                        [r[1], RIM_X[1] + 2], [r[0], RIM_X[1] + 2]], $fn = 512);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -507,7 +548,23 @@ module diff_body_b() {
             linear_extrude(WIRE_POLY_Z[1] - WIRE_POLY_Z[0]) polygon(WIRE_POLY);
         wire_lead();
         bore_groove_blend();
-        rim_slots();
+        // render() is not cosmetic. Preview normalises the tree to disjunctive
+        // normal form, and bore_groove_blend above is a difference nested in
+        // this one: x - (y - z) rewrites to (x - y) | (x & z), copying the
+        // tree once per term of z — 48 of them, one per hull in blend_tube.
+        // Appending 115 slot cuts to every copy runs past the normaliser's
+        // element cap, so it gives up and preview draws NOTHING ("Normalized
+        // tree is growing past ... Aborting normalization", then "CSG
+        // normalization resulted in an empty tree"). F6 and STL export never
+        // normalise and were never affected — every measurement in this file
+        // predates this line and is unchanged by it: same 44226 triangles,
+        // same volume, `dist` 0.000 mm both ways. Evaluating the slots to one
+        // mesh puts a single leaf under the cap. Collapsing the fillet instead
+        // also clears it, at 4:56 against 2:55, and doing both is slower than
+        // either. Of the nine parts here only this one overflows; 710-004 cuts
+        // 100 slots by the same construction and previews clean, because it
+        // has no nested difference ahead of them to multiply against.
+        render() rim_slots();
     }
 }
 

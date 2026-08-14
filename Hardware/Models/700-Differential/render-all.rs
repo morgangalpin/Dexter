@@ -52,6 +52,16 @@ const SCADMESH_CANDIDATES: [&str; 2] = [
     "../../../../../openscad-tools/target/release/scadmesh",
 ];
 
+/// Where the reference meshes live. They sit under `Reference/`, not beside
+/// the `.scad` files, because for these nine parts the `.scad` is the source of
+/// record and the mesh is only what it is measured against. The `reference`
+/// fields below name the file; `ref_path` puts it there.
+const REF_DIR: &str = "../Reference/meshes/700-Differential";
+
+fn ref_path(name: &str) -> String {
+    format!("{REF_DIR}/{name}")
+}
+
 /// A part recreated faithfully enough to compare against its reference mesh.
 struct ClonePart {
     stem: &'static str,
@@ -247,7 +257,8 @@ fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for part in &CLONES {
         let out_stl = format!("out/{}.stl", part.stem);
         render(part.scad, &out_stl, "previous", ctx)?;
-        let mut args = vec!["compare", out_stl.as_str(), part.reference];
+        let reference = ref_path(part.reference);
+        let mut args = vec!["compare", out_stl.as_str(), reference.as_str()];
         args.extend_from_slice(part.extra);
         let (ok, report) = sm_json(&args, ctx)?;
         let worst = report["worst_delta"].as_f64().unwrap_or(f64::NAN);
@@ -263,8 +274,9 @@ fn check_dist_gates(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
         let out_stl = format!("out/{}.stl", part.stem);
         render(part.scad, &out_stl, "previous", ctx)?;
         let tol = part.tol.to_string();
+        let reference = ref_path(part.reference);
         let (ok, report) =
-            sm_json(&["dist", &out_stl, part.reference, "--tol", &tol], ctx)?;
+            sm_json(&["dist", &out_stl, &reference, "--tol", &tol], ctx)?;
         let worst = report["hausdorff"].as_f64().unwrap_or(f64::NAN);
         tally.record(
             &format!("{} surface vs reference (hausdorff {worst:.3} mm, tol {tol} mm)",
