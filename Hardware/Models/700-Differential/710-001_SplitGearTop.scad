@@ -14,6 +14,33 @@
 // reference→candidate direction of `dist` is not meaningful against this
 // file: it flags every surface buried in the overlap.
 //
+// Three of the reference's features lie inside that overlap, so the union this
+// file renders cannot carry them and the checks report each as a miss. None of
+// them is a defect to fix, because a solid has no interior faces:
+//   z 15.448  the crown's back face, an annulus r 14.000 .. 14.890 standing
+//             inside the cage wall, which runs r 14.000 .. 17.499 there;
+//   z 17.840  BEVEL_HEEL_ROOT, where the teeth begin, at Ø36.709 inside the
+//             Ø36.997 body; `compare` counts it twice, as a diameter and as a
+//             plane;
+//   z 18.100  the cage's top face, roofed over by the crown out to r 18.731
+//             against the cage's own 18.497. This is the point `dist` reports
+//             worst in the reference→candidate direction, and it lies 2.170 mm
+//             from the Ø28 bore, the nearest surface this file does have.
+//
+// Two further "features" of the reference are its mesher's rather than the
+// part's. The Ø32.488 band is an intermediate ring along the brad holes' axis,
+// at depth |x| = 16.2366 -- 37 vertices on a Ø1.4986 circle centred at
+// z 12.2486, which is the hole this file already states. Their distance from
+// the part's axis varies across that circle, which spreads them over
+// Ø32.473 .. 32.508 and reads as a diameter. The ladder of planes from
+// z 18.358 to 20.391 is the tooth flanks' tessellation, which this file has no
+// counterpart for: its teeth are ruled through the apex and carry no rings.
+//
+// `compare` therefore cannot be satisfied here at its default 0.001 mm
+// tolerance, and no edit to this file would change that. Run against ITSELF
+// with this part's ignore ranges the reference still fails, at 0.074 mm: the
+// check bins vertex radii and measures their spacing rather than a dimension.
+//
 // Built in that order:
 //   1. revolve the measured meridional profile   -> the cage, as a full ring
 //   2. cut the windows, brad holes and strakes   -> the castellation

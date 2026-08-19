@@ -23,13 +23,29 @@
 // the root cone carries the tooth roots down to where the teeth begin, and the
 // heel cone carries the skirt from there to the bottom face.
 //
-// One reference defect must NOT be reproduced. The bottom face is triangulated
-// with a coarse inner boundary while the bore wall beside it carries 104
-// facets, so 18 of its triangles (38.9 mm² in total) cut chords straight
-// across the Ø8 bore, reaching in to r = 2.65. Sections taken 0.01 mm above
-// that face show the bore clean and round at Ø8.000, so the flaps are a
-// tessellation artifact of the export and not a counterbore. They are the
-// whole of this part's reference→candidate distance.
+// Two reference defects share the bottom face, and neither may be reproduced.
+//
+// The face is triangulated with a coarse inner boundary while the bore wall
+// beside it carries 104 facets, so 18 of its triangles (38.9 mm² in total) cut
+// chords straight across the Ø8 bore, reaching in to r = 2.65. Sections taken
+// 0.01 mm above that face show the bore clean and round at Ø8.000, so the
+// flaps are a tessellation artifact of the export and not a counterbore. They
+// are the whole of this part's reference→candidate distance.
+//
+// The same face also carries a seam at Ø17.000, drawn as a regular 27-gon
+// inscribed on that circle: its vertices sit at r = 8.500000 exactly, 360/27 =
+// 13.3333 degrees apart, and the subdivision points along each chord fall away
+// to the polygon's inradius, 8.5 cos(180/27) = 8.44253. All 1366 vertices
+// involved lie at z = 0.000000, so the seam bounds no step; and over a
+// 97-degree sector inside it, 66 facets are duplicated with their normals
+// reversed. That makes the region an internal coplanar face of the assembly
+// export rather than part geometry, so a revolved bottom face neither can
+// carry it nor should. It has to be read for what it is, because the
+// measurement it produces is loud: `scadmesh compare` clusters the seam's
+// vertices into a band of weighted mean Ø16.9248, finds no candidate radius
+// near it, and matches it instead to the Ø18.000 hub shoulder, reporting
+// 1.075 mm against a surface that is in fact flat and exact. The band belongs
+// in the harness's ignore list, not in this profile.
 
 include <diff_bevel.scad>
 

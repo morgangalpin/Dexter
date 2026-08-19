@@ -20,6 +20,29 @@
 // Measured with scadmesh (slice --full outline analysis, profile, segment).
 // Unlike 710-001/710-002 this reference is a single merged solid, so both
 // directions of `dist` are meaningful against it.
+//
+// Verification, and what the section checks can and cannot show. Because the
+// part is authored in the reference frame, a station quoted at it is a
+// reference-frame z: the tooth section measured above at z = 23.5 is the
+// part-local 6.000 plus Z0. `teeth --band 11.5,12.7 --slice-at 23.5` finds the
+// 40 GT2 peaks on this render and on the reference; a station of 6.000 sections
+// empty space 11.5 mm below the part and finds none on either mesh. One caution
+// on the station: OpenSCAD's ASCII STL carries six significant digits, about
+// 1e-4 mm at this radius, which is coarse enough that the section of the fine
+// tooth polyline fails to close at some heights and reports no peaks at all.
+// Exported as binary the count is 40 at every station between the flanges, and
+// z = 23.5 reads 40 either way.
+//
+// `compare` cannot reach its 0.001 mm default tolerance here, and no change to
+// this geometry would let it. Its radial checks match a histogram run of the
+// reference's vertex radii against the nearest candidate vertex radius, and at
+// the default 0.05 mm bin the whole tooth flank merges into one run whose mean,
+// Ø23.677, is not a feature and carries no vertex on either mesh: the reference
+// compared with itself fails that check by 0.044 mm, against this render's
+// 0.038 mm. What the surfaces agree to is 0.0008 mm mean and 0.0056 mm at the
+// 99th percentile, worst 0.030 mm at the glue-lobe edge (`dist`), and the
+// section at z = 23.5 reproduces the reference's root Ø23.395, tip Ø24.968 and
+// area 456.929 mm2 to within 0.0003 mm2.
 
 include <diff_params.scad>
 

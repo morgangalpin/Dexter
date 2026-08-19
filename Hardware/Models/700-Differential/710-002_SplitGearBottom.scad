@@ -15,6 +15,16 @@
 // the same way -- revolve a body, revolve a crown blank, stand the teeth on
 // it, drill the brads -- rather than carving one blank.
 //
+// It rebuilds them merged, which is what a finished part is, and that is the
+// one way the reference cannot be matched. An unmerged export keeps both
+// solids' whole boundaries, the crown's included where it runs inside the
+// body, and a merged model has no such surface to offer; see the crown's
+// bottom face below for what that costs a vertex-matching comparison.
+// Measured on the surfaces instead of on the vertices the two agree:
+// `scadmesh surface`, which sweeps radius fields and so is blind to
+// tessellation, puts this render's envelope 0.010 mm from the reference at
+// worst, at z 24.46, where the tooth tips meet the parting cone.
+//
 // The body profile is measured, not inferred from diameters and face heights:
 //   scadmesh segment ... --out body.stl --keep 0
 //   scadmesh profile body.stl --axis z --simplify 0.005
@@ -57,13 +67,18 @@ function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
 // (`scadmesh slice`), which average the facets out; a single cut reads a
 // bore's *inscribed* radius, low by r*(1 - cos(pi/n)).
 //
-// Two things measured on this section are not turned features and are not
+// Three things measured on this section are not turned features and are not
 // carried here. A 0.003 mm wall at Ø13 spanning z 4..13 is one of the
 // assembly export's zero-thickness internal shells. The dip to Ø24 across
 // z 12.0..13.5 is the brad hole the cutting plane happens to pass through;
-// it is drilled below as four discrete holes.
+// it is drilled below as four discrete holes. A ring of vertices at z 17.250
+// on the Ø27 wall is a tessellation seam rather than a step: the reference
+// changes triangulation density across it, from 430 outline points below to
+// 308 above, at one diameter and one area -- Ø27.000 and 572.397 mm2 are read
+// on both sides -- so there is nothing there to model, and the ring stands as
+// a 0.250 mm plane mismatch.
 //
-// A third is deliberate. The reference's funnel and Ø8.5 wire bore are not on
+// A fourth is deliberate. The reference's funnel and Ø8.5 wire bore are not on
 // the axis: circle fits at z 6.3, 6.5, 6.6, 6.7 and 6.9 all centre them on
 // (-0.039, 0.138), 0.143 mm off it, while every turned surface around them fits
 // the axis to 0.001 mm. That is a slip in the original, not a feature -- it is
@@ -126,6 +141,15 @@ assert(BRAD_D > BRAD_HOLE_D, "brad must be an interference fit in its hole");
 // The bore's bottom and the parting cone's foot are the same point: the cone
 // r = z - 7 passes through (11.500, 18.500) exactly, which is what lets the
 // crown's outer face be the surface 710-001 presses onto.
+//
+// That point is a knife edge and not a face: sections read the bore at
+// Ø23.000 and the parting cone at Ø23.020 by z 18.51. In the reference it is
+// nonetheless the heaviest plane in the file, 11088 vertices on that one
+// edge, because the crown is a solid in its own right there. It is buried --
+// probes at z 18.5 return material from r 9 to r 13.5, so the edge lies 2 mm
+// inside the body -- and a merged model therefore cannot put a vertex on it.
+// That absence is the largest mismatch a vertex-matching comparison of this
+// part reports, 1.500 mm, and no change to the geometry can close it.
 //
 // Where the root cone dives inside the inner cone, at (11.985, 25.338), the
 // teeth part company with the blank -- and the slots between them therefore
