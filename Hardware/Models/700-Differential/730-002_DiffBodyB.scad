@@ -48,7 +48,7 @@
 //   - The single mirror plane is y = -21, verified to 0.3% on a section-area
 //     sweep. The bore system is symmetric about x = 21 as well.
 //
-// WHERE THIS STANDS. Volume 16688.9 mm3 (-0.03%), bounding box 39.000 x
+// WHERE THIS STANDS. Volume 16689.5 mm3 (-0.03%), bounding box 39.000 x
 // 58.985 x 80.492, hausdorff 0.414 mm, rms 0.049 / 0.045, p95 0.136 both
 // ways, 1.2% of candidate points and 0.5% of reference points outside
 // tolerance. That FAILS the 0.15 mm gate on max, so 730-002 is deliberately
@@ -276,8 +276,20 @@ COLUMN = concat(
 // circle fit disagree: fitting a circle returns Ø5.43-5.55 at rms 0.25-0.36
 // while the area implies Ø4.72. Area, not the fit, is the trustworthy
 // measurement of a polygonal hole.
+// The Ø8 ends at 32.000 EXACTLY, and the exactness is the point: the lead-in
+// starts there, BLEND_ZTOP clips the fillet there, and the reference shows all
+// three meeting in one flat. Its x = 21 section reads that flat as dy 3.900 ->
+// 4.067, which is the lead-in's y half-width at z = 32 (lead_hy(32) = 3.900),
+// then the bore wall at 4.000, then the fillet's truncation. Carried to 32.050
+// — an overlap this file did not need, since a union of cutters meeting on a
+// plane is exact — the bore outlived the lead-in by 0.050 mm, and because the
+// lead-in is turning fastest there that 0.050 mm of height came back as a
+// 0.360 mm ledge: the same section read dy 3.640 -> 4.000 at z = 32.050, a
+// step ring standing inside the bore where the reference has none. A cutter
+// that overshoots into a taper does not err by its overshoot; it errs by the
+// overshoot divided by the taper's slope.
 WIRE_ROUND = [[0.000, -1.000], [4.000, -1.000],
-              [4.000, 32.050], [0.000, 32.050]];
+              [4.000, 32.000], [0.000, 32.000]];
 
 // Each corner carries two chamfers, not one — 45 degrees off the x face and
 // then 22.5 degrees onto the y face — so the section is a 12-gon. Shoelace on
@@ -437,11 +449,35 @@ module wire_lead() {
 // and no seam where the arcs meet. T is taken as a central difference; the
 // frame only needs its direction, and 0.01 deg leaves that right to 1e-8.
 //
-// As with the spheres this ring is inscribed, not circumscribed: at m = 32
-// its facet planes sit at BLEND_R * cos(5.625 deg), 0.01 mm shy of BLEND_R.
-// That errs toward removing less, which is the safe direction here, but a
-// cutter subtracted from a knife-edge cover needs r / cos(180/m) or the
-// shortfall exposes a face.
+// The ring is CIRCUMSCRIBED, BLEND_R / cos(180/m), and that is not a detail.
+// The zone's outer bounds are placed at the ball's TANGENCY with the wall
+// behind them — BLEND_ZONE_D is by construction the distance from the column
+// axis to the point where the ball touches the relief floor — so zone and
+// tube meet in a cusp there, and only a tube that CONTAINS the true ball
+// closes it. Inscribed at m = 32 the facet planes sat BLEND_R * (1 -
+// cos(5.625 deg)) = 0.0096 mm shy, and the x = 21 section of the export
+// showed what that costs: a 0.0134 mm vertical face standing at dy = 5.0769,
+// which is BLEND_ZONE_D itself — the zone's own bound, left uncovered and cut
+// as a face, on both fillets alike. The reference goes from the fillet arc onto
+// the relief floor in one step at (5.076, 9.759) with nothing between.
+// Circumscribed, zone - tube is contained in the exact cutter and closes at
+// both cusps, and that face falls to 0.0025 mm; the error also changes sign,
+// becoming a ridge of at most 0.0096 mm left un-filleted under the facet
+// vertices, which removes nothing that should have stayed. What is left is the
+// relief floor's own faceting: it is an inscribed 128-gon, so it sits up to
+// 11 * (1 - cos(180/128)) = 0.0033 mm inside r = 11, and the tube is tangent to
+// the true cylinder rather than to that polygon.
+//
+// The general rule, and the one this file got wrong twice: an inscribed cutter
+// is the safe direction only when it is subtracted from the PART. Subtracted
+// from a cover, as here, inscribing is what exposes the cover's boundary.
+//
+// One reading trap, met while measuring the above. A section taken at x = 21
+// reports a degenerate zero-area loop near the fillet, and it is not a defect
+// in the mesh: n = 12 over a span of 180 - 2 t0 puts station 6 at exactly
+// t = 90 deg, which is exactly x = 21, so the cut plane grazes a whole ring of
+// the polyhedron edge-on. It appears at 21.0 and at no other station, before
+// the change and after it. Section a swept solid off its stations.
 //
 // Sides and caps are both triangulated. A quad ring of a curved sweep is not
 // planar and a 32-gon cap is planar only to rounding; left as polygons,
@@ -449,9 +485,13 @@ module wire_lead() {
 // construction" once per arc and repairs them on its own terms.
 //
 // WINDING. Check it by volume, always. A polyhedron wound inside out exports
-// with no diagnostic whatever — the isolated test read -98.063 mm3 — and as
-// a difference() cutter an inverted solid silently ADDS material instead of
-// removing it. Wound correctly the same tube reads +98.084 mm3.
+// with no diagnostic whatever, and as a difference() cutter an inverted solid
+// silently ADDS material instead of removing it. Wound correctly this sweep
+// reads +446.725 mm3, one arc of the four +111.681; wound inside out it reads
+// the same magnitudes negative. (Those are the circumscribed figures. The
+// inscribed ring read 442.435 and 110.609, and 446.725 / 442.435 = 1.0097 is
+// 1 / cos^2(5.625 deg) to five places, which is the check that the radius
+// change did what it was meant to and nothing else.)
 //
 // The sweep has flat ends where the hull chain had hemispheres. That is the
 // entire difference between the two cutters, 132 mm3 of it against the
@@ -460,9 +500,12 @@ module wire_lead() {
 // with unit tangent (-0.724, 0.648, -0.237), so the cap normal's x component
 // is 0.724 and the absent half-ball reaches no closer than
 // 25 - 2 sqrt(1 - 0.724^2) = 23.62, against a zone bounded at GROOVE_X[1] =
-// 23. Symmetrically, 18.38 against 19. Measured rather than argued: the part
-// exports 16688.936 mm3 against the hull chain's 16688.927, the same bounding
-// box, and `dist` between the two meshes is 0.014 mm max, 0.000 rms.
+// 23. Symmetrically, 18.38 against 19. Measured rather than argued: when the
+// sweep replaced the hull chain the part exported 16688.936 mm3 against the
+// chain's 16688.927, the same bounding box, and `dist` between the two meshes
+// was 0.014 mm max, 0.000 rms. (Two later corrections have moved the volume
+// since — see the header — but they are the fillet's radius convention and
+// the Ø8 bore's top, not the caps.)
 function blend_pt(rc, rx, sz, t) =
     [COL_XY[0] + rc * cos(t),
      COL_XY[1] + rc * sin(t),
@@ -479,12 +522,13 @@ function blend_fan(idx) =
 
 module blend_arc(base, rc, rx, sz, t0, n, m) {
     step = (180 - 2 * t0) / n;
+    rr   = BLEND_R / cos(180 / m);            // circumscribed; see above
     pts = [for (i = [0 : n], k = [0 : m - 1])
              let (t = base + t0 + step * i,
                   f = blend_frame(rc, rx, sz, t),
                   a = 360 * k / m)
              blend_pt(rc, rx, sz, t)
-                 + BLEND_R * (cos(a) * f[0] + sin(a) * f[1])];
+                 + rr * (cos(a) * f[0] + sin(a) * f[1])];
     polyhedron(points = pts,
         faces = concat(
             [for (i = [0 : n - 1], k = [0 : m - 1], half = [0, 1])
