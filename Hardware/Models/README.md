@@ -116,12 +116,18 @@ depends on no proprietary tool. Four conventions keep the transition legible:
   so a part can export a flawless STL and show nothing. Below the cap it draws, but every primitive is
   redrawn once per product per frame, and the viewport stops turning. `render()` on the nested
   difference collapses it to one mesh, removing the fan-out at its source and costing the export
-  nothing; `render()` on the array only caps the element count and leaves the frame cost untouched.
+  nothing. Take the deepest multiplier first: wrapping a downstream cut while a large factor survives
+  upstream caps the element count without touching the product count, which cures the empty tree and
+  leaves the model exactly as unusable to turn.
   [`730-002_DiffBodyB.scad`](700-Differential/730-002_DiffBodyB.scad) is the worked example — its Ø8
   bore fillet multiplies the whole part, its 115 encoder slots merely land on every copy — and the
-  arithmetic and measurements are at that call site. Note which lever is the cheaper one: the fillet's
-  factor is set by how its cutter is built, and rebuilding that cutter as a swept polyhedron rather than
-  a chain of hulled spheres took the factor from 51 to 7 without any `render()` at all.
+  arithmetic and measurements are at that call site. Two things there carry elsewhere. The cheaper
+  lever is often not `render()` at all: that fillet's factor is set by how its cutter is built, and
+  rebuilding the cutter as a swept polyhedron rather than a chain of hulled spheres took it from 51 to
+  7 for nothing. And **measure compile and frame separately** — render the same file at two image
+  sizes, because compile does not scale with pixels and a frame does. On that part the variant that
+  compiled fastest was the one that could not be orbited, and reading the two costs as a single number
+  is what hid it.
 
 **`700-Differential/` is fully converted** (DC-2,
 [specs/009](../../specs/009-Design-Completion.md#differential-detail-design)): one `.scad` per part,

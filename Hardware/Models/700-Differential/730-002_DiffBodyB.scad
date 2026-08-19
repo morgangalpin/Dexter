@@ -577,6 +577,43 @@ module blend_tube(rc, rx, t0, n, m = 32) {
 BLEND_CR = WIRE_R + BLEND_R;
 BLEND_XR = GROOVE_R + BLEND_R;
 BLEND_ZTOP = 32.000;      // where the Ø8 bore ends and the lead-in starts
+// THE ZONE MUST NOT STATE A BOUND AS THE SURFACE IT BLENDS INTO. Two of them
+// did: the annulus's inner wall was WIRE_R, which is the Ø8 bore's own
+// cylinder, and the zone polygon's floor was GROOVE_R, which is the relief's
+// own. Same radius, same axis, same $fn, so each pair tessellates to identical
+// facets, and the difference then carries two coincident faces. CGAL orders
+// them exactly and F6 is clean; OpenCSG cannot order two fragments at one
+// depth, so PREVIEW drew both, and the fillet came out ringed by a speckled,
+// ragged band that reads as random chunks of material around the two bore
+// holes. It is worst looking along the bore, where the coincident cylinders
+// run edge-on and every pixel is a near-tie.
+//
+// Both bounds are now set BLEND_CLEAR clear of the surface they duplicated,
+// into the void behind it. This removes nothing extra: inside WIRE_R is the
+// wire bore and inside GROOVE_R is the relief, and BORE and WIRE_ROUND have
+// already cut both away, so the added reach reaches only where there is no
+// material to take. Half a millimetre is far above the 0.0033 mm ripple of a
+// 128-gon revolve and far below the 8.75 mm shaft land that walls the void, so
+// the value needs no more precision than that. Exported geometry is unchanged,
+// and exactly so: with the clearance in place the part still exports 43374
+// triangles at 16689.530 mm3, the same two figures recorded below for the
+// render that preceded it, and `dist` against the reference is unmoved at
+// 0.414 / 0.332 with both worst points where they were.
+//
+// Recorded because the band LOOKS like faceting and is not: the sweep's
+// section count (12 vs 48) and its ring radius (inscribed vs circumscribed)
+// were both tried first, and neither moved it by a pixel.
+BLEND_CLEAR = 0.500;
+
+// Sections along the sweep. The tube joins its rings by chords, so its surface
+// runs about 0.011 mm inside the true radius at n = 12, falling as 1/n^2. That
+// error is real, but it is the fillet's RADIUS and not its edge: 12 is kept
+// because 0.011 mm is a fourteenth of the 0.15 mm gate, and 48 costs 17 s per
+// F6 and 9.7 s per F5 to buy back geometry no measurement here can see.
+// Section step, not z step -- see the lead-in's note above for why this curve
+// must be walked by angle.
+BLEND_N = 12;
+
 BLEND_ZONE_D = BLEND_CR * GROOVE_R / BLEND_XR;
 
 function blend_rt(dx) = sqrt(WIRE_R * WIRE_R + BLEND_XR * BLEND_XR
@@ -587,7 +624,9 @@ BLEND_ZONE = concat(
         let (dx = GROOVE_X[0] - COL_XY[0]
                 + (GROOVE_X[1] - GROOVE_X[0]) * i / 8)
         [blend_rt(dx), COL_XY[0] + dx]],
-    [[GROOVE_R, GROOVE_X[1]], [GROOVE_R, GROOVE_X[0]]]
+    // The floor is set clear of GROOVE_R, not on it — see BLEND_CLEAR.
+    [[GROOVE_R - BLEND_CLEAR, GROOVE_X[1]],
+     [GROOVE_R - BLEND_CLEAR, GROOVE_X[0]]]
 );
 
 module bore_groove_blend() {
@@ -597,9 +636,10 @@ module bore_groove_blend() {
             // Annuli, not discs. The zone must also exclude the two voids it
             // blends: above z = 32 the wire bore is the lead-in and no longer
             // Ø8, so material stands inside r = WIRE_R there, and a zone that
-            // reaches the axis carves it away.
-            z_revolve([[WIRE_R, -10], [BLEND_ZONE_D, -10],
-                       [BLEND_ZONE_D, 80], [WIRE_R, 80]]);
+            // reaches the axis carves it away. The inner wall stays a wall; it
+            // is only set clear of WIRE_R rather than on it — see BLEND_CLEAR.
+            z_revolve([[WIRE_R - BLEND_CLEAR, -10], [BLEND_ZONE_D, -10],
+                       [BLEND_ZONE_D, 80], [WIRE_R - BLEND_CLEAR, 80]]);
             j4_revolve(BLEND_ZONE);
             // The blend is tangent to the Ø8 wall, so it cannot outlive it.
             // Its own tangency would carry it to z = 32.67, but the bore stops
@@ -610,7 +650,7 @@ module bore_groove_blend() {
         }
         // The centre curve is swept wider than the relief so that its tube
         // still covers the zone where the relief's side walls cut in.
-        blend_tube(BLEND_CR, BLEND_XR, acos(2 * half / BLEND_CR), 12);
+        blend_tube(BLEND_CR, BLEND_XR, acos(2 * half / BLEND_CR), BLEND_N);
     }
 }
 
@@ -627,9 +667,17 @@ module rim_slots() {
         // inscribed, so at 128 the slit edge ripples 25 x (1 - cos(180/128)) =
         // 0.007 mm inside its radius and the slit measures that much long —
         // small against the 0.15 gate, but this feature exists to be measured.
+        //
+        // Preview takes the 128, because preview cannot measure anything. The
+        // render() wrapped round this module makes CGAL evaluate these two
+        // revolves on every F5, and at 512 that alone costs 18 s of the
+        // compile — for a 0.007 mm ripple that is a fifth of a pixel on screen.
+        // $preview is false for F6 and for -o, so every exported mesh, and
+        // therefore every measurement the harness takes, is still the 512.
         for (r = TIE_R)
             j4_revolve([[r[0], TIE_X], [r[1], TIE_X],
-                        [r[1], RIM_X[1] + 2], [r[0], RIM_X[1] + 2]], $fn = 512);
+                        [r[1], RIM_X[1] + 2], [r[0], RIM_X[1] + 2]],
+                       $fn = $preview ? 128 : 512);
     }
 }
 
@@ -662,48 +710,62 @@ module diff_body_b() {
         translate([COL_XY[0], COL_XY[1], WIRE_POLY_Z[0]])
             linear_extrude(WIRE_POLY_Z[1] - WIRE_POLY_Z[0]) polygon(WIRE_POLY);
         wire_lead();
-        // render() is not cosmetic, and it belongs on the FILLET, not on the
-        // slots. Preview normalises the tree to disjunctive normal form, and
-        // both of these calls are differences nested inside the body's:
-        // x - (A - B) rewrites to (x - A) | (x & B), so each multiplies the
-        // whole body by one product per term of A plus one per term of B. The
-        // fillet's zone is an intersection of 3 and its cutter is 4 swept
-        // arcs, so 7; the slots subtract a union (one product, with 115 cuts
-        // appended) less 2 tie revolves, so 3. Against the body's own
-        // 5-product union that is 5 x 7 x 3 = 105 products, and every
-        // primitive in the tree is redrawn once per product per frame.
-        // Evaluating the fillet to a single mesh takes its factor to 1, and
-        // the tree to 15.
+        // These two render() calls are not cosmetic, and between them they are
+        // the whole reason this part is usable to look at. Preview normalises
+        // the tree to disjunctive normal form, and both calls are differences
+        // nested inside the body's: x - (A - B) rewrites to (x - A) | (x & B),
+        // so each multiplies the whole body by one product per term of A plus
+        // one per term of B. The fillet's zone is an intersection of 3 and its
+        // cutter is 4 swept arcs, so 7; the slots subtract a union — one
+        // product, with 115 cuts appended to it — less 2 tie revolves, so 3.
+        // Against the body's own 5-product union that is 5 x 7 x 3 = 105
+        // products, and every primitive in the tree is redrawn once per
+        // product per frame. Evaluating each cutter to a single mesh takes its
+        // factor to 1 and the whole tree to 5.
         //
-        // It was once far worse, which is why this line exists at all. With
-        // blend_tube built as 48 hulled spheres the fillet's factor was 51
-        // rather than 7 — 255 copies of the body before the slots applied
-        // theirs — and appending 115 slot cuts to all of them overran the
-        // normaliser's element cap outright: preview drew NOTHING ("Normalized
-        // tree is growing past ... Aborting normalization", then "CSG
-        // normalization resulted in an empty tree"). Wrapping the SLOTS
-        // instead capped the element count without touching the 255 products,
-        // so it fixed the empty tree and left the model unusable to look at.
+        // It was once far worse, which is why the first of these lines exists
+        // at all. With blend_tube built as 48 hulled spheres the fillet's
+        // factor was 51 rather than 7 — 255 copies of the body before the
+        // slots applied theirs — and appending 115 slot cuts to all of them
+        // overran the normaliser's element cap outright: preview drew NOTHING
+        // ("Normalized tree is growing past ... Aborting normalization", then
+        // "CSG normalization resulted in an empty tree").
         //
-        // Sweeping the tube took most of that away by itself, so what this
-        // render() now buys is 3 s and headroom, not usability. With it,
-        // preview compiles in 17 s and a 900x900 frame costs nothing
-        // measurable; without it, 20 s and about a second a frame. Both are
-        // fluid. It stays for the headroom: anything added to this difference
-        // later multiplies against 105 products rather than 15, and 105 is a
-        // long way up the road that emptied the tree once already. For scale,
-        // the hull chain compiled in 5:53 and spent 28 s a frame.
+        // What the second line buys, measured on one camera at two image sizes
+        // so that compile and frame separate — 64x64 is compile, and whatever
+        // 2400x2400 costs over it is one frame:
         //
-        // F6 and STL export never normalise, so the line changes nothing
-        // there — checked on the hull construction, which exported the same
-        // triangles, the same volume and 0.000 mm `dist` with it and without.
-        // The part now exports 43842 triangles in 4:18.6, against 44226 in
-        // 5:08.9 before the sweep. Of the nine parts here only this one fans
-        // out; 710-004 cuts 100 slots by the same construction and previews
-        // clean, because it has no nested difference ahead of them to
-        // multiply against.
+        //   rendered                 elements   compile   2400x2400 frame
+        //   fillet only                   323    18.4 s           1 - 3 s
+        //   fillet and slots               87    54.5 s   none measurable
+        //   the same, ties at $fn 128      87    36.3 s   none measurable
+        //
+        // The first row is the trap. It compiles fastest and it is the one
+        // that cannot be orbited: 1 - 3 s a frame is two frames a second at
+        // best, and a model can be quick to build and still unusable to turn.
+        // Wrapping the slots pays 18 s once per F5 and buys back every frame
+        // after it, which is the right way round for a part that is orbited
+        // far more often than it is edited. The third row is the same result
+        // for less — see rim_slots on why preview does not need the 512.
+        //
+        // Neither render() makes preview CORRECT, only cheap. Collapsing a
+        // cutter to one mesh does not change where its faces lie, so a bound
+        // stated on a surface the part already has stays coincident and stays
+        // unorderable — that defect is fixed at the bound, in BLEND_CLEAR, and
+        // could not have been fixed here.
+        //
+        // F6 and STL export never normalise, so neither line changes what
+        // comes out: exported with and without the slots' render() the part
+        // gives 43374 triangles and 16689.530 mm3 both times, the same
+        // bounding box, and `dist` between the two meshes is 0.000 mm in both
+        // directions. The two files are not byte-identical — ASCII facet order
+        // is not stable run to run, and they differ in sha256 at the same byte
+        // count — so check this by measurement and never by hash.
+        // Of the nine parts here only this one fans out; 710-004
+        // cuts 100 slots by the same construction and previews clean, because
+        // it has no nested difference ahead of them to multiply against.
         render() bore_groove_blend();
-        rim_slots();
+        render() rim_slots();
     }
 }
 
