@@ -73,37 +73,161 @@ fn ref_path(name: &str) -> String {
 }
 
 /// A part recreated faithfully enough to compare against its reference mesh.
+///
+/// `tol` is per part, and it is not slack — it is the measured noise floor of
+/// the comparison itself. `compare` matches extracted feature planes and
+/// diameters by binning the REFERENCE's vertex radii, merging adjacent bins
+/// into runs, taking each run's weighted mean and then finding the nearest
+/// CANDIDATE vertex. On a densely sampled curved flank that measures vertex
+/// SPACING rather than dimension, and the reference's own vertices need not sit
+/// at their run's mean either. So the floor is measurable directly: run
+/// `compare` on a reference against ITSELF, with that part's own flags, and see
+/// what it reports.
+///
+///     710-001  0.0741      720-002  0.0395      710-004  0.0000
+///     710-002  0.0647      710-003  0.0256
+///     720-003  0.0442      720-001  0.0156
+///
+/// Six of the seven cannot reach 0.001 mm by construction, which is what these
+/// all ran under until now: `sm_json` was called with no `--tol` and inherited
+/// `compare`'s default. The seven failures that produced were not statements
+/// about the models, and treating them as such is how the one real departure
+/// among them — 720-001's 0.768 mm — sat unexamined among six phantoms. Each
+/// `tol` below is the smallest round number clearing both that part's floor and
+/// its remaining residual; the residual is named in the part's own comment, and
+/// a part whose residual is a buried face carries an `--ignore-*` range for it
+/// rather than a looser `tol`.
 struct ClonePart {
     stem: &'static str,
     scad: &'static str,
     reference: &'static str,
+    tol: f64,
+    deviations: &'static [Deviation],
     extra: &'static [&'static str],
 }
 
+/// A check whose delta is a stated departure from the reference rather than an
+/// error. The part is held to `delta`, within `dev_tol`, instead of to zero.
+///
+/// This is not `tol` under another name. Covering a deliberate 0.768 mm
+/// departure by loosening the part's `tol` to 0.8 would loosen every other
+/// check on that part by the same amount — and would still pass if the
+/// departure silently disappeared. A deviation is two-sided: the number has to
+/// still be there, and the checks around it stay at the part's own tolerance.
+///
+/// `compare` has no per-check tolerance and no `--ignore-bbox`, and a bounding
+/// box cannot be masked with `--ignore-band` in any case, so the verdict for a
+/// part with deviations is computed here from `checks[]` rather than taken from
+/// `compare`'s exit status.
+struct Deviation {
+    check: &'static str,
+    delta: f64,
+    dev_tol: f64,
+}
+
 const CLONES: [ClonePart; 7] = [
+    // Residual 0.029 against a floor of 0.0256, both on radial-diam-8.58, the
+    // upper fillet's ring. The 0.003 over the floor is rotational tessellation
+    // and is demonstrable: rendered at $fn = 105, the reference's own export
+    // setting, this part scores exactly the 0.026 floor. It is not rendered at
+    // 105 — $fn belongs to diff_params.scad and the floor does not move — but
+    // that is the measurement showing there is no dimension left to find.
     ClonePart { stem: "710-003", scad: "710-003_DiffKeeper.scad",
-                reference: "710-003_DiffKeeper.stl", extra: &[] },
+                reference: "710-003_DiffKeeper.stl", tol: 0.03,
+                deviations: &[], extra: &[] },
+    // The only part whose reference compares to itself exactly, so its 0.006 mm
+    // was real — and it is bbox alone, every other check being under 6e-7. The
+    // rim is a 105-gon whose top and bottom rings are staggered by half a
+    // facet, giving 210 extreme positions at 0.857143 deg: x lands on one at
+    // 52.500 and y falls midway, so 52.5 * (1 - cos(180/210)) = 0.0058747,
+    // which is the measured delta to eight digits. 0.007, not the 0.006 that
+    // would just clear it: a check that passes by 0.000125 mm is the same trap
+    // as the 0.001 default, one edit to DISK_OD or $fn away from a failure that
+    // says nothing. Nothing is lost by the margin — every other check on this
+    // part comes in under 6e-7 mm, so the bbox term was never what gave this
+    // comparison its teeth.
+    //
+    // `compare` has no --ignore-bbox and no per-check tolerance, so for a
+    // bounding-box artifact a tolerance is the only lever there is.
+    //
+    // Its real defect was invisible here and worth remembering: the slot cuts
+    // met the recess floor exactly on the plane z = 0.200, and CGAL does not
+    // merge two voids that meet on a plane. That left a zero-thickness membrane
+    // across every slot — 100 x 2.45 mm2 counted twice — which `compare` scored
+    // identically to the sound part, because it changes no plane and no
+    // diameter. Surface area caught it (3781 mm2 against the reference's 3291)
+    // and `dist` charged 0.35 mm for it. When a cut has to land on a face, give
+    // it a second cutter that crosses the face instead.
     ClonePart { stem: "710-004", scad: "710-004_RotateCodeDisk.scad",
-                reference: "710-004_RotateCodeDisk.stl", extra: &[] },
+                reference: "710-004_RotateCodeDisk.stl", tol: 0.007,
+                deviations: &[], extra: &[] },
+    // Residual 0.038 on radial-diam-23.68, the GT2 flank: at the default 0.05
+    // bin the whole flank merges into one run of 8439 vertices whose mean falls
+    // in a 0.058 mm gap in the model's flank sampling. The reference has no
+    // vertex at its own run mean either, and scores 0.044 against itself.
     ClonePart { stem: "720-003", scad: "720-003_DiffEndPulley.scad",
-                reference: "720-003_DiffEndPulley.stl",
+                reference: "720-003_DiffEndPulley.stl", tol: 0.05,
+                deviations: &[],
                 extra: &["--ignore-plane=-4.05,-3.7", "--ignore-plane=-1.8,4.2"] },
+    // The added band masks the reference's own bottom face: 1366 vertices at
+    // z = 0.000000 forming a 27-gon on Ø17.000, of which 66 facets are exact
+    // reversed duplicates over a 97-degree sector — a zero-thickness sheet, the
+    // artifact class this file's header already names. It read 1.075 mm.
     ClonePart { stem: "720-002", scad: "720-002_DiffGearAxle.scad",
-                reference: "720-002_DiffGearAxle.stl",
-                extra: &["--ignore-band=25.8,28.2", "--ignore-band=36.5,43.9",
+                reference: "720-002_DiffGearAxle.stl", tol: 0.10,
+                deviations: &[],
+                extra: &["--ignore-band=16.8,17.05",
+                         "--ignore-band=25.8,28.2", "--ignore-band=36.5,43.9",
                          "--ignore-plane=2.2,2.45"] },
+    // The only one of the seven whose 0.768 mm was a real departure rather than
+    // a phantom of the tolerance — and it is deliberate. This part blunts its
+    // tooth tips to the reference's LAND rather than to the reference's
+    // diameter: on the shared crown's shallower tooth form the reference's
+    // Ø43.500 would leave a 0.031 mm land, which is a sharp tip with a matching
+    // number, so the wider blunt is cut instead and the OD comes out Ø0.785
+    // under. See that file on the tip cut for why the blunt outranks the match.
+    //
+    // Pinned as a deviation rather than waved through by a loose `tol`, because
+    // the departure has a value and re-typing the old diameter must fail this
+    // check too. Both transverse dims carry it; the axial dim is unaffected.
+    // 0.02 of drift is allowed: 0.768 rather than the OD's own 0.785 because
+    // the gear's transverse extent is set by the land corners of the tooth
+    // nearest the axis, which move with the flank tessellation. What remains
+    // outside the deviation is 0.025 mm on radial-diam-23.76, the shared bevel
+    // crown's flank, against a self-comparison floor of 0.016.
     ClonePart { stem: "720-001", scad: "720-001_DiffGearShaft.scad",
-                reference: "720-001_DiffGearShaft.stl",
+                reference: "720-001_DiffGearShaft.stl", tol: 0.05,
+                deviations: &[
+                    Deviation { check: "bbox-dim0", delta: 0.768, dev_tol: 0.02 },
+                    Deviation { check: "bbox-dim1", delta: 0.768, dev_tol: 0.02 },
+                ],
                 extra: &["--axis", "y", "--ignore-band=15.3,15.7",
                          "--ignore-band=27.15,43.5", "--ignore-plane=-30.5,30.5"] },
+    // This reference is two overlapping closed solids, cage and bevel crown,
+    // and neither can be stripped: `--keep 0` would delete the whole crown. The
+    // four added ranges are its buried faces and mesher ladders — the crown's
+    // back face at z 15.448 (which read 0.562 mm), the heel root Ø36.717 buried
+    // inside the cage's Ø36.997, that same circle seen as a plane, and the
+    // tooth-flank ladder over z 18.358..20.391. The band widened to 25.25
+    // covers the Ø23->Ø28 fillet's ring ladder, whose self-noise alone is 0.074.
     ClonePart { stem: "710-001", scad: "710-001_SplitGearTop.scad",
-                reference: "710-001_SplitGearTop.stl",
-                extra: &["--ignore-band=23.85,25.05", "--ignore-band=33.9,34.6",
+                reference: "710-001_SplitGearTop.stl", tol: 0.06,
+                deviations: &[],
+                extra: &["--ignore-band=23.85,25.25", "--ignore-band=33.9,34.6",
+                         "--ignore-band=36.5,36.8",
                          "--ignore-band=38.2,43.9", "--ignore-band=14.9,15.1",
-                         "--ignore-plane=-11.8,-11.6"] },
+                         "--ignore-plane=-11.8,-11.6", "--ignore-plane=3.65,3.85",
+                         "--ignore-plane=6.10,6.25", "--ignore-plane=6.60,8.75"] },
+    // Same story: the 1.500 mm was the crown solid's buried bottom edge at
+    // z 18.500, a knife edge 2 mm inside the merged part's material, which no
+    // correct model can carry a vertex on. The second added range is the
+    // tessellation seam at z 17.250, where the Ø27 wall's outline drops from
+    // 430 points to 308 with the diameter and area unchanged.
     ClonePart { stem: "710-002", scad: "710-002_SplitGearBottom.scad",
-                reference: "710-002_SplitGearBottom.stl",
-                extra: &["--ignore-band=8.15,8.35", "--ignore-band=23.95,24.45",
+                reference: "710-002_SplitGearBottom.stl", tol: 0.10,
+                deviations: &[],
+                extra: &["--ignore-plane=1.45,1.70", "--ignore-plane=2.70,2.95",
+                         "--ignore-band=8.15,8.35", "--ignore-band=23.95,24.45",
                          "--ignore-band=25.6,26.8", "--ignore-band=27.15,34.8",
                          "--ignore-plane=6.0,11.8", "--ignore-plane=-2.74,-2.62"] },
 ];
@@ -149,9 +273,17 @@ const COUNTS: [CountCheck; 7] = [
                  args: &["out/710-004.stl", "--band", "21.5,25.5",
                          "--slice-at", "0.6", "--center", "0,0"],
                  key: "loops_in_band", expect: 100 },
+    // 23.5, not 6.0. These stations are in the RENDER's own frame, and this
+    // part is authored in its reference's coordinates — it spans z 17.500 to
+    // 27.750, so 6.0 sections empty air 11.5 mm below it and can only ever
+    // report 0 peaks. It reported 0 for two years and was read as a missing
+    // tooth ring; the reference mesh reports 0 there too, which is the check
+    // that settles which side is wrong. 23.5 is the part-local 6.0 the station
+    // was written for, plus the part's own base: it finds 40 on both meshes,
+    // and the reference gives 40 at every station from 20.0 to 27.0.
     CountCheck { label: "720-003 40T GT2",
                  args: &["out/720-003.stl", "--band", "11.5,12.7",
-                         "--slice-at", "6.0", "--center", "0,0"],
+                         "--slice-at", "23.5", "--center", "0,0"],
                  key: "radius_peaks", expect: 40 },
     CountCheck { label: "720-001 40T GT2",
                  args: &["out/720-001.stl", "--axis", "y", "--band", "11.5,12.7",
@@ -330,11 +462,43 @@ fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
         let out_stl = format!("out/{}.stl", part.stem);
         render(part.scad, &out_stl, "previous", ctx, tally)?;
         let reference = ref_path(part.reference);
-        let mut args = vec!["compare", out_stl.as_str(), reference.as_str()];
+        let tol = part.tol.to_string();
+        let mut args = vec!["compare", out_stl.as_str(), reference.as_str(),
+                            "--tol", tol.as_str()];
         args.extend_from_slice(part.extra);
-        let (ok, report) = sm_json(&args, ctx)?;
-        let worst = report["worst_delta"].as_f64().unwrap_or(f64::NAN);
-        tally.record(&format!("{} vs reference (worst {worst:.3} mm)", part.stem), ok);
+        // `compare`'s own exit status and `worst_delta` cannot know which
+        // departures are stated, so a part with deviations is judged from the
+        // per-check array instead. Every check is still read; none is dropped.
+        let (_, report) = sm_json(&args, ctx)?;
+        let checks = report["checks"].as_array()
+            .with_context(|| format!("compare emitted no checks for {}", part.stem))?;
+        let mut worst = 0.0_f64;
+        let mut ok = true;
+        for check in checks {
+            let name = check["name"].as_str().unwrap_or_default();
+            let delta = check["delta"].as_f64().unwrap_or(f64::NAN);
+            match part.deviations.iter().find(|d| d.check == name) {
+                Some(dev) => {
+                    let off = (delta - dev.delta).abs();
+                    let held = off <= dev.dev_tol;
+                    tally.record(
+                        &format!("{} {name} holds its stated {:.3} mm departure \
+                                  (got {delta:.3}, off {off:.3} mm, tol {} mm)",
+                                 part.stem, dev.delta, dev.dev_tol),
+                        held,
+                    );
+                    ok &= held;
+                }
+                None => {
+                    worst = worst.max(delta);
+                    ok &= delta <= part.tol;
+                }
+            }
+        }
+        tally.record(
+            &format!("{} vs reference (worst {worst:.3} mm, tol {tol} mm)", part.stem),
+            ok,
+        );
     }
     Ok(())
 }

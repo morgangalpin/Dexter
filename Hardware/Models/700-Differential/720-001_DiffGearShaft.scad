@@ -110,32 +110,56 @@ TOE_PLANE = 13.4643;
 // THE TIP CYLINDER. Where the face cone and the back cone would cross in a
 // sharp circular edge, the reference has a cylindrical land instead: one
 // turned cut, coaxial with the shaft, blunting all 20 tips together. Measured
-// on the reference, it is 160 vertices at r = 21.7500 exactly (Ø43.500). The
-// land it leaves on each tooth is a trapezoid, 1.298 mm across the toe edge
-// and 1.835 mm across the heel edge; its axial span is 0.5990 (z 18.8855 ..
-// 19.4845) and its two sloping side edges measure 0.6564 mm, the flanks
-// carrying the difference.
+// on the reference, it is 160 vertices at r = 21.7500 exactly (Ø43.500), and
+// the surface says the same as the vertices: sectioned every few hundredths
+// through the feature, the largest loop radius reads 21.75000 unchanged from
+// z 18.90 to 19.48 and falls away on the face cone below and the back cone
+// above, putting the cut's two edges at z 18.8855 and 19.4845. The land it
+// leaves on each tooth is a trapezoid, 1.298 mm across the toe edge and
+// 1.835 mm across the heel edge; its axial span is that 0.5990 and its two
+// sloping side edges measure 0.6564 mm, the flanks carrying the difference.
 //
 // THE CUT DIAMETER AND THE LAND CANNOT BOTH BE HELD, and this file holds the
 // land. The reference's own teeth stand on a 1.18343 face cone and reach
 // Ø44.300 before the cut, so turning them to Ø43.500 takes 0.40 mm off the
-// radius and opens that 0.6 mm land. The shared crown's face cone is the
+// radius and opens that 0.5990 mm land. The shared crown's face cone is the
 // shallower 1.14792 (diff_bevel.scad's header), so its teeth run roughly
-// 0.6 mm shorter in radius and cross the back cone at Ø43.542 unaided -- a
-// cut at Ø43.500 would take 0.02 mm off them and leave a 0.031 mm land, which
-// is sharp tips with a diameter that happens to match. Cutting to the measured
-// land instead reproduces what the feature is for, and takes a comparable
-// 0.414 mm off the radius where the reference took 0.400.
+// 0.6 mm shorter in radius and cross the back cone at Ø43.5424 unaided; the
+// same Ø43.500 cut would take 0.0212 mm off them and leave a land of 0.0307,
+// z 19.4538 .. 19.4845 -- sharp tips with a diameter that happens to match.
 //
-// The cost is stated rather than hidden: this part's OD becomes Ø42.715
-// against the reference's Ø43.500, 0.785 mm under, on its largest dimension.
-// The tip land does not mesh -- it is clearance over the mating root -- so the
-// pair is unaffected. See 009 DC-2 and CR-3A14 for the adjudication.
+// THE BLUNTING IS THE FEATURE AND THE DIAMETER IS NOT. A tip land exists to
+// keep a knife edge off the tooth: it carries the burr, the chipped corner and
+// the stress riser out of the part, and being clearance over the mating root
+// rather than a meshing surface, its diameter is free where its existence is
+// not. Ø43.500 is the size that opened a 0.5990 mm land on the tooth form the
+// reference was cut with. That tooth form is superseded -- the shared crown is
+// the design of record and this part's departure from the reference's own is
+// already a stated exception (009 DC-2, CR-3A13) -- so carrying the old
+// diameter onto the new form reproduces the number and discards the thing the
+// number was for. The wider blunt is preferred to the closer match: this file
+// cuts to the land at r = 21.3577 (Ø42.7153), taking a comparable 0.414 mm off
+// the radius where the reference took 0.400. Solving it from the land rather
+// than typing a diameter also keeps the blunt right if either cone is ever
+// re-measured, which typing Ø43.500 would not.
+//
+// The cost is stated rather than hidden. This part's OD becomes Ø42.7153
+// against the reference's Ø43.500, 0.785 mm under on its largest dimension,
+// and measured against the reference mesh the bounding box comes in 0.768 mm
+// short -- not 0.785, because the gear's transverse extent is set by the land
+// corners of the tooth nearest the axis rather than by the tip cylinder
+// itself. That term is deliberate, and it is why render-all.rs gives 720-001
+// the loosest tolerance of the seven with the bbox check named in its comment.
+// Holding the diameter instead scores 0.047 mm there, and two-sided surface
+// distance is 0.568 mm outward either way against 0.456 inward rather than
+// 0.429. Those numbers say the diameter matches the older part better, which
+// is not in dispute and is not what is being chosen. The pair is unaffected
+// either way: the tip land does not mesh. See 009 DC-2 and CR-3A14, which
+// adjudicated it this way.
 TIP_LAND = 0.5990;      // axial span of the land, measured on the reference
 
 // Where a coaxial cut must sit for the face cone and the back cone to leave a
-// land this wide between them. Solving it rather than typing a diameter keeps
-// the land right if either cone is ever re-measured.
+// land this wide between them.
 function cut_r_for_land(land) =
     (land + BACK_CONE[0] / BACK_CONE[1] - SHAFT_TIP[0] / SHAFT_TIP[1])
     / (1 / BACK_CONE[1] - 1 / SHAFT_TIP[1]);

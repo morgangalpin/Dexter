@@ -253,9 +253,16 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
     its tooth form and is held to the usual standard: candidate→reference fell 1.282 → **0.568 mm** and
     reference→candidate 2.851 → **0.456 mm**. What remains sits on the two known consequences of the
     shared crown: its root cone runs 0.40 mm below this part's, and its shallower face cone forced a
-    choice between the reference's Ø43.500 tip cut and the 0.5990 mm land that cut leaves. The land was
-    kept, so this part's OD is Ø42.715 — **the one dimension outside the tooth zone that the file
-    knowingly does not match**, recorded rather than gated. What *is*
+    choice between the reference's Ø43.500 tip cut and the 0.5990 mm land that cut leaves. **The land is
+    kept**: the blunting is the feature and its diameter is not, and the diameter that opened that land
+    belongs to the superseded tooth form, so on the shared crown it would leave a 0.031 mm land — sharp
+    tips with a matching number. This part's OD is therefore Ø42.715, **the one dimension outside the
+    tooth zone that the file knowingly does not match**, with the argument and the measured cost of both
+    choices stated in
+    [`720-001_DiffGearShaft.scad`](../Hardware/Models/700-Differential/720-001_DiffGearShaft.scad).
+    It is gated at its stated value rather than merely recorded: `render-all.rs` holds both transverse
+    bounding-box dims to that 0.768 mm departure within 0.02 mm, so re-typing the reference's Ø43.500
+    fails the check as surely as losing the land would. What *is* also
     gated on this part: tooth count (20, exact) and tooth clocking (within 0.3° of the reference), both
     measured on the render directly rather than by surface distance, plus every dimension outside the
     tooth zone.
