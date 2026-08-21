@@ -183,7 +183,9 @@ end-effector wiring bundle passes through the differential's hollow bore.
   the 6703); the Split Gear is **split along a 45° cone**, `r = z − 7` in its own frame — the Top half keeps
   what lies outside that cone and the Bottom half what lies inside it, the teeth running across the joint
   uninterrupted, which is why the halves must be clocked to each other on assembly by four Ø1.5 brads
-  driven radially at z = 12.250. The as-built 40T input pulleys give a 40/16 = 2.5:1
+  driven radially at **z = 12.750** — an axis the two references disagreed about by 0.5 mm and which the
+  revised configuration settles on the Bottom half's value, `BRAD_Z` in `diff_params.scad`
+  ([DC-2](009-Design-Completion.md#differential-detail-design)). The as-built 40T input pulleys give a 40/16 = 2.5:1
   belt stage per input — measured data for [DC-3](009-Design-Completion.md#wrist-reduction-ratio)'s
   tooth-count split.
 
@@ -218,20 +220,43 @@ asserts the revised body against the cover envelope.
 
 **L4 realization.** The J4 and J5 axes **intersect**, at the differential centre — inherent to a bevel
 differential, and the reason the measured DH set carries `a ≈ 0` on both wrist rows and puts the wrist
-geometry in the `d` offsets instead ([003 § DH model](003-Kinematics.md#denavithartenberg-model)). The
-firmware link length L4 = 59.50 mm ([DC-6](009-Design-Completion.md#link-length-discrepancy-l4)) is
-therefore an offset **along the J4 axis**, and it composes as:
+geometry in the `d` offsets instead ([003 § DH model](003-Kinematics.md#denavithartenberg-model)). The link
+length L4 ([DC-6](009-Design-Completion.md#link-length-discrepancy-l4)) is therefore an offset **along the
+J4 axis** rather than a distance between two separated lines.
 
-| Contribution | Value | Set by |
+It runs from the point where **L3 lands on the J4 axis** up to the differential centre, and both
+ends are geometry this model set can name. The upper end is `C`, derived from the Diff Gear Shaft's own
+bevel apex, whose height is fixed by three separate seats in Diff Body A that agree exactly (the rear 6703
+face on the Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on
+the belt slot): `C = 48.5335 mm` above Body A's base plane. The lower end is Body A's **arm centreline at
+z = 11.000** — its 20 × 20 R4 section spans z 1–21, its 6 × 6 belt slot z 8–14, and its shell is
+mirror-symmetric about that plane over z ∈ [2, 20]. So:
+
+| L4 reading | Value | Source |
 |---|---|---|
-| Differential — Diff Body A's End Arm Hub mating face up to the differential centre | **31.0 mm** | `diff_assembly.scad` (identical in both configs) |
-| End Arm Hub — standoff on its side of that face | **28.5 mm** | End Arm Hub design (`#500-001`) |
-| **L4 total** | **59.50 mm** | `Firmware/Defaults.make_ins` |
+| **This design, as built** | **37.53 mm** | `diff_assembly.scad` (identical in both configs) |
+| CAD kinematic frames | 39.50 mm | `dde/HDIMeterModel.gltf`, J4 → J5 frame separation |
+| Measured DH set, J4 row `d` | 39.30 mm | HDI-007010 ([003](003-Kinematics.md#denavithartenberg-model)) |
+| Wiki link-length set | 50.95 mm | [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) |
+| Firmware — **authoritative** | 59.50 mm | `Firmware/Defaults.make_ins` |
 
-`diff_assembly.scad` computes the differential's contribution from the built stack, echoes the hub inset
-the End Arm Hub must provide, and asserts both the split and the axis intersection. **The 28.5 mm inset is
-a requirement this design places on the End Arm Hub**; confirm it by caliper on the first build together
-with the rest of [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
+**The three geometric readings agree within 2.0 mm and the firmware's is 22 mm away from all of them.**
+That is DC-6's real state: not a standoff still to be designed, but a firmware value that does not describe
+this wrist. `diff_assembly.scad` computes the built figure, echoes it against all four, and asserts it stays
+beside the geometric cluster rather than drifting toward the firmware value — L4 is not a number to reach by
+adjusting the model until it fits. The one assumption left is whether the arm centreline really is where the
+L3 tube lands; nothing in the 700 set shows the tube meeting it, so that is the first thing to check.
+
+**A superseded decomposition, recorded because its arithmetic looked sound.** This section previously split
+L4 into a differential contribution plus an **End Arm Hub standoff** — 31.0 + 28.5 mm, then briefly
+48.53 + 10.97 mm. There is no such split: the End Arm Hub (`#420-001`, CAD `HDI-500-001_EndArmHub`) sits at
+the **elbow**, a whole L3 away from the differential, exactly as the [End Arm Hub](#end-arm-hub-j3j4-region)
+section below describes it. Its glue rigs show the separation directly — `GlueRig_EndArmHubToDiff_A`+`_B`
+span 362 mm and `GlueRig_ArmBodyToEndArmHub_A`+`_B` span 405 mm, both long jigs holding parts at opposite
+ends of a tube. The two parts share no face to split at. The 28.5 mm once credited to the hub is a real
+feature of it — measured on `420-001_EndArmHub.stl`, its tube socket axis sits at z = −25.000 and its top
+face at z = +4.000, **29.000 mm** apart on its own bearing axis — but that is an offset at the **L3 end**,
+and nothing to do with L4.
 
 ### End Arm Hub (J3–J4 region)
 

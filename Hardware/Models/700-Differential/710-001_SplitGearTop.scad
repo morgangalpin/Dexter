@@ -69,8 +69,9 @@ Z_CAGE =  18.100;   // top face of the cage
 
 // Where the gear's apex sits on this part's axis. Every conical surface of the
 // crown follows from this one number and diff_bevel.scad; 710-002 states the
-// same apex, which is what keeps the two halves on one cone.
-BEVEL_APEX_Z = 39.5770;
+// same apex, which is what keeps the two halves on one cone -- so it is stated
+// once, beside the gear, and read from there by both halves and the assembly.
+BEVEL_APEX_Z = BEVEL_APEX_SPLIT;
 
 function cone_pt(cone, z) = [bevel_r(cone, z - BEVEL_APEX_Z), z];
 function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
@@ -144,12 +145,18 @@ WINDOW_Z   = [11.500, 14.500];
 // The four narrow openings on the quadrants are not slots at all: they are the
 // brad holes, drilled radially. Their width through the band is a circular
 // chord -- 0.745, 1.193, 1.494, 1.017 mm at z 11.60, 11.80, 12.20, 12.80 --
-// which fits a Ø1.497 hole on an axis at z = 12.250 to within 0.003 mm. That
-// is the Ø1.5 brad 710-002 is drilled for, and the cage floor at z = 11.500
-// falls tangent to the holes.
-BRAD_D     = 1.497;
-BRAD_ANG   = [0, 90, 180, 270];
-BRAD_Z     = 12.250;
+// which fits a Ø1.497 hole on an axis at z = 12.250 to within 0.003 mm, with
+// the cage floor at z = 11.500 tangent to them.
+//
+// The AXIS is not this part's to choose. A brad has to pass through this hole
+// and land in 710-002's, so the two halves drill to one line, and 710-002's
+// reference puts that line 0.500 mm higher. Which line both halves use is
+// BRAD_Z_TOP in diff_params.scad, where the disagreement is set out: it holds
+// the 12.250 measured here under config = "previous" and joins 710-002's axis
+// under "revised". The diameter stays this part's own, and is named
+// BRAD_HOLE_D as it is in 710-002 -- BRAD_D is the nail, not the hole.
+BRAD_HOLE_D = 1.497;
+BRAD_ANG    = [0, 90, 180, 270];
 
 // #710-005 CF strakes, 5.6 x 2.5 mm in section, slotted from the base.
 STRAKE    = [5.6, 2.5];
@@ -182,8 +189,8 @@ module cage_cuts() {
             translate([12, -WINDOW_W / 2, 0])
                 cube([9, WINDOW_W, WINDOW_Z[1] - WINDOW_Z[0]]);
     for (a = BRAD_ANG)
-        zrot(a) up(BRAD_Z) yrot(90)
-            cylinder(d = BRAD_D, h = 21);
+        zrot(a) up(BRAD_Z_TOP) yrot(90)
+            cylinder(d = BRAD_HOLE_D, h = 21);
     for (a = STRAKE_ANG)
         zrot(a - 90) up(Z_BASE - epsilon)
             translate([-STRAKE[0] / 2, STRAKE_R[0], 0])

@@ -49,9 +49,10 @@ include <diff_bevel.scad>
 
 /* [Hidden] */
 
-// Where the gear's apex sits on this part's axis. 710-001 states the same
-// number; that the two halves share it is what puts them on one cone.
-BEVEL_APEX_Z = 39.5770;
+// Where the gear's apex sits on this part's axis. 710-001 reads the same
+// constant; that the two halves share it is what puts them on one cone, which
+// is why it lives beside the gear in diff_bevel.scad rather than in either half.
+BEVEL_APEX_Z = BEVEL_APEX_SPLIT;
 
 function cone_pt(cone, z) = [bevel_r(cone, z - BEVEL_APEX_Z), z];
 function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
@@ -127,8 +128,13 @@ BODY_PROFILE = [
 // section reads the hole at 0 degrees as a 1.496 mm tall notch spanning
 // z 12.002..13.498 at r 12.000 -- a Ø1.5 bore centred at z 12.75, drilled to
 // a radius of 12. The #680-001 brad (BRAD_D = 1.8) is larger, so it presses in.
+//
+// That 12.75 is the axis, and it is stated as BRAD_Z in diff_params.scad
+// rather than here: 710-001 has to drill to the same line for a brad to reach
+// this hole, and its own reference disagrees by 0.500 mm, so the two halves
+// cannot each keep their own number. This measurement is the one BRAD_Z
+// carries -- see there for why it is this half's and not the other's.
 BRAD_HOLE_D = 1.5;
-BRAD_Z      = 12.75;
 BRAD_FLOOR  = 12.0;     // drilled depth, as a radius
 BRAD_A      = [0, 90, 180, 270];
 assert(BRAD_D > BRAD_HOLE_D, "brad must be an interference fit in its hole");

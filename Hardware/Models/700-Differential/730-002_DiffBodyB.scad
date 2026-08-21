@@ -100,8 +100,10 @@
 include <diff_params.scad>
 
 /* [Hidden] */
-J4_YZ  = [-21.0, 21.0];   // tunnel / pivot axis (y, z); runs along X
-COL_XY = [21.0, -21.0];   // column axis (x, y); runs along Z
+// The two axes, from diff_params.scad -- the assembly places this part by
+// putting their crossing on the differential centre, and reads them from there.
+J4_YZ  = BODY_B_J4_YZ;    // tunnel / pivot axis (y, z); runs along X
+COL_XY = BODY_B_COL_XY;   // column axis (x, y); runs along Z
 
 CLIP_Z    = 34.0;         // the flat face the chimney base rounds onto
 FLAT_Y    = 12.460;       // vertical side flats, +/- this about the mirror plane

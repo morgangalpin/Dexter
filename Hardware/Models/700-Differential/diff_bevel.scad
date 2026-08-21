@@ -95,6 +95,28 @@ BEVEL_SPLIT = [32.57700,  1.00000];
 function bevel_r(cone, z) = cone[0] + cone[1] * z;
 function bevel_z(cone, r) = (r - cone[0]) / cone[1];
 
+// ---------------------------------------------------------------- apexes ----
+// Where this crown's apex sits on each carrying part's own axis, and how the
+// shaft's copy is clocked. The apex IS the gear's placement: every cone above
+// is stated in the gear's own frame, so a part positions the gear by stating
+// this one number, and diff_assembly.scad positions the PART by putting that
+// same point on the differential centre.
+//
+// They are stated here, with the gear, for two reasons. The Split Gear's two
+// halves are one gear and must not drift apart, and one number they both read
+// is what guarantees it. And `use <part.scad>` imports a file's modules and
+// functions but NONE of its variables, so an apex left in a part file is
+// unreachable from the assembly and would have to be typed there a second time.
+//
+// How each was measured stays in the part that owns it -- 720-001's in
+// particular, whose frame is mirrored, and whose phase is the one clocking
+// measurement in the set.
+BEVEL_APEX_SPLIT  = 39.5770;    // 710-001 and 710-002: one gear, one apex
+BEVEL_APEX_AXLE   = 24.1286;    // 720-002
+BEVEL_APEX_SHAFT  =  0.5065;    // 720-001, mirrored frame -- see that file
+BEVEL_PHASE_SHAFT =  8.9722;    // 720-001's tooth centres, mod the pitch
+BEVEL_PITCH_ANG   = 360 / BEVEL_TEETH;      // 18 degrees
+
 // Where two cones meet, as the [r, z] a revolved profile wants.
 function bevel_meet(a, b) =
     let (z = (b[0] - a[0]) / (a[1] - b[1])) [bevel_r(a, z), z];

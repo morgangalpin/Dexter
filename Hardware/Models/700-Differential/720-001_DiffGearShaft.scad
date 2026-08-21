@@ -62,15 +62,19 @@ SEAT_REAR   = 2.7;      // rear seat depth
 // gear stands at y > apex, not y < apex as diff_bevel.scad's own frame
 // has it) -- the two facing bevels were exported in mirrored senses, so
 // the shared crown is placed mirrored below rather than plain up().
-BEVEL_APEX_Z = 0.5065;
+// The value is stated in diff_bevel.scad with the other two apexes, so that
+// diff_assembly.scad places this shaft from the same number this file builds
+// the crown on.
+BEVEL_APEX_Z = BEVEL_APEX_SHAFT;
 
 // Rotational clocking: diff_bevel.scad centres a tooth on its own +x axis,
 // which has no reason to line up with wherever this shaft's reference mesh
 // happened to be exported. Measured directly at y = 17.0 (scadmesh slice,
 // tip-land points within 0.05 mm of the section's max radius, clustered
 // into 20 teeth): tooth centres sit at 8.97 deg mod the 18 deg pitch,
-// constant across all 20 to +/-0.2 deg.
-BEVEL_PHASE = 8.9722;
+// constant across all 20 to +/-0.2 deg. Stated in diff_bevel.scad, because
+// the assembly has to clock this gear against the other two from it.
+BEVEL_PHASE = BEVEL_PHASE_SHAFT;
 
 // ----------------------------------------------------------- this frame ----
 // diff_bevel.scad states its cones in the gear's own frame: z = 0 at the

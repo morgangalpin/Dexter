@@ -53,8 +53,9 @@ include <diff_bevel.scad>
 Z_TOP = 14.000;         // top face of the boss
 
 // Where the gear's apex sits on this part's axis. Everything conical about the
-// crown follows from this one number and diff_bevel.scad.
-BEVEL_APEX_Z = 24.1286;
+// crown follows from this one number and diff_bevel.scad, which is where the
+// number itself is stated so the assembly can read it too.
+BEVEL_APEX_Z = BEVEL_APEX_AXLE;
 
 function cone_pt(cone, z) = [bevel_r(cone, z - BEVEL_APEX_Z), z];
 function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
