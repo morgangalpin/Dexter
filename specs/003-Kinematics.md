@@ -96,8 +96,11 @@ firmware is **L5 first, L1 last**.
   into carbon-fiber tube cut lengths in [DC-5](009-Design-Completion.md#link-member-lengths), which is where
   those lengths are derived and where the remaining check on them is tracked.
 - **Discrepancy to resolve:** an alternate link-length set in the wiki disagrees with the firmware file above
-  on L4 and L5. This specification treats the firmware file as authoritative; the two candidate sets and the
-  measurement that settles them are in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
+  on L4 and L5, and the authored differential ([DC-2](009-Design-Completion.md#differential-detail-design))
+  now builds a **37.53 mm** L4 — within 2.0 mm of both this document's DH `d` term and the CAD frames, and
+  22 mm short of the firmware's. This specification still treats the firmware file as authoritative; the
+  candidate sets, the geometric readings and the measurement that settles them are in
+  [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
 - Getting L2/L3/L4 wrong shifts where the links land relative to encoder zero and shows up as a
   Cartesian-accuracy error, not an assembly failure.
 

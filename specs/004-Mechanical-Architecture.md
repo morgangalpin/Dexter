@@ -142,17 +142,57 @@ end-effector wiring bundle passes through the differential's hollow bore.
   ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The 16T motor pulley is retained; the
   **driven side must be toothed to net 13.5:1**, and the tooth-count split that realizes it — along with the
   scale error that results from getting it wrong — is [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
-- **Differential detail — `[Provisional]`.** The differential is significantly revised from the previous
-  version, and no record of the revised internals survives: the design must be **authored** against the
-  [interface below](#differential-interface), not recovered. The build uses the previous version's
-  differential geometry as a working substitute meanwhile; an incorrect flex/pivot geometry risks binding a
-  joint that also carries the tool wiring through its bore. What closing this requires is in
-  [DC-2](009-Design-Completion.md#differential-detail-design).
+- **Differential detail — `[Specified]`.** The differential detail design is **authored** as parametric
+  OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
+  `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
+  `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
+  parameter sets are selectable: `config="previous"` reproduces the previous version's built differential;
+  `config="revised"` meets the [interface below](#differential-interface). Physical build validation
+  (binding, wiring survival, code-disk reads) remains in
+  [DC-9](009-Design-Completion.md#performance-characterization).
+
+  **All seven recreated parts now render as one clean solid from measured geometry.** An earlier
+  verification compared diameters and face positions rather than surfaces and could not see shape error;
+  under the revised, surface-based contract, six of the seven agree with their references within
+  0.150 mm and the seventh (720-001 Diff Gear Shaft) was deliberately cut to a tooth form other than its
+  own reference's, an explicit decided exception rather than a defect — see
+  [DC-2](009-Design-Completion.md#differential-detail-design) for the per-part measurements and the
+  revised verification contract.
+
+  **Authored mechanism facts** (measured from the built part set, now fixed in `diff_params.scad`): all
+  three bevels — Split Gear (output), Diff Gear Shaft, and Diff Gear Axle — are **20T straight bevels at
+  1:1:1**, outside diameter **44.055 mm** (module ≈ 2.057 at 45° pitch cones), one shared crown definition
+  carried by all three (a rebuild history recorded below). The Split Gear and the Diff Gear Axle are not
+  two similar gears but **one gear placed twice**:
+  sections of the Split Gear Top and the Diff Gear Axle taken
+  15.4484 mm apart agree to 0.0001 mm over 4088 points, already clocked alike. The crown is therefore
+  authored once, in `diff_bevel.scad`, from four measured cones — face `r = −1.14792 z`, root
+  `r = −0.11121 − 0.84952 z`, heel `r = 49.82164 + 1.44761 z` and a 45° inner face, all stated about the
+  gear's own apex — plus one cubic-Bézier tooth flank. **The Diff Gear Shaft's own reference carries the
+  previous revision of that gear.** It is 20T and its root radius agrees at a given height, but its
+  reference's top land ran `r = 1.18343 (y − 0.5068)` where this gear's face cone is `1.14792`, and its
+  root cone `r = 0.84175 y` with the apex on the origin rather than `0.84952` offset 0.131 mm. The v1
+  STEP identifies the form: it states one `CONICAL_SURFACE` of slope 1.1834163 and apex 0.5064895 in
+  **all four** of its bevels, and the Diff Gear Shaft's mesh reproduces that to 1.4 × 10⁻⁵ in slope — so
+  the revision that produced these references re-cut three gears and left this one behind, and it still
+  meshed, on a form one revision old. The Diff Gear Shaft is now rebuilt to the shared crown instead
+  ([CR-3A7](../CHANGES.md)), a matched set of four rather than a faithful copy of its own superseded
+  reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are
+  **40T GT2** pulleys (the Diff End Pulley and the shaft's integrated pulley section); the Diff Gear
+  Shaft doubles as the **J4 pivot axle** (its Ø25 section rides Diff Body A's 6705, its Ø17 rear journal
+  the 6703); the Split Gear is **split along a 45° cone**, `r = z − 7` in its own frame — the Top half keeps
+  what lies outside that cone and the Bottom half what lies inside it, the teeth running across the joint
+  uninterrupted, which is why the halves must be clocked to each other on assembly by four Ø1.5 brads
+  driven radially at **z = 12.750** — an axis the two references disagreed about by 0.5 mm and which the
+  revised configuration settles on the Bottom half's value, `BRAD_Z` in `diff_params.scad`
+  ([DC-2](009-Design-Completion.md#differential-detail-design)). The as-built 40T input pulleys give a 40/16 = 2.5:1
+  belt stage per input — measured data for [DC-3](009-Design-Completion.md#wrist-reduction-ratio)'s
+  tooth-count split.
 
 ### Differential interface
 
-The differential's detail design is open, but its **interface is specified**, and this is the constraint set
-any design must satisfy. Envelope and axis figures are taken from the cover bodies and kinematic frames in
+This is the **interface constraint set** the authored detail design satisfies (and any future revision must
+keep satisfying). Envelope and axis figures are taken from the cover bodies and kinematic frames in
 `dde/HDIMeterModel.gltf`, whose mesh vertices are in metres under a ×10 node scale and a ×100 root scale, so
 world units are millimetres.
 
@@ -164,7 +204,7 @@ world units are millimetres.
 | Tool frame | `(54.82, 939.84, −2.00)` mm | GLTF `DexterHDI_Link6_KinematicAssembly` |
 | Travel | Full J4 and J5 travel without binding; **J5's is the demanding one** for a mechanism routing wiring through its bore | [003 § Joint travel limits](003-Kinematics.md#joint-travel-limits) |
 | Bevel ratio | **≈1:1** — the net 13.5:1 is realized in the belt stages, not inside the differential | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
-| Encoders | Output-side optical code disks, **J4 = 115 slots, J5 = 100 slots**, read through the Angle and Rotate photointerrupter shrouds (`#824`, `#825`) | [003 § Joint definitions](003-Kinematics.md#joint-definitions), [005 § Sensing](005-Electronics-and-Control.md#sensing) |
+| Encoders | Output-side optical code disks, **J4 = 115 slots, J5 = 100 slots**, read through the Angle and Rotate photointerrupter shrouds (`#824`, `#825`). J5's disk is `#710-004` (100 slots, counted on the model); **J4 has no disk — its 115 slots are cut into `#730-002` Diff Body B's mating rim** and read across the pivot from Diff Body A ([DC-11(e)](009-Design-Completion.md#the-j4-code-disk-is-missing)) | [003 § Joint definitions](003-Kinematics.md#joint-definitions), [005 § Sensing](005-Electronics-and-Control.md#sensing) |
 | Through-bore | **6 conductors** pass the hollow centre and must survive J5's full travel | REQ-IF-4, [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) |
 
 **The frame separation agrees with the measured unit.** The 39.50 mm above lands within 0.2 mm of the J4
@@ -173,10 +213,50 @@ envelope model and the measured kinematics corroborate each other. It does *not*
 candidate in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) — a kinematic-assembly node origin
 need not sit exactly on the joint axis, so treat it as corroboration of the envelope, not as an L4 value.
 
-⚠️ **The substitute does not obviously fit inside the covers.** `730-001_DiffBodyA`'s longest dimension is
-80.98 mm against the cover's widest 78.0 mm. Build the previous version's differential **without** the
-`HDI-940` covers, or re-cut the covers to suit, until
-[DC-2](009-Design-Completion.md#differential-detail-design) replaces it.
+**Envelope conformance.** The previous version's Diff Body A is 80.98 mm across — wider than the cover's
+78.0 mm — so `config="previous"` builds must omit the `HDI-940` covers or re-cut them. The authored
+`config="revised"` trims Diff Body A to 77.8 mm (`BODY_A_LEN` in `diff_params.scad`); `render-all.rs`
+asserts the revised body against the cover envelope.
+
+**L4 realization.** The J4 and J5 axes **intersect**, at the differential centre — inherent to a bevel
+differential, and the reason the measured DH set carries `a ≈ 0` on both wrist rows and puts the wrist
+geometry in the `d` offsets instead ([003 § DH model](003-Kinematics.md#denavithartenberg-model)). The link
+length L4 ([DC-6](009-Design-Completion.md#link-length-discrepancy-l4)) is therefore an offset **along the
+J4 axis** rather than a distance between two separated lines.
+
+It runs from the point where **L3 lands on the J4 axis** up to the differential centre, and both
+ends are geometry this model set can name. The upper end is `C`, derived from the Diff Gear Shaft's own
+bevel apex, whose height is fixed by three separate seats in Diff Body A that agree exactly (the rear 6703
+face on the Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on
+the belt slot): `C = 48.5335 mm` above Body A's base plane. The lower end is Body A's **arm centreline at
+z = 11.000** — its 20 × 20 R4 section spans z 1–21, its 6 × 6 belt slot z 8–14, and its shell is
+mirror-symmetric about that plane over z ∈ [2, 20]. So:
+
+| L4 reading | Value | Source |
+|---|---|---|
+| **This design, as built** | **37.53 mm** | `diff_assembly.scad` (identical in both configs) |
+| CAD kinematic frames | 39.50 mm | `dde/HDIMeterModel.gltf`, J4 → J5 frame separation |
+| Measured DH set, J4 row `d` | 39.30 mm | HDI-007010 ([003](003-Kinematics.md#denavithartenberg-model)) |
+| Wiki link-length set | 50.95 mm | [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) |
+| Firmware — **authoritative** | 59.50 mm | `Firmware/Defaults.make_ins` |
+
+**The three geometric readings agree within 2.0 mm and the firmware's is 22 mm away from all of them.**
+That is DC-6's real state: not a standoff still to be designed, but a firmware value that does not describe
+this wrist. `diff_assembly.scad` computes the built figure, echoes it against all four, and asserts it stays
+beside the geometric cluster rather than drifting toward the firmware value — L4 is not a number to reach by
+adjusting the model until it fits. The one assumption left is whether the arm centreline really is where the
+L3 tube lands; nothing in the 700 set shows the tube meeting it, so that is the first thing to check.
+
+**A superseded decomposition, recorded because its arithmetic looked sound.** This section previously split
+L4 into a differential contribution plus an **End Arm Hub standoff** — 31.0 + 28.5 mm, then briefly
+48.53 + 10.97 mm. There is no such split: the End Arm Hub (`#420-001`, CAD `HDI-500-001_EndArmHub`) sits at
+the **elbow**, a whole L3 away from the differential, exactly as the [End Arm Hub](#end-arm-hub-j3j4-region)
+section below describes it. Its glue rigs show the separation directly — `GlueRig_EndArmHubToDiff_A`+`_B`
+span 362 mm and `GlueRig_ArmBodyToEndArmHub_A`+`_B` span 405 mm, both long jigs holding parts at opposite
+ends of a tube. The two parts share no face to split at. The 28.5 mm once credited to the hub is a real
+feature of it — measured on `420-001_EndArmHub.stl`, its tube socket axis sits at z = −25.000 and its top
+face at z = +4.000, **29.000 mm** apart on its own bearing axis — but that is an offset at the **L3 end**,
+and nothing to do with L4.
 
 ### End Arm Hub (J3–J4 region)
 
@@ -208,5 +288,5 @@ of done is in [009-Design-Completion.md](009-Design-Completion.md).
 | Main Pivot | J2 | — | `[Specified]` | — |
 | Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
 | End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
-| Differential | J4, J5 | belt → differential | `[Specified]` net ratio / `[Provisional]` detail | [DC-2](009-Design-Completion.md#differential-detail-design), [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
+| Differential | J4, J5 | belt → differential | `[Specified]` net ratio and detail / `[Provisional]` tooth split | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
 | Tool interface | roll, grip | smart servos | `[Specified]` | — |
