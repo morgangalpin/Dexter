@@ -176,7 +176,7 @@ end-effector wiring bundle passes through the differential's hollow bore.
   **all four** of its bevels, and the Diff Gear Shaft's mesh reproduces that to 1.4 × 10⁻⁵ in slope — so
   the revision that produced these references re-cut three gears and left this one behind, and it still
   meshed, on a form one revision old. The Diff Gear Shaft is now rebuilt to the shared crown instead
-  ([CR-3A13](../CHANGES.md)), a matched set of four rather than a faithful copy of its own superseded
+  ([CR-3A7](../CHANGES.md)), a matched set of four rather than a faithful copy of its own superseded
   reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are
   **40T GT2** pulleys (the Diff End Pulley and the shaft's integrated pulley section); the Diff Gear
   Shaft doubles as the **J4 pivot axle** (its Ø25 section rides Diff Body A's 6705, its Ø17 rear journal

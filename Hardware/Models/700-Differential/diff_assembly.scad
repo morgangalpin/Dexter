@@ -101,7 +101,14 @@
 // The two 0.28 mm figures are the same number on perpendicular axes and no
 // single shift removes both, since C must lie on both of Body B's axes. They
 // are the size of the residuals these parts already carry — 730-002's own gate
-// is 0.414 mm — so they are recorded, not designed out.
+// is 0.377 mm — so they are recorded, not designed out.
+//
+// The end-flank figure is NOT answered by the R1 edge breaks cut into the
+// z = 34 clip's two end corners while closing that gate, though the -X one
+// lands on the same end of the same part. The break is where the clip
+// truncates that end, at r ~ 13.0 about the J4 axis; the flank is the cone at
+// r 13.793..15.000, which the clipped corner never reaches. The flank reads
+// r = 13.7931 at x = 8.2929 both before and after the cuts.
 //
 // Kinematic conformance (DC-6, 004). In a bevel differential the J4 and J5
 // axes *intersect* — at the differential centre C — which is why the measured

@@ -48,29 +48,55 @@
 //   - The single mirror plane is y = -21, verified to 0.3% on a section-area
 //     sweep. The bore system is symmetric about x = 21 as well.
 //
-// WHERE THIS STANDS. Volume 16689.5 mm3 (-0.03%), bounding box 39.000 x
-// 58.985 x 80.492, hausdorff 0.414 mm, rms 0.049 / 0.045, p95 0.136 both
-// ways, 1.2% of candidate points and 0.5% of reference points outside
+// WHERE THIS STANDS. Volume 16686.0 mm3 (-0.05%), bounding box 39.000 x
+// 58.985 x 80.492, hausdorff 0.377 mm, rms 0.048 / 0.045, p95 0.136 both
+// ways, 1.0% of candidate points and 0.5% of reference points outside
 // tolerance. That FAILS the 0.15 mm gate on max, so 730-002 is deliberately
 // absent from render-all.rs's DIST_GATES; add it there when, and only when,
 // it passes. (Quote the volume to one decimal: OpenSCAD's tessellation is
 // not bit-stable run to run, and two renders of this file differed by 8
-// triangles and 0.004 mm3.) Three residuals are known, the first
-// undiagnosed:
-//   1. The top corner of the -X end face, at (8.001, -22.554, 34.000) where
-//      the z = 34 clip meets it — 0.414 mm, the worst candidate point, and
-//      the only thing now holding the gate.
-//   2. The chimney base's straight sides meeting the chimney cone. Both
+// triangles and 0.004 mm3.) Measure against the SEGMENTED reference, not the
+// file: 730-002's export carries six stray 1.05 x 1.0 x 1.0 inverted shells
+// (volume -0.815 mm3 apiece) beside the body, and dist run on the whole file
+// scores them at 0.991 mm reference->candidate. Isolate body 0 first
+// (`scadmesh segment --out ... --keep 0`) and the same comparison reads
+// 0.332. The numbers above are all against body 0. Two residuals are known,
+// and BOTH ENDS of the gate now sit on the first of them:
+//   1. The chimney base's straight sides meeting the chimney cone. All four
 //      junctions are filleted on the reference, radius about 1.5, and are
-//      modelled here as sharp intersections. This is now the worst REFERENCE
-//      point, 0.332 mm at (32.346, -32.469, 30.915) — the top of the
-//      z 30.22..30.91 band over which an x wall shows before the cone
-//      becomes the tighter bound. An earlier note here put the cost of this
-//      simplification at about 0.10 mm; that was measured on a y flat and
-//      understates the x wall by 3x.
-//   3. The wire bore's lead-in loft, about 0.10 mm.
+//      modelled here as sharp intersections. This is now the worst point in
+//      both directions, once on each y flat: 0.377 mm at (32.686, -9.406,
+//      31.057) on the candidate and 0.332 mm at (32.346, -32.469, 30.915) on
+//      the reference — the top of the z 30.22..30.91 band over which an x
+//      wall shows before the cone becomes the tighter bound. An earlier note
+//      here put the cost of this simplification at about 0.10 mm; that was
+//      measured on a y flat and understates the x wall by 3x. Filleting the
+//      four junctions is the whole of the remaining work on the gate.
+//   2. The wire bore's lead-in loft, about 0.10 mm.
 //
-// The encoder track used to be listed here as a fourth, undiagnosed residual
+// A third residual is CLOSED. The z = 34 clip's two end corners, at x = 8.000
+// and x = CYL_X = 34.000, were left square where the reference breaks both
+// with an R1 round, and a square corner stands sqrt(2) - 1 = 0.4142 mm proud
+// of that arc. They held the gate in turn: cutting the -X one took the
+// candidate side 0.414 -> 0.397 and exposed the +X one, and cutting that took
+// it 0.397 -> 0.377, where the chimney fillets take over. See clip_round()
+// below for the geometry and for why each is a cylinder along y rather than a
+// revolve. Two things this cost, worth not relearning:
+//   - The -X corner was first read as a 45 degree chamfer of about 0.6 mm
+//     legs, from probing the reference's material boundary on a 0.05 mm grid.
+//     It is an R1 round. A probe grid coarser than the feature will report a
+//     chord as a face; take the section's own vertices instead, which sat on
+//     the arc to four decimals and named it outright.
+//   - Neither cut touches the 0.276 mm interference diff_assembly.scad
+//     records between this part's -X end flank and the axle bevel's toe cone,
+//     though the two look adjacent. The flank is the 45 degree cone at
+//     r 13.793..15.000 about the J4 axis; the corner is where the z = 34 clip
+//     truncates that same end at r ~ 13.0, a radius the flank never reaches.
+//     Measured, not assumed: the flank reads r = 13.7931 at x = 8.2929 both
+//     before and after the cuts, identical to four decimals. The stack-up
+//     stands as recorded and needs its own answer.
+//
+// The encoder track used to be listed here as a further, undiagnosed residual
 // — the worst reference point at x = 46.875, r = 25.000 about the J4 axis.
 // It was the tie rings: the track had been modelled as a plain through
 // cuboid, so the slots ran 24.500..28.800 the whole depth of the rim instead
@@ -419,6 +445,64 @@ module wire_lead() {
         }
 }
 
+// The clip at CLIP_Z ends the top face at BOTH ends -- x = END_X = 8.000 where
+// the barrel's outer round stands at r = 13.086, and x = CYL_X = 34.000 where
+// the KEEP_CYL prism stops and the 35-degree planes take over -- and the
+// reference breaks both edges the same way. The two faces meeting at each are
+// PLANES, so their intersection is a straight line along y and the break is a
+// cylinder on it rather than a revolve. That distinction is the whole of the
+// modelling here and it is measured, not assumed: each arc reads identically
+// across y -- the -X one at y = -21 and y = -22.554, the +X one at y = -18,
+// -21 and -25 -- where a revolve at this radius would move 0.1 mm between the
+// first pair and 0.6 mm across the second.
+//
+// R1 both, centres (9.000, 33.000) and (33.000, 33.000): the same 12.000 mm
+// either side of the column axis at x = 21, as the end faces themselves are
+// the same 13.000 mm either side of it. Tangency to both faces fixes each
+// centre outright, and the reference's own section points sit on them to four
+// decimals -- (8.7412, 33.9659), (8.5000, 33.8660), (8.2929, 33.7071),
+// (8.1340, 33.5000), (8.0341, 33.2588) about the first, and (33.2588,
+// 33.9659), (33.5000, 33.8660), (33.7071, 33.7071), (33.8660, 33.5000),
+// (33.9659, 33.2588) about the second, each 1.0000 from its centre. (The
+// points between those read 0.9937: the reference facets the arc at 15
+// degrees, so every second slice point is a chord midpoint, not the surface.)
+// Left square either corner stands sqrt(2) - 1 = 0.4142 mm proud of where the
+// arc should be. They were this part's two worst points, taken in turn: with
+// only the -X one cut the +X corner became the whole of the 0.15 mm gate.
+//
+// Each cutter is a single polygon, not a boolean: a difference nested in the
+// body's own multiplies the preview tree, which is what the two render()
+// calls below exist to undo. It reaches `epsilon` PAST both faces it blends
+// rather than stopping on them, so inside the material nothing but the arc
+// bounds it -- a bound laid on a face the part already has stays coincident
+// and unorderable, the defect BLEND_CLEAR exists to avoid on the bore blend.
+// Its flat sides therefore all lie outside the part: at z = CLIP_Z - END_R
+// the region is beyond the end face (x < 8.000, x > 34.000), and at
+// x = 9.000 / x = 33.000 it is z > CLIP_Z, where only the column reaches and
+// it is rho 10.500 at most against these 12.000.
+//
+// The y span is bounded rather than run clear of the part as it can be at the
+// -X end, because past the +X end face the collar is kept below
+// z = 21 + tan(CONE_ANG) * |y + 21|, which reaches z = CLIP_Z - END_R at
+// y = -38.1 and y = -3.9. Between those the cutter's z = 33.000 side is
+// outside the material; the top face it is breaking only spans the flats,
+// y = -33.46 .. -8.54, so the bound costs nothing.
+END_X    = 8.000;         // the -X end face; the +X one is CYL_X
+END_R    = 1.000;         // round from each end face onto the z = 34 clip
+END_ROUND_Y = [-36, -6];  // spans the z = 34 face, inside the collar's reach
+
+// s = +1 leaves the material at x > face_x (the -X end), s = -1 at x < face_x.
+module clip_round(face_x, s) {
+    translate([0, END_ROUND_Y[1], 0]) xrot(90)
+        linear_extrude(END_ROUND_Y[1] - END_ROUND_Y[0])
+            polygon(concat(
+                arcpts(face_x + s * END_R, CLIP_Z - END_R, END_R,
+                       s > 0 ? 180 : 0, 90, 16),
+                [[face_x + s * END_R,   CLIP_Z + epsilon],
+                 [face_x - s * epsilon, CLIP_Z + epsilon],
+                 [face_x - s * epsilon, CLIP_Z - END_R]]));
+}
+
 // ---------------------------------------------------------------------------
 // Where the Ø8 wire bore breaks through the Ø22 bevel relief, top and bottom,
 // the rim of the hole is rounded R2. The radius is recovered from the x = 21
@@ -600,7 +684,9 @@ BLEND_ZTOP = 32.000;      // where the Ø8 bore ends and the lead-in starts
 // and exactly so: with the clearance in place the part still exports 43374
 // triangles at 16689.530 mm3, the same two figures recorded below for the
 // render that preceded it, and `dist` against the reference is unmoved at
-// 0.414 / 0.332 with both worst points where they were.
+// 0.414 / 0.332 with both worst points where they were. (Those absolutes
+// predate the clip rounds and are not the current ones in the header; what
+// this check establishes is that neither figure MOVED.)
 //
 // Recorded because the band LOOKS like faceting and is not: the sweep's
 // section count (12 vs 48) and its ring radius (inscribed vs circumscribed)
@@ -712,6 +798,8 @@ module diff_body_b() {
         translate([COL_XY[0], COL_XY[1], WIRE_POLY_Z[0]])
             linear_extrude(WIRE_POLY_Z[1] - WIRE_POLY_Z[0]) polygon(WIRE_POLY);
         wire_lead();
+        clip_round(END_X,  1);
+        clip_round(CYL_X, -1);
         // These two render() calls are not cosmetic, and between them they are
         // the whole reason this part is usable to look at. Preview normalises
         // the tree to disjunctive normal form, and both calls are differences
@@ -760,7 +848,9 @@ module diff_body_b() {
         // comes out: exported with and without the slots' render() the part
         // gives 43374 triangles and 16689.530 mm3 both times, the same
         // bounding box, and `dist` between the two meshes is 0.000 mm in both
-        // directions. The two files are not byte-identical — ASCII facet order
+        // directions. (Counts from before the clip rounds; the equality is
+        // the point, not the absolutes.) The two files are not
+        // byte-identical — ASCII facet order
         // is not stable run to run, and they differ in sha256 at the same byte
         // count — so check this by measurement and never by hash.
         // Of the nine parts here only this one fans out; 710-004

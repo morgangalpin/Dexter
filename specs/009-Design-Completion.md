@@ -128,14 +128,19 @@ would have made it one.
 | 720-003 Diff End Pulley | 0.030 | −0.02 % | **rebuilt, faithful** (was 1.98 / −4 %) |
 | 710-002 Split Gear Bottom | 0.150 | +0.02 % | **rebuilt, faithful** (p95 0.050; was 2.25 / −11 %) |
 | 710-001 Split Gear Top | 0.045 | −0.1 % | **rebuilt, faithful** (p95 0.010; was 3.57 / −11 %) |
-| 720-001 Diff Gear Shaft | 1.282 / 2.851 | −0.83 % | **rebuilt, cut to the shared crown** — fails ±0.15 mm by design, see CR-3A13 |
+| 720-001 Diff Gear Shaft | 0.568 / 0.456 | −2.05 % | **rebuilt, cut to the shared crown** — fails ±0.15 mm by design, see CR-3A7 |
 
 All seven parts now render as one clean solid from measured geometry. **720-001** is the one part that
 does not meet the ordinary ±0.15 mm gate — not because it is the wrong shape, but because it was
-deliberately cut to a tooth form other than its own reference's (below and [CR-3A13](../CHANGES.md)). Its
+deliberately cut to a tooth form other than its own reference's (below and [CR-3A7](../CHANGES.md)). Its
 "worst deviation" cell is candidate→reference and reference→candidate respectively, since neither alone
-tells the whole story here: the first is dominated by one localized modelling approximation (below), the
-second by the reference mesh's own pre-existing artifact (next section). Tooth count (20) and tooth
+tells the whole story here — and both now land in the tooth zone: the first where the shared crown's root
+cone runs 0.40 mm below this part's own (r 17.389, y 21.113), the second on the reference's own Ø43.500 tip
+cut (r 21.750, y 18.885), 0.39 mm further out than the cut that holds the land. Both are the tooth-form
+exception and its direct consequence, and after the envelope was cut to this part's own measured surfaces
+they are the only things left. The volume figure is the same departure by another measure — the shared
+crown's teeth are blunted further at the tip and cut deeper at the root than the superseded form the
+reference was cut with, and that is where the missing 433 mm³ is. Tooth count (20) and tooth
 clocking (within 0.3° of the reference at every position) are unaffected by the tooth-form swap and are
 verified separately, on the render itself rather than against the reference.
 
@@ -176,7 +181,7 @@ last — and each renders as a single clean solid. Two findings generalise beyon
   rest, 720-001's being the narrower. The pair therefore still meshes, on a tooth form one revision behind.
 
   **Decided: cut 720-001 from `diff_bevel.scad` like the other three**, for a matched set of four rather
-  than reproducing the old form faithfully — see [CR-3A13](../CHANGES.md) for the rebuild and its actual
+  than reproducing the old form faithfully — see [CR-3A7](../CHANGES.md) for the rebuild and its actual
   measured cost, which came in higher than the ~0.17 mm/0.64 mm estimated above (those numbers compared
   720-001's *old* form against the *shared gear's reference*; the rebuilt part's own `dist` against *its
   own* reference is reported in the measured-state table). 004's "20T straight bevels at 1:1:1" is now
@@ -246,12 +251,12 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
     modelled groove profile. The bevels' 45° pitch cones remain a consequence of the 20T-on-20T,
     90°-shaft configuration rather than a measurement — but the face cone's apex, measured independently,
     lands on the pitch apex.
-  - **720-001's tooth form — a decided exception, not a measurement gap.** [CR-3A13](../CHANGES.md) cut
+  - **720-001's tooth form — a decided exception, not a measurement gap.** [CR-3A7](../CHANGES.md) cut
     this part's crown to the shared gear rather than its own reference's superseded form, so its `dist`
-    against its own reference fails ±0.15 mm in the tooth zone — expected and accepted. [CR-3A14](../CHANGES.md)
-    then cut the crown's *envelope* to this part's own measured surfaces, which is not the same claim as
-    its tooth form and is held to the usual standard: candidate→reference fell 1.282 → **0.568 mm** and
-    reference→candidate 2.851 → **0.456 mm**. What remains sits on the two known consequences of the
+    against its own reference fails ±0.15 mm in the tooth zone — expected and accepted. The crown's
+    *envelope* is a separate claim from its tooth form and is cut to this part's own measured surfaces,
+    held to the usual standard: candidate→reference is **0.568 mm** and
+    reference→candidate **0.456 mm**. What remains sits on the two known consequences of the
     shared crown: its root cone runs 0.40 mm below this part's, and its shallower face cone forced a
     choice between the reference's Ø43.500 tip cut and the 0.5990 mm land that cut leaves. **The land is
     kept**: the blunting is the feature and its diameter is not, and the diameter that opened that land
@@ -282,26 +287,50 @@ model keeps it concentric, and that eccentricity is the whole of the part's excu
     30° apart with one on +x, running the full 60.6 mm of the part. They are voids and the mesh is sound:
     every triangle around a hole has its normal on that hole's own axis, `segment` returns one closed
     body, and the lateral area over any span is π·0.2·span to three decimals. They were most of the
-    2.851 mm reference→candidate number because the model did not have them; [CR-3A14](../CHANGES.md)
-    reproduces them, behind a `wall_holes` flag. **They are not buildable** — Ø0.2 × 60.6 mm is 303:1,
+    reference→candidate excursion while the model did not have them; the model now reproduces them,
+    behind a `wall_holes` flag. **They are not buildable** — Ø0.2 × 60.6 mm is 303:1,
     past drilling and far past printing — and no other part in the reference set carries anything like
     them, so whether the built shaft should have them is open under DC-11.
+    730-002's export shows the same trap a third way, and it is the one most likely to mislead a re-run:
+    the file carries **six stray 1.05 × 1.0 × 1.0 inverted shells** (−0.815 mm³ apiece) beside the body,
+    and `dist` against the whole file scores them at **0.991 mm** reference→candidate. Against the
+    isolated body the same comparison reads **0.332 mm**. Every figure quoted for that part is against
+    body 0, and a measurement that skips `segment` will read a part three times worse than it is.
 - The two housings (Diff Body A/B) were carried as **authored functional redesigns** rather than
   recreations — every bearing seat, journal, bore, axis position, and span taken from measurement, the
   sculpted shells replaced with clean parametric bodies, and verified by interface slice checks rather
   than shape comparison on the grounds that there was no reference shape they were meant to match.
-  **That exception is withdrawn** ([CR-3A16](../CHANGES.md)). Preserving every interface did not preserve
+  **That exception is withdrawn** ([CR-3A7](../CHANGES.md)). Preserving every interface did not preserve
   the part: the authored Diff Body A rendered 2.43× the reference's material in the same bounding box,
   which is mass and inertia at the worst point on the arm, and interface checks are what it passed.
   Both housings are to be faithful recreations gated on `scadmesh dist` at ±0.15 mm, with cover-envelope
   fit carried as a minimal delta in the `revised` configuration.
   **Diff Body A is rebuilt and passing** at 0.016 mm Hausdorff, 0.000% of samples over tolerance.
-  **Diff Body B is rebuilt from measurement but does not yet meet the contract** ([CR-3A17](../CHANGES.md)):
-  0.414 mm Hausdorff against 18.891 for the authored redesign, with p95 0.136 mm inside tolerance both
-  ways and 1.2% of samples over it. It is therefore absent from `DIST_GATES`, and closing that gap is the
-  one item keeping this bullet open. Its measured geometry is recorded in the part file
+  **Diff Body B is rebuilt from measurement but does not yet meet the contract** ([CR-3A7](../CHANGES.md)):
+  candidate→reference **0.377 mm** max (rms 0.048, p95 0.136, p99 0.156, 1.03 % of samples over tolerance)
+  and reference→candidate **0.332 mm** (rms 0.045, p95 0.136, p99 0.138, 0.48 % over), volume 16,686.0
+  against 16,694.3 mm³ (−0.05 %), bounding box 39.000 × 58.985 × 80.492, one closed body. p95 is inside
+  tolerance in both directions; it is the maxima that fail. It is therefore absent from `DIST_GATES`, and
+  closing that gap is the one item keeping this bullet open.
+
+  **What holds the gate is one modelling simplification, not a departure the design needed.** Both maxima
+  are now the same feature on opposite y flats: the chimney base's straight sides meeting the chimney cone,
+  filleted on the reference at radius about 1.5 and modelled here as sharp intersections — 0.377 mm at
+  (32.686, −9.406, 31.057) on the candidate side, 0.332 mm at (32.346, −32.469, 30.915) on the reference
+  side. Filleting those four junctions is the remaining work.
+
+  **Two unmodelled edge breaks have been cut and are closed.** The z = 34 clip's end corners, at x = 8.000
+  and x = 34.000, were left square where the reference breaks both with an **R1 round** — centres (9.000,
+  33.000) and (33.000, 33.000), the reference's own section vertices sitting on them to four decimals. A
+  square corner stands √2 − 1 = 0.4142 mm proud of that arc, and the two held the gate in turn: cutting the
+  −X corner took the candidate side 0.414 → 0.397 mm and exposed the +X one, and cutting that took it
+  0.397 → 0.377 mm. Each is a cylinder along y rather than a revolve, which is measured rather than
+  assumed — the arcs read identically at y = −18, −21 and −25, where a revolve at this radius would move
+  0.6 mm across that span.
+
+  Its measured geometry is recorded in the part file
   [`730-002_DiffBodyB.scad`](../Hardware/Models/700-Differential/730-002_DiffBodyB.scad) — the profiles
-  are the dimension tables — together with the three residuals still outstanding. Two premises of the
+  are the dimension tables — together with the two residuals still outstanding. Two premises of the
   authored Body B are disproved there: the `TUNNEL_Y` span is the J4 mating rim's diameter rather than a
   tunnel, and there is no bore on the Y axis at all. The shaft tunnel runs along **X**, on the J4 axis,
   and the part is a body of revolution about it rather than the fork an earlier reading took it for.
@@ -403,7 +432,14 @@ seat; Diff Body B's -X end flank sits 0.276 mm inside the axle bevel's toe cone,
 0.296 mm inside the Split Gear's, both being the same 45-degree relief on perpendicular axes. The two
 0.28 mm figures cannot both be removed by moving Body B, since the differential centre has to lie on both
 of its axes, and all three are the size of the residuals these parts already carry — `#730-002`'s own gate
-is 0.414 mm. They are kept as measurements rather than designed out.
+is 0.377 mm. They are kept as measurements rather than designed out.
+
+An earlier reading of the −X end flank figure is **withdrawn**. It proposed that the edge break found
+while diagnosing Body B's gate ([DC-2](#differential-detail-design)) sat on this same surface and might
+remove the interference and the gate residual together. It does not: the break is where the z = 34 clip
+truncates that end, at r ≈ 13.0 about the J4 axis, while the flank is the 45° cone at r 13.793–15.000 — a
+radius the clipped corner never reaches. Cutting it left the flank identical to four decimals (r = 13.7931
+at x = 8.2929, before and after). The stack-up stands as measured and still needs its own answer.
 
 **Definition of done (met):** a differential design authored to
 [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface), with its **source

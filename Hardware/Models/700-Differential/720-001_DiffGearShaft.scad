@@ -139,7 +139,7 @@ TOE_PLANE = 13.4643;
 // not. Ø43.500 is the size that opened a 0.5990 mm land on the tooth form the
 // reference was cut with. That tooth form is superseded -- the shared crown is
 // the design of record and this part's departure from the reference's own is
-// already a stated exception (009 DC-2, CR-3A13) -- so carrying the old
+// already a stated exception (009 DC-2, CR-3A7) -- so carrying the old
 // diameter onto the new form reproduces the number and discards the thing the
 // number was for. The wider blunt is preferred to the closer match: this file
 // cuts to the land at r = 21.3577 (Ø42.7153), taking a comparable 0.414 mm off
@@ -158,7 +158,7 @@ TOE_PLANE = 13.4643;
 // distance is 0.568 mm outward either way against 0.456 inward rather than
 // 0.429. Those numbers say the diameter matches the older part better, which
 // is not in dispute and is not what is being chosen. The pair is unaffected
-// either way: the tip land does not mesh. See 009 DC-2 and CR-3A14, which
+// either way: the tip land does not mesh. See 009 DC-2 and CR-3A7, which
 // adjudicated it this way.
 TIP_LAND = 0.5990;      // axial span of the land, measured on the reference
 
