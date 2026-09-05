@@ -145,8 +145,7 @@ power-on. *Source: wiki `End-Effectors.md` ("Version 2 Wiring").*
 
 ## Open items
 
-An index into [009-Design-Completion.md](009-Design-Completion.md), which owns each item's state, priority,
-and definition of done. Nothing else in this document is open.
+Nothing else in this document is open.
 
 | Item | What is open |
 |---|---|

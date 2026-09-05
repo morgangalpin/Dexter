@@ -53,13 +53,12 @@ changes described in [001](001-Overview.md#5-design-lineage).
 - **`Interpolation`** = 1 for all joints. The previous version used 16 on J4/J5 to sub-divide microsteps for the
   oscillation trick; 1 is correct here because the belt reduction supplies wrist resolution physically.
 - **The net wrist reduction *is* derivable — 13.5:1.** `AxisCal = gear_ratio × 400 × 16`, so
-  86400 / 6400 = **13.5:1**. What the firmware alone does not pin is the decomposition of that ratio into
-  tooth counts; that was chosen in [DC-3](009-Design-Completion.md#wrist-reduction-ratio) as
-  **16T → 108T** along the arm and **40T → 80T** along L3, two belt stages of 6.75:1 and 2.0:1 across a
-  1:1 elbow crossing and a 1:1 differential. ⚠️ The wrist hardware must be built to match: the HD model set
-  still carries the previous version's counts and nets **5.625:1**, so running this `AxisCal` against parts
-  printed as modelled would scale every commanded J4/J5 angle by **2.4**. The parts are re-cut under
-  [DC-12](009-Design-Completion.md#wrist-pulley-rework); confirm the as-built ratio before first motion.
+  86400 / 6400 = **13.5:1**. What the firmware alone does not pin is how that ratio is decomposed into
+  tooth counts; the belt stages that realize it are specified in
+  [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5). ⚠️ **Confirm the as-built
+  wrist ratio before first motion** — the printed model set does not yet carry the specified counts, and
+  what running this `AxisCal` against parts printed as modelled would do to every commanded J4/J5 angle is
+  stated there.
 
 *Source: `Firmware/Defaults.make_ins`, `Firmware/AxisCal.txt`; wiki `Hardware.md`, `Joints.md`, `Firmware.md`,
 `set-parameter-oplet.md`.*

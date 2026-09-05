@@ -469,11 +469,9 @@ build is [DC-9](#performance-characterization)'s.
 **The net ratio is fixed by the firmware and was never the open part.**
 `AxisCal = gear_ratio × motor_steps × microstepping`; with a 400-step motor at 16× microstepping one motor
 revolution is 6400 microsteps, so J4/J5's `AxisCal` = 86400 gives **86400 / 6400 = 13.5:1**. Corroborated
-by this unit's `Firmware/AxisCal.txt` (J4/J5 line = 0.0666667 = 13.5 × 6400 / 1 296 000) and by its
-`ANGLE_END_RATIO` term (−4 529 848 = −round(13.5 / 50 × 2²⁴); the base-joint `50` there vs the
-authoritative `52` is a separate stale-file note in
-[006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The previous version's `AxisCal` = 36000
-gives **5.625:1**.
+by this unit's `Firmware/AxisCal.txt`, whose J4/J5 line and `ANGLE_END_RATIO` term both encode 13.5
+([006](006-Firmware-and-Calibration.md#drive-constants-axiscal), which also records why that file's
+base-joint figure is stale). The previous version's `AxisCal` = 36000 gives **5.625:1**.
 
 **The whole 13.5 has to come from the belts, because the differential is 1:1.** All three bevels are one
 20T crown ([DC-2](#differential-detail-design)), so with side-gear angles θ_A and θ_B the carrier — Diff
@@ -655,9 +653,9 @@ in the tube: `tube_new = tube_previous + link_delta`, giving:
 Adopt these as the cut lengths of record. **Caveat:** the CAD model shows the printed bodies are *renumbered*
 (`HDI-310-001_ArmBody`, `HDI-500-001_EndArmHub` in `dde/HDIMeterModel.gltf`), so the socket seat
 depth is not guaranteed identical. **Confirm the socket seat depth against the CAD model (or measure
-the printed socket bottoms) before committing the tubes.** Getting L2/L3 wrong shifts where the links land
-relative to encoder zero and shows up as a Cartesian-accuracy error, not an assembly failure. `[Provisional]`
-(computed value; one narrow CAD/measurement check remaining).
+the printed socket bottoms) before committing the tubes.** What a wrong link length costs is stated in
+[003](003-Kinematics.md#link-lengths). `[Provisional]` (computed value; one narrow CAD/measurement check
+remaining).
 
 **While measuring the End Arm Hub, measure both ends of the L3 span, not just the socket.** The hub's own
 axial offset is now measured — its tube socket axis lies at z = −25.000 and its top face at z = +4.000 on
@@ -703,15 +701,13 @@ kinematic sources say the real robot's is too. `diff_assembly.scad` echoes all o
 built figure stays beside the geometric cluster, so a later frame edit cannot quietly drift it toward the
 firmware value.
 
-**One assumption carries the built figure, and it is the thing to check first.** The upper datum is solid:
-`C = 48.5335 mm` above Diff Body A's base plane, derived from the Diff Gear Shaft's bevel apex, whose height
-three separate seats in Body A fix in agreement (the rear 6703 face on the Ø20 waist shoulder, the Ø27
-collar 4 mm above the Ø26 step, and the 40T pulley band centred on the belt slot). The lower datum is **Body
-A's arm centreline at z = 11.000** — where its 20 × 20 R4 section, its 6 × 6 belt slot and its
-mirror-symmetric shell all centre. Taking that as the plane where L3 meets the J4 axis gives
-48.5335 − 11.000 = 37.53 mm. **Nothing in the 700 set shows the L3 tube landing on it**, and per
-[DC-5](#link-member-lengths) that tube is catalogued as 0.75″ square against Body A's 20 × 20 arm, which do
-not obviously fit one another. Settle that joint and this figure either firms up or moves.
+**One assumption carries the built figure, and it is the thing to check first.** 37.53 mm is the distance
+between two datums in Diff Body A, both derived in
+[004 § Differential interface](004-Mechanical-Architecture.md#differential-interface). The upper one is
+solid — three separate seats fix it in agreement. The lower one is the assumption: it takes Body A's arm
+centreline as the plane where L3 meets the J4 axis, and **nothing in the 700 set shows the L3 tube landing
+on it**. Per [DC-5](#link-member-lengths) that tube is catalogued as 0.75″ square against Body A's 20 × 20
+arm, which do not obviously fit one another. Settle that joint and this figure either firms up or moves.
 
 **Two superseded splits, recorded so they are not re-derived.** This item previously read 31.0 + 28.5 mm and
 then, on 2026-08-19, 48.53 + 10.97 mm — in both cases a differential contribution plus a standoff the **End
@@ -816,7 +812,7 @@ and each is `[Provisional]` there.
 
 | # | Item | What is open | Consequence if wrong |
 |---|---|---|---|
-| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"* — no manufacturer part number. The recommended `17HM19-2004S` is 0.46 N·m with a 24 mm shaft: it meets every stated requirement but is not a proven identity match | Body or shaft length mismatch against the printed Motor End Cap; five motors ordered wrong |
+| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"* — no manufacturer part number, and the recommended qualifying part is not a proven identity match. The requirements it must meet, and how the candidate measures against them, are in [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) | Body or shaft length mismatch against the printed Motor End Cap; five motors ordered wrong |
 | b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) | No size, voltage, or part number anywhere in the design record — only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`) | Fan does not fit the bracket, or fouls the MicroZed USB connector |
 | c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) | [007.5](007-Bill-of-Materials.md#0075-arm-body) types them "Fabricate"; [008.5](008-Assembly.md) treats them as printed bodies that accept pressed MR128 bearings and printed caps | Three parts either printed that should be machined, or absent from the print list |
 | d | **Print parameters** ([007.2 § Material](007.2-Printed-Parts.md#material)) | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment | Bearing bores and CF strake slots out of tolerance; press and bond fits fail |

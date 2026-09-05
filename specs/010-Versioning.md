@@ -137,11 +137,11 @@ author revision B of version 3 (or any successor):
    `002 → 003 → 004 → 005 → {006, 007, 008}`.
 5. **Carry forward open decisions.** Any open [009-Design-Completion.md](009-Design-Completion.md) item
    still open when the revision opens is inherited by it unless the change set closes it.
-6. **Re-mark design status.** A settled design the revision changes re-opens in
-   [009](009-Design-Completion.md) as `[Provisional]` until re-validated on a physical build of the new
-   revision — 009 owns status, so this is the only place it is marked. Do not carry a prior
-   revision's validation forward across a design change.
-7. **Release.** `git tag -a version-3-rev-b version-3`, then mark the revision's section in
+6. **Re-open changed designs.** A settled design the revision changes goes back on the open-items list
+   in [009](009-Design-Completion.md) until re-validated on a physical build of the new revision. Do not
+   carry a prior revision's validation forward across a design change.
+7. **Release.** Run the specification checks ([README § Document ownership](README.md#document-ownership)),
+   then `git tag -a version-3-rev-b version-3` and mark the revision's section in
    [CHANGES.md](../CHANGES.md) as released with its tag and date.
 
 **Starting a new version** follows the same shape on a new line: when a change departs from the current

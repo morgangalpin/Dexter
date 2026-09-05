@@ -292,16 +292,19 @@ anything version 3 does not independently specify
   already gone stale — 002 still called the wrist reduction `[Provisional]` after CR-3A8 closed DC-3, 007
   still pointed the differential at the closed DC-2, and 005 asked for a MicroZed part number that
   [007.1 C-701](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring) had already pinned.
-- **Now:** README states, as a rule, that **each document is the single source of truth for one set of
-  information** and names the owner of each set in a
-  [Document ownership](specs/README.md#document-ownership) table; where another document needs that
-  information it links to the owner rather than restating it. Applied first to design status, whose owner
-  is **009**: 002-008, 010 and 011 carry no status markers, and a passage that depends on something open
-  links to the [009](specs/009-Design-Completion.md) item instead. **Anything not named in 009 is
-  `[Specified]`.** 004's and 005's status tables became "open items by subassembly" indexes into 009, 002's
-  `Status` column became an `Open item` cross-reference, and the same for 007's subassembly summary.
-- **Driver:** a value written down twice eventually disagrees with itself, and there is then no way to tell
-  which copy is the design.
+- **Now:** README gains a [Document ownership](specs/README.md#document-ownership) section naming the
+  single owner of each set of information, and the rule that other documents link to the owner instead of
+  restating it. Applied first to design status, whose owner is **009**: 002-008, 010 and 011 carry no
+  status markers, and a passage that depends on something open links to the
+  [009](specs/009-Design-Completion.md) item instead. 004's and 005's status tables became open-item
+  indexes, and 002's and 007's `Status` columns became `Open item` cross-references. Then applied to the
+  restated prose the same sweep exposed: L4's competing readings and superseded splits (004 → DC-6), the
+  model-vs-BOM mismatches (007.2 → DC-11(e)), the supply's substitution limits (007.1 → 005), the wrist
+  tooth counts (006 and 008.9 → 004), the strain-wave component list (007 → 004), the stepper's
+  requirements (009 → C-101), the stale `AxisCal.txt` note (009 → 006), version identity (README → 010),
+  and the derived-document scopes (007 → README).
+- **Driver:** a value written down twice eventually disagrees with itself, and nothing then says which copy
+  is the design.
 - **Re-derive:** none — no design value changed. The stale copies listed above were corrected to agree with
   009 as they were removed.
 - **Status:** editorial. `[Specified]`/`[Provisional]`/`[TBD]` remain defined in

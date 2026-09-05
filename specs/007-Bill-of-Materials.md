@@ -10,15 +10,11 @@ Open design items are cross-referenced to
 [009-Design-Completion.md](009-Design-Completion.md). Order fasteners and bearings in excess — the aggregate
 totals below carry no slack, and several rows depend on [009](009-Design-Completion.md) items being finalized.
 
-**To order or fabricate parts, use the derived lists rather than this document:**
-
-| Document | Scope |
-|---|---|
-| [007.1 — Parts Catalog and Sourcing](007.1-Parts-Catalog.md) | Every purchased and fabricated item, **de-duplicated across the whole robot**, with full product specifications and supplier links (Canadian first) |
-| [007.2 — 3D Printed Parts](007.2-Printed-Parts.md) | Every printed part, **de-duplicated**, with print quantities and model-file sources |
-
-This document remains the by-subassembly view and the source those two are generated from. The regeneration
-procedures are in each derived document.
+**To order or fabricate parts, use the derived lists rather than this document** —
+[007.1](007.1-Parts-Catalog.md) for anything purchased or fabricated,
+[007.2](007.2-Printed-Parts.md) for anything printed. Both are de-duplicated across the whole robot, where
+this document counts a part once per subassembly that consumes it. This document is the by-subassembly view
+and the source those two are generated from; each carries its own regeneration procedure.
 
 ## Subassembly summary
 
@@ -38,8 +34,9 @@ procedures are in each derived document.
 
 ## Strain-wave component set (applies to 007.3 and 007.8)
 
-Each 52:1 strain-wave drive (J1, J2, J3 — three total) requires a **flex spline**, a **wave generator**, and
-a **circular/stator gear**, giving nine special-order parts in all. Confirmed as three
+Each of the three 52:1 drives (J1, J2, J3) takes one component set
+([004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive)), so **nine special-order parts**
+are needed in all. Confirmed as three
 **HanZhen `XB1-AS-C-32(14)-52`** sets, USD 120 each ([DC-1](009-Design-Completion.md#strain-wave-component-set),
 [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)). **Order this first:** it carries the
 longest lead time in the build (9–12 weeks).

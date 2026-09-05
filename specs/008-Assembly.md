@@ -263,10 +263,10 @@ Parts: GT2 belts/pulleys from [007.7](007-Bill-of-Materials.md#0077-end-arm-hub)
 than measured ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)), and the driven pulleys must be
 re-cut before printing ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
 
-⚠️ **Check the pulleys before fitting the belts.** The J4/J5 train must read **16T → 108T** along the arm
-and **40T → 80T** along L3. If the External pulleys count 90T or the differential's count 40T, they are the
-previous version's parts and the wrist will scale every commanded angle by 2.4 against this firmware
-([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). Verify J4/J5 resolution empirically after
+⚠️ **Count the pulley teeth before fitting the belts** and check them against the specified train in
+[004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5). Parts carrying the previous
+version's counts will scale every commanded wrist angle, and they are what the model set still holds
+([DC-12](009-Design-Completion.md#wrist-pulley-rework)). Verify J4/J5 resolution empirically after
 calibration regardless.
 
 1. Slide the 2 16T × 5 mm GT2 pulleys onto the external motors.

@@ -10,9 +10,9 @@ work remaining (see [Design status](#design-status) and
 
 ## Design identity and versioning
 
-**No document in this set states its own version and revision.** Which design a document belongs to is
-determined by the git branch or tag it is read at. The version line, the branch and tag scheme, and the
-procedure for deriving the next revision are defined in [010-Versioning.md](010-Versioning.md); the forward
+**No document in this set states its own version and revision**
+([010 § Design identity](010-Versioning.md#2-design-identity)). The version line, the branch and tag scheme,
+and the procedure for deriving the next revision are [010-Versioning.md](010-Versioning.md); the forward
 roadmap is [011-Roadmap.md](011-Roadmap.md); the recorded history of each revision is
 [CHANGES.md](../CHANGES.md) in the repository root.
 
@@ -71,31 +71,18 @@ specification, find the owner below and write it there.
 Part geometry is owned by the model sources rather than by this set: a dimension a `.scad` file computes is
 stated there, and referenced here.
 
-## Document ownership
+**[`check-specs.rs`](check-specs.rs) enforces this.** It fails when a run of prose is restated across two
+documents, when a document outside 009 labels its own design status, and when a cross-document link or
+heading anchor does not resolve. Run it from the repository root before committing a change to the
+specification:
 
-Each document is the **single source of truth** for one set of information. Where another document needs
-that information it links to the owner rather than restating it: a value written down twice will eventually
-disagree with itself, and there is then no way to tell which copy is the design. When adding to the
-specification, find the owner below and write it there.
+```
+./specs/check-specs.rs
+```
 
-| Information | Owner |
-|---|---|
-| What the robot must do: requirement IDs, targets, and their traceability | [002](002-Requirements.md) |
-| Frames, joint conventions, link lengths, the DH model, and motion commands | [003](003-Kinematics.md) |
-| Mechanical design and design intent, subassembly by subassembly; drive ratios and mechanical interfaces | [004](004-Mechanical-Architecture.md) |
-| Sensing, actuation, boards, power, the control loop, and the command interface | [005](005-Electronics-and-Control.md) |
-| Firmware parameter values, drive constants, and the calibration and bring-up procedure | [006](006-Firmware-and-Calibration.md) |
-| Which parts each subassembly consumes, and in what quantity | [007](007-Bill-of-Materials.md) |
-| Part identity, specification, supplier, price, and lead time | [007.1](007.1-Parts-Catalog.md) |
-| Print quantities and model-file sources for printed parts | [007.2](007.2-Printed-Parts.md) |
-| The order of operations that builds the robot | [008](008-Assembly.md) |
-| **Design status** — what is still open, its priority, and its definition of done | [009](009-Design-Completion.md) |
-| Version and revision identity, and the procedure for deriving the next one | [010](010-Versioning.md) |
-| Work anticipated beyond the current revision | [011](011-Roadmap.md) |
-| What changed in each revision, and why | [CHANGES.md](../CHANGES.md) |
-
-Part geometry is owned by the model sources rather than by this set: a dimension a `.scad` file computes is
-stated there, and referenced here.
+An overlap that is genuinely not a second source of truth — a shared part number, a stock sentence opener
+— goes in `specs/.duplication-allow` with a phrase from it. Suppressing a finding is a decision to be
+made deliberately and rarely; the first question is always which document owns the information.
 
 ## Design status
 
@@ -132,9 +119,10 @@ Finer-grained feature spec files are contained in a `specs/` directory in a feat
 - Use decimal notation for related specs (001-Overview.md, 001.1-Architecture.md, 001.2-Stack.md).
 
 ## Workflow
-1. Update/create spec files with requirements, behavior, edge cases, and interfaces.
+1. Find the owning document ([Document ownership](#document-ownership)) and update it there.
 2. Generate/update code, tests, documentation, and build artifacts from the spec.
 3. Verify the artifacts match the spec and that tests validate the requirements.
+4. Run `./specs/check-specs.rs` and resolve anything it reports.
 
 For this hardware project the "artifacts" derived from the spec are the firmware configuration
 ([006](006-Firmware-and-Calibration.md)), the bill of materials ([007](007-Bill-of-Materials.md)), the

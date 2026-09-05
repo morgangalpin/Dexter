@@ -163,13 +163,9 @@ end-effector wiring bundle passes through the differential's hollow bore.
   (binding, wiring survival, code-disk reads) remains in
   [DC-9](009-Design-Completion.md#performance-characterization).
 
-  **All seven recreated parts now render as one clean solid from measured geometry.** An earlier
-  verification compared diameters and face positions rather than surfaces and could not see shape error;
-  under the revised, surface-based contract, six of the seven agree with their references within
-  0.150 mm and the seventh (720-001 Diff Gear Shaft) was deliberately cut to a tooth form other than its
-  own reference's, an explicit decided exception rather than a defect — see
-  [DC-2](009-Design-Completion.md#differential-detail-design) for the per-part measurements and the
-  revised verification contract.
+  The recreated parts are verified against their reference meshes surface by surface, with one decided
+  exception on the Diff Gear Shaft's tooth form. The verification contract, the per-part measurements
+  and that exception's reasoning are [DC-2](009-Design-Completion.md#differential-detail-design).
 
   **Authored mechanism facts** (measured from the built part set, now fixed in `diff_params.scad`): all
   three bevels — Split Gear (output), Diff Gear Shaft, and Diff Gear Axle — are **20T straight bevels at
@@ -247,33 +243,15 @@ bevel apex, whose height is fixed by three separate seats in Diff Body A that ag
 face on the Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on
 the belt slot): `C = 48.5335 mm` above Body A's base plane. The lower end is Body A's **arm centreline at
 z = 11.000** — its 20 × 20 R4 section spans z 1–21, its 6 × 6 belt slot z 8–14, and its shell is
-mirror-symmetric about that plane over z ∈ [2, 20]. So:
+mirror-symmetric about that plane over z ∈ [2, 20]. So **L4 = 48.5335 − 11.000 = 37.53 mm**, computed in
+`diff_assembly.scad` and identical in both configs.
 
-| L4 reading | Value | Source |
-|---|---|---|
-| **This design, as built** | **37.53 mm** | `diff_assembly.scad` (identical in both configs) |
-| CAD kinematic frames | 39.50 mm | `dde/HDIMeterModel.gltf`, J4 → J5 frame separation |
-| Measured DH set, J4 row `d` | 39.30 mm | HDI-007010 ([003](003-Kinematics.md#denavithartenberg-model)) |
-| Wiki link-length set | 50.95 mm | [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) |
-| Firmware — **authoritative** | 59.50 mm | `Firmware/Defaults.make_ins` |
-
-**The three geometric readings agree within 2.0 mm and the firmware's is 22 mm away from all of them.**
-That is DC-6's real state: not a standoff still to be designed, but a firmware value that does not describe
-this wrist. `diff_assembly.scad` computes the built figure, echoes it against all four, and asserts it stays
-beside the geometric cluster rather than drifting toward the firmware value — L4 is not a number to reach by
-adjusting the model until it fits. The one assumption left is whether the arm centreline really is where the
-L3 tube lands; nothing in the 700 set shows the tube meeting it, so that is the first thing to check.
-
-**A superseded decomposition, recorded because its arithmetic looked sound.** This section previously split
-L4 into a differential contribution plus an **End Arm Hub standoff** — 31.0 + 28.5 mm, then briefly
-48.53 + 10.97 mm. There is no such split: the End Arm Hub (`#420-001`, CAD `HDI-500-001_EndArmHub`) sits at
-the **elbow**, a whole L3 away from the differential, exactly as the [End Arm Hub](#end-arm-hub-j3j4-region)
-section below describes it. Its glue rigs show the separation directly — `GlueRig_EndArmHubToDiff_A`+`_B`
-span 362 mm and `GlueRig_ArmBodyToEndArmHub_A`+`_B` span 405 mm, both long jigs holding parts at opposite
-ends of a tube. The two parts share no face to split at. The 28.5 mm once credited to the hub is a real
-feature of it — measured on `420-001_EndArmHub.stl`, its tube socket axis sits at z = −25.000 and its top
-face at z = +4.000, **29.000 mm** apart on its own bearing axis — but that is an offset at the **L3 end**,
-and nothing to do with L4.
+**That is not the firmware's L4, and reconciling them is not this document's job.** The competing readings,
+which of them corroborate each other, the two superseded decompositions recorded so they are not
+re-derived, and the measurement that settles it are all
+[DC-6](009-Design-Completion.md#link-length-discrepancy-l4). `diff_assembly.scad` asserts the built figure
+stays beside the geometric readings rather than drifting toward the firmware value, so L4 is not a number
+this model set can be adjusted until it reaches.
 
 ### End Arm Hub (J3–J4 region)
 
@@ -295,8 +273,7 @@ dynamic fingers with replaceable grip pads).
 
 ## Open items by subassembly
 
-An index into [009-Design-Completion.md](009-Design-Completion.md), which owns each item's state, priority,
-and definition of done. A subassembly not listed here has none open.
+A subassembly not listed here has nothing open.
 
 | Subassembly | Joints | Drive | What is open |
 |---|---|---|---|
