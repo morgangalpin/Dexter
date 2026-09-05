@@ -69,7 +69,7 @@ Travel is bounded in firmware, expressed as arcseconds from center. The degree e
 | J4 | ±390010 | **±108.3°** | REQ-WS-4 |
 | J5 | ±684010 | **±190.0°** | REQ-WS-5 |
 
-`[Specified]` — *Source: `Firmware/Defaults.make_ins` (`J*BoundryHigh/Low`).* These are the firmware
+*Source: `Firmware/Defaults.make_ins` (`J*BoundryHigh/Low`).* These are the firmware
 constants of record; the physical range must not be commanded beyond them (and the mechanical
 range must accommodate them — confirm on build).
 
@@ -86,7 +86,7 @@ firmware is **L5 first, L1 last**.
 | L4 | J4 → J5 axis | 59.50 mm | 50.80 mm | +8.70 mm |
 | L5 | J5 axis → tool tip | 82.44 mm | 82.55 mm | −0.11 mm |
 
-`[Specified]` — *Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`).*
+*Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`).*
 
 **Design notes.**
 - L5 is essentially identical across versions, consistent with the tool interface being cross-version
@@ -117,7 +117,7 @@ Per-link masses used by the gravity/torque model, useful for sizing, dynamics, a
 | Link 4 | 0.100 kg |
 | Link 5 | 0.044 kg |
 
-`[Provisional]` — *Source: `dde/math/DH.js` `torques_gravity` default masses; gravity 9.81 m/s².* Moving-link
+*Source: `dde/math/DH.js` `torques_gravity` default masses; gravity 9.81 m/s².* Moving-link
 mass totals ≈ 4.79 kg above the base. Confirm against a physical build.
 
 ## Denavit–Hartenberg model
@@ -139,7 +139,7 @@ The reference kinematic model is the DH parameter set measured from a serialized
 | J5 | 0.055616 | 94.5697 | 0.000000 | 90.0000 |
 | Tool | 0.082950 | 0.0000 | 0.000000 | −90.0000 |
 
-`[Specified]` — *Source: `dde/math/DH.js` ("DH params from Dexter HDI-007010 (meters and degrees)").*
+*Source: `dde/math/DH.js` ("DH params from Dexter HDI-007010 (meters and degrees)").*
 
 **Notes.**
 - This is a *measured* model of a specific calibrated unit; the `a` and `d` terms cross-check the nominal

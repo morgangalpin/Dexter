@@ -1,7 +1,10 @@
 # 009 — Design Completion
 
 This document is the live list of **open design decisions** that must be closed to make Dexter
-fully buildable and to advance its `[Provisional]`/`[TBD]` items to `[Specified]`. Each item states the
+fully buildable and to advance its `[Provisional]`/`[TBD]` items to `[Specified]`. **It owns design
+status.** No other document in the set carries status markers: each states its design as the design of
+record and links here where something is still open, so anything not named below is `[Specified]`
+([README.md](README.md#design-status)). Each item states the
 requirement it must satisfy, its current state, what closing it requires (definition of done), and what it
 blocks. These are design tasks owned by this project — not gaps in knowledge about the robot.
 
@@ -24,7 +27,7 @@ reference geometry.
 |---|---|---|---|---|---|
 | DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
 | DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | — | `[Specified]` ✔ closed |
-| DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | Tooth-count decomposition | `[Provisional]` |
+| DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | — | `[Specified]` ✔ closed |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | Socket-seat depth check | `[Provisional]` |
 | DC-6 | [Link-length discrepancy (L4)](#link-length-discrepancy-l4) | P2 | Kinematic accuracy | Caliper measurement | `[TBD]` |
@@ -33,13 +36,19 @@ reference geometry.
 | DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | Instrumented build | `[TBD]` |
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
+| DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to DC-3's counts | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, and DC-8 are closed. Every other item has been narrowed to the
+**Completion progress.** DC-1, DC-2, DC-3, and DC-8 are closed. Every other item has been narrowed to the
 single remaining gap named in the table above, and each of those gaps is one of three kinds of work:
-**procurement** (DC-11), **design or reconstruction authored here** (DC-3, DC-6, DC-10), or **a check on
+**procurement** (DC-11), **design or reconstruction authored here** (DC-6, DC-10, DC-12), or **a check on
 a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — the largest single piece of work in the set — is
 authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
 measured geometry. Its physical-build checks remain with DC-9.
+
+**DC-3 closed by decision, and it spawned DC-12.** Choosing the wrist's tooth-count split settled the
+ratio but did not re-cut the parts that carry it, and measurement showed those parts still hold the
+previous version's counts — so the authoring work that follows is tracked separately rather than left
+implicit inside a closed item.
 
 ---
 
@@ -449,41 +458,165 @@ alone, geometrically verified per the contract above. The physical checks former
 first-build checklist. Status `[Specified]`.
 
 ## Wrist reduction ratio
-**DC-3 · P2 · Requirement: REQ-STR-3, REQ-PRE (J4/J5) · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5), [006](006-Firmware-and-Calibration.md#drive-constants-axiscal)**
+**DC-3 · P2 · Requirement: REQ-STR-3, REQ-PRE (J4/J5) · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5), [006](006-Firmware-and-Calibration.md#drive-constants-axiscal)** — ✔ **closed**
 
-**Open:** the tooth-count decomposition. The **net** wrist reduction is fixed and specified; which pulleys
-realize it is not.
+**Closed.** The decomposition is decided here, as the item required: **16T motor → 108T External pulley**
+across the arm, the elbow crossing 1:1, then **40T Internal pulley → 80T differential input pulley**. That
+is 108/16 = 6.75 and 80/40 = 2.0, netting **13.5:1 exactly**. The belt lengths that follow are derived
+below. The parts this obliges are re-cut under [DC-12](#wrist-pulley-rework); the resolution check on a
+build is [DC-9](#performance-characterization)'s.
 
-**The net ratio is derivable from the firmware.** Only the *individual tooth counts* are unpinned — the
-net motor→joint reduction is fully determined by `AxisCal`:
+**The net ratio is fixed by the firmware and was never the open part.**
+`AxisCal = gear_ratio × motor_steps × microstepping`; with a 400-step motor at 16× microstepping one motor
+revolution is 6400 microsteps, so J4/J5's `AxisCal` = 86400 gives **86400 / 6400 = 13.5:1**. Corroborated
+by this unit's `Firmware/AxisCal.txt` (J4/J5 line = 0.0666667 = 13.5 × 6400 / 1 296 000) and by its
+`ANGLE_END_RATIO` term (−4 529 848 = −round(13.5 / 50 × 2²⁴); the base-joint `50` there vs the
+authoritative `52` is a separate stale-file note in
+[006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The previous version's `AxisCal` = 36000
+gives **5.625:1**.
 
-- `AxisCal = gear_ratio × motor_steps × microstepping`. With a 400-step motor at 16× microstepping,
-  one motor revolution = 6400 microsteps.
-- **J4/J5 (this version):** `AxisCal` = 86400 ⇒ **net wrist reduction = 86400 / 6400 = 13.5:1.** Corroborated
-  independently by this unit's `Firmware/AxisCal.txt` (J4/J5 line = 0.0666667 = 13.5 × 6400 / 1 296 000) and
-  by its `ANGLE_END_RATIO` term (−4 529 848 = −round(13.5 / 50 × 2²⁴); the base-joint `50` there vs the
-  authoritative `52` is a separate stale-file note in
-  [006](006-Firmware-and-Calibration.md#drive-constants-axiscal)).
-- **J4/J5 (previous version):** `AxisCal` = 36000 ⇒ net wrist reduction = 36000 / 6400 = **5.625:1**, which is exactly its
-  belt stage **90T / 16T** documented in the wiki (`Joints.md`, `Firmware.md`: motor pulley 16T → joint-3
-  pulley 90T).
+**The whole 13.5 has to come from the belts, because the differential is 1:1.** All three bevels are one
+20T crown ([DC-2](#differential-detail-design)), so with side-gear angles θ_A and θ_B the carrier — Diff
+Body B, which carries J4's encoder track — turns (θ_A + θ_B)/2 and the Split Gear turns (θ_A − θ_B)/2
+against it. Driving the two inputs in common gives J4 one-for-one with the input pulleys, driving them in
+opposition gives J5 the same, so the differential contributes **1:1 in both modes** and neither multiplies
+nor divides the belt reduction. The previous version confirms it arithmetically: its net 5.625:1 is
+*exactly* its belt train, with nothing left over for the gearbox.
 
-⚠️ **Correctness fix.** The firmware expects **13.5:1**, but the previously documented 16T→90T pulleys give only
-**5.625:1** — 2.4× short. **Building the wrist with that pulley set unchanged and running it against the
-`AxisCal` specified here would produce a 2.4× wrist-scale error.** The wrist must therefore net **13.5:1** (revised
-differential and/or re-toothed pulleys — 13.5 = 2.4 × the earlier 90/16 stage), *or* the firmware `AxisCal` must
-be set to the as-built ratio. The 16T motor pulley in [007.9](007-Bill-of-Materials.md#0079-external-gear-mount--differential-motors)
-is retained; the driven side is what changes. The differential bevels are ≈1:1 (the previous version's
-net 5.625:1 equals its
-belt stage alone), so the added 2.4× lives in the belt/pulley stages.
+### The shipped model set is still the previous version's ratio
 
-**Definition of done:** the J4/J5 tooth-count decomposition — which pulleys realize the 13.5:1 net —
-**chosen here**, since no surviving record states the intended split and none can be obtained (see
-**Sources of record** above); plus the belt lengths that follow from it, validated so firmware
-`AxisCal`/`Interpolation` produce correct joint resolution and range with acceptable backlash. Status
-`[Provisional]`: **the target net ratio (13.5:1) is fixed and specified**; only the tooth-count split is
-open. Do **not** ship the previous version's 16T/90T driven set against this firmware without re-checking
-the net ratio.
+⚠️ **This is measured, not inferred.** Counting teeth on the HD models themselves
+(`scadmesh teeth`, on slices through each tooth band) gives:
+
+| Part | Teeth | Tip Ø measured |
+|---|---|---|
+| `#6A0-001` motor pulley (bought) | 16T | — |
+| `#430-001` / `#430-002` External Outer / Inner | **90T / 90T** | 56.2 mm |
+| `#421-001` / `#421-002` Internal Outer / Inner | **40T / 40T** | 24.4 / 24.8 mm |
+| `#720-003` Diff End Pulley, `#720-001`'s integrated band | **40T** | 24.8 mm |
+
+The two channels are identical, and the elbow crossing is 1:1 by construction — the outer channel is the
+Ø8 stainless rod (`#421-003`), the inner channel the strake tube coupling `#430-002` to `#421-002` through
+three `#421-004` CF strakes, and each merely carries torque across the elbow at unity. So the train as
+modelled is **16T → 90T ‖ 40T → 40T = 5.625:1**, the previous version's figure, matching the wiki's
+`Joints.md` (`90 / 16`) and its `AxisCal` of 36000. **Printing this set and running it against
+`AxisCal` = 86400 would scale every commanded J4/J5 angle by 2.4.** Four printed parts carry the error, and
+they are named in the table above.
+
+### Why the elbow pulleys alone cannot absorb the 2.4×
+
+Writing the requirement out — `(N_ext / 16) × (40 / N_int) = 13.5` with the differential pulley left at 40T
+— gives `N_ext = 5.4 × N_int`, and `N_int` has a hard floor. `#421-002` Internal Inner Pulley carries its
+tooth ring on a **Ø17 6703 seat** (Ø18 boss, measured on the model), because that bearing is what supports
+the strake tube inside `#410-002` New Belt Pulley. A GT2 ring enclosing Ø18 with any usable wall needs
+**N_int ≥ 34**, which forces `N_ext ≥ 184` — a **Ø117 mm** pulley at the elbow. Shrinking the motor pulley
+instead does not work either: reaching 13.5 from the 16T side needs 8–12T, whose tip diameters
+(4.6–7.1 mm) are at or below the Ø5 motor shaft.
+
+**So the differential input pulley must grow.** Every feasible decomposition satisfies
+`N_ext × N_diff = 216 × N_int`, and with `N_int` held at its as-built 40T that is `N_ext × N_diff = 8640`.
+
+### The split, and what decided it
+
+The net ratio, and therefore joint resolution, speed and stall torque, is identical for every solution.
+What moves is **where the reduction sits**, and that trades two things against each other. Everything
+between the stages — the Ø8 rod, the strake tube, and the stage-2 belt — carries the *intermediate* torque,
+which is motor torque × stage 1, so a larger first stage loads the elbow crossing harder. A larger second
+stage means a larger pulley at the wrist, which is what pushes Diff Body A out against its cover.
+
+| | 90 / 96 | **108 / 80 — adopted** | 120 / 72 |
+|---|---|---|---|
+| Stage 1 (motor → External) | 5.625:1 | **6.75:1** | 7.5:1 |
+| Stage 2 (Internal → differential) | 2.4:1 | **2.0:1** | 1.8:1 |
+| Torque through rod + strake tube | 2.59 N·m | **3.10 N·m** | 3.45 N·m |
+| Stage-2 belt tension at stall | 203 N | **244 N** | 271 N |
+| Differential pulley tip Ø | 60.607 | **50.422** | 45.329 |
+| Diff Body A width vs the cover's 73.5 mm | ≈74.6 — **over** | **≈64.4** | ≈59.2 |
+| External pulley tip Ø | 56.788 | **68.247** | 75.886 |
+
+Torque figures are motor stall (0.46 N·m, [DC-11(a)](#procurement-data)) taken through the stage lossless,
+and the tension is that torque at the 40T Internal pulley's pitch radius — comparative figures, not
+ratings. The Body A widths carry that part's existing running clearance and wall thickness out to the new
+pulley radius (its pulley chamber wall reads r ≈ 15.5 mm and its outer surface is gone by r ≈ 19.5 mm at
+z = 11, measured on `730-001_DiffBodyA.stl`), so they are ±2–3 mm — enough to order the options, not to
+build to.
+
+**108 / 80 is adopted** because it leaves margin on both risks rather than spending all of it on either.
+90/96 preserves every load path at exactly today's values but drives Body A past the 78 × 73.5 × 50.5 cover
+envelope that [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface) fixes
+as a `[Specified]` constraint; 120/72 keeps the differential envelope untouched but puts 33 % more torque
+through a printed tube bonded to three CF strakes, which nothing characterizes. The adopted split widens
+Body A about 4 mm inside a cover with 13.5 mm of headroom, and raises the elbow torque 20 %. Its stage 2 is
+exactly 2:1.
+
+### Belt lengths
+
+Both belts are `[Provisional]`, and for a reason worth stating rather than hiding in a tolerance: **no file
+in this repository places the pulley centres.** What is available is each as-built belt against the pulleys
+it ran on, which back-solves its own centre distance from the standard open-belt relation
+`L = 2C + π(d₁+d₂)/2 + (d₂−d₁)²/(4C)`:
+
+| Belt | As built | Pulleys | Back-solved C |
+|---|---|---|---|
+| `#430-004` stage 1 | 1120 mm | 16T → 90T | 506.45 mm |
+| `#421-005` stage 2 | 900 mm | 40T → 40T | 410.00 mm |
+
+Neither lands on its link length (L2 = 339.09, L3 = 307.50 mm), so these paths are **not** simple two-pulley
+loops — the belt directors route them, and the pulley centres are not on the joint axes. The back-solved
+figures are therefore effective centre distances for the length relation and nothing more. Carrying
+[DC-5](#link-member-lengths)'s link deltas (L2 +18.41 mm, L3 −22.70 mm) onto them and re-solving for the
+adopted tooth counts gives:
+
+| Belt | Pulleys | Effective C | Computed | **Specify** |
+|---|---|---|---|---|
+| `#430-004` stage 1 | 16T → 108T | 524.86 mm | 1175.4 mm | **1176 mm (588T) × 6 mm GT2** |
+| `#421-005` stage 2 | 40T → 80T | 387.30 mm | 895.0 mm | **896 mm (448T) × 6 mm GT2** |
+
+The tooth-count part of each change is robust — going 90T → 108T adds 18.4–19.5 mm and 40T → 80T adds
+40.2–40.8 mm across any centre distance from 200 to 800 mm — so what the uncertainty actually rides on is
+DC-5's cut lengths and the routing. **Confirm both against the measured centre distance on the first
+build before ordering**, and expect to need a tensioning adjustment either way: 20 mm of belt is 10 mm of
+centre distance.
+
+**Definition of done (met):** the tooth-count decomposition chosen here, since no surviving record states
+the intended split and none can be obtained (see **Sources of record** above), together with the belt
+lengths that follow from it. Status `[Specified]` for the ratio and the tooth counts. The parts that must
+change to realize it are [DC-12](#wrist-pulley-rework); resolution, range and backlash on a physical build
+are [DC-9](#performance-characterization). Do **not** print the four pulleys named above from the HD model
+set as they stand.
+
+## Wrist pulley rework
+**DC-12 · P2 · Requirement: REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)**
+
+**Open:** the geometry that realizes [DC-3](#wrist-reduction-ratio)'s decomposition. The tooth counts are
+decided; the parts still carry the old ones, and two of them are load-bearing structure rather than plain
+pulleys, so this is authoring work rather than a parameter edit.
+
+| Part | From | To | What the change costs |
+|---|---|---|---|
+| `#430-001` External Outer Pulley | 90T | **108T** | Tip Ø 56.8 → 68.2. Free-standing printed pulley; re-cut the ring on the existing hub |
+| `#430-002` External Inner Pulley | 90T | **108T** | Same, on the strake-tube hub |
+| `#720-003` Diff End Pulley | 40T | **80T** | Tip Ø 25.0 → 50.4 on a part `dist`-gated under DC-2 |
+| `#720-001` Diff Gear Shaft, integrated band | 40T | **80T** | Same, on the part that is *also* the J4 pivot axle |
+| `#730-001` Diff Body A | — | pulley chamber | Its wall sits at r ≈ 15.5 mm and must open to about r 27, widening the body ≈ 4 mm |
+
+`#421-001` and `#421-002` stay at **40T** — the Internal pair is what the decomposition holds fixed.
+
+Three consequences follow from the DC-2 contract and should not be discovered late. The 700-series changes
+belong in **`config="revised"` only**: `config="previous"` is what the `dist` gates in `render-all.rs`
+measure against the reference meshes, and a re-toothed pulley would read as a miss there by design.
+`PULLEY_TEETH` in [`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) is presently a
+bare `40` consumed by `gt2_pulley_teeth_2d()` alongside a measured `GT2_TIP_D` and a hand-set
+`GT2_GROOVE_C`; those three must become one config-dependent set derived from the tooth count before
+either value can move. And Diff Body A is the part `check_revised()` asserts against the
+**78 × 73.5 × 50.5 mm** cover envelope, so opening its chamber re-runs the one interface check the revised
+config exists to satisfy — the ≈64.4 mm width predicted in DC-3 is an estimate that this work replaces
+with a rendered bounding box.
+
+**Definition of done:** the five parts above re-cut in `config="revised"`, every part still rendering as
+one clean solid and previewing without warnings, Diff Body A asserting inside the cover envelope, the
+`previous` config and its `dist` gates untouched, and `diff_assembly.scad` placing the enlarged pulleys
+without interference. `[Provisional]`.
 
 ## Base plate
 **DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)**

@@ -135,10 +135,11 @@ author revision B of version 3 (or any successor):
    architecture (004), and electronics/control (005), then regenerate the derived artifacts — firmware
    configuration (006), bill of materials (007), and assembly (008). The dependency order is:
    `002 → 003 → 004 → 005 → {006, 007, 008}`.
-5. **Carry forward open decisions.** Any [009-Design-Completion.md](009-Design-Completion.md) `[TBD]` item
+5. **Carry forward open decisions.** Any open [009-Design-Completion.md](009-Design-Completion.md) item
    still open when the revision opens is inherited by it unless the change set closes it.
-6. **Re-mark design status.** A `[Specified]` item whose design the revision changes reverts to
-   `[Provisional]` until re-validated on a physical build of the new revision. Do not carry a prior
+6. **Re-mark design status.** A settled design the revision changes re-opens in
+   [009](009-Design-Completion.md) as `[Provisional]` until re-validated on a physical build of the new
+   revision — 009 owns status, so this is the only place it is marked. Do not carry a prior
    revision's validation forward across a design change.
 7. **Release.** `git tag -a version-3-rev-b version-3`, then mark the revision's section in
    [CHANGES.md](../CHANGES.md) as released with its tag and date.

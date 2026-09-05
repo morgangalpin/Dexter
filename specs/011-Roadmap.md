@@ -9,10 +9,10 @@ requests when a revision is opened, recorded in [CHANGES.md](../CHANGES.md) in t
 complete design. An item moves off this roadmap when it is opened as a change request on a revision
 branch; it is not deleted until that revision is released.
 
-1. **Validate the current design on a physical build.** Promote the `[Provisional]` items in 004–008 to
-   `[Specified]` by building and measuring one unit; feed corrections back into the specs. This is the
+1. **Validate the current design on a physical build.** Close the `[Provisional]` items in
+   [009](009-Design-Completion.md) by building and measuring one unit; feed corrections back into the specs. This is the
    precondition for every later roadmap item.
-2. **Validate the strain-wave and differential designs on a build.** Both are now `[Specified]` on paper
+2. **Validate the strain-wave and differential designs on a build.** Both are now settled on paper
    (DC-1 procurement-confirmed; DC-2 authored as parametric OpenSCAD — see
    [009](009-Design-Completion.md)); item 1's build promotes them to validated designs, including the
    differential first-build checklist under DC-9.
@@ -26,4 +26,4 @@ branch; it is not deleted until that revision is released.
    new subsystem specified in its own document if pursued.
 6. **Payload, speed, and reach envelope characterization.** Measure and publish the performance figures
    that [002-Requirements.md](002-Requirements.md) currently marks for confirmation, turning derived or
-   `[TBD]` performance numbers into `[Specified]` ones.
+   the open performance numbers into measured ones.

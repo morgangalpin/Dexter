@@ -2,10 +2,10 @@
 
 This document is the procedure that builds the parts in [007-Bill-of-Materials.md](007-Bill-of-Materials.md)
 into the robot specified in [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md). It is a
-**derived artifact** — regenerate it when the mechanical design changes. Steps for `[Provisional]`
-subassemblies (the bolted base, the differential substitute, the revised link lengths) are the current
-procedure of record; confirm the corresponding [009-Design-Completion.md](009-Design-Completion.md) item
-before committing irreversible work (cutting CF, pressing strain-wave splines). A from-scratch build ends
+**derived artifact** — regenerate it when the mechanical design changes. Steps for subassemblies with an
+open item (the bolted base, the differential, the revised link lengths) are the current procedure of
+record; confirm the corresponding [009-Design-Completion.md](009-Design-Completion.md) item before
+committing irreversible work (cutting CF, pressing strain-wave splines). A from-scratch build ends
 with the firmware/calibration bring-up in [008.12](#00812-firmware-configuration-and-calibration).
 
 ## Assembly order
@@ -59,7 +59,7 @@ parts) that hold parts square while adhesive cures.
 7. Cure per the epoxy manufacturer's time before removing.
 
 ## 008.2 Base
-Parts: [007.2](007-Bill-of-Materials.md#0072-base). `[Provisional]` — steps 1 and 4 wait on the plate's
+Parts: [007.2](007-Bill-of-Materials.md#0072-base). Steps 1 and 4 wait on the plate's
 robot-side hole pattern ([DC-4](009-Design-Completion.md#base-plate)); the remaining steps are established.
 
 1. **(Blocked on [DC-4](009-Design-Completion.md#base-plate))** Bolt the Base Mounting Plate to the Base
@@ -154,8 +154,7 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 11. Place the M3 washer, then M2 washer, then M2 nut, and tighten.
 
 ## 008.6 Differential
-Parts: [007.6](007-Bill-of-Materials.md#0076-differential). `[Specified]` —
-[DC-2](009-Design-Completion.md#differential-detail-design); parametric source in
+Parts: [007.6](007-Bill-of-Materials.md#0076-differential). Parametric source in
 [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/).
 
 **Before printing:** choose the parameter set. `config="previous"` builds the previous version's proven
@@ -260,13 +259,22 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 
 ## 008.9 Belts
 Parts: GT2 belts/pulleys from [007.7](007-Bill-of-Materials.md#0077-end-arm-hub) and
-[007.8](007-Bill-of-Materials.md#0078-external-gear). `[Provisional]` — the driven pulleys are set by
-[DC-3](009-Design-Completion.md#wrist-reduction-ratio); verify J4/J5 resolution empirically after
-calibration.
+[007.8](007-Bill-of-Materials.md#0078-external-gear). Belt lengths are derived rather
+than measured ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)), and the driven pulleys must be
+re-cut before printing ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
+
+⚠️ **Check the pulleys before fitting the belts.** The J4/J5 train must read **16T → 108T** along the arm
+and **40T → 80T** along L3. If the External pulleys count 90T or the differential's count 40T, they are the
+previous version's parts and the wrist will scale every commanded angle by 2.4 against this firmware
+([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). Verify J4/J5 resolution empirically after
+calibration regardless.
 
 1. Slide the 2 16T × 5 mm GT2 pulleys onto the external motors.
 2. Before tightening the set screws, confirm the belts line up with the belt directors above.
 3. Tighten one set screw against the flat of each motor shaft.
+4. Fit the two 1176 mm belts to the External pulleys and the two 896 mm belts to the differential inputs.
+   Confirm each against its measured centre distance before committing — 20 mm of belt is 10 mm of centre
+   distance, so a wrong length is not tensionable.
 
 ## 008.10 Wire Harness
 Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the previous version's Motor Control Board

@@ -66,13 +66,13 @@ arm's full dynamic load (REQ-ENV-5).
 
 ### Base mounting plate
 
-| Property | Design | Status |
-|---|---|---|
-| Material | **6061-T6 aluminium**. Steel is an acceptable alternative and adds desirable mass. Printed Onyx is **not** acceptable for a load-bearing plate | `[Specified]` |
-| Thickness | **9.5 mm (3/8″)** in aluminium — stiff against deflection under the arm's overturning moment and thick enough to tap the robot-side holes (≈6 mm if steel) | `[Specified]` |
-| Footprint | **≈200 × 200 mm** — square, or the base's bolt-circle diameter plus clearance | `[Specified]` |
-| Robot-side bolt pattern | Matches the existing mounting holes on `HDI-110-001_BaseMountBottom`; exact coordinates transfer from CAD | `[Provisional]` — [DC-4](009-Design-Completion.md#base-plate) |
-| Work-surface bolt pattern | **4 × M6 clearance holes** near the plate corners, for through-bolting to a bench or T-slot clamping | `[Specified]` |
+| Property | Design |
+|---|---|
+| Material | **6061-T6 aluminium**. Steel is an acceptable alternative and adds desirable mass. Printed Onyx is **not** acceptable for a load-bearing plate |
+| Thickness | **9.5 mm (3/8″)** in aluminium — stiff against deflection under the arm's overturning moment and thick enough to tap the robot-side holes (≈6 mm if steel) |
+| Footprint | **≈200 × 200 mm** — square, or the base's bolt-circle diameter plus clearance |
+| Robot-side bolt pattern | Matches the existing mounting holes on `HDI-110-001_BaseMountBottom`; exact coordinates transfer from CAD — the transfer is [DC-4](009-Design-Completion.md#base-plate) |
+| Work-surface bolt pattern | **4 × M6 clearance holes** near the plate corners, for through-bolting to a bench or T-slot clamping |
 
 **Stability rationale.** The worst-case static overturning moment — the arm fully extended, moving-link mass
 lumped near mid-reach plus payload at full reach, with a ×2 dynamic factor — is ≈ **45 N·m**. A plate that
@@ -82,7 +82,7 @@ work surface**, at which point the moment reacts as trivial bolt tension (≈300
 within an M6's capacity). **Design intent: the plate is a permanent bench fixture; the robot base bolts onto
 it and can be removed as a unit while the plate stays fixed.**
 
-**Double base clamp — `[Provisional]`.** The base-to-pivot joint uses a **doubled** (stacked) base clamp.
+**Double base clamp.** The base-to-pivot joint uses a **doubled** (stacked) base clamp.
 This adds height at the base and is consistent with the +6.6 mm L1 delta
 ([003](003-Kinematics.md#link-lengths)); the exact stacking and spacing is to be confirmed on build.
 
@@ -112,7 +112,6 @@ The printed adapter interfaces are cut to match the commercial component set spe
 confirmed there and dimensionally cross-checked against the printed adapter geometry in
 [DC-1](009-Design-Completion.md#strain-wave-component-set). Mating dimensions: Ø50h6 housing OD into the
 Stator Holder bore, Ø44 6-hole mounting circle, Ø6H7 wave-generator input bore onto the Wave Gen Coupler.
-`[Specified]`.
 
 *Source: firmware `AxisCal`; wiki `Hardware.md`, `Joints.md`; factory maintenance note; HanZhen manufacturer
 drawing (`Hardware/Reference/XB1-AS-C-32.pdf`).*
@@ -126,7 +125,7 @@ a printed body, and additionally carries the **belt directors** — printed, bea
 the J4/J5 drive belts along the arm to the differential. The L2 link length is specified in
 [003](003-Kinematics.md#link-lengths); the tube cut length that realizes it is derived in
 [DC-5](009-Design-Completion.md#link-member-lengths) and listed in
-[007.5](007-Bill-of-Materials.md#0075-arm-body). `[Provisional]`.
+[007.5](007-Bill-of-Materials.md#0075-arm-body).
 
 ## Wrist and differential (J4–J5)
 
@@ -136,13 +135,26 @@ common produce pitch, driven in opposition produce yaw. The inputs are two plain
 that run forward along the arm through the belt directors to the differential's input pulleys. The
 end-effector wiring bundle passes through the differential's hollow bore.
 
-- **Belt reduction, not microstep oscillation — `[Specified]` (principle + net ratio), `[Provisional]`
-  (tooth split).** The wrist obtains its resolution from a **physical pulley reduction** rather than from
-  firmware microstep oscillation. The **net wrist reduction is 13.5:1**, fixed by the J4/J5 drive constant
-  ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)). The 16T motor pulley is retained; the
-  **driven side must be toothed to net 13.5:1**, and the tooth-count split that realizes it — along with the
-  scale error that results from getting it wrong — is [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
-- **Differential detail — `[Specified]`.** The differential detail design is **authored** as parametric
+- **Belt reduction, not microstep oscillation.** The wrist obtains its resolution from a
+  **physical pulley reduction** rather than from firmware microstep oscillation. The **net wrist reduction
+  is 13.5:1**, fixed by the J4/J5 drive constant
+  ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)), and it is realized in **two belt stages
+  either side of the elbow**:
+
+  | Stage | Driver | Driven | Ratio |
+  |---|---|---|---|
+  | 1 — along the arm | `#6A0-001` **16T** motor pulley | `#430-001`/`#430-002` **108T** External pulleys | 6.75:1 |
+  | — | *elbow crossing: Ø8 rod (outer channel), strake tube (inner channel)* | | *1:1* |
+  | 2 — along L3 | `#421-001`/`#421-002` **40T** Internal pulleys | `#720-003` and `#720-001`'s band, **80T** | 2.0:1 |
+  | | | | **13.5:1** |
+
+  Both channels are identical, so J4 and J5 see the same reduction. The differential itself is **1:1** and
+  contributes nothing to it (below). The split was chosen rather than recovered, and the reasoning, the
+  measured constraint that forced the differential pulley to grow, and the belt lengths that follow are in
+  [DC-3](009-Design-Completion.md#wrist-reduction-ratio). ⚠️ **The HD model set still carries the previous
+  version's counts** — 90T External against 40T at the differential, netting 5.625:1 — so five parts must
+  be re-cut before printing ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
+- **Differential detail.** The differential detail design is **authored** as parametric
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
   `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
   `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
@@ -177,17 +189,21 @@ end-effector wiring bundle passes through the differential's hollow bore.
   the revision that produced these references re-cut three gears and left this one behind, and it still
   meshed, on a form one revision old. The Diff Gear Shaft is now rebuilt to the shared crown instead
   ([CR-3A7](../CHANGES.md)), a matched set of four rather than a faithful copy of its own superseded
-  reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are
-  **40T GT2** pulleys (the Diff End Pulley and the shaft's integrated pulley section); the Diff Gear
+  reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are **40T GT2**
+  pulleys as modelled (the Diff End Pulley and the shaft's integrated pulley section), re-cut to **80T**
+  under [DC-12](009-Design-Completion.md#wrist-pulley-rework); the Diff Gear
   Shaft doubles as the **J4 pivot axle** (its Ø25 section rides Diff Body A's 6705, its Ø17 rear journal
   the 6703); the Split Gear is **split along a 45° cone**, `r = z − 7` in its own frame — the Top half keeps
   what lies outside that cone and the Bottom half what lies inside it, the teeth running across the joint
   uninterrupted, which is why the halves must be clocked to each other on assembly by four Ø1.5 brads
   driven radially at **z = 12.750** — an axis the two references disagreed about by 0.5 mm and which the
   revised configuration settles on the Bottom half's value, `BRAD_Z` in `diff_params.scad`
-  ([DC-2](009-Design-Completion.md#differential-detail-design)). The as-built 40T input pulleys give a 40/16 = 2.5:1
-  belt stage per input — measured data for [DC-3](009-Design-Completion.md#wrist-reduction-ratio)'s
-  tooth-count split.
+  ([DC-2](009-Design-Completion.md#differential-detail-design)). **A correction:** an earlier revision of
+  this section read the differential's 40T inputs as driven straight off the 16T motor pulley, for a
+  40/16 = 2.5:1 stage. They are not — the elbow train interposes, and the belt those pulleys actually run
+  is driven by the 40T Internal pulleys at 1:1, which is why the model set nets the previous version's
+  5.625:1 rather than 2.5:1. Counted on the models in
+  [DC-3](009-Design-Completion.md#wrist-reduction-ratio).
 
 ### Differential interface
 
@@ -203,7 +219,8 @@ world units are millimetres.
 | J5 axis frame | `(0, 917.29, −2.00)` mm — **39.50 mm** from J4 along the arm axis | GLTF `DexterHDI_Link5_KinematicAssembly` |
 | Tool frame | `(54.82, 939.84, −2.00)` mm | GLTF `DexterHDI_Link6_KinematicAssembly` |
 | Travel | Full J4 and J5 travel without binding; **J5's is the demanding one** for a mechanism routing wiring through its bore | [003 § Joint travel limits](003-Kinematics.md#joint-travel-limits) |
-| Bevel ratio | **≈1:1** — the net 13.5:1 is realized in the belt stages, not inside the differential | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
+| Bevel ratio | **1:1** — the differential neither multiplies nor divides; the net 13.5:1 is realized entirely in the two belt stages | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
+| Input pulleys | **80T GT2**, tip Ø 50.422, one per channel on the J4 axis. The pulley chamber in Diff Body A must clear them | [DC-3](009-Design-Completion.md#wrist-reduction-ratio), [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
 | Encoders | Output-side optical code disks, **J4 = 115 slots, J5 = 100 slots**, read through the Angle and Rotate photointerrupter shrouds (`#824`, `#825`). J5's disk is `#710-004` (100 slots, counted on the model); **J4 has no disk — its 115 slots are cut into `#730-002` Diff Body B's mating rim** and read across the pivot from Diff Body A ([DC-11(e)](009-Design-Completion.md#the-j4-code-disk-is-missing)) | [003 § Joint definitions](003-Kinematics.md#joint-definitions), [005 § Sensing](005-Electronics-and-Control.md#sensing) |
 | Through-bore | **6 conductors** pass the hollow centre and must survive J5's full travel | REQ-IF-4, [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) |
 
@@ -264,7 +281,7 @@ The **End Arm Hub** is the printed structure at the elbow/wrist transition: it h
 intersection** (where the J3 and downstream axes meet), the internal and external pulleys that transfer the
 belt drives across the elbow, and the L3 span (J3→J4) as a 0.75" CF tube. As with the Arm Body, the L3 link
 length is specified in [003](003-Kinematics.md#link-lengths) and its tube cut length is derived in
-[DC-5](009-Design-Completion.md#link-member-lengths). `[Provisional]`.
+[DC-5](009-Design-Completion.md#link-member-lengths).
 
 ## Tool interface (roll + grip)
 
@@ -274,19 +291,16 @@ carried unchanged across every version of the robot, consistent with L5 being un
 **Dynamixel smart servos** — a **roll** axis (tool rotation) and a **grip/span** axis (gripper) — commanded
 over the tool interface serial bus ([005](005-Electronics-and-Control.md#actuation)). The printed body
 mounts the servos, routes the 6-conductor tool cable, and carries the finger/gripper hardware (static and
-dynamic fingers with replaceable grip pads). `[Specified]`.
+dynamic fingers with replaceable grip pads).
 
-## Design-status summary
+## Open items by subassembly
 
-Open items are summarized here by which subassembly they block; each item's state, priority, and definition
-of done is in [009-Design-Completion.md](009-Design-Completion.md).
+An index into [009-Design-Completion.md](009-Design-Completion.md), which owns each item's state, priority,
+and definition of done. A subassembly not listed here has none open.
 
-| Subassembly | Joints | Drive | Status | Open item |
-|---|---|---|---|---|
-| Base | J1 support | — | `[Provisional]` | [DC-4](009-Design-Completion.md#base-plate); double clamp detail |
-| Base / Pivot / External-Gear motors | J1, J2, J3 | 52:1 strain-wave | `[Specified]` | — |
-| Main Pivot | J2 | — | `[Specified]` | — |
-| Arm Body (L2) | J3 support | belt routing | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
-| End Arm Hub (L3) | J3–J4 | belt transfer | `[Provisional]` cut length | [DC-5](009-Design-Completion.md#link-member-lengths) |
-| Differential | J4, J5 | belt → differential | `[Specified]` net ratio and detail / `[Provisional]` tooth split | [DC-3](009-Design-Completion.md#wrist-reduction-ratio) |
-| Tool interface | roll, grip | smart servos | `[Specified]` | — |
+| Subassembly | Joints | Drive | What is open |
+|---|---|---|---|
+| Base | J1 support | — | Robot-side hole transfer and the double clamp detail — [DC-4](009-Design-Completion.md#base-plate) |
+| Arm Body (L2) | J3 support | belt routing | Tube cut length — [DC-5](009-Design-Completion.md#link-member-lengths) |
+| End Arm Hub (L3) | J3–J4 | belt transfer | Tube cut length — [DC-5](009-Design-Completion.md#link-member-lengths); External pulleys re-cut to 108T — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| Differential | J4, J5 | belt → differential | Input pulleys re-cut to 80T — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
