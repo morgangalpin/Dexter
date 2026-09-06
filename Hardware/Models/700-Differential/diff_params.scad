@@ -125,18 +125,18 @@ BODY_B_J4_YZ  = [-21.0, 21.0];
 BODY_B_COL_XY = [ 21.0, -21.0];
 
 // ---------------------------------------------------------------------------
-// 004 § Differential interface (revised config targets)
+// L4, the J4 -> J5 offset (004 § Differential interface, DC-6)
 // ---------------------------------------------------------------------------
-// HDI-940-001 cover interior envelope. It bounds what sits inside that cover
-// (z -32.5 .. 18.0); it does NOT bound Diff Body A, which the HDI-950 gripper
-// covers enclose instead — see 004 § Differential interface.
-COVER_ENVELOPE = [78.0, 73.5, 50.5];
-
-// L4, the J4 -> J5 offset, has three geometric readings and one firmware
-// value, and they do not agree. The three geometric ones do: see DC-6, and
-// diff_assembly.scad, which computes what this design actually builds and
-// checks it against them. L4_TARGET is recorded as the firmware's number, NOT
-// as a dimension anything here is driven to.
+// Two surviving geometric readings and one firmware value, and they do not
+// agree; the two geometric ones agree with each other to 0.2 mm. None of them
+// is a dimension anything here is driven to — diff_assembly.scad hangs a
+// tripwire on the geometric pair and arbitrates nothing. A third geometric
+// reading, taken off Diff Body A's arm, was withdrawn on 2026-09-06: that arm
+// is the tool arm, and L4's lower datum is in no file in this set. See DC-6.
+//
+// There is no HDI-940 cover envelope here. One was carried as COVER_ENVELOPE
+// until 2026-09-06 and bounded nothing this model set builds; the figure
+// belongs to 004 § Differential interface, which owns it.
 L4_TARGET      = 59.50;   // Firmware/Defaults.make_ins
 L4_GLTF        = 39.50;   // dde/HDIMeterModel.gltf, J4 -> J5 frame separation
 L4_DH_D        = 39.30;   // HDI-007010's measured DH set, J4 row's d term
@@ -151,11 +151,11 @@ L4_DH_D        = 39.30;   // HDI-007010's measured DH set, J4 row's d term
 // and driving the model from it would place the arm's flat face wrongly.
 //
 // This was config-dependent until 2026-09-06, trimmed to 77.8 in "revised" to
-// fit COVER_ENVELOPE. That trim answered a conflict that does not exist: Body A
-// is enclosed by the HDI-950 gripper covers, not by HDI-940, and they clear it
-// by 0.25 mm at 81.0 — see 004 § Differential interface. The trim cost 3.2 mm
-// of tool-arm engagement to satisfy an envelope this part never enters, so both
-// configs now build the measured part.
+// fit the HDI-940 cover. That trim answered a conflict that does not exist:
+// Body A is enclosed by the HDI-950 gripper covers, not by HDI-940, and they
+// clear it by 0.25 mm at 81.0 — see 004 § Differential interface. The trim cost
+// 3.2 mm of tool-arm engagement to satisfy an envelope this part never enters,
+// so both configs now build the measured part.
 // ---------------------------------------------------------------------------
 BODY_A_LEN = 81.0;
 

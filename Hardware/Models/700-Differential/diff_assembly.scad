@@ -452,6 +452,7 @@ assert(C.x == 0 && C.y == 0, "J4 and J5 axes must intersect at C");
 // the placement is what would silently stop being true if a frame were edited.
 assert(BEVEL_APEX_SPLIT > -BEVEL_INNER_TIP.y,
        "the Split Gear's apex is inside its own teeth - check its frame");
-// There is no assert on Body A against COVER_ENVELOPE. One stood here until
-// 2026-09-06 and checked the wrong envelope: Body A is enclosed by the HDI-950
-// gripper covers, not by HDI-940 — see 004 § Differential interface.
+// There is no envelope assert on Body A. One stood here until 2026-09-06 and
+// checked the wrong cover: Body A is enclosed by the HDI-950 gripper covers,
+// not by HDI-940 — see 004 § Differential interface, which establishes the
+// clearance by measurement rather than by a bound in this file.
