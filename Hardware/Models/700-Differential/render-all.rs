@@ -558,19 +558,9 @@ fn check_bodies(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
-fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    render("730-001_DiffBodyA.scad", "out/730-001-revised.stl", "revised", ctx, tally)?;
-    let (ok, _) = sm_json(
-        &["bbox", "out/730-001-revised.stl", "--assert-max", "78.0,73.5,50.5"],
-        ctx,
-    )?;
-    tally.record("revised Diff Body A fits the HDI-940 cover envelope", ok);
-    Ok(())
-}
-
 /// The assembly is exported to CSG rather than STL: that evaluates every
 /// parameter and assertion in `diff_assembly.scad` (the L4 split, the axis
-/// intersection, the revised envelope) in seconds, where meshing the union
+/// intersection) in seconds, where meshing the union
 /// of nine parts — three of them involute bevel gears — takes minutes and
 /// checks nothing extra. Render it to STL by hand when you want to look at
 /// it: `openscad -o out/assembly.stl -D config='"revised"' diff_assembly.scad`.
@@ -603,7 +593,6 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_dist_gates(ctx, tally)?;
     check_bodies(ctx, tally)?;
     check_counts(ctx, tally)?;
-    check_revised(ctx, tally)?;
     check_assembly(ctx, tally)
 }
 

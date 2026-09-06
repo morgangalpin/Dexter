@@ -66,10 +66,20 @@ Not part of a build. Kept because the geometry exists nowhere else.
 
 ## Known defects
 
-**None outstanding.** `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of
-scale; it is corrected in place, dimension-checked against its mates, and now also has parametric source
-([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)). It was the only defective file in the
-build set.
+**None outstanding.** Two files have been wrong and both are corrected in place:
+
+- `200-ArmBody/200-001_ArmBody.stl` was not the Arm Body. It held
+  `ArmBodyFrontStrakeMED.stl` — a 20-triangle 4.9 × 9.9 × 32 mm block — byte for byte, so the mirror
+  had matched the archive's `ArmBody*` prefix rather than the part. The Arm Body is
+  `ArmBodyWEncode.stl` in [thing:3781990](https://www.thingiverse.com/thing:3781990) (11,946 triangles,
+  99.6 × 108.1 × 98.0 mm), and that is now the file. It is the part: its 29 × 29 mm L2 tube socket sits
+  where the CAD model's `HDI-310-001_ArmBody` puts it, to the seat depth
+  [DC-5](../../specs/009-Design-Completion.md#link-member-lengths) measures. **Any prefix-matched file in
+  this mirror is worth re-checking the same way** — a file that is the right size and the wrong part
+  passes every check the manifest makes.
+- `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of scale; it is
+  dimension-checked against its mates and now also has parametric source
+  ([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)).
 
 `Reference/meshes/700-Differential/720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a
 defect — it prints normally — but it is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd`

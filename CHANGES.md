@@ -147,9 +147,11 @@ anything version 3 does not independently specify
   part, shared dimensions in `diff_params.scad`, the bevel crown in `diff_bevel.scad`, the bought items in
   `diff_hardware.scad`, and `diff_assembly.scad` standing all nine parts and their hardware up as a machine.
   Two parameter sets: `config="previous"` reproduces the built differential; `config="revised"` meets
-  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface) — Diff Body A
-  trimmed 80.98 → 77.8 mm for the HDI-940 cover envelope, and the Split Gear's two halves drilled on one
-  brad axis. `render-all.rs` renders and checks every part in both configurations; `render-meshes.rs` caches
+  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface) — the Split
+  Gear's two halves drilled on one brad axis. A Diff Body A trim to 77.8 mm belonged to that set until
+  2026-09-06, when it was reverted under
+  [DC-2](specs/009-Design-Completion.md#differential-detail-design).
+  `render-all.rs` renders and checks every part in both configurations; `render-meshes.rs` caches
   the nine as binary STL for the assembly to import, ~54× faster to load than ASCII and carrying more digits
   than the ASCII writer emits. The oversize `710-002` STL is corrected in place (exact 1/1000,
   mate-verified — DC-11(f) closed).

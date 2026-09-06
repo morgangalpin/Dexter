@@ -226,10 +226,16 @@ envelope model and the measured kinematics corroborate each other. It does *not*
 candidate in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) — a kinematic-assembly node origin
 need not sit exactly on the joint axis, so treat it as corroboration of the envelope, not as an L4 value.
 
-**Envelope conformance.** The previous version's Diff Body A is 80.98 mm across — wider than the cover's
-78.0 mm — so `config="previous"` builds must omit the `HDI-940` covers or re-cut them. The authored
-`config="revised"` trims Diff Body A to 77.8 mm (`BODY_A_LEN` in `diff_params.scad`); `render-all.rs`
-asserts the revised body against the cover envelope.
+**Envelope conformance — against the gripper covers, not this one.** Diff Body A is enclosed by
+`HDI-950-001`/`-002`, which reproduce its extents with 0.25 mm clearance on three faces: cover x from
+−30.250 against the Ø60 top plate's 30.000 mm radius, cover z −32.250 and +28.250 against Body A's
+±29.988 mm half-width about the J5 axis at z = −2.000. Its 81 mm axis therefore lies along world **x**,
+inside an 85.065 mm cover, and the previous version's 80.98 mm fits. An earlier revision of this section
+compared that 80.98 mm against `HDI-940-001`'s 78.0 mm instead and called it an envelope violation; the two
+parts do not overlap — `HDI-940` spans z −32.5 to 18.0 and Body A does not enter it. The
+`config="revised"` trim to 77.8 mm that violation produced was reverted on 2026-09-06 under
+[DC-2](009-Design-Completion.md#differential-detail-design); `BODY_A_LEN` is 81.0 mm in both
+configurations.
 
 **L4 realization.** The J4 and J5 axes **intersect**, at the differential centre — inherent to a bevel
 differential, and the reason the measured DH set carries `a ≈ 0` on both wrist rows and puts the wrist
@@ -237,21 +243,23 @@ geometry in the `d` offsets instead ([003 § DH model](003-Kinematics.md#denavit
 length L4 ([DC-6](009-Design-Completion.md#link-length-discrepancy-l4)) is therefore an offset **along the
 J4 axis** rather than a distance between two separated lines.
 
-It runs from the point where **L3 lands on the J4 axis** up to the differential centre, and both
-ends are geometry this model set can name. The upper end is `C`, derived from the Diff Gear Shaft's own
-bevel apex, whose height is fixed by three separate seats in Diff Body A that agree exactly (the rear 6703
-face on the Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on
-the belt slot): `C = 48.5335 mm` above Body A's base plane. The lower end is Body A's **arm centreline at
-z = 11.000** — its 20 × 20 R4 section spans z 1–21, its 6 × 6 belt slot z 8–14, and its shell is
-mirror-symmetric about that plane over z ∈ [2, 20]. So **L4 = 48.5335 − 11.000 = 37.53 mm**, computed in
-`diff_assembly.scad` and identical in both configs.
+It runs from the point where **L3 lands on the J4 axis** up to the differential centre. Only the upper end
+is geometry this model set can name: `C`, derived from the Diff Gear Shaft's own bevel apex, whose height
+is fixed by three separate seats in Diff Body A that agree exactly (the rear 6703 face on the Ø20 waist
+shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on the belt slot):
+`C = 48.5335 mm` above Body A's base plane.
 
-**That is not the firmware's L4, and reconciling them is not this document's job.** The competing readings,
-which of them corroborate each other, the two superseded decompositions recorded so they are not
-re-derived, and the measurement that settles it are all
-[DC-6](009-Design-Completion.md#link-length-discrepancy-l4). `diff_assembly.scad` asserts the built figure
-stays beside the geometric readings rather than drifting toward the firmware value, so L4 is not a number
-this model set can be adjusted until it reaches.
+**The lower end is not in this model set.** An earlier revision of this section took it as Body A's arm
+centreline at z = 11.000, giving L4 = 37.53 mm. That arm is the **tool** arm — a 20 × 20 R4 spigot on world
++x carrying the six-conductor through-bore out to the gripper — while the L3 tube runs along world y at
+(x = 0, z = 36.000). The two are perpendicular and in different halves of the wrist, so 48.5335 − 11.000
+spans no link. Body A's own figures stand as measurements of Body A: its 20 × 20 R4 section spans z 1–21,
+its 6 × 6 belt slot z 8–14, and its shell is mirror-symmetric about z = 11.000 over z ∈ [2, 20]. What was
+withdrawn is the claim about which link that plane bounds.
+
+**Reconciling L4 with the firmware is not this document's job.** The competing readings, the evidence that
+withdrew the 37.53 mm one, and the three superseded decompositions recorded so they are not re-derived are
+all [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
 
 ### End Arm Hub (J3–J4 region)
 

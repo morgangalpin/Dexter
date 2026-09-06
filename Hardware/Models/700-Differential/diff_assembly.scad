@@ -118,12 +118,19 @@
 //
 // So L4 needs one datum this model can supply and one it cannot. The upper end
 // is C, which is derived here. The lower end is where the L3 span meets the J4
-// axis, and everything about Diff Body A's arm is centred on ITS z = 11.000 —
-// the 20 x 20 R4 section spans z 1..21, the 6 x 6 belt slot z 8..14, and the
-// shell is mirror-symmetric about that plane over z in [2,20]. Taking that
-// centreline as the L3 axis is what L4_BUILT below assumes, and it is the one
-// assumption in this file that no measurement here settles: nothing in the
-// 700 set shows the tube landing on it. It is the thing to check first.
+// axis, and this file used to take that as Diff Body A's arm centreline at ITS
+// z = 11.000, calling the difference L4. That was checked on 2026-09-05 and it
+// is wrong: Body A's arm is the TOOL arm, on world +x inside the HDI-950
+// gripper covers, while the L3 tube runs along world y at (x=0, z=36.000).
+// They are perpendicular and in different halves of the wrist, so the
+// difference spans no link. C_OVER_ARM below still measures a real and stable
+// relation inside Body A and is kept as a tripwire on C's height, but it is
+// NOT L4 and must not be echoed or asserted as one. The lower datum is in no
+// file here — see DC-6 and DC-5(h).
+//
+// Everything else about the arm still holds as a measurement of Body A: the
+// 20 x 20 R4 section spans z 1..21, the 6 x 6 belt slot z 8..14, and the shell
+// is mirror-symmetric about that plane over z in [2,20].
 //
 // This file previously split L4 as a differential contribution plus an End Arm
 // Hub standoff, measured from Body A's z = 0 as a mating face. That was wrong,
@@ -403,18 +410,18 @@ j4() {
 // What the placement computes.
 // ---------------------------------------------------------------------------
 
-// L4 as this design builds it (see header): C's height above the plane where
-// L3 lands on the J4 axis, which is Diff Body A's arm centreline.
-L3_AXIS_Z = 11.000;
-L4_BUILT  = C.z - L3_AXIS_Z;
+// C's height above Diff Body A's arm centreline (see header). This was read as
+// L4 until 2026-09-05; that arm is the tool arm, so this is a J5-side offset
+// and no L4 reading. Kept because it is a stable relation to hang a tripwire on.
+ARM_Z       = 11.000;
+C_OVER_ARM  = C.z - ARM_Z;
 
-echo(str("L4 along the J4 axis: built=", L4_BUILT, " mm (C at ", C.z,
-         " over Body A's arm centreline at ", L3_AXIS_Z,
-         ") vs firmware target ", L4_TARGET, " mm, short by ",
-         L4_TARGET - L4_BUILT, " mm — DC-6"));
-echo(str("  the two kinematic figures agree with the build, not the target: ",
+echo(str("C over Body A's arm centreline: ", C_OVER_ARM, " mm (C at ", C.z,
+         " over ", ARM_Z, "). NOT L4 — that arm is the tool arm; L4's lower ",
+         "datum is in no file here. See DC-6"));
+echo(str("  the two surviving L4 readings, neither from this file: ",
          "GLTF frame separation ", L4_GLTF, " mm, measured DH J4 d=", L4_DH_D,
-         " mm"));
+         " mm, against the firmware's ", L4_TARGET, " mm"));
 echo(str("differential centre C=", C, "  geometry=", geometry,
          "  J4=", J4_ANG, " deg"));
 echo(BRAD_Z_TOP == BRAD_Z
@@ -429,13 +436,13 @@ echo(str("bevel set: apexes on C from shaft ", BEVEL_APEX_SHAFT,
          "; teeth ", -BEVEL_INNER_TIP.y, " .. ", -BEVEL_HEEL_ROOT.y,
          " mm out from C"));
 
-// A tripwire on the J4-axis stack, not an arbitration of DC-6. The three
-// geometric sources for L4 — this build, the GLTF frames, the measured DH set
-// — span 2.0 mm; the firmware's figure is 22 mm away from all of them. A 3 mm
-// window therefore passes the geometry as it stands and fires if a frame edit
-// moves C toward the value the firmware wants, which is the mistake worth
-// catching: L4 is not a number to reach by adjusting the model until it fits.
-assert(abs(L4_BUILT - L4_GLTF) < 3.0,
+// A tripwire on the J4-axis stack, not an arbitration of DC-6, and not a claim
+// that C_OVER_ARM is L4 — it is not. It happens to sit 2.0 mm from the two
+// surviving L4 readings and 22 mm from the firmware's, so a 3 mm window passes
+// the geometry as it stands and fires if a frame edit moves C toward the value
+// the firmware wants. That is the mistake worth catching: nothing here is a
+// number to reach by adjusting the model until it fits.
+assert(abs(C_OVER_ARM - L4_GLTF) < 3.0,
        "the J4-axis stack has moved away from the measured wrist geometry");
 // The axes must intersect: C lies on the J4 axis (x = y = 0) by construction,
 // and the Split Gear is placed on the J5 axis through the same point.
@@ -445,7 +452,6 @@ assert(C.x == 0 && C.y == 0, "J4 and J5 axes must intersect at C");
 // the placement is what would silently stop being true if a frame were edited.
 assert(BEVEL_APEX_SPLIT > -BEVEL_INNER_TIP.y,
        "the Split Gear's apex is inside its own teeth - check its frame");
-// Revised config must fit the HDI-940 cover envelope across the arm.
-if (config == "revised")
-    assert(BODY_A_LEN <= COVER_ENVELOPE.x,
-           "Diff Body A exceeds the cover envelope");
+// There is no assert on Body A against COVER_ENVELOPE. One stood here until
+// 2026-09-06 and checked the wrong envelope: Body A is enclosed by the HDI-950
+// gripper covers, not by HDI-940 — see 004 § Differential interface.

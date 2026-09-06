@@ -180,6 +180,11 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
 
 - **#100-003 Pivot Skirt** — The only source was the Dropbox in-work folder; it appears in neither
   Thingiverse set.
+- **#200-001 Arm Body** — The file was the wrong part until 2026-09-05: it held
+  `ArmBodyFrontStrakeMED.stl`, not `ArmBodyWEncode.stl`. Corrected in place from
+  [thing:3781990](https://www.thingiverse.com/thing:3781990); see
+  [README § Known defects](README.md#known-defects) for the evidence and what it implies for the rest of
+  the mirror.
 - **#420-001 End Arm Hub** — `EndArmHubJoined` was selected. `EndAxisHubXLSolidDeCant` was the other
   candidate and has been discarded; recover it from
   [thing:3781990](https://www.thingiverse.com/thing:3781990) if the hub does not fit.
