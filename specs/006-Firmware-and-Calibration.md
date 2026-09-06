@@ -4,8 +4,8 @@ This document specifies the firmware configuration and the calibration model of 
 `Defaults.make_ins` parameters that describe the physical robot to the firmware, the drive constants, and
 the factory calibration and bring-up procedure. It is a **derived artifact** — its values follow from the
 kinematics ([003](003-Kinematics.md)) and electronics/control ([005](005-Electronics-and-Control.md)) design
-and must be regenerated when those change. Values here are `[Specified]` (traceable to the firmware file and
-the factory calibration documentation) unless noted.
+and must be regenerated when those change. Values here are traceable to the firmware file and the factory
+calibration documentation; what remains open is listed in [009](009-Design-Completion.md).
 
 ## Firmware defaults: `Defaults.make_ins`
 
@@ -35,7 +35,7 @@ S, ServoSet2X, 1, 35, 1020; Roll goal torque
 S, ServoSet2X, 3, 35, 1020; Span goal torque
 ```
 
-`[Specified]` — *Source: `Firmware/Defaults.make_ins`.* Link lengths and joint boundaries are specified in
+*Source: `Firmware/Defaults.make_ins`.* Link lengths and joint boundaries are specified in
 kinematic terms in [003](003-Kinematics.md#link-lengths) and [003](003-Kinematics.md#joint-travel-limits).
 The previous version's values are retained (commented) in the source file for reference; the deltas are the design
 changes described in [001](001-Overview.md#5-design-lineage).
@@ -53,13 +53,14 @@ changes described in [001](001-Overview.md#5-design-lineage).
 - **`Interpolation`** = 1 for all joints. The previous version used 16 on J4/J5 to sub-divide microsteps for the
   oscillation trick; 1 is correct here because the belt reduction supplies wrist resolution physically.
 - **The net wrist reduction *is* derivable — 13.5:1.** `AxisCal = gear_ratio × 400 × 16`, so
-  86400 / 6400 = **13.5:1**. What the firmware alone does *not* pin is the decomposition of that ratio into
-  tooth counts, and the wrist hardware must be built to match it — both are
-  [DC-3](009-Design-Completion.md#wrist-reduction-ratio). ⚠️ Do not run this `AxisCal` against an as-built
-  wrist of a different ratio without reading that item first.
+  86400 / 6400 = **13.5:1**. What the firmware alone does not pin is how that ratio is decomposed into
+  tooth counts; the belt stages that realize it are specified in
+  [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5). ⚠️ **Confirm the as-built
+  wrist ratio before first motion** — the printed model set does not yet carry the specified counts, and
+  what running this `AxisCal` against parts printed as modelled would do to every commanded J4/J5 angle is
+  stated there.
 
-`[Specified]` (J1–J3; J4/J5 net ratio 13.5:1), `[Provisional]` (J4/J5 tooth-count realization). *Source:
-`Firmware/Defaults.make_ins`, `Firmware/AxisCal.txt`; wiki `Hardware.md`, `Joints.md`, `Firmware.md`,
+*Source: `Firmware/Defaults.make_ins`, `Firmware/AxisCal.txt`; wiki `Hardware.md`, `Joints.md`, `Firmware.md`,
 `set-parameter-oplet.md`.*
 
 > **AxisCal.txt vs Defaults.make_ins — base-joint note.** `AxisCal.txt` is a derived runtime file
@@ -90,7 +91,7 @@ recorded values are overwritten incorrectly. Operationally:
   which of them are available and which must be reconstructed is
   [DC-10](009-Design-Completion.md#from-scratch-calibration-files).
 
-`[Specified]` — *Source: wiki `Encoder-Calibration.md`, `Dexter-Setup.md`; factory calibration PDFs.*
+*Source: wiki `Encoder-Calibration.md`, `Dexter-Setup.md`; factory calibration PDFs.*
 
 ## Factory calibration procedure
 
@@ -148,7 +149,7 @@ SCP/SSH), DDE, and a grounded anti-static wrist strap whenever handling the FPGA
     line. Power-cycle; boot takes ~3 minutes, after which the end effector "nods" to confirm readiness. To
     redo calibration later, re-comment both lines so PhUI does not start and block DDE access.
 
-`[Specified]` — *Source: `DDE/InitialCalibration/HDI CAL INSTRUCTIONS- STEP {1,2,3}.pdf`.*
+*Source: `DDE/InitialCalibration/HDI CAL INSTRUCTIONS- STEP {1,2,3}.pdf`.*
 
 ## Boot and PhUI
 
@@ -157,11 +158,11 @@ On power-up, Dexter loads Ubuntu 16.04 from microSD, then — unlike earlier ver
 **PhUI** and waits for physical commands. **While in any startup mode, including PhUI, the robot does not
 respond to DDE or other control software** — only the web interface, SSH, or console work in that window. To
 exit PhUI, grip the tool interface and "cog" up (rotate to a detent) without moving sideways until the robot
-pushes back and returns home. `[Specified]` — *Source: wiki `Dexter-Setup.md`, `PhysicalUserInterface.md`.*
+pushes back and returns home. *Source: wiki `Dexter-Setup.md`, `PhysicalUserInterface.md`.*
 
 ## Maintenance
 
 Run the robot through several training series and stress-test for ~36 hours after build. Replace the
 strain-wave drive lubricant at **100 hours** and again at **2000 hours**, using the lubricant specified by
 the drive vendor ([DC-1](009-Design-Completion.md#strain-wave-component-set)). Adjust belts as needed
-(REQ-ENV-4). `[Specified]` — *Source: factory calibration documentation (Step 3 maintenance note).*
+(REQ-ENV-4). *Source: factory calibration documentation (Step 3 maintenance note).*

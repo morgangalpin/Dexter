@@ -79,6 +79,15 @@ BEVEL_OD      = 44.055;     // outside diameter of the side bevels (the
 // Module for straight bevel, 90 deg shafts, 20:20 -> 45 deg pitch cones:
 // OD = m * (teeth + 2*cos(45)) => m = OD / 21.414
 BEVEL_MOD     = BEVEL_OD / (BEVEL_TEETH + 2*cos(45));
+// PULLEY_TEETH is 40 here because that is what both references measure, and
+// "previous" must keep it: the dist gates in render-all.rs compare against
+// those meshes. It is NOT the design of record. DC-3 fixed the J4/J5 train at
+// 16T -> 108T along the arm and 40T -> 80T along L3 (net 13.5:1), so the
+// revised config's differential inputs are 80T. Making that change is DC-12,
+// and it is more than retyping this number: GT2_TIP_D below is measured for
+// 40T and GT2_GROOVE_C is hand-set to match, so all three must become one
+// config-dependent set derived from the tooth count, and Diff Body A's pulley
+// chamber (wall at r ~15.5) has to open to about r 27 to clear a 80T ring.
 PULLEY_TEETH  = 40;         // Diff End Pulley + Diff Gear Shaft section
 GT2_PITCH     = 2.0;        // GT2 belt pitch
 GT2_PLD       = 0.254;      // GT2 pitch line distance (belt standard)

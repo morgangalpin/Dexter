@@ -63,13 +63,13 @@ internal control, commanded over the tool interface serial bus. *Source: wiki `H
 
 ## Boards
 
-| Board | Role | Status | Source of record |
-|---|---|---|---|
-| **Motor Control PCB** | Stepper drivers, power distribution, opto/tool connectors, FPGA carrier interface | `[Provisional]` — reuse the previous version's board | `Hardware/Motor PCB/` gerbers (D3/D4-corrected revision) |
-| **MicroZed FPGA/SoC** | Xilinx Zynq module: FPGA fabric (joint servo, gateware) + ARM core (DexRun, Linux) | `[Specified]` | wiki `MicroZed.md` for the exact module part number |
-| **Optical boards (×5)** | LED + phototransistor opto pickups, one per joint encoder | `[Specified]` | `Hardware/Opto/` gerbers/BOM |
+| Board | Role | Source of record |
+|---|---|---|
+| **Motor Control PCB** | Stepper drivers, power distribution, opto/tool connectors, FPGA carrier interface | `Hardware/Motor PCB/` gerbers (D3/D4-corrected revision) |
+| **MicroZed FPGA/SoC** | Xilinx Zynq module: FPGA fabric (joint servo, gateware) + ARM core (DexRun, Linux) | [C-701](007.1-Parts-Catalog.md#7-electronics-and-wiring) for the exact module part number |
+| **Optical boards (×5)** | LED + phototransistor opto pickups, one per joint encoder | `Hardware/Opto/` gerbers/BOM |
 
-- **Motor Control PCB — `[Provisional]`.** No Motor Control PCB design of this version's own exists; the
+- **Motor Control PCB.** No Motor Control PCB design of this version's own exists; the
   previous version's "green" board is reused (`09051-00135-A`, the revision carrying the D3/D4 power fix).
   Its gerbers and BOM (`Hardware/Motor PCB/`) define the board of record:
 
@@ -101,7 +101,7 @@ support it. The motor rail feeds the six A4983 stepper drivers (≈2 A/phase, fu
 the TPS54541 bucks derive the logic rails from it. Servo power for the tool is derived on the tool side.
 
 **Under-voltage is a failure mode, not just a slowdown:** a 12 V or 24 V brick causes the arm to grind and
-buzz, stall mid-motion, and fail to find home. Do not substitute one. `[Specified]` — *Source: wiki
+buzz, stall mid-motion, and fail to find home. Do not substitute one. *Source: wiki
 `Troubleshooting.md`; Motor PCB BOM (`Hardware/Motor PCB/09011-00135-A.BOM`);
 [LTC3786 datasheet](https://www.digikey.com/en/products/detail/analog-devices-inc/LTC3786IUD-PBF/2407353).*
 
@@ -141,20 +141,13 @@ safety-relevant.
 **Safety.** On the previous version, White may carry 6–8.75 V; here the same physical wire and terminal are
 a second ground. Connecting an older harness to a board configured for this version (or vice versa) without
 re-checking this assignment shorts a power rail to ground. Verify the White assignment against the board before first
-power-on. `[Specified]` — *Source: wiki `End-Effectors.md` ("Version 2 Wiring").*
+power-on. *Source: wiki `End-Effectors.md` ("Version 2 Wiring").*
 
-## Design-status summary
+## Open items
 
-Each open item's state, priority, and definition of done is in
-[009-Design-Completion.md](009-Design-Completion.md).
+Nothing else in this document is open.
 
-| Item | Status | Open item |
-|---|---|---|
-| Optical encoders + opto boards | `[Specified]` | — |
-| FPGA joint-servo loop / gateware | `[Specified]` | — |
-| Stepper actuation J1–J5 | `[Specified]` | — |
-| Tool servo actuation | `[Specified]` | — |
-| MicroZed FPGA/SoC | `[Specified]` | Confirm exact module P/N |
-| Motor Control PCB | `[Provisional]` | [DC-7](009-Design-Completion.md#motor-control-pcb) |
-| Power supply | `[Specified]` | — |
-| Tool interface wiring | `[Specified]` | — |
+| Item | What is open |
+|---|---|
+| Motor Control PCB | Physical power-on test of the reused board — [DC-7](009-Design-Completion.md#motor-control-pcb) |
+| Cooling fan over the stepper drivers | Size and voltage — [DC-11](009-Design-Completion.md#procurement-data) |

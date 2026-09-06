@@ -236,3 +236,38 @@ anything version 3 does not independently specify
   the candidate side 0.414 → 0.397 → 0.377 mm; neither touches the 0.276 mm interference with the axle
   bevel's toe cone, which is on a different surface and still needs its own answer. Whether the built
   shaft should carry the Ø0.2 wall holes at all is open under DC-11.
+
+### CR-3A8: Wrist tooth-count decomposition; design status consolidated into 009
+
+- **Affects:** [004 §Wrist](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [006 §Drive constants](specs/006-Firmware-and-Calibration.md#drive-constants-axiscal),
+  [007.1 §3](specs/007.1-Parts-Catalog.md#3-belts-and-pulleys),
+  [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub),
+  [007.2](specs/007.2-Printed-Parts.md#end-arm-hub-and-pulleys--0077);
+  [specs/README.md](specs/README.md#document-ownership) and every document in the set.
+- **Amends:** [CR-3A1](#cr-3a1-belt-reduced-wrist-j4j5) (closes
+  [DC-3](specs/009-Design-Completion.md#wrist-reduction-ratio)).
+- **Was:** The 13.5:1 wrist ratio was undecomposed, with no surviving record of the intended tooth split.
+  Design status was also duplicated across 201 markers in 002-009, some stale — e.g. 002 still called the
+  wrist reduction `[Provisional]` after this same change closed DC-3.
+- **Now:**
+  - Decomposed to **16T motor → 108T External** (6.75:1) → elbow 1:1 → **40T Internal → 80T differential
+    input** (2.0:1) = **13.5:1** net, chosen over 90/96 and 120/72 for margin on both elbow torque and the
+    differential's envelope against its cover. Belts: **1176 mm (588T)** and **896 mm (448T)** × 6 mm GT2
+    (was 1120/900 mm). Corrects an earlier 004 reading of the differential as driven directly off the motor
+    pulley.
+  - The HD model set still carries version 2's counts (90T/40T/40T) — five parts need re-cutting, tracked
+    as [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework).
+  - Design status now owned solely by **009** ([README §Document
+    ownership](specs/README.md#document-ownership)): status markers removed from 002-008, 010 and 011;
+    004's and 005's status tables became open-item indexes; other stale duplicated prose (L4 splits, BOM
+    mismatches, supply substitution limits, the strain-wave component list, stepper requirements, the stale
+    `AxisCal.txt` note, version identity, derived-document scopes) corrected to match 009.
+- **Driver:** DC-3 required the tooth split be chosen (originator out of business); a value written down
+  twice eventually disagrees with itself, with nothing left to say which copy is the design.
+- **Re-derive:** 007.1/007.2/007.7 done; 008.5/008.7 pending DC-12's re-cuts. No design value changed by
+  the status consolidation.
+- **Status:** `[Specified]` for the ratio and tooth counts; belt lengths `[Provisional]` — confirm against
+  the measured centre distance before ordering. `[Specified]`/`[Provisional]`/`[TBD]` remain defined in
+  [README](specs/README.md#design-status) and are applied in 009 only going forward; prior CR entries keep
+  the markers they were written with.
