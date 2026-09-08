@@ -66,8 +66,17 @@ Not part of a build. Kept because the geometry exists nowhere else.
 
 ## Known defects
 
-**None outstanding.** Two files have been wrong and both are corrected in place:
+**None outstanding.** Three files have been wrong and all three are corrected in place:
 
+- `100-Base/110-001_BaseMountBottom.stl` was the **un-bolted predecessor**, an 85 × 85 × 98 mm part whose
+  bottom face carried no fastener features whatever: sections through it return only an outer Ø ≈ 72.9
+  profile and a Ø53.99 bore, and the six 60°-spaced features on its Ø71.302 circle decompose into six
+  straight lines — 12.94 × 3.82 mm slots for the `#110-003` CF strakes, not a bolt pattern. The design of
+  record is a **bolted** base ([004 § Base (J1)](../../specs/004-Mechanical-Architecture.md#base-j1)), and
+  the CAD model holds it as `BaseMountBottom_Bolted v9`: 150 × 150 × 98 mm, with eight Ø6.000 mounting
+  holes through a 10 mm flange. That is now the file, exported from `dde/HDIMeterModel.gltf` in the part's
+  own frame. **This was found by re-checking a file the manifest was perfectly happy with** — the previous
+  entry was a valid, closed, correctly named mesh of the wrong revision.
 - `200-ArmBody/200-001_ArmBody.stl` was not the Arm Body. It held
   `ArmBodyFrontStrakeMED.stl` — a 20-triangle 4.9 × 9.9 × 32 mm block — byte for byte, so the mirror
   had matched the archive's `ArmBody*` prefix rather than the part. The Arm Body is
@@ -80,6 +89,20 @@ Not part of a build. Kept because the geometry exists nowhere else.
 - `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of scale; it is
   dimension-checked against its mates and now also has parametric source
   ([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)).
+
+The Base Mount Bottom is the only file here taken from the GLTF, and it takes two steps rather than one:
+
+```
+scadmesh gltf dde/HDIMeterModel.gltf --node HDI-110-001_BaseMountBottom \
+    --frame HDI-110-001_BaseMountBottom --scale 1000 --out raw.stl
+scadmesh repair raw.stl --out 100-Base/110-001_BaseMountBottom.stl
+```
+
+`--scale 1000` is needed because `--frame` reports the node's own units — metres here — where the default
+world export converts to millimetres. And the GLTF mesh arrives with three 11.5 µm holes at the central
+bore's seam, so it is not a closed solid until `repair` triangulates them; every other mesh in this
+directory is closed, and this one now is too. The repair adds 3 triangles and moves no existing vertex,
+leaving surface area and enclosed volume unchanged.
 
 `Reference/meshes/700-Differential/720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a
 defect — it prints normally — but it is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd`

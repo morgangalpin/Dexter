@@ -19,7 +19,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | #100-001 | Base Clamp | 2 | `100-001_BaseClamp.stl` |  |
 | #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.stl` |  |
 | #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.stl` | ⚠️ |
-| #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` |  |
+| #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` | ⚠️ |
 | #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.stl` |  |
 | #120-001 | Base Long | 1 | `120-001_BaseLong.stl` |  |
 
@@ -180,6 +180,11 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
 
 - **#100-003 Pivot Skirt** — The only source was the Dropbox in-work folder; it appears in neither
   Thingiverse set.
+- **#110-001 Base Mount Bottom** — The file was the un-bolted predecessor until 2026-09-07, and it carried
+  no robot-side mounting holes at all. Replaced by the bolted part the design of record calls for; see
+  [README § Known defects](README.md#known-defects) for the evidence, and
+  [004 § Base mounting plate](../../specs/004-Mechanical-Architecture.md#base-mounting-plate) for the hole
+  pattern it now carries.
 - **#200-001 Arm Body** — The file was the wrong part until 2026-09-05: it held
   `ArmBodyFrontStrakeMED.stl`, not `ArmBodyWEncode.stl`. Corrected in place from
   [thing:3781990](https://www.thingiverse.com/thing:3781990); see
