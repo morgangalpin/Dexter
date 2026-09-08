@@ -61,7 +61,7 @@ the output, not the motor shaft. This is the defining performance requirement of
 | REQ-STR-1 | Lightweight, stiff structure | 3D-printed body stiffened by bonded pultruded carbon fiber | — | [004](004-Mechanical-Architecture.md#materials-and-construction-methods) |
 | REQ-STR-2 | Base-joint reduction | **52:1** strain-wave (harmonic) drive on J1–J3 | — | [004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive) |
 | REQ-STR-3 | Wrist reduction | Belt/pulley reduction driving the J4/J5 differential, **net 13.5:1** | [DC-12](009-Design-Completion.md#wrist-pulley-rework) | [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) |
-| REQ-STR-4 | Rigid mounting | Bolted base to a stable work surface; doubled base clamp at the base-pivot joint | [DC-4](009-Design-Completion.md#base-plate) | [004](004-Mechanical-Architecture.md#base-j1) |
+| REQ-STR-4 | Rigid mounting | Bolted base to a stable work surface; doubled base clamp at the base-pivot joint | — | [004](004-Mechanical-Architecture.md#base-j1) |
 | REQ-STR-5 | Fabricability | Buildable with desktop CF-capable 3D printing and off-the-shelf components, except the strain-wave set | — | [007](007-Bill-of-Materials.md) |
 
 ## 5. Electrical and control requirements
@@ -93,7 +93,7 @@ the output, not the motor shaft. This is the defining performance requirement of
 | REQ-ENV-2 | First-use bring-up | A from-scratch build runs the factory calibration procedure once before first use | — | [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) |
 | REQ-ENV-3 | Startup behavior | Boots, finds home, then enters the physical teach interface before accepting network control | — | [006](006-Firmware-and-Calibration.md#boot-and-phui) |
 | REQ-ENV-4 | Maintenance | Scheduled strain-wave lubricant replacement; belts adjusted as needed | — | [006](006-Firmware-and-Calibration.md#maintenance) |
-| REQ-ENV-5 | Mounting environment | Rigid work surface able to react the arm's full dynamic load through the bolted base | [DC-4](009-Design-Completion.md#base-plate) | [004](004-Mechanical-Architecture.md#base-j1) |
+| REQ-ENV-5 | Mounting environment | Rigid work surface able to react the arm's full dynamic load through the bolted base | [DC-9](009-Design-Completion.md#performance-characterization) | [004](004-Mechanical-Architecture.md#base-j1) |
 
 ## 8. Traceability
 

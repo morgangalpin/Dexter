@@ -2,8 +2,8 @@
 
 Model files for the robot's printed parts, organized by **arm component**. This directory is the build
 source: everything needed to print one complete robot is here, and nothing else is. Most parts are meshes
-you can print directly; `700-Differential/` is parametric `.scad` and is rendered first — see
-[Moving to OpenSCAD](#moving-to-openscad).
+you can print directly; `700-Differential/` is parametric `.scad` and is rendered first, as is the base
+mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
 
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
@@ -138,8 +138,11 @@ depends on no proprietary tool. Four conventions keep the transition legible:
 - **Move the mesh to `Reference/meshes/<group>/` when the group is converted**, keeping its stem and
   group directory. It stops being the build source at that point and becomes only what the render is
   gated against, and leaving it in the component directory invites printing the mesh instead of the
-  `.scad`. A component directory holding `.scad` files therefore holds no `.stl`, and which groups have
-  been converted is visible from a listing of `Reference/meshes/`.
+  `.scad`. A **converted** part therefore has no `.stl` beside its `.scad`, and which groups have been
+  converted is visible from a listing of `Reference/meshes/`. The rule is about a part, not a directory:
+  `100-Base/` holds `110-004_BaseMountingPlate.scad` beside five meshes because that part was *authored*
+  rather than converted, and the meshes belong to parts nothing has rewritten yet. What a directory must
+  never hold is a `.scad` and an `.stl` of the **same** part.
 - **Wrap a nested `difference()` in `render()`, not the cut that follows it.** OpenSCAD's *preview*
   normalizes the tree to disjunctive normal form, and `x - (A - B)` rewrites to `(x - A) | (x & B)` —
   one copy of the entire part per term of `A` and of `B`. A subtracted union does not multiply, so an

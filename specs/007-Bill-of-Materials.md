@@ -21,7 +21,7 @@ and the source those two are generated from; each carries its own regeneration p
 | # | Subassembly | PBS | Open item |
 |---|---|---|---|
 | [007.1](#0071-glue-rig-assembly) | Glue Rig (tooling) | F | Shares the CF cut lengths of 007.5/007.7 — [DC-5](009-Design-Completion.md#link-member-lengths) |
-| [007.2](#0072-base) | Base | A | [DC-4](009-Design-Completion.md#base-plate) |
+| [007.2](#0072-base) | Base | A | — |
 | [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | — |
 | [007.4](#0074-main-pivot) | Main Pivot (J2) | C | — |
 | [007.5](#0075-arm-body) | Arm Body (L2) | B | [DC-5](009-Design-Completion.md#link-member-lengths) |
@@ -59,8 +59,7 @@ the extra quantity, do not double-order.
 | 6703 bearing | 2 | Shared |
 
 ## 007.2 Base
-Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)). The base plate's
-robot-side hole pattern is open ([DC-4](009-Design-Completion.md#base-plate)).
+Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)).
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
@@ -70,15 +69,15 @@ robot-side hole pattern is open ([DC-4](009-Design-Completion.md#base-plate)).
 | #110-001 | Base Mount Bottom | 3D print | 1 | |
 | #110-002 | Base Stator Holder | 3D print | 1 | |
 | #110-003 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
-| — | **Base Mounting Plate** | Machine (metal) | 1 | Material, thickness, footprint, and hole patterns per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
+| #110-004 | **Base Mounting Plate** | Machine (metal) | 1 | Material, thickness, footprint, and hole patterns per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Cut from [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad) |
 | — | M6 bolts + washers/nuts (plate to work surface) | Off the shelf | 4 | Through-bolt to bench, or T-slot clamp |
-| — | Robot-side bolts (Base Mount Bottom to plate) | Off the shelf | per CAD pattern | Size and count from the CAD hole transfer ([DC-4](009-Design-Completion.md#base-plate)) |
+| — | M5 × 18 mm socket head cap screw (Base Mount Bottom to plate) | Off the shelf | **8** | Driven from inside the base into the plate's tapped holes; head seats in the flange's Ø10.000 counterbore, so **no washer fits or is wanted** |
 | #120-001 | Base Long | 3D print | 1 | |
 | #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #120-003 | 107 mm M3 all-thread | Fabricate | 3 | |
 | #620-006 | 6810 bearing | Off the shelf | 2 | one per Base row |
-| #660-002 | M3 nuts | Off the shelf | 7 (+ clamp hardware) | Recompute against the doubled clamp |
-| #642-004 | M3 × 20 mm socket head screw | Off the shelf | 1 (+1 for 2nd clamp) | |
+| #660-002 | M3 nuts | Off the shelf | **9** | 7, plus one per clamp |
+| #642-004 | M3 × 20 mm socket head screw | Off the shelf | **2** | One per clamp — see [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
 | #670-003 | #6 washers | Off the shelf | 3 | |
 
 *(The previous version's #111-001 Foot ×6 and #111-002 aluminium strake ×6 do not appear in this design;
@@ -114,7 +113,7 @@ J2 shoulder structure ([004](004-Mechanical-Architecture.md#main-pivot-j2-and-ar
 |---|---|---|---|---|
 | #300-001 | Main Pivot (printed body) | 3D print | 1 | |
 | #300-002 | Pivot Code Disk | 3D print | 1 | |
-| #300-003 | 126 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock. Unchanged in length — the L1 delta is attributed to the doubled Base Clamp ([004](004-Mechanical-Architecture.md#base-j1)), not to these strakes |
+| #300-003 | 126 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock. Unchanged in length — these are bonded stiffeners and set no link length. What L1 grew by is [DC-13](009-Design-Completion.md#base-height-and-l1) |
 | #300-004 | 146 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #660-002 | M3 nuts | Off the shelf | 5 | |
 
@@ -325,8 +324,8 @@ gripper wire cover. Two pieces of yoga mat provide the finger grip pads.
 
 ## Aggregate hardware quantities (whole robot)
 
-Totals reflect the current design and exclude the Base Mounting Plate's robot-side hardware, whose count
-depends on [DC-4](009-Design-Completion.md#base-plate). No slack included — order in excess.
+Totals reflect the current design, including the Base Mounting Plate's robot-side hardware. No slack
+included — order in excess.
 
 These totals were **re-derived from the subassembly tables above** when
 [007.1](007.1-Parts-Catalog.md) was generated; eight lines were corrected in the process, and the causes
@@ -338,7 +337,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | Part | Total | Catalog |
 |---|---|---|
 | M2 nuts | 41 | [C-604](007.1-Parts-Catalog.md#6-fasteners) |
-| M3 nuts | 43 (+ doubled-clamp hardware) | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 nuts | 45 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 washers | 20 | [C-605](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 washers | 16 | [C-613](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 × 12 mm bolts | 20 | [C-601](007.1-Parts-Catalog.md#6-fasteners) |
@@ -350,6 +349,8 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M3 × 10 mm bolts | 3 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 12 mm socket head screws | 22 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 20 mm bolts | 6 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
+| M5 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
+| M6 bolt + washer + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
 | #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
 | 1" #19 finishing nail | 11 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |
 | 6703 bearing (17 × 23 × 4) | 10 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
@@ -396,9 +397,9 @@ not merely where from.
   SD card fitted destroys it.
 - **Power supply** — a 36 V / 4 A laptop-style DC brick; see
   [005 § Power](005-Electronics-and-Control.md#power) for what may and may not be substituted.
-- **Base Mounting Plate** — machined to
-  [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate), with the robot-side hole
-  pattern transferred per [DC-4](009-Design-Completion.md#base-plate).
+- **Base Mounting Plate** — `#110-004`, machined to
+  [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate); the drawing comes off
+  [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad).
 - **Wrist driven pulleys** — printed, not purchased ([007.2](007.2-Printed-Parts.md#end-arm-hub-and-pulleys--0077)).
   Tooth counts are fixed by [DC-3](009-Design-Completion.md#wrist-reduction-ratio), but **the model files
   still carry the previous version's** — re-cut them per

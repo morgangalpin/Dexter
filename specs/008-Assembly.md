@@ -59,17 +59,17 @@ parts) that hold parts square while adhesive cures.
 7. Cure per the epoxy manufacturer's time before removing.
 
 ## 008.2 Base
-Parts: [007.2](007-Bill-of-Materials.md#0072-base). Steps 1 and 4 wait on the plate's
-robot-side hole pattern ([DC-4](009-Design-Completion.md#base-plate)); the remaining steps are established.
+Parts: [007.2](007-Bill-of-Materials.md#0072-base).
 
-1. **(Blocked on [DC-4](009-Design-Completion.md#base-plate))** Bolt the Base Mounting Plate to the Base
-   Mount Bottom, per the plate's final robot-side bolt pattern.
+1. Bolt the Base Mounting Plate to the Base Mount Bottom with the 8 × M5 × 18 mm screws, driven **from
+   inside the base** — the heads seat in the flange's counterbores, so the plate goes on before anything
+   closes the base over them. Pattern and hole sizes:
+   [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
 2. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
    parts slide together and lock.
 3. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
    to rest against.
-4. **(Blocked on [DC-4](009-Design-Completion.md#base-plate))** Bolt the assembled Base Mounting Plate to the
-   work surface through its 4 × M6 holes. This is the sole mounting method, and the plate must be bolted
+4. Bolt the assembled Base Mounting Plate to the work surface through its 4 × M6 holes. This is the sole mounting method, and the plate must be bolted
    down rather than left resting — see
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
 5. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
@@ -127,8 +127,10 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
 16. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
 17. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
 18. Install **both** Base Clamps (from [008.2](#0082-base) step 5), stacked: remove the Base Long, slide both
-    clamps onto the Base Mount, reinstall the Base Long, and tighten both clamps. Confirm the stacking
-    order/spacing against a physical build.
+    clamps onto the Base Mount, reinstall the Base Long, and tighten both clamps. They stack face to face
+    with no spacer, the lower one seating on the Base Mount's shoulder — see
+    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Record the resulting
+    mounting-face-to-J2 height for [DC-13](009-Design-Completion.md#base-height-and-l1).
 
 ## 008.5 Arm Body
 Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).

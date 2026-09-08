@@ -28,7 +28,7 @@ reference geometry.
 | DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
 | DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | — | `[Specified]` ✔ closed |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | — | `[Specified]` ✔ closed |
-| DC-4 | [Base plate](#base-plate) | P2 | Base mounting | Robot-side hole transfer from CAD | `[Provisional]` |
+| DC-4 | [Base plate](#base-plate) | P2 | Base mounting | — | `[Specified]` ✔ closed |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | Socket-seat depth check | `[Provisional]` |
 | DC-6 | [Link-length discrepancy (L4)](#link-length-discrepancy-l4) | P2 | Kinematic accuracy | Caliper measurement | `[TBD]` |
 | DC-7 | [Motor Control PCB](#motor-control-pcb) | P2 | Electronics | Physical power-on test | `[Provisional]` |
@@ -37,13 +37,21 @@ reference geometry.
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to DC-3's counts | `[Provisional]` |
+| DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | Mounting face to J2 on a build | `[TBD]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, and DC-8 are closed. Every other item has been narrowed to the
-single remaining gap named in the table above, and each of those gaps is one of three kinds of work:
-**procurement** (DC-11), **design or reconstruction authored here** (DC-6, DC-10, DC-12), or **a check on
-a physical build** (DC-4, DC-5, DC-7, DC-9). DC-2 — the largest single piece of work in the set — is
-authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, and DC-8 are closed. Every other item has been narrowed
+to the single remaining gap named in the table above, and each of those gaps is one of three kinds of
+work: **procurement** (DC-11), **design or reconstruction authored here** (DC-6, DC-10, DC-12), or **a
+check on a physical build** (DC-5, DC-7, DC-9, DC-13). DC-2 — the largest single piece of work in the set
+— is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
 measured geometry. Its physical-build checks remain with DC-9.
+
+**DC-4 closed by measurement, and it spawned DC-13.** The hole pattern it was opened for turned out to be
+exactly recoverable, but from a part the model mirror did not hold — the file standing as
+`HDI-110-001_BaseMountBottom` was the previous version's un-bolted 6-leg strake base, corrected in place
+and logged as [DC-11(i)](#procurement-data). Measuring the base chain to settle the item's second half,
+the doubled clamp, then exposed a height the firmware's L1 does not agree with, which is tracked
+separately rather than left implicit inside a closed item.
 
 **DC-3 closed by decision, and it spawned DC-12.** Choosing the wrist's tooth-count split settled the
 ratio but did not re-cut the parts that carry it, and measurement showed those parts still hold the
@@ -617,21 +625,38 @@ one clean solid and previewing without warnings, Diff Body A asserting inside th
 without interference. `[Provisional]`.
 
 ## Base plate
-**DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)**
+**DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)** — ✔ **closed**
 
-**Open:** the plate's **robot-side hole pattern**. The plate's material, thickness, footprint, work-surface
-pattern, and the stability analysis that requires it to be bolted down are all specified in
-[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
+**Closed.** Both halves are settled by measurement: the robot-side hole pattern is transferred, and the
+doubled clamp's stacking and spacing — which [004](004-Mechanical-Architecture.md#base-mounting-plate)
+carried as "to be confirmed on build", a status marker outside this document — is resolved from geometry
+without needing a build. Everything either half established is written where its owner keeps it:
+[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) for the pattern, the bolt,
+and the clamp stack; [007.2](007-Bill-of-Materials.md#0072-base) for the resulting quantities.
 
-The pattern itself is not unknown — it matches the existing mounting bosses on
-`HDI-110-001_BaseMountBottom`, the same ones the previous version's feet bolted to. What remains is
-transferring the exact hole coordinates out of the OnShape/GLTF part and onto a plate drawing, and
-confirming the resulting bolt size and count (which the [007.2](007-Bill-of-Materials.md#0072-base) row
-currently leaves open).
+**The pattern was not where this item said it was.** It was described here as matching "the existing
+mounting bosses on `HDI-110-001_BaseMountBottom`, the same ones the previous version's feet bolted to" —
+but the file standing as that part had no fastener features at all, because it *was* the previous
+version's base. The pattern is recoverable exactly, from the CAD model's bolted part; correcting the
+mirror is [DC-11(i)](#procurement-data), and it was a prerequisite for closing this item rather than a
+side errand.
 
-**Definition of done:** a plate drawing carrying the robot-side hole coordinates transferred from CAD, the
-resulting hardware quantities added to [007.2](007-Bill-of-Materials.md#0072-base), and a build confirming
-the mounted plate reacts full dynamic load without walking or tipping. `[Provisional]`.
+**What the pattern is** — eight holes in pairs on the four edges of a 150 mm flange, with the coordinates,
+the counterbore, and the bolt they settle on all specified in
+[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Two independent code
+paths agree on it: vertex clustering on the glTF buffer (rms 0.000) and `scadmesh slice` on the installed
+STL (fit rms 0.002).
+
+**What the doubled clamp adds.** 15.000 mm, to the Base Long and every height above it — derived in
+[004](004-Mechanical-Architecture.md#base-mounting-plate) from the clamp's height, the mount's seating
+shoulder, and the fact that the tube bottoms on nothing. It does **not** explain L1, which is now
+[DC-13](#base-height-and-l1).
+
+**Definition of done — met:** a plate drawing carrying the robot-side hole coordinates transferred from
+CAD, and the resulting hardware quantities added to [007.2](007-Bill-of-Materials.md#0072-base). The
+build check this item used to carry — that the mounted plate reacts full dynamic load without walking or
+tipping — is a measurement on an instrumented unit, not a design gap, and moves to
+[DC-9](#performance-characterization) with DC-2's. `[Specified]`.
 
 ## Link member lengths
 **DC-5 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths), [004](004-Mechanical-Architecture.md)**
@@ -803,6 +828,42 @@ geometric evidence still points at that reconciliation going **against** the fir
 than at a design that must reach it; until a physical measurement says so, the firmware file stands as the
 record. `[TBD]`.
 
+## Base height and L1
+**DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)**
+
+**Open:** how tall the base stack actually is. Raised while closing [DC-4](#base-plate), which had to
+measure the base chain to settle the doubled clamp's stacking, and found that neither the single-clamp
+model nor the doubled-clamp design reaches the firmware's L1.
+
+The base chain is fully measurable, and its heights above the Base Mount Bottom's mounting face are:
+
+| Reading | Value | Source |
+|---|---|---|
+| Clamp seating shoulder | 97.000 mm | `110-001_BaseMountBottom.stl`, and the CAD clamp placement agrees to 0.000 |
+| Base clamp height | 15.000 mm | `100-001_BaseClamp.stl`, flat parallel faces |
+| **J2 axis, as modelled — one clamp** | **231.200 mm** | `HDI-210-001_MainPivot` / `DexterHDI_Link2_KinematicAssembly` node origins |
+| **J2 axis, as designed — two clamps** | **246.200 mm** | the above plus one clamp, per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
+| **L1 — authoritative** | **235.200 mm** | `Firmware/Defaults.make_ins` |
+
+**Neither configuration reproduces the firmware value.** The CAD model is **4.000 mm short** of it; adding
+the second clamp the design calls for overshoots it by **11.000 mm**. This is the same shape of problem as
+[DC-6](#link-length-discrepancy-l4) — a firmware link length that the geometry does not land on — and it
+has the same cause available to it: the CAD model is single-clamped, so it is not a model of the robot the
+firmware was written for, and nothing in the model set says which of the two the 235.200 mm belongs to.
+
+**What this replaces.** [004](004-Mechanical-Architecture.md#base-mounting-plate) previously called the
+doubled clamp "consistent with the +6.6 mm L1 delta" over the previous version's 228.60 mm. It is not: the
+clamp is 15.000 mm, and no stacking of it produces 6.60 mm. That attribution is withdrawn here and in
+[007.4](007-Bill-of-Materials.md#0074-main-pivot), which repeated it to explain why the `#300-003` CF
+strakes keep their length. Their length was never in question — they are bonded stiffeners and set no link
+length — so what is gone is the explanation, not the part.
+
+**Definition of done:** measure mounting face to J2 axis on the first build, with the clamp count recorded
+alongside it, and reconcile [003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware file to
+what the built stack measures. Because the clamp count moves the answer by 15.000 mm — far more than the
+disagreement itself — **the count has to be recorded with the measurement or it settles nothing**.
+`[TBD]`.
+
 ## Motor Control PCB
 **DC-7 · P2 · Requirement: REQ-CTL-3, REQ-IF-4 · Specified in [005](005-Electronics-and-Control.md#boards)**
 
@@ -843,9 +904,17 @@ bore and survives J5's full travel, and both code disks read cleanly through the
 (press interference, bevel backlash) tune in
 [`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) if a check fails.
 
+**Base first-build checklist (moved here from [DC-4](#base-plate)):** the mounted plate reacts full
+dynamic load without walking or tipping (REQ-ENV-5), bolted to the work surface as
+[004](004-Mechanical-Architecture.md#base-mounting-plate) requires — the plate is sized against a
+calculated ≈45 N·m overturning moment that an unbolted plate cannot resist, so this check tests the
+bolting, not the plate. Record the **mounting face to J2 axis height and the clamp count** at the same
+time; that is [DC-13](#base-height-and-l1)'s measurement and the base is only apart once.
+
 **Definition of done:** measured repeatability, payload, speed envelope, and reachable workspace on a
 physical build, replacing derived values and advancing the requirements to `[Specified]`; plus the
-differential checklist above. This is the main content of roadmap item 1 ([011](011-Roadmap.md)). `[TBD]`.
+differential and base checklists above. This is the main content of roadmap item 1
+([011](011-Roadmap.md)). `[TBD]`.
 
 ## From-scratch calibration files
 **DC-10 · P2 · Requirement: REQ-ENV-2, REQ-CTL-6 · Specified in [006](006-Firmware-and-Calibration.md#factory-calibration-procedure)**
@@ -873,8 +942,8 @@ confirm the resulting `post_cal_info.JSON` gives correct home-finding. `[Provisi
 **DC-11 · P2 · Requirement: buildability · Specified in [007.1](007.1-Parts-Catalog.md), [007.2](007.2-Printed-Parts.md)**
 
 **Open:** five part identities that the parts catalog could not pin from the design record, plus two parts
-that the model set does not contain at all (row h). (Two further sub-items, the defective and the misfiled
-model file, are closed — see rows f and g.) Everything else in
+that the model set does not contain at all (row h). (Three further sub-items — the defective, the misfiled,
+and the superseded model file — are closed; see rows f, g, and i.) Everything else in
 [007.1](007.1-Parts-Catalog.md) resolves to an orderable product with a supplier link; these five do not,
 and each is `[Provisional]` there.
 
@@ -888,6 +957,7 @@ and each is `[Provisional]` there.
 | f | **Defective model file** (`#710-002`, [007.2](007.2-Printed-Parts.md#differential--0076)) — ✔ **closed** | The file was **~1000× oversize** (exporter unit slip; its header read `STLB ASM 217.00.00.5800` vs neighbours' `220.00.00.0000`). The factor was detected as **exactly 1/1000** (`scadmesh scale --ref-dim 23.0`, zero residual against the 6703 seat), applied in place, and the corrected part verified against its mates: Ø23.000 6703 seat, Ø12.000 MR128 seat, Ø28.06 press bore receiving the Split Gear Top's Ø28.00, brad circle matching the Top's windows. Old SHA-256 `c20e30d1…a853af`, corrected `e746f42f…9cb3662`. The part now also has parametric source (`710-002_SplitGearBottom.scad`, [DC-2](#differential-detail-design)) | — |
 | g | **Misfiled model file** (`#200-001` Arm Body) — ✔ **closed** | `200-ArmBody/200-001_ArmBody.stl` held `ArmBodyFrontStrakeMED.stl` byte for byte (SHA-256 `c991b4e5…dcee1b`, 20 triangles, 4.9 × 9.9 × 32 mm) — the mirror had matched the archive's `ArmBody*` name prefix rather than the part. Replaced with `ArmBodyWEncode.stl` from [thing:3781990](https://www.thingiverse.com/thing:3781990) (SHA-256 `ad4e940d…1d86b4`, 11,946 triangles, 99.6 × 108.1 × 98.0 mm), confirmed to be the part by its 29 × 29 mm L2 tube socket agreeing with `HDI-310-001_ArmBody`'s to 0.011 mm ([DC-5](#link-member-lengths)). Unlike row f this was invisible to every check the manifest makes — the file was well-formed and the right size for *a* part. [Models § Known defects](../Hardware/Models/README.md#known-defects) records what that implies for the rest of the mirror | The largest printed part in the robot unprintable, and L2's seat depth uncheckable |
 | h | **Two tube-end parts absent from the model set** ([DC-5](#link-member-lengths)) | L2's far end closes on `HDI-330-002_ArmBodyHubB`, a split-clamp half with no file in the build set, no upper half anywhere, and no [007.2](007.2-Printed-Parts.md#printed-parts) row. L3's far end has no part at all: its tube axis is (x = 0, z = 36.000) in world, `HDI-940-001_DiffCover` stops at z = 18.000, and neither differential body carries a 0.75″ joint — the CAD model represents the whole wrist as covers | Two CF tubes cut to lengths whose far ends nothing verifies, and [DC-6](#link-length-discrepancy-l4)'s open datum unreachable |
+| i | **Superseded model file** (`#110-001` Base Mount Bottom) — ✔ **closed** | `100-Base/110-001_BaseMountBottom.stl` held the **previous version's un-bolted base**: 85.000 × 85.000 × 98.000 mm against the CAD part's 150 × 150 × 98, with **no fastener features at all**. Its six 60°-spaced features decompose under `scadmesh arcs` into six straight lines — 12.94 × 3.82 mm bonding pockets for the `#110-003` CF strakes — identifying it as exactly the *"6 legged aluminum strake base"* the wiki says the bolted base replaced ([010](010-Versioning.md#1-version-lineage)). Replaced from the CAD model's `BaseMountBottom_Bolted v9` (SHA-256 `ab267f07…c00d2bde`, 25,952 triangles, 150.000 × 150.000 × 98.000 mm), which carries the 8-hole robot-side pattern [DC-4](#base-plate) was opened to recover. Like row g this passed every check the manifest makes — the file was well-formed and plausible for *a* base | [DC-4](#base-plate) unclosable, and a base printed without the mounting holes the design bolts through |
 
 ### The J4 code disk is missing
 
