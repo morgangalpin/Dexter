@@ -2,8 +2,8 @@
 
 Model files for the robot's printed parts, organized by **arm component**. This directory is the build
 source: everything needed to print one complete robot is here, and nothing else is. Most parts are meshes
-you can print directly; `700-Differential/` is parametric `.scad` and is rendered first — see
-[Moving to OpenSCAD](#moving-to-openscad).
+you can print directly; `700-Differential/` is parametric `.scad` and is rendered first, as is the base
+mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
 
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
@@ -66,10 +66,43 @@ Not part of a build. Kept because the geometry exists nowhere else.
 
 ## Known defects
 
-**None outstanding.** `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of
-scale; it is corrected in place, dimension-checked against its mates, and now also has parametric source
-([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)). It was the only defective file in the
-build set.
+**None outstanding.** Three files have been wrong and all three are corrected in place:
+
+- `100-Base/110-001_BaseMountBottom.stl` was the **un-bolted predecessor**, an 85 × 85 × 98 mm part whose
+  bottom face carried no fastener features whatever: sections through it return only an outer Ø ≈ 72.9
+  profile and a Ø53.99 bore, and the six 60°-spaced features on its Ø71.302 circle decompose into six
+  straight lines — 12.94 × 3.82 mm slots for the `#110-003` CF strakes, not a bolt pattern. The design of
+  record is a **bolted** base ([004 § Base (J1)](../../specs/004-Mechanical-Architecture.md#base-j1)), and
+  the CAD model holds it as `BaseMountBottom_Bolted v9`: 150 × 150 × 98 mm, with eight Ø6.000 mounting
+  holes through a 10 mm flange. That is now the file, exported from `dde/HDIMeterModel.gltf` in the part's
+  own frame. **This was found by re-checking a file the manifest was perfectly happy with** — the previous
+  entry was a valid, closed, correctly named mesh of the wrong revision.
+- `200-ArmBody/200-001_ArmBody.stl` was not the Arm Body. It held
+  `ArmBodyFrontStrakeMED.stl` — a 20-triangle 4.9 × 9.9 × 32 mm block — byte for byte, so the mirror
+  had matched the archive's `ArmBody*` prefix rather than the part. The Arm Body is
+  `ArmBodyWEncode.stl` in [thing:3781990](https://www.thingiverse.com/thing:3781990) (11,946 triangles,
+  99.6 × 108.1 × 98.0 mm), and that is now the file. It is the part: its 29 × 29 mm L2 tube socket sits
+  where the CAD model's `HDI-310-001_ArmBody` puts it, to the seat depth
+  [DC-5](../../specs/009-Design-Completion.md#link-member-lengths) measures. **Any prefix-matched file in
+  this mirror is worth re-checking the same way** — a file that is the right size and the wrong part
+  passes every check the manifest makes.
+- `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of scale; it is
+  dimension-checked against its mates and now also has parametric source
+  ([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)).
+
+The Base Mount Bottom is the only file here taken from the GLTF, and it takes two steps rather than one:
+
+```
+scadmesh gltf dde/HDIMeterModel.gltf --node HDI-110-001_BaseMountBottom \
+    --frame HDI-110-001_BaseMountBottom --scale 1000 --out raw.stl
+scadmesh repair raw.stl --out 100-Base/110-001_BaseMountBottom.stl
+```
+
+`--scale 1000` is needed because `--frame` reports the node's own units — metres here — where the default
+world export converts to millimetres. And the GLTF mesh arrives with three 11.5 µm holes at the central
+bore's seam, so it is not a closed solid until `repair` triangulates them; every other mesh in this
+directory is closed, and this one now is too. The repair adds 3 triangles and moves no existing vertex,
+leaving surface area and enclosed volume unchanged.
 
 `Reference/meshes/700-Differential/720-002_DiffGearAxle.stl` is the set's only ASCII STL. That is not a
 defect — it prints normally — but it is why [MANIFEST.csv](MANIFEST.csv) records it as `ascii-or-nonstd`
@@ -105,8 +138,11 @@ depends on no proprietary tool. Four conventions keep the transition legible:
 - **Move the mesh to `Reference/meshes/<group>/` when the group is converted**, keeping its stem and
   group directory. It stops being the build source at that point and becomes only what the render is
   gated against, and leaving it in the component directory invites printing the mesh instead of the
-  `.scad`. A component directory holding `.scad` files therefore holds no `.stl`, and which groups have
-  been converted is visible from a listing of `Reference/meshes/`.
+  `.scad`. A **converted** part therefore has no `.stl` beside its `.scad`, and which groups have been
+  converted is visible from a listing of `Reference/meshes/`. The rule is about a part, not a directory:
+  `100-Base/` holds `110-004_BaseMountingPlate.scad` beside five meshes because that part was *authored*
+  rather than converted, and the meshes belong to parts nothing has rewritten yet. What a directory must
+  never hold is a `.scad` and an `.stl` of the **same** part.
 - **Wrap a nested `difference()` in `render()`, not the cut that follows it.** OpenSCAD's *preview*
   normalizes the tree to disjunctive normal form, and `x - (A - B)` rewrites to `(x - A) | (x & B)` —
   one copy of the entire part per term of `A` and of `B`. A subtracted union does not multiply, so an
