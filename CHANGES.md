@@ -147,11 +147,9 @@ anything version 3 does not independently specify
   part, shared dimensions in `diff_params.scad`, the bevel crown in `diff_bevel.scad`, the bought items in
   `diff_hardware.scad`, and `diff_assembly.scad` standing all nine parts and their hardware up as a machine.
   Two parameter sets: `config="previous"` reproduces the built differential; `config="revised"` meets
-  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface) — the Split
-  Gear's two halves drilled on one brad axis. A Diff Body A trim to 77.8 mm belonged to that set until
-  2026-09-06, when it was reverted under
-  [DC-2](specs/009-Design-Completion.md#differential-detail-design).
-  `render-all.rs` renders and checks every part in both configurations; `render-meshes.rs` caches
+  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface) — Diff Body A
+  trimmed 80.98 → 77.8 mm for the HDI-940 cover envelope, and the Split Gear's two halves drilled on one
+  brad axis. `render-all.rs` renders and checks every part in both configurations; `render-meshes.rs` caches
   the nine as binary STL for the assembly to import, ~54× faster to load than ASCII and carrying more digits
   than the ASCII writer emits. The oversize `710-002` STL is corrected in place (exact 1/1000,
   mate-verified — DC-11(f) closed).
@@ -273,3 +271,61 @@ anything version 3 does not independently specify
   the measured centre distance before ordering. `[Specified]`/`[Provisional]`/`[TBD]` remain defined in
   [README](specs/README.md#design-status) and are applied in 009 only going forward; prior CR entries keep
   the markers they were written with.
+
+### CR-3A9: Base mounting plate specified; two link datums withdrawn; two model mirrors replaced
+
+- **Affects:** [004 §Base (J1)](specs/004-Mechanical-Architecture.md#base-j1),
+  [007.2](specs/007-Bill-of-Materials.md#0072-base),
+  [007.1 §C-509](specs/007.1-Parts-Catalog.md#c-509--base-mounting-plate-stock) and
+  [§6](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
+  [009](specs/009-Design-Completion.md); `Hardware/Models/100-Base/`, `Hardware/Models/700-Differential/`.
+- **Amends:** [CR-3A2](#cr-3a2-bolted-base-and-doubled-base-clamp) (closes
+  [DC-4](specs/009-Design-Completion.md#base-plate)),
+  [CR-3A4](#cr-3a4-revised-link-geometry) (DC-5 seat depths, DC-6's L4 reading),
+  [CR-3A7](#cr-3a7-differential-detail-design-authored-as-parametric-openscad) (reverts the Diff Body A
+  trim recorded there).
+- **Was:** The base plate's robot-side pattern was owed as a transfer out of CAD, with bolt size and count
+  open and the doubled clamp's stacking "to be confirmed on build"; the doubled clamp was credited with
+  L1's +6.6 mm growth over version 2. The adopted L2/L3 cut lengths rested on an unverified assumption
+  that socket seat depth was unchanged. L4 was read as 37.53 mm off Diff Body A, and `config="revised"`
+  trimmed that body 80.98 → 77.8 mm to clear the HDI-940 cover. Two mirror files held the wrong part.
+- **Now:**
+  - **Base plate specified and drawn.** The robot-side pattern is **8 × Ø6.000 mm** through the mount's
+    150 × 150 × 10 mm flange, in pairs on its four edges at (±12.500, ±62.500) and (±62.500, ±12.500) —
+    not a bolt circle, and unchanged by a 90° rotation of the robot on its plate. Each opens into a
+    Ø10.000 counterbore driven from inside the base. The bolt is **M5 × 18 mm, 8 off**: Ø6.000 is below
+    the Ø6.6 an M6 needs and Ø10.000 exactly equals an M6 head, so M6 fits neither feature. The plate is
+    **`#110-004`**, authored as parametric OpenSCAD (the first part outside the differential to have
+    source), emitting its own machining DXF; `check.rs` asserts its eight tapped centres against the
+    mount's mesh rather than against this document, and fails on a 0.1 mm move.
+  - **Doubled clamp resolved from geometry, not deferred to a build.** The clamps stack face to face on
+    the mount's 97.000 mm shoulder, and because the Base Long bottoms on nothing the second clamp raises
+    J2 by its full **15.000 mm**. The +6.6 mm attribution is therefore **withdrawn**: 15.000 mm is
+    neither that, nor the 4.000 mm by which the CAD model falls short of firmware L1. That disagreement
+    is raised as [DC-13](specs/009-Design-Completion.md#base-height-and-l1) and belongs to L1.
+  - **L2/L3 cut lengths validated.** Seat depth is unchanged across versions (L3 exactly, L2 by 0.011 mm),
+    so **L2 = 282.4 / L3 = 214.3 mm** stand. L3 is a **spigot, not a socket** — the hub plugs into the
+    tube — and the 0.75″ tube's OD is **22.0 mm, wall ≈.038″**, not the .050″ previously assumed.
+  - **L4 = 37.53 mm withdrawn.** Diff Body A's 81 mm arm is the **tool** arm, perpendicular to the L3 tube
+    and in the other half of the wrist, so it cannot be where L3 lands. L4 now rests on two geometric
+    readings that agree (glTF 39.5 mm, measured DH 39.3 mm) and disagree with firmware's 59.50 mm.
+    **`BODY_A_LEN` reverts to 81.0 mm** in both configurations, since the envelope conflict that motivated
+    the trim does not exist; `COVER_ENVELOPE` is dropped with the asserts that read it.
+  - **Two model mirrors replaced.** `#200-001` Arm Body held `ArmBodyFrontStrakeMED.stl` byte for byte
+    (name-prefix match), and `#110-001` Base Mount Bottom held version 2's un-bolted 6-leg strake base —
+    150 × 150 × 98 mm bolted part now installed, which is what made DC-4's pattern recoverable at all.
+    Both were well-formed, correctly named meshes of the wrong part, which is precisely what
+    `MANIFEST.csv` cannot detect.
+- **Driver:** Close DC-4 and DC-5's checks against measurement rather than assumption; stop a reading
+  that two parts cannot share from propagating into L4 and into the differential's geometry.
+- **Re-derive:** 007.1/007.2 done (plate stock, M5 line, M3 nut and clamp-screw counts recomputed to 45
+  and 2); 008.2/008.4 unblocked; 003's L1 pending DC-13's measurement, which is queued with
+  [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base load check because the base
+  is only apart once.
+- **Status:** `[Specified]` for the base plate, its pattern, its hardware, and the clamp stack (DC-4
+  closed). `[Provisional]` for L2/L3 — both far ends are absent from the model set, so neither length is
+  verified stop-to-stop ([DC-11(h)](specs/009-Design-Completion.md#procurement-data)). `[TBD]` for
+  [L4](specs/009-Design-Completion.md#link-length-discrepancy-l4) and
+  [L1](specs/009-Design-Completion.md#base-height-and-l1); the firmware file stands as the record for both
+  until a unit is measured.
