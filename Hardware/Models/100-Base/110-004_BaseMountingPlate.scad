@@ -31,13 +31,13 @@
 FOOTPRINT = 200.0;   // square, per 004
 THICKNESS = 9.5;     // 3/8" aluminium
 
-// Robot-side pattern — 8 holes, tapped M5 through, measured off the CAD part.
+// Robot-side pattern — 8 holes, tapped M6 through, measured off the CAD part.
 // Each pair sits on one edge of the mount's 150 mm flange: two holes 25.000 mm
 // apart, 62.500 mm out from the axis. The pattern is symmetric under a 90°
 // rotation, so the robot can be indexed a quarter turn on its plate.
 ROBOT_OUT   = 62.500;  // distance from the J1 axis to the pair's edge
 ROBOT_HALF  = 12.500;  // half the spacing within a pair
-ROBOT_TAP   = 4.200;   // M5 tap drill (0.8 mm pitch: 5.0 - 0.8)
+ROBOT_TAP   = 5.000;   // M6 tap drill (1.0 mm pitch: 6.0 - 1.0)
 
 // Work-surface pattern — 4 × M6 clearance near the corners. 004 requires them
 // outboard of the robot-side pattern and near the corners; this file fixes

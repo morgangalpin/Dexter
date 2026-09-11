@@ -60,19 +60,21 @@ parts) that hold parts square while adhesive cures.
 
 ## 008.2 Base
 Parts: [007.2](007-Bill-of-Materials.md#0072-base).
-
-1. Bolt the Base Mounting Plate to the Base Mount Bottom with the 8 × M5 × 18 mm screws, driven **from
-   inside the base** — the heads seat in the flange's counterbores, so the plate goes on before anything
+1. Open the eight bolt holes in the Base Mount Bottom flange to **Ø6.6 mm through with a Ø11.0 mm
+   counterbore** on the flange's upper face. As printed they are Ø6.000 with a Ø10.000 counterbore, which
+   is under size for M6 on both diameters.
+2. Bolt the Base Mounting Plate to the Base Mount Bottom with the 8 × M6 × 18 mm screws, driven **from
+   inside the base** — the heads seat in the flange counterbores, so the plate goes on before anything
    closes the base over them. Pattern and hole sizes:
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
-2. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
+3. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
    parts slide together and lock.
-3. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
+4. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
    to rest against.
-4. Bolt the assembled Base Mounting Plate to the work surface through its 4 × M6 holes. This is the sole mounting method, and the plate must be bolted
-   down rather than left resting — see
+5. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washer, and nut,
+   or clamp the same four corners to a T-slot table. The plate must be fixed down, not left resting —
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
-5. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
+6. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
    other side. Assemble **both** clamps (the clamps are installed later, in [008.4](#0084-main-pivot) step
    18).
 
@@ -126,7 +128,7 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
 15. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
 16. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
 17. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
-18. Install **both** Base Clamps (from [008.2](#0082-base) step 5), stacked: remove the Base Long, slide both
+18. Install **both** Base Clamps (from [008.2](#0082-base) step 6), stacked: remove the Base Long, slide both
     clamps onto the Base Mount, reinstall the Base Long, and tighten both clamps. They stack face to face
     with no spacer, the lower one seating on the Base Mount's shoulder — see
     [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Record the resulting

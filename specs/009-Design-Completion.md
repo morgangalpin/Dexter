@@ -46,12 +46,10 @@ check on a physical build** (DC-5, DC-7, DC-9, DC-13). DC-2 — the largest sing
 — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
 measured geometry. Its physical-build checks remain with DC-9.
 
-**DC-4 closed by measurement, and it spawned DC-13.** The hole pattern it was opened for turned out to be
-exactly recoverable, but from a part the model mirror did not hold — the file standing as
-`HDI-110-001_BaseMountBottom` was the previous version's un-bolted 6-leg strake base, corrected in place
-and logged as [DC-11(i)](#procurement-data). Measuring the base chain to settle the item's second half,
-the doubled clamp, then exposed a height the firmware's L1 does not agree with, which is tracked
-separately rather than left implicit inside a closed item.
+**DC-4 closed by measurement, and it spawned DC-13.** The hole pattern is recovered exactly from the CAD
+part; the model mirror held the previous version's un-bolted base and is corrected in place
+([DC-11(i)](#procurement-data)). The measured base chain gives a J2 height the firmware's L1 does not
+agree with, which is tracked separately rather than left implicit inside a closed item.
 
 **DC-3 closed by decision, and it spawned DC-12.** Choosing the wrist's tooth-count split settled the
 ratio but did not re-cut the parts that carry it, and measurement showed those parts still hold the
@@ -627,37 +625,20 @@ without interference. `[Provisional]`.
 ## Base plate
 **DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)** — ✔ **closed**
 
-**Closed.** Both halves are settled by measurement: the robot-side hole pattern is transferred, and the
-doubled clamp's stacking and spacing — which [004](004-Mechanical-Architecture.md#base-mounting-plate)
-carried as "to be confirmed on build", a status marker outside this document — is resolved from geometry
-without needing a build. Everything either half established is written where its owner keeps it:
-[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) for the pattern, the bolt,
-and the clamp stack; [007.2](007-Bill-of-Materials.md#0072-base) for the resulting quantities.
+**Closed.** The robot-side hole pattern, the bolt, and the doubled clamp's stacking are specified in
+[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate); the hardware quantities
+are in [007.2](007-Bill-of-Materials.md#0072-base). The plate is `#110-004`, with parametric source and a
+render-and-check script at
+[`Hardware/Models/100-Base/`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad); `check.rs`
+gates its eight tapped centres against `110-001_BaseMountBottom.stl`.
 
-**The pattern was not where this item said it was.** It was described here as matching "the existing
-mounting bosses on `HDI-110-001_BaseMountBottom`, the same ones the previous version's feet bolted to" —
-but the file standing as that part had no fastener features at all, because it *was* the previous
-version's base. The pattern is recoverable exactly, from the CAD model's bolted part; correcting the
-mirror is [DC-11(i)](#procurement-data), and it was a prerequisite for closing this item rather than a
-side errand.
-
-**What the pattern is** — eight holes in pairs on the four edges of a 150 mm flange, with the coordinates,
-the counterbore, and the bolt they settle on all specified in
-[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Two independent code
-paths agree on it: vertex clustering on the glTF buffer (rms 0.000) and `scadmesh slice` on the installed
-STL (fit rms 0.002).
-
-**What the doubled clamp adds.** 15.000 mm, to the Base Long and every height above it — derived in
-[004](004-Mechanical-Architecture.md#base-mounting-plate) from the clamp's height, the mount's seating
-shoulder, and the fact that the tube bottoms on nothing. It does **not** explain L1, which is now
+The doubled clamp raises the J2 axis by 15.000 mm. That height does not agree with L1, which is
 [DC-13](#base-height-and-l1).
 
-**Definition of done — met:** a plate drawing carrying the robot-side hole coordinates transferred from
-CAD, and the resulting hardware quantities added to [007.2](007-Bill-of-Materials.md#0072-base). The
-build check this item used to carry — that the mounted plate reacts full dynamic load without walking or
-tipping — is a measurement on an instrumented unit, not a design gap, and moves to
-[DC-9](#performance-characterization) with DC-2's. `[Specified]`.
-
+**Definition of done — met:** a plate drawing carrying the robot-side hole coordinates, and the resulting
+hardware quantities in [007.2](007-Bill-of-Materials.md#0072-base). The load check — that the mounted
+plate reacts full dynamic load without walking or tipping — is a measurement on an instrumented unit and
+is held by [DC-9](#performance-characterization). `[Specified]`.
 ## Link member lengths
 **DC-5 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths), [004](004-Mechanical-Architecture.md)**
 
@@ -831,39 +812,25 @@ record. `[TBD]`.
 ## Base height and L1
 **DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)**
 
-**Open:** how tall the base stack actually is. Raised while closing [DC-4](#base-plate), which had to
-measure the base chain to settle the doubled clamp's stacking, and found that neither the single-clamp
-model nor the doubled-clamp design reaches the firmware's L1.
-
-The base chain is fully measurable, and its heights above the Base Mount Bottom's mounting face are:
+**Open:** the height of the base stack. Heights above the Base Mount Bottom's mounting face:
 
 | Reading | Value | Source |
 |---|---|---|
-| Clamp seating shoulder | 97.000 mm | `110-001_BaseMountBottom.stl`, and the CAD clamp placement agrees to 0.000 |
-| Base clamp height | 15.000 mm | `100-001_BaseClamp.stl`, flat parallel faces |
-| **J2 axis, as modelled — one clamp** | **231.200 mm** | `HDI-210-001_MainPivot` / `DexterHDI_Link2_KinematicAssembly` node origins |
-| **J2 axis, as designed — two clamps** | **246.200 mm** | the above plus one clamp, per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
+| Clamp seating shoulder | 97.000 mm | `110-001_BaseMountBottom.stl` |
+| Base clamp height | 15.000 mm | `100-001_BaseClamp.stl` |
+| J2 axis, as modelled — one clamp | 231.200 mm | `HDI-210-001_MainPivot` node origin |
+| J2 axis, as designed — two clamps | 246.200 mm | the above plus one clamp ([004](004-Mechanical-Architecture.md#base-mounting-plate)) |
 | **L1 — authoritative** | **235.200 mm** | `Firmware/Defaults.make_ins` |
 
-**Neither configuration reproduces the firmware value.** The CAD model is **4.000 mm short** of it; adding
-the second clamp the design calls for overshoots it by **11.000 mm**. This is the same shape of problem as
-[DC-6](#link-length-discrepancy-l4) — a firmware link length that the geometry does not land on — and it
-has the same cause available to it: the CAD model is single-clamped, so it is not a model of the robot the
-firmware was written for, and nothing in the model set says which of the two the 235.200 mm belongs to.
+Neither configuration reproduces the firmware value: the single-clamp model is 4.000 mm short of it, and
+the doubled clamp the design calls for overshoots it by 11.000 mm. The CAD model carries one clamp, so it
+does not model the design, and nothing in the model set says which clamp count the 235.200 mm belongs to.
+This is the same class of disagreement as [DC-6](#link-length-discrepancy-l4).
 
-**What this replaces.** [004](004-Mechanical-Architecture.md#base-mounting-plate) previously called the
-doubled clamp "consistent with the +6.6 mm L1 delta" over the previous version's 228.60 mm. It is not: the
-clamp is 15.000 mm, and no stacking of it produces 6.60 mm. That attribution is withdrawn here and in
-[007.4](007-Bill-of-Materials.md#0074-main-pivot), which repeated it to explain why the `#300-003` CF
-strakes keep their length. Their length was never in question — they are bonded stiffeners and set no link
-length — so what is gone is the explanation, not the part.
-
-**Definition of done:** measure mounting face to J2 axis on the first build, with the clamp count recorded
-alongside it, and reconcile [003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware file to
-what the built stack measures. Because the clamp count moves the answer by 15.000 mm — far more than the
-disagreement itself — **the count has to be recorded with the measurement or it settles nothing**.
-`[TBD]`.
-
+**Definition of done:** measure mounting face to J2 axis on the first build, recording the clamp count
+with it, and reconcile [003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware file to the
+built stack. The clamp count moves the answer by 15.000 mm, more than the disagreement itself, so a
+measurement without it settles nothing. `[TBD]`.
 ## Motor Control PCB
 **DC-7 · P2 · Requirement: REQ-CTL-3, REQ-IF-4 · Specified in [005](005-Electronics-and-Control.md#boards)**
 

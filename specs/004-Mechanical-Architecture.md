@@ -69,15 +69,15 @@ arm's full dynamic load (REQ-ENV-5).
 | Property | Design |
 |---|---|
 | Material | **6061-T6 aluminium**. Steel is an acceptable alternative and adds desirable mass. Printed Onyx is **not** acceptable for a load-bearing plate |
-| Thickness | **9.5 mm (3/8″)** in aluminium — stiff against deflection under the arm's overturning moment and thick enough to tap the robot-side holes (≈6 mm if steel) |
-| Footprint | **≈200 × 200 mm** — square, clearing the base's 150 mm flange and leaving room outboard of the robot-side pattern for the work-surface bolts |
-| Robot-side bolt pattern | **8 × M5 tapped through**, on the coordinates below |
-| Work-surface bolt pattern | **4 × M6 clearance holes** near the plate corners, for through-bolting to a bench or T-slot clamping |
+| Thickness | **9.5 mm (3/8″)** in aluminium, ≈6 mm in steel |
+| Footprint | **≈200 × 200 mm** square |
+| Robot-side bolt pattern | **8 × M6 tapped through**, on the coordinates below |
+| Work-surface bolt pattern | **4 × Ø6.6 mm clearance holes** at (±85.000, ±85.000) mm |
 
-**Robot-side hole pattern.** The Base Mount Bottom presents a **150 × 150 mm flange, 10.000 mm thick**,
-carrying eight mounting holes. They are **not** on a bolt circle: they sit in pairs on the flange's four
-edges, 25 mm apart and 62.5 mm out, so the pattern is unchanged by a 90° rotation of the robot on its plate.
-Coordinates are from the J1 axis, in the plate's plane:
+**Robot-side hole pattern.** The Base Mount Bottom presents a 150 × 150 mm flange, 10.000 mm thick, whose
+eight mounting holes the plate is tapped to match. They are not on a bolt circle: they sit in pairs on the
+flange's four edges, 25.000 mm apart and 62.500 mm out, so the pattern is unchanged by a 90° rotation of
+the robot on its plate. Coordinates are from the J1 axis, in the plate's plane:
 
 | | x (mm) | y (mm) |
 |---|---|---|
@@ -86,44 +86,43 @@ Coordinates are from the J1 axis, in the plate's plane:
 | Pair on +x edge | +62.500 | ±12.500 |
 | Pair on −x edge | −62.500 | ±12.500 |
 
-Each hole is **Ø6.000 through the flange**, opening on the flange's upper face into a **Ø10.000
-counterbore** that seats the bolt head; the bore above it is clear, so the head is driven from inside the
-base. **The bolt is M5 socket head cap, 8 off, 18 mm long** — 10 mm through the flange leaves 8 mm of thread
-in the plate, and 9.5 mm of 6061 taps M5 at nearly 2 D engagement. M5 is what the two diameters agree on:
-Ø6.000 is generous clearance for an M5 shank and *below* the Ø6.6 an M6 needs, while Ø10.000 takes an M5
-head (Ø8.5) with room and exactly equals an M6 head, which would not enter at all. Printed holes come out
-undersize, which widens the margin on M5 and closes it on M6.
+**The bolt is M6 socket head cap, 8 off, 18 mm long.** It passes through the flange and takes 8 mm of
+thread in the plate, leaving 1.5 mm of tapped depth unused so that nothing protrudes below the plate.
 
-*The pattern is measured from `HDI-110-001_BaseMountBottom` in the CAD model, which the model mirror now
-holds — see [Models § Known defects](../Hardware/Models/README.md#known-defects), because the file that
-stood there until 2026-09-07 was an earlier un-bolted part with no mounting holes at all.*
+The flange is printed at **Ø6.000 through with a Ø10.000 × 6.0 mm counterbore** on its upper face, which
+is under size for M6 on both diameters. The flange is therefore **opened on assembly to Ø6.6 through and
+Ø11.0 counterbore** ([008.2](008-Assembly.md#0082-base)). The head seats on the counterbore floor and is
+driven from inside the base, which is open above it.
 
 **Stability rationale.** The worst-case static overturning moment — the arm fully extended, moving-link mass
 lumped near mid-reach plus payload at full reach, with a ×2 dynamic factor — is ≈ **45 N·m**. A plate that
-merely *rests* on the bench would need impractical mass to resist that (a 250 × 250 × 10 mm steel plate at
-≈4.9 kg supplies only ≈6 N·m of restoring moment, so it tips). **The plate must therefore be bolted to the
-work surface**, at which point the moment reacts as trivial bolt tension (≈300 N at the far bolt, well
-within an M6's capacity). **Design intent: the plate is a permanent bench fixture; the robot base bolts onto
-it and can be removed as a unit while the plate stays fixed.**
+merely *rests* on the bench would need impractical mass to resist that: a 250 × 250 × 10 mm steel plate at
+≈4.9 kg supplies only ≈6 N·m of restoring moment, so it tips. **The plate must therefore be fixed to the
+work surface**, at which point the moment reacts as bolt tension of ≈300 N at the far bolt, well within an
+M6's capacity. Through-bolting the four corner holes is the specified method; clamping the plate to a
+T-slot table by the same corners is equivalent if each clamp is rated to that tension. **The base clamps
+are not part of this load path** — they join the Base Long to the Base Mount inside the base column and
+carry no plate-to-bench load.
 
-**Double base clamp.** The base-to-pivot joint uses a **doubled** (stacked) base clamp — one of the two
-features that separate this version from the previous one's 6-leg strake base
-([010](010-Versioning.md#1-version-lineage)), the other being the bolted base above.
+The work-surface fastener is **M6 bolt, washer, and nut, 4 sets**, with length set by the thickness of the
+work surface.
 
-**Stacking and spacing.** The two clamps stack **face to face, with no spacer between them**. Each is
-**15.000 mm** tall with flat, parallel end faces, and the Base Mount Bottom presents a **seating shoulder
-1.000 mm below its top face**, at 97.000 mm above its mounting face; the CAD model places the one clamp it
-carries exactly there. Stacked, the pair therefore occupies **97.000 → 127.000 mm** above the mounting
-face. The clamp is what sets the Base Long's axial position — the tube's lower end stops in open cavity
-27.3 mm below the shoulder and bottoms on nothing — so **the second clamp raises the Base Long, the J2
-axis, and every height above it by the clamp's full 15.000 mm**. That is the sense in which the doubled
-clamp "affects the link lengths and overall height of every z measurement".
+**Design intent: the plate is a permanent bench fixture; the robot base bolts onto it and can be removed as
+a unit while the plate stays fixed.**
+
+**Double base clamp.** The base-to-pivot joint uses a **doubled** (stacked) base clamp.
+
+The two clamps stack face to face with no spacer. Each is **15.000 mm** tall with flat, parallel end faces,
+and the Base Mount Bottom presents a seating shoulder at **97.000 mm** above its mounting face, 1.000 mm
+below its top face. The pair therefore occupies **97.000 → 127.000 mm** above the mounting face. The clamp
+sets the Base Long's axial position — the tube's lower end bottoms on nothing — so the second clamp raises
+the Base Long, the J2 axis, and every height above it by **15.000 mm**.
 
 Each clamp closes with one M3 × 20 mm bolt ([C-611](007.1-Parts-Catalog.md#6-fasteners)) through the
-Ø3.500 mm holes in the Base Long's ±35.540 mm faces; [008.4](008-Assembly.md#0084-main-pivot) installs
-both. **What the doubled clamp does not explain is L1** — 15.000 mm is neither the +6.60 mm by which L1
-grew nor the 4.00 mm by which the CAD model falls short of it. That disagreement is
-[DC-13](009-Design-Completion.md#base-height-and-l1) and belongs to L1, not to this joint.
+Ø3.500 mm holes in the Base Long's ±35.540 mm faces.
+
+The height this produces does not agree with L1; the disagreement is
+[DC-13](009-Design-Completion.md#base-height-and-l1).
 
 **Base rotation drive.** J1 is driven by a strain-wave base motor (see below); the base structure carries
 the Base Code Disk and stator for the J1 encoder and reduction.

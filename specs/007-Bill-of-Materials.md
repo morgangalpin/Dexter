@@ -70,8 +70,8 @@ Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)).
 | #110-002 | Base Stator Holder | 3D print | 1 | |
 | #110-003 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #110-004 | **Base Mounting Plate** | Machine (metal) | 1 | Material, thickness, footprint, and hole patterns per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Cut from [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad) |
-| — | M6 bolts + washers/nuts (plate to work surface) | Off the shelf | 4 | Through-bolt to bench, or T-slot clamp |
-| — | M5 × 18 mm socket head cap screw (Base Mount Bottom to plate) | Off the shelf | **8** | Driven from inside the base into the plate's tapped holes; head seats in the flange's Ø10.000 counterbore, so **no washer fits or is wanted** |
+| — | M6 bolt + washer + nut (plate to work surface) | Off the shelf | 4 sets | Length to suit the work surface. A T-slot clamp on the same corner is equivalent — see [004](004-Mechanical-Architecture.md#base-mounting-plate) |
+| — | M6 × 18 mm socket head cap screw (Base Mount Bottom to plate) | Off the shelf | **8** | Driven from inside the base into the plate's tapped holes; head seats in the flange counterbore, so no washer is used |
 | #120-001 | Base Long | 3D print | 1 | |
 | #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #120-003 | 107 mm M3 all-thread | Fabricate | 3 | |
@@ -349,7 +349,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M3 × 10 mm bolts | 3 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 12 mm socket head screws | 22 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 20 mm bolts | 6 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
-| M5 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
+| M6 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 bolt + washer + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
 | #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
 | 1" #19 finishing nail | 11 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |

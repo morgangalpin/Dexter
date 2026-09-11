@@ -294,8 +294,11 @@ anything version 3 does not independently specify
   - **Base plate specified and drawn.** The robot-side pattern is **8 × Ø6.000 mm** through the mount's
     150 × 150 × 10 mm flange, in pairs on its four edges at (±12.500, ±62.500) and (±62.500, ±12.500) —
     not a bolt circle, and unchanged by a 90° rotation of the robot on its plate. Each opens into a
-    Ø10.000 counterbore driven from inside the base. The bolt is **M5 × 18 mm, 8 off**: Ø6.000 is below
-    the Ø6.6 an M6 needs and Ø10.000 exactly equals an M6 head, so M6 fits neither feature. The plate is
+    Ø10.000 counterbore driven from inside the base. The bolt is **M6 × 18 mm, 8 off**; as printed the
+    flange is under size for it on both diameters, so the eight holes are opened on assembly to **Ø6.6
+    through with a Ø11.0 counterbore**. The work-surface side is **4 × Ø6.6 mm at (±85.000, ±85.000)**,
+    taking M6 bolt, washer, and nut with length set by the work surface, or a T-slot clamp on the same
+    four corners; the Base Clamps carry no part of this load path. The plate is
     **`#110-004`**, authored as parametric OpenSCAD (the first part outside the differential to have
     source), emitting its own machining DXF; `check.rs` asserts its eight tapped centres against the
     mount's mesh rather than against this document, and fails on a 0.1 mm move.
@@ -319,7 +322,7 @@ anything version 3 does not independently specify
     `MANIFEST.csv` cannot detect.
 - **Driver:** Close DC-4 and DC-5's checks against measurement rather than assumption; stop a reading
   that two parts cannot share from propagating into L4 and into the differential's geometry.
-- **Re-derive:** 007.1/007.2 done (plate stock, M5 line, M3 nut and clamp-screw counts recomputed to 45
+- **Re-derive:** 007.1/007.2 done (plate stock, M6 line, M3 nut and clamp-screw counts recomputed to 45
   and 2); 008.2/008.4 unblocked; 003's L1 pending DC-13's measurement, which is queued with
   [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base load check because the base
   is only apart once.

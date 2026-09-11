@@ -44,7 +44,7 @@ const SCADMESH_CANDIDATES: [&str; 2] = [
 /// Plate geometry, from `specs/004-Mechanical-Architecture.md`.
 const FOOTPRINT: f64 = 200.0;
 const THICKNESS: f64 = 9.5;
-const ROBOT_TAP: f64 = 4.2;
+const ROBOT_TAP: f64 = 5.0;
 const BENCH_CLEAR: f64 = 6.6;
 
 /// How far a hole centre may sit from where the reference part puts it. The
