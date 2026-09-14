@@ -47,10 +47,11 @@ apply to every step below and are not repeated per step.
 ---
 
 ## 008.1 Glue Rig Assembly
-Parts: [007.1](007-Bill-of-Materials.md#0071-glue-rig-assembly). Builds two epoxy jigs (tooling, not robot
-parts) that hold parts square while adhesive cures.
+Parts: [007.1](007-Bill-of-Materials.md#0071-glue-rig-assembly). Prints the epoxy jigs (tooling, not robot
+parts) that hold each bonded span at its finished spacing while adhesive cures. The jigs and the span each
+one holds are listed in [007.2 § Tooling](007.2-Printed-Parts.md#tooling--glue-rigs).
 
-1. Assemble one "top rig" and one "bottom rig," one at a time.
+1. Lap each rig's `_A` and `_B` halves into one jig. Glue up one span at a time.
 2. Clear all mating surfaces of first-layer print residue before gluing.
 3. Dry-fit every part on the rig before applying epoxy.
 4. Use a CF strake to lock the Axis Intersection so it cannot shift while curing.
@@ -71,7 +72,7 @@ Parts: [007.2](007-Bill-of-Materials.md#0072-base).
    parts slide together and lock.
 4. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
    to rest against.
-5. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washer, and nut,
+5. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washers, and nut,
    or clamp the same four corners to a T-slot table. The plate must be fixed down, not left resting —
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
 6. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
@@ -264,7 +265,7 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 ## 008.9 Belts
 Parts: GT2 belts/pulleys from [007.7](007-Bill-of-Materials.md#0077-end-arm-hub) and
 [007.8](007-Bill-of-Materials.md#0078-external-gear). Belt lengths are derived rather
-than measured ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)), and the driven pulleys must be
+than measured ([007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys)), and the driven pulleys must be
 re-cut before printing ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
 
 ⚠️ **Count the pulley teeth before fitting the belts** and check them against the specified train in
@@ -276,7 +277,7 @@ calibration regardless.
 1. Slide the 2 16T × 5 mm GT2 pulleys onto the external motors.
 2. Before tightening the set screws, confirm the belts line up with the belt directors above.
 3. Tighten one set screw against the flat of each motor shaft.
-4. Fit the two 1176 mm belts to the External pulleys and the two 896 mm belts to the differential inputs.
+4. Fit the two 1140 mm belts to the External pulleys and the two 940 mm belts to the differential inputs.
    Confirm each against its measured centre distance before committing — 20 mm of belt is 10 mm of centre
    distance, so a wrong length is not tensionable.
 

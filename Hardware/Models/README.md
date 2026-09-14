@@ -83,7 +83,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
   `ArmBodyWEncode.stl` in [thing:3781990](https://www.thingiverse.com/thing:3781990) (11,946 triangles,
   99.6 × 108.1 × 98.0 mm), and that is now the file. It is the part: its 29 × 29 mm L2 tube socket sits
   where the CAD model's `HDI-310-001_ArmBody` puts it, to the seat depth
-  [DC-5](../../specs/009-Design-Completion.md#link-member-lengths) measures. **Any prefix-matched file in
+  [C-504](../../specs/007.1-Parts-Catalog.md#c-504--braided-carbon-fibre-square-tube-1) states. **Any prefix-matched file in
   this mirror is worth re-checking the same way** — a file that is the right size and the wrong part
   passes every check the manifest makes.
 - `Reference/meshes/700-Differential/710-002_SplitGearBottom.stl` was 1000× out of scale; it is
@@ -181,6 +181,161 @@ is checked against is under
 
 `Reference/onshape-v1/parts-step/` is the most useful starting material: STEP solids can be measured for
 real dimensions, which an STL cannot give you reliably.
+
+### Verifying a recreated part against its reference
+
+A recreated part is gated on **surface distance**, not on dimensions. `scadmesh compare` asks whether
+every reference diameter and face position reappears somewhere in the candidate — a set of
+one-dimensional histograms that a wrong body can satisfy in full: a missing boss, a square hole where the
+reference has a round one, and a dished flank where the reference bulges all leave the histograms intact.
+It once reported ±0.006–0.131 mm agreement on parts deviating by up to 3.8 mm. **A dimensional check is
+not a shape check**, and no tightening of its tolerance makes it one. `compare` is retained only to name
+*which* dimension moved once `dist` has failed a part; it gates nothing.
+
+The contract every part in `700-Differential/` is held to:
+
+- **`scadmesh dist` within ±0.15 mm in both directions.** Both are required, not a formality:
+  candidate→reference finds material the model invented, reference→candidate finds material it never
+  reproduced, and a model that is a strict subset of its reference passes the first alone.
+- **Build the body from its measured meridional profile** (`scadmesh profile`) rather than from inferred
+  diameters and face heights, so flank curvature is reproduced instead of guessed.
+- **Preview (F5) as well as render (F6)**, checked rather than assumed — preview fails independently of
+  rendering, so exporting an STL and measuring it will pass a part that shows nothing in the GUI. Run
+  `openscad --preview -o check.png <part>.scad` and require zero warnings. The failure mode is specific:
+  **no cutter may be a module that is internally boolean** — BOSL2's `pie_slice()` and anything taking
+  `rounding=`/`chamfer=` are — because `A - (B - C)` normalizes to `(A - B) | (A & C)` and each one
+  doubles the preview tree. Build cutters from single primitives, and cut each solid before unioning it
+  into an array rather than after.
+- **A shared face is not a join.** Where a feature is trimmed to the surface of the blank it stands on,
+  CGAL returns the two as separate solids, the blank's face survives the union underneath the feature,
+  and the export carries interior surface — which `dist` then measures against nothing, reading over a
+  millimetre out on geometry that is dimensionally correct. Trim such a feature to a surface **offset
+  into** the blank (`BEVEL_ROOT_UNDER` offsets 0.35 mm) and let the overlap be buried. The `Volumes:`
+  line of the render log is the cheap check: a part modelled as one solid must report 2.
+
+**The references are CAD assembly exports (`STLB ASM` headers) and they mislead in three ways.** Run
+`scadmesh segment` on a reference before measuring it.
+
+- *Zero-thickness internal shells.* `profile` shows these as doubled-back slivers, one measuring
+  0.003 mm across in `710-002`. A clean model must not reproduce them.
+- *Unmerged solids.* `710-002` is two bodies — a turned body and a tooth crown, tessellated at 3.85 and
+  6.91 triangles/mm² and never merged. Its file volume **double-counts** the ≈352 mm³ where they
+  interpenetrate, so a faithful model reads 4.8 % light against the file and correct against the merged
+  7001 mm³; volume against an unmerged file is a screening signal, not a verdict. And reference→candidate
+  `dist` flags every **buried** surface, because a merged model has no counterpart for them — on this
+  part 28 % of reference samples at up to 2.25 mm, none of it a defect. Only candidate→reference gates a
+  part whose reference is an assembly export.
+- *Stray shells.* `730-002`'s export carries six 1.05 × 1.0 × 1.0 inverted shells (−0.815 mm³ apiece)
+  beside the body, and `dist` against the whole file scores them at **0.991 mm**. Against the isolated
+  body the same comparison reads **0.332 mm**. Every figure quoted for that part is against body 0, and a
+  measurement that skips `segment` reads a part three times worse than it is.
+
+Not every oddity in a reference is an artifact. `720-001`'s apparent degenerate Ø15.5 internal shell is
+**twelve Ø0.2 through-holes** on a Ø15.5 circle, 30° apart with one on +x, running the full 60.6 mm of the
+part: every triangle around a hole has its normal on that hole's own axis, `segment` returns one closed
+body, and the lateral area over any span is π·0.2·span to three decimals. The model reproduces them behind
+a `wall_holes` flag. They are **not buildable** — Ø0.2 × 60.6 mm is 303:1, past drilling and far past
+printing — so whether the built shaft should carry them is a separate question
+([DC-11](../../specs/009-Design-Completion.md#procurement-data)).
+
+Two exceptions are enumerated explicitly rather than absorbed into a widened tolerance. The **GT2 pulley**
+teeth are cut with a modelled groove profile rather than measured. The **Diff Gear Shaft's tooth form** is
+deliberately cut to the shared crown rather than to its own superseded reference
+([CR-3A7](../../CHANGES.md)), so its `dist` fails ±0.15 mm in the tooth zone by design; its tooth count
+(20, exact), its clocking (within 0.3° of the reference) and every dimension outside the tooth zone are
+gated as usual, measured on the render itself. There is **no tooth-band exemption for the bevels** — the
+crown is measured (`diff_bevel.scad`) and meets the ordinary surface check with room to spare.
+
+### Measured state of the differential set
+
+`scadmesh dist`, two-sided sampled surface distance against each reference, in mm. All nine parts render
+as one clean solid from measured geometry.
+
+| Part | Worst deviation | Volume vs reference | State |
+|---|---|---|---|
+| 710-001 Split Gear Top | 0.045 | −0.1 % | faithful (p95 0.010) |
+| 710-002 Split Gear Bottom | 0.150 | +0.02 % | faithful (p95 0.050) |
+| 710-003 Diff Keeper | 0.023 | −0.8 % | faithful |
+| 710-004 Rotate Code Disk | 0.350 | −1.4 % | faithful (p95 0.011; one localized edge) |
+| 720-001 Diff Gear Shaft | 0.568 / 0.456 | −2.05 % | cut to the shared crown — fails ±0.15 mm by design |
+| 720-002 Diff Gear Axle | 0.094 | −0.02 % | faithful (p95 0.028) |
+| 720-003 Diff End Pulley | 0.030 | −0.02 % | faithful |
+| 730-001 Diff Body A | 0.016 | — | faithful, 0.000 % of samples over tolerance |
+| 730-002 Diff Body B | 0.377 / 0.332 | −0.05 % | **not yet gated** — see below |
+
+`710-002`'s 0.150 mm is a defect in the reference, not the model: circle fits at z 6.3–6.9 centre the
+Ø8.5 bore and its funnel on (−0.039, 0.138), **0.143 mm off the axis**, while every turned surface around
+them fits the axis to 0.001 mm. It is a clearance hole for wire, so the model keeps it concentric, and
+that eccentricity is the whole of the part's excursion past tolerance (0.011 % of samples).
+
+`730-002` is absent from `DIST_GATES`. p95 is inside tolerance in both directions (0.136); it is the
+maxima that fail, and both are the same feature on opposite y flats — the chimney base's straight sides
+meeting the chimney cone, filleted on the reference at radius ≈1.5 and modelled here as sharp
+intersections, 0.377 mm at (32.686, −9.406, 31.057) and 0.332 mm at (32.346, −32.469, 30.915). Filleting
+those four junctions is the remaining work, tracked as
+[DC-2](../../specs/009-Design-Completion.md#differential-detail-design). Its measured geometry — the
+profiles are the dimension tables — is recorded in
+[`730-002_DiffBodyB.scad`](700-Differential/730-002_DiffBodyB.scad).
+
+### What the rebuild established
+
+Four findings generalise beyond the differential and are worth applying to the remaining groups.
+
+- **Revolved bodies recover as cones.** Every crown surface on `710-001`, `710-002` and `720-002` is a
+  cone, and fitting measured radius against height recovers each one exactly — the four fitted on
+  `720-002` leave a maximum residual of 0.0003 mm over six heights. Cone intersections then define every
+  edge outright, so no corner coordinate is measured twice.
+- **Straight bevel teeth are ruled through the gear apex**, so *one* section reproduces the whole tooth:
+  scaling it about the axis by the ratio of heights **is** the surface between them, which
+  `linear_extrude(scale=)` draws exactly and without facets. Nothing needs a loft through stacked
+  sections. Let the revolved envelope supply the tip, root and end faces, leaving the section responsible
+  for the flanks alone. The apex is measured rather than assumed — scaling a section at one height onto a
+  measured section at another and minimising the mismatch locates it to ±0.02 mm.
+- **A bevel flank is a cubic.** Fitted to 253 measured points (the median over 9 heights × 20 teeth,
+  which agree among themselves to 0.002 mm), a single cubic Bézier holds them to **0.006 mm max, 0.003
+  RMS** — where the polyline it replaced needed several hundred coordinates per part and still rendered
+  as visible facets. Rebuilding this way took `710-001` from 0.225 mm to 0.045 mm, made its bounding box
+  exact, cut its triangle count by 56 %, and carried the tooth's concave root fillet as measured, which a
+  loft through convex hulls cuts the corner across.
+- **Author a shared feature once.** The Split Gear and the Diff Gear Axle are not two similar gears but
+  one 20-tooth crown placed twice: sections taken 15.4484 mm apart return outlines **0.0001 mm apart over
+  4088 points**, already clocked alike, and `710-002` supplies exactly the material inside the parting
+  cone that `710-001` lacks — its area agreeing with `720-002`'s whole tooth ring to 0.007 mm² in 858.
+  The gear is defined once in `diff_bevel.scad` and each part intersects it with its own envelope, so
+  they cannot drift out of mesh in edit.
+
+### What assembling the set showed
+
+Per-part gating cannot see fit: a part can match its own reference to a hundredth of a millimetre and
+still not fit its neighbours. `diff_assembly.scad` places every part by a feature it carries rather than
+by a typed offset, and records each finding at the call site that exposes it.
+
+- **The three bevels mesh**, checked rather than asserted: the CGAL intersection of the Split Gear
+  against the Diff Gear Axle, and against the Diff Gear Shaft, is **empty in both cases** — as is the
+  intersection of whole 20T crowns substituted for both side bevels, whose tips are longer than the
+  shaft's cut ones and so is the stronger result. A bevel set meshes exactly when its apexes coincide,
+  and each part states where its apex sits on its own axis, so placing the parts by those three numbers
+  is the whole of the gear train.
+- **The Split Gear's halves need no relative transform.** `710-001` and `710-002` are authored in the
+  same frame, and their intersection is a set of open shells enclosing **exactly 0.000 mm³ apiece**
+  (`scadmesh segment`), bounded by the seating face at z = 4.000 and by `BEVEL_SPLIT_ROOT` — both
+  construction points rather than accidents. An earlier assembly mirrored one half against the other,
+  which cannot be right: mirrored about the shared apex the two crowns do not overlap anywhere.
+- **The brad holes disagreed by 0.5 mm.** `710-001`'s hole runs z 11.534–12.943 and `710-002`'s
+  z 12.089–13.456 — about 1.0 mm of common opening for a Ø1.5 hole taking a Ø1.8 interference-fit brad.
+  Neither half can move to fix it, so this is a disagreement between the two references. `config="previous"`
+  keeps each reference's own value; `config="revised"` drills both at **z = 12.750**, stated once as
+  `BRAD_Z` in `diff_params.scad`. That height is the one both parts have material for (it leaves a full
+  millimetre of `710-002`'s Ø27 wall below the hole, where 12.250 would leave 0.500 mm) and it is the
+  blind, glued half's own value — the hole that actually holds the brad. Verified by intersecting a
+  Ø1.45 probe on that axis with both halves as they sit: **empty in `revised`, not empty in `previous`**.
+  The assembly draws the four brads only when both halves drill to one line, so the previous config still
+  shows the disagreement by leaving them out.
+- **Three stack-ups are kept as measurements.** The Diff Gear Axle's Ø9 boss reaches 1.34 mm into the
+  shaft's front MR128 seat; Diff Body B's −X end flank sits 0.276 mm inside the axle bevel's toe cone,
+  and its chimney cone 0.296 mm inside the Split Gear's — the same 45° relief on perpendicular axes. The
+  two 0.28 mm figures cannot both be removed by moving Body B, since the differential centre lies on both
+  of its axes, and all three are the size of the residuals these parts already carry.
 
 ## What was removed
 
