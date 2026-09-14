@@ -20,13 +20,13 @@ and the source those two are generated from; each carries its own regeneration p
 
 | # | Subassembly | PBS | Open item |
 |---|---|---|---|
-| [007.1](#0071-glue-rig-assembly) | Glue Rig (tooling) | F | Shares the CF cut lengths of 007.5/007.7 — [DC-5](009-Design-Completion.md#link-member-lengths) |
+| [007.1](#0071-glue-rig-assembly) | Glue Rig (tooling) | F | — |
 | [007.2](#0072-base) | Base | A | — |
 | [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | — |
 | [007.4](#0074-main-pivot) | Main Pivot (J2) | C | — |
-| [007.5](#0075-arm-body) | Arm Body (L2) | B | [DC-5](009-Design-Completion.md#link-member-lengths) |
+| [007.5](#0075-arm-body) | Arm Body (L2) | B | — |
 | [007.6](#0076-differential) | Differential (J4/J5) | H | [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
-| [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | [DC-5](009-Design-Completion.md#link-member-lengths), [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
 | [007.8](#0078-external-gear) | External Gear (J3 drive) | G | — |
 | [007.9](#0079-external-gear-mount--differential-motors) | Ex Gear Mount + Diff Motors (J4/J5) | I | [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
 | [007.10](#00710-wire-harness) | Wire Harness | J | [DC-7](009-Design-Completion.md#motor-control-pcb) |
@@ -37,26 +37,17 @@ and the source those two are generated from; each carries its own regeneration p
 Each of the three 52:1 drives (J1, J2, J3) takes one component set
 ([004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive)), so **nine special-order parts**
 are needed in all. Confirmed as three
-**HanZhen `XB1-AS-C-32(14)-52`** sets, USD 120 each ([DC-1](009-Design-Completion.md#strain-wave-component-set),
-[C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)). **Order this first:** it carries the
+**HanZhen `XB1-AS-C-32(14)-52`** sets, USD 120 each
+([C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)). **Order this first:** it carries the
 longest lead time in the build (9–12 weeks).
 
 ---
 
 ## 007.1 Glue Rig Assembly
-Tooling (epoxy jigs), not a robot part. Reuses parts also listed in their real subassemblies below — order
-the extra quantity, do not double-order.
-
-| Part | Qty | Notes |
-|---|---|---|
-| Arm Body (printed) | 1 | Shared with [007.5](#0075-arm-body) |
-| 1" × 264 mm CF square tube | 1 | Shared with [007.5](#0075-arm-body) — verify against the L2 length note before cutting |
-| Axis Intersection Half (printed) | 2 | Shared with [007.7](#0077-end-arm-hub) |
-| End Arm Hub (printed) | 1 | Shared with [007.7](#0077-end-arm-hub) |
-| 0.75" × 237 mm CF square tube | 1 | Shared with [007.7](#0077-end-arm-hub) — verify against the L3 length note before cutting |
-| Ex Gear Mount (printed) | 1 | Shared with [007.9](#0079-external-gear-mount--differential-motors) |
-| 1" × 68 mm CF square tube | 1 | Shared with [007.9](#0079-external-gear-mount--differential-motors) |
-| 6703 bearing | 2 | Shared |
+The glue rigs are **tooling** — printed jigs that hold each bonded span at its finished spacing while the
+epoxy cures. They add **nothing** to this bill: the parts they hold are the robot's own, counted in their
+own subassemblies below, and the jigs themselves are printed parts listed in
+[007.2 § Tooling](007.2-Printed-Parts.md#tooling--glue-rigs), which also records the span each rig bonds.
 
 ## 007.2 Base
 Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)).
@@ -70,7 +61,7 @@ Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)).
 | #110-002 | Base Stator Holder | 3D print | 1 | |
 | #110-003 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #110-004 | **Base Mounting Plate** | Machine (metal) | 1 | Material, thickness, footprint, and hole patterns per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Cut from [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad) |
-| — | M6 bolt + washer + nut (plate to work surface) | Off the shelf | 4 sets | Length to suit the work surface. A T-slot clamp on the same corner is equivalent — see [004](004-Mechanical-Architecture.md#base-mounting-plate) |
+| — | M6 bolt + 2 washers + nut (plate to work surface) | Off the shelf | 4 sets | Class 8.8 or better; length and the T-slot clamp alternative are in [004](004-Mechanical-Architecture.md#base-mounting-plate) |
 | — | M6 × 18 mm socket head cap screw (Base Mount Bottom to plate) | Off the shelf | **8** | Driven from inside the base into the plate's tapped holes; head seats in the flange counterbore, so no washer is used |
 | #120-001 | Base Long | 3D print | 1 | |
 | #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
@@ -125,10 +116,10 @@ L2 span (J2→J3) plus belt-director sub-unit. The L2 tube length is specific to
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
-| #200-001 | Arm Body (printed) | 3D print | 1 | Also referenced by the glue rig |
+| #200-001 | Arm Body (printed) | 3D print | 1 | Bonded in a glue rig ([007.1](#0071-glue-rig-assembly)) |
 | #200-002 | Pivot Stator Holder | 3D print | 1 | |
 | #200-003 | Stator Balancer | 3D print | 4 | |
-| #200-005 | 1" CF square tube | Fabricate | 1 | **Cut length 282.4 mm.** This span is L2; confirm the socket seat before cutting ([DC-5](009-Design-Completion.md#link-member-lengths)) |
+| #200-005 | 1" CF square tube | Fabricate | 1 | **Cut length 264.0 mm.** This span is L2 ([C-504](007.1-Parts-Catalog.md#c-504--braided-carbon-fibre-square-tube-1)) |
 | #200-006 | Calibration Arrows | 3D print | 2 | |
 | #620-006 | 6810 bearing | Off the shelf | 1 | |
 | #210-001 | Belt Director Caps | 3D print | 3 | |
@@ -147,13 +138,13 @@ toothed pulley (tip Ø 15.92, root Ø 14.61 — the same ≈0.13 mm under-standa
 pulley in the set), and [008.5](008-Assembly.md) mounts it on an *idler plug* rather than a shaft. It
 engages the belt teeth to route the belt and **contributes no reduction**, because an idler in a single
 belt path passes the same belt from driver to driven whatever its own count. The net 13.5:1 and the tooth
-counts that realize it are fixed in [DC-3](009-Design-Completion.md#wrist-reduction-ratio). Verify wrist
+counts that realize it are specified in [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5). Verify wrist
 resolution empirically after build.
 
 ## 007.6 Differential
 J4/J5 wrist ([004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)). This
 parts list realizes the previous version's differential, built as a working substitute per
-[DC-2](009-Design-Completion.md#differential-detail-design).
+[004 § Wrist and differential](004-Mechanical-Architecture.md#wrist-and-differential-j4j5).
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
@@ -164,9 +155,9 @@ parts list realizes the previous version's differential, built as a working subs
 | #710-005 | 25 × 5.6 × 2.5 mm CF strake | Fabricate | 3 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #710-006 | AXK0819 thrust bearing (1/4") | Off the shelf | 1 | |
 | #710-007 | AS thrust races | Off the shelf | 2 | |
-| #720-001 | Diff Gear Shaft | 3D print | 1 | Integrated belt pulley is **80T GT2** per [DC-3](009-Design-Completion.md#wrist-reduction-ratio); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
+| #720-001 | Diff Gear Shaft | 3D print | 1 | Integrated belt pulley is **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
 | #720-002 | Diff Gear Axle | 3D print | 1 | |
-| #720-003 | Diff End Pulley | 3D print | 1 | **80T GT2** per [DC-3](009-Design-Completion.md#wrist-reduction-ratio); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
+| #720-003 | Diff End Pulley | 3D print | 1 | **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
 | #720-005 | 60 × 4.4 × 1.5 mm CF strake | Fabricate | 5 | Cut from [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) — .057″ × .177″ stock |
 | #720-006 | 96 × 8 × 6 mm CF rod | Fabricate | 1 | |
 | #730-001 | Diff Body A | 3D print | 1 | |
@@ -186,24 +177,24 @@ specific to this version.
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
-| #410-001 | Axis Intersection Half | 3D print | 2 | Also referenced by the glue rig |
+| #410-001 | Axis Intersection Half | 3D print | 2 | Bonded in a glue rig ([007.1](#0071-glue-rig-assembly)) |
 | #410-002 | New Belt Pulley | 3D print | 1 | |
 | #410-003 | End Arm Code Disk | 3D print | 1 | |
 | #410-004 | 45 × 5.6 × 2.5 mm CF strake | Fabricate | 2 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #410-005 | 48 × 5.6 × 2.5 mm CF strake | Fabricate | 2 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #410-006 | M3 × 107 mm all-thread | Fabricate | 4 | |
-| #420-001 | End Arm Hub (printed) | 3D print | 1 | Also referenced by the glue rig |
+| #420-001 | End Arm Hub (printed) | 3D print | 1 | Bonded in a glue rig ([007.1](#0071-glue-rig-assembly)) |
 | #420-002 | End Arm Hub Cap | 3D print | 1 | |
-| #420-003 | 0.75" CF square tube | Fabricate | 1 | **Cut length 214.3 mm.** This span is L3; confirm the socket seat before cutting ([DC-5](009-Design-Completion.md#link-member-lengths)) |
-| #421-001 | Internal Outer Pulley | 3D print | 1 | **40T GT2** — unchanged; the count [DC-3](009-Design-Completion.md#wrist-reduction-ratio) holds fixed |
+| #420-003 | 0.75" CF square tube | Fabricate | 1 | **Cut length 243.0 mm.** This span is L3 ([C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)) |
+| #421-001 | Internal Outer Pulley | 3D print | 1 | **40T GT2** — unchanged; the count [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) holds fixed |
 | #421-002 | Internal Inner Pulley | 3D print | 1 | **40T GT2** — unchanged. Its Ø17 6703 seat is the constraint that floors this count |
 | #421-003 | 113 × 8 × 6 mm stainless steel rod | Fabricate | 1 | |
 | #421-004 | 81 × 4.4 × 1.5 mm CF strake | Fabricate | 3 | Cut from [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) — .057″ × .177″ stock |
-| #421-005 | 896 mm (448T) × 6 mm GT2 belt | Off the shelf | 2 | Stage 2, 40T → 80T. Was 90 cm at 40T → 40T; length derived in [DC-3](009-Design-Completion.md#wrist-reduction-ratio) — confirm against the measured centre distance before ordering |
+| #421-005 | 940 mm (470T) × 6 mm GT2 belt | Off the shelf | 2 | Stage 2, 40T → 80T. Was 90 cm at 40T → 40T; length derived in [007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys) — confirm against the measured centre distance before ordering |
 | #421-006 | Pulley Spacer | 3D print | 2 | |
-| #430-001 | External Outer Pulley | 3D print | 1 | **108T GT2** per [DC-3](009-Design-Completion.md#wrist-reduction-ratio); the model is still 90T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
+| #430-001 | External Outer Pulley | 3D print | 1 | **108T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 90T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
 | #430-002 | External Inner Pulley | 3D print | 1 | **108T GT2**, as `#430-001` |
-| #430-004 | 1176 mm (588T) × 6 mm GT2 belt | Off the shelf | 2 | Stage 1, 16T → 108T. Was 112 cm at 16T → 90T; length derived in [DC-3](009-Design-Completion.md#wrist-reduction-ratio) — confirm against the measured centre distance before ordering |
+| #430-004 | 1140 mm (570T) × 6 mm GT2 belt | Off the shelf | 2 | Stage 1, 16T → 108T. Was 112 cm at 16T → 90T; length derived in [007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys) — confirm against the measured centre distance before ordering |
 | #620-002 | MR128 bearing | Off the shelf | 2 | |
 | #620-003 | 6703 bearing | Off the shelf | 3 | |
 | #620-005 | 6807 bearing | Off the shelf | 2 | |
@@ -242,12 +233,12 @@ Mounts the two plain **J4/J5 (angle + rotate) steppers** that drive the differen
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
-| #520-001 | Ex Gear Mount (printed) | 3D print | 1 | Also referenced by the glue rig |
+| #520-001 | Ex Gear Mount (printed) | 3D print | 1 | Bonded in a glue rig ([007.1](#0071-glue-rig-assembly)) |
 | #520-002 | Ex Gear Mount Top | 3D print | 1 | |
 | #520-003 | Nut Holder A | 3D print | 1 | |
 | #520-004 | Nut Holder B | 3D print | 1 | |
 | #520-005 | M3 × 46 mm all-thread | Fabricate | 2 | |
-| #520-006 | 1" × 68 mm CF square tube | Fabricate | 1 | Also referenced by the glue rig |
+| #520-006 | 1" × 68 mm CF square tube | Fabricate | 1 | Bonded in a glue rig ([007.1](#0071-glue-rig-assembly)) |
 | #620-006 | 6810 bearing | Off the shelf | 1 | |
 | #642-003 | M3 × 12 mm socket head screws | Off the shelf | 4 | |
 | #660-002 | M3 nuts | Off the shelf | 4 | |
@@ -255,7 +246,7 @@ Mounts the two plain **J4/J5 (angle + rotate) steppers** that drive the differen
 | #610-001 | NEMA-17 stepper (angle + rotate) | Off the shelf | 2 | Plain steppers, no strain-wave drive |
 | #642-004 | M3 × 8 mm bolts | Off the shelf | 8 | |
 | #670-002 | M3 washers | Off the shelf | 8 | |
-| #6A0-001 | 16T × 5 mm GT2 pulley (motor) | Off the shelf | 2 | Motor pulley, retained. It drives the 108T External pulleys at 6.75:1 ([DC-3](009-Design-Completion.md#wrist-reduction-ratio)) |
+| #6A0-001 | 16T × 5 mm GT2 pulley (motor) | Off the shelf | 2 | Motor pulley, retained. It drives the 108T External pulleys at 6.75:1 ([004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)) |
 
 ## 007.10 Wire Harness
 Electronics and connectorization ([005](005-Electronics-and-Control.md)). Reuses the
@@ -350,7 +341,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M3 × 12 mm socket head screws | 22 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 20 mm bolts | 6 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
-| M6 bolt + washer + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
+| M6 bolt + 2 washers + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
 | #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
 | 1" #19 finishing nail | 11 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |
 | 6703 bearing (17 × 23 × 4) | 10 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
@@ -380,8 +371,8 @@ not merely where from.
   **.092″ × .220″** ([C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220)), and
   **.057″ × .177″** ([C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177)).
   **The metric dimensions in the tables above are nominal descriptions of imperial pultrusions** — actual
-  stock differs by up to 0.16 mm. Order by cross-section, not by the metric label. Confirm the L2/L3 cut
-  lengths ([DC-5](009-Design-Completion.md#link-member-lengths)) before cutting.
+  stock differs by up to 0.16 mm. Order by cross-section, not by the metric label. Cut the L2/L3 tubes to
+  the lengths in [007.1 §5](007.1-Parts-Catalog.md#5-structural-composites-and-metal-stock).
 - **Bearings** — standard metric trade sizes (68xx/67xx/MRxxx); source by ID/OD/width from any supplier.
   Note that `#710-006` is an **8 mm bore** AXK0819, not the 1/4″ implied by its description in
   [007.6](#0076-differential) — see [C-407](007.1-Parts-Catalog.md#4-bearings).
@@ -401,7 +392,7 @@ not merely where from.
   [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate); the drawing comes off
   [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad).
 - **Wrist driven pulleys** — printed, not purchased ([007.2](007.2-Printed-Parts.md#end-arm-hub-and-pulleys--0077)).
-  Tooth counts are fixed by [DC-3](009-Design-Completion.md#wrist-reduction-ratio), but **the model files
+  Tooth counts are specified in [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5), but **the model files
   still carry the previous version's** — re-cut them per
   [DC-12](009-Design-Completion.md#wrist-pulley-rework) before printing, and confirm both belt lengths
   against the measured centre distance before ordering.

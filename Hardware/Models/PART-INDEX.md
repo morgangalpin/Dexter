@@ -198,16 +198,13 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
   Export an STL from `900-ToolInterface/920-001_StaticFinger.step` before printing. This is the one part in
   the build list that cannot be sliced as delivered.
 
-## Glue-rig jigs — not in 007.2
+## Glue-rig jigs
 
-`950-Tooling/` holds eight jig bodies that [007.2's tooling
-section](../../specs/007.2-Printed-Parts.md#tooling--glue-rig) does not account for. That section states the
-glue rig needs *"extra copies of parts already listed above — not new geometry"*, but these are distinct
-geometry shipped in the HD sets:
+`950-Tooling/` holds eight jig bodies shipped in the HD sets:
 
 `GlueRig_ArmBodyToEndArmHub_A/B/C`, `GlueRig_ArmBodyToExGear`, `GlueRig_EndArmHubToDiff_A/B`,
 `GlueRig_EpoxyHolder`, `GlueRig_EpoxyPlunger`
 
-They are kept because a glue rig that needs them cannot be built from extra copies alone. **Either 007.2's
-tooling table is incomplete or these are orphans from a superseded rig design** — unresolved, tracked under
-[DC-11](../../specs/009-Design-Completion.md#procurement-data).
+Each is a trough that holds both ends of one bonded CF span at its finished spacing. They are listed with
+the span each one jigs in
+[007.2's tooling section](../../specs/007.2-Printed-Parts.md#tooling--glue-rigs).

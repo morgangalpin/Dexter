@@ -42,7 +42,7 @@ anything version 3 does not independently specify
   [009](specs/009-Design-Completion.md).
 - **Re-derive:** 006 (drive constants), 007 (pulley part numbers), 008 (wrist assembly).
 - **Note:** Version 2's driven pulley set is not compatible with the new `AxisCal`; see
-  [DC-3](specs/009-Design-Completion.md#wrist-reduction-ratio) before reusing wrist pulleys.
+  [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework) before reusing wrist pulleys.
 
 ### CR-3A2: Bolted base and doubled base clamp
 
@@ -71,15 +71,16 @@ anything version 3 does not independently specify
 ### CR-3A4: Revised link geometry
 
 - **Affects:** [003 §Link lengths](specs/003-Kinematics.md#link-lengths), [004](specs/004-Mechanical-Architecture.md), [007](specs/007-Bill-of-Materials.md)
-- **Was:** Version 2 link lengths L1–L5 = 228.60 / 320.68 / 330.20 / 50.80 / 82.55 mm.
+- **Was:** Link lengths L1–L5 = 228.60 / 320.68 / 330.20 / 50.80 / 82.55 mm. *(This entry originally
+  attributed them to version 2; they are **version 1**'s — see
+  [CR-3A10](#cr-3a10-l2l3-cut-lengths-corrected-the-comparison-link-set-identified-as-version-1).)*
 - **Now:** Link lengths L1–L5 = 235.20 / 339.09 / 307.50 / 59.50 / 82.44 mm (deltas +6.60, +18.42,
   −22.70, +8.70, −0.11 mm). L5 is unchanged within tolerance, consistent with the cross-version tool
   interface.
-- **Driver:** Revised arm geometry; the L2/L3 deltas are far larger than build tolerance and change the
-  carbon-fiber tube cut lengths.
-- **Status:** `[Specified]` for the link lengths themselves (source: `Firmware/Defaults.make_ins`);
-  `[Provisional]` for the derived cut lengths (Arm Body 282.4 mm, End Arm Hub 214.3 mm), pending a
-  socket-seat check ([DC-5](specs/009-Design-Completion.md#link-member-lengths)).
+- **Driver:** Revised arm geometry.
+- **Status:** `[Specified]` for the link lengths themselves (source: `Firmware/Defaults.make_ins`). The
+  tube cut lengths this entry derived from the deltas above are superseded by
+  [CR-3A10](#cr-3a10-l2l3-cut-lengths-corrected-the-comparison-link-set-identified-as-version-1).
 - **Re-derive:** 007 (tube cut lengths), 008 (link assembly).
 
 ### CR-3A5: Specification restructured as the design of record
@@ -253,9 +254,11 @@ anything version 3 does not independently specify
 - **Now:**
   - Decomposed to **16T motor → 108T External** (6.75:1) → elbow 1:1 → **40T Internal → 80T differential
     input** (2.0:1) = **13.5:1** net, chosen over 90/96 and 120/72 for margin on both elbow torque and the
-    differential's envelope against its cover. Belts: **1176 mm (588T)** and **896 mm (448T)** × 6 mm GT2
-    (was 1120/900 mm). Corrects an earlier 004 reading of the differential as driven directly off the motor
-    pulley.
+    differential's envelope against its cover. Belts: 1176 mm (588T) and 896 mm (448T) × 6 mm GT2 (was
+    1120/900 mm) — both superseded by
+    [CR-3A10](#cr-3a10-l2l3-cut-lengths-corrected-the-comparison-link-set-identified-as-version-1), which
+    re-solves them at unchanged centre distances. Corrects an earlier 004 reading of the differential as
+    driven directly off the motor pulley.
   - The HD model set still carries version 2's counts (90T/40T/40T) — five parts need re-cutting, tracked
     as [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework).
   - Design status now owned solely by **009** ([README §Document
@@ -307,9 +310,11 @@ anything version 3 does not independently specify
     J2 by its full **15.000 mm**. The +6.6 mm attribution is therefore **withdrawn**: 15.000 mm is
     neither that, nor the 4.000 mm by which the CAD model falls short of firmware L1. That disagreement
     is raised as [DC-13](specs/009-Design-Completion.md#base-height-and-l1) and belongs to L1.
-  - **L2/L3 cut lengths validated.** Seat depth is unchanged across versions (L3 exactly, L2 by 0.011 mm),
-    so **L2 = 282.4 / L3 = 214.3 mm** stand. L3 is a **spigot, not a socket** — the hub plugs into the
-    tube — and the 0.75″ tube's OD is **22.0 mm, wall ≈.038″**, not the .050″ previously assumed.
+  - **L2/L3 seat depths validated.** Seat depth is unchanged across versions (L3 exactly, L2 by 0.011 mm).
+    L3 is a **spigot, not a socket** — the hub plugs into the tube — and the 0.75″ tube's OD is **22.0 mm,
+    wall ≈.038″**, not the .050″ previously assumed. The cut lengths this entry read off those seats
+    (282.4 / 214.3 mm) are superseded by
+    [CR-3A10](#cr-3a10-l2l3-cut-lengths-corrected-the-comparison-link-set-identified-as-version-1).
   - **L4 = 37.53 mm withdrawn.** Diff Body A's 81 mm arm is the **tool** arm, perpendicular to the L3 tube
     and in the other half of the wrist, so it cannot be where L3 lands. L4 now rests on two geometric
     readings that agree (glTF 39.5 mm, measured DH 39.3 mm) and disagree with firmware's 59.50 mm.
@@ -327,8 +332,80 @@ anything version 3 does not independently specify
   [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base load check because the base
   is only apart once.
 - **Status:** `[Specified]` for the base plate, its pattern, its hardware, and the clamp stack (DC-4
-  closed). `[Provisional]` for L2/L3 — both far ends are absent from the model set, so neither length is
-  verified stop-to-stop ([DC-11(h)](specs/009-Design-Completion.md#procurement-data)). `[TBD]` for
+  closed). `[Provisional]` for L2/L3 as recorded here, superseded by
+  [CR-3A10](#cr-3a10-l2l3-cut-lengths-corrected-the-comparison-link-set-identified-as-version-1). `[TBD]` for
   [L4](specs/009-Design-Completion.md#link-length-discrepancy-l4) and
   [L1](specs/009-Design-Completion.md#base-height-and-l1); the firmware file stands as the record for both
   until a unit is measured.
+
+### CR-3A10: L2/L3 cut lengths corrected; the comparison link set identified as version 1
+
+- **Affects:** [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
+  [007 §007.1](specs/007-Bill-of-Materials.md#0071-glue-rig-assembly),
+  [007.5](specs/007-Bill-of-Materials.md#0075-arm-body),
+  [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub),
+  [007.1 §3](specs/007.1-Parts-Catalog.md#3-belts-and-pulleys) and
+  [§5](specs/007.1-Parts-Catalog.md#5-structural-composites-and-metal-stock),
+  [007.2 §Tooling](specs/007.2-Printed-Parts.md#tooling--glue-rigs),
+  [009](specs/009-Design-Completion.md); `Hardware/Models/PART-INDEX.md`.
+- **Amends:** [CR-3A4](#cr-3a4-revised-link-geometry) (the comparison link set and the derived cut
+  lengths), [CR-3A8](#cr-3a8-wrist-tooth-count-decomposition-design-status-consolidated-into-009) (both
+  belt lengths), [CR-3A9](#cr-3a9-base-mounting-plate-specified-two-link-datums-withdrawn-two-model-mirrors-replaced)
+  (the L2/L3 status recorded there).
+- **Was:** The link-length comparison column in 003 was labelled "previous version", and the L2/L3 tube
+  cut lengths were derived from it as `tube_previous + link_delta`, giving 282.4 mm and 214.3 mm. The two
+  wrist belts were re-solved at centre distances carrying the same deltas. The glue rigs were recorded as
+  tooling that consumes extra copies of the robot's own parts, and the eight jig bodies in `950-Tooling/`
+  as possible orphans of a superseded rig design.
+- **Now:**
+  - **The comparison set is version 1, not version 2.** `dde/core/robot.js` carries both link sets on one
+    line per link and labels them `HDI` and `ORIG DEX`. [010](specs/010-Versioning.md#1-version-lineage)
+    records no link change between versions 2 and 3, so there is **no version 2 → 3 delta to apply to a
+    version 2 part**, and the deltas in 003's table span two version steps.
+  - **L2 = 264.0 mm and L3 = 243.0 mm** — the previous version's tubes, carried across unchanged. Both are
+    re-derived against the current kinematics rather than by delta: L2 closes stop to stop at
+    37.513 + 264.000 + 37.500 = **339.013 mm** against the firmware's 339.092, and L3's far face sits
+    28.500 + 243.000 = 271.500 mm from J3, putting its stop 36.000 mm short of a J4 axis that both the
+    firmware and the CAD model place at 307.500 mm. The superseded figures would have left L2 18.4 mm long
+    and L3 22.7 mm short.
+  - **L2's far end is `#410-001` Axis Intersection Half**, whose Ø42.000 mm J3 bore and blind 29.000 mm
+    channel end at −37.500 mm are measured on the part. It was previously believed to be
+    `HDI-330-002_ArmBodyHubB`, a clamp half with no file; that part is the clamp at the same joint, with
+    its node origin on the J3 axis.
+  - **Belts re-solved at unchanged centre distances: 1140 mm (570T) and 940 mm (470T)** × 6 mm GT2,
+    replacing 1176 mm and 896 mm. Only the tooth counts move the length.
+  - **The glue rigs resolved as tooling.** Each of the eight jig bodies is a trough holding both ends of
+    one bonded span at its finished spacing, with the negative of the part it seats at each end — which is
+    how L2's far end was identified. They consume **no** extra copies of robot parts; 007's 007.1
+    subassembly, 007.1 §8 and 007.2's tooling total are corrected accordingly, and
+    [C-404](specs/007.1-Parts-Catalog.md#4-bearings)'s *(+2 tooling)* 6703s drop — the catalog quantity is
+    **10**, unchanged.
+- **Driver:** A cut length is unrecoverable if it is short, and the derivation that set both rested on a
+  column whose provenance had never been traced to a source file.
+- **Re-derive:** 007/007.1/007.2 done (cut lengths, belt lengths, CF stock figures, tooling totals);
+  008's belt-fitting step updated to the new lengths.
+- **Status:** `[Specified]` for both cut lengths and for the glue rigs
+  ([DC-5](specs/009-Design-Completion.md#link-member-lengths) closed). `[Provisional]` for the two belt
+  lengths, which still stand on a routing no file places
+  ([DC-3](specs/009-Design-Completion.md#wrist-reduction-ratio)). The part at L3's far end remains absent
+  from the model set ([DC-11(h)](specs/009-Design-Completion.md#procurement-data)); no cut length depends
+  on it.
+
+### CR-3A11: Work-surface fastener specified
+
+- **Affects:** [004 §Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+  [007 §007.2](specs/007-Bill-of-Materials.md#0072-base),
+  [007.1 §6](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [008 §008.2](specs/008-Assembly.md#0082-base).
+- **Amends:** [CR-3A9](#cr-3a9-base-mounting-plate-specified-two-link-datums-withdrawn-two-model-mirrors-replaced)
+  (the plate-to-bench fastener).
+- **Was:** "M6 bolt, washer, and nut, 4 sets", with length "to suit the work surface" and no property
+  class — not orderable as written.
+- **Now:** **M6, property class 8.8 or better, one plain washer under the head and one under the nut,
+  4 sets.** Length is **9.5 mm plate + work-surface thickness + 12 mm**, rounded up to a stock length. The
+  work surface must give access to its underside for the nuts; where it does not, the T-slot clamp
+  alternative already recorded in 004 applies.
+- **Driver:** The four corner fasteners are the plate's only tie to the bench and carry ≈300 N at the far
+  bolt; the entry did not state a class, a length rule, or what to do on a bench with no underside access.
+- **Re-derive:** 007/007.1 fastener rows done.
+- **Status:** `[Specified]`.

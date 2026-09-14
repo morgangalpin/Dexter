@@ -78,7 +78,7 @@ range must accommodate them — confirm on build).
 Link lengths define the distances between joint axes used by both onboard and host kinematics. The order in
 firmware is **L5 first, L1 last**.
 
-| Link | Span | Value | Previous version | Delta |
+| Link | Span | Value | Version 1 | Delta from version 1 |
 |---|---|---|---|---|
 | L1 | Base mount → J2 axis | 235.20 mm | 228.60 mm | +6.60 mm |
 | L2 | J2 → J3 axis | 339.09 mm | 320.68 mm | +18.42 mm |
@@ -86,21 +86,21 @@ firmware is **L5 first, L1 last**.
 | L4 | J4 → J5 axis | 59.50 mm | 50.80 mm | +8.70 mm |
 | L5 | J5 axis → tool tip | 82.44 mm | 82.55 mm | −0.11 mm |
 
-*Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`).*
+*Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`).
+Comparison column: `dde/core/robot.js`, whose `ORIG DEX` set is version 1 in
+[010](010-Versioning.md#1-version-lineage)'s numbering.*
 
 **Design notes.**
 - L5 is essentially identical across versions, consistent with the tool interface being cross-version
   compatible ([004](004-Mechanical-Architecture.md#tool-interface-roll--grip)).
-- The L2 (+18.4 mm) and L3 (−22.7 mm) deltas are far larger than build tolerance, so the structural members
-  spanning those links are not carried over from the previous version unchanged. The deltas are converted
-  into carbon-fiber tube cut lengths in [DC-5](009-Design-Completion.md#link-member-lengths), which is where
-  those lengths are derived and where the remaining check on them is tracked.
+- No link value changes between versions 2 and 3, so every delta above spans two version steps. The
+  structural members spanning L2 and L3 are version 2 parts, carried across unchanged; their cut lengths
+  are in [007.1 §5](007.1-Parts-Catalog.md#5-structural-composites-and-metal-stock).
 - **Discrepancy to resolve:** an alternate link-length set in the wiki disagrees with the firmware file above
-  on L4 and L5, and the authored differential ([DC-2](009-Design-Completion.md#differential-detail-design))
-  now builds a **37.53 mm** L4 — within 2.0 mm of both this document's DH `d` term and the CAD frames, and
-  22 mm short of the firmware's. This specification still treats the firmware file as authoritative; the
-  candidate sets, the geometric readings and the measurement that settles them are in
-  [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
+  on L4 and L5, and two independent geometric readings — this document's DH `d` term and the CAD kinematic
+  frames — put L4 near 39.4 mm rather than the firmware's 59.50 mm. This specification still treats the
+  firmware file as authoritative; the candidate sets, the geometric readings and the measurement that
+  settles them are in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
 - Getting L2/L3/L4 wrong shifts where the links land relative to encoder zero and shows up as a
   Cartesian-accuracy error, not an assembly failure.
 
