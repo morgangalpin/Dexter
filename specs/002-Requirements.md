@@ -33,7 +33,7 @@ on, and is empty for the rest; 009 owns what that entry's state and definition o
 | REQ-WS-3 | Joint travel, J3 (elbow) | ≈ ±158° | — | [003](003-Kinematics.md#joint-travel-limits) |
 | REQ-WS-4 | Joint travel, J4 (wrist pitch) | ≈ ±108° | — | [003](003-Kinematics.md#joint-travel-limits) |
 | REQ-WS-5 | Joint travel, J5 (wrist yaw) | ≈ ±190° | — | [003](003-Kinematics.md#joint-travel-limits) |
-| REQ-WS-6 | Maximum reach from base axis | ≈ 0.79 m (derived: L2+L3+L4+L5) | measure on build — [DC-9](009-Design-Completion.md#performance-characterization) | [003](003-Kinematics.md#link-lengths) |
+| REQ-WS-6 | Maximum reach from base axis | ≈ 0.77 m (derived: L2+L3+L4+L5) | measure on build — [DC-9](009-Design-Completion.md#performance-characterization) | [003](003-Kinematics.md#link-lengths) |
 | REQ-WS-7 | Nominal working point | Reliable motion around `[0, 0.5, 0.075]` m (0.5 m out, 75 mm up) | — | [003](003-Kinematics.md#inverse-kinematics) |
 | REQ-WS-8 | Reachable envelope | Per the motion-envelope side/top profiles; not a simple sphere (config- and singularity-limited) | measure on build — [DC-9](009-Design-Completion.md#performance-characterization) | [003](003-Kinematics.md#workspace-envelope) |
 
