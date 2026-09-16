@@ -11,7 +11,9 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   script that renders and verifies them) with its size, SHA-256, and, for STLs, format and triangle count.
   Sizes and hashes are of the **repository** bytes, so text files are counted with LF line endings — on a
   Windows checkout (`core.autocrlf=true`) the working-tree file is larger than its row says. Compare a
-  text file by normalizing CRLF to LF first; binary files compare directly.
+  text file by normalizing CRLF to LF first; binary files compare directly. The text set is `.step`
+  (ISO-10303-21 is ASCII), `.scad`, `.rs`, `.json` and `.md`; `.stl`, `.f3d`, `.ipt`, `.dwg`, `.skp`
+  and `.skb` compare directly.
 
 ## Layout
 
