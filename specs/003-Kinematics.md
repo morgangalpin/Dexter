@@ -75,20 +75,40 @@ range must accommodate them — confirm on build).
 
 ## Link lengths
 
-Link lengths define the distances between joint axes used by both onboard and host kinematics. The order in
-firmware is **L5 first, L1 last**.
+Link lengths define the joint-axis stations used by both onboard and host kinematics, each measured **along
+the arm**. The order in firmware is **L5 first, L1 last**.
 
 | Link | Span | Value | Version 1 | Delta from version 1 |
 |---|---|---|---|---|
 | L1 | Base mount → J2 axis | 235.20 mm | 228.60 mm | +6.60 mm |
 | L2 | J2 → J3 axis | 339.09 mm | 320.68 mm | +18.42 mm |
 | L3 | J3 → J4 axis | 307.50 mm | 330.20 mm | −22.70 mm |
-| L4 | J4 → J5 axis | 59.50 mm | 50.80 mm | +8.70 mm |
+| L4 | J4 → J5 axis | **39.50 mm** | 50.80 mm | −11.30 mm |
 | L5 | J5 axis → tool tip | 82.44 mm | 82.55 mm | −0.11 mm |
 
-*Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`).
-Comparison column: `dde/core/robot.js`, whose `ORIG DEX` set is version 1 in
+*Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`)
+for L1, L2, L3 and L5. **L4 is specified here** against the CAD kinematic chain below; the firmware file's
+`59500` is superseded, and [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins)
+carries the line to write. Comparison column: `dde/core/robot.js`, whose `ORIG DEX` set is version 1 in
 [010](010-Versioning.md#1-version-lineage)'s numbering.*
+
+**The values are along-arm components of the CAD kinematic chain.** The
+`DexterHDI_Link*_KinematicAssembly` node origins in `dde/HDIMeterModel.gltf` (units per
+[004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)) place each joint
+station on the model's arm axis, `y`, with an offset across it in `z`:
+
+| Span | Along the arm | Across the arm | Link length |
+|---|---|---|---|
+| Base mount → J2 | 231.200 mm | +55.000 mm | L1 = 235.20 mm — does not follow, [DC-13](009-Design-Completion.md#base-height-and-l1) |
+| J2 → J3 | 339.0945 mm | +10.000 mm | L2 = 339.09 mm ✔ |
+| J3 → J4 | 307.5000 mm | −47.000 mm | L3 = 307.50 mm ✔ |
+| J4 → J5 | 39.5000 mm | −20.000 mm | **L4 = 39.50 mm** |
+
+L2 and L3 reproduce their firmware values from the along-arm column alone — L3 to the micron, L2 to 3 µm —
+which fixes the convention: a link length is the along-arm component, and the across-arm offset is not
+represented in a five-length model. **L4 follows from that convention as 39.50 mm.** The firmware file's
+`59500` is the J4 → J5 span's two components added together (39.500 + 20.000); it is neither the along-arm
+component nor the 44.275 mm distance between the two stations.
 
 **Design notes.**
 - L5 is essentially identical across versions, consistent with the tool interface being cross-version
@@ -96,11 +116,11 @@ Comparison column: `dde/core/robot.js`, whose `ORIG DEX` set is version 1 in
 - No link value changes between versions 2 and 3, so every delta above spans two version steps. The
   structural members spanning L2 and L3 are version 2 parts, carried across unchanged; their cut lengths
   are in [007.1 §5](007.1-Parts-Catalog.md#5-structural-composites-and-metal-stock).
-- **Discrepancy to resolve:** an alternate link-length set in the wiki disagrees with the firmware file above
-  on L4 and L5, and two independent geometric readings — this document's DH `d` term and the CAD kinematic
-  frames — put L4 near 39.4 mm rather than the firmware's 59.50 mm. This specification still treats the
-  firmware file as authoritative; the candidate sets, the geometric readings and the measurement that
-  settles them are in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
+- The across-arm offsets are real geometry that a five-length model cannot carry. What they cost in
+  Cartesian accuracy is measured on a physical build, with the built J4 → J5 station separation
+  ([DC-9](009-Design-Completion.md#performance-characterization)).
+- The link-length pair shown on the wiki's Kinematics page is **version 1's set**, not an alternate reading
+  of this version: its L5 is version 1's to 0.001 mm and its L4 is within 0.15 mm of version 1's 2.000 in.
 - Getting L2/L3/L4 wrong shifts where the links land relative to encoder zero and shows up as a
   Cartesian-accuracy error, not an assembly failure.
 
@@ -142,10 +162,17 @@ The reference kinematic model is the DH parameter set measured from a serialized
 *Source: `dde/math/DH.js` ("DH params from Dexter HDI-007010 (meters and degrees)").*
 
 **Notes.**
-- This is a *measured* model of a specific calibrated unit; the `a` and `d` terms cross-check the nominal
-  link lengths above (a₂ = 340 mm ≈ L2, a₃ = 312 mm ≈ L3, d_tool = 83 mm ≈ L5). Per-unit values will differ
-  slightly after that unit's calibration; the nominal link lengths above are the design targets, and this
-  DH set is the reference for validating kinematics math and seeding IK.
+- This is a *measured* model of a specific calibrated unit. Its **`a` terms** cross-check the nominal link
+  lengths above (a₂ = 339.9 mm ≈ L2, a₃ = 311.8 mm ≈ L3), as does the Tool row's `d` = 83.0 mm ≈ L5, whose
+  axes are perpendicular. Per-unit values will differ slightly after that unit's calibration; the nominal
+  link lengths above are the design targets, and this DH set is the reference for validating kinematics
+  math and seeding IK.
+- **The `d` terms on the wrist rows are not link readings.** J2, J3 and J4 are parallel pitch axes — the J2
+  and J3 rows carry α = 180.43° and 0.81° — and between parallel axes the common normal has no determined
+  position, so `d` on the J3 and J4 rows is a fit parameter rather than a measured offset. The J4 row's
+  `d` = 39.300 mm is therefore not a reading of L4, and its closeness to L4's 39.50 mm is coincidence. That
+  row's `a` = −0.000049 m is the reading to take from it: the wrist axes intersect
+  ([004](004-Mechanical-Architecture.md#differential-interface)).
 - Forward kinematics compose the six frame transforms `T_i(d, θ+q_i, a, α)`; inverse kinematics solve for
   joint angles `q` given a tool pose (`DH.forward_kinematics` / `DH.inverse_kinematics`).
 
@@ -200,7 +227,7 @@ position from `a`/`M` is summed with the PID offset from `P`/`C`. *Source: wiki 
 
 The reachable envelope is bounded by the joint travel limits above, the link lengths, configuration
 constraints, and singularity avoidance — it is not a simple sphere. Maximum reach from the base axis is
-≈ 0.79 m (derived: L2 + L3 + L4 + L5), and reliable motion is available around the nominal working point
+≈ 0.77 m (derived: L2 + L3 + L4 + L5), and reliable motion is available around the nominal working point
 `[0, 0.5, 0.075]` m. The motion envelope is documented as measured side-view and top-view profiles
 (wiki `Kinematics.md`); characterizing the envelope on a physical build closes REQ-WS-6/WS-8
 ([009](009-Design-Completion.md)).

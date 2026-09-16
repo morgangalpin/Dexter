@@ -409,3 +409,58 @@ anything version 3 does not independently specify
   bolt; the entry did not state a class, a length rule, or what to do on a bench with no underside access.
 - **Re-derive:** 007/007.1 fastener rows done.
 - **Status:** `[Specified]`.
+
+### CR-3A12: L4 specified along the arm; the DH `d` corroboration withdrawn
+
+- **Affects:** [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
+  [§DH model](specs/003-Kinematics.md#denavithartenberg-model) and
+  [§Workspace envelope](specs/003-Kinematics.md#workspace-envelope),
+  [002 §2](specs/002-Requirements.md#2-kinematic-and-workspace-requirements),
+  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
+  [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
+  [009](specs/009-Design-Completion.md).
+- **Amends:** [CR-3A4](#cr-3a4-revised-link-geometry) (L4's value),
+  [CR-3A8](#cr-3a8-wrist-tooth-count-decomposition-design-status-consolidated-into-009) (note 1's
+  corroboration of the 37.53 mm reading),
+  [CR-3A9](#cr-3a9-base-mounting-plate-specified-two-link-datums-withdrawn-two-model-mirrors-replaced)
+  (L4's `[TBD]` status, the two readings recorded there as agreeing, and the firmware file standing as its
+  record).
+- **Was:** L4 = 59.50 mm on the authority of `Firmware/Defaults.make_ins`, with three competing readings
+  open against it — the wiki's 50.95 mm, the CAD kinematic frames' 39.50 mm, and HDI-007010's DH `d` term
+  at 39.30 mm — the last two held to be independent geometric readings agreeing to within 0.2 mm. Closing
+  the item was owed a caliper measurement on a first build, and a datum that the model set could not reach.
+- **Now:**
+  - **L4 = 39.50 mm, and link lengths are along-arm components.** The `DexterHDI_Link*_KinematicAssembly`
+    origins in `dde/HDIMeterModel.gltf` place each joint station on the arm axis with an offset across it.
+    Taking the along-arm component alone reproduces the firmware's L3 to the micron (307.5000 against
+    307.500) and its L2 to 3 µm (339.0945 against 339.092). Under that convention the J4 → J5 span reads
+    **39.500 mm along the arm, −20.000 mm across it**, so L4 = 39.50 mm.
+  - **The firmware's 59.50 mm is the two components added together** — 39.500 + 20.000 — and is neither
+    the along-arm component nor the 44.275 mm distance between the two stations. `Defaults.make_ins` needs
+    `39500` in that field; every other field stands.
+  - **The DH `d` corroboration is withdrawn.** J2, J3 and J4 are parallel pitch axes (α = 180.43° and
+    0.81° on the J2 and J3 rows), and between parallel axes the common normal has no determined position,
+    so `d` on the rows that follow them is a fit parameter, not a measured offset. The J4 row's
+    `d` = 39.300 mm is not a reading of L4 and its closeness to 39.50 mm is coincidence; that row's
+    `a` = −0.000049 m is what it does say, which is that the wrist axes intersect. The DH set's **`a`**
+    terms remain the cross-check on L2, L3 and L5.
+  - **The wiki's pair is version 1's set** — L5 identical to 0.001 mm, L4 within 0.15 mm of version 1's
+    2.000 in — not an alternate reading of this version, so it competes with nothing.
+  - **The open datum is settled.** Where L3 lands on the J4 axis is the J4 station, which the same chain
+    places 307.500 mm along the arm from J3. It never depended on the bracket that carries the
+    differential off the L3 tube, which remains absent from the model set
+    ([DC-11(h)](specs/009-Design-Completion.md#procurement-data)).
+- **Driver:** The item could not be closed while its two supporting readings were believed to measure the
+  same quantity, and the firmware field it disagrees with silently displaces every commanded Cartesian
+  position by the error.
+- **Re-derive:** 004's differential-interface prose done (the frame separation now reads as L4; the
+  withdrawn 37.53 mm decomposition and its narrative are gone); 006's `LinkLengths` block carries `39500`
+  with the deviation from the shipped file called out; the derived maximum reach falls 20.00 mm to
+  **≈ 0.77 m** in 003 § Workspace envelope and REQ-WS-6; 009's DC-6 closed and its measurement moved to
+  [DC-9](specs/009-Design-Completion.md#performance-characterization). No cut length, belt length, or
+  printed part derives from L4.
+- **Status:** `[Specified]` for L4 and for the along-arm convention
+  ([DC-6](specs/009-Design-Completion.md#link-length-discrepancy-l4) closed). The built J4 → J5 station
+  separation is measured with DC-9's first-build checks; L1 remains `[TBD]` under
+  [DC-13](specs/009-Design-Completion.md#base-height-and-l1), where the same convention makes the 4.000 mm
+  a disagreement over the base stack.

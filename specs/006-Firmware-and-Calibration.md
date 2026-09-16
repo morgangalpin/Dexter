@@ -21,7 +21,7 @@ S, AxisCal, -332800, -332800, -332800, -86400, -86400 ; Dexter HDI
 S, Interpolation, 1, 1, 1, 1, 1 ; Dexter HDI
 
 ; Length of each link, in microns. L5 is first, L1 last.
-S, LinkLengths, 82440, 59500, 307500, 339092, 235200;
+S, LinkLengths, 82440, 39500, 307500, 339092, 235200;
 
 ; Joint motion limits, in arcseconds from center
 S, J1BoundryHigh, 684010;   S, J1BoundryLow, -684010;
@@ -39,6 +39,13 @@ S, ServoSet2X, 3, 35, 1020; Span goal torque
 kinematic terms in [003](003-Kinematics.md#link-lengths) and [003](003-Kinematics.md#joint-travel-limits).
 The previous version's values are retained (commented) in the source file for reference; the deltas are the design
 changes described in [001](001-Overview.md#5-design-lineage).
+
+⚠️ **`LinkLengths` above differs from the shipped file in one field.** The file as published carries
+`59500` for L4; the block above carries the specified **39500**
+([003 § Link lengths](003-Kinematics.md#link-lengths)). Write that value into `Defaults.make_ins` before
+first Cartesian motion: the onboard `M`, `T` and `C` kinematics all consume the line, DDE reads the same
+line from the robot, and an error in L4 displaces every commanded Cartesian position. `a`/`P` joint moves
+are unaffected.
 
 ## Drive constants (`AxisCal`)
 

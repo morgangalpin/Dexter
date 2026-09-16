@@ -7,9 +7,11 @@
 //   config = "revised"  — the DC-2 authored configuration meeting the
 //                         interface in specs/004 § Differential interface: it
 //                         fits the HDI-940 cover envelope and drills the Split
-//                         Gear's brad holes on one axis. It does NOT reach the
-//                         firmware's L4 = 59.50 mm, and no configuration here
-//                         does; that is DC-6's open question, not a parameter.
+//                         Gear's brad holes on one axis. No configuration here
+//                         reaches the firmware file's L4 = 59.50 mm, and none
+//                         is meant to: L4 is specified at 39.50 mm in
+//                         specs/003 § Link lengths, and no part here is driven
+//                         to either figure.
 //
 // Dimensions are stated once here; part files and specs reference them.
 
@@ -125,21 +127,26 @@ BODY_B_J4_YZ  = [-21.0, 21.0];
 BODY_B_COL_XY = [ 21.0, -21.0];
 
 // ---------------------------------------------------------------------------
-// L4, the J4 -> J5 offset (004 § Differential interface, DC-6)
+// L4, the J4 -> J5 offset (004 § Differential interface, specs/003)
 // ---------------------------------------------------------------------------
-// Two surviving geometric readings and one firmware value, and they do not
-// agree; the two geometric ones agree with each other to 0.2 mm. None of them
-// is a dimension anything here is driven to — diff_assembly.scad hangs a
-// tripwire on the geometric pair and arbitrates nothing. A third geometric
-// reading, taken off Diff Body A's arm, was withdrawn on 2026-09-06: that arm
-// is the tool arm, and L4's lower datum is in no file in this set. See DC-6.
+// L4 is specified at 39.50 mm — the along-arm separation of the J4 and J5
+// stations in the CAD kinematic chain — in specs/003 § Link lengths, which
+// closed DC-6 on 2026-09-13. It is not a dimension anything here is driven to:
+// diff_assembly.scad hangs a tripwire on it and arbitrates nothing.
+//
+// Two readings once carried here are withdrawn, and neither is to be revived
+// as an L4 figure. Diff Body A's arm, on 2026-09-06: that arm is the tool arm.
+// HDI-007010's measured DH J4 row d = 39.30 mm, on 2026-09-13: J2, J3 and J4
+// are parallel pitch axes, so d on the rows that follow them is a fit
+// parameter, and its closeness to 39.50 mm is coincidence (specs/003 § DH
+// model). The firmware file's 59.50 mm is that span's along-arm and across-arm
+// components added together and is superseded; specs/006 carries the line.
 //
 // There is no HDI-940 cover envelope here. One was carried as COVER_ENVELOPE
 // until 2026-09-06 and bounded nothing this model set builds; the figure
 // belongs to 004 § Differential interface, which owns it.
-L4_TARGET      = 59.50;   // Firmware/Defaults.make_ins
-L4_GLTF        = 39.50;   // dde/HDIMeterModel.gltf, J4 -> J5 frame separation
-L4_DH_D        = 39.30;   // HDI-007010's measured DH set, J4 row's d term
+L4             = 39.50;   // specified: specs/003 § Link lengths
+L4_SUPERSEDED  = 59.50;   // the field Firmware/Defaults.make_ins still carries
 
 // ---------------------------------------------------------------------------
 // Diff Body A axis length. One value for both configs.

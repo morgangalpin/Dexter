@@ -30,7 +30,7 @@ reference geometry.
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | — | `[Specified]` ✔ closed |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | — | `[Specified]` ✔ closed |
 | DC-5 | [Link member lengths (L2/L3)](#link-member-lengths) | P2 | Arm Body, End Arm Hub | — | `[Specified]` ✔ closed |
-| DC-6 | [Link-length discrepancy (L4)](#link-length-discrepancy-l4) | P2 | Kinematic accuracy | Caliper measurement | `[TBD]` |
+| DC-6 | [Link-length discrepancy (L4)](#link-length-discrepancy-l4) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-7 | [Motor Control PCB](#motor-control-pcb) | P2 | Electronics | Physical power-on test | `[Provisional]` |
 | DC-8 | [Power supply rating](#power-supply) | P2 | Power | — | `[Specified]` ✔ closed |
 | DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | Instrumented build | `[TBD]` |
@@ -39,9 +39,9 @@ reference geometry.
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to the specified counts | `[Provisional]` |
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | Mounting face to J2 on a build | `[TBD]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, and DC-8 are closed. Every other item has been
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, and DC-8 are closed. Every other item has been
 narrowed to the single remaining gap named in the table above, and each of those gaps is one of three kinds
-of work: **procurement** (DC-11), **design or reconstruction authored here** (DC-6, DC-10, DC-12), or **a
+of work: **procurement** (DC-11), **design or reconstruction authored here** (DC-10, DC-12), or **a
 check on a physical build** (DC-7, DC-9, DC-13). DC-2 — the largest single piece of work in the set
 — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
 measured geometry. Its physical-build checks remain with DC-9.
@@ -210,97 +210,22 @@ stays with [DC-11(h)](#procurement-data) and [DC-6](#link-length-discrepancy-l4)
 it. Confirmation on a built arm belongs to [DC-9](#performance-characterization). `[Specified]`.
 
 ## Link-length discrepancy (L4)
-**DC-6 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)**
+**DC-6 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)** — ✔ **closed**
 
-Link-length records disagree on L4, and no unit exists to arbitrate them:
+**Closed by analysis.** L4 is **39.50 mm**, the along-arm separation of the J4 and J5 stations, specified
+together with the convention it follows from in [003 § Link lengths](003-Kinematics.md#link-lengths). Both
+records this item was opened against are disposed of there: the firmware file's 59.50 mm is that span's
+along-arm and across-arm components added together, and the wiki's pair is version 1's set rather than a
+reading of this version. The readings withdrawn on the way, the DH `d` term among them, are recorded in
+[CR-3A12](../CHANGES.md#cr-3a12-l4-specified-along-the-arm-the-dh-d-corroboration-withdrawn).
 
-| Source | L4 | L5 |
-|---|---|---|
-| `Firmware/Defaults.make_ins` — **authoritative** | 59.50 mm | 82.44 mm |
-| Wiki | 50.95 mm | 82.55 mm |
-| CAD frame separation, per [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface) | 39.50 mm along the arm axis (44.27 mm in 3D) | — |
-
-**State — the authored design now supplies a fourth figure, and it does not land on the firmware's.** With
-no serialized unit available to measure (see **Sources of record** above), L4 became a **design output**:
-whatever the differential authored under [DC-2](#differential-detail-design) places between the J4 and J5
-axes. It has now been computed from that design rather than assumed. The wrist axes intersect at the
-differential centre (consistent with the DH set's `a ≈ 0`), so L4 is an offset **along the J4 axis**, from
-where L3 lands on it up to that centre:
-
-| L4 reading | Value | Kind |
-|---|---|---|
-| ~~DC-2 design, as built~~ | ~~37.53 mm~~ | **withdrawn 2026-09-05** — measures a J5-side offset, below |
-| CAD kinematic frames | 39.50 mm | measured on the GLTF |
-| Measured DH set, J4 row `d` | 39.30 mm | measured on HDI-007010 |
-| Wiki | 50.95 mm | record |
-| Firmware — authoritative | 59.50 mm | record |
-
-**The two surviving geometric readings agree to within 0.2 mm; the firmware's is 20 mm from both.** That
-reframes this item. It is no longer a design gap to close by adding standoff somewhere until 59.50 is
-reached — two independent kinematic sources put the real robot's wrist near 39.4 mm. What they no longer
-have is a third, independent agreement from the authored design, because that reading has been withdrawn.
-
-**The withdrawn reading, and why.** 37.53 mm was the distance between two datums in Diff Body A, both
-derived in [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface). The upper
-one stands — three separate seats fix the Diff Gear Shaft's bevel apex in agreement. The lower one took
-**Body A's arm centreline as the plane where L3 meets the J4 axis, and that arm is not on the L3 side of
-the wrist at all: it is the tool arm.** Two measurements settle it:
-
-- **Body A's orientation is fixed by the gripper covers, not the differential cover** — they reproduce its
-  extents with 0.25 mm clearance on three faces, measured in
-  [004 § Differential interface](004-Mechanical-Architecture.md#differential-interface). So Body A's 81 mm
-  arm axis lies along world **x**, and the arm reaches x = +51.000, stopping 3.815 mm short of the
-  `DexterHDI_Link6` tool frame at x = 54.815.
-- **The L3 tube axis lies along world y**, at (x = 0, z = 36.000), fixed by the End Arm Hub's spigot
-  ([C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)).
-
-Two perpendicular lines, in different halves of the wrist: the L3 tube cannot land on that arm. Positively,
-the arm is the **tool mount** — a 20 × 20 R4 spigot with a 131.716 mm² through-bore, ending inside the
-gripper covers, which is the route REQ-IF-4's six conductors take out to the tool. `C − 11.000` therefore
-measures from the bevel apex to the tool arm, a J5-side offset, and belongs to no L4 decomposition.
-
-**A second consequence, for [DC-2](#differential-detail-design), now resolved.** The same misidentification
-drove `BODY_A_LEN`: [004](004-Mechanical-Architecture.md#differential-interface) compared Body A's 80.98 mm
-across against `HDI-940-001_DiffCover`'s 78.0 mm and trimmed the revised config to 77.8 mm to fit. Body A is
-not inside that cover — it is inside `HDI-950`, where 81.0 mm fits with the clearance measured there. **The
-trim answered a conflict that does not exist, and it shortened the tool arm from 15.0 to 11.8 mm of
-engagement.** Reverted on 2026-09-06: `BODY_A_LEN` is 81.0 mm unconditionally, and the assert that enforced
-the trim is gone from `diff_assembly.scad`. Nothing replaces it — it tested the wrong envelope, and the
-right one is checked in 004 by measurement, not by a model-side bound.
-
-**Three superseded splits, recorded so they are not re-derived, and they fail the same way.** Each named two
-parts and assumed a face between them without finding it. This item read 31.0 + 28.5 mm, then on
-2026-08-19 48.53 + 10.97 mm, and then took 48.5335 − 11.000 as a distance spanning L3's landing — the
-first two crediting the **End Arm Hub** with a standoff against Diff Body A, the third crediting Body A's
-**tool** arm with receiving L3. All three closed arithmetically, which is why none of them fell to a
-recomputation; each fell to asking which face the two parts actually share. **Before splitting a dimension
-across two parts, name that face.** The first two errors are detailed below. The
-differential's half was a typed constant in a hand-placed assembly (the Diff Gear Shaft laid along the wrong
-axis, the Split Gear halves mirrored apart), which is what the 2026-08-19 rework fixed. The decomposition
-itself was wrong in both versions: **the End Arm Hub is at the elbow, a whole L3 away from the
-differential**, as [004 § End Arm Hub](004-Mechanical-Architecture.md#end-arm-hub-j3j4-region) describes it
-and as its own tooling shows — `GlueRig_EndArmHubToDiff_A`+`_B` span 362 mm and
-`GlueRig_ArmBodyToEndArmHub_A`+`_B` span 405 mm, both long jigs holding parts at opposite ends of a tube.
-The two parts share no mating face, so there was never a split to make there and no standoff for the hub to
-owe. The 28.5 mm once credited to it is a real feature — the hub's tube socket axis at z = −25.000 and its
-top face at z = +4.000, **29.000 mm** apart on `420-001_EndArmHub.stl` — but it is an offset at the **L3
-end**.
-
-Neither measured source is decisive alone. The DH model of HDI-007010
-([003](003-Kinematics.md#denavithartenberg-model)) carries the wrist in frame `d` offsets (J4 `d` = 39.3 mm,
-J5 `d` = 55.6 mm) because the axes intersect, and those do not map 1:1 onto a link length; a GLTF
-kinematic-assembly node origin need not sit exactly on the joint axis either. What makes them worth more
-than either is that they are independent of each other and now of a third, and all three land together.
-
-**Definition of done:** settle where L3 meets the J4 axis — the open datum shared with
-[DC-5](#link-member-lengths), which is now known **not** to be in Diff Body A. It cannot be settled from
-this model set at all: the bracket that carries the differential off the L3 tube is in no file here
-([DC-5](#link-member-lengths), [DC-11(h)](#procurement-data)), so that part has to be modelled or measured
-off a unit first. Then confirm the wrist by caliper on the first build and reconcile the records to it,
-updating [003](003-Kinematics.md#link-lengths) and the firmware file if the built value differs. The
-geometric evidence still points at that reconciliation going **against** the firmware's 59.50 mm rather
-than at a design that must reach it; until a physical measurement says so, the firmware file stands as the
-record. `[TBD]`.
+**Definition of done — met:** the datum this item turned on — where L3 lands on the J4 axis — is the J4
+station, which the same kinematic chain places 307.500 mm along the arm from J3, reproducing L3 exactly. It
+does not depend on the bracket that carries the differential off the L3 tube; that part is absent from the
+model set and stays with [DC-11(h)](#procurement-data). What remains is confirmation on a built arm —
+measured with [DC-9](#performance-characterization)'s first-build checks — and the one firmware field that
+follows from it ([006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins)).
+`[Specified]`.
 
 ## Base height and L1
 **DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)**
@@ -319,7 +244,10 @@ at 97.000 mm above the mounting face and two 15.000 mm clamps stacked on it — 
 Neither configuration reproduces the firmware value: the single-clamp model is 4.000 mm short of it, and
 the doubled clamp the design calls for overshoots it by 11.000 mm. The CAD model carries one clamp, so it
 does not model the design, and nothing in the model set says which clamp count the 235.200 mm belongs to.
-This is the same class of disagreement as [DC-6](#link-length-discrepancy-l4).
+The 231.200 mm is the along-arm figure that
+[003 § Link lengths](003-Kinematics.md#link-lengths)'s convention takes a link length from, so this is a
+disagreement over the stack rather than over the convention, which is what
+[DC-6](#link-length-discrepancy-l4) turned out to be.
 
 **Definition of done:** measure mounting face to J2 axis on the first build, recording the clamp count
 with it, and reconcile [003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware file to the
@@ -363,6 +291,12 @@ bore and survives J5's full travel, and both code disks read cleanly through the
 ([DC-11(e)](#the-j4-code-disk-is-missing)). Print-fit parameters
 (press interference, bevel backlash) tune in
 [`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) if a check fails.
+
+**Wrist station (moved here from [DC-6](#link-length-discrepancy-l4)):** measure the **J4 → J5 along-arm
+station separation** on the built arm. [003 § Link lengths](003-Kinematics.md#link-lengths) specifies L4
+from the CAD kinematic chain, and the build is the first independent check of it; reconcile 003 and the
+`LinkLengths` line in [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) to what is
+measured. The wrist is only apart once, so take it with the travel checks above.
 
 **Base first-build checklist (moved here from [DC-4](#base-plate)):** the mounted plate reacts full
 dynamic load without walking or tipping (REQ-ENV-5), bolted to the work surface as
@@ -416,7 +350,7 @@ and each is `[Provisional]` there.
 | e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) | `HDI-311-006C_J2StatorHolderCap_ConeDrive` is in the CAD model but has no BOM row; `HDI-610-006_MotorShaftCoupler` is instanced 4× where the BOM calls for 3. **Plus two found while authoring [DC-2](#differential-detail-design):** (i) [007.6](007-Bill-of-Materials.md#0076-differential) lists **5 × `#720-005` 60 × 4.4 × 1.5 mm CF strakes** in the differential, but no step in [008.6](008-Assembly.md#0086-differential) places them and no 4.4 × 1.5 mm slot appears anywhere in the differential's measured geometry (only the three 25 mm `#710-005` strakes, in the Split Gear Bottom, are both slotted and placed); (ii) **resolved — the J4 code disk is not a part at all**, its 115-slot track being cut into `#730-002`'s mating rim, so the BOM is not short a row — see [the note below](#the-j4-code-disk-is-missing). **Plus three found while placing `diff_assembly.scad`,** where every bought part was drawn into the seat it occupies and three had no seat to go to: (iii) the **needle thrust stack** (`#710-006` AXK0819 + 2 × AS0819, Ø19 OD) that [008.6](008-Assembly.md#0086-differential) step 5 puts on Diff Body B's Ø8 tube — nothing along that tube has a bore wide enough, the only Ø ≥ 19 bore in the Split Gear being `#710-001`'s Ø23 pocket, which `#710-002`'s Ø17 stub already fills; (iv) `#620-001` **MR85** (5 × 8 × 2.5), catalogued "Diff Gear Axle back" — `#720-002`'s only bore is the Ø8 the CF rod occupies, and no Ø5 feature exists anywhere in the differential for its inner race; (v) the **fifth 6703**, which by elimination is that Ø23 pocket (an r 8.5–11.5 × 4.25 mm annulus, floored exactly where `#710-002` bottoms on `#710-001` — a 6703 section to a hundredth), except that both of its races belong to parts the brads lock together, so nothing there turns relative to anything | Five fabricated parts with no home; three bought parts ordered with nowhere to fit |
 | f | **Defective model file** (`#710-002`, [007.2](007.2-Printed-Parts.md#differential--0076)) — ✔ **closed** | The file was **~1000× oversize** (exporter unit slip; its header read `STLB ASM 217.00.00.5800` vs neighbours' `220.00.00.0000`). The factor was detected as **exactly 1/1000** (`scadmesh scale --ref-dim 23.0`, zero residual against the 6703 seat), applied in place, and the corrected part verified against its mates: Ø23.000 6703 seat, Ø12.000 MR128 seat, Ø28.06 press bore receiving the Split Gear Top's Ø28.00, brad circle matching the Top's windows. Old SHA-256 `c20e30d1…a853af`, corrected `e746f42f…9cb3662`. The part now also has parametric source (`710-002_SplitGearBottom.scad`, [DC-2](#differential-detail-design)) | — |
 | g | **Misfiled model file** (`#200-001` Arm Body) — ✔ **closed** | `200-ArmBody/200-001_ArmBody.stl` held `ArmBodyFrontStrakeMED.stl` byte for byte (SHA-256 `c991b4e5…dcee1b`, 20 triangles, 4.9 × 9.9 × 32 mm) — the mirror had matched the archive's `ArmBody*` name prefix rather than the part. Replaced with `ArmBodyWEncode.stl` from [thing:3781990](https://www.thingiverse.com/thing:3781990) (SHA-256 `ad4e940d…1d86b4`, 11,946 triangles, 99.6 × 108.1 × 98.0 mm), confirmed to be the part by its 29 × 29 mm L2 tube socket agreeing with `HDI-310-001_ArmBody`'s to 0.011 mm ([DC-5](#link-member-lengths)). Unlike row f this was invisible to every check the manifest makes — the file was well-formed and the right size for *a* part. [Models § Known defects](../Hardware/Models/README.md#known-defects) records what that implies for the rest of the mirror | The largest printed part in the robot unprintable, and L2's seat depth uncheckable |
-| h | **L3's far-end part is absent from the model set** | [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) puts the L3 tube's far face 36.000 mm short of the J4 axis, and no file here presents the face it butts. The tube axis is (x = 0, z = 36.000) in world, `HDI-940-001_DiffCover` stops at z = 18.000, and neither differential body carries a 0.75″ joint; the CAD model represents the whole wrist as covers | [DC-6](#link-length-discrepancy-l4)'s open datum unreachable from this model set. The L3 cut length does not depend on it |
+| h | **L3's far-end part is absent from the model set** | [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) puts the L3 tube's far face 36.000 mm short of the J4 axis, and no file here presents the face it butts. The tube axis is (x = 0, z = 36.000) in world, `HDI-940-001_DiffCover` stops at z = 18.000, and neither differential body carries a 0.75″ joint; the CAD model represents the whole wrist as covers | No modelled path from the L3 tube's far face to the differential. Neither the L3 cut length nor [DC-6](#link-length-discrepancy-l4)'s L4 depends on it |
 | i | **Superseded model file** (`#110-001` Base Mount Bottom) — ✔ **closed** | `100-Base/110-001_BaseMountBottom.stl` held the **previous version's un-bolted base**: 85.000 × 85.000 × 98.000 mm against the CAD part's 150 × 150 × 98, with **no fastener features at all**. Its six 60°-spaced features decompose under `scadmesh arcs` into six straight lines — 12.94 × 3.82 mm bonding pockets for the `#110-003` CF strakes — identifying it as exactly the *"6 legged aluminum strake base"* the wiki says the bolted base replaced ([010](010-Versioning.md#1-version-lineage)). Replaced from the CAD model's `BaseMountBottom_Bolted v9` (SHA-256 `ab267f07…c00d2bde`, 25,952 triangles, 150.000 × 150.000 × 98.000 mm), which carries the 8-hole robot-side pattern [DC-4](#base-plate) was opened to recover. Like row g this passed every check the manifest makes — the file was well-formed and plausible for *a* base | [DC-4](#base-plate) unclosable, and a base printed without the mounting holes the design bolts through |
 
 ### The J4 code disk is missing

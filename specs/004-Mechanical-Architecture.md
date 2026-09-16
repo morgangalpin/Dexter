@@ -296,11 +296,10 @@ world units are millimetres.
 | Encoders | Output-side optical code disks, **J4 = 115 slots, J5 = 100 slots**, read through the Angle and Rotate photointerrupter shrouds (`#824`, `#825`). J5's disk is `#710-004` (100 slots, counted on the model); **J4 has no disk — its 115 slots are cut into `#730-002` Diff Body B's mating rim** and read across the pivot from Diff Body A ([DC-11(e)](009-Design-Completion.md#the-j4-code-disk-is-missing)) | [003 § Joint definitions](003-Kinematics.md#joint-definitions), [005 § Sensing](005-Electronics-and-Control.md#sensing) |
 | Through-bore | **6 conductors** pass the hollow centre and must survive J5's full travel | REQ-IF-4, [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) |
 
-**The frame separation agrees with the measured unit.** The 39.50 mm above lands within 0.2 mm of the J4
-`d` term in the HDI-007010 DH set (39.3 mm, [003](003-Kinematics.md#denavithartenberg-model)), so the
-envelope model and the measured kinematics corroborate each other. It does *not* agree with either L4
-candidate in [DC-6](009-Design-Completion.md#link-length-discrepancy-l4) — a kinematic-assembly node origin
-need not sit exactly on the joint axis, so treat it as corroboration of the envelope, not as an L4 value.
+**The frame separation is L4.** The 39.50 mm above is the along-arm separation of the J4 and J5 stations,
+which is the quantity [003 § Link lengths](003-Kinematics.md#link-lengths) specifies as L4 and states the
+convention for. The 20.00 mm across-arm offset between the same two frames is real geometry that the
+five-length kinematic model does not carry.
 
 **Envelope conformance — against the gripper covers, not this one.** Diff Body A is enclosed by
 `HDI-950-001`/`-002`, which reproduce its extents with 0.25 mm clearance on three faces: cover x from
@@ -313,29 +312,21 @@ parts do not overlap — `HDI-940` spans z −32.5 to 18.0 and Body A does not e
 [CR-3A7](../CHANGES.md); `BODY_A_LEN` is 81.0 mm in both
 configurations.
 
-**L4 realization.** The J4 and J5 axes **intersect**, at the differential centre — inherent to a bevel
-differential, and the reason the measured DH set carries `a ≈ 0` on both wrist rows and puts the wrist
-geometry in the `d` offsets instead ([003 § DH model](003-Kinematics.md#denavithartenberg-model)). The link
-length L4 ([DC-6](009-Design-Completion.md#link-length-discrepancy-l4)) is therefore an offset **along the
-J4 axis** rather than a distance between two separated lines.
+**The wrist has no axis-to-axis distance.** The J4 and J5 axes **intersect**, at the differential centre —
+inherent to a bevel differential, and the reason the measured DH set carries `a ≈ 0` on both wrist rows
+([003 § DH model](003-Kinematics.md#denavithartenberg-model)). What the kinematic model carries across the
+wrist is the station separation above, not a distance between two separated lines.
 
-It runs from the point where **L3 lands on the J4 axis** up to the differential centre. Only the upper end
-is geometry this model set can name: `C`, derived from the Diff Gear Shaft's own bevel apex, whose height
-is fixed by three separate seats in Diff Body A that agree exactly (the rear 6703 face on the Ø20 waist
-shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on the belt slot):
-`C = 48.5335 mm` above Body A's base plane.
+**The bevel apex sits `C = 48.5335 mm` above Diff Body A's base plane**, derived from the Diff Gear
+Shaft's own apex and fixed by three separate seats in Body A that agree exactly: the rear 6703 face on the
+Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on the belt
+slot. Body A's remaining datums are its 20 × 20 R4 section spanning z 1–21, its 6 × 6 belt slot at z 8–14,
+and a shell mirror-symmetric about z = 11.000 over z ∈ [2, 20].
 
-**The lower end is not in this model set.** An earlier revision of this section took it as Body A's arm
-centreline at z = 11.000, giving L4 = 37.53 mm. That arm is the **tool** arm — a 20 × 20 R4 spigot on world
-+x carrying the six-conductor through-bore out to the gripper — while the L3 tube runs along world y at
-(x = 0, z = 36.000). The two are perpendicular and in different halves of the wrist, so 48.5335 − 11.000
-spans no link. Body A's own figures stand as measurements of Body A: its 20 × 20 R4 section spans z 1–21,
-its 6 × 6 belt slot z 8–14, and its shell is mirror-symmetric about z = 11.000 over z ∈ [2, 20]. What was
-withdrawn is the claim about which link that plane bounds.
-
-**Reconciling L4 with the firmware is not this document's job.** The competing readings, the evidence that
-withdrew the 37.53 mm one, and the three superseded decompositions recorded so they are not re-derived are
-all [DC-6](009-Design-Completion.md#link-length-discrepancy-l4).
+**Body A's 20 × 20 R4 arm on world +x is the tool mount**, carrying REQ-IF-4's six conductors out to the
+gripper through its 131.716 mm² bore ([005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring)).
+No link lands on it: the L3 tube runs along world y at (x = 0, z = 36.000), perpendicular to that arm and
+in the other half of the wrist ([C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)).
 
 ### End Arm Hub (J3–J4 region)
 
