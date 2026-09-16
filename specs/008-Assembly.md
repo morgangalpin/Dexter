@@ -293,11 +293,16 @@ Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the previous 
 5. Epoxy the bottom PCB bracket 37.5 mm up from the Arm Body joint — this sets the top bracket position too.
 6. Hold the Motor Control Board with the brackets on the opposite side of the 1" CF tube and screw in the
    M3 × 20 mm bolts without over-tightening (an M3 nut can back up a stripped hole).
-7. Connect the power wires: black to negative (−), red to positive (+).
-8. **Tool-interface wiring:** connect the White signal wire to the **2nd ground terminal** (labeled "−"
-   near the top of the motor board). Verify this assignment against the board before first power-on — the
-   cross-version hazard it guards against is specified in
-   [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring).
+7. Fit exactly one opto-supply jumper — `W1` or `W2` — before any opto board is connected
+   ([005 § Boards](005-Electronics-and-Control.md#boards)).
+8. Land each stepper and each opto board on the header its **joint name** selects, not its connector
+   number — the two orders differ, and the map is in
+   [005 § Boards](005-Electronics-and-Control.md#boards).
+9. Connect the power wires to `J24`: black to negative (−), red to positive (+).
+10. **Tool-interface wiring:** land all six conductors as
+    [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) specifies. Confirm
+    the White wire on `J24` pin 2 before first power-on — the cross-version hazard it guards against is
+    specified there.
 
 ## 008.11 Tool Interface / Gripper
 Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).

@@ -253,19 +253,31 @@ disagreement over the stack rather than over the convention, which is what
 with it, and reconcile [003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware file to the
 built stack. The clamp count moves the answer by 15.000 mm, more than the disagreement itself, so a
 measurement without it settles nothing. `[TBD]`.
+
 ## Motor Control PCB
 **DC-7 · P2 · Requirement: REQ-CTL-3, REQ-IF-4 · Specified in [005](005-Electronics-and-Control.md#boards)**
 
 **Open:** a physical power-on test. No purpose-built Motor Control PCB exists, so the previous version's
-"green" board is reused. Its contents have been confirmed against the gerbers and BOM and are specified in
-[005 § Boards](005-Electronics-and-Control.md#boards); that review is what established the reuse as viable,
-since the board's connector set is generic and the only known difference is the harness White-wire
-reassignment. What has *not* happened is running a unit on it.
+"green" board is reused. Its devices, its full connector map, and the board landing of every tool conductor
+are specified in [005 § Boards](005-Electronics-and-Control.md#boards) and
+[005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) from the schematic; that
+review is what established the reuse as viable, since the board's connector set is generic and the only
+known difference is the harness White-wire reassignment. What has *not* happened is running a unit on it.
 
 **Definition of done:** confirm the inherited board drives a unit correctly with this wiring harness on a
-physical power-on test. Full closure (a purpose-built board) is a roadmap item
-([011](011-Roadmap.md)), not a blocker here. If a unit shows power-related faults absent on earlier builds,
-revisit this reuse assumption first. `[Provisional]`.
+physical power-on test:
+
+1. **Before power.** White lands on `J24` pin 2 with nothing at the tool end driving it; exactly one
+   opto-supply jumper is fitted; every motor and opto lead is on the header its joint *name* selects
+   ([008.10](008-Assembly.md#00810-wire-harness)).
+2. **Under power.** Each of the five joints steps in the commanded direction and its own encoder counts
+   with it — the check that the channel map was followed rather than the connector numbering.
+3. **Measure the rail at `J23`** while the board runs; that reading is what
+   [DC-11(b)](#procurement-data) needs to choose the fan.
+
+Full closure (a purpose-built board) is a roadmap item ([011](011-Roadmap.md)), not a blocker here. If a
+unit shows power-related faults absent on earlier builds, revisit this reuse assumption first.
+`[Provisional]`.
 
 ## Power supply
 **DC-8 · P2 · Requirement: REQ-CTL-5 · Specified in [005](005-Electronics-and-Control.md#power)** — ✔ **closed**
@@ -344,7 +356,7 @@ and each is `[Provisional]` there.
 | # | Item | What is open | Consequence if wrong |
 |---|---|---|---|
 | a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"* — no manufacturer part number, and the recommended qualifying part is not a proven identity match. The requirements it must meet, and how the candidate measures against them, are in [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) | Body or shaft length mismatch against the printed Motor End Cap; five motors ordered wrong |
-| b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) | No size, voltage, or part number anywhere in the design record — only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`) | Fan does not fit the bracket, or fouls the MicroZed USB connector |
+| b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) | Size and part number. The board side — the connector, its fusing, and the voltage the schematic annotates — is specified in [005 § Boards](005-Electronics-and-Control.md#boards); no fan dimension or part number is anywhere in the design record, only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`). The rail is read on [DC-7](#motor-control-pcb)'s power-on | Fan does not fit the bracket, or fouls the MicroZed USB connector |
 | c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) | [007.5](007-Bill-of-Materials.md#0075-arm-body) types them "Fabricate"; [008.5](008-Assembly.md) treats them as printed bodies that accept pressed MR128 bearings and printed caps | Three parts either printed that should be machined, or absent from the print list |
 | d | **Print parameters** ([007.2 § Material](007.2-Printed-Parts.md#material)) | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment | Bearing bores and CF strake slots out of tolerance; press and bond fits fail |
 | e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) | `HDI-311-006C_J2StatorHolderCap_ConeDrive` is in the CAD model but has no BOM row; `HDI-610-006_MotorShaftCoupler` is instanced 4× where the BOM calls for 3. **Plus two found while authoring [DC-2](#differential-detail-design):** (i) [007.6](007-Bill-of-Materials.md#0076-differential) lists **5 × `#720-005` 60 × 4.4 × 1.5 mm CF strakes** in the differential, but no step in [008.6](008-Assembly.md#0086-differential) places them and no 4.4 × 1.5 mm slot appears anywhere in the differential's measured geometry (only the three 25 mm `#710-005` strakes, in the Split Gear Bottom, are both slotted and placed); (ii) **resolved — the J4 code disk is not a part at all**, its 115-slot track being cut into `#730-002`'s mating rim, so the BOM is not short a row — see [the note below](#the-j4-code-disk-is-missing). **Plus three found while placing `diff_assembly.scad`,** where every bought part was drawn into the seat it occupies and three had no seat to go to: (iii) the **needle thrust stack** (`#710-006` AXK0819 + 2 × AS0819, Ø19 OD) that [008.6](008-Assembly.md#0086-differential) step 5 puts on Diff Body B's Ø8 tube — nothing along that tube has a bore wide enough, the only Ø ≥ 19 bore in the Split Gear being `#710-001`'s Ø23 pocket, which `#710-002`'s Ø17 stub already fills; (iv) `#620-001` **MR85** (5 × 8 × 2.5), catalogued "Diff Gear Axle back" — `#720-002`'s only bore is the Ø8 the CF rod occupies, and no Ø5 feature exists anywhere in the differential for its inner race; (v) the **fifth 6703**, which by elimination is that Ø23 pocket (an r 8.5–11.5 × 4.25 mm annulus, floored exactly where `#710-002` bottoms on `#710-001` — a 6703 section to a hundredth), except that both of its races belong to parts the brads lock together, so nothing there turns relative to anything | Five fabricated parts with no home; three bought parts ordered with nowhere to fit |
@@ -404,8 +416,9 @@ source ([DC-2](#differential-detail-design)), and the `openscad-tools` measureme
 apply to every remaining mesh-only part.
 
 **Definition of done:** (a) a confirmed stepper part number verified against the printed Motor End Cap
-envelope; (b) fan size, voltage, and part number specified against the Fan Bracket; (c) the Belt Director
-type settled and the affected rows corrected in [007](007-Bill-of-Materials.md)/[007.2](007.2-Printed-Parts.md);
+envelope; (b) fan size and part number specified against the Fan Bracket, on the rail DC-7 reads at `J23`;
+(c) the Belt Director type settled and the affected rows corrected in
+[007](007-Bill-of-Materials.md)/[007.2](007.2-Printed-Parts.md);
 (d) a published print profile validated on a bearing bore and a strake slot; (e) both CAD-vs-BOM mismatches
 adjudicated against the model set; (f) **done** — the rescaled, mate-verified STL and its parametric source
 are committed (see row f); and [007.2](007.2-Printed-Parts.md) carrying per-part model links now that the

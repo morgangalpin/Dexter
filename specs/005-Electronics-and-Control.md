@@ -65,22 +65,42 @@ internal control, commanded over the tool interface serial bus. *Source: wiki `H
 
 | Board | Role | Source of record |
 |---|---|---|
-| **Motor Control PCB** | Stepper drivers, power distribution, opto/tool connectors, FPGA carrier interface | `Hardware/Motor PCB/` gerbers (D3/D4-corrected revision) |
+| **Motor Control PCB** | Stepper drivers, power distribution, opto/tool connectors, FPGA carrier interface | `Hardware/Motor PCB/` gerbers and BOM; schematic `Hardware/09011-00135-A.PDF` |
 | **MicroZed FPGA/SoC** | Xilinx Zynq module: FPGA fabric (joint servo, gateware) + ARM core (DexRun, Linux) | [C-701](007.1-Parts-Catalog.md#7-electronics-and-wiring) for the exact module part number |
 | **Optical boards (×5)** | LED + phototransistor opto pickups, one per joint encoder | `Hardware/Opto/` gerbers/BOM |
 
 - **Motor Control PCB.** No Motor Control PCB design of this version's own exists; the
   previous version's "green" board is reused (`09051-00135-A`, the revision carrying the D3/D4 power fix).
-  Its gerbers and BOM (`Hardware/Motor PCB/`) define the board of record:
+  Its gerbers, BOM, and schematic define the board of record:
 
   | Function | Devices | Note |
   |---|---|---|
   | Stepper drivers | 6 × Allegro **A4983** (`Z1–Z6` on `MOT1–MOT6`) | 5 arm joints + 1 spare/External channel |
-  | Logic rails | TI **TPS54541** bucks (`U1`, `U2`) | Derived from the motor rail |
-  | Boost | **LTC3786** (`U3`) | Sets the board's **38 V** input ceiling |
-  | Power rectification | **PDS760** Schottkys (`D3`, `D4`), 60 V | The "D3/D4 fix" that defines this board revision |
-  | Per-channel protection | 3.0 A thermal fuses (`F1–F6`) | One per motor channel |
-  | Connectors | `J1–J6`/`J24` 4-pin motor screw terminals; `J7–J13` 6-pin opto headers; `J14–J17` 3-pin tool headers; `J19–J21` power | Generic, not tied to a specific robot version |
+  | Logic rails | TI **TPS54541** bucks — `U1` → 5 V, `U2` → 3.3 V | Bucked from the input rail `PMAIN`, ahead of the boost |
+  | Boost | **LTC3786** (`U3`) | Raises `PMAIN` to the motor rail `PMOTOR` that feeds the drivers; its 38 V ceiling is the board's **input** ceiling |
+  | Input series Schottky | **MBR30H100MFS** (`D6`), 100 V | Carries the whole board current in from `J24` |
+  | Buck catch diodes | **PDS760** Schottkys (`D3`, `D4`), 60 V | One per TPS54541; the "D3/D4 fix" that defines this board revision |
+  | Per-channel protection | 3.0 A thermal fuses (`F1`–`F6`) | One per motor channel; `F7` (1.0 A) fuses the fan |
+  | Connectors | Mapped below | Generic, not tied to a specific robot version |
+
+  **Connector map**, from the schematic. Channel order follows the firmware's axis order — Base, End,
+  Pivot, Angle, Rotate — **not** joint number, so the Pivot and End channels cross over relative to their
+  joint names ([003](003-Kinematics.md#joint-definitions)). Wire by name, never by connector number.
+
+  | Ref | Type | Carries |
+  |---|---|---|
+  | `J1`–`J6` | 4-pin 0.1″ screw terminal | Stepper phases, pins 1–4 = A−, A+, B−, B+. `J1` Base, `J2` End, `J3` Pivot, `J4` Angle, `J5` Rotate, `J6` External (spare) |
+  | `J7`, `J8`, `J10`–`J13` | 1 × 6 0.1″ header | Opto boards, pins 1–6 = A−, A+, B−, B+, supply, ground. `J7` Base, `J8` Rotate, `J10` Angle, `J11` Pivot, `J12` End, `J13` External |
+  | `W1`, `W2` | 0 Ω jumper | Selects the opto supply — `W1` 5 V, `W2` 3.3 V. **Fit exactly one** |
+  | `J9`, `J18` | 2 × 50 0.8 mm | MicroZed carrier: `JX2` (analog and encoder) and `JX1` (digital) |
+  | `J14`–`J17` | 1 × 3 2 mm right-angle | Differential analog inputs `ANA_1`–`ANA_4` |
+  | `J19` | 1 × 7 2 mm right-angle | Debug port; pin 7 is the `GripperMotor` output |
+  | `J20`, `J21` | 1 × 2 2 mm right-angle | FPGA `AUX1` and `AUX2` pairs through 33.2 Ω series resistors; the tool's Green and Blue land on `J20` ([Tool interface wiring](#tool-interface-wiring)) |
+  | `J22`, `J25` | 1 × 2 0.1″ header | `J25` is the tool's logic pair — ground and +5 V |
+  | `J23` | 1 × 2 2 mm right-angle | Cooling fan, through `F7`; the schematic annotates the load `12V FAN` ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) |
+  | `J24` | 4-pin 0.1″ screw terminal | Main power in, pins 1–4 = `VIN1` "+", `GND1` "−", `VIN2` "+", `GND2` "−" |
+
+  `J20`, `J21` and `J23` take the same mating connector.
 
   The generic connector set is why the reuse is viable: the only known difference from the previous version
   is the wiring-harness reassignment described in [Tool interface wiring](#tool-interface-wiring), not a
@@ -96,9 +116,10 @@ A single DC supply feeds the motor and logic rails through the Motor Control PCB
 record is **36 V DC, 4 A (≈144 W)** — a standard laptop-style DC brick with a matching barrel connector.
 
 The **38 V board ceiling** set by the `LTC3786` ([Boards](#boards)) is what bounds the supply from above;
-36 V sits just under it with margin, and the board's 50 V-rated input capacitors and 60 V PDS760 Schottkys
-support it. The motor rail feeds the six A4983 stepper drivers (≈2 A/phase, fused at 3.0 A per channel);
-the TPS54541 bucks derive the logic rails from it. Servo power for the tool is derived on the tool side.
+36 V sits just under it with margin, and the board's 50 V-rated input capacitors and the 100 V `D6` input
+Schottky support it. The motor rail `PMOTOR` feeds the six A4983 stepper drivers (≈2 A/phase, fused at
+3.0 A per channel); the TPS54541 bucks derive the logic rails from the input rail ahead of the boost. Servo
+power for the tool is derived on the tool side.
 
 **Under-voltage is a failure mode, not just a slowdown:** a 12 V or 24 V brick causes the arm to grind and
 buzz, stall mid-motion, and fail to find home. Do not substitute one. *Source: wiki
@@ -129,19 +150,20 @@ The tool interface connects to the Motor Control PCB through **6 conductors** (R
 are common across versions; **the White conductor changed with this version** and the difference is
 safety-relevant.
 
-| Wire | Assignment | Note |
-|---|---|---|
-| Black | Ground | |
-| Red | +5 V logic | |
-| Yellow | Unregulated supply power | |
-| Blue | Servo data bus | |
-| Green | Auxiliary / return serial data | |
-| **White** | **Second ground** (2nd-from-top "−" screw terminal) | **On the previous version this same wire can carry regulated servo power (6–8.75 V)** |
+| Wire | Assignment | Lands on | Note |
+|---|---|---|---|
+| Black | Ground | `J25` pin 1 (top) | |
+| Red | +5 V logic | `J25` pin 2 (bottom) | |
+| Yellow | Unregulated supply power | `J24` pin 1 — the "+" slot | Tapped from the board's own DC input |
+| Blue | Servo data bus | `J20` bottom pin (`AUX1_N`) | |
+| Green | Auxiliary / return serial data | `J20` top pin (`AUX1_P`) | |
+| **White** | **Second ground** | `J24` pin 2 — the 2nd-from-top "−" slot | **On the previous version this same wire can carry regulated servo power (6–8.75 V)** |
 
 **Safety.** On the previous version, White may carry 6–8.75 V; here the same physical wire and terminal are
 a second ground. Connecting an older harness to a board configured for this version (or vice versa) without
-re-checking this assignment shorts a power rail to ground. Verify the White assignment against the board before first
-power-on. *Source: wiki `End-Effectors.md` ("Version 2 Wiring").*
+re-checking this assignment shorts a power rail to ground. Before first power-on, confirm White lands on
+`J24` pin 2 and that nothing at the tool end drives it. *Source: wiki `End-Effectors.md` ("Version 2
+Wiring"); schematic `Hardware/09011-00135-A.PDF` for the landings above.*
 
 ## Open items
 
@@ -150,4 +172,4 @@ Nothing else in this document is open.
 | Item | What is open |
 |---|---|
 | Motor Control PCB | Physical power-on test of the reused board — [DC-7](009-Design-Completion.md#motor-control-pcb) |
-| Cooling fan over the stepper drivers | Size and voltage — [DC-11](009-Design-Completion.md#procurement-data) |
+| Cooling fan over the stepper drivers | Size and part number — [DC-11](009-Design-Completion.md#procurement-data) |
