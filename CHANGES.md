@@ -464,3 +464,40 @@ anything version 3 does not independently specify
   separation is measured with DC-9's first-build checks; L1 remains `[TBD]` under
   [DC-13](specs/009-Design-Completion.md#base-height-and-l1), where the same convention makes the 4.000 mm
   a disagreement over the base stack.
+
+### CR-3A13: Motor Control PCB connector map recovered from the schematic
+
+- **Affects:** [005 §Boards](specs/005-Electronics-and-Control.md#boards),
+  [005 §Power](specs/005-Electronics-and-Control.md#power),
+  [005 §Tool interface wiring](specs/005-Electronics-and-Control.md#tool-interface-wiring),
+  [007.1 §7](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring),
+  [008 §008.10](specs/008-Assembly.md#00810-wire-harness),
+  [009](specs/009-Design-Completion.md).
+- **Was:** The board's connectors were given as four groups — `J1`–`J6`/`J24` motor screw terminals,
+  `J7`–`J13` opto headers, `J14`–`J17` tool headers, `J19`–`J21` power — with no map from a connector to
+  the joint it serves, and a tool conductor's landing named only for White, as "the 2nd-from-top '−' screw
+  terminal". The logic rails were said to derive from the motor rail, and `D3`/`D4` to be the input
+  rectification.
+- **Now:** Every connector on the board is mapped in [005 §Boards](specs/005-Electronics-and-Control.md#boards)
+  from the schematic (`Hardware/09011-00135-A.PDF`), and each of the six tool conductors carries its board
+  landing in [005 §Tool interface wiring](specs/005-Electronics-and-Control.md#tool-interface-wiring).
+  Four of the earlier groupings were wrong: `J24` is the main power input (`VIN1`/`GND1`/`VIN2`/`GND2`),
+  not a seventh motor terminal; `J9` is the MicroZed `JX2` carrier connector, not an opto header;
+  `J14`–`J17` are the differential analog inputs `ANA_1`–`ANA_4`, not tool headers; and `J19`–`J21` are the
+  debug port and the two FPGA `AUX` pairs, not power. **The board's channel order is the firmware's axis
+  order — Base, End, Pivot, Angle, Rotate — so the Pivot and End channels cross over relative to joint
+  number**, and the opto headers run in a third order again. `U1`/`U2` buck the logic rails from the input
+  rail ahead of the boost; `D3`/`D4` are those bucks' catch diodes, which is what the "D3/D4 fix" naming
+  this board revision corrects, and `D6` is the input series Schottky.
+- **Driver:** [DC-7](specs/009-Design-Completion.md#motor-control-pcb) closes on a physical power-on test,
+  and the specification did not say where a single wire goes. Wiring by connector number rather than by
+  joint name drives two joints from each other's channels, and the White conductor's landing — the one
+  cross-version hazard on this board — could not be checked before power without the schematic.
+- **Re-derive:** [008.10](specs/008-Assembly.md#00810-wire-harness) gains the opto-jumper, motor, and opto
+  landing steps it did not have; DC-7's definition of done is now the power-on procedure itself;
+  [DC-11(b)](specs/009-Design-Completion.md#procurement-data) and
+  [C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring) narrow to fan size and part number, the
+  board side being settled, with the rail at `J23` read during DC-7's test.
+- **Status:** `[Specified]` for the connector map, the harness landings, and the rail derivation.
+  [DC-7](specs/009-Design-Completion.md#motor-control-pcb) stays `[Provisional]`: nothing here substitutes
+  for running a unit on the board.
