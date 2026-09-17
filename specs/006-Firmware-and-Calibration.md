@@ -104,6 +104,22 @@ rates against these settings are measured on a build
 *Source: `Firmware/DexRun.c` (`arcsec_per_nbits`, `maxSpeed_arcsec_per_sec`, `CartesianSpeed`, and the
 `Params` table's `MaxSpeed`/`Acceleration` cases); `Firmware/Cal.make_ins`.*
 
+## Encoder velocity monitor
+
+`monitorTorque()` converts each joint's raw encoder word to a position it differences for velocity, and
+faults the robot when the difference exceeds that joint's limit. The conversion is the ratio of two
+per-joint arrays, `joints_corr[i] / joints_slots[i]`, and **the pair is fitted empirically, not derived** —
+`joints_corr` is a tuned residual against whatever `joints_slots` it was tuned with. Neither term is
+independently meaningful, so neither is corrected on its own.
+
+This matters because `joints_slots` reads `{200, 184, 157, 115, 100}` while J2's code disk has **180** slots
+([003 § Joint definitions](003-Kinematics.md#joint-definitions)); J2's monitor is therefore scaled 2.2 %
+against its own joint. The trip has margin and the fault is a velocity limit rather than a position, so the
+design of record keeps the fitted pair intact. Re-fit both terms together against measured J2 encoder
+velocity if the monitor mis-trips on a build.
+
+*Source: `Firmware/DexRun.c` (`monitorTorque`).*
+
 
 ## Calibration model
 
@@ -121,9 +137,10 @@ recorded values are overwritten incorrectly. Operationally:
   Do not save calibration on such a unit.
 - A **from-scratch build** (new opto boards, new code disks, new drives) has no recorded calibration and
   **must run the full factory procedure once** before first use — this is unavoidable for a new build and is
-  the single most consequential bring-up step. The procedure depends on a set of calibration job files;
-  which of them are available and which must be reconstructed is
-  [DC-10](009-Design-Completion.md#from-scratch-calibration-files).
+  the single most consequential bring-up step. The procedure is driven from two calibration job files, named
+  in the steps below and inventoried in
+  [DC-10](009-Design-Completion.md#from-scratch-calibration-files); running them on a build is what closes
+  that item.
 
 *Source: wiki `Encoder-Calibration.md`, `Dexter-Setup.md`; factory calibration PDFs.*
 
@@ -149,9 +166,9 @@ SCP/SSH), DDE, and a grounded anti-static wrist strap whenever handling the FPGA
 2. Align the "X" on the Base Long with the center of the ExGear Mount Bottom (J3 wire exit); fine-tune by
    aligning the J1 opto block's right edge with the raised notch on the Base Code Disk.
 3. Move to the most upright (home) position; power on.
-4. In DDE, open the calibration job file (`Setup_Find_Index_Home_HDI*.dde` from the factory bundle;
-   [009](009-Design-Completion.md#from-scratch-calibration-files)) → `Jobs → Calibrate Dexter…` → select the
-   robot. Wait for the "Initializing…" dialog to clear (DDE has read `AdcCenters.txt`).
+4. In DDE, open the calibration job file `DDE/InitialCalibration/Setup_Find_Index_Home_HDIv2.dde` →
+   `Jobs → Calibrate Dexter…` → select the robot. Wait for the "Initializing…" dialog to clear (DDE has read
+   `AdcCenters.txt`).
 5. **Start with J2, not J1** — this order avoids over-rotating J2 into the work surface if J1/J2 wiring is
    swapped.
 6. For each joint, adjust the two trim potentiometers until the plotted cycle is a centered,
@@ -162,6 +179,8 @@ SCP/SSH), DDE, and a grounded anti-static wrist strap whenever handling the FPGA
      holes undersized, rework/replace the block.
 
 ### Step 3 — movement calibration and go-live
+Every named routine below is a job defined in the Step 2 calibration file, run from its window.
+
 1. Confirm the Step 2 base alignment; fresh reboot; open the calibration file.
 2. `Undef` → `Clear` → `Eval`.
 3. `Check_Eye_Order` — each row should show a clear largest-value pattern; a row breaking the pattern means
@@ -179,9 +198,10 @@ SCP/SSH), DDE, and a grounded anti-static wrist strap whenever handling the FPGA
    makes "no recalibration needed" real) → `Check_Eye_Order` → `Find_Idx_Eyes` (confirm correct home
    return).
 10. Enable boot jobs: in `/srv/samba/share/RunDexRun`, remove the leading `#` from the home-finding line
-    (`Find_Index_Pulses_HDI.dde`) — always enable this — and, for default PhUI startup, the `PHUI2RCP.js`
-    line. Power-cycle; boot takes ~3 minutes, after which the end effector "nods" to confirm readiness. To
-    redo calibration later, re-comment both lines so PhUI does not start and block DDE access.
+    (`dde_apps/Find_Index_Pulses_HDI.dde`) — always enable this — and, for default PhUI startup, the
+    `dde_apps/PHUI2RCP.js` line. Power-cycle; boot takes ~3 minutes, after which the end effector "nods" to
+    confirm readiness. To redo calibration later, re-comment both lines so PhUI does not start and block
+    DDE access.
 
 *Source: `DDE/InitialCalibration/HDI CAL INSTRUCTIONS- STEP {1,2,3}.pdf`.*
 

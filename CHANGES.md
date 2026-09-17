@@ -604,3 +604,52 @@ anything version 3 does not independently specify
   while the wrist is open as DC-9 previously directed. **`J23` is the fan connector**, not the motor rail
   — [DC-7](specs/009-Design-Completion.md#motor-control-pcb) criterion 3 reads it precisely because the
   rail feeding it is unknown, so the protocol states no expected voltage.
+
+### CR-3A16: Calibration job files restored from repository history; J4 slot count corrected in both
+
+- **Affects:** `DDE/InitialCalibration/Setup_Find_Index_Home_HDIv2.dde` (restored),
+  `Firmware/dde_apps/Find_Index_Pulses_HDI.dde` (restored),
+  [006 §Calibration model](specs/006-Firmware-and-Calibration.md#calibration-model),
+  [006 §Factory calibration procedure](specs/006-Firmware-and-Calibration.md#factory-calibration-procedure),
+  [006 §Encoder velocity monitor](specs/006-Firmware-and-Calibration.md#encoder-velocity-monitor) (new),
+  [009 §DC-10](specs/009-Design-Completion.md#from-scratch-calibration-files),
+  [009.2 §Gate items](specs/009.2-Test-Build-Manifest.md#gate-items--close-these-before-cutting-anything)
+  and §Stage 6.
+- **Was:** [DC-10](specs/009-Design-Completion.md#from-scratch-calibration-files) held that the two job
+  files driving [006 Steps 2–3](specs/006-Firmware-and-Calibration.md#factory-calibration-procedure) were
+  missing from the public repository, that they were thin wrappers over the calibration engine in
+  `dde/low_level_dexter/`, and that reconstructing them against that engine was the only route. It was a
+  gate on the whole test build, and 006 named the Step 2 file only by a glob.
+- **Now:** Both files are in the repository. They were committed with the design and deleted from it in
+  October 2020 — `Find_Index_Pulses_HDI.dde` at `e4a3a0d` (2020-10-27),
+  `Setup_Find_Index_Home_HDIv2.dde` at `1b121ce` (2020-10-29) — in a run of six pure deletions that added
+  nothing in their place, and they are restored from that history. Neither is a wrapper: the index-eye
+  search, the scan thresholds, and the home-offset arithmetic are in the job files, and every routine
+  [006 Step 3](specs/006-Firmware-and-Calibration.md#factory-calibration-procedure) names is a job defined
+  in the Step 2 file — none of them exists anywhere else in either repository. `Find_Index_Pulses_HDI.dde`
+  is restored at its **2020-10-16** content, which reads the joint boundaries from `Defaults.make_ins`
+  rather than setting a narrower set inside the job, so the job agrees with
+  [003 §Joint travel limits](specs/003-Kinematics.md#joint-travel-limits). 006 now names both files by
+  path, and 009.2 drops DC-10 as a gate: nothing is owed before cutting, and the item closes when the
+  files run.
+- **Driver:** DC-10 gated every measurement in [009.1](specs/009.1-Performance-Characterization-Protocol.md)
+  that needs trustworthy encoder counts, and it was scoped as reconstruction of two wrappers — work that
+  would in fact have meant re-authoring the entire index-eye algorithm, against an engine that does not
+  contain it.
+- **Status:** `[Provisional]` — DC-10 stays open on the one thing left: running
+  [006 Steps 2 and 3](specs/006-Firmware-and-Calibration.md#factory-calibration-procedure) end to end on a
+  build. The files have not been run since they were restored.
+- **Re-derive:** Nothing downstream. 006 gains file paths it referred to by glob; 009.2's gate table and
+  stage 6 follow DC-10's change of kind.
+- **Note:** **One correction is applied to both files.** Each declared
+  `n_eyes = [200, 180, 157, 113, 100]`, the per-joint slot counts the eye-to-angle conversion
+  `deg_per_eye = 360 / n_eyes` is built from; J4's term is **115**
+  ([003 §Joint definitions](specs/003-Kinematics.md#joint-definitions), counted on `#730-002`'s rim, and
+  carried by `DexRun.c`), so at 113 every J4 eye hop ran 1.8 % long. Recovered SHA-256 `e07b3602…e4e0b0`
+  and `8fed1af9…e9d6ff`; corrected `b0d9322c…8b88c02` and `34cededd…4b3ec1`. **A second slot-count
+  disagreement is left alone and specified instead.** `DexRun.c`'s `monitorTorque` reads J2 as 184 slots
+  against the disk's 180, but its `joints_slots` and `joints_corr` arrays are an empirically fitted pair
+  and correcting one term alone de-tunes the other — see
+  [006 §Encoder velocity monitor](specs/006-Firmware-and-Calibration.md#encoder-velocity-monitor). Two
+  superseded Step 2 variants, `Setup_Find_Index_Home_HDI.dde` and `Setup_Find_Index_Home_HDI_Stable.dde`,
+  remain in history and are not restored; `HDI CAL INSTRUCTIONS- STEP 2.pdf` names `HDIv2`.
