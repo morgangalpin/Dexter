@@ -113,7 +113,11 @@ internal control, commanded over the tool interface serial bus. *Source: wiki `H
 ## Power
 
 A single DC supply feeds the motor and logic rails through the Motor Control PCB (REQ-CTL-5). The supply of
-record is **36 V DC, 4 A (≈144 W)** — a standard laptop-style DC brick with a matching barrel connector.
+record is **36 V DC, ≥ 4 A (≈144 W)** — an external desktop brick, pinned to a part number in
+[C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc). It enters the robot through a **snap-and-lock
+4-pin DIN inlet** ([C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring)), not a barrel jack: the arm
+moves under power and a barrel jack has no retention. The supply drives each polarity on two pins — 1 and
+4 `+Vo`, 2 and 3 `−Vo` — and both pins of a polarity are landed.
 
 The **38 V board ceiling** set by the `LTC3786` ([Boards](#boards)) is what bounds the supply from above;
 36 V sits just under it with margin, and the board's 50 V-rated input capacitors and the 100 V `D6` input
@@ -122,7 +126,9 @@ Schottky support it. The motor rail `PMOTOR` feeds the six A4983 stepper drivers
 power for the tool is derived on the tool side.
 
 **Under-voltage is a failure mode, not just a slowdown:** a 12 V or 24 V brick causes the arm to grind and
-buzz, stall mid-motion, and fail to find home. Do not substitute one. *Source: wiki
+buzz, stall mid-motion, and fail to find home. It does not damage the board, so the symptom is bad motion
+rather than an obvious fault. Do not substitute one. **The hazard runs both ways:** this supply plugged
+into a laptop expecting 12 V or 24 V can destroy the laptop. *Source: wiki
 `Troubleshooting.md`; Motor PCB BOM (`Hardware/Motor PCB/09011-00135-A.BOM`);
 [LTC3786 datasheet](https://www.digikey.com/en/products/detail/analog-devices-inc/LTC3786IUD-PBF/2407353).*
 

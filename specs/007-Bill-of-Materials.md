@@ -254,7 +254,7 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
-| #800-001/002 | Wire Entry Left / Right | 3D print | 1 each | |
+| #800-001/002 | Wire Entry Left / Right | 3D print | 1 each | No step in [008](008-Assembly.md) places these; whether they carry the power inlet is open ([DC-14](009-Design-Completion.md#power-inlet-mounting)) |
 | #800-003/004 | Main Pivot Plug A / B | 3D print | 1 each | |
 | #800-005 | Fan Bracket | 3D print | 1 | |
 | #800-006 | PCB Bracket | 3D print | 2 | |
@@ -275,9 +275,10 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #810-001/002 | 6-pin strain relief top / bottom | 3D print | as needed | |
 | #821–825 | Photointerrupter shrouds (base/pivot/end/angle/rotate) | 3D print | per joint | |
 | #830-001/002 | Solder jigs (6-pin holder, LED rig) | 3D print | 2 / 1 | |
-| #840-001 | Power connector wires | Off the shelf | 244 cm | Red + black, 24 AWG |
-| #840-002 | Power connector | Off the shelf | 1 | |
-| #650-001 | **Power Supply** | Off the shelf | 1 | **36 V DC, 4 A** laptop-style brick with matching barrel/DC plug. Rating and substitution limits per [005 § Power](005-Electronics-and-Control.md#power) |
+| #840-001 | Power inlet wires | Off the shelf | 244 cm | Red + black, **18 AWG** — gauge per [C-714](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
+| #840-002 | **Power inlet connector** | Off the shelf | 1 | KYCON `KPJX-PM-4S` snap-and-lock 4-pin panel receptacle ([C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring)); mates the supply plug specified in [005 § Power](005-Electronics-and-Control.md#power) |
+| #650-001 | **Power Supply** | Off the shelf | 1 | **36 V DC, ≥ 4 A** desktop brick, MEAN WELL `GST160A36-R7B` ([C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc)). Rating and substitution limits per [005 § Power](005-Electronics-and-Control.md#power) |
+| — | Mains line cord | Off the shelf | 1 | IEC C13 to local mains plug — the supply has a C14 inlet and ships without one ([C-718](007.1-Parts-Catalog.md#7-electronics-and-wiring)) |
 
 ## 007.11 Tool Interface / Gripper
 2-axis roll + grip; cross-version compatible.
@@ -353,7 +354,8 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
 | NEMA-17 stepper (0.9°/step) | 5 | [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) |
 | Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each | [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |
-| Power supply, 36 V / 4 A DC brick | 1 | [C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc) |
+| Power supply, 36 V / ≥ 4 A DC brick | 1 | [C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc) |
+| Power inlet connector, 4-pin snap-and-lock | 1 | [C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
 | Dynamixel XL-320 servo | 2 | [C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) |
 | Optical Board | 5 | [C-703](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
 | 6-pin connector | 10 | [C-708](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
@@ -386,8 +388,9 @@ not merely where from.
 - **MicroZed** — the module is Avnet **`AES-Z7MB-7Z020-SOM-G`**: the Zynq **7020** commercial version,
   **not** the 7010 ([C-701](007.1-Parts-Catalog.md#7-electronics-and-wiring)). Powering a MicroZed with no
   SD card fitted destroys it.
-- **Power supply** — a 36 V / 4 A laptop-style DC brick; see
-  [005 § Power](005-Electronics-and-Control.md#power) for what may and may not be substituted.
+- **Power supply** — MEAN WELL `GST160A36-R7B`, a 36 V / 4.44 A desktop brick; see
+  [005 § Power](005-Electronics-and-Control.md#power) for what may and may not be substituted. It mates the
+  robot through a 4-pin snap-and-lock inlet and needs an IEC C13 line cord it does not ship with.
 - **Base Mounting Plate** — `#110-004`, machined to
   [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate); the drawing comes off
   [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad).

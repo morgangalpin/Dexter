@@ -72,7 +72,7 @@ the output, not the motor shaft. This is the defining performance requirement of
 | REQ-CTL-2 | Onboard motion computation | Firmware runs trajectory generation and onboard kinematics on the robot | — | [006](006-Firmware-and-Calibration.md) |
 | REQ-CTL-3 | Actuation, J1–J5 | Microstepped stepper motors via the Motor Control PCB | — | [005](005-Electronics-and-Control.md#actuation) |
 | REQ-CTL-4 | Actuation, tool axes | Smart servos on the tool interface serial bus | — | [005](005-Electronics-and-Control.md#actuation) |
-| REQ-CTL-5 | Power | Single DC supply feeding motor and logic rails, **36 V / 4 A** | — | [005](005-Electronics-and-Control.md#power) |
+| REQ-CTL-5 | Power | Single DC supply feeding motor and logic rails, **36 V / ≥ 4 A** | — | [005](005-Electronics-and-Control.md#power) |
 | REQ-CTL-6 | Calibration retained per unit | Calibration recorded onto the individual robot and retained; not re-established in the field | — | [006](006-Firmware-and-Calibration.md#calibration-model) |
 
 ## 6. Interface requirements

@@ -38,10 +38,11 @@ reference geometry.
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to the specified counts | `[Provisional]` |
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | Mounting face to J2 on a build | `[TBD]` |
+| DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, and DC-8 are closed. Every other item has been
 narrowed to the single remaining gap named in the table above, and each of those gaps is one of three kinds
-of work: **procurement** (DC-11), **design or reconstruction authored here** (DC-10, DC-12), or **a
+of work: **procurement** (DC-11), **design or reconstruction authored here** (DC-10, DC-12, DC-14), or **a
 check on a physical build** (DC-7, DC-9, DC-13). DC-2 — the largest single piece of work in the set
 — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
 measured geometry. Its physical-build checks remain with DC-9.
@@ -55,6 +56,10 @@ agree with, which is tracked separately rather than left implicit inside a close
 ratio but did not re-cut the parts that carry it, and measurement showed those parts still hold the
 previous version's counts — so the authoring work that follows is tracked separately rather than left
 implicit inside a closed item.
+
+**DC-11(j) closed by decision, and it spawned DC-14.** Naming the inlet connector settled what plugs into
+the robot but not what holds the receptacle: the part chosen is panel-mount and the design has no panel, so
+the mounting home is tracked separately rather than left implicit inside a closed sub-item.
 
 ---
 
@@ -284,10 +289,40 @@ unit shows power-related faults absent on earlier builds, revisit this reuse ass
 
 **Closed.** The supply rating was open because the board's input ceiling had not been established. It has
 been, so the rating, the reasoning behind it, and the under-voltage failure mode are specified in
-[005 § Power](005-Electronics-and-Control.md#power), and the part is listed in
-[007.10](007-Bill-of-Materials.md#00710-wire-harness). REQ-CTL-5 is `[Specified]`.
+[005 § Power](005-Electronics-and-Control.md#power), the part is listed in
+[007.10](007-Bill-of-Materials.md#00710-wire-harness), and an orderable part meeting that rating is named
+in [C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc). REQ-CTL-5 is `[Specified]`.
 
 *(The in-testing "blue" board would raise the ceiling to 75 V — out of scope for this design.)*
+
+## Power inlet mounting
+**DC-14 · P2 · Requirement: REQ-CTL-5 · Specified in [005 § Power](005-Electronics-and-Control.md#power)**
+
+**Open:** where the inlet receptacle mounts. [C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring) is a
+**panel-mount** part and the build list has no panel. [008.10](008-Assembly.md#00810-wire-harness) brackets
+the Motor Control Board straight to the 1" CF tube, and the only parts in the set presenting a face of that
+kind are the 9xx outer skins, which are cosmetic and outside the build list
+([007.2](007.2-Printed-Parts.md#not-in-the-build-list)). `#110-004` Base Mounting Plate is machined and
+defined by the hole pattern it bolts through
+([004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate)), not a face to cut a
+connector into.
+
+⚠️ **The absence is measured, not inferred.** The only candidates by name are `#800-001/002` **Wire Entry
+Left / Right** — a mirror pair meeting on a split plane, `#800-001` measuring
+**18.000 × 29.730 × 43.713 mm**. Sectioning it along both the split-plane normal and the long axis returns
+irregular saddle outlines under **225 mm²**, and no void larger than about **Ø6** — smaller than a 4-pin DIN
+body whatever the datasheet cut-out figure proves to be.
+
+**The Wire Entry pair is itself unplaced.** It is listed in
+[007.10](007-Bill-of-Materials.md#00710-wire-harness) and in
+[007.2](007.2-Printed-Parts.md#wire-harness--00710), and no step in [008](008-Assembly.md) installs either
+part — so what the pair is for is as open as where the receptacle goes, and the two close together.
+
+**Definition of done:** the part that carries the receptacle named; its cut-out specified from the
+[KPJX-PM datasheet](https://www.kycon.com/Catalog_PDF/KPJX-PM.pdf) — hole size, flange screw pattern, and
+the panel thickness the receptacle clamps; a step in [008.10](008-Assembly.md#00810-wire-harness) placing
+that part ahead of the wiring step; and a [007.2](007.2-Printed-Parts.md) row if the part is new.
+`[Provisional]`.
 
 ## Performance characterization
 **DC-9 · P3 · Requirements: REQ-PRE-5/6/7, REQ-WS-6/8**
@@ -348,10 +383,10 @@ confirm the resulting `post_cal_info.JSON` gives correct home-finding. `[Provisi
 **DC-11 · P2 · Requirement: buildability · Specified in [007.1](007.1-Parts-Catalog.md), [007.2](007.2-Printed-Parts.md)**
 
 **Open:** five part identities that the parts catalog could not pin from the design record, plus two parts
-that the model set does not contain at all (row h). (Three further sub-items — the defective, the misfiled,
-and the superseded model file — are closed; see rows f, g, and i.) Everything else in
-[007.1](007.1-Parts-Catalog.md) resolves to an orderable product with a supplier link; these five do not,
-and each is `[Provisional]` there.
+that the model set does not contain at all (row h). (Four further sub-items are closed: the defective, the
+misfiled, and the superseded model file — rows f, g, and i — and the power supply with its inlet
+connector, row j.) Everything else in [007.1](007.1-Parts-Catalog.md) resolves to an orderable product
+with a supplier link; these five do not, and each is `[Provisional]` there.
 
 | # | Item | What is open | Consequence if wrong |
 |---|---|---|---|
@@ -364,6 +399,7 @@ and each is `[Provisional]` there.
 | g | **Misfiled model file** (`#200-001` Arm Body) — ✔ **closed** | `200-ArmBody/200-001_ArmBody.stl` held `ArmBodyFrontStrakeMED.stl` byte for byte (SHA-256 `c991b4e5…dcee1b`, 20 triangles, 4.9 × 9.9 × 32 mm) — the mirror had matched the archive's `ArmBody*` name prefix rather than the part. Replaced with `ArmBodyWEncode.stl` from [thing:3781990](https://www.thingiverse.com/thing:3781990) (SHA-256 `ad4e940d…1d86b4`, 11,946 triangles, 99.6 × 108.1 × 98.0 mm), confirmed to be the part by its 29 × 29 mm L2 tube socket agreeing with `HDI-310-001_ArmBody`'s to 0.011 mm ([DC-5](#link-member-lengths)). Unlike row f this was invisible to every check the manifest makes — the file was well-formed and the right size for *a* part. [Models § Known defects](../Hardware/Models/README.md#known-defects) records what that implies for the rest of the mirror | The largest printed part in the robot unprintable, and L2's seat depth uncheckable |
 | h | **L3's far-end part is absent from the model set** | [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) puts the L3 tube's far face 36.000 mm short of the J4 axis, and no file here presents the face it butts. The tube axis is (x = 0, z = 36.000) in world, `HDI-940-001_DiffCover` stops at z = 18.000, and neither differential body carries a 0.75″ joint; the CAD model represents the whole wrist as covers | No modelled path from the L3 tube's far face to the differential. Neither the L3 cut length nor [DC-6](#link-length-discrepancy-l4)'s L4 depends on it |
 | i | **Superseded model file** (`#110-001` Base Mount Bottom) — ✔ **closed** | `100-Base/110-001_BaseMountBottom.stl` held the **previous version's un-bolted base**: 85.000 × 85.000 × 98.000 mm against the CAD part's 150 × 150 × 98, with **no fastener features at all**. Its six 60°-spaced features decompose under `scadmesh arcs` into six straight lines — 12.94 × 3.82 mm bonding pockets for the `#110-003` CF strakes — identifying it as exactly the *"6 legged aluminum strake base"* the wiki says the bolted base replaced ([010](010-Versioning.md#1-version-lineage)). Replaced from the CAD model's `BaseMountBottom_Bolted v9` (SHA-256 `ab267f07…c00d2bde`, 25,952 triangles, 150.000 × 150.000 × 98.000 mm), which carries the 8-hole robot-side pattern [DC-4](#base-plate) was opened to recover. Like row g this passed every check the manifest makes — the file was well-formed and plausible for *a* base | [DC-4](#base-plate) unclosable, and a base printed without the mounting holes the design bolts through |
+| j | **Power supply and its mating connector** ([C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc), [C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record named no supply model — the wiki gives only *"standard laptop power bricks ... rated at 36 volts, 4 amps"* — so [DC-8](#power-supply) closed on a rating and left the part open. C-103 then specified the supply as carrying a **DC barrel plug** while recommending MEAN WELL `GST160A36-R7B`, whose standard `-R7B` plug is a **KYCON `KPPX-4P` equivalent 4-pin DIN**: the two cannot mate, and C-715 was unorderable in consequence. **Closed by decision.** `GST160A36-R7B` is the supply of record and the inlet is its snap-and-lock mate, KYCON **`KPJX-PM-4S`** (48 V DC, 7.5 A per pin), specified in [005 § Power](005-Electronics-and-Control.md#power). A barrel inlet is rejected: the arm moves under power and a barrel plug has no retention. Two consequences follow — the inlet wire goes to **18 AWG** ([C-714](007.1-Parts-Catalog.md#7-electronics-and-wiring)), C-715's datasheet specifying #18 for its power pins where the previous version's 24 AWG is undersized for a 4 A rail; and an **IEC C13 line cord** ([C-718](007.1-Parts-Catalog.md#7-electronics-and-wiring)) joins the bill, the adapter having a C14 inlet and shipping without one | — |
 
 ### The J4 code disk is missing
 
