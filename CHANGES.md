@@ -501,3 +501,51 @@ anything version 3 does not independently specify
 - **Status:** `[Specified]` for the connector map, the harness landings, and the rail derivation.
   [DC-7](specs/009-Design-Completion.md#motor-control-pcb) stays `[Provisional]`: nothing here substitutes
   for running a unit on the board.
+
+### CR-3A14: Power supply, its inlet connector, and the supply wiring specified
+
+- **Affects:** [002 §REQ-CTL-5](specs/002-Requirements.md),
+  [005 §Power](specs/005-Electronics-and-Control.md#power),
+  [007 §007.10](specs/007-Bill-of-Materials.md#00710-wire-harness),
+  [007.1 §C-103](specs/007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc) and §7 (C-714, C-715, C-718),
+  [008 §008.10](specs/008-Assembly.md#00810-wire-harness),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data) and
+  [§DC-14](specs/009-Design-Completion.md#power-inlet-mounting),
+  [011 item 3](specs/011-Roadmap.md).
+- **Was:** The rating read **36 V / 4 A** as a fixed figure in the requirement, in 005, and in the bill of
+  materials, while the catalog read **≥ 4 A** and recommended a 4.44 A part — so the recommended supply did
+  not meet the rating as the other three documents stated it. C-103 specified the supply as carrying "a DC
+  barrel plug" and sent the builder to [C-712](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring) for
+  the mating part and to C-711/C-712 to fit the connector; those are the tool 3-pin connector and square
+  pin header stock. No supply model was named, [C-715](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring)
+  was "match to the PSU plug you order" and unorderable, [008.10](specs/008-Assembly.md#00810-wire-harness)
+  step 9 landed power wires on `J24` without ever terminating their other end, and no mains cord appeared
+  in any list. [DC-8](specs/009-Design-Completion.md#power-supply) was closed and the connector was booked
+  nowhere.
+- **Now:** The rating is **36 V DC, ≥ 4 A (≈144 W)** in all four documents, the current being a floor the
+  supply must meet rather than a figure it must equal. The supply of record is **MEAN WELL
+  `GST160A36-R7B`**, whose `-R7B` order suffix *is* its plug code: a **KYCON `KPPX-4P` equivalent 4-pin
+  DIN**, pins 1/4 `+Vo` and 2/3 `−Vo`. **The barrel-plug premise is withdrawn** — C-103 had asserted a
+  connector its own candidate does not have. The inlet is that plug's snap-and-lock mate, KYCON
+  **`KPJX-PM-4S`** (48 V DC, 7.5 A per pin), and 008.10 step 9 now lands both pins of each polarity and
+  mounts the receptacle before wiring `J24`. Two dependent corrections follow: the inlet wire goes to
+  **18 AWG**, C-715's datasheet specifying #18 for its power pins where the inherited 24 AWG is undersized
+  for a 4 A rail; and an **IEC C13 line cord** ([C-718](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring))
+  joins the bill, the adapter having a C14 inlet and shipping without one. 005 records that under-voltage
+  does not damage the board — it degrades motion — so only the 38 V ceiling is a damage limit, and carries
+  the converse hazard the source warns of: this supply into a laptop expecting 12 V or 24 V can destroy
+  the laptop.
+- **Driver:** A builder pricing the supply could not tell whether a 4.44 A brick was over-rated or out of
+  spec, and following C-103's connector references ordered the wrong two parts — for a plug the supply
+  does not carry. Retention drove the connector choice over a barrel jack: the arm moves under power.
+- **Re-derive:** [007.10](specs/007-Bill-of-Materials.md#00710-wire-harness) gains a mains-cord row and
+  carries the new gauge on `#840-001`; [008.10](specs/008-Assembly.md#00810-wire-harness) step 9 is
+  rewritten; [DC-11(j)](specs/009-Design-Completion.md#procurement-data) closes, and closing it opens
+  [DC-14](specs/009-Design-Completion.md#power-inlet-mounting) — the receptacle is panel-mount and nothing
+  in the build list carries a panel.
+- **Status:** `[Specified]`. [DC-8](specs/009-Design-Completion.md#power-supply) never covered the
+  connector — it closed on the rating, and stays closed on it.
+- **Note:** USB-C PD 3.1 EPR supplies 36 V natively and was evaluated as the inlet. It does not fit this
+  board — EPR's expected maximum at 36 V nominal is 38.3 V against the `LTC3786`'s 38 V, an unclamped
+  disconnect transient reaches 44.3 V, and EPR drops the rail after one second of silence from the sink.
+  It is recorded against the purpose-built board in [011 item 3](specs/011-Roadmap.md) instead.

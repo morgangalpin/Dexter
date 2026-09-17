@@ -298,7 +298,11 @@ Parts: [007.10](007-Bill-of-Materials.md#00710-wire-harness). Uses the previous 
 8. Land each stepper and each opto board on the header its **joint name** selects, not its connector
    number — the two orders differ, and the map is in
    [005 § Boards](005-Electronics-and-Control.md#boards).
-9. Connect the power wires to `J24`: black to negative (−), red to positive (+).
+9. **Power inlet.** Land the 18 AWG pair on the `KPJX-PM-4S` receptacle: red to pins 1 and 4, black to
+   pins 2 and 3 — both pins of each polarity, per [005 § Power](005-Electronics-and-Control.md#power).
+   Mount the receptacle in its cut-out — which part carries that cut-out is open
+   ([DC-14](009-Design-Completion.md#power-inlet-mounting)) — then connect the other end to `J24`: black to
+   negative (−), red to positive (+).
 10. **Tool-interface wiring:** land all six conductors as
     [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) specifies. Confirm
     the White wire on `J24` pin 2 before first power-on — the cross-version hazard it guards against is
