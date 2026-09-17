@@ -549,3 +549,65 @@ anything version 3 does not independently specify
   board — EPR's expected maximum at 36 V nominal is 38.3 V against the `LTC3786`'s 38 V, an unclamped
   disconnect transient reaches 44.3 V, and EPR drops the rail after one second of silence from the sink.
   It is recorded against the purpose-built board in [011 item 3](specs/011-Roadmap.md) instead.
+
+### CR-3A15: First-build measurement protocol specified; motion shaping parameters documented
+
+- **Affects:** [009.1](specs/009.1-Performance-Characterization-Protocol.md) (new),
+  [006 §Motion shaping parameters](specs/006-Firmware-and-Calibration.md#motion-shaping-parameters),
+  [009 §DC-9](specs/009-Design-Completion.md#performance-characterization),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
+  [README](specs/README.md#document-ownership).
+- **Was:** [DC-9](specs/009-Design-Completion.md#performance-characterization) named four measurements and
+  three inherited checklists but specified no procedure for any of them, so the one item that can only be
+  closed on a physical build had nothing a builder could execute. `MaxSpeed` and `Acceleration` were
+  referred to by name in 002 and 003 and defined nowhere; neither is in `Defaults.make_ins`.
+- **Now:** [009.1](specs/009.1-Performance-Characterization-Protocol.md) specifies each measurement: the
+  instrument and the resolution it must reach, the procedure, the rule that decides the result, and — in
+  its [§ 7](specs/009.1-Performance-Characterization-Protocol.md#section-7-closing-out) — the document each
+  result is written into. Where 002 marks a requirement for characterization, no acceptance threshold is
+  stated: the measurement is the value, and a threshold invented in advance would become the answer the
+  build was run to find. 006 now specifies the motion shaping parameters, including that the `S, MaxSpeed`
+  argument is scaled by `arcsec_per_nbits` = 0.46423 rather than taken as arcsec/s — a value read as
+  arcsec/s overstates the commanded speed by ≈ 2.15×.
+- **Driver:** Four requirements (REQ-PRE-5/6/7, REQ-WS-6/8) and three design-completion items wait on
+  measurements that no document described how to take.
+- **Status:** `[TBD]` for DC-9 itself, which still requires a build. The protocol that closes it is
+  complete.
+- **Re-derive:** Nothing downstream. 009.1 produces values; it consumes none that are not linked to their
+  owner.
+- **Note:** Four corrections were forced while authoring it, each a procedure that could not have been
+  run as written. **J4 cannot be rotated 360°** — it is bounded at ±108.3°, and the checklist item that
+  commanded a full turn to count its 115-slot track is not executable; the track is read across its
+  bounded travel. **J5 does not rotate continuously** — its cycle is a 380° sweep and return, not a
+  revolution. **L4 cannot be measured dimensionally**: the J4 and J5 axes intersect
+  ([004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface)), so no
+  instrument can be put across them and the check is kinematic, on a calibrated robot, rather than taken
+  while the wrist is open as DC-9 previously directed. **`J23` is the fan connector**, not the motor rail
+  — [DC-7](specs/009-Design-Completion.md#motor-control-pcb) criterion 3 reads it precisely because the
+  rail feeding it is unknown, so the protocol states no expected voltage.
+
+### CR-3A16: Test build specified — what to print, buy, fabricate, and assemble to run 009.1
+
+- **Affects:** [009.2](specs/009.2-Test-Build-Manifest.md) (new), [009](specs/009-Design-Completion.md),
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md), [README](specs/README.md)
+- **Was:** [CR-3A15](#cr-3a15-first-build-measurement-protocol-specified-motion-shaping-parameters-documented)
+  left DC-9 needing "a build to run it on" with nothing specifying what that build is. 007 lists parts by
+  subassembly and 008 gives an assembly order, but neither says which subset a characterization build
+  needs, what can be deferred, or what has to be settled before ordering.
+- **Now:** 009.2 specifies the build as seven stages, each drawing named 007 subassemblies, assembled by
+  named 008 procedures, and each closing specific open items before the next is committed. It carries a
+  table mapping every open item in 009 to the stage that answers it.
+- **Driver:** Ordering the strain-wave sets last would add months to the build, and belts or a fan bought
+  before the measurements that size them would be bought twice.
+- **Status:** `[TBD]` for DC-9, unchanged. What the build is, is now specified; the build does not exist.
+- **Re-derive:** Nothing. 009.2 selects from 007 and 008 and states no quantity of its own.
+- **Note:** Three items are **gates, not outputs** — the build cannot be completed without them.
+  [DC-10](specs/009-Design-Completion.md#from-scratch-calibration-files)'s two job wrappers are what
+  [006 §Steps 2–3](specs/006-Firmware-and-Calibration.md#factory-calibration-procedure) run, so without
+  them there is no calibration and most of 009.1 cannot be executed at all.
+  [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework) must be closed before the wrist parts are
+  printed, or every commanded J4 and J5 angle is scaled by 2.4 against the specified `AxisCal`.
+  [DC-11(h)](specs/009-Design-Completion.md#procurement-data) is the hard one: no part in the set bridges
+  the elbow tube to the wrist, so there is no complete arm to characterize until one is designed.
+  [DC-14](specs/009-Design-Completion.md#power-inlet-mounting) alone is deferrable — the test build takes
+  bench leads to `J24` and does not close it.

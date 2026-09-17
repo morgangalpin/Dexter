@@ -78,6 +78,33 @@ are unaffected.
 > sampled `AxisCal.txt` appears stale/mis-generated and **must be regenerated to 52:1 on a real build** (a
 > 50:1 file would give ≈4 % base-joint scale error). Both files agree J4/J5 = 13.5:1.
 
+## Motion shaping parameters
+
+`MaxSpeed`, `StartSpeed`, `Acceleration` and `CartesianSpeed` shape every move
+([003 § Motion commands](003-Kinematics.md#motion-commands)). They are **not** in `Defaults.make_ins`: they
+are set at runtime by `S` commands, and a job file that needs a particular speed sets it there — the
+calibration sweep in `Firmware/Cal.make_ins` is the worked example.
+
+⚠️ **The `S, MaxSpeed` argument is not in arcseconds per second.** It is scaled by
+`arcsec_per_nbits` = 0.4642324678861586 on the way in, a legacy unit retained for compatibility with
+DDE's `_nbits_cf` form. A value read as arcsec/s overstates the commanded speed by a factor of ≈ 2.15.
+
+| Parameter | Argument unit | Firmware default | As set by `Cal.make_ins` |
+|---|---|---|---|
+| `MaxSpeed` | 0.46423 arcsec/s per count | 108 000 arcsec/s (30 °/s) | 300 000 ⇒ ≈ 139 270 arcsec/s (≈ 38.7 °/s); 280 000 ⇒ ≈ 130 000 arcsec/s (≈ 36.1 °/s) for the calibration sweep |
+| `StartSpeed` | same | 3 600 arcsec/s (1 °/s) | — |
+| `Acceleration` | 6-bit FPGA field, 0–63, dimensionless | 3 | — |
+| `CartesianSpeed` | microns per second | 300 000 µm/s (0.3 m/s) | — |
+
+`CartesianSpeed` applies to the straight-line `T` and `C` moves, which derive each segment's joint speed
+from the commanded tip speed; the joint-space `a` and `P` moves take `MaxSpeed` directly. The achieved
+rates against these settings are measured on a build
+([009.1 § 4.4](009.1-Performance-Characterization-Protocol.md#test-44-maximum-speed)).
+
+*Source: `Firmware/DexRun.c` (`arcsec_per_nbits`, `maxSpeed_arcsec_per_sec`, `CartesianSpeed`, and the
+`Params` table's `MaxSpeed`/`Acceleration` cases); `Firmware/Cal.make_ins`.*
+
+
 ## Calibration model
 
 Dexter's precision depends on mapping each joint's raw optical-encoder readings to true joint position.
