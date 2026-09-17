@@ -33,7 +33,7 @@ reference geometry.
 | DC-6 | [Link-length discrepancy (L4)](#link-length-discrepancy-l4) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-7 | [Motor Control PCB](#motor-control-pcb) | P2 | Electronics | Physical power-on test | `[Provisional]` |
 | DC-8 | [Power supply rating](#power-supply) | P2 | Power | — | `[Specified]` ✔ closed |
-| DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | Instrumented build | `[TBD]` |
+| DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | The build [009.2](009.2-Test-Build-Manifest.md) specifies | `[TBD]` |
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to the specified counts | `[Provisional]` |
@@ -331,31 +331,49 @@ End-to-end repeatability, rated payload, maximum speed, and the reachable envelo
 not measured. This is inherently a **physical, instrumented-build** item and cannot be closed from the design
 record.
 
-**Differential first-build checklist (moved here from [DC-2](#differential-detail-design)):** J4 and J5
-move without binding through their full travel (J4 ±108.3°, J5 ±190°), the 6-conductor bundle passes the
-bore and survives J5's full travel, and both code disks read cleanly through their shrouds — J5's off
-`#710-004` and J4's off the track on Diff Body B's rim
-([DC-11(e)](#the-j4-code-disk-is-missing)). Print-fit parameters
-(press interference, bevel backlash) tune in
-[`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) if a check fails.
+**The protocol is written and runnable.**
+[009.1](009.1-Performance-Characterization-Protocol.md) specifies every measurement this item owns: the
+instrument and the resolution it must reach, the procedure, the rule that decides each result, and the
+document each result is written into once taken
+([009.1 § 7](009.1-Performance-Characterization-Protocol.md#section-7-closing-out)). What remains is a
+build to run it on: [009.2](009.2-Test-Build-Manifest.md) specifies what that build must contain, the
+stages it is assembled in, and the three items that must close before it can be completed. Where a requirement is marked for characterization, that protocol states no acceptance
+threshold: the measurement is the value.
 
-**Wrist station (moved here from [DC-6](#link-length-discrepancy-l4)):** measure the **J4 → J5 along-arm
-station separation** on the built arm. [003 § Link lengths](003-Kinematics.md#link-lengths) specifies L4
-from the CAD kinematic chain, and the build is the first independent check of it; reconcile 003 and the
-`LinkLengths` line in [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) to what is
-measured. The wrist is only apart once, so take it with the travel checks above.
+**Differential first-build checklist (moved here from [DC-2](#differential-detail-design)):** J4 and J5
+move without binding through their full travel, the 6-conductor bundle passes the bore and survives
+J5's travel, and both code disks read cleanly through their shrouds — J5's off `#710-004` and J4's off
+the track on Diff Body B's rim ([DC-11(e)](#the-j4-code-disk-is-missing)). Print-fit parameters (press
+interference, bevel backlash) tune in
+[`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) if a check fails. Procedure:
+[009.1 § 1](009.1-Performance-Characterization-Protocol.md#section-1-differential-first-build-checklist).
+
+**Wrist station (moved here from [DC-6](#link-length-discrepancy-l4)):** confirm L4 on the built arm.
+[003 § Link lengths](003-Kinematics.md#link-lengths) specifies it from the CAD kinematic chain, and the
+build is the first independent check of it; reconcile 003 and the `LinkLengths` line in
+[006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) to what is measured.
+**The check is kinematic, not dimensional.** The J4 and J5 axes intersect
+([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)), so no instrument
+can be put across them; L4 is observable only as the value that minimizes Cartesian residual, which
+requires a calibrated robot rather than an open wrist. Procedure:
+[009.1 § 2](009.1-Performance-Characterization-Protocol.md#section-2-wrist-station--l4-measurement), which
+also carries the belt centre distances [DC-3](#wrist-reduction-ratio) leaves provisional — those *are*
+taken while the arm is apart.
 
 **Base first-build checklist (moved here from [DC-4](#base-plate)):** the mounted plate reacts full
 dynamic load without walking or tipping (REQ-ENV-5), bolted to the work surface as
 [004](004-Mechanical-Architecture.md#base-mounting-plate) requires — the plate is sized against a
 calculated ≈45 N·m overturning moment that an unbolted plate cannot resist, so this check tests the
 bolting, not the plate. Record the **mounting face to J2 axis height and the clamp count** at the same
-time; that is [DC-13](#base-height-and-l1)'s measurement and the base is only apart once.
+time; that is [DC-13](#base-height-and-l1)'s measurement and the base is only apart once. Procedure:
+[009.1 § 3](009.1-Performance-Characterization-Protocol.md#section-3-base-first-build-checklist).
 
 **Definition of done:** measured repeatability, payload, speed envelope, and reachable workspace on a
 physical build, replacing derived values and advancing the requirements to `[Specified]`; plus the
-differential and base checklists above. This is the main content of roadmap item 1
-([011](011-Roadmap.md)). `[TBD]`.
+differential and base checklists above, executed per [009.1](009.1-Performance-Characterization-Protocol.md)
+and written back through its
+[§ 7](009.1-Performance-Characterization-Protocol.md#section-7-closing-out).
+This is the main content of roadmap item 1 ([011](011-Roadmap.md)). `[TBD]`.
 
 ## From-scratch calibration files
 **DC-10 · P2 · Requirement: REQ-ENV-2, REQ-CTL-6 · Specified in [006](006-Firmware-and-Calibration.md#factory-calibration-procedure)**
@@ -399,7 +417,7 @@ with a supplier link; these five do not, and each is `[Provisional]` there.
 | g | **Misfiled model file** (`#200-001` Arm Body) — ✔ **closed** | `200-ArmBody/200-001_ArmBody.stl` held `ArmBodyFrontStrakeMED.stl` byte for byte (SHA-256 `c991b4e5…dcee1b`, 20 triangles, 4.9 × 9.9 × 32 mm) — the mirror had matched the archive's `ArmBody*` name prefix rather than the part. Replaced with `ArmBodyWEncode.stl` from [thing:3781990](https://www.thingiverse.com/thing:3781990) (SHA-256 `ad4e940d…1d86b4`, 11,946 triangles, 99.6 × 108.1 × 98.0 mm), confirmed to be the part by its 29 × 29 mm L2 tube socket agreeing with `HDI-310-001_ArmBody`'s to 0.011 mm ([DC-5](#link-member-lengths)). Unlike row f this was invisible to every check the manifest makes — the file was well-formed and the right size for *a* part. [Models § Known defects](../Hardware/Models/README.md#known-defects) records what that implies for the rest of the mirror | The largest printed part in the robot unprintable, and L2's seat depth uncheckable |
 | h | **L3's far-end part is absent from the model set** | [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) puts the L3 tube's far face 36.000 mm short of the J4 axis, and no file here presents the face it butts. The tube axis is (x = 0, z = 36.000) in world, `HDI-940-001_DiffCover` stops at z = 18.000, and neither differential body carries a 0.75″ joint; the CAD model represents the whole wrist as covers | No modelled path from the L3 tube's far face to the differential. Neither the L3 cut length nor [DC-6](#link-length-discrepancy-l4)'s L4 depends on it |
 | i | **Superseded model file** (`#110-001` Base Mount Bottom) — ✔ **closed** | `100-Base/110-001_BaseMountBottom.stl` held the **previous version's un-bolted base**: 85.000 × 85.000 × 98.000 mm against the CAD part's 150 × 150 × 98, with **no fastener features at all**. Its six 60°-spaced features decompose under `scadmesh arcs` into six straight lines — 12.94 × 3.82 mm bonding pockets for the `#110-003` CF strakes — identifying it as exactly the *"6 legged aluminum strake base"* the wiki says the bolted base replaced ([010](010-Versioning.md#1-version-lineage)). Replaced from the CAD model's `BaseMountBottom_Bolted v9` (SHA-256 `ab267f07…c00d2bde`, 25,952 triangles, 150.000 × 150.000 × 98.000 mm), which carries the 8-hole robot-side pattern [DC-4](#base-plate) was opened to recover. Like row g this passed every check the manifest makes — the file was well-formed and plausible for *a* base | [DC-4](#base-plate) unclosable, and a base printed without the mounting holes the design bolts through |
-| j | **Power supply and its mating connector** ([C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc), [C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record named no supply model — the wiki gives only *"standard laptop power bricks ... rated at 36 volts, 4 amps"* — so [DC-8](#power-supply) closed on a rating and left the part open. C-103 then specified the supply as carrying a **DC barrel plug** while recommending MEAN WELL `GST160A36-R7B`, whose standard `-R7B` plug is a **KYCON `KPPX-4P` equivalent 4-pin DIN**: the two cannot mate, and C-715 was unorderable in consequence. **Closed by decision.** `GST160A36-R7B` is the supply of record and the inlet is its snap-and-lock mate, KYCON **`KPJX-PM-4S`** (48 V DC, 7.5 A per pin), specified in [005 § Power](005-Electronics-and-Control.md#power). A barrel inlet is rejected: the arm moves under power and a barrel plug has no retention. Two consequences follow — the inlet wire goes to **18 AWG** ([C-714](007.1-Parts-Catalog.md#7-electronics-and-wiring)), C-715's datasheet specifying #18 for its power pins where the previous version's 24 AWG is undersized for a 4 A rail; and an **IEC C13 line cord** ([C-718](007.1-Parts-Catalog.md#7-electronics-and-wiring)) joins the bill, the adapter having a C14 inlet and shipping without one | — |
+| j | **Power supply and its mating connector** ([C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc), [C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record named no supply model — the wiki gives only *"standard laptop power bricks ... rated at 36 volts, 4 amps"* — so [DC-8](#power-supply) closed on a rating and left the part open. C-103 then specified the supply as carrying a **DC barrel plug** while recommending MEAN WELL `GST160A36-R7B`, whose standard `-R7B` plug is a **KYCON `KPPX-4P` equivalent 4-pin DIN**: the two cannot mate, and C-715 was unorderable in consequence. **Closed by decision.** `GST160A36-R7B` is the supply of record and the inlet is its snap-and-lock mate, KYCON **`KPJX-PM-4S`** (48 V DC, 7.5 A per pin), specified in [005 § Power](005-Electronics-and-Control.md#power). A barrel inlet is rejected for the reason [005 § Power](005-Electronics-and-Control.md#power) gives. Two consequences follow — the inlet wire goes to **18 AWG** ([C-714](007.1-Parts-Catalog.md#7-electronics-and-wiring)), C-715's datasheet specifying #18 for its power pins where the previous version's 24 AWG is undersized for a 4 A rail; and an **IEC C13 line cord** ([C-718](007.1-Parts-Catalog.md#7-electronics-and-wiring)) joins the bill, the adapter having a C14 inlet and shipping without one | — |
 
 ### The J4 code disk is missing
 

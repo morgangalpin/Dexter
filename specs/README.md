@@ -34,6 +34,8 @@ Read top to bottom for a full picture; each document is self-contained and cross
 | 007.2 | [3D Printed Parts](007.2-Printed-Parts.md) | Every printed part, de-duplicated, with print quantities and model-file sources |
 | 008 | [Assembly](008-Assembly.md) | The procedure that builds the parts in 007 into the robot in 004 |
 | 009 | [Design Completion](009-Design-Completion.md) | Design status: the open design decisions that must be closed to make the current design fully buildable |
+| 009.1 | [Performance Characterization Protocol](009.1-Performance-Characterization-Protocol.md) | The first-build measurement protocol behind DC-9: test-by-test procedure, required instruments, and the recording template |
+| 009.2 | [Test Build Manifest](009.2-Test-Build-Manifest.md) | What the first measurable build contains, the stages it is assembled in, and which open item each stage answers |
 | 010 | [Versioning](010-Versioning.md) | Version lineage, design identity, the git branch and tag model for versions and revisions, and the procedure for deriving the next one |
 | 011 | [Roadmap](011-Roadmap.md) | Improvements anticipated beyond the current revision |
 | — | [CHANGES.md](../CHANGES.md) | The design history: what changed in each revision and why (repository root) |
@@ -64,6 +66,7 @@ specification, find the owner below and write it there.
 | Print quantities and model-file sources for printed parts | [007.2](007.2-Printed-Parts.md) |
 | The order of operations that builds the robot | [008](008-Assembly.md) |
 | **Design status** — what is still open, its priority, and its definition of done | [009](009-Design-Completion.md) |
+| How a first build is measured, and what each measurement closes | [009.1](009.1-Performance-Characterization-Protocol.md) |
 | Version and revision identity, and the procedure for deriving the next one | [010](010-Versioning.md) |
 | Work anticipated beyond the current revision | [011](011-Roadmap.md) |
 | What changed in each revision, and why | [CHANGES.md](../CHANGES.md) |
