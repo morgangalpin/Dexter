@@ -16,12 +16,14 @@ cutting/committing structure; **P3** are refinements or characterizations.
 
 **Sources of record.** Haddington Dynamics, the originator of this design, is **out of business**. No
 further design files, part identities, or physical units can be obtained from them, and no serialized HDI
-unit is available to measure. Every item below is therefore closed by one of three routes only: a
-**third-party procurement action**, a **decision authored into this specification**, or a **measurement on
-a unit built from it**. Where an item previously named recovery from the originator, that route is gone and
-the item is an authoring task — most consequentially [DC-2](#differential-detail-design), which became a
-full detail design, authored as OpenSCAD source that is committed but does not yet reproduce its
-reference geometry.
+unit is available to measure. Every item below is therefore closed by one of four routes only: **recovery
+from material already in this repository**, a **third-party procurement action**, a **decision authored into
+this specification**, or a **measurement on a unit built from it**. The first route is narrow but real: it
+closed [DC-10](#from-scratch-calibration-files), whose job files were committed with the design, deleted in
+2020, and are restored from this repository's history. Where an item previously named recovery from the
+originator, that route is gone and the item is an authoring task — most consequentially
+[DC-2](#differential-detail-design), which became a full detail design, authored as OpenSCAD source that is
+committed but does not yet reproduce its reference geometry.
 
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
@@ -34,7 +36,7 @@ reference geometry.
 | DC-7 | [Motor Control PCB](#motor-control-pcb) | P2 | Electronics | Physical power-on test | `[Provisional]` |
 | DC-8 | [Power supply rating](#power-supply) | P2 | Power | — | `[Specified]` ✔ closed |
 | DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | The build [009.2](009.2-Test-Build-Manifest.md) specifies | `[TBD]` |
-| DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Two job wrappers | `[Provisional]` |
+| DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Running the calibration on a build | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | Five unpinned part identities | `[Provisional]` |
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to the specified counts | `[Provisional]` |
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | Mounting face to J2 on a build | `[TBD]` |
@@ -42,10 +44,10 @@ reference geometry.
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, and DC-8 are closed. Every other item has been
 narrowed to the single remaining gap named in the table above, and each of those gaps is one of three kinds
-of work: **procurement** (DC-11), **design or reconstruction authored here** (DC-10, DC-12, DC-14), or **a
-check on a physical build** (DC-7, DC-9, DC-13). DC-2 — the largest single piece of work in the set
-— is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean solid from
-measured geometry. Its physical-build checks remain with DC-9.
+of work: **procurement** (DC-11), **design authored here** (DC-12, DC-14), or **a check on a physical
+build** (DC-7, DC-9, DC-10, DC-13). DC-2 — the largest single piece of work in the set — is authored as
+parametric OpenSCAD source; all seven recreated parts now render as one clean solid from measured geometry.
+Its physical-build checks remain with DC-9.
 
 **DC-4 closed by measurement, and it spawned DC-13.** The hole pattern is recovered exactly from the CAD
 part; the model mirror held the previous version's un-bolted base and is corrected in place
@@ -378,24 +380,42 @@ This is the main content of roadmap item 1 ([011](011-Roadmap.md)). `[TBD]`.
 ## From-scratch calibration files
 **DC-10 · P2 · Requirement: REQ-ENV-2, REQ-CTL-6 · Specified in [006](006-Firmware-and-Calibration.md#factory-calibration-procedure)**
 
-**Open:** two job files. The [factory calibration procedure](006-Firmware-and-Calibration.md#factory-calibration-procedure)
-a from-scratch build must run references calibration jobs that shipped in a factory bundle. Most of that
-bundle is recoverable from public repos; two wrappers are not.
+**Open:** running the calibration on a build. The
+[factory calibration procedure](006-Firmware-and-Calibration.md#factory-calibration-procedure) a
+from-scratch build must run is driven from two job files. Both are **present**, restored from this
+repository's own history, into which they were committed with the design and from which they were deleted
+in October 2020 without replacement.
 
-| File | Role | Availability |
+| File | Role | Provenance |
 |---|---|---|
-| `PHUI2RCP.js` | Default PhUI startup job | **Present** — `Firmware/dde_apps/PHUI2RCP.js` (and `DDE/examples/PHUI2RCP.dde`) |
-| Calibration engine | Optical-encoder calibration routines the job files call | **Present** — `dde/low_level_dexter/` (`Calibrate_Encoders_Function.dde`, `calibrate_optical.js`, `calibrate_build_tables.js`, `calibrate_ui.js`, `ViewEyeRealTime.js`, `ViewEye_Support_Functions.js`) |
-| `Setup_Find_Index_Home_HDI*.dde` | Step 2 eye-calibration job wrapper | **Missing** from the public repo (referenced only) |
-| `Find_Index_Pulses_HDI.dde` | Boot home-finding job wrapper | **Missing** — named in `Firmware/RunDexRun` (commented boot line) but not shipped |
+| `DDE/InitialCalibration/Setup_Find_Index_Home_HDIv2.dde` | The Step 2 and Step 3 job. Defines every routine those steps call | Added `91a9bbb`, deleted `1b121ce` (2020-10-29), restored |
+| `Firmware/dde_apps/Find_Index_Pulses_HDI.dde` | The boot home-finding job Step 3.10 enables in `Firmware/RunDexRun`. Carries the index-eye search and the scan that writes `Firmware/Index_Eye_Data.JSON` | Added `bc42951`, revised `2efc8ee` (2020-10-16), deleted `e4a3a0d` (2020-10-27), restored at the revised content |
+| `dde/low_level_dexter/` | The eye-plot and encoder-sweep engine `Jobs → Calibrate Dexter…` drives between those steps | Present |
+| `Firmware/dde_apps/PHUI2RCP.js` | Default PhUI startup job, the second boot line Step 3.10 enables | Present |
 
-Because the calibration **engine** is public, the two missing `.dde` wrappers are thin jobs over it and must
-be **reconstructed** against `Calibrate_Encoders_Function.dde` / `calibrate_optical.js`. Requesting them
-from the originator is not an option (see **Sources of record** above), so reconstruction is the only route.
+`Setup_Find_Index_Home_HDIv2.dde` is the file of record: `HDI CAL INSTRUCTIONS- STEP 2.pdf` names it by
+that name and sits beside it. Two earlier variants, `Setup_Find_Index_Home_HDI.dde` and
+`Setup_Find_Index_Home_HDI_Stable.dde`, are superseded and are not restored. Neither job is a thin wrapper
+over the engine: the index-eye search, the scan thresholds, and the home-offset arithmetic are in the job
+files, and the engine supplies only the eye plots and the calibration sweep the steps are run between.
 
-**Definition of done:** reconstruct the two missing job wrappers, verify they drive the engine
-through [006](006-Firmware-and-Calibration.md#factory-calibration-procedure) end-to-end on a new unit, and
-confirm the resulting `post_cal_info.JSON` gives correct home-finding. `[Provisional]`.
+`Find_Index_Pulses_HDI.dde` is restored at its **2020-10-16** content. That revision takes the joint
+boundaries by running `Defaults.make_ins`, which is what makes the job agree with
+[003 § Joint travel limits](003-Kinematics.md#joint-travel-limits); the content it replaces set a narrower
+boundary set of its own, inside the job. It also shapes the search move rather than taking the firmware
+defaults for it.
+
+**One correction is applied to both files.** Each declared `n_eyes = [200, 180, 157, 113, 100]`, the
+per-joint slot counts the eye-to-angle conversion `deg_per_eye = 360 / n_eyes` is built from. J4's term is
+**115**, the count [003 § Joint definitions](003-Kinematics.md#joint-definitions) specifies, counted on
+`#730-002`'s rim ([the J4 code disk note](#the-j4-code-disk-is-missing)) and carried by `DexRun.c`'s
+`joints_slots`. At 113 every J4 eye hop runs 1.8 % long. Recovered SHA-256 `e07b3602…e4e0b0` and
+`8fed1af9…e9d6ff`; corrected `b0d9322c…8b88c02` and `34cededd…4b3ec1`.
+
+**Definition of done:** run [006 Steps 2 and 3](006-Firmware-and-Calibration.md#factory-calibration-procedure)
+end-to-end on a build from these two files, and confirm the resulting `post_cal_info.JSON` gives correct
+home-finding. This is [009.2 stage 6](009.2-Test-Build-Manifest.md), which every measurement needing
+trustworthy encoder counts sits behind. `[Provisional]`.
 
 ## Procurement data
 **DC-11 · P2 · Requirement: buildability · Specified in [007.1](007.1-Parts-Catalog.md), [007.2](007.2-Printed-Parts.md)**
