@@ -842,3 +842,33 @@ anything version 3 does not independently specify
   differential parts list calls for **4 MR128** and **6 6703** — the same two figures reached by counting
   seats, and the record [008.6](specs/008-Assembly.md#0086-differential) is itself derived from, so the
   two rows had been short against their own source. That same list is what fails to carry a 60 mm strake.
+
+### CR-3A22
+
+**The arm composed, and the missing part bounded**
+
+- **Affects:** `Hardware/Models/robot_assembly.scad` (new), `Hardware/Models/README.md`,
+  `Hardware/Models/MANIFEST.csv`, [009 DC-11(h)](specs/009-Design-Completion.md#procurement-data).
+- **Was:** The model set held one assembly, `700-Differential/diff_assembly.scad`, covering nine parts of
+  seventy. Every other part existed only in its own print frame, so where the parts sit relative to one
+  another was recorded in prose or not at all, and DC-11(h) could say the L3 far-end part was missing
+  without being able to say what shape of hole it left.
+- **Now:** `robot_assembly.scad` composes the arm in the CAD kinematic frame — the frame
+  [003 § Link lengths](specs/003-Kinematics.md#link-lengths) states the joint stations in. It places the
+  base group, the Main Pivot, the Arm Body and the five End Arm parts that share the J3 axis, draws the
+  C-504 and C-505 tubes from their catalogued sections and cut lengths, and carries the cover envelopes as
+  measured boxes. **Every placement is solved from a feature the part itself carries**, and a part whose
+  position nothing fixes is listed in `UNPLACED` rather than drawn somewhere plausible.
+- **Driver:** DC-11(h) is the one open DC-11 sub-item and the only one that needs a part authored rather
+  than a record adjudicated. Authoring needs the hole measured, and a part in its own print frame cannot
+  show a hole.
+- **Status:** `[Specified]`. DC-11(h) stays open, and is now blocked on the axis rather than the envelope.
+- **Re-derive:** Nothing. No dimension of any part changes; this file reads the model set and adds to it.
+- **Note:** The composition settles three faces of the missing part and raises one question that has to be
+  answered before it can be drawn. The faces are in [009 DC-11(h)](specs/009-Design-Completion.md#procurement-data).
+  The question is which way the J4 axis points:
+  [003 § DH model](specs/003-Kinematics.md#denavithartenberg-model) puts it parallel to J3, across the
+  arm, and [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface)
+  fits Diff Body A to the gripper covers by a radius that bounds two perpendicular directions at once,
+  which puts it along the arm. The differential is left out of the composition rather than drawn on a
+  guess, because drawing it would answer that question silently.

@@ -5,6 +5,11 @@ source: everything needed to print one complete robot is here, and nothing else 
 you can print directly; `700-Differential/` is parametric `.scad` and is rendered first, as is the base
 mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
 
+- **[robot_assembly.scad](robot_assembly.scad)** — the arm composed in the CAD kinematic frame, so the
+  build can be reviewed by looking at it. Every placement in it is solved from a feature the part carries;
+  a part whose position nothing fixes is listed in that file's `UNPLACED` rather than drawn somewhere
+  plausible, which is what lets a missing part show as a hole. `700-Differential/diff_assembly.scad` is the
+  same idea one level down.
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
 - **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the
@@ -13,7 +18,8 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   Windows checkout (`core.autocrlf=true`) the working-tree file is larger than its row says. Compare a
   text file by normalizing CRLF to LF first; binary files compare directly. The text set is `.step`
   (ISO-10303-21 is ASCII), `.scad`, `.rs`, `.json` and `.md`; `.stl`, `.f3d`, `.ipt`, `.dwg`, `.skp`
-  and `.skb` compare directly.
+  and `.skb` compare directly. The group column is the file's directory; a file that belongs to no one
+  component group is grouped `(all)`.
 
 ## Layout
 
