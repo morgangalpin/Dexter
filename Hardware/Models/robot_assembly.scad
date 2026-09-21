@@ -14,8 +14,9 @@
 // Z-up; relating the two is a question about the pose this model is drawn in,
 // and nothing here depends on the answer.
 //
-// The three pitch axes J2, J3 and J4 run along z. J1 runs along y. J5 runs
-// along x, out through the tool arm.
+// J2 and J3 run along z. J1 runs along y. J5 runs along x, out through the
+// tool arm. Which way J4 runs is the open question below, and this file does
+// not presuppose it.
 //
 // WHAT PLACES WHAT. Every placement below is solved from a feature the part
 // itself carries, matched against the CAD assembly in dde/HDIMeterModel.gltf —
@@ -34,9 +35,11 @@
 //      is NOT drawn at a plausible position. It goes in UNPLACED below. The
 //      value of this file is that the holes in it are real.
 //
-// THE J4 AXIS IS NOT SETTLED, and the differential is not drawn until it is.
-// Two records in the spec set imply perpendicular answers, and the shape of
-// the missing part depends on which holds.
+// THE J4 AXIS IS NOT SETTLED, SO EVERY READING IS DRAWN. Two records in the
+// spec set imply perpendicular answers, and the shape of the missing part
+// depends on which holds. Drawing one of them would adopt it silently, so the
+// arm is drawn once per live reading, side by side along x. The `wrist`
+// parameter selects one, or all of them.
 //
 //   Along z, with J2 and J3. specs/003 § DH model reads the J3 row's
 //   alpha = 0.8072 deg off a calibrated unit, which says the J3 and J4 axes
@@ -53,8 +56,57 @@
 //   along y, through (x = 0, z = -2.000). That is also the J5 station's z, so
 //   the two axes would intersect there, as a bevel differential requires.
 //
-// Neither reading is adopted here. Drawing the differential would pick one
-// silently, which is the one thing this file is built not to do.
+// WHAT THE TWO READINGS SHARE, which is why they can be drawn as one variable.
+// Both hold that the J4 and J5 axes intersect, because a bevel differential
+// has no other option, and 700-Differential/diff_assembly.scad asserts it of
+// its own frame. So both place that assembly by its diff_centre() -- the one
+// point both its axes pass through -- and both put that point where the J5
+// axis is: along x through the J5 station's (y, z), at x = 0 by the arm's
+// symmetry. Both also send the differential frame's -x out to this frame's +x,
+// because Diff Body A's arm runs out along that -x and the tool is on +x.
+// What is left is one quarter turn about the J5 axis, and that turn IS the
+// question: it carries the J4 axis onto z or onto y and nothing else changes.
+//
+// WHY THREE ARMS AND NOT TWO. The quarter turn has four landings, not two:
+// the J4 axis can go onto +z, -z, +y or -y. Three of them are worth drawing.
+//
+//   j4_plus_z is specs/003's reading in J3's own sense, since 003 says the two
+//   axes are parallel and J3 is drawn along +z here. j4_minus_z is the same
+//   reading mirrored and tests the same thing, so it is echoed, not drawn.
+//
+//   j4_plus_y and j4_minus_y are both specs/004's reading, and 004's argument
+//   does not choose between them. Its radius bounds the Ø60 plate's x and z,
+//   and the plate lands at x +/-30.000 and z -32.000..28.000 about
+//   (x = 0, z = -2.000) in BOTH -- identically, because the two differ only
+//   along y, which a radius in the x-z plane says nothing about.
+//
+// WHAT THE DRAWING SETTLES. z against y, and by the argument specs/004 makes
+// rather than by a preference: a disc of one radius can bound this frame's x
+// and z together only if its normal is y. Under either z landing the same disc
+// bounds x and y instead, and the echoes show what follows -- Diff Body A ends
+// up 30 to 46 mm clear of every cover across the arm, where under either y
+// landing it lands in the covers' own x and z to a quarter of a millimetre.
+//
+// WHAT IT DOES NOT SETTLE, and what the third arm is for. Which way along y.
+// The two y landings put Body A 75.067 mm apart along the arm and each has a
+// record behind it:
+//
+//   j4_minus_y puts Body A at y 943.828..965.828, inside ENV_GRIPPER on every
+//   face with 0.25 mm to spare on three of them. specs/004 says Body A is
+//   enclosed by the HDI-950 gripper covers, and this is the landing that
+//   satisfies it.
+//
+//   j4_plus_y puts Body A at y 868.761..890.761, whose near face stands
+//   26.967 mm past the L3 tube's. That is the span DC-11(h)'s missing part has
+//   to close, and it is the size of a part. Under j4_minus_y the same span is
+//   102.034 mm with Diff Body B standing in it, and Body B pivots with J4, so
+//   nothing static can cross it. The Diff End Pulley divides the same way:
+//   j4_plus_y lands it at y 886.261..896.511, facing the forearm a belt would
+//   come down, and j4_minus_y at y 938.078..948.328, facing the tool, which
+//   asks the belts to pass the differential before they reach it.
+//
+// Neither landing is adopted. Adopting one is a spec edit, not a model edit;
+// this file draws all three and reports what each measures.
 //
 // THE L3 GAP. The forearm's far end is open. The End Arm Hub's tube spigot and
 // the 243 mm C-505 tube put the tube's far face 36.000 mm short of the J4
@@ -64,6 +116,22 @@
 // inferred. It is the one thing here drawn because it is absent.
 
 include <BOSL2/std.scad>
+
+// The differential subassembly, for place_differential(). `use` imports its
+// modules and diff_centre() without firing its own top-level call, echoes or
+// asserts, and leaves its mesh paths resolving against its own directory.
+use <700-Differential/diff_assembly.scad>
+
+/* [Wrist] */
+// Which way the J4 axis is taken to run — see THE J4 AXIS IS NOT SETTLED.
+// "all" draws one arm per live landing, ARM_PITCH apart along x, in the order
+// WRIST_DRAWN lists them. "neither" leaves the differential out.
+wrist = "all";      // [all, j4_plus_z, j4_minus_z, j4_plus_y, j4_minus_y, neither]
+// Separation between arms when more than one is drawn. Clears the widest
+// cover, ENV_J3_COVER at x +/-45.346, with room to see between them.
+ARM_PITCH = 200;
+// Name each arm under its base, so a view of both says which is which.
+show_labels = true;
 
 /* [View] */
 // Printed parts, from the group directories.
@@ -96,6 +164,74 @@ J3_STN   = [0,      570.2945,  65.000];
 J4_STN   = [0,      877.7945,  18.000];
 J5_STN   = [0,      917.2945,  -2.000];
 TOOL_STN = [54.815, 939.8440,  -2.000];   // Link6, the tool roll frame
+
+// ---------------------------------------------------------------------------
+// The wrist frame, every way it can land — see THE J4 AXIS IS NOT SETTLED.
+//
+// WRIST_C is where the J4 and J5 axes cross. The J5 station lies on the J5
+// axis, which runs along x, so the crossing shares that station's y and z; the
+// arm is symmetric about x = 0 and the J4 axis is on that plane, which gives
+// the third coordinate. No new number: it is the J5 station.
+//
+// basis_for says where the differential frame's own x, y and z go in this one,
+// and it is the whole of the difference between the landings. All four rows
+// send that frame's x onto -x, which is the half turn Body A's arm fixes; they
+// differ only in where its z — the J4 axis — goes. All four are proper
+// rotations, each row being the cross product of the two beside it.
+// ---------------------------------------------------------------------------
+WRIST_C = J5_STN;
+
+WRIST_DIRS = ["j4_plus_z", "j4_minus_z", "j4_plus_y", "j4_minus_y"];
+
+// The landings worth looking at, left to right. j4_minus_z is left out
+// because it tests exactly what j4_plus_z tests; it is still echoed.
+WRIST_DRAWN = ["j4_plus_z", "j4_plus_y", "j4_minus_y"];
+
+function basis_for(dir) =
+    dir == "j4_minus_y" ? [[-1, 0, 0], [0,  0, -1], [0, -1,  0]] :
+    dir == "j4_plus_y"  ? [[-1, 0, 0], [0,  0,  1], [0,  1,  0]] :
+    dir == "j4_minus_z" ? [[-1, 0, 0], [0,  1,  0], [0,  0, -1]] :
+                          [[-1, 0, 0], [0, -1,  0], [0,  0,  1]];
+
+// A differential-frame vector, and a differential-frame point, in this frame.
+function wrist_vec(dir, v) = let (b = basis_for(dir))
+    v.x * b[0] + v.y * b[1] + v.z * b[2];
+function wrist_pt(dir, p) = WRIST_C + wrist_vec(dir, p - diff_centre());
+
+// The same rotation as a matrix, so the geometry and the echoes below are
+// placed by one definition rather than by two that have to agree.
+function wrist_matrix(dir) = let (b = basis_for(dir)) [
+    [b[0].x, b[1].x, b[2].x, 0],
+    [b[0].y, b[1].y, b[2].y, 0],
+    [b[0].z, b[1].z, b[2].z, 0],
+    [      0,      0,      0, 1]];
+
+// Two parts' extents in the frame 700-Differential/diff_assembly.scad places
+// them in, from their meshes. These are the only measurements this file takes
+// from inside that assembly and they position nothing: they are here so the
+// echoes can carry them into this frame and say where each landing puts them.
+//
+// Diff Body A is the part that does not pivot with J4, so it is the part the
+// forearm has to reach and the part specs/004 places inside a cover. The Diff
+// End Pulley is where a belt from the elbow lands, so which way it faces says
+// which way the belts would have to run.
+BODY_A_D = [[-51.000, -30.000,  0.000], [30.000, 30.000, 22.000]];
+PULLEY_D = [[-13.000, -13.000, 17.500], [13.000, 13.000, 27.750]];
+
+// A box's extents in this frame, from its eight corners.
+function wrist_box(dir, b) =
+    let (c = [for (x = [b[0].x, b[1].x], y = [b[0].y, b[1].y],
+                   z = [b[0].z, b[1].z]) wrist_pt(dir, [x, y, z])])
+    [[min([for (p = c) p.x]), min([for (p = c) p.y]), min([for (p = c) p.z])],
+     [max([for (p = c) p.x]), max([for (p = c) p.y]), max([for (p = c) p.z])]];
+
+// Whether the first box lies inside the second, and by how little.
+function box_inside(a, b) =
+    a[0].x >= b[0].x && a[0].y >= b[0].y && a[0].z >= b[0].z &&
+    a[1].x <= b[1].x && a[1].y <= b[1].y && a[1].z <= b[1].z;
+function box_slack(a, b) =
+    min([a[0].x - b[0].x, a[0].y - b[0].y, a[0].z - b[0].z,
+         b[1].x - a[1].x, b[1].y - a[1].y, b[1].z - a[1].z]);
 
 // ---------------------------------------------------------------------------
 // Carbon fibre tube stock (specs/007.1 §5).
@@ -221,6 +357,17 @@ module place_end_arm() {
     }
 }
 
+// The differential, in whichever reading `w` names. The transform is the one
+// wrist_matrix states and nothing more: carry the assembly's own diff_centre()
+// to the origin, turn it, and set that point down on WRIST_C. Its nine parts,
+// their bearings and their clocking are that file's business, not this one's.
+module in_diff(dir) {
+    translate(WRIST_C) multmatrix(wrist_matrix(dir))
+        translate(-diff_centre()) children();
+}
+
+module place_differential(dir) { in_diff(dir) diff_assembly(); }
+
 // ---------------------------------------------------------------------------
 // Structural stock.
 // ---------------------------------------------------------------------------
@@ -253,12 +400,15 @@ module station(p, axis) {
     }
 }
 
-module place_frame() {
+// The J4 station's axis comes from the landing rather than from a record,
+// because which way it points is the whole question. It is the landing's own
+// third basis vector, so the line and the differential cannot disagree.
+module place_frame(dir) {
     station(BASE_STN, BACK);
     station(J1_STN, BACK);
     station(J2_STN, UP);
     station(J3_STN, UP);
-    station(J4_STN, UP);
+    station(J4_STN, dir == "neither" ? UP : basis_for(dir)[2]);
     station(J5_STN, RIGHT);
     station(TOOL_STN, RIGHT);
 }
@@ -295,16 +445,37 @@ module place_gap() {
 }
 
 // ---------------------------------------------------------------------------
-if (show_parts) {
-    place_base();
-    place_main_pivot();
-    place_arm_body();
-    place_end_arm();
+// One arm, in the reading `w` names. Everything but the differential and the
+// J4 station's axis is the same in both, and is drawn from the same numbers.
+// ---------------------------------------------------------------------------
+module arm(dir) {
+    if (show_parts) {
+        place_base();
+        place_main_pivot();
+        place_arm_body();
+        place_end_arm();
+        if (dir != "neither") place_differential(dir);
+    }
+    if (show_stock)     place_stock();
+    if (show_frame)     place_frame(dir);
+    if (show_envelopes) place_envelopes();
+    if (show_gap)       place_gap();
+    if (show_labels)    label(dir);
 }
-if (show_stock)     place_stock();
-if (show_frame)     place_frame();
-if (show_envelopes) place_envelopes();
-if (show_gap)       place_gap();
+
+// The reading's name, under the base and flat in the x-y plane, so a view down
+// z reads it. Drawn at the base end because that is the end the two arms have
+// in common, and a label at the wrist would sit inside the geometry it names.
+module label(dir) {
+    color(FRAME_C) translate([0, -70, 0]) linear_extrude(1)
+        text(dir, size = 16, halign = "center");
+}
+
+// ---------------------------------------------------------------------------
+if (wrist == "all")
+    for (i = [0 : len(WRIST_DRAWN) - 1])
+        right((i - (len(WRIST_DRAWN) - 1) / 2) * ARM_PITCH) arm(WRIST_DRAWN[i]);
+else arm(wrist);
 
 // ---------------------------------------------------------------------------
 // UNPLACED. What the arm needs and this file does not draw, with the reason.
@@ -314,8 +485,6 @@ if (show_gap)       place_gap();
 UNPLACED = [
   ["#410-001 Axis Intersection Half x2",
    "holds the L2 tube's far end 37.500 mm from the J3 axis, but its model is not in the End Arm group's frame and its own channel has not been located"],
-  ["700-Differential, 9 parts",
-   "has a subassembly model, but nothing fixes where it sits on the arm, and the two records that bear on which way its J4 axis points disagree - see THE J4 AXIS IS NOT SETTLED"],
   ["#100-002, #300-002, #410-003 code disks",
    "each on its joint's axis, but the seat that sets its height is unmeasured"],
   ["600-StrainWave, stator holders, motor end caps",
@@ -336,5 +505,24 @@ echo(str("L3 gap: ", L3_GAP, " mm along the arm from the tube's far face to the 
          L3_TUBE_Z - J4_STN.z, " mm down across it. DC-11(h)."));
 for (u = UNPLACED) echo(str("UNPLACED: ", u[0], " - ", u[1]));
 
+// Where each landing puts Diff Body A, against the two records that bear on
+// it: the cover specs/004 § Differential interface says encloses it, and the
+// span from the L3 tube's far face that DC-11(h)'s missing part has to close.
+// The transform is wrist_matrix's, so this reports the geometry that is drawn
+// rather than a second calculation of it, and it moves if the placement does.
+for (dir = WRIST_DIRS)
+    let (a = wrist_box(dir, BODY_A_D), p = wrist_box(dir, PULLEY_D))
+    echo(str(dir, ": Diff Body A ", a[0], "..", a[1],
+             box_inside(a, ENV_GRIPPER)
+             ? str(" - inside ENV_GRIPPER by ", box_slack(a, ENV_GRIPPER), " mm")
+             : " - NOT inside ENV_GRIPPER",
+             "; L3 tube far face to its near y = ", a[0].y - L3_TUBE_Y1,
+             "; End Pulley at y ", p[0].y, "..", p[1].y, " mm"));
+
 assert(abs(L3_GAP - 36.000) < 0.001,
        "the L3 gap is C-505's own figure; if it moved, a cut length moved with it");
+// WRIST_C must lie on the J5 axis, which is what makes the two readings differ
+// by a turn about that axis and nothing else. A frame edit that moved it would
+// make the pair of pictures a comparison of two different things.
+assert(WRIST_C.y == J5_STN.y && WRIST_C.z == J5_STN.z,
+       "the J4/J5 crossing must sit on the J5 axis in both readings");

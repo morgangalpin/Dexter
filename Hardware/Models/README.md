@@ -9,7 +9,10 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   build can be reviewed by looking at it. Every placement in it is solved from a feature the part carries;
   a part whose position nothing fixes is listed in that file's `UNPLACED` rather than drawn somewhere
   plausible, which is what lets a missing part show as a hole. `700-Differential/diff_assembly.scad` is the
-  same idea one level down.
+  same idea one level down, and this file composes it in by its `diff_centre()`. Where a placement is
+  disputed rather than unknown, every candidate is drawn side by side and labelled instead of one being
+  chosen: the `wrist` parameter does that for the J4 axis, which
+  [DC-11(h)](../../specs/009-Design-Completion.md#procurement-data) is open on.
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
 - **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the

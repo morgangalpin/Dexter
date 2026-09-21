@@ -221,6 +221,11 @@ SHAFT_Z0 = 49.040;
 // The J5 axis crosses the J4 axis here and all three crowns share it.
 C = [0, 0, SHAFT_Z0 - BEVEL_APEX_SHAFT];
 
+// C, for a parent composition. `use` imports modules and functions but not
+// variables, and C is the only point of this frame a parent needs: it is the
+// one point both wrist axes pass through, so placing it places the assembly.
+function diff_centre() = C;
+
 // Diff Body B's axis crossing, in Body B's own frame. This point goes on C.
 BODY_B_C = [BODY_B_COL_XY[0], BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]];
 
@@ -346,98 +351,106 @@ ENC_C    = [0.30, 0.32, 0.36];
 STEEL_C  = [0.55, 0.60, 0.66];
 CARBON_C = [0.16, 0.16, 0.18];
 
-// Static: the wrist frame the whole differential hangs on.
-color(BODY_C) part("730-001");
+// The assembly is a module rather than a run of top-level calls so that a
+// parent composition can place it: ../robot_assembly.scad reaches it with
+// `use` and positions it by diff_centre(). Called at the end of this file, so
+// opening this file on its own is unchanged.
+module diff_assembly() {
+    // Static: the wrist frame the whole differential hangs on.
+    color(BODY_C) part("730-001");
 
-j4() {
-    // The pivoting carrier, and the J4 encoder rim it turns over Body A's
-    // end-stop track.
-    color(BODY_C) in_body_b() part("730-002");
+    j4() {
+        // The pivoting carrier, and the J4 encoder rim it turns over Body A's
+        // end-stop track.
+        color(BODY_C) in_body_b() part("730-002");
 
-    // Input B: the hollow shaft, its integrated 40T pulley and its bevel.
-    color(GEAR_C) in_shaft() part("720-001");
+        // Input B: the hollow shaft, its integrated 40T pulley and its bevel.
+        color(GEAR_C) in_shaft() part("720-001");
 
-    // Input A: the CF rod, its bevel at the top and its pulley at the bottom.
-    color(GEAR_C) in_axle() part("720-002");
-    color(GEAR_C) up(ROD_BOT + PULLEY_FROM_TIP) part("720-003");
+        // Input A: the CF rod, its bevel at the top and its pulley at the bottom.
+        color(GEAR_C) in_axle() part("720-002");
+        color(GEAR_C) up(ROD_BOT + PULLEY_FROM_TIP) part("720-003");
 
-    // Output: the split bevel on the column, both halves on one transform.
-    color(GEAR_C) in_split() {
-        part("710-001");
-        part("710-002");
-    }
+        // Output: the split bevel on the column, both halves on one transform.
+        color(GEAR_C) in_split() {
+            part("710-001");
+            part("710-002");
+        }
 
-    // J5 encoder disk, over the Split Gear body and against its stop collar.
-    color(ENC_C) in_split() up(CODE_DISK_Z) part("710-004");
+        // J5 encoder disk, over the Split Gear body and against its stop collar.
+        color(ENC_C) in_split() up(CODE_DISK_Z) part("710-004");
 
-    // The keeper, epoxied on the Ø8 tube. It does NOT butt the Split Gear's
-    // base: the needle thrust stack stands between the two (008.6 step 23),
-    // so the keeper's epoxy face sits a stack height below SPLIT_BASE_Z.
-    color(BODY_C) in_split() up(SPLIT_BASE_Z - thrust_stack_h())
-        xrot(180) part("710-003");
+        // The keeper, epoxied on the Ø8 tube. It does NOT butt the Split Gear's
+        // base: the needle thrust stack stands between the two (008.6 step 23),
+        // so the keeper's epoxy face sits a stack height below SPLIT_BASE_Z.
+        color(BODY_C) in_split() up(SPLIT_BASE_Z - thrust_stack_h())
+            xrot(180) part("710-003");
 
-    if (show_hardware) {
-        color(CARBON_C) up(ROD_BOT) cf_rod();
-        color(STEEL_C) {
-            // J4 pivot, in Body A.
-            up(SEAT_A_6703) bearing(BRG_6703);
-            up(SEAT_A_6705) bearing(BRG_6705);
-            // J4 pivot, in Body B's tunnel: the pair that spans the shaft's
-            // 22.5 mm front journal.
-            in_body_b() {
-                translate([SEAT_B_FRONT, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]])
-                    yrot(90) bearing(BRG_6703);
-                translate([SEAT_B_REAR, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]])
-                    yrot(90) bearing(BRG_6703);
-                // J5: the column journal, in 710-002's Ø23 crown bore.
-                translate([BODY_B_COL_XY[0], BODY_B_COL_XY[1], SEAT_B_COL])
-                    bearing(BRG_6703);
+        if (show_hardware) {
+            color(CARBON_C) up(ROD_BOT) cf_rod();
+            color(STEEL_C) {
+                // J4 pivot, in Body A.
+                up(SEAT_A_6703) bearing(BRG_6703);
+                up(SEAT_A_6705) bearing(BRG_6705);
+                // J4 pivot, in Body B's tunnel: the pair that spans the shaft's
+                // 22.5 mm front journal.
+                in_body_b() {
+                    translate([SEAT_B_FRONT, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]])
+                        yrot(90) bearing(BRG_6703);
+                    translate([SEAT_B_REAR, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]])
+                        yrot(90) bearing(BRG_6703);
+                    // J5: the column journal, in 710-002's Ø23 crown bore.
+                    translate([BODY_B_COL_XY[0], BODY_B_COL_XY[1], SEAT_B_COL])
+                        bearing(BRG_6703);
+                }
+                // The rod's two bearings, in the shaft's own end seats.
+                up(SEAT_SHAFT_F) bearing(BRG_MR128);
+                up(SEAT_SHAFT_R) bearing(BRG_MR128);
+                // The Split Gear on Body B's Ø8 thrust tube, and the 6703 between
+                // its halves. That last one is an ASSEMBLY bearing, not a running
+                // one: 710-001's Ø23 bore and 710-002's Ø17 stub are the 6703's
+                // two race diameters exactly, the void between them is its width
+                // plus 0.253, and 008.6 installs it into the Top at step 5 —
+                // BEFORE step 8 presses the halves together and turns one against
+                // the other to clock the teeth. It carries that rotation, and
+                // thereafter stands as a ground Ø17/Ø23 concentricity bush. Its
+                // races turning together once the brads are in is the finished
+                // state, not a defect.
+                in_split() {
+                    up(SEAT_SG_TOP)  bearing(BRG_MR128);
+                    up(SEAT_SG_BOT)  bearing(BRG_MR128);
+                    up(SEAT_SG_6703) bearing(BRG_6703);
+                    // The needle thrust stack, on the 10.423 mm of Ø8 tube that
+                    // stands proud of the Split Gear's base. It is located by the
+                    // tube and carried by two FACES — 710-001's base annulus,
+                    // r 5.994..18.500, against the keeper — so it never wanted a
+                    // bore. Anchored on its own bottom face like the bearings, and
+                    // drawn downward from that base.
+                    up(SPLIT_BASE_Z - thrust_stack_h()) thrust_stack();
+                }
+                // The MR85, pressed into the flat back of the Diff Gear Axle and
+                // standing 1 mm proud of it (008.6 step 19). Its OD is the Ø8 rod
+                // bore, so it takes the top 1.5 mm of that bore; what its Ø5 rides
+                // on closes the wrist above and is outside this model set, which
+                // ends here at the J4 axis. See ROD_TOP: this is what says the rod
+                // cannot be flush with that face.
+                in_axle() up(-MR85_PROUD) bearing(BRG_MR85);
+                // The four brads that lock the Split Gear's halves together. They
+                // are drawn only when both halves drill to one line, which is a
+                // config choice — see BRAD_Z in diff_params.scad. Under the
+                // reference heights there is no straight brad either part would
+                // support, and drawing one anyway would hide that.
+                if (BRAD_Z_TOP == BRAD_Z)
+                    in_split() up(BRAD_Z)
+                        for (a = [0 : 90 : 270])
+                            zrot(a) right(BRAD_TIP_R)
+                                brad(BRAD_HEAD_R - BRAD_TIP_R);
             }
-            // The rod's two bearings, in the shaft's own end seats.
-            up(SEAT_SHAFT_F) bearing(BRG_MR128);
-            up(SEAT_SHAFT_R) bearing(BRG_MR128);
-            // The Split Gear on Body B's Ø8 thrust tube, and the 6703 between
-            // its halves. That last one is an ASSEMBLY bearing, not a running
-            // one: 710-001's Ø23 bore and 710-002's Ø17 stub are the 6703's
-            // two race diameters exactly, the void between them is its width
-            // plus 0.253, and 008.6 installs it into the Top at step 5 —
-            // BEFORE step 8 presses the halves together and turns one against
-            // the other to clock the teeth. It carries that rotation, and
-            // thereafter stands as a ground Ø17/Ø23 concentricity bush. Its
-            // races turning together once the brads are in is the finished
-            // state, not a defect.
-            in_split() {
-                up(SEAT_SG_TOP)  bearing(BRG_MR128);
-                up(SEAT_SG_BOT)  bearing(BRG_MR128);
-                up(SEAT_SG_6703) bearing(BRG_6703);
-                // The needle thrust stack, on the 10.423 mm of Ø8 tube that
-                // stands proud of the Split Gear's base. It is located by the
-                // tube and carried by two FACES — 710-001's base annulus,
-                // r 5.994..18.500, against the keeper — so it never wanted a
-                // bore. Anchored on its own bottom face like the bearings, and
-                // drawn downward from that base.
-                up(SPLIT_BASE_Z - thrust_stack_h()) thrust_stack();
-            }
-            // The MR85, pressed into the flat back of the Diff Gear Axle and
-            // standing 1 mm proud of it (008.6 step 19). Its OD is the Ø8 rod
-            // bore, so it takes the top 1.5 mm of that bore; what its Ø5 rides
-            // on closes the wrist above and is outside this model set, which
-            // ends here at the J4 axis. See ROD_TOP: this is what says the rod
-            // cannot be flush with that face.
-            in_axle() up(-MR85_PROUD) bearing(BRG_MR85);
-            // The four brads that lock the Split Gear's halves together. They
-            // are drawn only when both halves drill to one line, which is a
-            // config choice — see BRAD_Z in diff_params.scad. Under the
-            // reference heights there is no straight brad either part would
-            // support, and drawing one anyway would hide that.
-            if (BRAD_Z_TOP == BRAD_Z)
-                in_split() up(BRAD_Z)
-                    for (a = [0 : 90 : 270])
-                        zrot(a) right(BRAD_TIP_R)
-                            brad(BRAD_HEAD_R - BRAD_TIP_R);
         }
     }
 }
+
+diff_assembly();
 
 // ---------------------------------------------------------------------------
 // What the placement computes.

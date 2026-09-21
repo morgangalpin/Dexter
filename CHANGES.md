@@ -872,3 +872,34 @@ anything version 3 does not independently specify
   fits Diff Body A to the gripper covers by a radius that bounds two perpendicular directions at once,
   which puts it along the arm. The differential is left out of the composition rather than drawn on a
   guess, because drawing it would answer that question silently.
+
+### CR-3A23
+
+**The wrist drawn every way it can go, and a second question found under the first**
+
+- **Affects:** `Hardware/Models/robot_assembly.scad`, `Hardware/Models/700-Differential/diff_assembly.scad`,
+  `Hardware/Models/README.md`, `Hardware/Models/MANIFEST.csv`,
+  [009 DC-11(h)](specs/009-Design-Completion.md#procurement-data).
+- **Was:** [CR-3A22](#cr-3a22) left the differential out of the composition because two records disagree
+  about which way its J4 axis points, and drawing it either way would have adopted a reading silently.
+  That kept the model honest and left the question exactly where it was: two paragraphs of prose, nothing
+  to look at, and no way to tell whether the disagreement was real or an artefact of reading one of them
+  wrongly.
+- **Now:** The differential is drawn in every direction that axis can take, side by side along x and
+  labelled, and the model reports what each one measures against three things: the cover
+  [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface) says
+  encloses Diff Body A, the span DC-11(h)'s missing part has to close, and the end a drive belt arrives
+  on. `diff_assembly.scad`'s placement moved into a module and gained `diff_centre()` so a parent can
+  position it; run on its own it is unchanged.
+- **Driver:** DC-11(h) cannot be authored while the axis is open, and the axis was not going to close by
+  being described again.
+- **Status:** `[Specified]`. DC-11(h) stays open.
+- **Re-derive:** Nothing. No dimension of any part changes.
+- **Note:** The drawing settles the original disagreement and replaces it with a narrower one. Across the
+  arm against along it goes to 004: a disc of one radius can bound the arm's two cross-sections at once
+  only if its normal runs along the arm, and drawn the other way the same disc bounds a different pair,
+  putting Diff Body A clear of every cover. What it does not settle is which way along the arm the
+  differential faces. 004's radius is silent on it, the two answers stand a link-scale distance apart,
+  and each is supported by one of the same two records — one lands Body A inside the gripper cover as 004
+  states, the other lands it within reach of the L3 tube and puts the belt pulley on the side a belt
+  comes from. Neither is adopted. The measurements are in the model file, which owns them.
