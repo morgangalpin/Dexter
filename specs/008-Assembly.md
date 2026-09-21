@@ -2,7 +2,10 @@
 
 This document is the procedure that builds the parts in [007-Bill-of-Materials.md](007-Bill-of-Materials.md)
 into the robot specified in [004-Mechanical-Architecture.md](004-Mechanical-Architecture.md). It is a
-**derived artifact** — regenerate it when the mechanical design changes. Steps for subassemblies with an
+**derived artifact** — regenerate it when the mechanical design changes. Its step text descends from the
+upstream [HD Build Notes](https://github.com/HaddingtonDynamics/Dexter/wiki/HD-Build-Notes), corrected
+against the model set wherever the two disagree; that page also lists the parts each subassembly consumes,
+which is a second witness to [007](007-Bill-of-Materials.md)'s quantities. Steps for subassemblies with an
 open item (the bolted base, the differential, the revised link lengths) are the current procedure of
 record; confirm the corresponding [009-Design-Completion.md](009-Design-Completion.md) item before
 committing irreversible work (cutting CF, pressing strain-wave splines). A from-scratch build ends

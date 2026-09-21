@@ -158,16 +158,18 @@ parts list realizes the previous version's differential, built as a working subs
 | #720-001 | Diff Gear Shaft | 3D print | 1 | Integrated belt pulley is **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
 | #720-002 | Diff Gear Axle | 3D print | 1 | |
 | #720-003 | Diff End Pulley | 3D print | 1 | **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
-| #720-005 | 60 × 4.4 × 1.5 mm CF strake | Fabricate | 5 | Cut from [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) — .057″ × .177″ stock |
 | #720-006 | 96 × 8 × 6 mm CF rod | Fabricate | 1 | |
 | #730-001 | Diff Body A | 3D print | 1 | |
 | #730-002 | Diff Body B | 3D print | 1 | |
 | #620-001 | MR85 bearing | Off the shelf | 1 | Its **outer** race is the one that seats ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #620-002 | MR128 bearing | Off the shelf | 4 | **Was 2.** Four Ø12 seats: both ends of `#720-001`, and one in each Split Gear half ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
-| #620-003 | 6703 bearing | Off the shelf | 5 | Five Ø23 seats in this subassembly's own parts. [008.6](008-Assembly.md#0086-differential) step 2 installs a **sixth**, into `#420-001`, which no subassembly counts ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
+| #620-003 | 6703 bearing | Off the shelf | 6 | **Was 5.** Five Ø23 seats in this subassembly's own parts, and a sixth that [008.6](008-Assembly.md#0086-differential) step 2 presses into `#420-001` ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #620-004 | 6705 bearing | Off the shelf | 1 | |
 | #642-005 | M3 × 6 mm set screws | Off the shelf | 3 | |
 | #680-001 | 1" #19 finishing nail | Off the shelf | 4 | Locking dowels |
+
+`#720-005`, five 60 × 4.4 × 1.5 mm CF strakes, is **withdrawn**: no part in this subassembly carries a slot
+that would take one, and no step places them ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 
 Consumables: cyanoacrylate, hot glue, a small zip tie, epoxy.
 
@@ -345,7 +347,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M6 bolt + 2 washers + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
 | #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
 | 1" #19 finishing nail | 11 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |
-| 6703 bearing (17 × 23 × 4) | 10 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
+| 6703 bearing (17 × 23 × 4) | 11 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
 | 6705 bearing (25 × 32 × 4) | 1 | [C-403](007.1-Parts-Catalog.md#4-bearings) |
 | 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
 | 6810 bearing (50 × 65 × 7) | 8 | [C-401](007.1-Parts-Catalog.md#4-bearings) |

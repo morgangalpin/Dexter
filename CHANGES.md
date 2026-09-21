@@ -804,3 +804,41 @@ anything version 3 does not independently specify
   Separately, step 2 presses a **sixth** 6703 into `#420-001` End Arm Hub that no subassembly counts;
   [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub)'s three are all consumed by the New Belt
   Pulley. That seat is in a 400-series part and is recorded rather than re-quantified here.
+
+### CR-3A21: The five 60 mm differential strakes withdrawn; 6703 count corrected; the print coupon re-specified
+
+- **Affects:** [007 §7.6](specs/007-Bill-of-Materials.md#0076-differential),
+  [007 §Aggregate](specs/007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot),
+  [007.1 §4](specs/007.1-Parts-Catalog.md#4-bearings),
+  [007.1 §5](specs/007.1-Parts-Catalog.md#5-structural-composites-and-metal-stock),
+  [007.1 §Corrections](specs/007.1-Parts-Catalog.md#corrections-to-007),
+  [007.2 §Print profile](specs/007.2-Printed-Parts.md#print-profile),
+  [007.2 §Model-vs-BOM](specs/007.2-Printed-Parts.md#model-vs-bom-discrepancies),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
+  `Hardware/Models/700-Differential/diff_params.scad`.
+- **Was:** [DC-11(e)](specs/009-Design-Completion.md#procurement-data) carried the five `#720-005`
+  60 × 4.4 × 1.5 mm CF strakes as a fabricated row with no seat to go to and no step to place it, and
+  [C-503](specs/007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) was ordered as a 48″ stick to
+  cut them. The differential's 6703 row read **5**, with a sixth that
+  [008.6](specs/008-Assembly.md#0086-differential) step 2 presses into `#420-001` recorded but counted by
+  nobody. The print-qualification coupon in
+  [007.2](specs/007.2-Printed-Parts.md#print-profile) called for a **1.45 × 4.50 mm** strake slot.
+- **Now:** **The `#720-005` row is withdrawn.** Three records are silent on it — no assembly step, no
+  entry in the build record's differential parts list, and **no slot in any of the nine printed parts**,
+  each of which is a recreation gated against its reference mesh and each of which reproduces the slots it
+  does have. The forearm carries exactly three slot families, all accounted for: `#710-001`'s three at
+  **5.600 × 2.500 mm**, `#421-002`'s three at **5.000 × 2.000 mm**, and the Axis Intersection Half's four
+  at 14.546 mm² in section. **The 6703 row reads 6** and [C-404](specs/007.1-Parts-Catalog.md#4-bearings)
+  **11**: a subassembly's row is what its own steps consume, so the sixth belongs to the differential.
+  **The coupon is re-specified** on `#710-001`'s 5.600 × 2.500 mm slot, the robot's tightest bond fit;
+  1.45 × 4.50 mm is the C-503 *strip*'s own section and is not a slot anywhere in the design.
+- **Driver:** DC-11(e) was the last sub-item standing between the parts list and an order, and the one
+  thing it still carried could be settled by searching the model set for the seat rather than by a build.
+- **Status:** `[Specified]`. DC-11 keeps one open sub-item, [row h](specs/009-Design-Completion.md#procurement-data).
+- **Re-derive:** [C-503](specs/007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) drops from 8
+  pieces and a 48″ stick to 3 pieces and a **24″** stick. The cost of the withdrawal being wrong is five
+  cuts from stock already on hand, not a purchase.
+- **Note:** Both bearing corrections are now corroborated from outside the model set. The build record's
+  differential parts list calls for **4 MR128** and **6 6703** — the same two figures reached by counting
+  seats, and the record [008.6](specs/008-Assembly.md#0086-differential) is itself derived from, so the
+  two rows had been short against their own source. That same list is what fails to carry a 60 mm strake.
