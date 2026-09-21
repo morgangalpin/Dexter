@@ -149,7 +149,8 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 6. Slide the Pivot Stator Holder onto the Arm Body, pressing while rotating the motor shaft.
 7. Tap the 4 Stator Balancers into place with light mallet taps (they are fragile).
 8. Assemble the Belt Directors:
-   a. Press the 6 MR128 bearings into the belt director bodies.
+   a. Press the 6 MR128 bearings **onto** the belt director shanks, two per body — the shank is the bearing
+      bore, not a housing ([007.2](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)).
    b. Apply a drop of super glue **inside** each Belt Director (not on the cap — cap glue can seep into and
       lock the bearing).
    c. Push the Large and Small Belt Directors through front to back, then press the Caps in from the back.
@@ -172,13 +173,17 @@ a physical build until the DC-9 checklist passes. The former `710-002` scale def
 2. Insert one 6703 into the End Arm Hub; press to seat.
 3. Insert 2× 6703 into Diff Body B (one each side); press to seat.
 4. Insert 2× MR128 into the Diff Gear Shaft (one each end); press to seat.
-5. Insert one 6703 and one MR128 into the Split Gear Top (fitted locations); press.
+5. Insert one 6703 and one MR128 into the Split Gear Top (fitted locations); press. The 6703 goes in the
+   Ø23 pocket z 4.000–8.750 and is what the Split Gear Bottom's Ø17 stub then enters, so it must be in
+   before step 8 — step 8 turns one half against the other on it.
 6. Insert one 6703 and one MR128 into opposite sides of the Split Gear Bottom; press.
 7. Ream the 4 side holes of the Split Gear Top ~6 mm deep.
 8. Press the Split Gear Top into the Split Gear Bottom; rotate until the 4 holes show through the 4 windows.
 9. Through each window, insert a 1" #19 wire brad with super glue ~6 mm deep; trim flush once set.
 10. Push a zip-tie flat end into each window as far as it goes, hot-glue, and trim flush.
-11. Epoxy the 3 25 mm CF strakes into the Split Gear Bottom slots; cure.
+11. Epoxy the 3 25 mm CF strakes into the Split Gear **Top** slots; cure. The three 5.6 × 2.5 mm slots are
+    cut from that part's base on r 13.000–15.500 at 90°, 210° and 330°, and run up to z 8.000; the Split
+    Gear Bottom carries no slot ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 12. Press the Diff Gear Shaft into Diff Body B.
 13. Press Diff Body B into Diff Body A (tight, fully seated).
 14. Feed all 6 tool wires through Diff Body B: Red/White/Blue through the top entrance and out one side of the
@@ -189,13 +194,18 @@ a physical build until the DC-9 checklist passes. The former `710-002` scale def
     toward the rod's long side.
 17. Confirm the 6703/MR128 bearings are seated so the shaft end protrudes ~1 mm past the 6703.
 18. Super-glue and snap the Diff Axle Keeper over the shaft end, against the 6703.
-19. Press the MR85 into the flat back of the Diff Gear Axle, ~1 mm proud.
-20. Sand the other rod end and epoxy the Diff Gear Axle onto it.
+19. Press the MR85 into the flat back of the Diff Gear Axle, ~1 mm proud. It seats by its **OD**, in the
+    same Ø8 bore the rod runs in — the Ø5 bore is the race that leaves this subassembly.
+20. Sand the other rod end and epoxy the Diff Gear Axle onto it. The rod **stops 1.5 mm short of that back
+    face**, on the MR85, which leaves 12.5 mm of Ø8 lap for the joint. That is why step 19 comes first: a
+    rod driven to the face leaves the bearing nowhere to go.
 21. Insert the CF rod through the Diff Gear Shaft until it stops.
 22. Hand-turn the Split Gear to confirm free rotation.
 23. Slide one AS thrust race over the wires and Diff Body B shaft, then the AXK0819, then the second race.
     Epoxy only the chamfered edge of a Diff Keeper (apply sparingly with a nail), feed the wires through, and
-    join to Diff Body B.
+    join to Diff Body B. **The keeper does not butt the Split Gear** — the stack stands between them, on
+    the shaft, bearing on the Split Gear Top's base face. Expect ~2.4 mm of shaft still proud of the
+    keeper once both are on ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 24. Clamp a second Diff Keeper on top of the epoxied one until cured.
 
 ## 008.7 End Arm Hub

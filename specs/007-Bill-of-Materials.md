@@ -125,8 +125,8 @@ L2 span (J2→J3) plus belt-director sub-unit. The L2 tube length is specific to
 | #210-001 | Belt Director Caps | 3D print | 3 | |
 | #210-002 | Belt Director Pulley | 3D print | 1 | |
 | #210-003 | Idler Plug | 3D print | 1 | |
-| #210-004 | Small Belt Director | Fabricate | 2 | |
-| #210-005 | Large Belt Director | Fabricate | 1 | |
+| #210-004 | Small Belt Director | 3D print | 2 | |
+| #210-005 | Large Belt Director | 3D print | 1 | |
 | #620-001 | MR85 bearing | Off the shelf | 1 | |
 | #620-002 | MR128 bearing | Off the shelf | 6 | |
 | #641-003 | M2 × 20 mm bolt | Off the shelf | 1 | |
@@ -162,9 +162,9 @@ parts list realizes the previous version's differential, built as a working subs
 | #720-006 | 96 × 8 × 6 mm CF rod | Fabricate | 1 | |
 | #730-001 | Diff Body A | 3D print | 1 | |
 | #730-002 | Diff Body B | 3D print | 1 | |
-| #620-001 | MR85 bearing | Off the shelf | 1 | |
-| #620-002 | MR128 bearing | Off the shelf | 2 | |
-| #620-003 | 6703 bearing | Off the shelf | 5 | |
+| #620-001 | MR85 bearing | Off the shelf | 1 | Its **outer** race is the one that seats ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
+| #620-002 | MR128 bearing | Off the shelf | 4 | **Was 2.** Four Ø12 seats: both ends of `#720-001`, and one in each Split Gear half ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
+| #620-003 | 6703 bearing | Off the shelf | 5 | Five Ø23 seats in this subassembly's own parts. [008.6](008-Assembly.md#0086-differential) step 2 installs a **sixth**, into `#420-001`, which no subassembly counts ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #620-004 | 6705 bearing | Off the shelf | 1 | |
 | #642-005 | M3 × 6 mm set screws | Off the shelf | 3 | |
 | #680-001 | 1" #19 finishing nail | Off the shelf | 4 | Locking dowels |
@@ -350,7 +350,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
 | 6810 bearing (50 × 65 × 7) | 8 | [C-401](007.1-Parts-Catalog.md#4-bearings) |
 | MR85 bearing (5 × 8 × 2.5) | 3 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
-| MR128 bearing (8 × 12 × 3.5) | 12 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
+| MR128 bearing (8 × 12 × 3.5) | 14 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
 | AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
 | NEMA-17 stepper (0.9°/step) | 5 | [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) |
 | Strain-wave component sets (flex spline / wave generator / stator gear) | 3 each | [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) |

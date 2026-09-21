@@ -140,6 +140,42 @@ Per-link masses used by the gravity/torque model, useful for sizing, dynamics, a
 *Source: `dde/math/DH.js` `torques_gravity` default masses; gravity 9.81 m/s².* Moving-link
 mass totals ≈ 4.79 kg above the base. Confirm against a physical build.
 
+### Static gravity torque
+
+Worst-case static joint torque over the travel limits above, computed from those masses with
+`DH.torques_gravity` and the DH set below:
+
+| Load at the tool tip | J2 | J3 | J2 at the motor (52:1, η 0.70) |
+|---|---|---|---|
+| None | 0.823 N·m | 0.773 N·m | **0.023 N·m** |
+| 1 kg | 7.76 N·m | 4.49 N·m | 0.213 N·m |
+| 2 kg | 14.84 N·m | 8.25 N·m | 0.408 N·m |
+
+**J2 binds in every loaded case**, and load scales it by **≈7.03 N·m/kg** at the joint, i.e.
+**0.193 N·m/kg** at the motor. The unloaded case is small because Link 2's mass acts 62 mm behind the J2
+axis and partly cancels the outboard links.
+
+These are static stall figures at a nominal 70% strain-wave efficiency and carry no dynamic allowance.
+
+**What the payload ceiling actually is.** Reading the J2 row against the drive's torque ratings
+([C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)) rather than against the motor:
+
+| Limit reached at J2 | Joint torque | Tool-tip payload |
+|---|---|---|
+| Drive rated, continuous | 4 N·m | **0.45 kg** |
+| Drive start/stop | 11 N·m | **1.45 kg** |
+| Motor stall ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) | 16.7 N·m | 2.26 kg |
+| Drive peak | 24 N·m | 3.30 kg |
+
+**The drive binds, and the motor sits between its start/stop and peak ratings** — so the motor is capable of
+overloading the drive, and payload is a gearbox question rather than a motor one. These bound REQ-PRE-6
+rather than stating it; the rated payload is measured on a build
+([009.1 § Test 4.3](009.1-Performance-Characterization-Protocol.md#test-43-rated-payload)), against a
+ceiling set here.
+
+*Method: worst case over 140,238 poses spanning the travel limits above, J1 held at 0 — its axis is
+vertical and carries no gravity torque at any pose.*
+
 ## Denavit–Hartenberg model
 
 The reference kinematic model is the DH parameter set measured from a serialized production unit,

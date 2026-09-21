@@ -653,3 +653,154 @@ anything version 3 does not independently specify
   [006 §Encoder velocity monitor](specs/006-Firmware-and-Calibration.md#encoder-velocity-monitor). Two
   superseded Step 2 variants, `Setup_Find_Index_Home_HDI.dde` and `Setup_Find_Index_Home_HDI_Stable.dde`,
   remain in history and are not restored; `HDI CAL INSTRUCTIONS- STEP 2.pdf` names `HDIv2`.
+
+### CR-3A17: Cooling fan, Belt Director type and the print profile specified; two CAD-vs-BOM mismatches dismissed
+
+- **Affects:** [007.1 §7](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring),
+  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [007.5](specs/007-Bill-of-Materials.md#0075-arm-body),
+  [007.2 §Print profile](specs/007.2-Printed-Parts.md#print-profile),
+  [007.2 §Model-vs-BOM discrepancies](specs/007.2-Printed-Parts.md#model-vs-bom-discrepancies),
+  [008.5](specs/008-Assembly.md#0085-arm-body),
+  [005 §Open items](specs/005-Electronics-and-Control.md#open-items),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
+  [009.1 §Section 5](specs/009.1-Performance-Characterization-Protocol.md#section-5-fan-rail-measurement),
+  [009.2](specs/009.2-Test-Build-Manifest.md).
+- **Was:** [DC-11](specs/009-Design-Completion.md#procurement-data) held five part identities the parts
+  catalog could not pin. The fan had no size and no part number; the Belt Directors were typed "Fabricate"
+  in [007.5](specs/007-Bill-of-Materials.md#0075-arm-body) and printed everywhere else; layer height, wall
+  count, infill and orientation were unpublished; two CAD bodies were recorded as BOM shortfalls; and
+  [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) justified its body-length limit as
+  "envelope inside the Motor End Cap".
+- **Now:** Four of the five resolve against the model set. **The fan is a 40 mm frame** — the CAD body
+  `HDI-730-005_Fan` and the printed Fan Bracket agree on it independently — specified as Sunon
+  `MF40101V1-1000U-A99` in [C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring), whose 4.5–13.8 V
+  span makes it immune to whatever rail `J23` turns out to carry. **The Belt Directors are printed**, and
+  the same measurement corrects the fit's direction: the Ø8.000 shank is the MR128 bore, so the bearings go
+  *onto* it. **A print profile is published**, derived parameter by parameter from the features the parts
+  must hold, with a qualification coupon carrying the two governing fits. **Neither CAD-vs-BOM mismatch is
+  a missing row:** `HDI-311-006C_J2StatorHolderCap_ConeDrive` is a modelling division of the single printed
+  `#200-002`, and `HDI-610-006_MotorShaftCoupler` is a different part from `#630-004` used as a generic hub.
+  `#630-004`'s CAD-ID mapping is withdrawn. C-101's frame and shaft rows are confirmed against the parts
+  they mate; its body-length row is re-justified, because the end caps epoxy to the motor *bottom* and
+  bound nothing.
+- **Driver:** DC-11 gated ordering and printing, and four of its sub-items were answerable from geometry
+  already in the repository rather than from a decision or a build.
+- **Status:** `[Provisional]` — DC-11 stays open on the stepper's body length (row a), the four differential
+  adjudications (row e), and L3's absent far-end part (row h).
+- **Re-derive:** [007.2](specs/007.2-Printed-Parts.md) quantities are unaffected — no row's quantity
+  changes, only two rows' *type* and one row's CAD ID. [009.2](specs/009.2-Test-Build-Manifest.md) drops the
+  fan from its held-back purchases and restates Stage 0's coupon as a reference to the profile that now owns
+  it.
+- **Note:** The fan closure also explains the bracket. Its two Ø2.99 holes are 49.737 mm apart and the Motor
+  Control PCB's mounting holes stand in two columns 1.95″ = 49.53 mm apart, so `#800-005` is cut for the
+  stood-off position the wiki prescribes — a fan mounted directly on the drivers reaches over the MicroZed
+  USB connector and the SD-card socket. The bracket carries no fan screw holes at all: at the standard 32 mm
+  pattern the fan's own holes fall inside the aperture, so the fan is glued rather than fastened.
+
+### CR-3A18: Stepper motor specified by decision; motor sizing derived from the gravity model
+
+- **Affects:** [003 §Static gravity torque](specs/003-Kinematics.md#static-gravity-torque),
+  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
+  [009.1 §Section 4](specs/009.1-Performance-Characterization-Protocol.md#section-4-performance-envelope),
+  [009.2](specs/009.2-Test-Build-Manifest.md).
+- **Was:** [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) named a *recommended
+  qualifying* part rather than a part of record, its holding-torque row justified only as "legacy build
+  record specifies 0.52 N·m" and its body-length row as a ≤ 48 mm ceiling on how far the Motor End Cap
+  stands off the joint body. [DC-11(a)](specs/009-Design-Completion.md#procurement-data) carried the
+  identity as open.
+- **Now:** **StepperOnline `17HM19-2004S` is the part of record**, adopted by decision. No manufacturer part
+  number is recoverable: the design's own CAD carries the motor as `NEMA17-48H` across seven
+  `Reference/onshape-v1/` assemblies but as an imported solid with no vendor identity, which was the last
+  place one could have been held. **Body length is 48 mm exactly, and the constraint is two-sided** — the End
+  Cap is pressed onto a 6810 and epoxied to the Main Pivot *before* the motor is epoxied to it, so it is a
+  fixed datum and body length positions the whole drive axially within the joint. **Holding torque is now
+  derived, not inherited:** [003](specs/003-Kinematics.md#static-gravity-torque) owns a worst-case static
+  gravity table computed with the project's own `DH.torques_gravity` over the travel limits. The Flex Spline
+  Attach `#630-005` joins the three Motor End Caps as a fourth part confirming the 31.000 mm square face
+  pattern.
+- **Driver:** DC-11(a) gated ordering five motors, and the one thing genuinely missing from the record — an
+  OEM part number — was shown to be unrecoverable rather than merely unfound.
+- **Status:** `[Provisional]` — DC-11 stays open on the four differential adjudications (row e) and L3's
+  absent far-end part (row h). Row a is closed.
+- **Re-derive:** [009.2](specs/009.2-Test-Build-Manifest.md)'s Stage 2 gate changes what it reads: the
+  drive's axial stack-up, not end-cap stand-off.
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md)'s payload ladder drops the claim that the
+  moving links consume a substantial fraction of stall at full extension — they consume a few percent.
+- **Note:** The gravity model explains why. Link 2 carries 2.520 kg of the robot's 4.79 kg of moving mass and
+  its centre of mass acts 62 mm *behind* the J2 axis, partly cancelling the outboard links, so the unloaded
+  arm needs ≈1/20 of the specified motor's holding torque. Motor sizing on this robot is set by payload and
+  dynamics, not by holding its own weight up.
+
+### CR-3A19: Strain-wave torque ratings recovered from the manufacturer drawing; payload ceiling and test bound corrected
+
+- **Affects:** [007.1 §C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set),
+  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [003 §Static gravity torque](specs/003-Kinematics.md#static-gravity-torque),
+  [009.1 §Test 4.3](specs/009.1-Performance-Characterization-Protocol.md#test-43-rated-payload),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
+  [009.2](specs/009.2-Test-Build-Manifest.md).
+- **Was:** [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) transcribed the
+  diameters, overall length, backlash, input speed and mass from
+  [`XB1-AS-C-32.pdf`](Hardware/Reference/XB1-AS-C-32.pdf) but **not its torque table**, which the drawing
+  carries. Motor stall was therefore treated as the payload ceiling throughout, and
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md) laddered payload to 2.5 kg against stop
+  conditions that watch the motor and the supply.
+- **Now:** **The drives, not the motors, limit joint load.** At 52:1 — a ratio the drawing does not list,
+  bracketed by its 50 and 60 rows — the set is rated **4–5 N·m continuous, 11 N·m start/stop, 24 N·m
+  peak**. J2 reaches the continuous rating at ≈0.45 kg at the tool tip and start/stop at ≈1.45 kg, while
+  the specified motor drives it to ≈16.7 N·m — **between the start/stop and peak ratings**, so the motor
+  can overload the drive without ever stalling. [009.1 Test 4.3](specs/009.1-Performance-Characterization-Protocol.md#test-43-rated-payload)
+  is bounded at **1.0 kg** and that bound added as a stop condition. The drawing also yields the axial
+  interface: **23.5 mm between mounting faces**, with the wave-generator hub protruding 5.0 mm beyond the
+  circular-spline face.
+- **Driver:** poppler became available, so the drawing could be rendered and read rather than only
+  `pdftotext`-ed — it is an image-only scan and yields no text.
+- **Status:** unchanged. [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) still closes on
+  physical receipt; this changes what the received parts may be asked to do.
+- **Re-derive:** any payload figure quoted against motor stall. The ceiling is the gearbox and it is roughly
+  a third of the motor-derived number. [CR-3A18](#cr-3a18-stepper-motor-specified-by-decision-motor-sizing-derived-from-the-gravity-model)
+  priced the legacy-vs-adopted stepper torque gap at ≈0.31 kg of stall payload; that comparison is moot,
+  since both motors exceed what the drive accepts.
+- **Note:** The body-length tolerance this drawing was consulted for is **not** on it. The drawing fixes the
+  component set internally and says nothing about how far its mating parts may sit from nominal, and because
+  the set is rigid at 23.5 mm face to face, body length shifts the drive's station rather than its tooth
+  engagement. The band is an assembly stack-up, taken up on the Stator Holder all-thread, and
+  [009.2](specs/009.2-Test-Build-Manifest.md) Stage 2 now asks for it to be recorded.
+
+### CR-3A20: Three homeless differential bought parts placed; MR128 count corrected
+
+- **Affects:** [007 §7.6](specs/007-Bill-of-Materials.md#0076-differential),
+  [007.1 §4](specs/007.1-Parts-Catalog.md#4-bearings),
+  [007.1 §Corrections](specs/007.1-Parts-Catalog.md#corrections-to-007),
+  [007.2](specs/007.2-Printed-Parts.md#model-vs-bom-discrepancies),
+  [008 §8.6](specs/008-Assembly.md#0086-differential),
+  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
+  `Hardware/Models/700-Differential/diff_assembly.scad`, `diff_params.scad`.
+- **Was:** [DC-11(e)](specs/009-Design-Completion.md#procurement-data) carried three bought parts that
+  `diff_assembly.scad` could not place: the `#710-006` needle thrust stack, the `#620-001` MR85, and one
+  6703. All three had been searched for as a **bore**. The keeper was drawn butted onto the Split Gear
+  Top's base face, and [007.6](specs/007-Bill-of-Materials.md#0076-differential) listed 2 MR128.
+- **Now:** All three are placed, and none of them wanted a bore. The **thrust stack** is a washer stack
+  between two faces — the Split Gear Top's base annulus and the Diff Keeper — on the **10.423 mm** of Diff
+  Body B's Ø8 tube that stands proud of that base; the keeper is stood off by the stack's 4.0 mm. The
+  **MR85** seats by its OD 8 in the top 1.5 mm of `#720-002`'s Ø8 rod bore, which also fixes the one
+  placement the file had no measurement behind: the CF rod stops on the bearing rather than flush with that
+  face. The **6703** between the Split Gear halves is an assembly bearing — the two halves' Ø23 bore and
+  Ø17 stub are its race diameters exactly, and [008.6](specs/008-Assembly.md#0086-differential) step 8
+  turns one half against the other on it to clock the teeth.
+- **Driver:** [DC-11(e)](specs/009-Design-Completion.md#procurement-data) — CAD-vs-BOM mismatches.
+- **Status:** `[Specified]` for the three placements. DC-11(e) stays open on the five `#720-005` strakes,
+  which no differential part is slotted for.
+- **Re-derive:** `ROD_TOP` in `diff_assembly.scad` moves 1.5 mm, and the `#720-003` End Pulley with it.
+  [007.6](specs/007-Bill-of-Materials.md#0076-differential)'s MR128 row goes 2 → **4** and
+  [C-405](specs/007.1-Parts-Catalog.md#4-bearings) 12 → **14**; an earlier pass had met this as a 15-vs-12
+  conflict and re-derived the aggregate downward from the short row, so
+  [007.1's corrections table](specs/007.1-Parts-Catalog.md#corrections-to-007) is restated.
+- **Note:** Two [008.6](specs/008-Assembly.md#0086-differential) steps were wrong and are corrected. Step
+  11 sends the 25 mm strakes to the Split Gear **Bottom**, which carries no slot — they go in the Top.
+  Step 23 left the keeper butted on the Split Gear, with no room for the stack it is supposed to retain.
+  Separately, step 2 presses a **sixth** 6703 into `#420-001` End Arm Hub that no subassembly counts;
+  [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub)'s three are all consumed by the New Belt
+  Pulley. That seat is in a 400-series part and is recorded rather than re-quantified here.
