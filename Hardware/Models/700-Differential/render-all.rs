@@ -195,6 +195,10 @@ const CLONES: [ClonePart; 7] = [
     // nearest the axis, which move with the flank tessellation. What remains
     // outside the deviation is 0.025 mm on radial-diam-23.76, the shared bevel
     // crown's flank, against a self-comparison floor of 0.016.
+    //
+    // The render is the solid, buildable shaft (`wall_holes` false) and the
+    // reference carries twelve Ø0.2 holes on Ø15.5; the 15.3..15.7 band masks
+    // that ring, so the part is gated in the state it is printed in.
     ClonePart { stem: "720-001", scad: "720-001_DiffGearShaft.scad",
                 reference: "720-001_DiffGearShaft.stl", tol: 0.05,
                 deviations: &[

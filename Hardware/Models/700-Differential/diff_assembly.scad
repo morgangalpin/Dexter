@@ -148,8 +148,8 @@
 // and the correction is worth recording because the arithmetic looked sound.
 // The End Arm Hub (400-EndArm/420-001_EndArmHub.stl, CAD HDI-500-001) is at
 // the ELBOW, not the wrist: its glue rigs put it a whole L3 away from the
-// differential (950-Tooling/GlueRig_EndArmHubToDiff_A+B span 362 mm in x,
-// GlueRig_ArmBodyToEndArmHub_A+B span 405 mm in y), and 004's own End Arm Hub
+// differential (950-Tooling/GlueRig_EndArmHubToDiff_A+B holds that span in x,
+// GlueRig_ArmBodyToEndArmHub_A+B holds L2's in y), and 004's own End Arm Hub
 // paragraph says the same in words. There is no face where the two parts meet,
 // so there was never a split to make there. The 29.000 mm the hub does carry
 // on its own axis — tube socket axis at z = -25.000 up to its top face at

@@ -236,7 +236,7 @@ anything version 3 does not independently specify
   both directions. Two unmodelled R1 edge breaks on the z = 34 clip have been cut along the way, taking
   the candidate side 0.414 → 0.397 → 0.377 mm; neither touches the 0.276 mm interference with the axle
   bevel's toe cone, which is on a different surface and still needs its own answer. Whether the built
-  shaft should carry the Ø0.2 wall holes at all is open under DC-11.
+  shaft should carry the Ø0.2 wall holes at all is open under DC-11(k).
 
 ### CR-3A8: Wrist tooth-count decomposition; design status consolidated into 009
 
@@ -654,520 +654,162 @@ anything version 3 does not independently specify
   superseded Step 2 variants, `Setup_Find_Index_Home_HDI.dde` and `Setup_Find_Index_Home_HDI_Stable.dde`,
   remain in history and are not restored; `HDI CAL INSTRUCTIONS- STEP 2.pdf` names `HDIv2`.
 
-### CR-3A17: Cooling fan, Belt Director type and the print profile specified; two CAD-vs-BOM mismatches dismissed
-
-- **Affects:** [007.1 §7](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring),
-  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
-  [007.5](specs/007-Bill-of-Materials.md#0075-arm-body),
-  [007.2 §Print profile](specs/007.2-Printed-Parts.md#print-profile),
-  [007.2 §Model-vs-BOM discrepancies](specs/007.2-Printed-Parts.md#model-vs-bom-discrepancies),
-  [008.5](specs/008-Assembly.md#0085-arm-body),
-  [005 §Open items](specs/005-Electronics-and-Control.md#open-items),
-  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
-  [009.1 §Section 5](specs/009.1-Performance-Characterization-Protocol.md#section-5-fan-rail-measurement),
-  [009.2](specs/009.2-Test-Build-Manifest.md).
-- **Was:** [DC-11](specs/009-Design-Completion.md#procurement-data) held five part identities the parts
-  catalog could not pin. The fan had no size and no part number; the Belt Directors were typed "Fabricate"
-  in [007.5](specs/007-Bill-of-Materials.md#0075-arm-body) and printed everywhere else; layer height, wall
-  count, infill and orientation were unpublished; two CAD bodies were recorded as BOM shortfalls; and
-  [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) justified its body-length limit as
-  "envelope inside the Motor End Cap".
-- **Now:** Four of the five resolve against the model set. **The fan is a 40 mm frame** — the CAD body
-  `HDI-730-005_Fan` and the printed Fan Bracket agree on it independently — specified as Sunon
-  `MF40101V1-1000U-A99` in [C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring), whose 4.5–13.8 V
-  span makes it immune to whatever rail `J23` turns out to carry. **The Belt Directors are printed**, and
-  the same measurement corrects the fit's direction: the Ø8.000 shank is the MR128 bore, so the bearings go
-  *onto* it. **A print profile is published**, derived parameter by parameter from the features the parts
-  must hold, with a qualification coupon carrying the two governing fits. **Neither CAD-vs-BOM mismatch is
-  a missing row:** `HDI-311-006C_J2StatorHolderCap_ConeDrive` is a modelling division of the single printed
-  `#200-002`, and `HDI-610-006_MotorShaftCoupler` is a different part from `#630-004` used as a generic hub.
-  `#630-004`'s CAD-ID mapping is withdrawn. C-101's frame and shaft rows are confirmed against the parts
-  they mate; its body-length row is re-justified, because the end caps epoxy to the motor *bottom* and
-  bound nothing.
-- **Driver:** DC-11 gated ordering and printing, and four of its sub-items were answerable from geometry
-  already in the repository rather than from a decision or a build.
-- **Status:** `[Provisional]` — DC-11 stays open on the stepper's body length (row a), the four differential
-  adjudications (row e), and L3's absent far-end part (row h).
-- **Re-derive:** [007.2](specs/007.2-Printed-Parts.md) quantities are unaffected — no row's quantity
-  changes, only two rows' *type* and one row's CAD ID. [009.2](specs/009.2-Test-Build-Manifest.md) drops the
-  fan from its held-back purchases and restates Stage 0's coupon as a reference to the profile that now owns
-  it.
-- **Note:** The fan closure also explains the bracket. Its two Ø2.99 holes are 49.737 mm apart and the Motor
-  Control PCB's mounting holes stand in two columns 1.95″ = 49.53 mm apart, so `#800-005` is cut for the
-  stood-off position the wiki prescribes — a fan mounted directly on the drivers reaches over the MicroZed
-  USB connector and the SD-card socket. The bracket carries no fan screw holes at all: at the standard 32 mm
-  pattern the fan's own holes fall inside the aperture, so the fan is glued rather than fastened.
-
-### CR-3A18: Stepper motor specified by decision; motor sizing derived from the gravity model
+### CR-3A17: DC-11 resolved to a coupon print
 
 - **Affects:** [003 §Static gravity torque](specs/003-Kinematics.md#static-gravity-torque),
-  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
-  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
-  [009.1 §Section 4](specs/009.1-Performance-Characterization-Protocol.md#section-4-performance-envelope),
-  [009.2](specs/009.2-Test-Build-Manifest.md).
-- **Was:** [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) named a *recommended
-  qualifying* part rather than a part of record, its holding-torque row justified only as "legacy build
-  record specifies 0.52 N·m" and its body-length row as a ≤ 48 mm ceiling on how far the Motor End Cap
-  stands off the joint body. [DC-11(a)](specs/009-Design-Completion.md#procurement-data) carried the
-  identity as open.
-- **Now:** **StepperOnline `17HM19-2004S` is the part of record**, adopted by decision. No manufacturer part
-  number is recoverable: the design's own CAD carries the motor as `NEMA17-48H` across seven
-  `Reference/onshape-v1/` assemblies but as an imported solid with no vendor identity, which was the last
-  place one could have been held. **Body length is 48 mm exactly, and the constraint is two-sided** — the End
-  Cap is pressed onto a 6810 and epoxied to the Main Pivot *before* the motor is epoxied to it, so it is a
-  fixed datum and body length positions the whole drive axially within the joint. **Holding torque is now
-  derived, not inherited:** [003](specs/003-Kinematics.md#static-gravity-torque) owns a worst-case static
-  gravity table computed with the project's own `DH.torques_gravity` over the travel limits. The Flex Spline
-  Attach `#630-005` joins the three Motor End Caps as a fourth part confirming the 31.000 mm square face
-  pattern.
-- **Driver:** DC-11(a) gated ordering five motors, and the one thing genuinely missing from the record — an
-  OEM part number — was shown to be unrecoverable rather than merely unfound.
-- **Status:** `[Provisional]` — DC-11 stays open on the four differential adjudications (row e) and L3's
-  absent far-end part (row h). Row a is closed.
-- **Re-derive:** [009.2](specs/009.2-Test-Build-Manifest.md)'s Stage 2 gate changes what it reads: the
-  drive's axial stack-up, not end-cap stand-off.
-  [009.1](specs/009.1-Performance-Characterization-Protocol.md)'s payload ladder drops the claim that the
-  moving links consume a substantial fraction of stall at full extension — they consume a few percent.
-- **Note:** The gravity model explains why. Link 2 carries 2.520 kg of the robot's 4.79 kg of moving mass and
-  its centre of mass acts 62 mm *behind* the J2 axis, partly cancelling the outboard links, so the unloaded
-  arm needs ≈1/20 of the specified motor's holding torque. Motor sizing on this robot is set by payload and
-  dynamics, not by holding its own weight up.
-
-### CR-3A19: Strain-wave torque ratings recovered from the manufacturer drawing; payload ceiling and test bound corrected
-
-- **Affects:** [007.1 §C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set),
-  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
-  [003 §Static gravity torque](specs/003-Kinematics.md#static-gravity-torque),
-  [009.1 §Test 4.3](specs/009.1-Performance-Characterization-Protocol.md#test-43-rated-payload),
-  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
-  [009.2](specs/009.2-Test-Build-Manifest.md).
-- **Was:** [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) transcribed the
-  diameters, overall length, backlash, input speed and mass from
-  [`XB1-AS-C-32.pdf`](Hardware/Reference/XB1-AS-C-32.pdf) but **not its torque table**, which the drawing
-  carries. Motor stall was therefore treated as the payload ceiling throughout, and
-  [009.1](specs/009.1-Performance-Characterization-Protocol.md) laddered payload to 2.5 kg against stop
-  conditions that watch the motor and the supply.
-- **Now:** **The drives, not the motors, limit joint load.** At 52:1 — a ratio the drawing does not list,
-  bracketed by its 50 and 60 rows — the set is rated **4–5 N·m continuous, 11 N·m start/stop, 24 N·m
-  peak**. J2 reaches the continuous rating at ≈0.45 kg at the tool tip and start/stop at ≈1.45 kg, while
-  the specified motor drives it to ≈16.7 N·m — **between the start/stop and peak ratings**, so the motor
-  can overload the drive without ever stalling. [009.1 Test 4.3](specs/009.1-Performance-Characterization-Protocol.md#test-43-rated-payload)
-  is bounded at **1.0 kg** and that bound added as a stop condition. The drawing also yields the axial
-  interface: **23.5 mm between mounting faces**, with the wave-generator hub protruding 5.0 mm beyond the
-  circular-spline face.
-- **Driver:** poppler became available, so the drawing could be rendered and read rather than only
-  `pdftotext`-ed — it is an image-only scan and yields no text.
-- **Status:** unchanged. [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) still closes on
-  physical receipt; this changes what the received parts may be asked to do.
-- **Re-derive:** any payload figure quoted against motor stall. The ceiling is the gearbox and it is roughly
-  a third of the motor-derived number. [CR-3A18](#cr-3a18-stepper-motor-specified-by-decision-motor-sizing-derived-from-the-gravity-model)
-  priced the legacy-vs-adopted stepper torque gap at ≈0.31 kg of stall payload; that comparison is moot,
-  since both motors exceed what the drive accepts.
-- **Note:** The body-length tolerance this drawing was consulted for is **not** on it. The drawing fixes the
-  component set internally and says nothing about how far its mating parts may sit from nominal, and because
-  the set is rigid at 23.5 mm face to face, body length shifts the drive's station rather than its tooth
-  engagement. The band is an assembly stack-up, taken up on the Stator Holder all-thread, and
-  [009.2](specs/009.2-Test-Build-Manifest.md) Stage 2 now asks for it to be recorded.
-
-### CR-3A20: Three homeless differential bought parts placed; MR128 count corrected
-
-- **Affects:** [007 §7.6](specs/007-Bill-of-Materials.md#0076-differential),
-  [007.1 §4](specs/007.1-Parts-Catalog.md#4-bearings),
-  [007.1 §Corrections](specs/007.1-Parts-Catalog.md#corrections-to-007),
-  [007.2](specs/007.2-Printed-Parts.md#model-vs-bom-discrepancies),
-  [008 §8.6](specs/008-Assembly.md#0086-differential),
-  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
-  `Hardware/Models/700-Differential/diff_assembly.scad`, `diff_params.scad`.
-- **Was:** [DC-11(e)](specs/009-Design-Completion.md#procurement-data) carried three bought parts that
-  `diff_assembly.scad` could not place: the `#710-006` needle thrust stack, the `#620-001` MR85, and one
-  6703. All three had been searched for as a **bore**. The keeper was drawn butted onto the Split Gear
-  Top's base face, and [007.6](specs/007-Bill-of-Materials.md#0076-differential) listed 2 MR128.
-- **Now:** All three are placed, and none of them wanted a bore. The **thrust stack** is a washer stack
-  between two faces — the Split Gear Top's base annulus and the Diff Keeper — on the **10.423 mm** of Diff
-  Body B's Ø8 tube that stands proud of that base; the keeper is stood off by the stack's 4.0 mm. The
-  **MR85** seats by its OD 8 in the top 1.5 mm of `#720-002`'s Ø8 rod bore, which also fixes the one
-  placement the file had no measurement behind: the CF rod stops on the bearing rather than flush with that
-  face. The **6703** between the Split Gear halves is an assembly bearing — the two halves' Ø23 bore and
-  Ø17 stub are its race diameters exactly, and [008.6](specs/008-Assembly.md#0086-differential) step 8
-  turns one half against the other on it to clock the teeth.
-- **Driver:** [DC-11(e)](specs/009-Design-Completion.md#procurement-data) — CAD-vs-BOM mismatches.
-- **Status:** `[Specified]` for the three placements. DC-11(e) stays open on the five `#720-005` strakes,
-  which no differential part is slotted for.
-- **Re-derive:** `ROD_TOP` in `diff_assembly.scad` moves 1.5 mm, and the `#720-003` End Pulley with it.
-  [007.6](specs/007-Bill-of-Materials.md#0076-differential)'s MR128 row goes 2 → **4** and
-  [C-405](specs/007.1-Parts-Catalog.md#4-bearings) 12 → **14**; an earlier pass had met this as a 15-vs-12
-  conflict and re-derived the aggregate downward from the short row, so
-  [007.1's corrections table](specs/007.1-Parts-Catalog.md#corrections-to-007) is restated.
-- **Note:** Two [008.6](specs/008-Assembly.md#0086-differential) steps were wrong and are corrected. Step
-  11 sends the 25 mm strakes to the Split Gear **Bottom**, which carries no slot — they go in the Top.
-  Step 23 left the keeper butted on the Split Gear, with no room for the stack it is supposed to retain.
-  Separately, step 2 presses a **sixth** 6703 into `#420-001` End Arm Hub that no subassembly counts;
-  [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub)'s three are all consumed by the New Belt
-  Pulley. That seat is in a 400-series part and is recorded rather than re-quantified here.
-
-### CR-3A21: The five 60 mm differential strakes withdrawn; 6703 count corrected; the print coupon re-specified
-
-- **Affects:** [007 §7.6](specs/007-Bill-of-Materials.md#0076-differential),
+  [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
+  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
+  [005 §Open items](specs/005-Electronics-and-Control.md#open-items),
+  [007 §7.5](specs/007-Bill-of-Materials.md#0075-arm-body),
+  [007 §7.6](specs/007-Bill-of-Materials.md#0076-differential),
   [007 §Aggregate](specs/007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot),
   [007.1 §4](specs/007.1-Parts-Catalog.md#4-bearings),
   [007.1 §5](specs/007.1-Parts-Catalog.md#5-structural-composites-and-metal-stock),
+  [007.1 §7](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring),
+  [007.1 §C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [007.1 §C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set),
+  [007.1 §C-503](specs/007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177),
+  [007.1 §C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075),
   [007.1 §Corrections](specs/007.1-Parts-Catalog.md#corrections-to-007),
-  [007.2 §Print profile](specs/007.2-Printed-Parts.md#print-profile),
-  [007.2 §Model-vs-BOM](specs/007.2-Printed-Parts.md#model-vs-bom-discrepancies),
-  [009 §DC-11](specs/009-Design-Completion.md#procurement-data),
-  `Hardware/Models/700-Differential/diff_params.scad`.
-- **Was:** [DC-11(e)](specs/009-Design-Completion.md#procurement-data) carried the five `#720-005`
-  60 × 4.4 × 1.5 mm CF strakes as a fabricated row with no seat to go to and no step to place it, and
-  [C-503](specs/007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) was ordered as a 48″ stick to
-  cut them. The differential's 6703 row read **5**, with a sixth that
-  [008.6](specs/008-Assembly.md#0086-differential) step 2 presses into `#420-001` recorded but counted by
-  nobody. The print-qualification coupon in
-  [007.2](specs/007.2-Printed-Parts.md#print-profile) called for a **1.45 × 4.50 mm** strake slot.
-- **Now:** **The `#720-005` row is withdrawn.** Three records are silent on it — no assembly step, no
-  entry in the build record's differential parts list, and **no slot in any of the nine printed parts**,
-  each of which is a recreation gated against its reference mesh and each of which reproduces the slots it
-  does have. The forearm carries exactly three slot families, all accounted for: `#710-001`'s three at
-  **5.600 × 2.500 mm**, `#421-002`'s three at **5.000 × 2.000 mm**, and the Axis Intersection Half's four
-  at 14.546 mm² in section. **The 6703 row reads 6** and [C-404](specs/007.1-Parts-Catalog.md#4-bearings)
-  **11**: a subassembly's row is what its own steps consume, so the sixth belongs to the differential.
-  **The coupon is re-specified** on `#710-001`'s 5.600 × 2.500 mm slot, the robot's tightest bond fit;
-  1.45 × 4.50 mm is the C-503 *strip*'s own section and is not a slot anywhere in the design.
-- **Driver:** DC-11(e) was the last sub-item standing between the parts list and an order, and the one
-  thing it still carried could be settled by searching the model set for the seat rather than by a build.
-- **Status:** `[Specified]`. DC-11 keeps one open sub-item, [row h](specs/009-Design-Completion.md#procurement-data).
-- **Re-derive:** [C-503](specs/007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) drops from 8
-  pieces and a 48″ stick to 3 pieces and a **24″** stick. The cost of the withdrawal being wrong is five
-  cuts from stock already on hand, not a purchase.
-- **Note:** Both bearing corrections are now corroborated from outside the model set. The build record's
-  differential parts list calls for **4 MR128** and **6 6703** — the same two figures reached by counting
-  seats, and the record [008.6](specs/008-Assembly.md#0086-differential) is itself derived from, so the
-  two rows had been short against their own source. That same list is what fails to carry a 60 mm strake.
-
-### CR-3A22
-
-**The arm composed, and the missing part bounded**
-
-- **Affects:** `Hardware/Models/robot_assembly.scad` (new), `Hardware/Models/README.md`,
-  `Hardware/Models/MANIFEST.csv`, [009 DC-11(h)](specs/009-Design-Completion.md#procurement-data).
-- **Was:** The model set held one assembly, `700-Differential/diff_assembly.scad`, covering nine parts of
-  seventy. Every other part existed only in its own print frame, so where the parts sit relative to one
-  another was recorded in prose or not at all, and DC-11(h) could say the L3 far-end part was missing
-  without being able to say what shape of hole it left.
-- **Now:** `robot_assembly.scad` composes the arm in the CAD kinematic frame — the frame
-  [003 § Link lengths](specs/003-Kinematics.md#link-lengths) states the joint stations in. It places the
-  base group, the Main Pivot, the Arm Body and the five End Arm parts that share the J3 axis, draws the
-  C-504 and C-505 tubes from their catalogued sections and cut lengths, and carries the cover envelopes as
-  measured boxes. **Every placement is solved from a feature the part itself carries**, and a part whose
-  position nothing fixes is listed in `UNPLACED` rather than drawn somewhere plausible.
-- **Driver:** DC-11(h) is the one open DC-11 sub-item and the only one that needs a part authored rather
-  than a record adjudicated. Authoring needs the hole measured, and a part in its own print frame cannot
-  show a hole.
-- **Status:** `[Specified]`. DC-11(h) stays open, and is now blocked on the axis rather than the envelope.
-- **Re-derive:** Nothing. No dimension of any part changes; this file reads the model set and adds to it.
-- **Note:** The composition settles three faces of the missing part and raises one question that has to be
-  answered before it can be drawn. The faces are in [009 DC-11(h)](specs/009-Design-Completion.md#procurement-data).
-  The question is which way the J4 axis points:
-  [003 § DH model](specs/003-Kinematics.md#denavithartenberg-model) puts it parallel to J3, across the
-  arm, and [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface)
-  fits Diff Body A to the gripper covers by a radius that bounds two perpendicular directions at once,
-  which puts it along the arm. The differential is left out of the composition rather than drawn on a
-  guess, because drawing it would answer that question silently.
-
-### CR-3A23
-
-**The wrist drawn every way it can go, and a second question found under the first**
-
-- **Affects:** `Hardware/Models/robot_assembly.scad`, `Hardware/Models/700-Differential/diff_assembly.scad`,
-  `Hardware/Models/README.md`, `Hardware/Models/MANIFEST.csv`,
-  [009 DC-11(h)](specs/009-Design-Completion.md#procurement-data).
-- **Was:** [CR-3A22](#cr-3a22) left the differential out of the composition because two records disagree
-  about which way its J4 axis points, and drawing it either way would have adopted a reading silently.
-  That kept the model honest and left the question exactly where it was: two paragraphs of prose, nothing
-  to look at, and no way to tell whether the disagreement was real or an artefact of reading one of them
-  wrongly.
-- **Now:** The differential is drawn in every direction that axis can take, side by side along x and
-  labelled, and the model reports what each one measures against three things: the cover
-  [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface) says
-  encloses Diff Body A, the span DC-11(h)'s missing part has to close, and the end a drive belt arrives
-  on. `diff_assembly.scad`'s placement moved into a module and gained `diff_centre()` so a parent can
-  position it; run on its own it is unchanged.
-- **Driver:** DC-11(h) cannot be authored while the axis is open, and the axis was not going to close by
-  being described again.
-- **Status:** `[Specified]`. DC-11(h) stays open.
-- **Re-derive:** Nothing. No dimension of any part changes.
-- **Note:** The drawing settles the original disagreement and replaces it with a narrower one. Across the
-  arm against along it goes to 004: a disc of one radius can bound the arm's two cross-sections at once
-  only if its normal runs along the arm, and drawn the other way the same disc bounds a different pair,
-  putting Diff Body A clear of every cover. What it does not settle is which way along the arm the
-  differential faces. 004's radius is silent on it, the two answers stand a link-scale distance apart,
-  and each is supported by one of the same two records — one lands Body A inside the gripper cover as 004
-  states, the other lands it within reach of the L3 tube and puts the belt pulley on the side a belt
-  comes from. Neither is adopted. The measurements are in the model file, which owns them.
-
-### CR-3A24
-
-**The differential's mesh cache made renderable: each mesh settled, repaired and pinched as it is
-written**
-
-- **Affects:** `Hardware/Models/700-Differential/render-meshes.rs`, `Hardware/Models/robot_assembly.scad`,
-  `Hardware/Models/MANIFEST.csv`.
-- **Was:** The mesh cache `diff_assembly.scad` imports was whatever OpenSCAD wrote, and an exported mesh
-  is not always a surface CGAL can walk. Tessellating an exact solid leaves pairs of coordinates a few
-  1e-7 mm apart where a parametric blend reaches a face it is meant to meet exactly, which the importer's
-  1e-6 mm vertex grid then merges in one facet and not in the next, tearing the surface along the facets
-  left bounding nothing; and it leaves zero-thickness facet pairs where the CSG tree cuts two coincident
-  faces against each other. A full render of the differential — or of `robot_assembly.scad`, which
-  composes it in — failed with "The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron"
-  and dropped the offending part from the result. The message names no file, so which of the nineteen
-  meshes on screen was at fault could not be read off it.
-- **Now:** `render-meshes.rs` puts each mesh through `scadmesh` as it is written, in three steps:
-  `settle` writes the mesh as OpenSCAD's own importer will read it, `repair` fills the gaps that reveals
-  and drops the facets that bound nothing, and `pinch` opens any edge or vertex the surface still touches
-  itself at. `pinch` reports whether a builder can take the result and the script stops on a part that
-  fails, so the cache is renderable or there is no cache. All nine convert.
-- **Driver:** A composition exists to be looked at, and one that will only preview cannot be asked the
-  questions a render answers.
-- **Status:** `[Specified]`.
-- **Re-derive:** Nothing. No measurement moves, and the script checks rather than asserting it: each
-  part's enclosed volume is measured before and after, and a part whose volume shifts at all is a
-  failure. The measuring set `render-all.rs` writes is left alone for the reason its own header gives.
-- **Note:** Choosing a vertex grid coarser than the reader's own was tried first and is luck, not
-  engineering: at 1e-6 mm only 710-002 tears, at 3e-6 mm 720-003 gains self-contacts, and at 1e-5 mm
-  720-002 gains a boundary loop as well. No spacing is clean for all nine. Settling at the reader's own
-  spacing and then repairing what that reveals is what holds. `render-meshes.rs` owns the per-part
-  counts, and `openscad-tools` owns what each step does.
-
-### CR-3A25
-
-**The End Arm Hub's tangency contacts opened, so the mesh converts**
-
-- **Affects:** `Hardware/Models/400-EndArm/420-001_EndArmHub.stl`,
-  [Hardware/Models/README.md](Hardware/Models/README.md#known-defects), `Hardware/Models/MANIFEST.csv`.
-- **Was:** `420-001_EndArmHub.stl` was not a closed 2-manifold, and it is the second reason a full render
-  of `robot_assembly.scad` stopped at "The given mesh is not closed". Three of the part's four Ø3.000 holes
-  are tangent to its Ø27.500 bore and share a whole line with it, four faces on one edge and two cones of
-  faces at the vertex ending it. No hole is involved, so `scadmesh repair` reported the mesh as not closed
-  and then found nothing to fill, and the defects section said OpenSCAD renders it anyway — which a probe
-  that unions the import with a second solid, rather than exporting it straight back out, disproves.
-- **Now:** Corrected in place by `scadmesh pinch`, which gives one surface at each contact its own vertex
-  1 µm off the line along its own normal: 6 triangles added, no existing vertex moved, the bounding box
-  unchanged and the volume four parts in ten million larger.
-- **Driver:** The one mesh in the set CGAL refuses is the one mesh no assembly can be rendered with.
-- **Status:** `[Specified]`.
-- **Re-derive:** Nothing. A micron is four orders below the 0.15 mm the parts are gated on, and the part
-  has no parametric source to re-measure against yet.
-- **Note:** Repairing a mesh rather than the model that made it is what this directory already does, for
-  the reason `110-001` records. The models [README](Hardware/Models/README.md#known-defects) owns the
-  geometry and the recipe; `scadmesh pinch` is new in openscad-tools and reports what it opened, so the
-  same check can be run over the whole set.
-
-### CR-3A26
-
-**A drawing allowance between the surfaces the differential is designed to meet on, so the assembly
-unions**
-
-- **Affects:** `Hardware/Models/700-Differential/diff_params.scad`,
-  `Hardware/Models/700-Differential/diff_hardware.scad`,
-  `Hardware/Models/700-Differential/diff_assembly.scad`, `Hardware/Models/robot_assembly.scad`,
-  `Hardware/Models/MANIFEST.csv`.
-- **Was:** Surfaces the design has touching were drawn touching. The Split Gear's two halves mate face to
-  face, and every bearing stand-in and the CF rod was drawn at the catalogue diameter of the seat bored
-  for it and the journal it rides on, so each pair touched over a whole surface and interpenetrated
-  nowhere. CGAL cannot union a tangency: `diff_assembly()` converted to a solid that is not a 2-manifold
-  — 991 contacts in the gear pair, and 263 more across the hardware once that pair was opened. Such a
-  solid still exports, which is why every part measured correctly and why CR-3A24's nine meshes all
-  convert, but it is no longer safe to union, and how that shows depends on what it is unioned with. A
-  full render of `robot_assembly.scad`, which composes the assembly in, stopped at "CGAL ERROR: assertion
-  violation! Expr: itl != it->second.end()" in `applyUnion3D`, naming no file; with the gear pair alone
-  opened, the same render instead ran to completion and reported its result as possibly not a valid
-  2-manifold.
-- **Now:** `diff_params.scad` defines `DRAW_JOINT = 0.001` mm and owns what it is for. Each stand-in ring
-  is drawn that far off both catalogue diameters, and the Split Gear's halves part by it along the
-  column, away from the centre. The differential now converts simple both with the hardware drawn and
-  without it, and neither raises a manifold warning where the hardware case raised two. A full render of
-  `robot_assembly.scad` is simple, warns nothing and holds the same 65 volumes it held before.
-- **Driver:** An assembly that cannot be unioned cannot be composed into the robot, which is the view the
-  model set exists for.
-- **Status:** `[Specified]`.
-- **Re-derive:** Nothing. The stand-ins are illustrations rather than part models, and no seat, bore or
-  part dimension derives from the allowance; `diff_params.scad` owns why a figure this size is invisible
-  to both the importer and the harness.
-- **Note:** This is a second and unrelated failure of the same render. CR-3A24 cleared "The given mesh is
-  not closed", which is a defect of one mesh; this is a union refusing two solids that are each already
-  closed, and clearing the first is what exposed it. The failure was reproduced in isolation before the
-  model was touched, as one seat bored to a catalogue diameter with its stand-in in it: not simple at
-  every one of the five catalogue sizes probed, and simple at all five with the allowance. Which way the
-  Split Gear's joint opens is decided by the meshes rather than by the design, and `diff_assembly.scad`
-  owns that measurement. An export of the whole assembly still reports a few contacts, where a
-  stand-in's 48-gon corners cross the finer circle of its seat; a crossing is not a coincidence and CGAL
-  resolves it, and no tracked artifact is an export of this assembly. `robot_assembly.scad` also stops
-  crediting the mesh cache alone with making itself renderable.
-
-### CR-3A30
-
-**007.2 links every printed part to the file the mirror holds it as**
-
-- **Affects:** [007.2 § Printed parts](specs/007.2-Printed-Parts.md#printed-parts),
-  [007.2 § Model file sources](specs/007.2-Printed-Parts.md#model-file-sources),
-  `Hardware/Models/PART-INDEX.md`,
-  [DC-11](specs/009-Design-Completion.md#procurement-data).
-- **Was:** [007.2](specs/007.2-Printed-Parts.md#model-file-sources) pointed each part at the upstream
-  archive its family came from, and only the nine differential rows named a file. Reaching a part's
-  geometry meant leaving the print list for `PART-INDEX.md` and matching on the part number by eye.
-- **Now:** Every row of the print list carries a `Model` column linking the file
-  [`Hardware/Models/`](Hardware/Models/README.md) mirrors that part as, and both tooling tables link
-  theirs. The `Source` column still says which archive the file came from, so provenance and location are
-  separate columns rather than one. The differential's nine rows are unchanged — they already linked their
-  `.scad`.
-- **Driver:** The mirror made the archives replaceable but left the print list pointing at them, so a
-  builder held a file list and a part list that had to be reconciled by hand. It was the last documentation
-  item [DC-11](specs/009-Design-Completion.md#procurement-data) was open on.
-- **Status:** `[Specified]`.
-- **Re-derive:** Nothing dimensional. No quantity, part, file or total moves.
-  `Hardware/Models/PART-INDEX.md` owns which file is which part and the new column is generated from it,
-  which [007.2 § Procedure](specs/007.2-Printed-Parts.md#procedure) now carries as a step; the column
-  states no mapping of its own. The index's 73 rows cover all 72 printed parts, the extra being `#110-004`
-  Base Mounting Plate, which is machined rather than printed.
-  [DC-11](specs/009-Design-Completion.md#procurement-data)'s definition of done is left with the coupon
-  print alone.
-- **Note:** Two rows link a file named for a different part number — `#210-003` links
-  `210-001_IdlerPlug.stl` and `#520-004` links `520-003_ExGearNutHold.stl`. One geometry serves two BOM
-  lines in each case, and `PART-INDEX.md` records what is and is not settled about both.
-
-### CR-3A29
-
-**The L3 glue rig is shortened 2.000 mm to the specified link length**
-
-- **Affects:** `Hardware/Models/950-Tooling/GlueRig_EndArmHubToDiff_B.scad` (new),
-  `Hardware/Models/950-Tooling/GlueRig_EndArmHubToDiff_B.stl`,
-  `Hardware/Models/Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl` (new),
-  `Hardware/Models/robot_assembly.scad`,
-  [007.2 § Tooling](specs/007.2-Printed-Parts.md#tooling--glue-rigs),
-  [DC-9](specs/009-Design-Completion.md#performance-characterization),
-  [DC-11(h)](specs/009-Design-Completion.md#procurement-data), `Hardware/Models/MANIFEST.csv`.
-- **Was:** `GlueRig_EndArmHubToDiff_A`/`_B` held its two precision registers **309.500 mm** apart, against
-  the 307.500 mm [003 § Link lengths](specs/003-Kinematics.md#link-lengths) and the firmware both hold.
-  [CR-3A28](#cr-3a28) found the residue and left it for the built arm to reconcile.
-- **Now:** The rig holds the specified span. Its `_B` half is shortened by 2.000 mm and is now generated
-  from `GlueRig_EndArmHubToDiff_B.scad`, which cuts the exported mesh at x = 200.000 — inside a 90 mm run
-  of constant 80 mm² section, clear of every feature — and closes the two halves back together. The hub
-  register moves from x = 292.635 to 290.635 and the differential register stays at x = −16.865, so the
-  registers now stand **307.500 mm** apart. The as-exported mesh is kept as
-  `Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.
-- **Driver:** The firmware and the kinematic records are the design of record for a link length, and a jig
-  is derived from them. Shortening `_B` rather than `_A` leaves `_A`'s frame, the shoulder at x = 128.287
-  and the pair's 10 mm lap untouched, so one file carries the whole correction.
-- **Status:** `[Specified]`.
-- **Re-derive:** Nothing outside the rig. No robot part, cut length or link length moves — the arm already
-  measures 307.500 mm ([CR-3A28](#cr-3a28)) — and both registers keep their diameters and their pin
-  pattern: Ø22.971 with four pins on r = 14.500, and Ø16.971 carrying its 6703. The rendered `_B` is
-  191.348 mm long over 28290.866 mm³, from 193.348 mm and 28454.988 mm³, and the assembled jig is
-  360.500 mm rather than 362.500. The pins read Ø1.992 on the rendered mesh against Ø1.994 on the exported
-  one; the cut is 90 mm away from them and the difference is the re-tessellation, not the geometry. A rig
-  printed before this change is 2.000 mm long and is not the tool
-  [008.6](specs/008-Assembly.md#0086-differential) calls for.
-- **Note:** The cut is taken out of a prismatic stretch of the trough, which is the only kind of stretch
-  that can absorb it: shortening either register's end would move a locating feature, and shortening the
-  lap would move the shoulder that positively locates `_A` against `_B`.
-
-### CR-3A28
-
-**The wrist lands on the J4 axis, and DC-11(h)'s missing part turns out not to exist**
-
-- **Affects:** `Hardware/Models/robot_assembly.scad`,
-  `Hardware/Models/700-Differential/diff_assembly.scad`,
-  [003 § Link lengths](specs/003-Kinematics.md#link-lengths),
-  [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
-  [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075),
-  [007.2 § Tooling](specs/007.2-Printed-Parts.md#tooling--glue-rigs),
+  [007.2](specs/007.2-Printed-Parts.md#printed-parts) throughout,
+  [008 §8.5](specs/008-Assembly.md#0085-arm-body),
+  [008 §8.6](specs/008-Assembly.md#0086-differential),
   [DC-5](specs/009-Design-Completion.md#link-member-lengths),
   [DC-6](specs/009-Design-Completion.md#link-length-discrepancy-l4),
   [DC-9](specs/009-Design-Completion.md#performance-characterization),
-  [DC-11(h)](specs/009-Design-Completion.md#procurement-data),
-  [009.2](specs/009.2-Test-Build-Manifest.md), `Hardware/Models/MANIFEST.csv`.
-- **Was:** [CR-3A27](#cr-3a27) fixed the differential's orientation on its two mating features but took its
-  position from the J5 station, on the reading that the station lies on the J5 axis. That stands the
-  differential's own J4 axis 347.000 mm from J3, where
-  [003 § Link lengths](specs/003-Kinematics.md#link-lengths) and the firmware both give 307.500, and it
-  leaves 24.500 mm of the L3 span with nothing in it — the hole
-  [DC-11(h)](specs/009-Design-Completion.md#procurement-data) was opened on, and which a part or a
-  283.5 mm cut was to fill.
-- **Now:** The J4 and J5 crossing is placed on the **J4 axis at the J4 station**, at the J5 station's
-  height. J3 to the differential's own J4 axis then measures 307.500 mm, and the specified 243.0 mm C-505
-  cut **laps Diff Body A's spigot by 15.000 mm**, leaving 6.000 mm of its 21.000 mm standing proud of the
-  tube's end against 16.0 mm of lap on the same plug at the hub. The span closes on geometry already in
-  the model set: **no part is missing and no cut length moves.** The J5 and tool frames are chain frames
-  carrying link offsets, and the J5 one is not a point on the J5 axis.
-- **Driver:** One axis crossing cannot sit at two frames 39.500 mm apart, so which of them it is at is a
-  measurement rather than a convention. Four readings answer it and none is a bounding box: the link
-  length, 307.500 mm against 347.000; the cut, a 15.000 mm lap against a 24.500 mm hole; the covers, Body
-  A inside `ENV_L3_SKIN` with 6.5335 mm to spare against overrunning it by 30.500 mm into the gripper's
-  box; and `950-Tooling/GlueRig_EndArmHubToDiff_A`/`_B`, which registers a Ø22.971 boss in the End Arm
-  Hub's Ø22.990 J3 bore at one end and a Ø16.971 boss — a 6703's bore, the bearing
-  [007 § Aggregate](specs/007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot) carries as
-  *(+2 glue rig)*, its Ø23 race seating in Diff Body A — 309.500 mm away at the other. That rig measures
-  J3 to J4 directly: it misses the 347.000 mm landing by 37.500 mm and sits 2.000 mm beyond the 307.500 mm
-  the records hold. A jig holding exactly two parts across this tube also says the bonded span has exactly
-  two ends.
-- **Status:** `[Specified]`.
-- **Re-derive:** Nothing dimensional. No cut length, part dimension, link length or L4 value moves, and
-  the 0.4665 mm by which the spigot axis sits off the tube's is unchanged. What is withdrawn is the span:
-  `robot_assembly.scad` no longer draws a void or carries `show_gap`, `L3_OPEN` becomes `L3_FAR_LAP`, and
-  C-505's 283.5 mm alternative cut and 004's reading that the differential centre lands on the J5 station
-  both go with it. [DC-11](specs/009-Design-Completion.md#procurement-data) is left with a coupon print
-  and per-part model links, neither of them a design question, and
+  [DC-11](specs/009-Design-Completion.md#procurement-data),
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md),
+  [009.2](specs/009.2-Test-Build-Manifest.md),
+  `Hardware/Models/robot_assembly.scad` (new), `Hardware/Models/README.md`,
+  `Hardware/Models/PART-INDEX.md`, `Hardware/Models/MANIFEST.csv`,
+  `Hardware/Models/700-Differential/` (`diff_assembly.scad`, `diff_params.scad`, `diff_hardware.scad`,
+  `720-001_DiffGearShaft.scad`, `render-meshes.rs`, `render-all.rs`),
+  `Hardware/Models/400-EndArm/420-001_EndArmHub.stl`,
+  `Hardware/Models/950-Tooling/GlueRig_EndArmHubToDiff_B.scad` (new) and its mesh,
+  `Hardware/Models/Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl` (new).
+- **Was:** [DC-11](specs/009-Design-Completion.md#procurement-data) gated ordering and printing, and it was
+  open on five part identities the catalog could not pin, four differential findings with no seat to go to,
+  and L3's far end, where [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)
+  leaves the tube's far face 36.000 mm short of the J4 axis and no file presented the face it butts. The
+  fan had no size and no part number; the Belt Directors were typed "Fabricate" in
+  [007.5](specs/007-Bill-of-Materials.md#0075-arm-body) and printed everywhere else; layer height, wall
+  count, infill and orientation were unpublished;
+  [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) named a *recommended qualifying* part
+  rather than a part of record and justified its holding torque as "legacy build record specifies
+  0.52 N·m"; and two CAD bodies were recorded as BOM shortfalls. Motor stall was treated as the payload
+  ceiling throughout, because [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)
+  had transcribed everything from [`XB1-AS-C-32.pdf`](Hardware/Reference/XB1-AS-C-32.pdf) except its torque
+  table. The model set held one assembly covering nine parts of seventy, so where parts sit relative to one
+  another was recorded in prose or not at all, and [007.2](specs/007.2-Printed-Parts.md) pointed each part
+  at the upstream archive its family came from rather than at a file.
+- **Now:** **Every part in [007.1](specs/007.1-Parts-Catalog.md) resolves to an orderable product with a
+  supplier link**, and all eleven of DC-11's sub-items are closed.
+  *Identities.* The **fan is a 40 mm frame** — the CAD body `HDI-730-005_Fan` and the printed Fan Bracket
+  agree on it independently — specified as Sunon `MF40101V1-1000U-A99` in
+  [C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring), whose 4.5–13.8 V span makes it immune to
+  whatever rail `J23` carries. The **Belt Directors are printed**, and the same measurement corrects the
+  fit's direction: the Ø8.000 shank is the MR128 bore, so the bearings go *onto* it. **A print profile is
+  published**, derived parameter by parameter from the features the parts must hold. **StepperOnline
+  `17HM19-2004S` is the stepper of record**, adopted by decision because no manufacturer part number is
+  recoverable — the design's own CAD carries the motor as an imported solid with no vendor identity, which
+  was the last place one could have been held — with body length **48 mm exactly** and a two-sided
+  constraint, the End Cap being epoxied to the Main Pivot before the motor is epoxied to it. **Neither
+  CAD-vs-BOM mismatch is a missing row:** `HDI-311-006C_J2StatorHolderCap_ConeDrive` is a modelling
+  division of the single printed `#200-002`, and `HDI-610-006_MotorShaftCoupler` is a different part from
+  `#630-004` used as a generic hub.
+  *Loads.* **The drives, not the motors, limit joint load.** At 52:1 the component set is rated **4–5 N·m
+  continuous, 11 N·m start/stop, 24 N·m peak**; J2 reaches the continuous rating at ≈0.45 kg at the tool
+  tip and start/stop at ≈1.45 kg, while the specified motor drives it to ≈16.7 N·m, so the motor can
+  overload the drive without ever stalling. Holding torque is derived rather than inherited:
+  [003](specs/003-Kinematics.md#static-gravity-torque) owns a worst-case static gravity table computed with
+  the project's own `DH.torques_gravity`. The drawing also yields the axial interface, **23.5 mm between
+  mounting faces**.
+  *The differential's parts.* All four findings are adjudicated and none of them wanted a bore. The
+  **thrust stack** is a washer stack between the Split Gear Top's base annulus and the Diff Keeper, on the
+  10.423 mm of Diff Body B's Ø8 tube that stands proud of that base. The **MR85** seats by its OD 8 in the
+  top 1.5 mm of `#720-002`'s Ø8 rod bore, which also fixes the CF rod: it stops on the bearing rather than
+  flush with that face. The fifth **6703** is an assembly bearing that
+  [008.6](specs/008-Assembly.md#0086-differential) step 8 turns one gear half against the other on. **The
+  five `#720-005` 60 mm CF strakes are withdrawn** — no assembly step places them, the build record does
+  not list them, and no slot in any of the nine printed parts will take one. **Two bearing counts were
+  wrong and are corrected:** MR128 2 → **4** and 6703 5 → **6**, both corroborated by the build record
+  [008.6](specs/008-Assembly.md#0086-differential) descends from.
+  *The arm.* `robot_assembly.scad` composes the arm in the CAD kinematic frame, solving **every placement
+  from a feature the part itself carries** and listing in `UNPLACED` any part whose position nothing fixes.
+  It settles L3's far end by finding that **the part that row was opened on does not exist**: Diff Body A's
+  own −x spigot is the same 20 × 20 R4 plug the End Arm Hub presents — 386.245 mm² against 386.068 in
+  section over one bore of 131.7156 mm² against 131.7158, two parts in a million — so it is the tube's far
+  end and points back down the forearm, and the Diff End Pulley facing the elbow sends the J4 axis along
+  world z. The J4 and J5 crossing lands on the **J4 axis at the J4 station**, where J3 to the
+  differential's own J4 axis measures the specified **307.500 mm** and the specified **243.0 mm C-505 cut
+  laps the spigot by 15.000 mm**. **No part is missing and no cut length moves.**
+  *The jig.* `950-Tooling/GlueRig_EndArmHubToDiff_A`/`_B` registers a Ø22.971 boss in the End Arm Hub's
+  Ø22.990 J3 bore at one end and a Ø16.971 boss — a 6703's bore, its Ø23 race seating in Diff Body A — at
+  the other, so it states J3 to J4 directly. As exported it stated 309.500 mm. The kinematic records are
+  the design of record and a jig is derived from them, so the jig is what moves: `_B` is shortened
+  **2.000 mm** across a prismatic stretch of its trough, clear of both registers and of the pair's lap, and
+  is now generated from `GlueRig_EndArmHubToDiff_B.scad`.
+  *The mirror.* [007.2](specs/007.2-Printed-Parts.md#printed-parts) links every row to the file
+  `Hardware/Models/` holds that part as; `Hardware/Models/PART-INDEX.md` owns which file is which part and
+  the `Model` column is generated from it.
+  *The wall holes.* **The Diff Gear Shaft prints solid.** The twelve Ø0.2 wall holes its reference mesh
+  carries are unbuildable and unused, so [007.2](specs/007.2-Printed-Parts.md#differential--0076) states
+  the part's print state and `720-001_DiffGearShaft.scad`'s `wall_holes` flag defaults off to match. The
+  harness gate already masks the ring the holes occupy, so it passes on the solid render unchanged.
+- **Driver:** DC-11 gated ordering and printing — it is the item standing between the specification and a
+  parts order — and most of what it held was answerable from geometry already in the repository rather than
+  from a decision or a build. Answering the last of it needed the parts composed: a part in its own print
+  frame cannot show a hole, and a subassembly placed by a bounding box is placed by a coincidence.
+- **Status:** `[Provisional]` — DC-11 is left with one item, and it needs no part authored: the coupon
+  print that validates [row d](specs/009-Design-Completion.md#procurement-data)'s profile, which is
+  [009.2](specs/009.2-Test-Build-Manifest.md)'s.
+- **Re-derive:** **Order against the corrected rows.** Ordering from
+  [007.6](specs/007-Bill-of-Materials.md#0076-differential) as it stood lands two MR128 and one 6703 short
+  at the bench. [C-503](specs/007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) drops from 8
+  pieces and a 48″ stick to 3 pieces and a **24″** stick. Any payload figure quoted against motor stall is
+  superseded: the ceiling is the gearbox and roughly a third of the motor-derived number, so
+  [009.1 Test 4.3](specs/009.1-Performance-Characterization-Protocol.md#test-43-rated-payload) is bounded
+  at **1.0 kg** with that bound added as a stop condition, and
+  [009.2](specs/009.2-Test-Build-Manifest.md)'s Stage 2 gate reads the drive's axial stack-up rather than
+  end-cap stand-off. **Nothing dimensional moves on the robot**: no cut length, part dimension, link length
+  or L4 value changes, and the 0.4665 mm by which the spigot axis sits off the tube's is unchanged. What is
+  withdrawn is the span — `robot_assembly.scad` draws no void,
+  [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)'s 283.5 mm alternative
+  cut and [004](specs/004-Mechanical-Architecture.md#differential-interface)'s reading that the
+  differential centre lands on the J5 station both go with it, and
   [009.2](specs/009.2-Test-Build-Manifest.md) loses a gate:
-  [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework) is now the only authoring work the build
-  waits on. The rig's own 2.000 mm residue against the records is closed by [CR-3A29](#cr-3a29), which
-  moves the jig rather than the records.
-- **Note:** [DC-6](specs/009-Design-Completion.md#link-length-discrepancy-l4) had already specified the J4
-  station as where L3 lands on the J4 axis, reproducing 307.500 mm from the kinematic chain. This change
-  is that statement applied to the part that has to be there, reached from the differential's own geometry
-  and arriving at the same station.
-
-### CR-3A27
-
-**The differential is placed in the arm by the spigot it mates on, and the L3 gap changes shape**
-
-- **Affects:** `Hardware/Models/robot_assembly.scad`,
-  `Hardware/Models/700-Differential/diff_assembly.scad`,
-  `Hardware/Models/700-Differential/diff_params.scad`,
-  [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
-  [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075),
-  [DC-11(h)](specs/009-Design-Completion.md#procurement-data),
-  [009.2](specs/009.2-Test-Build-Manifest.md), `Hardware/Models/MANIFEST.csv`.
-- **Was:** Diff Body A's 20 x 20 R4 arm was read as the tool mount, on world +x inside the gripper
-  covers, and the differential was placed from a cover extent: 004 fitted Body A to `HDI-950` by a radius
-  that bounds two perpendicular directions at once. `robot_assembly.scad` took that as an open question
-  against 003's parallel-axis reading and drew the arm three times, once per live landing. All four
-  landings sent the differential frame's -x onto world +x, so none of them was right, and the file
-  reported the Diff End Pulley from its mesh's own frame — 36.338 mm out and on the wrong side of the
-  differential centre, which is the axis the landing turns on.
-- **Now:** Two mating features fix the transform and nothing else enters it. Body A's -x end is the same
-  20 x 20 R4 plug the End Arm Hub presents — 386.245 mm2 against 386.068 in section, both faceted short
-  of a true 386.2655, over one 12.700 x 15.304 mm bore of 131.7156 mm2 against 131.7158, two parts in a
-  million — so it is the L3 tube's far end and points back down the forearm. The Diff End Pulley faces
-  the elbow pulleys the belt reaches it from, which sends the J4 axis along world z. Placed so, Body A's
-  spigot axis lands on (x = 0, z = 35.5335) against the tube's (x = 0, z = 36.000), coaxial to 0.4665 mm,
-  and its 6 x 6 belt slot opens at the tip facing the elbow the belts come from. 003's reading survives
-  and 004's is withdrawn.
-- **Driver:** A subassembly placed by a bounding box is placed by a coincidence. `robot_assembly.scad`
-  already held the rule that a mating feature outranks one, and the differential was the part it was not
-  applied to.
-- **Status:** `[Specified]`.
-- **Re-derive:** DC-11(h)'s span and the shape of what closes it. Of the 36.000 mm between the tube's far
-  face and the J4 station, Body A's spigot occupies 11.500 and 24.500 mm are open; the joint is in-line
-  and carries none of the 18.000 mm of step the span was drawn with, both ends it meets are the same male
-  plug, and the forearm skin is its cover rather than `HDI-940-001`. Lapping this end by the 16.0 mm
-  C-505 laps the other wants 283.5 mm of tube against the 243.0 mm specified, so a longer cut is now a
-  standing alternative to a part. No cut length, L4 or part dimension moves.
-- **Note:** [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) had already
-  recorded that Body A carries the hub's section and set it aside as insufficient to identify a tube end.
-  The bore is what decides it: a belt passage is not a feature a tool arm repeats, and 004 states the
-  six tool conductors run through the differential's hollow centre in the same table that called this arm
-  their path. Body A now lands inside no measured cover box, the forearm skin holding it across the arm
-  with 6.5335 mm to spare and stopping 30.4995 mm short of its far end while the two wrist boxes stop
-  about 18 mm below its top; the covers are reported rather than absorbed, since a cover revision the
-  printed differential does not match is what the Main Pivot and the Arm Body already show. The three
-  figures a parent composition needs are now functions on `diff_assembly.scad`, which owns where in its
-  own frame each one sits.
+  [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework) is the only authoring work the build now
+  waits on. **A glue rig printed before this change is 2.000 mm long** and is not the tool
+  [008.6](specs/008-Assembly.md#0086-differential) calls for; the as-exported mesh is kept under
+  `Reference/superseded/`. Two [008.6](specs/008-Assembly.md#0086-differential) steps are corrected — step
+  11 sent the 25 mm strakes to the Split Gear Bottom, which carries no slot, and step 23 left the Diff
+  Keeper butted on the Split Gear with no room for the stack it retains — and `ROD_TOP` in
+  `diff_assembly.scad` moves 1.5 mm with the End Pulley on it.
+  **A `720-001` mesh rendered before this change carries the Ø0.2 wall holes**, the flag having defaulted
+  on; re-render it before slicing. This closes the wall-hole question
+  [CR-3A7](#cr-3a7-differential-detail-design-authored-as-parametric-openscad) left open.
+- **Note:** *What made the composition renderable.* Three unrelated defects stopped a full render and each
+  was cleared on its own terms. Exported meshes are not always surfaces CGAL can walk, so
+  `render-meshes.rs` now puts each one through `scadmesh` as it is written — `settle` writes the mesh as
+  OpenSCAD's own importer will read it, `repair` fills the gaps that reveals, and `pinch` opens any edge or
+  vertex the surface still touches itself at — and stops on a part that fails, so the cache is renderable
+  or there is no cache. `420-001_EndArmHub.stl` was not a closed 2-manifold at all, three of its four
+  Ø3.000 holes being tangent to its Ø27.500 bore, and is corrected in place by `pinch`: 6 triangles added,
+  no existing vertex moved, volume four parts in ten million larger. And surfaces the design has touching
+  were drawn touching, which CGAL cannot union, so `diff_params.scad` defines `DRAW_JOINT = 0.001` mm and
+  owns what it is for; the stand-ins are illustrations rather than part models and no seat, bore or part
+  dimension derives from it. *Why the arm was drawn before it was landed.* The differential was first left
+  out of the composition, then drawn in every direction its J4 axis could take, rather than placed on a
+  reading — [003 §DH model](specs/003-Kinematics.md#denavithartenberg-model) put that axis across the arm
+  and [004](specs/004-Mechanical-Architecture.md#differential-interface) fitted Body A to the gripper
+  covers by a radius that bounds two perpendicular directions at once. Drawing it either way would have
+  adopted an answer silently. The mating bore is what decided it — a belt passage is not a feature a tool
+  arm repeats — and 004's gripper-cover argument is withdrawn there along with the four readings it
+  produced. *Sizing.* Link 2 carries 2.520 kg of the robot's 4.79 kg of moving mass and its centre of mass
+  acts 62 mm *behind* the J2 axis, so the unloaded arm needs about a twentieth of the specified motor's
+  holding torque: motor sizing on this robot is set by payload and dynamics, not by holding its own weight
+  up. *The drawing's silence.* The body-length tolerance
+  [`XB1-AS-C-32.pdf`](Hardware/Reference/XB1-AS-C-32.pdf) was consulted for is not on it — the drawing
+  fixes the component set internally and says nothing about how far its mating parts may sit from nominal —
+  so the band is an assembly stack-up taken up on the Stator Holder all-thread, which
+  [009.2](specs/009.2-Test-Build-Manifest.md) Stage 2 records.

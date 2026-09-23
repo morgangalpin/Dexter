@@ -271,8 +271,8 @@ Not every oddity in a reference is an artifact. `720-001`'s apparent degenerate 
 part: every triangle around a hole has its normal on that hole's own axis, `segment` returns one closed
 body, and the lateral area over any span is π·0.2·span to three decimals. The model reproduces them behind
 a `wall_holes` flag. They are **not buildable** — Ø0.2 × 60.6 mm is 303:1, past drilling and far past
-printing — so whether the built shaft should carry them is a separate question
-([DC-11](../../specs/009-Design-Completion.md#procurement-data)).
+printing — so the flag defaults off and the built shaft is solid
+([007.2](../../specs/007.2-Printed-Parts.md#differential--0076)).
 
 Two exceptions are enumerated explicitly rather than absorbed into a widened tolerance. The **GT2 pulley**
 teeth are cut with a modelled groove profile rather than measured. The **Diff Gear Shaft's tooth form** is

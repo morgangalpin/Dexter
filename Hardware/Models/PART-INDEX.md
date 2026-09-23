@@ -211,5 +211,5 @@ the span each one jigs in
 
 `GlueRig_EndArmHubToDiff_B` is the one that is not the shipped mesh. Its `.scad` is the source of record
 and the `.stl` is rendered from it: the file shortens the shipped body by 2.000 mm so the pair holds the
-specified L3 span ([CR-3A29](../../CHANGES.md#cr-3a29)), and the mesh it edits is kept as
+specified L3 span ([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)), and the mesh it edits is kept as
 `Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.

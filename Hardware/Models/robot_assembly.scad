@@ -175,7 +175,7 @@ TOOL_STN = [54.815, 939.8440,  -2.000];   // Link6, the tool roll frame
 //     Ø22.971 boss in the hub's own Ø22.990 J3 bore and a Ø16.971 boss -- a
 //     6703's bore, its Ø23 race seating in Body A -- at the far end. That
 //     measures J3 to J4 directly, and as exported it read 309.500 mm: it
-//     misses 347.000 by 37.500 mm and stood 2.000 mm beyond 307.500. CR-3A29
+//     misses 347.000 by 37.500 mm and stood 2.000 mm beyond 307.500. CR-3A17
 //     shortens the rig's B half by that residue, so it holds 307.500 now.
 //
 // WRIST_BASIS says where the differential frame's own x, y and z go in this
