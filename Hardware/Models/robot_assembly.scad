@@ -56,7 +56,9 @@
 // what makes WRIST_BASIS below a proper rotation and the whole of the
 // transform. Both features also put the J4 and J5 axes through one point, as a
 // bevel differential requires and as 700-Differential/diff_assembly.scad
-// asserts of its own frame, so the assembly is placed by its diff_centre().
+// asserts of its own frame, so the assembly is placed by its diff_centre() --
+// which lands on the J4 axis, at the J4 station. The wrist frame below states
+// what fixes it there and what putting it anywhere else costs.
 //
 // WHAT THE LANDING THEN MEASURES, none of it fitted. Body A's spigot axis lands
 // on (x = 0, z = 35.5335) along y, against the C-505 tube's own
@@ -79,28 +81,26 @@
 // the gripper cover's own section about the tool axis, which begins at the J5
 // station and runs out to the tool, and it bounds no plate of Body A's.
 //
-// WHERE THAT LEAVES THE COVERS. Body A lands inside no measured cover box. The
-// forearm skin holds it across the arm with 6.5335 mm to spare and stops
-// 30.500 mm short of its far end; the two wrist boxes stop 17.891 mm and
-// 18.284 mm below its top. Rule 1 above decides which of the two to place it
-// by. What the covers then measure is either a revision the printed
-// differential does not match -- as the Main Pivot's and the Arm Body's already
-// are -- or a cover the measured set is missing, and the echoes report it
-// rather than absorbing it.
+// WHERE THAT LEAVES THE COVERS. Body A lands inside ENV_L3_SKIN, the forearm
+// skin, and inside none of the three wrist boxes, every one of which ends at or
+// below z = 18.000 while this axis runs at z = 36.000. The skin begins on that
+// same z = 18.000 plane and runs to 65.001, so over the wrist the skin and
+// ENV_DIFF_COVER read as the two halves of one shell split there, and the
+// differential sits in the upper half. What the wrist boxes measure on their
+// own is then either a revision the printed differential does not match -- as
+// the Main Pivot's and the Arm Body's already are -- or a cover the measured
+// set is missing, and the echoes report it rather than absorbing it.
 //
-// THE L3 GAP, WHICH THE LANDING RESHAPES. The forearm's far end is open. The
-// End Arm Hub's tube spigot and the 243 mm C-505 tube put the tube's far face
-// 36.000 mm short of the J4 station, and no part in the model set closes that
-// span: specs/009 DC-11(h). Of those 36.000 mm, Body A's spigot now occupies
-// the last 11.500 and 24.500 mm are open air. What closes them carries no
-// step across the arm -- the 18.000 mm of step the span was drawn with belonged
-// to a withdrawn reading -- and both its ends are female over male, since the
-// tube's 20.07 mm bore is what laps the hub's plug and Body A's is that same
-// plug. Lapping this end by the 16.0 mm C-505 laps the other asks for 283.5 mm
-// of tube against the 243.0 mm specified, so whether the span wants a part or a
-// longer cut is DC-11(h)'s to settle and not this file's. The open 24.500 mm is
-// drawn as a marked void on the tube's own section, and it is the one thing
-// here drawn because it is absent.
+// THE L3 JOINT, WHICH THE LANDING CLOSES. The forearm's far end was read as
+// open. The End Arm Hub's tube spigot and the 243 mm C-505 tube put the tube's
+// far face 36.000 mm short of the J4 station, and specs/009 DC-11(h) was opened
+// on the part that closes that span. There is no such part, and no longer cut
+// either: Body A's spigot tip stands 51.000 mm back from the J4 axis, so the
+// spigot crosses the whole 36.000 mm and reaches 15.000 mm inside the tube. Of
+// its 21.000 mm, 15.000 are lapped and 6.000 stand proud of the tube's end.
+// Both ends of C-505 are therefore female over the same 20 x 20 R4 male plug,
+// 16.0 mm of lap at the hub and 15.000 mm here, and nothing is drawn for the
+// span because nothing is missing from it.
 //
 // RENDERING IT. A preview needs nothing but this file. A full render asks CGAL
 // for a closed solid of everything drawn, the nine meshes 700-Differential/
@@ -128,8 +128,6 @@ show_stock = true;
 show_frame = true;
 // Cover envelopes, as boxes from the CAD bodies' measured extents.
 show_envelopes = true;
-// The span no part closes.
-show_gap = true;
 
 /* [Hidden] */
 $fn = 64;
@@ -154,10 +152,31 @@ TOOL_STN = [54.815, 939.8440,  -2.000];   // Link6, the tool roll frame
 // ---------------------------------------------------------------------------
 // The wrist frame — see THE WRIST LANDING above.
 //
-// WRIST_C is where the J4 and J5 axes cross. The J5 station lies on the J5
-// axis, which runs along x, so the crossing shares that station's y and z; the
-// arm is symmetric about x = 0 and the J4 axis is on that plane, which gives
-// the third coordinate. No new number: it is the J5 station.
+// WRIST_C is where the J4 and J5 axes cross. It lies on the J4 axis, and the
+// J4 axis is at the J4 station: specs/003 § Link lengths puts J3 → J4 at
+// 307.500 mm and the firmware carries the same figure to the micron. The arm
+// is symmetric about x = 0 and that axis is on the plane, which gives x. Its
+// height along the axis comes from the J5 station, 20.000 mm below the J4 one,
+// which is the z component of the firmware's J4 → J5 offset. No new number: it
+// is the J4 station's x and y at the J5 station's z.
+//
+// THE J5 STATION IS NOT ON THE J5 AXIS. The two stations are chain frames
+// separated by specs/003's L4 = 39.500 mm along the arm, and one crossing
+// cannot be at both, so which of the two it is at is measured rather than
+// assumed. Four readings agree, and none of them is a bounding box:
+//
+//   - the J4 axis lands 307.500 mm from J3, the figure both specs/003 and the
+//     firmware hold, against 347.000 mm from the other station;
+//   - the specified 243.0 mm C-505 cut laps Body A's spigot by 15.000 mm,
+//     where the other station leaves it 24.500 mm short of the spigot's tip;
+//   - Body A falls inside ENV_L3_SKIN, where the other station overruns that
+//     box by 30.500 mm and carries the differential into ENV_GRIPPER;
+//   - 950-Tooling's End Arm Hub -> differential glue rig, which registers a
+//     Ø22.971 boss in the hub's own Ø22.990 J3 bore and a Ø16.971 boss -- a
+//     6703's bore, its Ø23 race seating in Body A -- at the far end. That
+//     measures J3 to J4 directly, and as exported it read 309.500 mm: it
+//     misses 347.000 by 37.500 mm and stood 2.000 mm beyond 307.500. CR-3A29
+//     shortens the rig's B half by that residue, so it holds 307.500 now.
 //
 // WRIST_BASIS says where the differential frame's own x, y and z go in this
 // one. Its first row is the spigot's — that frame's -x runs back down the
@@ -165,7 +184,7 @@ TOOL_STN = [54.815, 939.8440,  -2.000];   // Link6, the tool roll frame
 // The second is the cross product of those two, so the basis is a proper
 // rotation and no measured row was fitted to make it one.
 // ---------------------------------------------------------------------------
-WRIST_C = J5_STN;
+WRIST_C = [J4_STN.x, J4_STN.y, J5_STN.z];
 
 WRIST_BASIS = [[0, 1, 0], [1, 0, 0], [0, 0, -1]];
 
@@ -239,7 +258,7 @@ L3_TUBE_Z   = 36.000;                   // the hub's spigot axis, measured
 
 L3_TUBE_Y1  = L3_TUBE_Y0 + L3_TUBE_LEN; // 841.795
 L3_GAP      = J4_STN.y - L3_TUBE_Y1;    // 36.000: C-505's own figure
-L3_OPEN     = ARM_TIP_Y - L3_TUBE_Y1;   // 24.4995 of it with nothing in it
+L3_FAR_LAP  = L3_TUBE_Y1 - ARM_TIP_Y;   // 15.000 of tube over Body A's spigot
 L3_LAP      = 16.0;                     // what C-505 laps the hub's plug by
 
 // ---------------------------------------------------------------------------
@@ -259,7 +278,6 @@ PRINT_C  = [0.72, 0.74, 0.78];
 CARBON_C = [0.16, 0.16, 0.18];
 FRAME_C  = [0.90, 0.75, 0.20];
 ENV_C    = [0.45, 0.55, 0.70, 0.22];
-GAP_C    = [0.85, 0.25, 0.25, 0.45];
 
 // ---------------------------------------------------------------------------
 // The printed parts.
@@ -407,25 +425,6 @@ module place_envelopes() {
     envelope(ENV_J3_COVER);
 }
 
-// The open span between the L3 tube's far face and Body A's spigot tip, drawn
-// on the tube's own section because both of its ends now carry that section.
-//
-// What belongs here is bounded on four sides even though no model of it exists.
-// It takes the 22.0 mm tube on (x = 0, z = 36.000) from y no further than
-// 841.795, and it presents the spigot 24.500 mm later on (x = 0, z = 35.5335)
-// — the two axes 0.4665 mm apart, so the part is a straight coaxial joint and
-// carries no step. Both ends it meets are male, and both are the same male:
-// C-505's bore is what laps them. And it is covered by ENV_L3_SKIN, which holds
-// the span in x and z with room to spare; ENV_DIFF_COVER is not its cover, that
-// box stopping at z = 18.000, well below this axis.
-//
-// None of the part is drawn, because none of its geometry is known — only where
-// it has to begin, where it has to end, and what it has to fit inside.
-module place_gap() {
-    color(GAP_C) translate([0, L3_TUBE_Y1, L3_TUBE_Z]) xrot(-90)
-        cuboid([L3_TUBE_OD, L3_TUBE_OD, L3_OPEN], anchor = BOTTOM);
-}
-
 // ---------------------------------------------------------------------------
 // The arm.
 // ---------------------------------------------------------------------------
@@ -440,7 +439,6 @@ module arm() {
     if (show_stock)     place_stock();
     if (show_frame)     place_frame();
     if (show_envelopes) place_envelopes();
-    if (show_gap)       place_gap();
 }
 
 arm();
@@ -469,8 +467,8 @@ echo(str("robot_assembly: J2..J3 = ", J3_STN.y - J2_STN.y,
 echo(str("L2 tube ", L2_TUBE_Y0, "..", L2_TUBE_Y0 + L2_TUBE_LEN,
          " on z=", L2_TUBE_Z, ";  L3 tube ", L3_TUBE_Y0, "..", L3_TUBE_Y1,
          " on z=", L3_TUBE_Z));
-echo(str("L3 gap: ", L3_GAP, " mm along the arm from the tube's far face to the J4 station; ",
-         L3_OPEN, " of it open, the rest Body A's spigot. DC-11(h)."));
+echo(str("L3 joint: ", L3_GAP, " mm along the arm from the tube's far face to the J4 station, ",
+         "all of it Body A's spigot, which the tube laps by ", L3_FAR_LAP, " mm. DC-11(h)."));
 for (u = UNPLACED) echo(str("UNPLACED: ", u[0], " - ", u[1]));
 
 // The landing, reported against the features that fix it and the records that
@@ -483,8 +481,8 @@ echo(str("wrist landing: J4 axis along ", wrist_vec([0, 0, 1]), " through ", WRI
 echo(str("  spigot axis on (x=", ARM_AXIS.x, ", z=", ARM_AXIS.z, ") against the L3 tube's z=",
          L3_TUBE_Z, " — coaxial to ", L3_TUBE_Z - ARM_AXIS.z, " mm"));
 echo(str("  spigot tip at y ", ARM_TIP_Y, ", tube far face at ", L3_TUBE_Y1,
-         " — ", L3_OPEN, " mm open; a ", L3_LAP, " mm lap here wants ",
-         ARM_TIP_Y + L3_LAP - L3_TUBE_Y0, " mm of tube against ", L3_TUBE_LEN));
+         " — C-505's ", L3_TUBE_LEN, " mm cut laps the spigot ", L3_FAR_LAP,
+         " mm, against ", L3_LAP, " mm at the hub"));
 for (e = [["ENV_DIFF_COVER", ENV_DIFF_COVER], ["ENV_DIFF_CAP", ENV_DIFF_CAP],
           ["ENV_GRIPPER", ENV_GRIPPER], ["ENV_L3_SKIN", ENV_L3_SKIN]])
     echo(str("  Diff Body A vs ", e[0], ": ",
@@ -494,16 +492,20 @@ for (e = [["ENV_DIFF_COVER", ENV_DIFF_COVER], ["ENV_DIFF_CAP", ENV_DIFF_CAP],
 
 assert(abs(L3_GAP - 36.000) < 0.001,
        "the L3 gap is C-505's own figure; if it moved, a cut length moved with it");
-// WRIST_C must lie on the J5 axis. A frame edit that moved it would turn the
-// differential about a line the J5 station is not on.
-assert(WRIST_C.y == J5_STN.y && WRIST_C.z == J5_STN.z,
-       "the J4/J5 crossing must sit on the J5 axis");
+// WRIST_C must lie on the J4 axis, at the J4 station. A frame edit that put it
+// on the J5 station instead would turn the differential about a line 39.500 mm
+// further out, stand its J4 axis 347.000 mm from J3 against specs/003's
+// 307.500, and reopen the span DC-11(h) closed.
+assert(WRIST_C.x == J4_STN.x && WRIST_C.y == J4_STN.y && WRIST_C.z == J5_STN.z,
+       "the J4/J5 crossing sits on the J4 axis at the J4 station, dropped to the J5 station's z");
 // The landing is fixed by Body A's spigot being the L3 tube's far end, so the
 // two have to stay coaxial. They measure 0.4665 mm apart, which is a residual;
 // a window ten times that passes it and fires on anything that is not one.
 assert(abs(ARM_AXIS.z - L3_TUBE_Z) < 5.0 && abs(ARM_AXIS.x) < 0.001,
        "Body A's spigot has left the L3 tube's axis — WRIST_BASIS is what places it");
-// And the spigot must point back down the arm, not out past the wrist: its tip
-// is the near face along y, and it has to fall short of the plate it grows from.
-assert(ARM_TIP_Y < WRIST_C.y && L3_OPEN > 0,
-       "Body A's spigot must face the elbow, with the L3 tube short of its tip");
+// And the spigot must point back down the arm and stand inside the tube: its
+// tip is the near face along y, and the tube's far face has to reach over it
+// rather than stop short. A lap that went to zero would mean the joint had come
+// apart again, which is the state DC-11(h) was opened in.
+assert(ARM_TIP_Y < WRIST_C.y && L3_FAR_LAP > 0,
+       "C-505 must lap Body A's spigot, which must face the elbow");

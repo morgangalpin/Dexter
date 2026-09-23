@@ -501,8 +501,8 @@ diff_assembly();
 // C's height above Diff Body A's arm centreline (see header). This was read as
 // L4 until 2026-09-05; that arm is the L3 spigot, so this is an across-arm
 // offset and no L4 reading. ../robot_assembly.scad measures the same span in
-// the robot frame, as the L3 tube's axis over the J5 station, and reports the
-// residual. Kept because it is a stable relation to hang a tripwire on.
+// the robot frame, as the L3 tube's axis over Body A's spigot axis, and reports
+// the residual. Kept because it is a stable relation to hang a tripwire on.
 ARM_Z       = 11.000;
 C_OVER_ARM  = C.z - ARM_Z;
 

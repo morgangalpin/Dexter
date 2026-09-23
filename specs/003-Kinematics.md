@@ -83,14 +83,17 @@ the arm**. The order in firmware is **L5 first, L1 last**.
 | L1 | Base mount → J2 axis | 235.20 mm | 228.60 mm | +6.60 mm |
 | L2 | J2 → J3 axis | 339.09 mm | 320.68 mm | +18.42 mm |
 | L3 | J3 → J4 axis | 307.50 mm | 330.20 mm | −22.70 mm |
-| L4 | J4 → J5 axis | **39.50 mm** | 50.80 mm | −11.30 mm |
+| L4 | J4 axis → J5 station | **39.50 mm** | 50.80 mm | −11.30 mm |
 | L5 | J5 axis → tool tip | 82.44 mm | 82.55 mm | −0.11 mm |
 
 *Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`)
 for L1, L2, L3 and L5. **L4 is specified here** against the CAD kinematic chain below; the firmware file's
 `59500` is superseded, and [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins)
-carries the line to write. Comparison column: `dde/core/robot.js`, whose `ORIG DEX` set is version 1 in
-[010](010-Versioning.md#1-version-lineage)'s numbering.*
+carries the line to write. The J5 and tool stations are chain frames rather than points on their own axes;
+which station the wrist's one axis crossing is at is stated at
+[004 § Differential interface](004-Mechanical-Architecture.md#differential-interface). Comparison column:
+`dde/core/robot.js`, whose `ORIG DEX` set is version 1 in [010](010-Versioning.md#1-version-lineage)'s
+numbering.*
 
 **The values are along-arm components of the CAD kinematic chain.** The
 `DexterHDI_Link*_KinematicAssembly` node origins in `dde/HDIMeterModel.gltf` (units per

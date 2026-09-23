@@ -1003,6 +1003,128 @@ unions**
   resolves it, and no tracked artifact is an export of this assembly. `robot_assembly.scad` also stops
   crediting the mesh cache alone with making itself renderable.
 
+### CR-3A30
+
+**007.2 links every printed part to the file the mirror holds it as**
+
+- **Affects:** [007.2 § Printed parts](specs/007.2-Printed-Parts.md#printed-parts),
+  [007.2 § Model file sources](specs/007.2-Printed-Parts.md#model-file-sources),
+  `Hardware/Models/PART-INDEX.md`,
+  [DC-11](specs/009-Design-Completion.md#procurement-data).
+- **Was:** [007.2](specs/007.2-Printed-Parts.md#model-file-sources) pointed each part at the upstream
+  archive its family came from, and only the nine differential rows named a file. Reaching a part's
+  geometry meant leaving the print list for `PART-INDEX.md` and matching on the part number by eye.
+- **Now:** Every row of the print list carries a `Model` column linking the file
+  [`Hardware/Models/`](Hardware/Models/README.md) mirrors that part as, and both tooling tables link
+  theirs. The `Source` column still says which archive the file came from, so provenance and location are
+  separate columns rather than one. The differential's nine rows are unchanged — they already linked their
+  `.scad`.
+- **Driver:** The mirror made the archives replaceable but left the print list pointing at them, so a
+  builder held a file list and a part list that had to be reconciled by hand. It was the last documentation
+  item [DC-11](specs/009-Design-Completion.md#procurement-data) was open on.
+- **Status:** `[Specified]`.
+- **Re-derive:** Nothing dimensional. No quantity, part, file or total moves.
+  `Hardware/Models/PART-INDEX.md` owns which file is which part and the new column is generated from it,
+  which [007.2 § Procedure](specs/007.2-Printed-Parts.md#procedure) now carries as a step; the column
+  states no mapping of its own. The index's 73 rows cover all 72 printed parts, the extra being `#110-004`
+  Base Mounting Plate, which is machined rather than printed.
+  [DC-11](specs/009-Design-Completion.md#procurement-data)'s definition of done is left with the coupon
+  print alone.
+- **Note:** Two rows link a file named for a different part number — `#210-003` links
+  `210-001_IdlerPlug.stl` and `#520-004` links `520-003_ExGearNutHold.stl`. One geometry serves two BOM
+  lines in each case, and `PART-INDEX.md` records what is and is not settled about both.
+
+### CR-3A29
+
+**The L3 glue rig is shortened 2.000 mm to the specified link length**
+
+- **Affects:** `Hardware/Models/950-Tooling/GlueRig_EndArmHubToDiff_B.scad` (new),
+  `Hardware/Models/950-Tooling/GlueRig_EndArmHubToDiff_B.stl`,
+  `Hardware/Models/Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl` (new),
+  `Hardware/Models/robot_assembly.scad`,
+  [007.2 § Tooling](specs/007.2-Printed-Parts.md#tooling--glue-rigs),
+  [DC-9](specs/009-Design-Completion.md#performance-characterization),
+  [DC-11(h)](specs/009-Design-Completion.md#procurement-data), `Hardware/Models/MANIFEST.csv`.
+- **Was:** `GlueRig_EndArmHubToDiff_A`/`_B` held its two precision registers **309.500 mm** apart, against
+  the 307.500 mm [003 § Link lengths](specs/003-Kinematics.md#link-lengths) and the firmware both hold.
+  [CR-3A28](#cr-3a28) found the residue and left it for the built arm to reconcile.
+- **Now:** The rig holds the specified span. Its `_B` half is shortened by 2.000 mm and is now generated
+  from `GlueRig_EndArmHubToDiff_B.scad`, which cuts the exported mesh at x = 200.000 — inside a 90 mm run
+  of constant 80 mm² section, clear of every feature — and closes the two halves back together. The hub
+  register moves from x = 292.635 to 290.635 and the differential register stays at x = −16.865, so the
+  registers now stand **307.500 mm** apart. The as-exported mesh is kept as
+  `Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.
+- **Driver:** The firmware and the kinematic records are the design of record for a link length, and a jig
+  is derived from them. Shortening `_B` rather than `_A` leaves `_A`'s frame, the shoulder at x = 128.287
+  and the pair's 10 mm lap untouched, so one file carries the whole correction.
+- **Status:** `[Specified]`.
+- **Re-derive:** Nothing outside the rig. No robot part, cut length or link length moves — the arm already
+  measures 307.500 mm ([CR-3A28](#cr-3a28)) — and both registers keep their diameters and their pin
+  pattern: Ø22.971 with four pins on r = 14.500, and Ø16.971 carrying its 6703. The rendered `_B` is
+  191.348 mm long over 28290.866 mm³, from 193.348 mm and 28454.988 mm³, and the assembled jig is
+  360.500 mm rather than 362.500. The pins read Ø1.992 on the rendered mesh against Ø1.994 on the exported
+  one; the cut is 90 mm away from them and the difference is the re-tessellation, not the geometry. A rig
+  printed before this change is 2.000 mm long and is not the tool
+  [008.6](specs/008-Assembly.md#0086-differential) calls for.
+- **Note:** The cut is taken out of a prismatic stretch of the trough, which is the only kind of stretch
+  that can absorb it: shortening either register's end would move a locating feature, and shortening the
+  lap would move the shoulder that positively locates `_A` against `_B`.
+
+### CR-3A28
+
+**The wrist lands on the J4 axis, and DC-11(h)'s missing part turns out not to exist**
+
+- **Affects:** `Hardware/Models/robot_assembly.scad`,
+  `Hardware/Models/700-Differential/diff_assembly.scad`,
+  [003 § Link lengths](specs/003-Kinematics.md#link-lengths),
+  [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
+  [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075),
+  [007.2 § Tooling](specs/007.2-Printed-Parts.md#tooling--glue-rigs),
+  [DC-5](specs/009-Design-Completion.md#link-member-lengths),
+  [DC-6](specs/009-Design-Completion.md#link-length-discrepancy-l4),
+  [DC-9](specs/009-Design-Completion.md#performance-characterization),
+  [DC-11(h)](specs/009-Design-Completion.md#procurement-data),
+  [009.2](specs/009.2-Test-Build-Manifest.md), `Hardware/Models/MANIFEST.csv`.
+- **Was:** [CR-3A27](#cr-3a27) fixed the differential's orientation on its two mating features but took its
+  position from the J5 station, on the reading that the station lies on the J5 axis. That stands the
+  differential's own J4 axis 347.000 mm from J3, where
+  [003 § Link lengths](specs/003-Kinematics.md#link-lengths) and the firmware both give 307.500, and it
+  leaves 24.500 mm of the L3 span with nothing in it — the hole
+  [DC-11(h)](specs/009-Design-Completion.md#procurement-data) was opened on, and which a part or a
+  283.5 mm cut was to fill.
+- **Now:** The J4 and J5 crossing is placed on the **J4 axis at the J4 station**, at the J5 station's
+  height. J3 to the differential's own J4 axis then measures 307.500 mm, and the specified 243.0 mm C-505
+  cut **laps Diff Body A's spigot by 15.000 mm**, leaving 6.000 mm of its 21.000 mm standing proud of the
+  tube's end against 16.0 mm of lap on the same plug at the hub. The span closes on geometry already in
+  the model set: **no part is missing and no cut length moves.** The J5 and tool frames are chain frames
+  carrying link offsets, and the J5 one is not a point on the J5 axis.
+- **Driver:** One axis crossing cannot sit at two frames 39.500 mm apart, so which of them it is at is a
+  measurement rather than a convention. Four readings answer it and none is a bounding box: the link
+  length, 307.500 mm against 347.000; the cut, a 15.000 mm lap against a 24.500 mm hole; the covers, Body
+  A inside `ENV_L3_SKIN` with 6.5335 mm to spare against overrunning it by 30.500 mm into the gripper's
+  box; and `950-Tooling/GlueRig_EndArmHubToDiff_A`/`_B`, which registers a Ø22.971 boss in the End Arm
+  Hub's Ø22.990 J3 bore at one end and a Ø16.971 boss — a 6703's bore, the bearing
+  [007 § Aggregate](specs/007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot) carries as
+  *(+2 glue rig)*, its Ø23 race seating in Diff Body A — 309.500 mm away at the other. That rig measures
+  J3 to J4 directly: it misses the 347.000 mm landing by 37.500 mm and sits 2.000 mm beyond the 307.500 mm
+  the records hold. A jig holding exactly two parts across this tube also says the bonded span has exactly
+  two ends.
+- **Status:** `[Specified]`.
+- **Re-derive:** Nothing dimensional. No cut length, part dimension, link length or L4 value moves, and
+  the 0.4665 mm by which the spigot axis sits off the tube's is unchanged. What is withdrawn is the span:
+  `robot_assembly.scad` no longer draws a void or carries `show_gap`, `L3_OPEN` becomes `L3_FAR_LAP`, and
+  C-505's 283.5 mm alternative cut and 004's reading that the differential centre lands on the J5 station
+  both go with it. [DC-11](specs/009-Design-Completion.md#procurement-data) is left with a coupon print
+  and per-part model links, neither of them a design question, and
+  [009.2](specs/009.2-Test-Build-Manifest.md) loses a gate:
+  [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework) is now the only authoring work the build
+  waits on. The rig's own 2.000 mm residue against the records is closed by [CR-3A29](#cr-3a29), which
+  moves the jig rather than the records.
+- **Note:** [DC-6](specs/009-Design-Completion.md#link-length-discrepancy-l4) had already specified the J4
+  station as where L3 lands on the J4 axis, reproducing 307.500 mm from the kinematic chain. This change
+  is that statement applied to the part that has to be there, reached from the differential's own geometry
+  and arriving at the same station.
+
 ### CR-3A27
 
 **The differential is placed in the arm by the spigot it mates on, and the L3 gap changes shape**
