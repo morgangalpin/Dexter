@@ -9,10 +9,10 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   build can be reviewed by looking at it. Every placement in it is solved from a feature the part carries;
   a part whose position nothing fixes is listed in that file's `UNPLACED` rather than drawn somewhere
   plausible, which is what lets a missing part show as a hole. `700-Differential/diff_assembly.scad` is the
-  same idea one level down, and this file composes it in by its `diff_centre()`. Where a placement is
-  disputed rather than unknown, every candidate is drawn side by side and labelled instead of one being
-  chosen: the `wrist` parameter does that for the J4 axis, which
-  [DC-11(h)](../../specs/009-Design-Completion.md#procurement-data) is open on.
+  same idea one level down, and this file composes it in by its `diff_centre()`. A mating feature outranks
+  a bounding box there: the differential is oriented by the L3 spigot Diff Body A carries and by the side
+  its End Pulley faces, and where the measured cover bodies disagree with that the file reports the
+  disagreement rather than moving the part into them.
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
 - **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the
@@ -77,7 +77,32 @@ Not part of a build. Kept because the geometry exists nowhere else.
 
 ## Known defects
 
-**None outstanding.** Three files have been wrong and all three are corrected in place:
+**A tangency, corrected in place.** `400-EndArm/420-001_EndArmHub.stl` was not a closed 2-manifold. The
+part carries four Ø3.000 holes whose centres sit on a Ø30.500 circle, each tangent to the Ø27.500 bore
+exactly — 15.250 − 1.500 = 13.750 — and the tessellator honoured the tangency by giving both surfaces a
+vertex at the same coordinate. At three of the four, (0, 13.750), (0, −13.750) and (13.750, 0) in the
+part's own frame, they then shared the whole line from z = −2.000 to z = −30.000: four faces on one edge
+instead of two, and two cones of faces meeting at the single vertex at the z = −2.000 end, with no way to
+say which faces bound the material. The fourth, at (−13.750, 0), is cut into different segments on each
+surface, shares no edge, and is manifold — which is why there were three and not four. CGAL takes none of
+it, so a render of anything holding this part stopped at `The given mesh is not closed`.
+
+It was not a hole — the mesh has no boundary loop anywhere, which is why `scadmesh repair` reported it as
+not closed and then found nothing to fill — so what it needed was each contact opened rather than patched:
+
+```
+scadmesh pinch 400-EndArm/420-001_EndArmHub.stl --out 400-EndArm/420-001_EndArmHub.stl
+```
+
+That gives one surface at each contact its own vertex 1 µm off the line, along its own normal, which grows
+the material between the two surfaces by that much: 6 triangles added, no existing vertex moved, the
+bounding box unchanged and the volume 0.028 mm³ — four parts in ten million — larger. The file also holds
+a second closed shell that shares no edge with the body, the 18 × 20 × 20 mm block on the spigot axis at
+x 26.500..44.500, y ±10.000, z −35.000..−15.000, so this is a multi-body export rather than one unioned
+solid. That is not a defect: two shells convert as readily as one.
+
+Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
+place:
 
 - `100-Base/110-001_BaseMountBottom.stl` was the **un-bolted predecessor**, an 85 × 85 × 98 mm part whose
   bottom face carried no fastener features whatever: sections through it return only an outer Ø ≈ 72.9

@@ -903,3 +903,149 @@ anything version 3 does not independently specify
   and each is supported by one of the same two records — one lands Body A inside the gripper cover as 004
   states, the other lands it within reach of the L3 tube and puts the belt pulley on the side a belt
   comes from. Neither is adopted. The measurements are in the model file, which owns them.
+
+### CR-3A24
+
+**The differential's mesh cache made renderable: each mesh settled, repaired and pinched as it is
+written**
+
+- **Affects:** `Hardware/Models/700-Differential/render-meshes.rs`, `Hardware/Models/robot_assembly.scad`,
+  `Hardware/Models/MANIFEST.csv`.
+- **Was:** The mesh cache `diff_assembly.scad` imports was whatever OpenSCAD wrote, and an exported mesh
+  is not always a surface CGAL can walk. Tessellating an exact solid leaves pairs of coordinates a few
+  1e-7 mm apart where a parametric blend reaches a face it is meant to meet exactly, which the importer's
+  1e-6 mm vertex grid then merges in one facet and not in the next, tearing the surface along the facets
+  left bounding nothing; and it leaves zero-thickness facet pairs where the CSG tree cuts two coincident
+  faces against each other. A full render of the differential — or of `robot_assembly.scad`, which
+  composes it in — failed with "The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron"
+  and dropped the offending part from the result. The message names no file, so which of the nineteen
+  meshes on screen was at fault could not be read off it.
+- **Now:** `render-meshes.rs` puts each mesh through `scadmesh` as it is written, in three steps:
+  `settle` writes the mesh as OpenSCAD's own importer will read it, `repair` fills the gaps that reveals
+  and drops the facets that bound nothing, and `pinch` opens any edge or vertex the surface still touches
+  itself at. `pinch` reports whether a builder can take the result and the script stops on a part that
+  fails, so the cache is renderable or there is no cache. All nine convert.
+- **Driver:** A composition exists to be looked at, and one that will only preview cannot be asked the
+  questions a render answers.
+- **Status:** `[Specified]`.
+- **Re-derive:** Nothing. No measurement moves, and the script checks rather than asserting it: each
+  part's enclosed volume is measured before and after, and a part whose volume shifts at all is a
+  failure. The measuring set `render-all.rs` writes is left alone for the reason its own header gives.
+- **Note:** Choosing a vertex grid coarser than the reader's own was tried first and is luck, not
+  engineering: at 1e-6 mm only 710-002 tears, at 3e-6 mm 720-003 gains self-contacts, and at 1e-5 mm
+  720-002 gains a boundary loop as well. No spacing is clean for all nine. Settling at the reader's own
+  spacing and then repairing what that reveals is what holds. `render-meshes.rs` owns the per-part
+  counts, and `openscad-tools` owns what each step does.
+
+### CR-3A25
+
+**The End Arm Hub's tangency contacts opened, so the mesh converts**
+
+- **Affects:** `Hardware/Models/400-EndArm/420-001_EndArmHub.stl`,
+  [Hardware/Models/README.md](Hardware/Models/README.md#known-defects), `Hardware/Models/MANIFEST.csv`.
+- **Was:** `420-001_EndArmHub.stl` was not a closed 2-manifold, and it is the second reason a full render
+  of `robot_assembly.scad` stopped at "The given mesh is not closed". Three of the part's four Ø3.000 holes
+  are tangent to its Ø27.500 bore and share a whole line with it, four faces on one edge and two cones of
+  faces at the vertex ending it. No hole is involved, so `scadmesh repair` reported the mesh as not closed
+  and then found nothing to fill, and the defects section said OpenSCAD renders it anyway — which a probe
+  that unions the import with a second solid, rather than exporting it straight back out, disproves.
+- **Now:** Corrected in place by `scadmesh pinch`, which gives one surface at each contact its own vertex
+  1 µm off the line along its own normal: 6 triangles added, no existing vertex moved, the bounding box
+  unchanged and the volume four parts in ten million larger.
+- **Driver:** The one mesh in the set CGAL refuses is the one mesh no assembly can be rendered with.
+- **Status:** `[Specified]`.
+- **Re-derive:** Nothing. A micron is four orders below the 0.15 mm the parts are gated on, and the part
+  has no parametric source to re-measure against yet.
+- **Note:** Repairing a mesh rather than the model that made it is what this directory already does, for
+  the reason `110-001` records. The models [README](Hardware/Models/README.md#known-defects) owns the
+  geometry and the recipe; `scadmesh pinch` is new in openscad-tools and reports what it opened, so the
+  same check can be run over the whole set.
+
+### CR-3A26
+
+**A drawing allowance between the surfaces the differential is designed to meet on, so the assembly
+unions**
+
+- **Affects:** `Hardware/Models/700-Differential/diff_params.scad`,
+  `Hardware/Models/700-Differential/diff_hardware.scad`,
+  `Hardware/Models/700-Differential/diff_assembly.scad`, `Hardware/Models/robot_assembly.scad`,
+  `Hardware/Models/MANIFEST.csv`.
+- **Was:** Surfaces the design has touching were drawn touching. The Split Gear's two halves mate face to
+  face, and every bearing stand-in and the CF rod was drawn at the catalogue diameter of the seat bored
+  for it and the journal it rides on, so each pair touched over a whole surface and interpenetrated
+  nowhere. CGAL cannot union a tangency: `diff_assembly()` converted to a solid that is not a 2-manifold
+  — 991 contacts in the gear pair, and 263 more across the hardware once that pair was opened. Such a
+  solid still exports, which is why every part measured correctly and why CR-3A24's nine meshes all
+  convert, but it is no longer safe to union, and how that shows depends on what it is unioned with. A
+  full render of `robot_assembly.scad`, which composes the assembly in, stopped at "CGAL ERROR: assertion
+  violation! Expr: itl != it->second.end()" in `applyUnion3D`, naming no file; with the gear pair alone
+  opened, the same render instead ran to completion and reported its result as possibly not a valid
+  2-manifold.
+- **Now:** `diff_params.scad` defines `DRAW_JOINT = 0.001` mm and owns what it is for. Each stand-in ring
+  is drawn that far off both catalogue diameters, and the Split Gear's halves part by it along the
+  column, away from the centre. The differential now converts simple both with the hardware drawn and
+  without it, and neither raises a manifold warning where the hardware case raised two. A full render of
+  `robot_assembly.scad` is simple, warns nothing and holds the same 65 volumes it held before.
+- **Driver:** An assembly that cannot be unioned cannot be composed into the robot, which is the view the
+  model set exists for.
+- **Status:** `[Specified]`.
+- **Re-derive:** Nothing. The stand-ins are illustrations rather than part models, and no seat, bore or
+  part dimension derives from the allowance; `diff_params.scad` owns why a figure this size is invisible
+  to both the importer and the harness.
+- **Note:** This is a second and unrelated failure of the same render. CR-3A24 cleared "The given mesh is
+  not closed", which is a defect of one mesh; this is a union refusing two solids that are each already
+  closed, and clearing the first is what exposed it. The failure was reproduced in isolation before the
+  model was touched, as one seat bored to a catalogue diameter with its stand-in in it: not simple at
+  every one of the five catalogue sizes probed, and simple at all five with the allowance. Which way the
+  Split Gear's joint opens is decided by the meshes rather than by the design, and `diff_assembly.scad`
+  owns that measurement. An export of the whole assembly still reports a few contacts, where a
+  stand-in's 48-gon corners cross the finer circle of its seat; a crossing is not a coincidence and CGAL
+  resolves it, and no tracked artifact is an export of this assembly. `robot_assembly.scad` also stops
+  crediting the mesh cache alone with making itself renderable.
+
+### CR-3A27
+
+**The differential is placed in the arm by the spigot it mates on, and the L3 gap changes shape**
+
+- **Affects:** `Hardware/Models/robot_assembly.scad`,
+  `Hardware/Models/700-Differential/diff_assembly.scad`,
+  `Hardware/Models/700-Differential/diff_params.scad`,
+  [004 § Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
+  [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075),
+  [DC-11(h)](specs/009-Design-Completion.md#procurement-data),
+  [009.2](specs/009.2-Test-Build-Manifest.md), `Hardware/Models/MANIFEST.csv`.
+- **Was:** Diff Body A's 20 x 20 R4 arm was read as the tool mount, on world +x inside the gripper
+  covers, and the differential was placed from a cover extent: 004 fitted Body A to `HDI-950` by a radius
+  that bounds two perpendicular directions at once. `robot_assembly.scad` took that as an open question
+  against 003's parallel-axis reading and drew the arm three times, once per live landing. All four
+  landings sent the differential frame's -x onto world +x, so none of them was right, and the file
+  reported the Diff End Pulley from its mesh's own frame — 36.338 mm out and on the wrong side of the
+  differential centre, which is the axis the landing turns on.
+- **Now:** Two mating features fix the transform and nothing else enters it. Body A's -x end is the same
+  20 x 20 R4 plug the End Arm Hub presents — 386.245 mm2 against 386.068 in section, both faceted short
+  of a true 386.2655, over one 12.700 x 15.304 mm bore of 131.7156 mm2 against 131.7158, two parts in a
+  million — so it is the L3 tube's far end and points back down the forearm. The Diff End Pulley faces
+  the elbow pulleys the belt reaches it from, which sends the J4 axis along world z. Placed so, Body A's
+  spigot axis lands on (x = 0, z = 35.5335) against the tube's (x = 0, z = 36.000), coaxial to 0.4665 mm,
+  and its 6 x 6 belt slot opens at the tip facing the elbow the belts come from. 003's reading survives
+  and 004's is withdrawn.
+- **Driver:** A subassembly placed by a bounding box is placed by a coincidence. `robot_assembly.scad`
+  already held the rule that a mating feature outranks one, and the differential was the part it was not
+  applied to.
+- **Status:** `[Specified]`.
+- **Re-derive:** DC-11(h)'s span and the shape of what closes it. Of the 36.000 mm between the tube's far
+  face and the J4 station, Body A's spigot occupies 11.500 and 24.500 mm are open; the joint is in-line
+  and carries none of the 18.000 mm of step the span was drawn with, both ends it meets are the same male
+  plug, and the forearm skin is its cover rather than `HDI-940-001`. Lapping this end by the 16.0 mm
+  C-505 laps the other wants 283.5 mm of tube against the 243.0 mm specified, so a longer cut is now a
+  standing alternative to a part. No cut length, L4 or part dimension moves.
+- **Note:** [C-505](specs/007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) had already
+  recorded that Body A carries the hub's section and set it aside as insufficient to identify a tube end.
+  The bore is what decides it: a belt passage is not a feature a tool arm repeats, and 004 states the
+  six tool conductors run through the differential's hollow centre in the same table that called this arm
+  their path. Body A now lands inside no measured cover box, the forearm skin holding it across the arm
+  with 6.5335 mm to spare and stopping 30.4995 mm short of its far end while the two wrist boxes stop
+  about 18 mm below its top; the covers are reported rather than absorbed, since a cover revision the
+  printed differential does not match is what the Main Pivot and the Arm Body already show. The three
+  figures a parent composition needs are now functions on `diff_assembly.scad`, which owns where in its
+  own frame each one sits.

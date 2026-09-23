@@ -25,6 +25,27 @@ config = "previous"; // [previous, revised]
 $fn = 128;
 epsilon = 0.01;
 
+// The gap drawn between two surfaces that are designed to meet exactly, in mm.
+//
+// Where a part touches another over a whole surface — a bearing in a seat bored
+// to its own diameter, two halves bolted face to face — drawing both at nominal
+// makes those surfaces coincident: the solids touch everywhere and
+// interpenetrate nowhere. CGAL cannot union a tangency. What it returns is a
+// solid that is not a 2-manifold, and such a solid still exports, so the
+// failure need not be immediate or loud: a composition holding one either warns
+// that the object may not be a valid 2-manifold, or stops outright at "CGAL
+// ERROR: assertion violation!" in applyUnion3D, which names no file. Drawing
+// one of the two surfaces this far clear of the other leaves the solids
+// separate and the union simple.
+//
+// This is a drawing allowance, not a design clearance. It says nothing about
+// how the parts fit, and no seat, bore or part dimension derives from it. The
+// size is chosen from both ends: it is a thousand times OpenSCAD's own 1e-6 mm
+// vertex grid, so an importer cannot merge the two surfaces back together, and
+// it is two orders below the 0.15 mm the parts are measured to, so nothing the
+// harness gates on can see it.
+DRAW_JOINT = 0.001;
+
 // ---------------------------------------------------------------------------
 // Off-the-shelf interfaces (007.1 parts catalog: [ID, OD, width] in mm).
 // Parts reference these rather than restating a diameter, so re-specifying a
@@ -142,7 +163,8 @@ BODY_B_COL_XY = [ 21.0, -21.0];
 // diff_assembly.scad hangs a tripwire on it and arbitrates nothing.
 //
 // Two readings once carried here are withdrawn, and neither is to be revived
-// as an L4 figure. Diff Body A's arm, on 2026-09-06: that arm is the tool arm.
+// as an L4 figure. Diff Body A's arm, on 2026-09-06: that arm is the L3 spigot,
+// so its offset from C is across the arm rather than along it.
 // HDI-007010's measured DH J4 row d = 39.30 mm, on 2026-09-13: J2, J3 and J4
 // are parallel pitch axes, so d on the rows that follow them is a fit
 // parameter, and its closeness to 39.50 mm is coincidence (specs/003 § DH

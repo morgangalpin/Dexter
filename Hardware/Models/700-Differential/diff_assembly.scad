@@ -127,10 +127,11 @@
 //
 // Two readings taken here are withdrawn and are not to be revived as L4. Diff
 // Body A's arm centreline at ITS z = 11.000, whose distance below C this file
-// once called L4 (2026-09-05): that arm is the TOOL arm, on world +x inside the
-// HDI-950 gripper covers, while the L3 tube runs along world y at
-// (x=0, z=36.000) — perpendicular, and in different halves of the wrist, so the
-// difference spans no link. And HDI-007010's measured DH J4 row d = 39.30 mm,
+// once called L4 (2026-09-05): that arm is the L3 spigot — the far end of the
+// forearm tube, which ../robot_assembly.scad places it as — so C_OVER_ARM is
+// the offset ACROSS the arm from that tube's axis to the wrist centre, while L4
+// is a separation ALONG the arm. The two are perpendicular and no edit turns one
+// into the other. And HDI-007010's measured DH J4 row d = 39.30 mm,
 // which stood as independent corroboration until 2026-09-13: J2, J3 and J4 are
 // parallel pitch axes, so d on the rows that follow them is a fit parameter
 // rather than a measured offset, and its closeness to 39.50 mm is coincidence.
@@ -280,6 +281,35 @@ ROD_TOP = C.z + BEVEL_APEX_AXLE - (BRG_MR85[2] - MR85_PROUD);
 ROD_BOT = ROD_TOP - CF_ROD_LEN;
 
 // ---------------------------------------------------------------------------
+// What a parent composition reads out of this frame. `use` imports modules and
+// functions but not variables, so anything a parent needs is a function here
+// rather than a number it would have to keep in step by hand.
+//
+// Three features carry the wrist's placement, and ../robot_assembly.scad places
+// the whole arm by them. Diff Body A is the part that does NOT pivot with J4,
+// so it is the part the forearm reaches; its -x end is the 20 x 20 R4 spigot
+// the L3 tube slides over, and its axis is the tube's. The Diff End Pulley is
+// where a belt from the elbow lands, so which way it faces says which side the
+// belts run on.
+//
+// Neither mesh can be measured from outside in this frame. Body A takes no
+// transform here, so its own extents are its placed ones; the End Pulley's is
+// exported PULLEY_REF_Z0 above its module's base and is then placed off the
+// rod's far end, so only this file can say where it ends up.
+// ---------------------------------------------------------------------------
+BODY_A_MESH = [[-51.000, -30.000,  0.000], [30.000, 30.000, 22.000]];
+PULLEY_MESH = [[-13.000, -13.000, 17.500], [13.000, 13.000, 27.750]];
+
+function diff_body_a_box() = BODY_A_MESH;
+
+function diff_end_pulley_box() =
+    let (dz = ROD_BOT + PULLEY_FROM_TIP - PULLEY_REF_Z0)
+    [PULLEY_MESH[0] + [0, 0, dz], PULLEY_MESH[1] + [0, 0, dz]];
+
+// The spigot's axis, on Body A's shell symmetry plane at ARM_Z.
+function diff_arm_axis() = [0, 0, ARM_Z];
+
+// ---------------------------------------------------------------------------
 // Frames. Each turns a part's own coordinates into this one, so every
 // placement below reads as the number the part states and nothing else.
 // ---------------------------------------------------------------------------
@@ -372,8 +402,20 @@ module diff_assembly() {
         color(GEAR_C) up(ROD_BOT + PULLEY_FROM_TIP) part("720-003");
 
         // Output: the split bevel on the column, both halves on one transform.
+        //
+        // The halves mate, and both meshes honour it: at nominal they touch
+        // over the whole facing surface and interpenetrate nowhere, which is
+        // the coincidence DRAW_JOINT exists for — 991 contacts, every one of
+        // them in this one pair. The joint opens rather than shuts, and the
+        // meshes decide that: opening it leaves the two halves as separate
+        // closed shells, each carrying its own mesh's volume to the digit —
+        // 13020.518 and 6999.825 mm3, summing to what the pair measured
+        // before — while closing it by the same amount merges them into one
+        // shell that is not closed and loses 0.299 mm3 to the overlap. Neither
+        // part moves either way: they are bolted together, and 008.6 seats
+        // them face to face.
         color(GEAR_C) in_split() {
-            part("710-001");
+            down(DRAW_JOINT) part("710-001");
             part("710-002");
         }
 
@@ -457,14 +499,16 @@ diff_assembly();
 // ---------------------------------------------------------------------------
 
 // C's height above Diff Body A's arm centreline (see header). This was read as
-// L4 until 2026-09-05; that arm is the tool arm, so this is a J5-side offset
-// and no L4 reading. Kept because it is a stable relation to hang a tripwire on.
+// L4 until 2026-09-05; that arm is the L3 spigot, so this is an across-arm
+// offset and no L4 reading. ../robot_assembly.scad measures the same span in
+// the robot frame, as the L3 tube's axis over the J5 station, and reports the
+// residual. Kept because it is a stable relation to hang a tripwire on.
 ARM_Z       = 11.000;
 C_OVER_ARM  = C.z - ARM_Z;
 
 echo(str("C over Body A's arm centreline: ", C_OVER_ARM, " mm (C at ", C.z,
-         " over ", ARM_Z, "). NOT L4 — that arm is the tool arm. See ",
-         "specs/003 § Link lengths"));
+         " over ", ARM_Z, "). NOT L4 — that arm is the L3 spigot and this is ",
+         "an across-arm offset. See specs/003 § Link lengths"));
 echo(str("  L4 is specified at ", L4, " mm and is not read from this file; ",
          "Firmware/Defaults.make_ins still carries ", L4_SUPERSEDED, " mm"));
 echo(str("differential centre C=", C, "  geometry=", geometry,
