@@ -38,13 +38,13 @@ committed but does not yet reproduce its reference geometry.
 | DC-9 | [Performance characterization](#performance-characterization) | P3 | REQ-PRE/WS confirmation | The build [009.2](009.2-Test-Build-Manifest.md) specifies | `[TBD]` |
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Running the calibration on a build | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | A coupon print | `[Provisional]` |
-| DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | Re-cutting five parts to the specified counts | `[Provisional]` |
+| DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | — | `[Specified]` ✔ closed |
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | Mounting face to J2 on a build | `[TBD]` |
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, and DC-8 are closed. Every other item has been
-narrowed to the gap named in the table above, and each of those gaps is one of two kinds of work: **design
-authored here** (DC-12, DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11, DC-13).
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, and DC-12 are closed. Every other item
+has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds of work:
+**design authored here** (DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11, DC-13).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -55,10 +55,8 @@ part; the model mirror held the previous version's un-bolted base and is correct
 ([DC-11(i)](#procurement-data)). The measured base chain gives a J2 height the firmware's L1 does not
 agree with, which is tracked separately rather than left implicit inside a closed item.
 
-**DC-3 closed by decision, and it spawned DC-12.** Choosing the wrist's tooth-count split settled the
-ratio but did not re-cut the parts that carry it, and measurement showed those parts still hold the
-previous version's counts — so the authoring work that follows is tracked separately rather than left
-implicit inside a closed item.
+**DC-3 closed by decision, and DC-12 realized it.** The tooth-count split is carried by the parts that
+`config="revised"` builds; `config="previous"` still builds the previous version's counts.
 
 **DC-11(j) closed by decision, and it spawned DC-14.** Naming the inlet connector settled what plugs into
 the robot but not what holds the receptacle: the part chosen is panel-mount and the design has no panel, so
@@ -139,50 +137,48 @@ follow from it. `[Specified]` for the ratio and the tooth counts. The two belt l
 `[Provisional]`: they stand on a routing no file in this repository places, and are confirmed against the
 measured centre distance on the first build before ordering. The parts that must be re-cut to realize the
 decomposition are [DC-12](#wrist-pulley-rework); resolution, range and backlash on a physical build are
-[DC-9](#performance-characterization). **Do not print the four driven pulleys from the HD model set as
-they stand** — see DC-12.
+[DC-9](#performance-characterization). Print the wrist pulleys from `config="revised"` only — see DC-12.
 
 ## Wrist pulley rework
-**DC-12 · P2 · Requirement: REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)**
+**DC-12 · P2 · Requirement: REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — ✔ **closed**
 
-**Open:** the geometry that realizes the tooth-count decomposition specified in
-[004 § Wrist and differential](004-Mechanical-Architecture.md#wrist-and-differential-j4j5). The counts are
-decided; the parts still carry the previous version's, and two of them are load-bearing structure rather
-than plain pulleys, so this is authoring work rather than a parameter edit.
+**Closed by authoring.** `config="revised"` builds the tooth counts that
+[004 § Wrist and differential](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) specifies.
+`config="previous"` builds the previous version's 16T → 90T ‖ 40T → 40T = 5.625:1 train, which does not
+match `AxisCal` = 86400 ([006](006-Firmware-and-Calibration.md#drive-constants-axiscal)); it is kept as the
+reference the `dist` gates measure against and is not printed. Every printed GT2 tooth ring takes its form
+from one shared definition, [`gt2_pulley.scad`](../Hardware/Models/gt2_pulley.scad), which derives tip and
+root diameters from the tooth count.
 
-⚠️ **The shortfall is measured, not inferred.** Counting teeth on the HD models themselves
-(`scadmesh teeth`, on slices through each tooth band) returns **90T/90T** on the External pair (tip
-Ø 56.2 mm), **40T/40T** on the Internal pair (24.4 / 24.8 mm) and **40T** on both differential inputs
-(24.8 mm), against the bought 16T motor pulley. The train as modelled is therefore
-16T → 90T ‖ 40T → 40T = **5.625:1**, the previous version's figure — matching the wiki's `Joints.md`
-(`90 / 16`) and its `AxisCal` of 36000. **Printing this set and running it against `AxisCal` = 86400 would
-scale every commanded J4/J5 angle by 2.4.**
-
-| Part | From | To | What the change costs |
+| Part | `previous` | `revised` | Source |
 |---|---|---|---|
-| `#430-001` External Outer Pulley | 90T | **108T** | Tip Ø 56.8 → 68.2. Free-standing printed pulley; re-cut the ring on the existing hub |
-| `#430-002` External Inner Pulley | 90T | **108T** | Same, on the strake-tube hub |
-| `#720-003` Diff End Pulley | 40T | **80T** | Tip Ø 25.0 → 50.4 on a part `dist`-gated under DC-2 |
-| `#720-001` Diff Gear Shaft, integrated band | 40T | **80T** | Same, on the part that is *also* the J4 pivot axle |
-| `#730-001` Diff Body A | — | pulley chamber | Its wall sits at r ≈ 15.5 mm and must open to about r 27, widening the body ≈ 4 mm |
+| `#430-001` External Outer Pulley | 90T | **108T** | [`430-001_ExternalOuterPulley.scad`](../Hardware/Models/400-EndArm/430-001_ExternalOuterPulley.scad) |
+| `#430-002` External Inner Pulley | 90T | **108T** | [`430-002_ExternalInnerPulley.scad`](../Hardware/Models/400-EndArm/430-002_ExternalInnerPulley.scad) |
+| `#720-003` Diff End Pulley | 40T | **80T** | [`720-003_DiffEndPulley.scad`](../Hardware/Models/700-Differential/720-003_DiffEndPulley.scad) |
+| `#720-004` Diff Shaft Pulley | — | **80T** | [`720-004_DiffShaftPulley.scad`](../Hardware/Models/700-Differential/720-004_DiffShaftPulley.scad) |
+| `#720-001` Diff Gear Shaft | 40T input band | 40T spline band carrying `#720-004` | [`720-001_DiffGearShaft.scad`](../Hardware/Models/700-Differential/720-001_DiffGearShaft.scad) |
+| `#730-001` Diff Body A | measured chamber | opened pulley chamber | [`730-001_DiffBodyA.scad`](../Hardware/Models/700-Differential/730-001_DiffBodyA.scad) |
 
 `#421-001` and `#421-002` stay at **40T** — the Internal pair is what the decomposition holds fixed.
 
-Three consequences follow from the DC-2 contract and should not be discovered late. The 700-series changes
-belong in **`config="revised"` only**: `config="previous"` is what the `dist` gates in `render-all.rs`
-measure against the reference meshes, and a re-toothed pulley would read as a miss there by design.
-`PULLEY_TEETH` in [`diff_params.scad`](../Hardware/Models/700-Differential/diff_params.scad) is presently a
-bare `40` consumed by `gt2_pulley_teeth_2d()` alongside a measured `GT2_TIP_D` and a hand-set
-`GT2_GROOVE_C`; those three must become one config-dependent set derived from the tooth count before
-either value can move. And Diff Body A is the part `check_revised()` asserts against the
-**78 × 73.5 × 50.5 mm** cover envelope, so opening its chamber re-runs the one interface check the revised
-config exists to satisfy — the ≈64.4 mm width predicted in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) is an estimate that this work replaces
-with a rendered bounding box.
+The Diff Gear Shaft's 80T input is the separate ring `#720-004`: the shaft enters Diff Body A through the
+6705's Ø25 bore, which an 80T ring cannot pass. The ring keys on the shaft's 40T band as a spline and is
+set into the chamber before the shaft ([008.6](008-Assembly.md#0086-differential)). Diff Body A's M3
+screws sit outboard of the ring. Each part's dimensions, clearances, and what it keeps from its reference
+are stated in its `.scad` file.
 
-**Definition of done:** the five parts above re-cut in `config="revised"`, every part still rendering as
-one clean solid and previewing without warnings, Diff Body A asserting inside the cover envelope, the
-`previous` config and its `dist` gates untouched, and `diff_assembly.scad` placing the enlarged pulleys
-without interference. `[Provisional]`.
+[`render-all.rs`](../Hardware/Models/700-Differential/render-all.rs) verifies the revised set: every
+revised part renders as one clean solid, the tooth counts are counted on the rendered meshes, the extents
+`diff_assembly.scad` places by agree with the renders, and Diff Body A's intersection with `#720-004` is
+empty. [`robot_assembly.scad`](../Hardware/Models/robot_assembly.scad) asserts Diff Body A inside the
+forearm skin in both configurations.
+
+**Definition of done — met:** the five parts re-cut in `config="revised"`, every part rendering as one
+clean solid and previewing without warnings, Diff Body A asserting inside the envelope, the `previous`
+config and its `dist` gates untouched, and `diff_assembly.scad` placing the enlarged pulleys without
+interference. No file in this repository places the External pulleys against the elbow, so their
+clearance there is confirmed on the first build together with the belt lengths
+([DC-3](#wrist-reduction-ratio)). `[Specified]`.
 
 ## Base plate
 **DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)** — ✔ **closed**

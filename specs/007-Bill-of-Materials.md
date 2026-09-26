@@ -25,10 +25,10 @@ and the source those two are generated from; each carries its own regeneration p
 | [007.3](#0073-harmonic-drive-motors) | Harmonic Drive Motors (J1, J2) | D | — |
 | [007.4](#0074-main-pivot) | Main Pivot (J2) | C | — |
 | [007.5](#0075-arm-body) | Arm Body (L2) | B | — |
-| [007.6](#0076-differential) | Differential (J4/J5) | H | [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
-| [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| [007.6](#0076-differential) | Differential (J4/J5) | H | — |
+| [007.7](#0077-end-arm-hub) | End Arm Hub (L3) | E | — |
 | [007.8](#0078-external-gear) | External Gear (J3 drive) | G | — |
-| [007.9](#0079-external-gear-mount--differential-motors) | Ex Gear Mount + Diff Motors (J4/J5) | I | [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| [007.9](#0079-external-gear-mount--differential-motors) | Ex Gear Mount + Diff Motors (J4/J5) | I | — |
 | [007.10](#00710-wire-harness) | Wire Harness | J | [DC-7](009-Design-Completion.md#motor-control-pcb) |
 | [007.11](#00711-tool-interface--gripper) | Tool Interface / Gripper | K–O | — |
 
@@ -155,9 +155,10 @@ parts list realizes the previous version's differential, built as a working subs
 | #710-005 | 25 × 5.6 × 2.5 mm CF strake | Fabricate | 3 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #710-006 | AXK0819 thrust bearing (1/4") | Off the shelf | 1 | |
 | #710-007 | AS thrust races | Off the shelf | 2 | |
-| #720-001 | Diff Gear Shaft | 3D print | 1 | Integrated belt pulley is **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
+| #720-001 | Diff Gear Shaft | 3D print | 1 | Its 40T band keys `#720-004` |
 | #720-002 | Diff Gear Axle | 3D print | 1 | |
-| #720-003 | Diff End Pulley | 3D print | 1 | **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 40T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
+| #720-003 | Diff End Pulley | 3D print | 1 | **80T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) |
+| #720-004 | Diff Shaft Pulley | 3D print | 1 | **80T GT2** — the Diff Gear Shaft's input ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
 | #720-006 | 96 × 8 × 6 mm CF rod | Fabricate | 1 | |
 | #730-001 | Diff Body A | 3D print | 1 | |
 | #730-002 | Diff Body B | 3D print | 1 | |
@@ -194,7 +195,7 @@ specific to this version.
 | #421-004 | 81 × 4.4 × 1.5 mm CF strake | Fabricate | 3 | Cut from [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) — .057″ × .177″ stock |
 | #421-005 | 940 mm (470T) × 6 mm GT2 belt | Off the shelf | 2 | Stage 2, 40T → 80T. Was 90 cm at 40T → 40T; length derived in [007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys) — confirm against the measured centre distance before ordering |
 | #421-006 | Pulley Spacer | 3D print | 2 | |
-| #430-001 | External Outer Pulley | 3D print | 1 | **108T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5); the model is still 90T ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
+| #430-001 | External Outer Pulley | 3D print | 1 | **108T GT2** per [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) |
 | #430-002 | External Inner Pulley | 3D print | 1 | **108T GT2**, as `#430-001` |
 | #430-004 | 1140 mm (570T) × 6 mm GT2 belt | Off the shelf | 2 | Stage 1, 16T → 108T. Was 112 cm at 16T → 90T; length derived in [007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys) — confirm against the measured centre distance before ordering |
 | #620-002 | MR128 bearing | Off the shelf | 2 | |
@@ -397,9 +398,7 @@ not merely where from.
   [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate); the drawing comes off
   [`110-004_BaseMountingPlate.scad`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad).
 - **Wrist driven pulleys** — printed, not purchased ([007.2](007.2-Printed-Parts.md#end-arm-hub-and-pulleys--0077)).
-  Tooth counts are specified in [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5), but **the model files
-  still carry the previous version's** — re-cut them per
-  [DC-12](009-Design-Completion.md#wrist-pulley-rework) before printing, and confirm both belt lengths
-  against the measured centre distance before ordering.
+  Tooth counts are specified in [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5) and built by
+  `config="revised"`. Confirm both belt lengths against the measured centre distance before ordering.
 - **3D printed parts** — model files are not held in this repository. Sources, print quantities, and the
   material of record are in [007.2](007.2-Printed-Parts.md#model-file-sources).

@@ -34,6 +34,22 @@
 //
 // House style is followed except for edge breaks: no chamfer or roundover is
 // added for printability, because every edge here has to match a measurement.
+//
+// "revised" (DC-12) opens the pulley chamber for the 80T #720-004 ring and
+// changes nothing else a mating part sees: the bearing ladder, the arm, the
+// slot, the pins and the pocket track are the measured ones. Three features
+// move to make room:
+//   - The chamber wall, the Ø28 relief, becomes RELIEF_R, and the arm's
+//     concave end follows it.
+//   - The +X rib, which stands inside an 80T ring's radius, is replaced by two
+//     posts either side of the chamber. That leaves +X open between the plates:
+//     the window the ring is set in through (specs/008 § 008.6). The lower plate
+//     is hulled out to the posts; the upper one carries a pad over each post
+//     instead, because a hull there would floor the end-stop pockets, which
+//     are cut through the top plate and must stay through.
+//   - The two M3 screws move out along the arm, from x = -25 — inside the
+//     ring's flange radius and across the belts' path into the slot — to
+//     SCREW_X, where the arm web still holds them with the measured wall.
 
 include <diff_params.scad>
 
@@ -56,8 +72,20 @@ PLATE_LO     = [0.0, 6.0];
 PLATE_HI     = [16.0, 20.0];
 TOP_PLATE    = [20.0, H];
 
-RIB          = [16.0, 20.0, 6.0, 16.0];  // [r_in, r_out, z_low, z_high]
-RELIEF_R     = 14.0;            // Ø28 relief the arm's concave end wraps
+RIB          = [16.0, 20.0, 6.0, 16.0];  // [r_in, r_out, z_low, z_high]; "previous"
+
+// The pulley chamber: the relief the arm's concave end wraps. "previous" is the
+// measured Ø28, which clears the 40T belt's back by 0.885; "revised" clears
+// the 80T belt's back by at least CHAMBER_CLEAR.
+CHAMBER_CLEAR = 1.5;
+RELIEF_R     = config == "previous" ? 14.0 : 27.5;
+assert(config == "previous"
+       || RELIEF_R - (PULLEY_TIP_D / 2 + GT2_BELT_BACK) >= CHAMBER_CLEAR,
+       "the pulley chamber does not clear the input pulley's belt");
+
+// "revised": the two posts that replace the rib, [half-length x, y_in, y_out],
+// one each side of the chamber and spanning the open middle.
+POST         = [8.0, RELIEF_R, RELIEF_R + 4.0];
 
 // Arm. The tip is x = ARM_TIP; "previous" reproduces the reference's 80.984 mm
 // overall width, "revised" trims the arm to fit the HDI-940 cover envelope.
@@ -74,7 +102,9 @@ SLOT         = [3.0, 8.0, 14.0, -12.0];    // [half-width y, z_lo, z_hi, x_inner
 MOUTH_Y      = 6.350;             // mouth half-width; the flare runs at 45 deg
 MOUTH_Z      = [3.348, 18.652];   // mouth z limits (11 -/+ 7.652)
 
-SCREW_POS    = [[-25.026, 8.692], [-25.027, -8.713]];
+SCREW_X      = -30.0;             // "revised" screw station on the arm
+SCREW_POS    = config == "previous" ? [[-25.026, 8.692], [-25.027, -8.713]]
+                                    : [[SCREW_X, 8.7], [SCREW_X, -8.7]];
 SCREW_CLEAR  = [4.598, 18.008];   // Ø, up to this z
 SCREW_FLAT   = 1.800;             // clearance holes are D-shaped: flat this far
                                   // from the axis, on the outboard side
@@ -89,6 +119,14 @@ POCKET       = [20.0, 27.0, 2.5, 2.0, 20.0];  // [r_in, r_out, chord, fillet, fl
 POCKET_ANG   = [30, -30, 90, -90];
 
 echo(str("Diff Body A width=", BODY_A_LEN, " mm  arm tip x=", ARM_TIP));
+for (p = SCREW_POS)
+    assert(norm(p) - SCREW_CLEAR[0] / 2 - RELIEF_R >= 1.0,
+           "a retaining screw breaks into the pulley chamber");
+
+// The part's extent, for the assembly.
+function body_a_box() =
+    let (w = config == "previous" ? TOP_D / 2 : max(TOP_D / 2, POST[2]))
+    [[ARM_TIP, -w, 0], [TOP_D / 2, w, H]];
 assert(ARM_TIP < min(PIN_POS[0][0], SCREW_POS[0][0]) - 2,
        "Body A arm is too short to carry its screw and pin features");
 
@@ -130,7 +168,7 @@ module arm_top_2d() {
 // band with nothing but the rib (009 § geometry verification records the
 // same trap for exactly collinear vertices).
 module arm_mid_2d() {
-    a0 = atan2(-11.0, -8.660) + 360;   // where the flank meets the relief
+    a0 = atan2(-11.0, -sqrt(RELIEF_R^2 - 11.0^2)) + 360;   // flank meets relief
     polygon(concat(
         [[ARM_TIP, -10.0], [ARM_STEP_X, -10.0], [ARM_STEP_X, -11.0]],
         arc_pts(RELIEF_R, a0, 360 - a0),
@@ -189,10 +227,33 @@ module pocket_2d() {
                        arc_pts(ro, a_out, -a_out, 32)));
 }
 
-module plate(zspan, hub_d, join_y) {
+// One post's footprint, on +Y; mirrored for -Y.
+module post_2d() {
+    polygon([[-POST[0], POST[1]], [POST[0], POST[1]],
+             [POST[0], POST[2]], [-POST[0], POST[2]]]);
+}
+
+// The plate's hub: the measured circle, or in "revised" that circle joined to
+// both posts — hulled to them, or with a pad over each where the plate lies
+// under the pocket track (POCKET[1] < POST[1] keeps the pads out of it).
+module plate_hub_2d(hub_d, hulled) {
+    if (config == "previous") circle(d = hub_d);
+    else if (hulled) hull() {
+        circle(d = hub_d);
+        post_2d();
+        mirror([0, 1]) post_2d();
+    }
+    else {
+        circle(d = hub_d);
+        post_2d();
+        mirror([0, 1]) post_2d();
+    }
+}
+
+module plate(zspan, hub_d, join_y, hulled) {
     translate([0, 0, zspan[0]]) linear_extrude(zspan[1] - zspan[0])
         union() {
-            circle(d = hub_d);
+            plate_hub_2d(hub_d, hulled);
             arm_plate_2d(join_y);
         }
 }
@@ -204,14 +265,21 @@ module plate(zspan, hub_d, join_y) {
 module diff_body_a() {
     difference() {
         union() {
-            plate(PLATE_LO, HUB_D, 17.361);
-            plate(PLATE_HI, HUB_D, 17.361);
+            plate(PLATE_LO, HUB_D, 17.361, true);
+            plate(PLATE_HI, HUB_D, 17.361, false);
             translate([0, 0, TOP_PLATE[0]]) linear_extrude(TOP_PLATE[1] - TOP_PLATE[0])
                 union() {
                     circle(d = TOP_D);
                     arm_top_2d();
                 }
-            translate([0, 0, RIB[2]]) linear_extrude(RIB[3] - RIB[2]) rib_2d();
+            if (config == "previous")
+                translate([0, 0, RIB[2]]) linear_extrude(RIB[3] - RIB[2]) rib_2d();
+            else
+                translate([0, 0, PLATE_LO[1] - epsilon])
+                    linear_extrude(PLATE_HI[0] - PLATE_LO[1] + 2 * epsilon) {
+                        post_2d();
+                        mirror([0, 1]) post_2d();
+                    }
             translate([0, 0, RIB[2]]) linear_extrude(RIB[3] - RIB[2]) arm_mid_2d();
             // The arm's outer section, rounded in the Y-Z plane.
             translate([ARM_TIP, 0, ARM_FAR_Z]) yrot(90)
@@ -255,4 +323,5 @@ module diff_body_a() {
     }
 }
 
+echo(body_a_box = body_a_box());   // render-all.rs checks it against the render
 diff_body_a();

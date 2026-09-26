@@ -42,14 +42,14 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`100-Base/`](100-Base/) | 6 | 6 | Base clamp, mount, stator holder, code disc |
 | [`200-ArmBody/`](200-ArmBody/) | 9 | 8 | Arm body, stator holder and balancers, belt directors |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
-| [`400-EndArm/`](400-EndArm/) | 10 | 11 | Axis intersection, hub, internal and external pulleys |
+| [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 6 | External gear, stator holder, mount and nut holders |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 3 | Wave gen coupler, flex spline attach and cap |
-| [`700-Differential/`](700-Differential/) | 9 | 13 | Split gears, diff gear shaft and axle, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
+| [`700-Differential/`](700-Differential/) | 10 | 14 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 10 | Solder jigs and glue-rig jig bodies |
-| [`Reference/`](#reference) | — | 224 | Not printed for a build. See below |
+| [`Reference/`](#reference) | — | 226 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -72,7 +72,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 9 | The original meshes of parts that now have parametric source. `700-Differential/` only so far; a group's meshes move here when its `.scad` files land, and `render-all.rs` measures each render against them |
+| [`Reference/meshes/`](Reference/meshes/) | 11 | The original meshes of parts that now have parametric source: `700-Differential/`, and `400-EndArm/`'s two External pulleys. A part's mesh moves here when its `.scad` lands; `render-all.rs` measures each `700-Differential/` render against its mesh, and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 1 | Earlier revisions of parts the build no longer uses. `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects

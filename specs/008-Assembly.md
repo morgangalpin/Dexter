@@ -166,10 +166,10 @@ Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 Parts: [007.6](007-Bill-of-Materials.md#0076-differential). Parametric source in
 [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/).
 
-**Before printing:** choose the parameter set. `config="previous"` builds the previous version's proven
-differential (does not fit the `HDI-940` covers — omit or re-cut them); `config="revised"` fits the covers
-([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)) but is unproven on
-a physical build until the DC-9 checklist passes. The former `710-002` scale defect is resolved
+**Before printing:** print `config="revised"`. It carries the 80T inputs and fits the `HDI-940` covers
+([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)), and is unproven on
+a physical build until the DC-9 checklist passes. `config="previous"` nets the previous version's 5.625:1
+wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pulley-rework)). The former `710-002` scale defect is resolved
 ([DC-11(f)](009-Design-Completion.md#procurement-data)).
 
 1. Insert one 6705 and one 6703 bearing into Diff Body A; press to seat.
@@ -188,7 +188,11 @@ a physical build until the DC-9 checklist passes. The former `710-002` scale def
     cut from that part's base on r 13.000–15.500 at 90°, 210° and 330°, and run up to z 8.000; the Split
     Gear Bottom carries no slot ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 12. Press the Diff Gear Shaft into Diff Body B.
-13. Press Diff Body B into Diff Body A (tight, fully seated).
+13. Coat the bore of the Diff Shaft Pulley (`#720-004`) with epoxy, and set it in Diff Body A's pulley
+    chamber through the +X window, centred on the 6705. Press Diff Body B into Diff Body A (tight, fully
+    seated), turning the Diff Gear Shaft until its 40T band enters the pulley's bore; the band passes the
+    6705 dry, so no epoxy reaches the bearing. Through the window, set the pulley flush with both ends of
+    the band before the epoxy cures.
 14. Feed all 6 tool wires through Diff Body B: Red/White/Blue through the top entrance and out one side of the
     shaft; Black/Green/Yellow through the bottom and out the other side (only 3 fit per channel). Confirm the
     wires slide freely before continuing.
@@ -278,13 +282,12 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 ## 008.9 Belts
 Parts: GT2 belts/pulleys from [007.7](007-Bill-of-Materials.md#0077-end-arm-hub) and
 [007.8](007-Bill-of-Materials.md#0078-external-gear). Belt lengths are derived rather
-than measured ([007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys)), and the driven pulleys must be
-re-cut before printing ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
+than measured ([007.1 § 3](007.1-Parts-Catalog.md#3-belts-and-pulleys)), and the driven pulleys are
+printed from `config="revised"` ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
 
 ⚠️ **Count the pulley teeth before fitting the belts** and check them against the specified train in
 [004 § Wrist](004-Mechanical-Architecture.md#wrist-and-differential-j4j5). Parts carrying the previous
-version's counts will scale every commanded wrist angle, and they are what the model set still holds
-([DC-12](009-Design-Completion.md#wrist-pulley-rework)). Verify J4/J5 resolution empirically after
+version's counts — what `config="previous"` builds — scale every commanded wrist angle by 2.4. Verify J4/J5 resolution empirically after
 calibration regardless.
 
 1. Slide the 2 16T × 5 mm GT2 pulleys onto the external motors.

@@ -813,3 +813,43 @@ anything version 3 does not independently specify
   fixes the component set internally and says nothing about how far its mating parts may sit from nominal —
   so the band is an assembly stack-up taken up on the Stator Holder all-thread, which
   [009.2](specs/009.2-Test-Build-Manifest.md) Stage 2 records.
+
+### CR-3A18: Wrist pulleys re-cut to the specified tooth counts
+
+- **Affects:** [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
+  [004 §Differential interface](specs/004-Mechanical-Architecture.md#differential-interface),
+  [007 §7.6](specs/007-Bill-of-Materials.md#0076-differential),
+  [007 §7.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub),
+  [007.1 §3](specs/007.1-Parts-Catalog.md#3-belts-and-pulleys),
+  [007.2](specs/007.2-Printed-Parts.md#printed-parts),
+  [008 §8.6](specs/008-Assembly.md#0086-differential), [008 §8.9](specs/008-Assembly.md#0089-belts),
+  [DC-3](specs/009-Design-Completion.md#wrist-reduction-ratio),
+  [DC-12](specs/009-Design-Completion.md#wrist-pulley-rework),
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md),
+  [009.2](specs/009.2-Test-Build-Manifest.md),
+  `Hardware/Models/gt2_pulley.scad` (new), `Hardware/Models/robot_assembly.scad`,
+  `Hardware/Models/400-EndArm/` (`external_pulley.scad`, `430-001_ExternalOuterPulley.scad`,
+  `430-002_ExternalInnerPulley.scad`, all new; both meshes moved to `Reference/meshes/400-EndArm/`),
+  `Hardware/Models/700-Differential/` (`720-004_DiffShaftPulley.scad` new; `diff_params.scad`,
+  `720-001_DiffGearShaft.scad`, `720-003_DiffEndPulley.scad`, `730-001_DiffBodyA.scad`,
+  `diff_assembly.scad`, `render-meshes.rs`, `render-all.rs`), `Hardware/Models/README.md`,
+  `Hardware/Models/PART-INDEX.md`, `Hardware/Models/MANIFEST.csv`.
+- **Was:** The model set carried the previous version's counts — 90T External pulleys and 40T
+  differential inputs, netting 5.625:1 against an `AxisCal` of 86400 — so a wrist printed from it scaled
+  every commanded J4/J5 angle by 2.4. The External pulleys existed only as meshes, and `diff_params.scad`
+  held one measured 40T tooth ring.
+- **Now:** `config="revised"` builds 108T External pulleys, an 80T Diff End Pulley, and a new 80T ring,
+  `#720-004` Diff Shaft Pulley, keyed on the Diff Gear Shaft's 40T band; Diff Body A's pulley chamber is
+  opened to clear them, widening it from 60.0 to 63.0 mm, and its M3 screws move outboard of the ring.
+  Every printed GT2 ring derives from `gt2_pulley.scad`. `render-all.rs` counts the revised teeth on the
+  rendered meshes, checks the assembly's placing extents against the renders, and requires Diff Body A
+  and `#720-004` not to intersect; `robot_assembly.scad` asserts Diff Body A inside the forearm skin.
+  `config="previous"` and its `dist` gates are unchanged.
+- **Driver:** Realize [CR-3A8](#cr-3a8-wrist-tooth-count-decomposition-design-status-consolidated-into-009)'s
+  decomposition so the printed wrist matches `AxisCal`.
+- **Status:** `[Specified]` — DC-12 is closed. The External pulleys' clearance at the elbow is not placed
+  by any file in the repository and is confirmed on the first build with the belt lengths.
+- **Re-derive:** Print every wrist pulley and Diff Body A from `config="revised"`; a `config="previous"`
+  print does not match `AxisCal`. [008.6](specs/008-Assembly.md#0086-differential) step 13 now sets
+  `#720-004` in Body A before the shaft enters it. [009.2](specs/009.2-Test-Build-Manifest.md) has no
+  authoring gate left on the wrist.

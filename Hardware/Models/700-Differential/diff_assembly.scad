@@ -196,6 +196,7 @@ use <710-004_RotateCodeDisk.scad>
 use <720-001_DiffGearShaft.scad>
 use <720-002_DiffGearAxle.scad>
 use <720-003_DiffEndPulley.scad>
+use <720-004_DiffShaftPulley.scad>
 use <730-001_DiffBodyA.scad>
 use <730-002_DiffBodyB.scad>
 
@@ -207,6 +208,9 @@ geometry = "stl";   // [stl, scad]
 J4_ANG = 0;         // [-90:1:90]
 // Draw the bearings and the CF rod.
 show_hardware = true;
+// Draw only where two placed parts overlap, e.g. ["730-001", "720-004"].
+// render-all.rs sets it and requires an empty result; [] draws the assembly.
+interference = [];
 
 /* [Hidden] */
 
@@ -292,19 +296,17 @@ ROD_BOT = ROD_TOP - CF_ROD_LEN;
 // where a belt from the elbow lands, so which way it faces says which side the
 // belts run on.
 //
-// Neither mesh can be measured from outside in this frame. Body A takes no
-// transform here, so its own extents are its placed ones; the End Pulley's is
-// exported PULLEY_REF_Z0 above its module's base and is then placed off the
-// rod's far end, so only this file can say where it ends up.
+// Each part states its own extent for the configuration in force. Body A takes
+// no transform here, so its extent is its placed one; the End Pulley's is
+// stated in its reference frame, PULLEY_REF_Z0 above its module's base, and is
+// then placed off the rod's far end, so only this file can say where it ends up.
 // ---------------------------------------------------------------------------
-BODY_A_MESH = [[-51.000, -30.000,  0.000], [30.000, 30.000, 22.000]];
-PULLEY_MESH = [[-13.000, -13.000, 17.500], [13.000, 13.000, 27.750]];
-
-function diff_body_a_box() = BODY_A_MESH;
+function diff_body_a_box() = body_a_box();
 
 function diff_end_pulley_box() =
-    let (dz = ROD_BOT + PULLEY_FROM_TIP - PULLEY_REF_Z0)
-    [PULLEY_MESH[0] + [0, 0, dz], PULLEY_MESH[1] + [0, 0, dz]];
+    let (dz = ROD_BOT + PULLEY_FROM_TIP - PULLEY_REF_Z0,
+         b  = end_pulley_box_ref())
+    [b[0] + [0, 0, dz], b[1] + [0, 0, dz]];
 
 // The spigot's axis, on Body A's shell symmetry plane at ARM_Z.
 function diff_arm_axis() = [0, 0, ARM_Z];
@@ -343,10 +345,11 @@ module in_axle() {
 // ---------------------------------------------------------------------------
 // The printed parts, from whichever source `geometry` selects.
 //
-// Two meshes are not in their module's frame. render-all.rs exports each
-// file's own top-level call and two of those carry a placement: 720-001 is
-// exported in the reference's Y-up orientation and 720-003 in the reference's
-// z, PULLEY_REF_Z0 above its module's base. Undoing both here is what lets
+// Three meshes are not in their module's frame. render-all.rs exports each
+// file's own top-level call and three of those carry a placement: 720-001 is
+// exported in the reference's Y-up orientation, 720-003 in the reference's
+// z, PULLEY_REF_Z0 above its module's base, and 720-004 based at z = 0 for
+// printing, BAND_Z[0] below its module's frame. Undoing each here is what lets
 // every placement above be written once and mean the same thing either way.
 // ---------------------------------------------------------------------------
 module part(id) {
@@ -355,6 +358,8 @@ module part(id) {
             xrot(90) import("out/asm/720-001.stl", convexity = 10);
         else if (id == "720-003")
             down(PULLEY_REF_Z0) import("out/asm/720-003.stl", convexity = 10);
+        else if (id == "720-004")
+            up(BAND_Z[0]) import("out/asm/720-004.stl", convexity = 10);
         else
             import(str("out/asm/", id, ".stl"), convexity = 10);
     }
@@ -365,6 +370,7 @@ module part(id) {
     else if (id == "720-001") diff_gear_shaft();
     else if (id == "720-002") diff_gear_axle();
     else if (id == "720-003") diff_end_pulley();
+    else if (id == "720-004") diff_shaft_pulley();
     else if (id == "730-001") diff_body_a();
     else if (id == "730-002") diff_body_b();
     else assert(false, str("no such part: ", id));
@@ -387,19 +393,21 @@ CARBON_C = [0.16, 0.16, 0.18];
 // opening this file on its own is unchanged.
 module diff_assembly() {
     // Static: the wrist frame the whole differential hangs on.
-    color(BODY_C) part("730-001");
+    color(BODY_C) placed("730-001");
 
     j4() {
         // The pivoting carrier, and the J4 encoder rim it turns over Body A's
         // end-stop track.
         color(BODY_C) in_body_b() part("730-002");
 
-        // Input B: the hollow shaft, its integrated 40T pulley and its bevel.
-        color(GEAR_C) in_shaft() part("720-001");
+        // Input B: the hollow shaft, its 40T band and its bevel. In "revised"
+        // the band is a spline and the 80T ring over it is the pulley.
+        color(GEAR_C) placed("720-001");
+        if (config == "revised") color(GEAR_C) placed("720-004");
 
         // Input A: the CF rod, its bevel at the top and its pulley at the bottom.
         color(GEAR_C) in_axle() part("720-002");
-        color(GEAR_C) up(ROD_BOT + PULLEY_FROM_TIP) part("720-003");
+        color(GEAR_C) placed("720-003");
 
         // Output: the split bevel on the column, both halves on one transform.
         //
@@ -492,7 +500,19 @@ module diff_assembly() {
     }
 }
 
-diff_assembly();
+// Where Body A and the input-pulley parts sit, stated once for the assembly and
+// for the interference check. The carrier's J4 turn is the caller's.
+module placed(id) {
+    if (id == "730-001") part(id);
+    else if (id == "720-001" || id == "720-004") in_shaft() part(id);
+    else if (id == "720-003") up(ROD_BOT + PULLEY_FROM_TIP) part(id);
+    else assert(false, str("placed() does not place ", id));
+}
+
+if (len(interference) == 2)
+    intersection() { placed(interference[0]); placed(interference[1]); }
+else
+    diff_assembly();
 
 // ---------------------------------------------------------------------------
 // What the placement computes.
@@ -541,7 +561,14 @@ assert(C.x == 0 && C.y == 0, "J4 and J5 axes must intersect at C");
 // the placement is what would silently stop being true if a frame were edited.
 assert(BEVEL_APEX_SPLIT > -BEVEL_INNER_TIP.y,
        "the Split Gear's apex is inside its own teeth - check its frame");
-// There is no envelope assert on Body A. One stood here until 2026-09-06 and
-// checked the wrong cover: Body A is enclosed by the HDI-950 gripper covers,
-// not by HDI-940 — see 004 § Differential interface, which establishes the
-// clearance by measurement rather than by a bound in this file.
+// Body A's envelope is the forearm skin, which is in the robot frame, so
+// ../robot_assembly.scad asserts it (004 § Differential interface).
+//
+// The End Pulley hangs off the rod's far end, below Body A: their extents must
+// not overlap along J4, whatever the pulley's size. #720-004 sits inside Body
+// A's chamber, which no extent can check; render-all.rs renders that pair's
+// overlap instead.
+assert(diff_end_pulley_box()[1].z < diff_body_a_box()[0].z,
+       "the Diff End Pulley reaches Diff Body A");
+echo(str("Diff End Pulley top z=", diff_end_pulley_box()[1].z,
+         ", Diff Body A base z=", diff_body_a_box()[0].z));

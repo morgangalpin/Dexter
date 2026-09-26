@@ -1,7 +1,9 @@
 #!/bin/bash
 //! 2>/dev/null; command -v rust-script >/dev/null 2>&1 || { echo "Error: Install rust-script with: cargo install rust-script" >&2; exit 1; }; exec rust-script "$0" "$@"
-//! Render every 700-Differential part in both configurations and verify the
-//! faithful ("previous") renders against their reference meshes.
+//! Render every 700-Differential part in both configurations, verify the
+//! faithful ("previous") renders against their reference meshes, and verify
+//! the "revised" renders against what DC-12 re-cut: tooth counts, stated
+//! extents, and the pulley chamber's clearance.
 //!
 //! This is the verification contract behind DC-2 in
 //! `specs/009-Design-Completion.md`. It needs OpenSCAD (set `$OPENSCAD` to
@@ -333,6 +335,70 @@ const DIAMS: [DiamCheck; 6] = [
 
 const DIAM_TOL: f64 = 0.05;
 
+/// The printed parts of the revised configuration, rendered to `out/revised/`.
+/// #720-004 exists in this configuration only. The two External pulleys are
+/// the elbow half of the same DC-12 train, so they are verified here too.
+const REVISED_PARTS: [(&str, &str); 12] = [
+    ("710-001", "710-001_SplitGearTop.scad"),
+    ("710-002", "710-002_SplitGearBottom.scad"),
+    ("710-003", "710-003_DiffKeeper.scad"),
+    ("710-004", "710-004_RotateCodeDisk.scad"),
+    ("720-001", "720-001_DiffGearShaft.scad"),
+    ("720-002", "720-002_DiffGearAxle.scad"),
+    ("720-003", "720-003_DiffEndPulley.scad"),
+    ("720-004", "720-004_DiffShaftPulley.scad"),
+    ("730-001", "730-001_DiffBodyA.scad"),
+    ("730-002", "730-002_DiffBodyB.scad"),
+    ("430-001", "../400-EndArm/430-001_ExternalOuterPulley.scad"),
+    ("430-002", "../400-EndArm/430-002_ExternalInnerPulley.scad"),
+];
+
+/// The DC-12 tooth counts, on the revised renders: 16T -> 108T at the elbow
+/// and 40T -> 80T at the wrist. The shaft's band stays 40T as the spline
+/// #720-004 is keyed on. 430-001 is sectioned clear of its access holes.
+const REVISED_COUNTS: [CountCheck; 6] = [
+    CountCheck { label: "430-001 108T GT2 (revised)",
+                 args: &["out/revised/430-001.stl", "--band", "33.0,34.3",
+                         "--slice-at", "28.5", "--center", "0,0"],
+                 key: "radius_peaks", expect: 108 },
+    CountCheck { label: "430-002 108T GT2 (revised)",
+                 args: &["out/revised/430-002.stl", "--band", "33.0,34.3",
+                         "--slice-at", "24.0", "--center", "0,0"],
+                 key: "radius_peaks", expect: 108 },
+    CountCheck { label: "720-003 80T GT2 (revised)",
+                 args: &["out/revised/720-003.stl", "--band", "24.3,25.3",
+                         "--slice-at", "23.5", "--center", "0,0"],
+                 key: "radius_peaks", expect: 80 },
+    CountCheck { label: "720-004 80T GT2 (revised)",
+                 args: &["out/revised/720-004.stl", "--band", "24.3,25.3",
+                         "--slice-at", "4.0", "--center", "0,0"],
+                 key: "radius_peaks", expect: 80 },
+    CountCheck { label: "720-004 40T spline bore (revised)",
+                 args: &["out/revised/720-004.stl", "--band", "11.5,12.8",
+                         "--slice-at", "4.0", "--center", "0,0"],
+                 key: "radius_peaks", expect: 40 },
+    CountCheck { label: "720-001 40T band (revised)",
+                 args: &["out/revised/720-001.stl", "--axis", "y", "--band", "11.5,12.7",
+                         "--slice-at", "36.0", "--center", "0,0"],
+                 key: "radius_peaks", expect: 40 },
+];
+
+/// A part that states its own extent for the assemblies to read: the file
+/// echoes `<name> = [[min], [max]]`, and the render's bounding box must agree.
+/// This is what keeps `robot_assembly.scad`'s envelope assert on Body A, and
+/// `diff_assembly.scad`'s End Pulley clearance, measuring the parts themselves.
+const EXTENTS: [(&str, &str, &str); 2] = [
+    ("730-001", "730-001_DiffBodyA.scad", "body_a_box"),
+    ("720-003", "720-003_DiffEndPulley.scad", "end_pulley_box_ref"),
+];
+
+const EXTENT_TOL: f64 = 0.02;
+
+/// Pairs of placed parts that must not overlap, rendered as their intersection
+/// from source. The ring sits inside Body A's chamber, where no extent check can
+/// reach.
+const INTERFERENCE: [(&str, &str); 1] = [("730-001", "720-004")];
+
 /// Resolve a tool: `$env_key` wins, then the first existing candidate
 /// (resolved relative to `dir`), then the bare name via `$PATH`.
 fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> String {
@@ -420,6 +486,11 @@ fn render(scad: &str, out_stl: &str, config: &str, ctx: &Ctx,
           tally: &mut Tally) -> Result<()> {
     let define = format!("config=\"{config}\"");
     let r = run(&ctx.openscad, &["-o", out_stl, "-D", &define, scad], &ctx.dir)?;
+    judge(&r, scad, config, tally)
+}
+
+/// Hold a finished OpenSCAD run to exiting cleanly and rendering silently.
+fn judge(r: &Run, scad: &str, config: &str, tally: &mut Tally) -> Result<()> {
     if !r.ok {
         bail!("OpenSCAD failed rendering {scad} ({config}):\n{}",
               r.stderr.trim_end());
@@ -527,8 +598,8 @@ fn check_dist_gates(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
-fn check_counts(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    for c in &COUNTS {
+fn check_counts(ctx: &Ctx, tally: &mut Tally, counts: &[CountCheck]) -> Result<()> {
+    for c in counts {
         let mut args = vec!["teeth"];
         args.extend_from_slice(c.args);
         let (_, json) = sm_json(&args, ctx)?;
@@ -573,6 +644,78 @@ fn check_assembly(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
         let out_csg = format!("out/assembly-{config}.csg");
         let ok = render("diff_assembly.scad", &out_csg, config, ctx, tally).is_ok();
         tally.record(&format!("assembly parameters and assertions ({config})"), ok);
+        // The arm composition, which holds Body A to the forearm skin.
+        let out_csg = format!("out/robot-{config}.csg");
+        let ok = render("../robot_assembly.scad", &out_csg, config, ctx, tally).is_ok();
+        tally.record(&format!("robot assembly parameters and assertions ({config})"), ok);
+    }
+    Ok(())
+}
+
+/// Every part in the revised configuration, then the DC-12 counts on them.
+fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
+    for (id, scad) in &REVISED_PARTS {
+        render(scad, &format!("out/revised/{id}.stl"), "revised", ctx, tally)?;
+    }
+    check_counts(ctx, tally, &REVISED_COUNTS)
+}
+
+/// Read `<name> = [[..], [..]]` off OpenSCAD's echo output.
+fn echoed_box(stderr: &str, name: &str) -> Option<Value> {
+    let tag = format!("ECHO: {name} = ");
+    let line = stderr.lines().find_map(|l| l.trim().strip_prefix(tag.as_str()))?;
+    serde_json::from_str(line).ok()
+}
+
+fn box_agrees(stated: &Value, bbox: &Value) -> bool {
+    (0..3).all(|i| {
+        let near = |a: &Value, b: &Value| match (a.as_f64(), b.as_f64()) {
+            (Some(a), Some(b)) => (a - b).abs() <= EXTENT_TOL,
+            _ => false,
+        };
+        near(&stated[0][i], &bbox["min"][i]) && near(&stated[1][i], &bbox["max"][i])
+    })
+}
+
+/// Each part's stated extent against its render, in both configurations. The
+/// echo comes from a CSG export, which evaluates the file in seconds.
+fn check_extents(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    for config in ["previous", "revised"] {
+        let dir = if config == "previous" { "out" } else { "out/revised" };
+        let define = format!("config=\"{config}\"");
+        for (id, scad, name) in &EXTENTS {
+            let out_csg = format!("{dir}/{id}-extent.csg");
+            let r = run(&ctx.openscad, &["-o", &out_csg, "-D", &define, scad], &ctx.dir)?;
+            let stated = echoed_box(&r.stderr, name);
+            let (_, bbox) = sm_json(&["bbox", &format!("{dir}/{id}.stl")], ctx)?;
+            tally.record(
+                &format!("{id} stated extent {name} matches its render ({config}): {}",
+                         stated.as_ref().map_or("not echoed".into(), |s| s.to_string())),
+                stated.is_some_and(|s| box_agrees(&s, &bbox)),
+            );
+        }
+    }
+    Ok(())
+}
+
+/// Each pair's overlap, rendered from source: clean only if OpenSCAD reports
+/// the top level object empty and says nothing else.
+fn check_interference(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    for (a, b) in &INTERFERENCE {
+        let pair = format!("interference=[\"{a}\",\"{b}\"]");
+        let out = format!("out/revised/interference-{a}-{b}.stl");
+        let r = run(&ctx.openscad,
+                    &["-o", &out, "-D", "config=\"revised\"", "-D", "geometry=\"scad\"",
+                      "-D", &pair, "diff_assembly.scad"], &ctx.dir)?;
+        let complaints = diagnostics(&r.stderr);
+        let empty = complaints.len() == 1 && complaints[0].contains("top level object is empty");
+        if !empty {
+            for line in &complaints {
+                println!("      {line}");
+            }
+        }
+        tally.record(&format!("{a} and {b} do not overlap (revised)"), empty);
     }
     Ok(())
 }
@@ -596,8 +739,11 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_clones(ctx, tally)?;
     check_dist_gates(ctx, tally)?;
     check_bodies(ctx, tally)?;
-    check_counts(ctx, tally)?;
-    check_assembly(ctx, tally)
+    check_counts(ctx, tally, &COUNTS)?;
+    check_assembly(ctx, tally)?;
+    check_revised(ctx, tally)?;
+    check_extents(ctx, tally)?;
+    check_interference(ctx, tally)
 }
 
 fn finish(tally: &Tally) -> ! {
