@@ -83,14 +83,17 @@ the arm**. The order in firmware is **L5 first, L1 last**.
 | L1 | Base mount → J2 axis | 235.20 mm | 228.60 mm | +6.60 mm |
 | L2 | J2 → J3 axis | 339.09 mm | 320.68 mm | +18.42 mm |
 | L3 | J3 → J4 axis | 307.50 mm | 330.20 mm | −22.70 mm |
-| L4 | J4 → J5 axis | **39.50 mm** | 50.80 mm | −11.30 mm |
+| L4 | J4 axis → J5 station | **39.50 mm** | 50.80 mm | −11.30 mm |
 | L5 | J5 axis → tool tip | 82.44 mm | 82.55 mm | −0.11 mm |
 
 *Source of record: `Firmware/Defaults.make_ins` (`S, LinkLengths, 82440, 59500, 307500, 339092, 235200`)
 for L1, L2, L3 and L5. **L4 is specified here** against the CAD kinematic chain below; the firmware file's
 `59500` is superseded, and [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins)
-carries the line to write. Comparison column: `dde/core/robot.js`, whose `ORIG DEX` set is version 1 in
-[010](010-Versioning.md#1-version-lineage)'s numbering.*
+carries the line to write. The J5 and tool stations are chain frames rather than points on their own axes;
+which station the wrist's one axis crossing is at is stated at
+[004 § Differential interface](004-Mechanical-Architecture.md#differential-interface). Comparison column:
+`dde/core/robot.js`, whose `ORIG DEX` set is version 1 in [010](010-Versioning.md#1-version-lineage)'s
+numbering.*
 
 **The values are along-arm components of the CAD kinematic chain.** The
 `DexterHDI_Link*_KinematicAssembly` node origins in `dde/HDIMeterModel.gltf` (units per
@@ -139,6 +142,42 @@ Per-link masses used by the gravity/torque model, useful for sizing, dynamics, a
 
 *Source: `dde/math/DH.js` `torques_gravity` default masses; gravity 9.81 m/s².* Moving-link
 mass totals ≈ 4.79 kg above the base. Confirm against a physical build.
+
+### Static gravity torque
+
+Worst-case static joint torque over the travel limits above, computed from those masses with
+`DH.torques_gravity` and the DH set below:
+
+| Load at the tool tip | J2 | J3 | J2 at the motor (52:1, η 0.70) |
+|---|---|---|---|
+| None | 0.823 N·m | 0.773 N·m | **0.023 N·m** |
+| 1 kg | 7.76 N·m | 4.49 N·m | 0.213 N·m |
+| 2 kg | 14.84 N·m | 8.25 N·m | 0.408 N·m |
+
+**J2 binds in every loaded case**, and load scales it by **≈7.03 N·m/kg** at the joint, i.e.
+**0.193 N·m/kg** at the motor. The unloaded case is small because Link 2's mass acts 62 mm behind the J2
+axis and partly cancels the outboard links.
+
+These are static stall figures at a nominal 70% strain-wave efficiency and carry no dynamic allowance.
+
+**What the payload ceiling actually is.** Reading the J2 row against the drive's torque ratings
+([C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)) rather than against the motor:
+
+| Limit reached at J2 | Joint torque | Tool-tip payload |
+|---|---|---|
+| Drive rated, continuous | 4 N·m | **0.45 kg** |
+| Drive start/stop | 11 N·m | **1.45 kg** |
+| Motor stall ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) | 16.7 N·m | 2.26 kg |
+| Drive peak | 24 N·m | 3.30 kg |
+
+**The drive binds, and the motor sits between its start/stop and peak ratings** — so the motor is capable of
+overloading the drive, and payload is a gearbox question rather than a motor one. These bound REQ-PRE-6
+rather than stating it; the rated payload is measured on a build
+([009.1 § Test 4.3](009.1-Performance-Characterization-Protocol.md#test-43-rated-payload)), against a
+ceiling set here.
+
+*Method: worst case over 140,238 poses spanning the travel limits above, J1 held at 0 — its axis is
+vertical and carries no gravity torque at any pose.*
 
 ## Denavit–Hartenberg model
 

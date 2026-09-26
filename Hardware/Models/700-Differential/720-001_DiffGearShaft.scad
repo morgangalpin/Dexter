@@ -32,9 +32,9 @@ include <diff_bevel.scad>
 
 /* [Reference detail] */
 // Reproduce the twelve Ø0.2 through-holes the reference mesh carries (WALL
-// HOLES below). They are real voids in the reference and unbuildable at that
-// size; set false to render the shaft as a manufacturable part.
-wall_holes = true;
+// HOLES below). The built shaft is solid, so this stays false for every
+// printed part; set true only to compare against the reference itself.
+wall_holes = false;
 
 /* [Hidden] */
 Z0          = -10.96;   // shaft start (front journal end)
@@ -262,9 +262,10 @@ module gear_hub() {
 //
 // Nothing in the differential uses them and nothing can make them: Ø0.2 by
 // 60.6 mm is 303:1, past drilling and far past printing. No other part in
-// the reference set carries anything like them. They are reproduced because
-// they are in the reference, behind `wall_holes` so the buildable shaft is
-// one flag away -- see 009 DC-2 for the adjudication.
+// the reference set carries anything like them. The built shaft omits them
+// (007.2 owns that print instruction), and `wall_holes` defaults false to
+// match. The cut is kept so the reference-faithful state stays one flag
+// away. render-all.rs gates the solid shaft, and says there how.
 WALL_HOLE_D   = 0.2;
 WALL_HOLE_PCD = 15.5;
 WALL_HOLE_N   = 12;

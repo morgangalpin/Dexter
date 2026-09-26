@@ -178,4 +178,4 @@ Nothing else in this document is open.
 | Item | What is open |
 |---|---|
 | Motor Control PCB | Physical power-on test of the reused board — [DC-7](009-Design-Completion.md#motor-control-pcb) |
-| Cooling fan over the stepper drivers | Size and part number — [DC-11](009-Design-Completion.md#procurement-data) |
+| Cooling fan rail | The fan is specified ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)); the voltage `J23` presents is read on [DC-7](009-Design-Completion.md#motor-control-pcb)'s power-on |

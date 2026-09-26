@@ -288,7 +288,7 @@ world units are millimetres.
 |---|---|---|
 | Outer envelope | `HDI-940-001_DiffCover` measures **78.0 × 73.5 × 50.5 mm**; `HDI-940-002_DiffCoverCap` seats on its +Y face, giving **≈78 mm across × 83 mm tall** stacked | GLTF cover bodies |
 | J4 axis frame | `(0, 877.79, 18.00)` mm; the cover's own origin sits at `(0, 877.79, 0.50)` mm | GLTF `DexterHDI_Link4_KinematicAssembly` |
-| J5 axis frame | `(0, 917.29, −2.00)` mm — **39.50 mm** from J4 along the arm axis | GLTF `DexterHDI_Link5_KinematicAssembly` |
+| J5 frame | `(0, 917.29, −2.00)` mm — **39.50 mm** from J4 along the arm axis, and not a point on the J5 axis (below) | GLTF `DexterHDI_Link5_KinematicAssembly` |
 | Tool frame | `(54.82, 939.84, −2.00)` mm | GLTF `DexterHDI_Link6_KinematicAssembly` |
 | Travel | Full J4 and J5 travel without binding; **J5's is the demanding one** for a mechanism routing wiring through its bore | [003 § Joint travel limits](003-Kinematics.md#joint-travel-limits) |
 | Bevel ratio | **1:1** — the differential neither multiplies nor divides; the net 13.5:1 is realized entirely in the two belt stages | Three identical 20T crowns (above) |
@@ -299,23 +299,40 @@ world units are millimetres.
 **The frame separation is L4.** The 39.50 mm above is the along-arm separation of the J4 and J5 stations,
 which is the quantity [003 § Link lengths](003-Kinematics.md#link-lengths) specifies as L4 and states the
 convention for. The 20.00 mm across-arm offset between the same two frames is real geometry that the
-five-length kinematic model does not carry.
+five-length kinematic model does not carry. Both are offsets between chain frames, not distances between
+axes; which frame the wrist's one axis crossing is at is stated below.
 
-**Envelope conformance — against the gripper covers, not this one.** Diff Body A is enclosed by
-`HDI-950-001`/`-002`, which reproduce its extents with 0.25 mm clearance on three faces: cover x from
-−30.250 against the Ø60 top plate's 30.000 mm radius, cover z −32.250 and +28.250 against Body A's
-±29.988 mm half-width about the J5 axis at z = −2.000. Its 81 mm axis therefore lies along world **x**,
-inside an 85.065 mm cover, and the previous version's 80.98 mm fits. An earlier revision of this section
-compared that 80.98 mm against `HDI-940-001`'s 78.0 mm instead and called it an envelope violation; the two
-parts do not overlap — `HDI-940` spans z −32.5 to 18.0 and Body A does not enter it. The
+**Body A's 81 mm axis lies along world y, down the forearm**, its −x end being the L3 spigot below. That
+spigot is what orients the differential in the arm; the transform and everything it then measures are in
+`Hardware/Models/robot_assembly.scad`, which owns the arm composition and the cover extents.
+
+**Body A is inside the forearm skin, inside no wrist cover body, and a mating feature outranks a cover
+extent.** The skin holds it with 6.5335 mm to spare on its tightest face. The three wrist boxes all end at
+or below z = 18.000 while this axis runs at z = 36.000, and the skin begins on that same plane, so over the
+wrist the two read as the halves of one shell split there. The spigot places the part, and what the wrist
+boxes measure on their own is either a revision the printed differential does not match — as the Main
+Pivot's and the Arm Body's already are — or a cover the measured set is missing.
+
+**The reading that `HDI-950-001`/`-002` enclose Body A is withdrawn.** That cover's ±30.250 mm in x and z
+about z = −2.000 is its own section about the tool axis, which begins at the J5 station and runs out to the
+tool; it reproduces no plate of Body A's, and taking it for one placed the differential a quarter turn off
+the spigot. An earlier revision compared Body A's 80.98 mm against `HDI-940-001`'s 78.0 mm and called that
+an envelope violation; the two parts do not overlap — `HDI-940` spans z −32.5 to 18.0. The
 `config="revised"` trim to 77.8 mm that violation produced was reverted on 2026-09-06 under
-[CR-3A7](../CHANGES.md); `BODY_A_LEN` is 81.0 mm in both
-configurations.
+[CR-3A7](../CHANGES.md); `BODY_A_LEN` is 81.0 mm in both configurations.
 
 **The wrist has no axis-to-axis distance.** The J4 and J5 axes **intersect**, at the differential centre —
 inherent to a bevel differential, and the reason the measured DH set carries `a ≈ 0` on both wrist rows
 ([003 § DH model](003-Kinematics.md#denavithartenberg-model)). What the kinematic model carries across the
 wrist is the station separation above, not a distance between two separated lines.
+
+**That crossing is at the J4 frame, which makes the J5 frame a chain frame and not a point on the J5 axis.**
+One intersection cannot sit at two frames 39.50 mm apart. It is at the J4 one, on four independent readings
+set out at [DC-11(h)](009-Design-Completion.md#procurement-data); the first is that the differential's own
+J4 axis then stands **307.500 mm** from J3 — the figure
+[003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware both hold — where placing it on the
+J5 frame would stand it 39.500 mm further out, at 347.000 mm.
+`Hardware/Models/robot_assembly.scad` places the assembly on that crossing and asserts it.
 
 **The bevel apex sits `C = 48.5335 mm` above Diff Body A's base plane**, derived from the Diff Gear
 Shaft's own apex and fixed by three separate seats in Body A that agree exactly: the rear 6703 face on the
@@ -323,10 +340,15 @@ Shaft's own apex and fixed by three separate seats in Body A that agree exactly:
 slot. Body A's remaining datums are its 20 × 20 R4 section spanning z 1–21, its 6 × 6 belt slot at z 8–14,
 and a shell mirror-symmetric about z = 11.000 over z ∈ [2, 20].
 
-**Body A's 20 × 20 R4 arm on world +x is the tool mount**, carrying REQ-IF-4's six conductors out to the
-gripper through its 131.716 mm² bore ([005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring)).
-No link lands on it: the L3 tube runs along world y at (x = 0, z = 36.000), perpendicular to that arm and
-in the other half of the wrist ([C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)).
+**Body A's 20 × 20 R4 arm is the L3 spigot** — the far end of the forearm tube, and the same plug the End
+Arm Hub presents at the near end. The hub's measures 386.068 mm² in section over a 12.700 × 15.304 mm bore
+of 131.7158 mm²; Body A's measures 386.245 mm² over the same bore, 131.7156 mm², the two bores agreeing to
+two parts in a million. That bore is the belt passage both ends of an L3 span carry, and the six conductors
+REQ-IF-4 routes to the gripper take the through-bore in the table above instead. The tube runs along world
+y at (x = 0, z = 36.000) and Body A's spigot axis lands on (x = 0, z = 35.5335) — coaxial to 0.4665 mm,
+the residual between the differential's own stack and the kinematic frame
+([C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)). **The reading that this arm
+is the tool mount is withdrawn**, and with it the claim that no link lands on Body A.
 
 ### End Arm Hub (J3–J4 region)
 

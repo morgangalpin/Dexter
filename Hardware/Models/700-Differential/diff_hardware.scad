@@ -23,6 +23,18 @@ include <diff_params.scad>
 HW_FN     = 48;     // stand-ins are drawn, not measured
 HW_SHIELD = 0.35;   // how deep a shield sits below the race faces
 
+// One ring of a stand-in, between a surface a part bores and a surface a part
+// turns. A seat is bored to the catalogue diameter the stand-in is drawn at, so
+// without something between them the two surfaces coincide exactly. Each ring
+// is drawn DRAW_JOINT off both catalogue diameters, which is enough that no
+// surface here coincides with a surface of a part — the allowance
+// diff_params.scad defines, and the reason for it. The stand-in is what moves:
+// it is an illustration, and the seat is the part.
+module hw_ring(id, od, h) {
+    tube(id = id + 2 * DRAW_JOINT, od = od - 2 * DRAW_JOINT, h = h,
+         anchor = BOTTOM, $fn = HW_FN);
+}
+
 // A deep-groove ball bearing: an outer race, an inner race, and a shield sunk
 // between them on both faces. Anchored on its own bottom face, so that placing
 // one is a single z — the seat's own floor — and never an arithmetic.
@@ -31,7 +43,7 @@ module bearing(spec) {
     race   = max(0.6, (od - id) / 5);
     shield = min(HW_SHIELD, w / 6);
     difference() {
-        tube(id = id, od = od, h = w, anchor = BOTTOM, $fn = HW_FN);
+        hw_ring(id, od, w);
         down(epsilon)
             tube(id = id + race, od = od - race, h = shield + epsilon,
                  anchor = BOTTOM, $fn = HW_FN);
@@ -47,11 +59,11 @@ module bearing(spec) {
 // sum of all three rather than the cage alone.
 module thrust_stack(spec = THRUST_AXK0819, race_w = 1.0) {
     id = spec[0];  od = spec[1];  w = spec[2];
-    tube(id = id, od = od, h = race_w, anchor = BOTTOM, $fn = HW_FN);
+    hw_ring(id, od, race_w);
     up(race_w)
         tube(id = id + 0.5, od = od - 0.5, h = w, anchor = BOTTOM, $fn = HW_FN);
     up(race_w + w)
-        tube(id = id, od = od, h = race_w, anchor = BOTTOM, $fn = HW_FN);
+        hw_ring(id, od, race_w);
 }
 
 function thrust_stack_h(spec = THRUST_AXK0819, race_w = 1.0) =
@@ -61,7 +73,7 @@ function thrust_stack_h(spec = THRUST_AXK0819, race_w = 1.0) =
 // conductors' path, so a solid cylinder would misrepresent what the assembly
 // has room for. Anchored on its own bottom face, like the bearings.
 module cf_rod(len = CF_ROD_LEN) {
-    tube(id = CF_ROD_ID, od = CF_ROD_D, h = len, anchor = BOTTOM, $fn = HW_FN);
+    hw_ring(CF_ROD_ID, CF_ROD_D, len);
 }
 
 // A #680-001 wire brad: the pin that locks the Split Gear's two halves to each

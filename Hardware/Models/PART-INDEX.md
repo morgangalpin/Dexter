@@ -208,3 +208,8 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
 Each is a trough that holds both ends of one bonded CF span at its finished spacing. They are listed with
 the span each one jigs in
 [007.2's tooling section](../../specs/007.2-Printed-Parts.md#tooling--glue-rigs).
+
+`GlueRig_EndArmHubToDiff_B` is the one that is not the shipped mesh. Its `.scad` is the source of record
+and the `.stl` is rendered from it: the file shortens the shipped body by 2.000 mm so the pair holds the
+specified L3 span ([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)), and the mesh it edits is kept as
+`Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.

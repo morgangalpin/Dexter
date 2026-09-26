@@ -25,6 +25,27 @@ config = "previous"; // [previous, revised]
 $fn = 128;
 epsilon = 0.01;
 
+// The gap drawn between two surfaces that are designed to meet exactly, in mm.
+//
+// Where a part touches another over a whole surface — a bearing in a seat bored
+// to its own diameter, two halves bolted face to face — drawing both at nominal
+// makes those surfaces coincident: the solids touch everywhere and
+// interpenetrate nowhere. CGAL cannot union a tangency. What it returns is a
+// solid that is not a 2-manifold, and such a solid still exports, so the
+// failure need not be immediate or loud: a composition holding one either warns
+// that the object may not be a valid 2-manifold, or stops outright at "CGAL
+// ERROR: assertion violation!" in applyUnion3D, which names no file. Drawing
+// one of the two surfaces this far clear of the other leaves the solids
+// separate and the union simple.
+//
+// This is a drawing allowance, not a design clearance. It says nothing about
+// how the parts fit, and no seat, bore or part dimension derives from it. The
+// size is chosen from both ends: it is a thousand times OpenSCAD's own 1e-6 mm
+// vertex grid, so an importer cannot merge the two surfaces back together, and
+// it is two orders below the 0.15 mm the parts are measured to, so nothing the
+// harness gates on can see it.
+DRAW_JOINT = 0.001;
+
 // ---------------------------------------------------------------------------
 // Off-the-shelf interfaces (007.1 parts catalog: [ID, OD, width] in mm).
 // Parts reference these rather than restating a diameter, so re-specifying a
@@ -32,19 +53,26 @@ epsilon = 0.01;
 // for reference and consumed by no geometry; each says so.
 // ---------------------------------------------------------------------------
 BRG_6705  = [25, 32, 4];    // #620-004, Diff Body A
-BRG_6703  = [17, 23, 4];    // #620-003, 5 in the differential
-BRG_MR128 = [8, 12, 3.5];   // #620-002, Diff Gear Shaft ends
-BRG_MR85  = [5, 8, 2.5];    // #620-001, Diff Gear Axle back
+BRG_6703  = [17, 23, 4];    // #620-003, 5 seats in the differential's own parts
+                            //   and a 6th that 008.6 step 2 puts in #420-001
+BRG_MR128 = [8, 12, 3.5];   // #620-002, 4 seats: shaft ends, and one per Split
+                            //   Gear half. Both counts corrected under DC-11(e)
+BRG_MR85  = [5, 8, 2.5];    // #620-001, into the Diff Gear Axle's back bore
 THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 
 CF_ROD_D    = 8;            // #720-006 CF rod OD
 CF_ROD_ID   = 6;            // #720-006 CF rod bore; the tool conductors' path
 CF_ROD_LEN  = 96;           // reference: cut length, set by 008.6 not by geometry
-STRAKE_25   = [25, 5.6, 2.5];   // #710-005, 3x, Split Gear Bottom
-// #720-005 (5x 60 x 4.4 x 1.5) is listed in 007.6 but no assembly step
-// places it and no part here carries a matching slot - open under
-// DC-11(e). Not modeled until that is adjudicated.
-STRAKE_60   = [60, 4.4, 1.5];
+STRAKE_25   = [25, 5.6, 2.5];   // #710-005, 3x. The slots are in the Split
+                                //   Gear TOP, and are drawn 5.600 x 2.500 for
+                                //   a 5.588 x 2.337 strip -- 0.012 mm across
+                                //   the width, the robot's tightest bond fit
+                                //   (007.1 C-502). 008.6 step 11 named the
+                                //   Bottom, which carries no slot - DC-11(e)
+// #720-005 (5x 60 x 4.4 x 1.5) was listed in 007.6. No assembly step places
+// it, no part here carries a slot that would take it, and the build record
+// does not call for it, so the row is withdrawn - DC-11(e). The constant is
+// gone with it; nothing in this model set referred to it.
 BRAD_D      = 1.8;          // #680-001 1" #19 finishing nail (locking dowel)
 
 // Where the Split Gear's brad holes are drilled, on the halves' shared z. The
@@ -135,7 +163,8 @@ BODY_B_COL_XY = [ 21.0, -21.0];
 // diff_assembly.scad hangs a tripwire on it and arbitrates nothing.
 //
 // Two readings once carried here are withdrawn, and neither is to be revived
-// as an L4 figure. Diff Body A's arm, on 2026-09-06: that arm is the tool arm.
+// as an L4 figure. Diff Body A's arm, on 2026-09-06: that arm is the L3 spigot,
+// so its offset from C is across the arm rather than along it.
 // HDI-007010's measured DH J4 row d = 39.30 mm, on 2026-09-13: J2, J3 and J4
 // are parallel pitch axes, so d on the rows that follow them is a fit
 // parameter, and its closeness to 39.50 mm is coincidence (specs/003 § DH
