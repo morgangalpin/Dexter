@@ -65,8 +65,8 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | #421-001 | Internal Outer Pulley | 1 | `421-001_InternalOuterPulley.stl` |  |
 | #421-002 | Internal Inner Pulley | 1 | `421-002_InternalInnerPulley.stl` |  |
 | #421-006 | Pulley Spacer | 2 | `421-006_PulleySpacer.stl` |  |
-| #430-001 | External Outer Pulley | 1 | `430-001_ExternalOuterPulley.stl` |  |
-| #430-002 | External Inner Pulley | 1 | `430-002_ExternalInnerPulley.stl` |  |
+| #430-001 | External Outer Pulley | 1 | `430-001_ExternalOuterPulley.scad` | 108T in `revised` |
+| #430-002 | External Inner Pulley | 1 | `430-002_ExternalInnerPulley.scad` | 108T in `revised` |
 
 ## 500-ExternalGear — External gear and mount
 
@@ -111,6 +111,7 @@ shared stem.
 | #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.scad` | rendered |
 | #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.scad` | rendered |
 | #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.scad` | rendered |
+| #720-004 | Diff Shaft Pulley | 1 | `720-004_DiffShaftPulley.scad` | rendered, `revised` only |
 | #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.scad` | rendered |
 | #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.scad` | rendered |
 

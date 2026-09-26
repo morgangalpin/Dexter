@@ -1,6 +1,13 @@
 // #720-003 Diff End Pulley — parametric source (DC-2).
-// GT2 40T input pulley epoxied onto the 96 mm CF rod, 6 mm from the tip
-// (008.6 step 16).
+// GT2 input pulley epoxied onto the 96 mm CF rod, 6 mm from the tip
+// (008.6 step 16): 40T in "previous", 80T in "revised" (DC-12).
+//
+// "revised" keeps every measured axial station and the whole hub, and moves
+// only the rim out: the flanges and the root band stand the same height over
+// the new tooth ring as they did over the old one, and the web between hub and
+// rim fills solid. The tooth band is the GT2 standard ring from
+// gt2_pulley.scad rather than the measured 40T sector, which fits no other
+// count. Everything below about the reference describes "previous".
 //
 // Authored in the reference mesh's own coordinates (z 17.500 .. 27.750), so
 // every number below is a measurement rather than a derived offset and the
@@ -88,7 +95,28 @@ BODY_PROFILE = [
 // 0.027 mm over the lead-in.
 LOBE_APEX_Z  = 14.984;
 BELT_Z       = [19.750, 27.250];   // tooth band, between the flanges
-TOOTH_PITCH  = 360 / PULLEY_TEETH; // 9.000 deg, confirmed on the mesh
+TOOTH_PITCH  = 360 / PULLEY_TEETH; // 9.000 deg at 40T, confirmed on the mesh
+
+// The rim, moved out to the configured tooth count. RIM_R0 splits the profile:
+// everything at or beyond it is rim (root band and flanges) and moves by
+// RIM_SHIFT, the growth of the tip radius over the measured 40T's; the hub
+// inside it stays. The root band stops ROOT_CLEAR short of the grooves so its
+// cylinder never lies on their bottoms — the teeth disc is solid below them,
+// so the band's own surface is buried either way.
+RIM_R0     = 11.69;
+RIM_SHIFT  = (PULLEY_TIP_D - BAND_TIP_D) / 2;
+ROOT_CLEAR = 0.1;
+FLANGE_R0  = 12.5;     // above the root band, below the flanges
+
+function rim_shift(p) =
+    RIM_SHIFT == 0 || p.x < RIM_R0 ? p
+    : [p.x + RIM_SHIFT - (p.x < FLANGE_R0 ? ROOT_CLEAR : 0), p.y];
+
+PROFILE = [for (p = BODY_PROFILE) rim_shift(p)];
+
+// The part's extent in the reference frame, for the assembly.
+function end_pulley_box_ref() =
+    let (r = max([for (p = PROFILE) p.x])) [[-r, -r, Z0], [r, r, Z1]];
 
 // one 9.000 deg pitch sector, measured at z = 23.5; spans 9.046 deg so copies overlap
 TOOTH_SECTOR = [
@@ -606,16 +634,20 @@ BORE_LOBED = [
 
 // The turned body: the measured outline, revolved.
 module pulley_body() {
-    rotate_extrude() polygon(BODY_PROFILE);
+    rotate_extrude() polygon(PROFILE);
 }
 
-// The GT2 band: one measured pitch sector, closed through the axis so the
-// copies tile the full circle. The sector spans slightly more than one pitch,
-// so consecutive copies overlap rather than risk a seam.
+// The GT2 band. At the measured 40T: one measured pitch sector, closed through
+// the axis so the copies tile the full circle; the sector spans slightly more
+// than one pitch, so consecutive copies overlap rather than risk a seam. At
+// any other count: the standard ring.
 module tooth_band() {
     up(BELT_Z[0]) linear_extrude(BELT_Z[1] - BELT_Z[0])
-        zrot_copies(n = PULLEY_TEETH)
-            polygon(concat([[0, 0]], TOOTH_SECTOR));
+        if (RIM_SHIFT == 0)
+            zrot_copies(n = PULLEY_TEETH)
+                polygon(concat([[0, 0]], TOOTH_SECTOR));
+        else
+            pulley_teeth_2d();
 }
 
 // Everything cut away, in the same reference coordinates as the body: the Ø8
@@ -646,4 +678,5 @@ module diff_end_pulley() {
     down(Z0) diff_end_pulley_ref();
 }
 
+echo(end_pulley_box_ref = end_pulley_box_ref());   // render-all.rs checks it
 diff_end_pulley_ref();

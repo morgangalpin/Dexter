@@ -4,7 +4,8 @@
 // through it on two MR128 bearings pressed into the Ø12 end seats
 // (008.6 steps 4, 12, 21). Integrated on the shaft: a 20T bevel gear
 // facing the Diff Gear Axle's bevel (both mesh the Split Gear at 90 deg)
-// and a 40T GT2 pulley section for its drive belt.
+// and a 40T GT2 band. In "previous" the band is the pulley its drive belt
+// runs on; in "revised" it is the spline #720-004's 80T ring is bonded over.
 //
 // Body geometry solved from 720-001_DiffGearShaft.stl (scadmesh slice
 // sweeps and vertex fits).
@@ -43,10 +44,15 @@ JOURNAL_D   = 17.0;     // 6703 inner-race journals, both ends
 FRONT_STEPS = [[11.54, 19.0], [13.040, 23.0]];  // [z, Ø] steps before the gear
 D27_D       = 27.0;     // collar behind the gear
 D27_TOP     = 28.04;    // Ø27 section top
-D25_TOP     = 34.04;    // Ø25 section top / pulley start
-PULLEY_TOP  = 42.04;    // pulley section top
+D25_TOP     = BAND_Z[0];   // Ø25 section top / band start
+PULLEY_TOP  = BAND_Z[1];   // band top
 D25B_TOP    = 42.79;    // second Ø25 collar top
 D19B_TOP    = 44.04;    // Ø19 collar top / rear journal start, rear 6703 face
+// The collar behind the band. Ø25 as measured; "revised" turns it down to the
+// band's root, less 0.2 so its edge does not lie on the groove bottoms, so
+// #720-004's internal teeth pass over it when the shaft is driven through
+// the ring (008.6).
+COLLAR_D    = config == "previous" ? 25.0 : gt2_root_d(BAND_TIP_D) - 0.2;
 BORE_D      = 10.0;     // rod clearance bore
 SEAT_D      = 12.0;     // MR128 press seats
 SEAT_FRONT  = 3.0;      // front seat depth
@@ -301,8 +307,8 @@ module diff_gear_shaft() {
                 cyl(d=25.0, h=D25_TOP - D27_TOP + epsilon, anchor=BOTTOM);
             up(D25_TOP - epsilon)
                 linear_extrude(PULLEY_TOP - D25_TOP + 2*epsilon)
-                    gt2_pulley_teeth_2d();
-            up(PULLEY_TOP) cyl(d=25.0, h=D25B_TOP - PULLEY_TOP, anchor=BOTTOM);
+                    band_teeth_2d();
+            up(PULLEY_TOP) cyl(d=COLLAR_D, h=D25B_TOP - PULLEY_TOP, anchor=BOTTOM);
             up(D25B_TOP - epsilon)
                 cyl(d=19.0, h=D19B_TOP - D25B_TOP + epsilon, anchor=BOTTOM);
             up(D19B_TOP - epsilon)

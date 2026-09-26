@@ -116,6 +116,10 @@ include <BOSL2/std.scad>
 // modules and diff_centre() without firing its own top-level call, echoes or
 // asserts, and leaves its mesh paths resolving against its own directory.
 use <700-Differential/diff_assembly.scad>
+// The External pulleys are sources, not meshes: their tooth count follows the
+// same `-D config=` switch as the differential (DC-12).
+use <400-EndArm/430-001_ExternalOuterPulley.scad>
+use <400-EndArm/430-002_ExternalInnerPulley.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -351,8 +355,8 @@ module place_end_arm() {
         import("400-EndArm/420-001_EndArmHub.stl", convexity = 8);
         import("400-EndArm/421-001_InternalOuterPulley.stl", convexity = 8);
         import("400-EndArm/421-002_InternalInnerPulley.stl", convexity = 8);
-        import("400-EndArm/430-001_ExternalOuterPulley.stl", convexity = 8);
-        import("400-EndArm/430-002_ExternalInnerPulley.stl", convexity = 8);
+        external_outer_pulley();
+        external_inner_pulley();
     }
 }
 
@@ -509,3 +513,8 @@ assert(abs(ARM_AXIS.z - L3_TUBE_Z) < 5.0 && abs(ARM_AXIS.x) < 0.001,
 // apart again, which is the state DC-11(h) was opened in.
 assert(ARM_TIP_Y < WRIST_C.y && L3_FAR_LAP > 0,
        "C-505 must lap Body A's spigot, which must face the elbow");
+// Body A's envelope is the forearm skin (specs/004 § Differential interface).
+// Its extent is the part's own statement, which render-all.rs holds to the
+// render, so this bounds the part as built in either configuration.
+assert(box_inside(BODY_A_W, ENV_L3_SKIN),
+       "Diff Body A is outside the forearm skin");

@@ -16,6 +16,7 @@
 // Dimensions are stated once here; part files and specs reference them.
 
 include <BOSL2/std.scad>
+include <../gt2_pulley.scad>
 
 /* [Configuration] */
 // Parameter set: previous (matches reference STLs) or revised (004 interface)
@@ -101,7 +102,8 @@ BRAD_Z_TOP  = config == "previous" ? 12.250 : BRAD_Z;
 
 // ---------------------------------------------------------------------------
 // Gear teeth (measured from the reference STLs — see 004 amendment)
-// All three bevels are 20T and mesh 1:1:1 at 90 deg; both GT2 pulleys are 40T.
+// All three bevels are 20T and mesh 1:1:1 at 90 deg. The GT2 inputs are 40T
+// in "previous" and 80T in "revised" (DC-12).
 // ---------------------------------------------------------------------------
 BEVEL_TEETH   = 20;
 BEVEL_OD      = 44.055;     // outside diameter of the side bevels (the
@@ -109,39 +111,38 @@ BEVEL_OD      = 44.055;     // outside diameter of the side bevels (the
 // Module for straight bevel, 90 deg shafts, 20:20 -> 45 deg pitch cones:
 // OD = m * (teeth + 2*cos(45)) => m = OD / 21.414
 BEVEL_MOD     = BEVEL_OD / (BEVEL_TEETH + 2*cos(45));
-// PULLEY_TEETH is 40 here because that is what both references measure, and
-// "previous" must keep it: the dist gates in render-all.rs compare against
-// those meshes. It is NOT the design of record. DC-3 fixed the J4/J5 train at
-// 16T -> 108T along the arm and 40T -> 80T along L3 (net 13.5:1), so the
-// revised config's differential inputs are 80T. Making that change is DC-12,
-// and it is more than retyping this number: GT2_TIP_D below is measured for
-// 40T and GT2_GROOVE_C is hand-set to match, so all three must become one
-// config-dependent set derived from the tooth count, and Diff Body A's pulley
-// chamber (wall at r ~15.5) has to open to about r 27 to clear a 80T ring.
-PULLEY_TEETH  = 40;         // Diff End Pulley + Diff Gear Shaft section
-GT2_PITCH     = 2.0;        // GT2 belt pitch
-GT2_PLD       = 0.254;      // GT2 pitch line distance (belt standard)
-GT2_TIP_D     = 24.97;      // 40T tooth tip diameter (measured)
-GT2_GROOVE_R  = 0.8;        // groove cutter radius (root at Ø23.40)
-GT2_GROOVE_C  = 12.5;       // groove cutter center radius
+// The tooth form itself is gt2_pulley.scad's, shared with the elbow pulleys.
+//
+// The Diff Gear Shaft's band is 40T in both configs. In "previous" it is the
+// shaft's own pulley; in "revised" it is the spline that drives #720-004, the
+// 80T ring epoxied over it, because an 80T ring cannot be turned on the shaft
+// itself: the shaft enters Body A through the 6705's Ø25 bore, and the ring
+// has to be in the chamber before it does (specs/008 § 008.6).
+//
+// PULLEY_TEETH is the count the belt meets: 40 in "previous", which is what
+// both references measure and what the dist gates in render-all.rs compare
+// against, and 80 in "revised", the 40T -> 80T stage-2 of the 13.5:1 train
+// (specs/004 § Wrist and differential). A measured 40T keeps its measured
+// tip; any other count takes the GT2 standard's.
+BAND_TEETH    = 40;         // Diff Gear Shaft band, both configs
+BAND_TIP_D    = 24.97;      // its tooth tip diameter (measured)
+BAND_Z        = [34.04, 42.04];   // its span on the shaft, in 720-001's frame;
+                                  //   #720-004 is authored on the same span
+PULLEY_TEETH  = config == "previous" ? 40 : 80;   // Diff End Pulley, #720-004
+PULLEY_TIP_D  = PULLEY_TEETH == BAND_TEETH ? BAND_TIP_D
+                                           : gt2_tip_d(PULLEY_TEETH);
+PULLEY_ROOT_D = gt2_root_d(PULLEY_TIP_D);
 
-// Cross-check the measured tip diameter against the GT2 standard: for an
-// n-tooth pulley, pitch Ø = n*p/PI and tip Ø = pitch Ø - 2*PLD. Agreement
+// Cross-check the measured tip diameter against the GT2 standard. Agreement
 // is what confirms these are 40T GT2 pulleys rather than some other belt.
-GT2_STD_TIP_D = PULLEY_TEETH * GT2_PITCH / PI - 2 * GT2_PLD;
-assert(abs(GT2_TIP_D - GT2_STD_TIP_D) < 0.05,
+assert(abs(BAND_TIP_D - gt2_tip_d(BAND_TEETH)) < 0.05,
        "measured pulley tip diameter disagrees with the 40T GT2 standard");
 
-// 2D cross-section of the 40T GT2 pulley tooth ring, shared by the Diff
-// End Pulley and the Diff Gear Shaft's integrated pulley section.
-module gt2_pulley_teeth_2d() {
-    difference() {
-        circle(d=GT2_TIP_D);
-        for (i = [0 : PULLEY_TEETH - 1])
-            zrot(i * 360 / PULLEY_TEETH)
-                right(GT2_GROOVE_C) circle(r=GT2_GROOVE_R);
-    }
-}
+// The Diff Gear Shaft's band section.
+module band_teeth_2d() { gt2_teeth_2d(BAND_TEETH, BAND_TIP_D); }
+
+// The input pulleys' tooth section, 720-003 and 720-004.
+module pulley_teeth_2d() { gt2_teeth_2d(PULLEY_TEETH, PULLEY_TIP_D); }
 
 // ---------------------------------------------------------------------------
 // Diff Body B's two axes, in Body B's own frame. The J4 tunnel runs along X at
@@ -186,12 +187,9 @@ L4_SUPERSEDED  = 59.50;   // the field Firmware/Defaults.make_ins still carries
 // falls short of its true radius — that 0.016 mm is faceting, not geometry,
 // and driving the model from it would place the arm's flat face wrongly.
 //
-// This was config-dependent until 2026-09-06, trimmed to 77.8 in "revised" to
-// fit the HDI-940 cover. That trim answered a conflict that does not exist:
-// Body A is enclosed by the HDI-950 gripper covers, not by HDI-940, and they
-// clear it by 0.25 mm at 81.0 — see 004 § Differential interface. The trim cost
-// 3.2 mm of tool-arm engagement to satisfy an envelope this part never enters,
-// so both configs now build the measured part.
+// One value for both configs because Body A lies inside the forearm skin and
+// no wrist cover bounds its length (004 § Differential interface);
+// robot_assembly.scad asserts the skin.
 // ---------------------------------------------------------------------------
 BODY_A_LEN = 81.0;
 

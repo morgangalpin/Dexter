@@ -101,6 +101,18 @@ const PARTS: [(&str, &str); 9] = [
     ("730-002", "730-002_DiffBodyB.scad"),
 ];
 
+/// Parts that exist only in the revised configuration: #720-004, the 80T ring
+/// over the shaft's band (DC-12). Its file asserts the configuration.
+const REVISED_PARTS: [(&str, &str); 1] = [
+    ("720-004", "720-004_DiffShaftPulley.scad"),
+];
+
+/// The parts a configuration builds.
+fn parts_for(config: &str) -> Vec<(&'static str, &'static str)> {
+    let extra: &[(&str, &str)] = if config == "revised" { &REVISED_PARTS } else { &[] };
+    PARTS.iter().chain(extra).copied().collect()
+}
+
 const OUT_DIR: &str = "out/asm";
 
 /// Widest boundary loop, in mm, that `repair` may close here.
@@ -137,8 +149,8 @@ fn script_dir() -> Result<PathBuf> {
 }
 
 /// Render one part. The mesh is exported in the part file's own top-level
-/// orientation, which for two of the nine is not the module's frame; the
-/// assembly's `part()` undoes both, and says so there.
+/// orientation, which for 720-001, 720-003 and 720-004 is not the module's
+/// frame; the assembly's `part()` undoes each, and says so there.
 fn render(openscad: &str, dir: &Path, scad: &str, out: &str,
           config: &str) -> Result<()> {
     let define = format!("config=\"{config}\"");
@@ -227,9 +239,10 @@ fn main() -> Result<()> {
     let config = std::env::args().nth(1).unwrap_or_else(|| "previous".into());
     std::fs::create_dir_all(dir.join(OUT_DIR))?;
 
+    let parts = parts_for(&config);
     println!("Rendering {} parts to {OUT_DIR}/ ({config}, binary STL)",
-             PARTS.len());
-    for (id, scad) in &PARTS {
+             parts.len());
+    for (id, scad) in &parts {
         print!("  {id} ... ");
         use std::io::Write;
         std::io::stdout().flush().ok();

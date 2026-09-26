@@ -212,23 +212,23 @@ end-effector wiring bundle passes through the differential's hollow bore.
   | Torque through rod + strake tube | 2.59 N·m | **3.10 N·m** | 3.45 N·m |
   | Stage-2 belt tension at stall | 203 N | **244 N** | 271 N |
   | Differential pulley tip Ø | 60.607 mm | **50.422 mm** | 45.329 mm |
-  | Diff Body A width vs the cover's 73.5 mm | ≈74.6 — **over** | **≈64.4** | ≈59.2 |
+  | Diff Body A width vs the cover's 73.5 mm | ≈74.6 — **over** | **63.0** (rendered) | ≈59.2 |
   | External pulley tip Ø | 56.788 mm | **68.247 mm** | 75.886 mm |
 
   Torque figures are motor stall (0.46 N·m,
   [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) taken through the stage lossless, and the
   tension is that torque at the 40T Internal pulley's pitch radius —
-  comparative figures, not ratings. The Body A widths carry that part's existing running clearance and
-  wall thickness out to the new pulley radius, so they are ±2–3 mm: enough to order the options, not to
-  build to. **108 / 80 is adopted** because it leaves margin on both risks rather than spending all of it
+  comparative figures, not ratings. The rejected options' Body A widths carry that part's existing running
+  clearance and wall thickness out to the new pulley radius, so they are ±2–3 mm: enough to order the
+  options, not to build to. The adopted width is the rendered `config="revised"` part. **108 / 80 is adopted** because it leaves margin on both risks rather than spending all of it
   on either. 90/96 preserves every load path at today's values but drives Body A past the
   78 × 73.5 × 50.5 mm cover envelope that the [interface below](#differential-interface) fixes; 120/72
   keeps that envelope untouched but puts 33 % more torque through a printed tube bonded to three CF
-  strakes, which nothing characterizes. The adopted split widens Body A about 4 mm inside a cover with
-  13.5 mm of headroom and raises the elbow torque 20 %; its stage 2 is exactly 2:1.
+  strakes, which nothing characterizes. The adopted split widens Body A from 60.0 to 63.0 mm inside a
+  cover with 13.5 mm of headroom and raises the elbow torque 20 %; its stage 2 is exactly 2:1.
 
-  ⚠️ **The HD model set still carries the previous version's counts** — 90T External against 40T at the
-  differential, netting 5.625:1 — so five parts must be re-cut before printing
+  `config="revised"` builds these counts; `config="previous"` builds the previous version's 90T External
+  against 40T at the differential, netting 5.625:1, and is not printed
   ([DC-12](009-Design-Completion.md#wrist-pulley-rework)).
 - **Differential detail.** The differential detail design is **authored** as parametric
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
@@ -261,21 +261,19 @@ end-effector wiring bundle passes through the differential's hollow bore.
   the revision that produced these references re-cut three gears and left this one behind, and it still
   meshed, on a form one revision old. The Diff Gear Shaft is now rebuilt to the shared crown instead
   ([CR-3A7](../CHANGES.md)), a matched set of four rather than a faithful copy of its own superseded
-  reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are **40T GT2**
-  pulleys as modelled (the Diff End Pulley and the shaft's integrated pulley section), re-cut to **80T**
-  under [DC-12](009-Design-Completion.md#wrist-pulley-rework); the Diff Gear
+  reference — the **1:1:1 claim is exact for all three** positions. Both belt inputs are **80T GT2**
+  pulleys in `config="revised"`: the Diff End Pulley, and the `#720-004` Diff Shaft Pulley ring keyed on
+  the shaft's 40T band, which is the shaft's own input in `config="previous"`
+  ([DC-12](009-Design-Completion.md#wrist-pulley-rework)); the Diff Gear
   Shaft doubles as the **J4 pivot axle** (its Ø25 section rides Diff Body A's 6705, its Ø17 rear journal
   the 6703); the Split Gear is **split along a 45° cone**, `r = z − 7` in its own frame — the Top half keeps
   what lies outside that cone and the Bottom half what lies inside it, the teeth running across the joint
   uninterrupted, which is why the halves must be clocked to each other on assembly by four Ø1.5 brads
   driven radially at **z = 12.750** — an axis the two references disagreed about by 0.5 mm and which the
   revised configuration settles on the Bottom half's value, `BRAD_Z` in `diff_params.scad`
-  ([`Hardware/Models/README.md`](../Hardware/Models/README.md#what-assembling-the-set-showed)). **A correction:** an earlier revision of
-  this section read the differential's 40T inputs as driven straight off the 16T motor pulley, for a
-  40/16 = 2.5:1 stage. They are not — the elbow train interposes, and the belt those pulleys actually run
-  is driven by the 40T Internal pulleys at 1:1, which is why the model set nets the previous version's
-  5.625:1 rather than 2.5:1. Counted on the models in
-  [DC-12](009-Design-Completion.md#wrist-pulley-rework).
+  ([`Hardware/Models/README.md`](../Hardware/Models/README.md#what-assembling-the-set-showed)). The
+  differential's inputs are driven by the 40T Internal pulleys through the elbow train, not by the 16T
+  motor pulley.
 
 ### Differential interface
 
@@ -292,7 +290,7 @@ world units are millimetres.
 | Tool frame | `(54.82, 939.84, −2.00)` mm | GLTF `DexterHDI_Link6_KinematicAssembly` |
 | Travel | Full J4 and J5 travel without binding; **J5's is the demanding one** for a mechanism routing wiring through its bore | [003 § Joint travel limits](003-Kinematics.md#joint-travel-limits) |
 | Bevel ratio | **1:1** — the differential neither multiplies nor divides; the net 13.5:1 is realized entirely in the two belt stages | Three identical 20T crowns (above) |
-| Input pulleys | **80T GT2**, tip Ø 50.422 mm, one per channel on the J4 axis. The pulley chamber in Diff Body A must clear them | Stage 2 above; the models are re-cut under [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| Input pulleys | **80T GT2**, tip Ø 50.422 mm, one per channel on the J4 axis. The pulley chamber in Diff Body A clears them | Stage 2 above; `#720-003`, `#720-004` ([DC-12](009-Design-Completion.md#wrist-pulley-rework)) |
 | Encoders | Output-side optical code disks, **J4 = 115 slots, J5 = 100 slots**, read through the Angle and Rotate photointerrupter shrouds (`#824`, `#825`). J5's disk is `#710-004` (100 slots, counted on the model); **J4 has no disk — its 115 slots are cut into `#730-002` Diff Body B's mating rim** and read across the pivot from Diff Body A ([DC-11(e)](009-Design-Completion.md#the-j4-code-disk-is-missing)) | [003 § Joint definitions](003-Kinematics.md#joint-definitions), [005 § Sensing](005-Electronics-and-Control.md#sensing) |
 | Through-bore | **6 conductors** pass the hollow centre and must survive J5's full travel | REQ-IF-4, [005 § Tool interface wiring](005-Electronics-and-Control.md#tool-interface-wiring) |
 
@@ -377,5 +375,5 @@ A subassembly not listed here has nothing open.
 |---|---|---|---|
 | Base | J1 support | — | Base height against L1 — [DC-13](009-Design-Completion.md#base-height-and-l1) |
 | Arm Body (L2) | J3 support | belt routing | — |
-| End Arm Hub (L3) | J3–J4 | belt transfer | External pulleys re-cut to 108T — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
-| Differential | J4, J5 | belt → differential | Input pulleys re-cut to 80T — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| End Arm Hub (L3) | J3–J4 | belt transfer | External pulleys 108T in `config="revised"` — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
+| Differential | J4, J5 | belt → differential | Input pulleys 80T in `config="revised"` — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
