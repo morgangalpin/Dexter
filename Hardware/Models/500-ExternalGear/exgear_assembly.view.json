@@ -44,7 +44,9 @@
        {"text": "Upper 6810 inner race above the motor face", "value": "{upper_6810_above_motor}"},
        {"text": "Upper 6810 inner race below the hub face", "value": "{upper_6810_below_hub}"},
        {"text": "Top 6810 bore on the spline's Ø50h6", "value": "{top_6810_on_spline}"},
-       {"text": "Stator Holder flange below the Mount Top", "value": "{stator_below_top}"}]},
+       {"text": "Stator Holder flange below the Mount Top", "value": "{stator_below_top}"},
+       {"text": "External Gear's bottom face above the floor plate", "value": "{gear_above_floor}"},
+       {"text": "Gear and holder inside the Mount's bore, radial, at least", "value": "{rotor_inside_bore}"}]},
     {"heading": "Not drawn",
      "items": [
        "Nut Holders A/B (#520-003/-004) and the two all-threads",

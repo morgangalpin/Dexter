@@ -875,6 +875,7 @@ anything version 3 does not independently specify
   [008.7](specs/008-Assembly.md#0087-end-arm-hub),
   [008.8](specs/008-Assembly.md#0088-external-gear), [009](specs/009-Design-Completion.md),
   [009.1 §3.1](specs/009.1-Performance-Characterization-Protocol.md#test-31-mounting-face-to-j2-axis),
+  [009.1 §3.3](specs/009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack) (new),
   [009.2](specs/009.2-Test-Build-Manifest.md), [010](specs/010-Versioning.md),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/500-ExternalGear/exgear_assembly.scad` (new),
   `exgear_assembly.view.json` (new), `500-ExternalGear/511-001_ExGearMotorEndCap.scad` (new),
@@ -985,9 +986,16 @@ anything version 3 does not independently specify
   the washers of 008.4 step 9d and 008.5 step 3 retain the free-running inner race. 007.2 states that
   #511-001 and #630-005 print from `config="revised"`. Two restatements become links: 007.2's L3 rig
   paragraph leaves the jig's correction to DC-11(h), and DC-11(h) leaves the spigot's section to 004. The
-  Models README's part and file counts are recounted from its directories.
+  Models README's part and file counts are recounted from its directories. 008.3 step 10 sets the wave
+  generator's depth from the flex spline's mounting face, which J3's drop lowers on its motor. 009.1 § 3.3
+  confirms J3's closure on the built joint, and 008.8, 009 and 009.2's Stage 4 point to it; 009.2's Stage 2
+  gate loses J3, which Stage 4 builds, and Stage 4's draw list loses a repeated 007.9 line.
+  `exgear_assembly.scad` also asserts and echoes the External Gear's clearance to the Mount's floor plate
+  and bore, which the section view shows again. The bore is centred behind the drive axis, so the least
+  radial clearance is at its edges rather than at its back.
 - **Status:** `[Specified]` — [DC-13](specs/009-Design-Completion.md#base-height-and-l1) is closed. The
   built height is confirmed under
   [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base checklist. J3's stack closes
   in `exgear_assembly.scad`, whose asserts hold it for the measured motor length; the fit is confirmed on
-  the first built J3.
+  the first built J3 by
+  [009.1 § 3.3](specs/009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack).

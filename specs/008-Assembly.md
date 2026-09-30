@@ -99,7 +99,11 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
 8. Press M3 nuts into the Wave Gen Coupler, insert M3 × 8 mm hex bolts to retain them, then epoxy over the
    nut heads to lock them; cure.
 9. Ream the Wave Gen Coupler and lubricate before sliding it onto the motor shaft.
-10. Use the wave-generator depth-setting tool to set the coupler depth on the shaft.
+10. Use the wave-generator depth-setting tool to set the coupler depth on the shaft. The depth puts the wave
+    generator where the drive's drawing puts it against the flex spline: its hub's outer face the overall
+    axial length [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the
+    flex spline's mounting face. J3's Attach carries that face lower on its motor by its `hub_drop`, so a
+    tool that gauges from the motor face is reset for J3.
 11. Tighten the M3 × 8 mm hex bolts evenly (alternate a few turns each) until snug — do not over-tighten the
     printed mount.
 
@@ -258,7 +262,9 @@ Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 
 ## 008.8 External Gear
 Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd strain-wave drive (J3) — follow
-[008.3](#0083-harmonic-drive-motors) steps 1–11 for the drive, then:
+[008.3](#0083-harmonic-drive-motors) steps 1–11 for the drive, then the steps below.
+[009.1 § 3.3](009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack) is taken between steps 6
+and 13, while the drive is open.
 
 1. Place 4 M3 nuts into the hex nut holders on the Ex Gear Motor End Cap.
 2. Screw M3 × 10 mm bolts into those nuts from the underside.

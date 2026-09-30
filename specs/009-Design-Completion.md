@@ -245,7 +245,8 @@ evidence, and the doubled clamp withdrawn with it, are recorded in
 
 **Definition of done — met:** L1 specified against a stack of positive stops, and
 [003 § Link lengths](003-Kinematics.md#link-lengths) and the `LinkLengths` line reconciled to it.
-Confirmation on a built base belongs to [DC-9](#performance-characterization)'s base checklist.
+Confirmation on a built base, and of J3's drive stack, belongs to
+[DC-9](#performance-characterization)'s base checklist.
 `[Specified]`.
 
 ## Motor Control PCB
@@ -355,7 +356,10 @@ dynamic load without walking or tipping (REQ-ENV-5), bolted to the work surface 
 [004](004-Mechanical-Architecture.md#base-mounting-plate) requires — the plate is sized against a
 calculated ≈45 N·m overturning moment that an unbolted plate cannot resist, so this check tests the
 bolting, not the plate. Measure the **mounting face to J2 axis height** at the same time; it confirms
-the L1 that [DC-13](#base-height-and-l1) specified, and the base is only apart once. Procedure:
+the L1 that [DC-13](#base-height-and-l1) specified, and the base is only apart once. The same section confirms
+J3's drive stack, closed in the model under
+[CR-3A19](../CHANGES.md#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats),
+while that drive is open. Procedure:
 [009.1 § 3](009.1-Performance-Characterization-Protocol.md#section-3-base-first-build-checklist).
 
 **Definition of done:** measured repeatability, payload, speed envelope, and reachable workspace on a

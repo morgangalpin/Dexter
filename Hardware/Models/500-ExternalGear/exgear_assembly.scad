@@ -76,6 +76,10 @@ $fn = 96;
 
 // --- Features, each in its own part's frame --------------------------------
 BOSS_TOP         = 6.000;    // #520-001 floor bosses, top face
+MOUNT_FLOOR      = 4.000;    // #520-001 floor plate, top face
+// #520-001 bore: R 38.000 about (-0.655, 0), behind the drive axis, so it is
+// nearest the axis at its two edges, (-24.55, +/-29.54) over z 57..62.
+MOUNT_NEAR_R     = 38.410;
 TOP_SEAT         = [93.000, 100.000];  // #520-002 Ø65 seat, open face and shoulder
 ENDCAP_TOP       = end_cap_top();                // #511-001 face on the bosses
 ENDCAP_SEAT      = end_cap_seat("revised");      // #511-001 face the motor stands on
@@ -84,6 +88,8 @@ ATTACH_HUB       = attach_hub_face("previous");  // #630-005 hub face before the
 GEAR_LOWER_SHLDR = -24.763;  // #510-001 lower seat shoulder, along its x
 GEAR_UPPER_SHLDR = 25.243;   // #510-001 upper seat shoulder
 GEAR_KEYED_END   = 44.250;   // #510-001 notched end face
+GEAR_BOTTOM      = -32.263;  // #510-001 end face over the floor
+ROTOR_R          = 36.977;   // #510-001 and #511-002, largest radius
 STATOR_SEAT      = 1.000;    // #511-002 flange face on the gear's end
 STATOR_RECESS    = -4.000;   // #511-002 Ø50 recess floor
 MOTOR_LEN        = 48.000;   // C-101 body length; replace with the measured one
@@ -109,6 +115,8 @@ assert(abs(CS_NOM - CS_FACE) < 1e-9, "the drive does not close between its motor
 assert(BRG_UP > MOTOR_F, "upper 6810 inner race passes below the motor face");
 assert(BRG_UP + B6810[2] < HUB_F, "upper 6810 inner race runs off the Attach's land");
 assert(ATTACH_HUB_DROP >= 0, "the drive stands lower on its motor than on its holder; the Attach cannot rise");
+assert(GEAR_BOTTOM + GEAR_C > MOUNT_FLOOR, "the External Gear reaches the floor plate");
+assert(MOUNT_NEAR_R > ROTOR_R, "the External Gear or the Stator Holder reaches the Mount's bore");
 
 // Named, so scripts and the section viewer (exgear_assembly.view.json) read
 // them; every length is mm.
@@ -119,6 +127,8 @@ echo(upper_6810_above_motor = BRG_UP - MOTOR_F);         // inner race bottom ov
 echo(upper_6810_below_hub = HUB_F - BRG_UP - B6810[2]);  // inner race top under the hub face
 echo(top_6810_on_spline = CS_FACE - BRG_TOP);            // the circular spline's Ø50h6 within the Mount Top's bore
 echo(stator_below_top = BRG_TOP - (STATOR_Z + 7));       // Stator Holder flange under the Mount Top
+echo(gear_above_floor = GEAR_BOTTOM + GEAR_C - MOUNT_FLOOR);  // External Gear's bottom face over the floor plate
+echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Holder inside the Mount's bore, radial, at least
 
 // --- Parts ------------------------------------------------------------------
 module mount()     color("#9aa7b4") import("520-001_ExGearMount.stl");
