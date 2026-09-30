@@ -300,29 +300,6 @@ echoes. A script holds only its own gates and checks. Two rules keep the scripts
   `500-ExternalGear/render-all.rs` runs `600-StrainWave/render-all.rs` first, because J3's stack
   depends on the Flex Spline Attach.
 
-### Viewing an assembly
-
-An assembly `.scad` can be turned into a section viewer page, an orthographic model cut on a movable
-plane with its parts listed, grouped and labelled, by `scadmesh view` from `openscad-tools`. The
-assembly must be **viewable**:
-
-- A top-level `part` variable selects what it draws: `"all"`, or one part's id, drawn in its assembled
-  position.
-- Every value the page quotes is echoed at top level as `echo(name = value)`.
-
-A sidecar `<assembly>.view.json` beside it names the parts, colours and groups, the labels and camera
-presets, and the notes. It restates no dimension: part heights come from the exported meshes, and text
-quotes echoes through `{name}` placeholders. The format is in `openscad-tools`'
-`specs/003-CLI.md` § The view sidecar. The page is output, like any render:
-
-```
-scadmesh view exgear_assembly.view.json --out out/view
-```
-
-writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD exports each part
-once, so the page takes as long as the slowest part's render. `500-ExternalGear/exgear_assembly.scad`
-is the first viewable assembly.
-
 ### Measured state of the differential set
 
 `scadmesh dist`, two-sided sampled surface distance against each reference, in mm. All nine parts render
@@ -413,6 +390,66 @@ by a typed offset, and records each finding at the call site that exposes it.
   and its chimney cone 0.296 mm inside the Split Gear's — the same 45° relief on perpendicular axes. The
   two 0.28 mm figures cannot both be removed by moving Body B, since the differential centre lies on both
   of its axes, and all three are the size of the residuals these parts already carry.
+
+## Viewing an assembly
+
+An assembly `.scad` can be turned into a section viewer page, an orthographic model cut on a movable
+plane with its parts listed, grouped and labelled, by `scadmesh view` from `openscad-tools`. The
+assembly must be **viewable**:
+
+- A top-level `part` variable selects what it draws: `"all"`, or one part's id, drawn in its assembled
+  position.
+- Every value the page quotes is echoed at top level as `echo(name = value)`.
+
+A sidecar `<assembly>.view.json` beside it names the parts, colours and groups, the labels and camera
+presets, and the notes. It restates no dimension: part heights come from the exported meshes, and text
+quotes echoes through `{name}` placeholders. The format is in `openscad-tools`'
+`specs/003-CLI.md` § The view sidecar. Every `*.view.json` in this tree names a viewable assembly.
+
+### Prerequisites
+
+- **OpenSCAD**, found as `openscad-tools`' `specs/003-CLI.md` states for `view`.
+- **`scadmesh`** on `PATH`, built from `openscad-tools` (its README § Build); `cargo install --path .`
+  in that checkout installs it.
+- **`miniserve`**: `cargo install miniserve`.
+
+### Building, serving and opening a view
+
+Run from the directory that holds the assembly — `500-ExternalGear/` for the External Gear stack:
+
+```
+scadmesh view exgear_assembly.view.json --out out/view
+miniserve out/view
+```
+
+and open `http://localhost:8080/index.html`.
+
+- `scadmesh view` writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD
+  exports each part in its own run, one after another, so the build takes the sum of the parts'
+  renders — about eight minutes for the External Gear stack. The page is output, like any render, and
+  `out/` is untracked.
+- The page loads its parts over HTTP, so it must be served; opened from disk (`file://`) it draws no
+  parts.
+- A rebuild while `miniserve` runs needs only a browser refresh. `Ctrl+C` stops the server, and
+  `miniserve -p <port> out/view` serves on another port when 8080 is taken.
+
+### Making an assembly viewable
+
+1. **Write the assembly.** A group's assembly is `<group>/<short>_assembly.scad`; the arm's is
+   [`robot_assembly.scad`](robot_assembly.scad). Place every part by a feature it carries, as the
+   arm's assembly does. Copy the viewable shape from
+   [`exgear_assembly.scad`](500-ExternalGear/exgear_assembly.scad): the `part` variable, a `PARTS` list
+   of ids, one module per part, a `draw(p)` that dispatches on the id, and an `assembly()` that draws
+   every id `part` selects. Echo every value the page will quote.
+2. **Check one part exports alone** — `openscad -D 'part="<id>"' -o check.stl <assembly>.scad` — with
+   no warnings.
+3. **Write the sidecar**, `<assembly>.view.json` beside the assembly, to the format above;
+   [`exgear_assembly.view.json`](500-ExternalGear/exgear_assembly.view.json) is the worked example.
+   Every part `id` is an entry of `PARTS`, and every number the page shows is a `{name}` placeholder
+   for an echo, never typed.
+4. **Build and open it** as above. `scadmesh view` rejects an unknown field, a duplicate id, or a
+   label, preset, overlap or focus that names no part or preset before it exports anything, so a
+   sidecar mistake fails in seconds.
 
 ## What was removed
 
