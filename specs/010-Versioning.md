@@ -19,7 +19,7 @@ carried product names; those names are historical and are not how a design is id
 |---|---|---|---|---|---|
 | 1 | Dexter 1 | PLA (FDM) | Microstep oscillation | Free-standing | Field-calibrated |
 | 2 | Dexter HD | Onyx / carbon-fiber | Microstep oscillation (firmware `Interpolation` 16×) | 6-leg strake base, single clamp | Field-calibrated |
-| **3** | Dexter HDI | Onyx / carbon-fiber | **Belt/pulley reduction** (`Interpolation` 1×) | **Bolted base, double clamp** | **Factory-recorded, not re-calibrated in field** |
+| **3** | Dexter HDI | Onyx / carbon-fiber | **Belt/pulley reduction** (`Interpolation` 1×) | **Bolted base** | **Factory-recorded, not re-calibrated in field** |
 
 Version 3 develops the version 2 architecture rather than replacing it; this is why version 2 serves as the
 inherited baseline for any subassembly whose design version 3 does not independently establish. The
@@ -112,7 +112,8 @@ Rules:
   forward.
 - **A single change request may take its own short-lived branch** off the version line, named as described
   above, merged back when complete. This is optional, and appropriate when a change is large enough to want
-  isolated review.
+  isolated review. **A branch records exactly one change entry** in [CHANGES.md](../CHANGES.md): everything
+  the branch changes is written into that entry, so the entry and the merge describe the same change.
 - **Version numbers are assigned in order and never reused.** Revision letters restart at A for each
   version, which is why a tag names both (`version-4-rev-a` is not `version-3-rev-a`).
 

@@ -32,37 +32,12 @@
 //! [dependencies]
 //! anyhow = "1"
 //! serde_json = "1"
+//! render-check = { path = "../render-check" }
 //! ```
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
+use render_check::{diagnostics, dist_gate, render, run, sm_json, Ctx, DistGate, Tally};
 use serde_json::Value;
-use std::path::{Path, PathBuf};
-use std::process::Command;
-
-/// Absolute paths tried for OpenSCAD before falling back to `$PATH`.
-///
-/// `openscad.exe` is deliberate on Windows, and the choice is not obvious.
-/// That binary is built for the GUI subsystem, so run from an interactive
-/// console it attaches to no terminal and appears to print nothing — which is
-/// why the install also ships `openscad.com`, a wrapper that republishes
-/// everything on stdout. The wrapper is the wrong tool here: this script reads
-/// stdout and stderr apart, and the diagnostics it needs are the stderr ones.
-/// Redirected to a pipe, as `Command::output` does, `openscad.exe` writes
-/// them there correctly. Use `openscad.com` when reading by eye, `.exe` when
-/// reading by program.
-const OPENSCAD_CANDIDATES: [&str; 3] = [
-    "C:/Program Files/OpenSCAD/openscad.exe",
-    "/usr/bin/openscad",
-    "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD",
-];
-
-/// Paths tried for `scadmesh`, relative to this script's directory: the
-/// standalone `openscad-tools` project checked out beside this repository's
-/// parent. Falls back to `$PATH`, or set `$SCADMESH`.
-const SCADMESH_CANDIDATES: [&str; 2] = [
-    "../../../../../openscad-tools/target/release/scadmesh.exe",
-    "../../../../../openscad-tools/target/release/scadmesh",
-];
 
 /// Where the reference meshes live. They sit under `Reference/`, not beside
 /// the `.scad` files, because for these nine parts the `.scad` is the source of
@@ -238,16 +213,6 @@ const CLONES: [ClonePart; 7] = [
                          "--ignore-plane=6.0,11.8", "--ignore-plane=-2.74,-2.62"] },
 ];
 
-/// A part reproduced closely enough to be gated on two-sided surface
-/// distance. `tol` is the Hausdorff limit in mm; the render must sit inside
-/// it in both directions, with no sampled point over.
-struct DistGate {
-    stem: &'static str,
-    scad: &'static str,
-    reference: &'static str,
-    tol: f64,
-}
-
 /// Body B joins this table when it is rebuilt as a faithful recreation.
 const DIST_GATES: [DistGate; 1] = [DistGate {
     stem: "730-001",
@@ -399,139 +364,6 @@ const EXTENT_TOL: f64 = 0.02;
 /// reach.
 const INTERFERENCE: [(&str, &str); 1] = [("730-001", "720-004")];
 
-/// Resolve a tool: `$env_key` wins, then the first existing candidate
-/// (resolved relative to `dir`), then the bare name via `$PATH`.
-fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> String {
-    if let Ok(v) = std::env::var(env_key) {
-        return v;
-    }
-    for c in candidates {
-        let path = dir.join(c);
-        if path.exists() {
-            return path.to_string_lossy().into_owned();
-        }
-    }
-    name.to_string()
-}
-
-fn script_dir() -> Result<PathBuf> {
-    let base = std::env::var("RUST_SCRIPT_BASE_PATH")
-        .context("RUST_SCRIPT_BASE_PATH unset - run this file as a rust-script")?;
-    Ok(PathBuf::from(base))
-}
-
-/// A finished tool run. Both streams are kept: `scadmesh` reports on stdout,
-/// OpenSCAD diagnoses on stderr, and neither can stand in for the other.
-struct Run {
-    ok: bool,
-    stdout: String,
-    stderr: String,
-}
-
-fn run(exe: &str, args: &[&str], dir: &Path) -> Result<Run> {
-    let out = Command::new(exe)
-        .args(args)
-        .current_dir(dir)
-        .output()
-        .with_context(|| {
-            format!("running {exe} - set $OPENSCAD / $SCADMESH if it is not on PATH")
-        })?;
-    Ok(Run {
-        ok: out.status.success(),
-        stdout: String::from_utf8_lossy(&out.stdout).into_owned(),
-        stderr: String::from_utf8_lossy(&out.stderr).into_owned(),
-    })
-}
-
-/// The lines on OpenSCAD's stderr that mean the mesh cannot be trusted,
-/// picked out of the cache and timing chatter that surrounds them.
-///
-/// The exit status cannot do this job. OpenSCAD exits 0 for `ERROR: The given
-/// mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron`, which is the
-/// one diagnostic that most directly invalidates an export, and 0 again for
-/// every `WARNING:`. It exits 1 only when the top level object comes out
-/// empty or a script-level assertion fails. So a render that quietly dropped a
-/// subtree, or silently ignored a misspelled variable, used to reach the
-/// measurements as if nothing had happened, and whatever the measurements then
-/// said was reported as a PASS.
-///
-/// `Simple: no` is caught as well as the explicit complaints. It sits in the
-/// summary block rather than in a warning, and it is how a self-intersecting
-/// or non-manifold export announces itself while OpenSCAD exits 0 and writes
-/// the file. A `.csg` export evaluates no geometry and prints no such block,
-/// so the assembly is simply not asked the question.
-///
-/// Nothing here is filtered as benign. These nine parts render clean today,
-/// and the point of the check is to notice the first one that stops.
-fn diagnostics(stderr: &str) -> Vec<&str> {
-    const MARKERS: [&str; 4] = ["ERROR:", "WARNING:", "UI-WARNING:", "TRACE:"];
-    stderr
-        .lines()
-        .map(str::trim)
-        .filter(|line| {
-            MARKERS.iter().any(|m| line.starts_with(m))
-                || line.contains("not a simple polyhedron")
-                || line.contains("top level object is empty")
-                || line.contains("nonplanar faces")
-                || (line.starts_with("Simple:") && line.ends_with("no"))
-        })
-        .collect()
-}
-
-/// Render one configuration of one part, and hold it to rendering silently.
-/// The tally entry is deliberately separate from the measurements that follow:
-/// a part that warns and then measures well has not passed, it has measured a
-/// mesh nobody should be measuring.
-fn render(scad: &str, out_stl: &str, config: &str, ctx: &Ctx,
-          tally: &mut Tally) -> Result<()> {
-    let define = format!("config=\"{config}\"");
-    let r = run(&ctx.openscad, &["-o", out_stl, "-D", &define, scad], &ctx.dir)?;
-    judge(&r, scad, config, tally)
-}
-
-/// Hold a finished OpenSCAD run to exiting cleanly and rendering silently.
-fn judge(r: &Run, scad: &str, config: &str, tally: &mut Tally) -> Result<()> {
-    if !r.ok {
-        bail!("OpenSCAD failed rendering {scad} ({config}):\n{}",
-              r.stderr.trim_end());
-    }
-    let complaints = diagnostics(&r.stderr);
-    for line in &complaints {
-        println!("      {line}");
-    }
-    tally.record(&format!("{scad} ({config}) renders without diagnostics"),
-                 complaints.is_empty());
-    Ok(())
-}
-
-fn sm_json(args: &[&str], ctx: &Ctx) -> Result<(bool, Value)> {
-    let mut full: Vec<&str> = args.to_vec();
-    full.push("--json");
-    let r = run(&ctx.scadmesh, &full, &ctx.dir)?;
-    let json = serde_json::from_str(&r.stdout)
-        .with_context(|| format!("parsing scadmesh output for {args:?}"))?;
-    Ok((r.ok, json))
-}
-
-struct Ctx {
-    dir: PathBuf,
-    openscad: String,
-    scadmesh: String,
-}
-
-struct Tally {
-    failures: usize,
-}
-
-impl Tally {
-    fn record(&mut self, label: &str, ok: bool) {
-        println!("{}  {label}", if ok { "PASS" } else { "FAIL" });
-        if !ok {
-            self.failures += 1;
-        }
-    }
-}
-
 fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for part in &CLONES {
         let out_stl = format!("out/{}.stl", part.stem);
@@ -581,19 +413,8 @@ fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 /// Render each gated housing and measure its surface against the reference.
 /// The render is left at `out/<stem>.stl` for the interface checks to reuse.
 fn check_dist_gates(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    for part in &DIST_GATES {
-        let out_stl = format!("out/{}.stl", part.stem);
-        render(part.scad, &out_stl, "previous", ctx, tally)?;
-        let tol = part.tol.to_string();
-        let reference = ref_path(part.reference);
-        let (ok, report) =
-            sm_json(&["dist", &out_stl, &reference, "--tol", &tol], ctx)?;
-        let worst = report["hausdorff"].as_f64().unwrap_or(f64::NAN);
-        tally.record(
-            &format!("{} surface vs reference (hausdorff {worst:.3} mm, tol {tol} mm)",
-                     part.stem),
-            ok,
-        );
+    for gate in &DIST_GATES {
+        dist_gate(gate, REF_DIR, ctx, tally)?;
     }
     Ok(())
 }
@@ -720,16 +541,6 @@ fn check_interference(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
-fn context() -> Result<Ctx> {
-    let dir = script_dir()?;
-    std::fs::create_dir_all(dir.join("out"))?;
-    Ok(Ctx {
-        openscad: tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", &dir),
-        scadmesh: tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", &dir),
-        dir,
-    })
-}
-
 /// Order matters: everything `check_counts` measures has to have been rendered
 /// by an earlier step. Body B is rendered by `check_bodies`, so that has to
 /// come first — run the other way round, the slot count was read off whatever
@@ -746,19 +557,9 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_interference(ctx, tally)
 }
 
-fn finish(tally: &Tally) -> ! {
-    println!();
-    if tally.failures == 0 {
-        println!("ALL CHECKS PASSED");
-        std::process::exit(0);
-    }
-    println!("{} CHECK(S) FAILED", tally.failures);
-    std::process::exit(1);
-}
-
 fn main() -> Result<()> {
-    let ctx = context()?;
-    let mut tally = Tally { failures: 0 };
+    let ctx = Ctx::for_script()?;
+    let mut tally = Tally::default();
     verify(&ctx, &mut tally)?;
-    finish(&tally)
+    tally.finish()
 }

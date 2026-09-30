@@ -102,7 +102,7 @@ Dexter is a line of numbered versions, each a distinct machine rather than a var
 specified here develops the previous version's architecture — strain-wave base joints, output-side optical
 encoders, the FPGA joint servo, the printed-and-bonded-carbon-fiber body, and the cross-version tool
 interface — and departs from it in four ways load-bearing enough to affect the whole machine: the
-**belt-reduced wrist**, the **bolted base and doubled base clamp**, **factory-recorded calibration**, and
+**belt-reduced wrist**, the **bolted base**, **factory-recorded calibration**, and
 **revised link geometry**. Each is specified as the design in the document that owns it, not as an
 annotation on its predecessor.
 

@@ -853,3 +853,138 @@ anything version 3 does not independently specify
   print does not match `AxisCal`. [008.6](specs/008-Assembly.md#0086-differential) step 13 now sets
   `#720-004` in Body A before the shaft enters it. [009.2](specs/009.2-Test-Build-Manifest.md) has no
   authoring gate left on the wrist.
+
+### CR-3A19: L1 specified from the base stack; the doubled clamp withdrawn; 6810s allocated to their seats
+
+- **Affects:** [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
+  [004 §Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+  [001 §5](specs/001-Overview.md#5-design-lineage), REQ-STR-4 in
+  [002](specs/002-Requirements.md),
+  [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
+  [007 §7.2](specs/007-Bill-of-Materials.md#0072-base),
+  [007 §7.4](specs/007-Bill-of-Materials.md#0074-main-pivot),
+  [007 §7.9](specs/007-Bill-of-Materials.md#0079-external-gear-mount--differential-motors),
+  [007 aggregate](specs/007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot),
+  [007.1 C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [007.1 C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set),
+  [007.1 §4](specs/007.1-Parts-Catalog.md#4-bearings), [007.1 §6](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [007.1 §Corrections](specs/007.1-Parts-Catalog.md#corrections-to-007),
+  [007.2](specs/007.2-Printed-Parts.md#totals), [008.2](specs/008-Assembly.md#0082-base),
+  [008.3](specs/008-Assembly.md#0083-harmonic-drive-motors),
+  [008.4](specs/008-Assembly.md#0084-main-pivot), [008.5](specs/008-Assembly.md#0085-arm-body),
+  [008.7](specs/008-Assembly.md#0087-end-arm-hub),
+  [008.8](specs/008-Assembly.md#0088-external-gear), [009](specs/009-Design-Completion.md),
+  [009.1 §3.1](specs/009.1-Performance-Characterization-Protocol.md#test-31-mounting-face-to-j2-axis),
+  [009.2](specs/009.2-Test-Build-Manifest.md), [010](specs/010-Versioning.md),
+  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/500-ExternalGear/exgear_assembly.scad` (new),
+  `exgear_assembly.view.json` (new), `500-ExternalGear/511-001_ExGearMotorEndCap.scad` (new),
+  `600-StrainWave/630-005_FlexSplineAttach.scad` (new), both groups' `render-all.rs` (new), the shared
+  `render-check/` crate (new), `700-Differential/render-all.rs`, the two meshes moved to
+  `Reference/meshes/`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
+  `Hardware/Models/MANIFEST.csv`.
+- **Amends:** [CR-3A2](#cr-3a2-bolted-base-and-doubled-base-clamp) (the doubled clamp; the bolted base
+  stands),
+  [CR-3A9](#cr-3a9-base-mounting-plate-specified-two-link-datums-withdrawn-two-model-mirrors-replaced)
+  ("doubled clamp resolved from geometry": the 97.000 mm shoulder, the Base Long bottoming on nothing, the
+  15.000 mm rise, and the clamp-screw and M3 nut counts of 2 and 45),
+  [CR-3A12](#cr-3a12-l4-specified-along-the-arm-the-dh-d-corroboration-withdrawn) (L1's `[TBD]` status),
+  [CR-3A6](#cr-3a6-parts-catalog-and-printed-parts-list-added-bom-made-orderable) (its 6810 correction from
+  7 to 8).
+- **Was:** L1 = 235.20 mm on the authority of `Firmware/Defaults.make_ins`, against a stack of two
+  15.000 mm clamps on a 97.000 mm shoulder that was held to set the Base Long's height. The CAD model's
+  single-clamp chain put J2 at 231.200 mm and the doubled stack at 246.200 mm, neither of them L1, and
+  DC-13 was left open on a first-build measurement of height and clamp count together.
+  [007.2](specs/007-Bill-of-Materials.md#0072-base) listed two 6810s, "one per Base row", and C-401
+  totalled 8. [008.7](specs/008-Assembly.md#0087-end-arm-hub) step 1 inserted a 6810 into each Axis
+  Intersection half, against [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub)'s two 6807s. The
+  [007.9](specs/007-Bill-of-Materials.md#0079-external-gear-mount--differential-motors) 6810 was consumed
+  by no step in 008. #511-001 and #630-005 were the HD set's meshes. J1's and J2's far 6810 was pushed off
+  its shoulder on assembly and tapped back ([008.4](specs/008-Assembly.md#0084-main-pivot) step 9c,
+  [008.5](specs/008-Assembly.md#0085-arm-body) step 2), and J3's was pressed "~38 mm" with the same
+  instruction ([008.8](specs/008-Assembly.md#0088-external-gear) step 5).
+- **Now:**
+  - **The Base Long bottoms on the Base Mount Bottom's top face, at 98.000 mm.** Sectioning the CAD bodies
+    shows the two parts sharing material over r 33–36 mm at that plane. The clamp seats on a shoulder at
+    **82.000 mm**, not 97.000, occupying 82.000–97.000 mm around a 16.000 mm spigot. Its Ø74.500 bore
+    equals the outer face radius of the six strakes, which it squeezes into the spigot's grooves. It is
+    not in the axial stack, so the number of clamps does not move J2.
+  - **The spigot takes one clamp.** A second would ride on the first to 112.000 mm and lift the Base Long
+    off its seat, a rise of 14.000 mm, not 15.000 mm, and to no stop. The HD build notes list one clamp,
+    one M3 × 20 mm bolt and one M3 nut for the base. The wiki's `Dynamics.md` names a "double base clamp"
+    among the features "specific to the Dexter HDI that was measured", which records a deviation on that
+    one unit, not the design.
+  - **L1 = 231.500 mm, the printed stack:** the mount's top face at 98.000, `#120-001` Base Long
+    96.000 mm tall (the CAD body is 95.700), and `#300-001` Main Pivot carrying the J2 axis 37.500 mm above
+    its base, which rests on the 6810's inner race flush with the Base Long's top. The CAD chain gives
+    231.200 mm; the 0.300 mm is the Base Long's two revisions.
+  - **The firmware's 235.20 mm is superseded.** No seated stack of these parts reproduces it. It is not
+    the doubled-clamp unit's height either, since that unit's second clamp has no stop. HDI-007010's DH J1
+    row carries `d` = 250.101 mm, 14.9 mm above 235.20, which fits the one measured unit having carried a
+    second clamp on its own stack. That row's base-frame datum is not recorded, so it is not a reading of
+    L1 and corroborates nothing here.
+  - **The ±35.540 mm holes are not clamp-bolt holes.** They are six axial Ø3.5 mm holes in the Base Long.
+    The clamp bolt runs tangentially across the clamp's own split, from a Ø5.5 mm head counterbore on one
+    ear into a 5.5 mm hex pocket on the other. The pocket takes the M3 nut the build notes' parts list
+    gives; their instruction to put "the M3 Washer" there is a slip, and 008.2 step 6 now places the nut.
+  - **The Base Long carries two 6810s, and the stack rests on the upper one.** Its upper bore is a
+    Ø65 × 7 mm seat on a shoulder, flush with the top face; it takes the bearing pressed onto the Base
+    Motor End Cap's eight Ø50 fingers, whose face lies flush with the finger tips that meet the Main
+    Pivot's Ø55 boss. Its lower bore is Ø65 for 35.5 mm from the lower end, stopping on a Ø60 shoulder: the
+    "about 1½″ down" seat of the build notes, which takes the bearing of 008.4 step 9a and sets no height.
+  - **The robot takes seven 6810s**: 7.2 ×1, 7.3 ×2, 7.5 ×1, 7.8 ×2, 7.9 ×1. The total returns to
+    CR-3A6's "was" figure of 7 by a different sum: that count took 7.3 once and 7.2 twice.
+  - **The Base Long's second 6810 was counted twice.** Its upper bore takes the bearing pressed onto the
+    Base Motor End Cap in [008.4](specs/008-Assembly.md#0084-main-pivot) step 4, which is 7.3's per-motor
+    row. Only the lower-bore bearing of step 9a is 7.2's. The build notes list three 6810s for the whole
+    Main Pivot assembly: two end caps and one Base Long.
+  - **The Axis Intersection seat is a 6807.** `#410-001` bores Ø47.000 for 7 mm onto a Ø42 lip, which is
+    the 6807's 35 × 47 × 7 and not the 6810's 50 × 65 × 7. The build notes' "2 - 6810 Bearings" under the
+    End Arm Hub is a slip that 008.7 inherited, like their "M3 Washer" for the base clamp's nut.
+  - **The Ex Gear Mount Top's 6810 is the output's third support.** `#520-002` bores Ø65.0 for 7 mm from
+    its underside onto a Ø55/Ø51 shoulder at its top face. `exgear_assembly.scad` places the
+    500-ExternalGear group, its motor and its strain-wave drive from the parts' own seats, and puts the
+    circular spline's Ø50h6 in this bearing's bore; the spline turns with the Stator Holder and the
+    External Gear. The External Gear's own two Ø65 seats take 7.8's two bearings. The build notes name two
+    6810s for the External Gear and do not install this one; the seat decides it.
+  - **J3's stack closes on two revised prints.** Placed from its seats, J3's upper 6810 ran into the Flex
+    Spline Attach's flare and its inner race passed below the motor face, and the drive stood higher on its
+    motor than on its Stator Holder. `#511-001` `revised` deepens the motor seat, which lowers the motor,
+    the Attach and the drive; `#630-005` `revised` removes the flare, running the land down to the motor
+    face, and lowers the hub face by `hub_drop`. `exgear_assembly.scad` computes J3's drop from `MOTOR_LEN`
+    and asserts that the drive closes and the upper 6810 clears both the motor face and the hub face; the
+    values are its echoes. The Attach's motor face is at its local z −1.000, which the first placement took
+    as 0.
+  - **J1 and J2 print the revised Attach at no drop.** Their far 6810's inner race sat 0.2 mm into the
+    flare; that is the push-out their steps handled. On the continued land it runs free, retained by the
+    #6 washers on the counterbore floors, which the revision keeps at z 7.000. Their Stator Holders ride
+    the all-thread nuts, which take up the drive's span, so they need no drop.
+  - **The section view is reusable.** `scadmesh view` (openscad-tools) writes a section viewer for any
+    assembly that follows the Models README's viewable-assembly convention, from a sidecar that names the
+    parts, labels and notes and takes every number from the assembly's echoes;
+    `exgear_assembly.view.json` is the first.
+- **Driver:** DC-13 could not be closed by a measurement whose outcome depended on how many clamps a
+  builder fitted. A link length has to rest on positive stops that the parts define. A bearing row that no
+  step consumes, or a step that consumes a bearing no row lists, is an order that arrives short or long at
+  the bench. A bearing that is tapped back on every build, and one that cannot reach its journal, are fits
+  the printed parts must make, not steps a builder repeats.
+- **Re-derive:** 003's L1 row and chain row carry 231.50 mm; 004 replaces the double-clamp paragraph with
+  the single clamp and the stack table, and drops the Base open item; 006's `LinkLengths` block carries
+  `231500`, with the second deviation from the shipped file called out (`Defaults.make_ins` itself is not
+  edited, per CR-3A12); #100-001 goes to qty 1; M3 × 20 mm goes to 5 and M3 nuts to 44; printed pieces go
+  to 108 (119 with tooling); 008.2 step 6 places the clamp's nut; 008.4 steps 4 and 9 name the end caps,
+  press the lower bearing to its shoulder, and seat the Base Motor End Cap's bearing flush in the upper
+  bore; 008.4 step 18 installs one clamp; 009.1 § 3.1 measures from the plate's top
+  face (the Base Mount Bottom's mounting face) rather than its bottom, and becomes a pass/fail
+  confirmation of L1; `robot_assembly.scad` seats the Main Pivot on the printed Base Long's top and
+  asserts that the stack sums to L1. The derived maximum reach does not include L1 and is unchanged.
+  C-401 carries 7 with its breakdown, and 007.1's corrections table loses its 6810 row and C-401 quantity
+  note; 008.7 step 1 inserts 6807s; 008.8 step 13 presses the 7.9 bearing into the Ex Gear Mount Top
+  before fitting it. 007.2 and `PART-INDEX.md` point #511-001 and #630-005 at their `.scad` files; C-101's
+  body-length row says how each joint closes the drive and C-201's span row links it; 008.3 measures J3's
+  motor before its Attach is printed; 008.4 step 9c, 008.5 step 2 and 008.8 step 5 lose the tap-back, and
+  the washers of 008.4 step 9d and 008.5 step 3 retain the free-running inner race.
+- **Status:** `[Specified]` — [DC-13](specs/009-Design-Completion.md#base-height-and-l1) is closed. The
+  built height is confirmed under
+  [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base checklist. J3's stack closes
+  in `exgear_assembly.scad`, whose asserts hold it for the measured motor length; the fit is confirmed on
+  the first built J3.

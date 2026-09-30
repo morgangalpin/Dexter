@@ -78,13 +78,15 @@ Parts: [007.2](007-Bill-of-Materials.md#0072-base).
 5. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washers, and nut,
    or clamp the same four corners to a T-slot table. The plate must be fixed down, not left resting —
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
-6. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
-   other side. Assemble **both** clamps (the clamps are installed later, in [008.4](#0084-main-pivot) step
-   18).
+6. Assemble the Base Clamp: place an M3 nut in the hex pocket on one ear and thread in an M3 × 20 mm bolt
+   from the counterbored ear. The clamp is installed later, in [008.4](#0084-main-pivot) step 18.
 
 ## 008.3 Harmonic Drive Motors
 Parts: [007.3](007-Bill-of-Materials.md#0073-harmonic-drive-motors). Builds the base (J1) and pivot (J2)
-motor assemblies (repeat for the J3 external-gear motor in [008.8](#0088-external-gear)).
+motor assemblies (repeat for the J3 external-gear motor in [008.8](#0088-external-gear)). Before printing J3's
+Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
+[`exgear_assembly.scad`](../Hardware/Models/500-ExternalGear/exgear_assembly.scad), and print the Attach with the
+`hub_drop` that file echoes as `j3_hub_drop` ([007.2](007.2-Printed-Parts.md#printed-parts)).
 
 1. Assemble one drive at a time.
 2. Keep each strain-wave drive's top and bottom halves paired — they are matched at manufacture and are not
@@ -109,19 +111,21 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
    both the body holes and strake ends.
 2. Epoxy both ends at once — internal weep holes connect them and epoxy mixes inside; wipe weeped excess.
 3. Confirm both strake sets protrude by about the same distance once seated.
-4. Press the Pivot Motor End Caps onto two 6810 bearings.
+4. Press the two Motor End Caps — Base `#311-001` and Pivot `#312-001` — onto two 6810 bearings.
 5. Slide the two-sided Pivot Code Disk onto the Main Pivot, flat side facing away from the body.
 6. Epoxy the Pivot Motor End Caps to the Main Pivot; orient the long-end cap's notch toward the motor-wire
    hole in the long end (short-end cap orientation is free — its wire hole is centered).
 7. Feed the two motor assemblies' wires through the side holes and pull them through.
 8. Epoxy the motor bottoms, End Cap faces, and the strake-to-motor contact areas.
 9. Mount the Main Pivot onto the Base:
-   a. Press a 6810 bearing ~38 mm (1.5") into the Base Long (mallet + aluminum drift if it resists).
+   a. From the Base Long's lower end, press a 6810 bearing into the lower bore until it stops on the bore's
+      shoulder, 35.5 mm (about 1½″) in (mallet + aluminum drift if it resists).
    b. Align the Base Code Disk with the 3 strakes and press to snap in.
-   c. Push the Base Long (wires up) onto the Main Pivot until fully seated; if the bearing pushes out, invert
-      and tap back.
-   d. Remove the Flex Spline Attach socket-head screws one at a time, adding a #6 washer under each to hold
-      the bearing and lock the motor while adhesive cures.
+   c. Push the Base Long, lower end up (wires up), onto the Main Pivot until the Base Motor End Cap's bearing
+      bottoms in the Base Long's upper bore, flush with its top face.
+   d. Remove the Flex Spline Attach socket-head screws one at a time, adding a #6 washer under each; the
+      washers retain the lower bearing's inner race, which runs free on the Attach's land, and lock the motor
+      while adhesive cures.
 10. Lubricate 4× M2 × 16 mm bolts, place them in the Base Stator Holder, and screw down.
 11. Seat the strain-wave top in the Base Stator Holder, stamped "52" outward, aligning the two threaded
     holes; secure with 2× M3 × 12 mm socket-head bolts.
@@ -132,20 +136,20 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
 15. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
 16. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
 17. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
-18. Install **both** Base Clamps (from [008.2](#0082-base) step 6), stacked: remove the Base Long, slide both
-    clamps onto the Base Mount, reinstall the Base Long, and tighten both clamps. They stack face to face
-    with no spacer, the lower one seating on the Base Mount's shoulder — see
-    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Record the resulting
-    mounting-face-to-J2 height for [DC-13](009-Design-Completion.md#base-height-and-l1).
+18. Install the Base Clamp (from [008.2](#0082-base) step 6): remove the Base Long, slide the clamp onto the
+    Base Mount until it seats on the shoulder, reinstall the Base Long fully down on the Base Mount's top
+    face, and tighten the clamp — see
+    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Measure the
+    mounting-face-to-J2 height per
+    [009.1 § 3.1](009.1-Performance-Characterization-Protocol.md#test-31-mounting-face-to-j2-axis).
 
 ## 008.5 Arm Body
 Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 
 1. Press a 6810 bearing ~38 mm into the Arm Body.
-2. Slide the Arm Body over the Pivot Motor and snap in; tap the bearing back with mallet + drift if it backs
-   out.
-3. Remove the M3 × 12 mm socket-head screws one at a time, adding a #6 washer under each, and retighten to
-   lock the bearing.
+2. Slide the Arm Body over the Pivot Motor and snap in.
+3. Remove the M3 × 12 mm socket-head screws one at a time, adding a #6 washer under each, and retighten; the
+   washers retain the bearing's inner race on the Flex Spline Attach's land.
 4. Lubricate 4× M2 × 16 mm bolts in the Pivot Stator Holder and screw down.
 5. Seat the strain-wave top in the Pivot Stator Holder, "52" outward, aligning the threaded holes; secure
    with 2× M3 × 12 mm socket-head bolts.
@@ -218,7 +222,7 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
 ## 008.7 End Arm Hub
 Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 
-1. Insert a 6810 bearing into each Axis Intersection half.
+1. Insert a 6807 bearing into each Axis Intersection half.
 2. Press the New Belt Pulley into the Arm-Body-side half.
 3. Epoxy the holes on the Arm-Body-side Axis Intersection.
 4. Epoxy the mirrored other half and join the two; epoxy the remaining holes for the 48 mm strakes.
@@ -261,8 +265,8 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 3. Feed the motor wires through the End Cap.
 4. Epoxy the motor bottom and End Cap top and join, aligning the notch with the wire exit; then pull the
    bolts away from the End Cap so the nuts seat inward.
-5. Press one 6810 ~38 mm into the External Gear (tap back if it pushes out); press the second 6810 into the
-   top.
+5. Press one 6810 ~38 mm into the External Gear; press the second 6810 into the top. The upper one's inner
+   race runs free on the Flex Spline Attach's land.
 6. Replace the temporary bolts one at a time with M3 × 12 mm socket-head bolts and #6 washers, cross-pattern.
 7. Mount the strain-wave top to the Ex Gear Stator Holder: "52" outward, threaded holes aligned, lubricate
    the bolt shafts, secure with 2× M3 × 12 mm socket-head bolts.
@@ -273,7 +277,8 @@ Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd stra
 10. Feed the motor wires through the Ex Gear Mount hole, slide onto the strake holes, press hand-tight.
 11. Install 4× M3 × 12 mm socket-head bolts to secure the External Gear.
 12. Thread 2 M3 nuts onto one end of an M3 × 46 mm all-thread, tightened together.
-13. Fit the Ex Gear Mount Top over the External Gear, insert the all-thread, and tighten.
+13. Press a 6810 into the Ex Gear Mount Top's bearing seat from the underside until it stops on the seat's
+    shoulder. Fit the Mount Top over the External Gear, insert the all-thread, and tighten.
 14. Install the angle and rotate motors: feed each shaft back to front through the mount, wires toward the arm
     shaft.
 15. Place M3 washers on 4× M3 × 8 mm bolts, insert through the mount front, tighten cross-pattern until each

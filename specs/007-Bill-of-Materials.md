@@ -54,7 +54,7 @@ Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)).
 
 | PBS # | Part | Type | Qty | Notes |
 |---|---|---|---|---|
-| #100-001 | Base Clamp | 3D print | **2** | Doubled per the double-clamp design; stacked at the base-pivot joint |
+| #100-001 | Base Clamp | 3D print | 1 | One clamp; seat and stack per [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
 | #100-002 | Base Code Disc | 3D print | 1 | |
 | #100-003 | Pivot Skirt | 3D print | 1 | |
 | #110-001 | Base Mount Bottom | 3D print | 1 | |
@@ -66,9 +66,9 @@ Realizes the bolted base ([004](004-Mechanical-Architecture.md#base-j1)).
 | #120-001 | Base Long | 3D print | 1 | |
 | #120-002 | 133 × 12.6 × 3.2 mm CF strake | Fabricate | 3 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #120-003 | 107 mm M3 all-thread | Fabricate | 3 | |
-| #620-006 | 6810 bearing | Off the shelf | 2 | one per Base row |
-| #660-002 | M3 nuts | Off the shelf | **9** | 7, plus one per clamp |
-| #642-004 | M3 × 20 mm socket head screw | Off the shelf | **2** | One per clamp — see [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
+| #620-006 | 6810 bearing | Off the shelf | 1 | The Base Long's lower bore ([008.4](008-Assembly.md#0084-main-pivot) step 9a). Its upper bore takes the Base Motor End Cap's bearing, counted in [007.3](#0073-harmonic-drive-motors) |
+| #660-002 | M3 nuts | Off the shelf | **8** | 7, plus one for the clamp |
+| #642-004 | M3 × 20 mm socket head screw | Off the shelf | 1 | The clamp bolt — see [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
 | #670-003 | #6 washers | Off the shelf | 3 | |
 
 *(The previous version's #111-001 Foot ×6 and #111-002 aluminium strake ×6 do not appear in this design;
@@ -104,12 +104,13 @@ J2 shoulder structure ([004](004-Mechanical-Architecture.md#main-pivot-j2-and-ar
 |---|---|---|---|---|
 | #300-001 | Main Pivot (printed body) | 3D print | 1 | |
 | #300-002 | Pivot Code Disk | 3D print | 1 | |
-| #300-003 | 126 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock. Unchanged in length — these are bonded stiffeners and set no link length. What L1 grew by is [DC-13](009-Design-Completion.md#base-height-and-l1) |
+| #300-003 | 126 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock. Unchanged in length — these are bonded stiffeners and set no link length. L1 is set by the base stack in [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) |
 | #300-004 | 146 × 12.6 × 3.2 mm CF strake | Fabricate | 4 | Cut from [C-501](007.1-Parts-Catalog.md#c-501--carbon-fibre-strip-125--500) — .125″ × .500″ stock |
 | #660-002 | M3 nuts | Off the shelf | 5 | |
 
-Also consumes the two motor assemblies from [007.3](#0073-harmonic-drive-motors), a 6810 bearing, and the
-Base Code Disk / Base Stator Holder from [007.2](#0072-base) — see [008.4](008-Assembly.md#0084-main-pivot).
+Also consumes the two motor assemblies from [007.3](#0073-harmonic-drive-motors), and the Base Long's 6810
+bearing and the Base Code Disk / Base Stator Holder from [007.2](#0072-base) — see
+[008.4](008-Assembly.md#0084-main-pivot).
 
 ## 007.5 Arm Body
 L2 span (J2→J3) plus belt-director sub-unit. The L2 tube length is specific to this version.
@@ -242,7 +243,7 @@ Mounts the two plain **J4/J5 (angle + rotate) steppers** that drive the differen
 | #520-004 | Nut Holder B | 3D print | 1 | |
 | #520-005 | M3 × 46 mm all-thread | Fabricate | 2 | |
 | #520-006 | 1" × 68 mm CF square tube | Fabricate | 1 | Bonded in a glue rig ([007.1](#0071-glue-rig-assembly)) |
-| #620-006 | 6810 bearing | Off the shelf | 1 | |
+| #620-006 | 6810 bearing | Off the shelf | 1 | The Ex Gear Mount Top's seat ([008.8](008-Assembly.md#0088-external-gear) step 13) |
 | #642-003 | M3 × 12 mm socket head screws | Off the shelf | 4 | |
 | #660-002 | M3 nuts | Off the shelf | 4 | |
 | #670-003 | #6 washers | Off the shelf | 2 | |
@@ -332,7 +333,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | Part | Total | Catalog |
 |---|---|---|
 | M2 nuts | 41 | [C-604](007.1-Parts-Catalog.md#6-fasteners) |
-| M3 nuts | 45 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 nuts | 44 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 washers | 20 | [C-605](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 washers | 16 | [C-613](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 × 12 mm bolts | 20 | [C-601](007.1-Parts-Catalog.md#6-fasteners) |
@@ -343,7 +344,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M3 × 8 mm hex cap bolt | 6 | [C-608](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 10 mm bolts | 3 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 12 mm socket head screws | 22 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
-| M3 × 20 mm bolts | 6 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 20 mm bolts | 5 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 bolt + 2 washers + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
 | #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
@@ -351,7 +352,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | 6703 bearing (17 × 23 × 4) | 11 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
 | 6705 bearing (25 × 32 × 4) | 1 | [C-403](007.1-Parts-Catalog.md#4-bearings) |
 | 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
-| 6810 bearing (50 × 65 × 7) | 8 | [C-401](007.1-Parts-Catalog.md#4-bearings) |
+| 6810 bearing (50 × 65 × 7) | 7 | [C-401](007.1-Parts-Catalog.md#4-bearings) |
 | MR85 bearing (5 × 8 × 2.5) | 3 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
 | MR128 bearing (8 × 12 × 3.5) | 14 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
 | AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
@@ -362,7 +363,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | Dynamixel XL-320 servo | 2 | [C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) |
 | Optical Board | 5 | [C-703](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
 | 6-pin connector | 10 | [C-708](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
-| 3D printed parts | 109 pieces / 70 distinct | [007.2](007.2-Printed-Parts.md#totals) |
+| 3D printed parts | 108 pieces / 70 distinct | [007.2](007.2-Printed-Parts.md#totals) |
 
 ## Sourcing notes
 

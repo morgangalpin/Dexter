@@ -1,0 +1,56 @@
+{
+  "scad": "exgear_assembly.scad",
+  "title": "External gear stack",
+  "subtitle": "exgear_assembly.scad · J3 at a {motor_len} mm motor body · orthographic, cut on XZ",
+  "groups": [
+    {"name": "Frame", "role": "fixed", "parts": [
+      {"id": "mount", "name": "Ex Gear Mount", "pn": "#520-001", "color": "#9aa7b4"},
+      {"id": "mount_top", "name": "Ex Gear Mount Top", "pn": "#520-002", "color": "#b8c4cf"},
+      {"id": "end_cap", "name": "Motor End Cap", "pn": "#511-001", "color": "#d99a45"},
+      {"id": "motor", "name": "NEMA 17 motor", "pn": "C-101", "color": "#50565c"},
+      {"id": "attach", "name": "Flex Spline Attach", "pn": "#630-005", "color": "#e3b060"},
+      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"},
+      {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"}]},
+    {"name": "Input", "role": "motor speed", "parts": [
+      {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"}]},
+    {"name": "Output", "role": "turns", "parts": [
+      {"id": "circular_spline", "name": "Circular spline", "pn": "C-201", "color": "#2a9d8f"},
+      {"id": "stator", "name": "Stator Holder", "pn": "#511-002", "color": "#c65f4f"},
+      {"id": "gear", "name": "External Gear", "pn": "#510-001", "color": "#4f86c6"}]},
+    {"name": "Bearings", "role": "6810, 50 × 65 × 7", "parts": [
+      {"id": "bearing_lower", "name": "Lower, on End Cap land", "pn": "6810", "color": "#dcdcdc"},
+      {"id": "bearing_upper", "name": "Upper, on Attach land", "pn": "6810", "color": "#dcdcdc"},
+      {"id": "bearing_top", "name": "Top, in Mount Top", "pn": "6810", "color": "#f0c419"}]}
+  ],
+  "labels": [
+    {"at": [25, 0], "part": "bearing_top", "text": "Top 6810 on spline Ø50h6 · {top_6810_on_spline}"},
+    {"at": [25, 0], "part": "bearing_upper", "text": "Upper 6810 on Attach land · {upper_6810_above_motor} over the motor"},
+    {"at": [25, 0], "part": "bearing_lower", "text": "Lower 6810 on End Cap land"}
+  ],
+  "presets": [
+    {"label": "Top bearing", "at": [26, 0], "part": "bearing_top", "span": 28},
+    {"label": "Upper 6810", "at": [26, 0], "part": "bearing_upper", "span": 28},
+    {"label": "Lower 6810", "at": [26, 0], "part": "bearing_lower", "span": 28}
+  ],
+  "notes": [
+    {"heading": "What turns in the Mount Top's bearing", "emphasis": true,
+     "text": "The circular spline. The Mount Top's 6810 takes the spline's Ø50h6 outside diameter over the spline's top {top_6810_on_spline} mm. The spline turns with the Stator Holder and the External Gear, so this bearing is the output's third support.",
+     "focus": {"label": "Show the journal in section", "preset": "Top bearing", "hide": ["mount"]}},
+    {"heading": "How J3's stack closes",
+     "text": "Two revised prints close the motor chain on the output chain. The drop follows the motor body: measure it (008.3), set MOTOR_LEN, and print J3's Attach with the new j3_hub_drop.",
+     "rows": [
+       {"text": "End Cap seat raised (#511-001, revised)", "value": "{seat_raise}"},
+       {"text": "Attach hub face lowered (#630-005, J3)", "value": "{j3_hub_drop}"},
+       {"text": "Upper 6810 inner race above the motor face", "value": "{upper_6810_above_motor}"},
+       {"text": "Upper 6810 inner race below the hub face", "value": "{upper_6810_below_hub}"},
+       {"text": "Top 6810 bore on the spline's Ø50h6", "value": "{top_6810_on_spline}"},
+       {"text": "Stator Holder flange below the Mount Top", "value": "{stator_below_top}"}]},
+    {"heading": "Not drawn",
+     "items": [
+       "Nut Holders A/B (#520-003/-004) and the two all-threads",
+       "Wave Gen Coupler (#630-004); a tool sets its depth",
+       "Angle and rotate motors in the Mount's front pockets",
+       "Vendor parts are envelopes: motor from C-101, drive from the XB1-AS-C-32 drawing, bearings at catalogue size"]}
+  ],
+  "overlap": ["bearing_top", "circular_spline"]
+}

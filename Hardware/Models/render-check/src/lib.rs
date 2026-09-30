@@ -1,0 +1,325 @@
+//! Shared machinery for the per-group `render-all.rs` scripts: finding
+//! OpenSCAD and `scadmesh`, running them, holding a render to silence, and
+//! tallying the verdicts. Each group's script owns its own checks and calls
+//! into this crate for everything else, through a path dependency:
+//!
+//! ```text
+//! //! ```cargo
+//! //! [dependencies]
+//! //! render-check = { path = "../render-check" }
+//! //! ```
+//! ```
+
+use anyhow::{bail, Context, Result};
+use serde_json::Value;
+use std::path::{Path, PathBuf};
+use std::process::Command;
+
+/// Absolute paths tried for OpenSCAD before falling back to `$PATH`.
+///
+/// `openscad.exe` is deliberate on Windows, and the choice is not obvious.
+/// That binary is built for the GUI subsystem, so run from an interactive
+/// console it attaches to no terminal and appears to print nothing — which is
+/// why the install also ships `openscad.com`, a wrapper that republishes
+/// everything on stdout. The wrapper is the wrong tool here: the checks read
+/// stdout and stderr apart, and the diagnostics they need are the stderr ones.
+/// Redirected to a pipe, as `Command::output` does, `openscad.exe` writes
+/// them there correctly. Use `openscad.com` when reading by eye, `.exe` when
+/// reading by program.
+const OPENSCAD_CANDIDATES: [&str; 3] = [
+    "C:/Program Files/OpenSCAD/openscad.exe",
+    "/usr/bin/openscad",
+    "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD",
+];
+
+/// Paths tried for `scadmesh`, relative to this crate: the standalone
+/// `openscad-tools` project checked out beside this repository's parent.
+/// Falls back to `$PATH`, or set `$SCADMESH`.
+const SCADMESH_CANDIDATES: [&str; 2] = [
+    "../../../../../openscad-tools/target/release/scadmesh.exe",
+    "../../../../../openscad-tools/target/release/scadmesh",
+];
+
+/// Resolve a tool: `$env_key` wins, then the first existing candidate
+/// (resolved relative to `dir`), then the bare name via `$PATH`.
+pub fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> String {
+    if let Ok(v) = std::env::var(env_key) {
+        return v;
+    }
+    candidates
+        .iter()
+        .map(|c| dir.join(c))
+        .find(|p| p.exists())
+        .map_or_else(|| name.to_string(), |p| p.to_string_lossy().into_owned())
+}
+
+/// Where the tools run and which binaries they are.
+pub struct Ctx {
+    pub dir: PathBuf,
+    pub openscad: String,
+    pub scadmesh: String,
+}
+
+impl Ctx {
+    /// A context for the group directory `dir`, with `out/` created in it.
+    pub fn new(dir: PathBuf) -> Result<Ctx> {
+        std::fs::create_dir_all(dir.join("out"))?;
+        let here = Path::new(env!("CARGO_MANIFEST_DIR"));
+        Ok(Ctx {
+            openscad: tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", here),
+            scadmesh: tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", here),
+            dir,
+        })
+    }
+
+    /// The context for the script rust-script is running.
+    pub fn for_script() -> Result<Ctx> {
+        let base = std::env::var("RUST_SCRIPT_BASE_PATH")
+            .context("RUST_SCRIPT_BASE_PATH unset - run this file as a rust-script")?;
+        Ctx::new(PathBuf::from(base))
+    }
+}
+
+/// A finished tool run. Both streams are kept: `scadmesh` reports on stdout,
+/// OpenSCAD diagnoses on stderr, and neither can stand in for the other.
+pub struct Run {
+    pub ok: bool,
+    pub stdout: String,
+    pub stderr: String,
+}
+
+pub fn run(exe: &str, args: &[&str], dir: &Path) -> Result<Run> {
+    let out = Command::new(exe)
+        .args(args)
+        .current_dir(dir)
+        .output()
+        .with_context(|| format!("running {exe} - set $OPENSCAD / $SCADMESH if it is not on PATH"))?;
+    Ok(Run {
+        ok: out.status.success(),
+        stdout: String::from_utf8_lossy(&out.stdout).into_owned(),
+        stderr: String::from_utf8_lossy(&out.stderr).into_owned(),
+    })
+}
+
+/// The lines on OpenSCAD's stderr that mean the mesh cannot be trusted,
+/// picked out of the cache and timing chatter that surrounds them.
+///
+/// The exit status cannot do this job. OpenSCAD exits 0 for `ERROR: The given
+/// mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron`, which is the
+/// one diagnostic that most directly invalidates an export, and 0 again for
+/// every `WARNING:`. It exits 1 only when the top level object comes out
+/// empty or a script-level assertion fails. So a render that quietly dropped a
+/// subtree, or silently ignored a misspelled variable, would reach the
+/// measurements as if nothing had happened.
+///
+/// `Simple: no` is caught as well as the explicit complaints. It sits in the
+/// summary block rather than in a warning, and it is how a self-intersecting
+/// or non-manifold export announces itself while OpenSCAD exits 0 and writes
+/// the file. A `.csg` export evaluates no geometry and prints no such block.
+///
+/// Nothing here is filtered as benign: the point of the check is to notice
+/// the first part that stops rendering clean.
+pub fn diagnostics(stderr: &str) -> Vec<&str> {
+    const MARKERS: [&str; 4] = ["ERROR:", "WARNING:", "UI-WARNING:", "TRACE:"];
+    stderr
+        .lines()
+        .map(str::trim)
+        .filter(|line| {
+            MARKERS.iter().any(|m| line.starts_with(m))
+                || line.contains("not a simple polyhedron")
+                || line.contains("top level object is empty")
+                || line.contains("nonplanar faces")
+                || (line.starts_with("Simple:") && line.ends_with("no"))
+        })
+        .collect()
+}
+
+/// Pass/fail bookkeeping for one script run.
+#[derive(Default)]
+pub struct Tally {
+    pub failures: usize,
+}
+
+impl Tally {
+    pub fn record(&mut self, label: &str, ok: bool) {
+        println!("{}  {label}", if ok { "PASS" } else { "FAIL" });
+        if !ok {
+            self.failures += 1;
+        }
+    }
+
+    /// The closing line a script prints, and the exit status it returns.
+    pub fn verdict(&self) -> (String, i32) {
+        match self.failures {
+            0 => ("ALL CHECKS PASSED".into(), 0),
+            n => (format!("{n} CHECK(S) FAILED"), 1),
+        }
+    }
+
+    pub fn finish(&self) -> ! {
+        let (line, code) = self.verdict();
+        println!("\n{line}");
+        std::process::exit(code);
+    }
+}
+
+/// Hold a finished OpenSCAD run to exiting cleanly and rendering silently.
+/// The tally entry is deliberately separate from the measurements that follow:
+/// a part that warns and then measures well has not passed, it has measured a
+/// mesh nobody should be measuring.
+pub fn judge(r: &Run, what: &str, tally: &mut Tally) -> Result<()> {
+    if !r.ok {
+        bail!("OpenSCAD failed on {what}:\n{}", r.stderr.trim_end());
+    }
+    let complaints = diagnostics(&r.stderr);
+    for line in &complaints {
+        println!("      {line}");
+    }
+    tally.record(&format!("{what} renders without diagnostics"), complaints.is_empty());
+    Ok(())
+}
+
+/// Render `scad` to `out` with `-D` definitions, and judge the run.
+pub fn render_with(scad: &str, out: &str, defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
+    let mut args = vec!["-o", out];
+    for d in defines {
+        args.extend(["-D", d]);
+    }
+    args.push(scad);
+    let r = run(&ctx.openscad, &args, &ctx.dir)?;
+    judge(&r, &format!("{scad} ({})", defines.join(", ")), tally)?;
+    Ok(r)
+}
+
+/// Render one configuration of one part.
+pub fn render(scad: &str, out: &str, config: &str, ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
+    render_with(scad, out, &[&format!("config=\"{config}\"")], ctx, tally)
+}
+
+/// Run `scadmesh <args> --json` and parse its report.
+pub fn sm_json(args: &[&str], ctx: &Ctx) -> Result<(bool, Value)> {
+    let mut full: Vec<&str> = args.to_vec();
+    full.push("--json");
+    let r = run(&ctx.scadmesh, &full, &ctx.dir)?;
+    let json = serde_json::from_str(&r.stdout).with_context(|| format!("parsing scadmesh output for {args:?}"))?;
+    Ok((r.ok, json))
+}
+
+/// A part reproduced closely enough to be gated on two-sided surface
+/// distance. `tol` is the Hausdorff limit in mm; the render must sit inside
+/// it in both directions, with no sampled point over.
+pub struct DistGate {
+    pub stem: &'static str,
+    pub scad: &'static str,
+    pub reference: &'static str,
+    pub tol: f64,
+}
+
+/// Render the gate's part faithfully to `out/<stem>.stl` and measure its
+/// surface against `ref_dir/<reference>`.
+pub fn dist_gate(gate: &DistGate, ref_dir: &str, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let out = format!("out/{}.stl", gate.stem);
+    render(gate.scad, &out, "previous", ctx, tally)?;
+    let tol = gate.tol.to_string();
+    let reference = format!("{ref_dir}/{}", gate.reference);
+    let (ok, report) = sm_json(&["dist", &out, &reference, "--tol", &tol], ctx)?;
+    let worst = report["hausdorff"].as_f64().unwrap_or(f64::NAN);
+    tally.record(
+        &format!("{} surface vs reference (hausdorff {worst:.3} mm, tol {tol} mm)", gate.stem),
+        ok,
+    );
+    Ok(())
+}
+
+/// Read `ECHO: "<prefix><value>"` or `ECHO: <name> = <value>` off OpenSCAD's
+/// stderr: the text after `tag` on the first line carrying it, with any
+/// closing quote removed.
+pub fn echoed<'a>(stderr: &'a str, tag: &str) -> Option<&'a str> {
+    stderr.lines().find_map(|l| {
+        let rest = l.trim().strip_prefix("ECHO: ")?;
+        let rest = rest.strip_prefix('"').unwrap_or(rest);
+        Some(rest.strip_prefix(tag)?.trim_end_matches('"'))
+    })
+}
+
+/// Probe points with `scadmesh solid`, returning inside/outside per point.
+pub fn probe(stl: &str, points: &[[f64; 3]], ctx: &Ctx) -> Result<Vec<bool>> {
+    let args: Vec<String> = points
+        .iter()
+        .map(|p| format!("--probe={},{},{}", p[0], p[1], p[2]))
+        .collect();
+    let mut full = vec!["solid", stl];
+    full.extend(args.iter().map(String::as_str));
+    let (_, json) = sm_json(&full, ctx)?;
+    let probes = json["probes"].as_array().context("scadmesh solid emitted no probes")?;
+    Ok(probes.iter().map(|p| p["inside"].as_bool().unwrap_or(false)).collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn diagnostics_keeps_complaints_and_drops_chatter() {
+        let err = "Compiling design\nWARNING: x\nECHO: 1\n  ERROR: y\nSimple: no\nSimple: yes\n\
+                   Volumes: 2\nCurrent top level object is empty.\nTRACE: z";
+        assert_eq!(
+            diagnostics(err),
+            vec!["WARNING: x", "ERROR: y", "Simple: no", "Current top level object is empty.", "TRACE: z"]
+        );
+        assert!(diagnostics("Rendering Polygon Mesh using CGAL...\nSimple: yes").is_empty());
+    }
+
+    #[test]
+    fn tally_counts_failures_and_gives_the_verdict() {
+        let mut t = Tally::default();
+        t.record("a", true);
+        assert_eq!(t.verdict(), ("ALL CHECKS PASSED".into(), 0));
+        t.record("b", false);
+        t.record("c", false);
+        assert_eq!(t.verdict(), ("2 CHECK(S) FAILED".into(), 1));
+    }
+
+    #[test]
+    fn tool_prefers_env_then_candidate_then_name() {
+        let dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+        assert_eq!(tool("RENDER_CHECK_UNSET_VAR", &["nope"], "bare", dir), "bare");
+        let found = tool("RENDER_CHECK_UNSET_VAR", &["nope", "Cargo.toml"], "bare", dir);
+        assert!(found.ends_with("Cargo.toml"));
+        std::env::set_var("RENDER_CHECK_SET_VAR", "from-env");
+        assert_eq!(tool("RENDER_CHECK_SET_VAR", &["Cargo.toml"], "bare", dir), "from-env");
+    }
+
+    #[test]
+    fn echoed_reads_both_echo_forms() {
+        let err = "ECHO: \"J3 Attach: -D hub_drop=0.687\"\nECHO: body_box = [[0, 0], [1, 1]]\n";
+        assert_eq!(echoed(err, "J3 Attach: -D hub_drop="), Some("0.687"));
+        assert_eq!(echoed(err, "body_box = "), Some("[[0, 0], [1, 1]]"));
+        assert_eq!(echoed(err, "missing"), None);
+    }
+
+    #[test]
+    fn judge_fails_hard_on_exit_and_softly_on_warnings() {
+        let mut t = Tally::default();
+        let bad = Run { ok: false, stdout: String::new(), stderr: "ERROR: assert".into() };
+        assert!(judge(&bad, "p", &mut t).is_err());
+        let noisy = Run { ok: true, stdout: String::new(), stderr: "WARNING: w".into() };
+        judge(&noisy, "p", &mut t).unwrap();
+        let clean = Run { ok: true, stdout: String::new(), stderr: "Volumes: 2".into() };
+        judge(&clean, "p", &mut t).unwrap();
+        assert_eq!(t.failures, 1);
+    }
+
+    #[test]
+    fn run_reports_a_missing_binary_as_an_error() {
+        assert!(run("render-check-no-such-binary", &[], Path::new(".")).is_err());
+    }
+
+    #[test]
+    fn ctx_new_creates_out_and_finds_tools() {
+        let dir = std::env::temp_dir().join("render-check-ctx-test");
+        let ctx = Ctx::new(dir.clone()).unwrap();
+        assert!(dir.join("out").is_dir());
+        assert!(!ctx.openscad.is_empty() && !ctx.scadmesh.is_empty());
+    }
+}

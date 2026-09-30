@@ -39,21 +39,21 @@ committed but does not yet reproduce its reference geometry.
 | DC-10 | [From-scratch calibration files](#from-scratch-calibration-files) | P2 | First bring-up | Running the calibration on a build | `[Provisional]` |
 | DC-11 | [Procurement data](#procurement-data) | P2 | Ordering, printing | A coupon print | `[Provisional]` |
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | — | `[Specified]` ✔ closed |
-| DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | Mounting face to J2 on a build | `[TBD]` |
+| DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, and DC-12 are closed. Every other item
-has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds of work:
-**design authored here** (DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11, DC-13).
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
+other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
+of work: **design authored here** (DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
 solid from measured geometry. Its physical-build checks remain with DC-9.
 
-**DC-4 closed by measurement, and it spawned DC-13.** The hole pattern is recovered exactly from the CAD
-part; the model mirror held the previous version's un-bolted base and is corrected in place
-([DC-11(i)](#procurement-data)). The measured base chain gives a J2 height the firmware's L1 does not
-agree with, which is tracked separately rather than left implicit inside a closed item.
+**DC-4 closed by measurement, and DC-13 closed the height it left.** The hole pattern is recovered exactly
+from the CAD part; the model mirror held the previous version's un-bolted base and is corrected in place
+([DC-11(i)](#procurement-data)). The J2 height the base stack sets is L1, specified from that stack under
+[DC-13](#base-height-and-l1).
 
 **DC-3 closed by decision, and DC-12 realized it.** The tooth-count split is carried by the parts that
 `config="revised"` builds; `config="previous"` still builds the previous version's counts.
@@ -183,15 +183,12 @@ clearance there is confirmed on the first build together with the belt lengths
 ## Base plate
 **DC-4 · P2 · Requirement: REQ-STR-4, REQ-ENV-5 · Specified in [004](004-Mechanical-Architecture.md#base-j1)** — ✔ **closed**
 
-**Closed.** The robot-side hole pattern, the bolt, and the doubled clamp's stacking are specified in
+**Closed.** The robot-side hole pattern, the bolt, and the base stack are specified in
 [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate); the hardware quantities
 are in [007.2](007-Bill-of-Materials.md#0072-base). The plate is `#110-004`, with parametric source and a
 render-and-check script at
 [`Hardware/Models/100-Base/`](../Hardware/Models/100-Base/110-004_BaseMountingPlate.scad); `check.rs`
 gates its eight tapped centres against `110-001_BaseMountBottom.stl`.
-
-The doubled clamp raises the J2 axis, and the height that produces does not agree with L1, which is
-[DC-13](#base-height-and-l1).
 
 **Definition of done — met:** a plate drawing carrying the robot-side hole coordinates, and the resulting
 hardware quantities in [007.2](007-Bill-of-Materials.md#0072-base). The load check — that the mounted
@@ -234,31 +231,22 @@ that follows from it ([006](006-Firmware-and-Calibration.md#firmware-defaults-de
 `[Specified]`.
 
 ## Base height and L1
-**DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths)**
+**DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths), [004](004-Mechanical-Architecture.md#base-mounting-plate)** — ✔ **closed**
 
-**Open:** which clamp count the authoritative L1 belongs to. The base stack is specified in
-[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate) — a clamp seating shoulder
-at 97.000 mm above the mounting face and two 15.000 mm clamps stacked on it — and L1 is
-[003 § Link lengths](003-Kinematics.md#link-lengths). Measured against those, the J2 axis lands at:
+**Closed by analysis.** L1 is **231.50 mm**, the height of the J2 axis above the mounting face, specified
+in [003 § Link lengths](003-Kinematics.md#link-lengths). It is set by the base stack specified in
+[004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate), where every height rests
+on a face the next part seats on. The clamp is not in that stack, so it does not move L1, and the spigot
+the clamp fits has room for one. The firmware file's 235.20 mm is a
+height no seated stack of the build's parts produces; it is superseded, and
+[006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) carries the line to write. The
+evidence, and the doubled clamp withdrawn with it, are recorded in
+[CR-3A19](../CHANGES.md#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats).
 
-| Reading | J2 axis above the mounting face | Source |
-|---|---|---|
-| As modelled — one clamp | 231.200 mm | `HDI-210-001_MainPivot` node origin |
-| As designed — two clamps | 246.200 mm | the above plus one clamp |
-| **L1 — authoritative** | **235.200 mm** | `Firmware/Defaults.make_ins` |
-
-Neither configuration reproduces the firmware value: the single-clamp model is 4.000 mm short of it, and
-the doubled clamp the design calls for overshoots it by 11.000 mm. The CAD model carries one clamp, so it
-does not model the design, and nothing in the model set says which clamp count the 235.200 mm belongs to.
-The 231.200 mm is the along-arm figure that
-[003 § Link lengths](003-Kinematics.md#link-lengths)'s convention takes a link length from, so this is a
-disagreement over the stack rather than over the convention, which is what
-[DC-6](#link-length-discrepancy-l4) turned out to be.
-
-**Definition of done:** measure mounting face to J2 axis on the first build, recording the clamp count
-with it, and reconcile [003 § Link lengths](003-Kinematics.md#link-lengths) and the firmware file to the
-built stack. The clamp count moves the answer by 15.000 mm, more than the disagreement itself, so a
-measurement without it settles nothing. `[TBD]`.
+**Definition of done — met:** L1 specified against a stack of positive stops, and
+[003 § Link lengths](003-Kinematics.md#link-lengths) and the `LinkLengths` line reconciled to it.
+Confirmation on a built base belongs to [DC-9](#performance-characterization)'s base checklist.
+`[Specified]`.
 
 ## Motor Control PCB
 **DC-7 · P2 · Requirement: REQ-CTL-3, REQ-IF-4 · Specified in [005](005-Electronics-and-Control.md#boards)**
@@ -366,8 +354,8 @@ taken while the arm is apart.
 dynamic load without walking or tipping (REQ-ENV-5), bolted to the work surface as
 [004](004-Mechanical-Architecture.md#base-mounting-plate) requires — the plate is sized against a
 calculated ≈45 N·m overturning moment that an unbolted plate cannot resist, so this check tests the
-bolting, not the plate. Record the **mounting face to J2 axis height and the clamp count** at the same
-time; that is [DC-13](#base-height-and-l1)'s measurement and the base is only apart once. Procedure:
+bolting, not the plate. Measure the **mounting face to J2 axis height** at the same time; it confirms
+the L1 that [DC-13](#base-height-and-l1) specified, and the base is only apart once. Procedure:
 [009.1 § 3](009.1-Performance-Characterization-Protocol.md#section-3-base-first-build-checklist).
 
 **Definition of done:** measured repeatability, payload, speed envelope, and reachable workspace on a

@@ -43,13 +43,13 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`200-ArmBody/`](200-ArmBody/) | 9 | 8 | Arm body, stator holder and balancers, belt directors |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
-| [`500-ExternalGear/`](500-ExternalGear/) | 7 | 6 | External gear, stator holder, mount and nut holders |
-| [`600-StrainWave/`](600-StrainWave/) | 3 | 3 | Wave gen coupler, flex spline attach and cap |
+| [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap is `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
+| [`600-StrainWave/`](600-StrainWave/) | 3 | 4 | Wave gen coupler, flex spline attach and cap; the Attach is `.scad` |
 | [`700-Differential/`](700-Differential/) | 10 | 14 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 10 | Solder jigs and glue-rig jig bodies |
-| [`Reference/`](#reference) | — | 226 | Not printed for a build. See below |
+| [`Reference/`](#reference) | — | 228 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -72,7 +72,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 11 | The original meshes of parts that now have parametric source: `700-Differential/`, and `400-EndArm/`'s two External pulleys. A part's mesh moves here when its `.scad` lands; `render-all.rs` measures each `700-Differential/` render against its mesh, and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 13 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap and `600-StrainWave/`'s Flex Spline Attach. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 1 | Earlier revisions of parts the build no longer uses. `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -281,6 +281,47 @@ deliberately cut to the shared crown rather than to its own superseded reference
 (20, exact), its clocking (within 0.3° of the reference) and every dimension outside the tooth zone are
 gated as usual, measured on the render itself. There is **no tooth-band exemption for the bevels** — the
 crown is measured (`diff_bevel.scad`) and meets the ordinary surface check with room to spare.
+
+### Checking a group
+
+Every group with `.scad` parts carries a `render-all.rs` (`rust-script render-all.rs`, run from the group
+directory). It renders the group's parts into its untracked `out/`, gates each faithful render against
+its mesh under `Reference/meshes/<group>/` by the contract above, checks the revised geometry by probing
+material and void either side of the faces it moved, and ends in `ALL CHECKS PASSED` or a failure count.
+
+The machinery is shared, not copied: the [`render-check/`](render-check/) crate, which each script takes
+as a path dependency, finds OpenSCAD and `scadmesh` (`$OPENSCAD` and `$SCADMESH` first), runs a render and
+fails it on any warning, a result CGAL reports as not simple, or an empty one, runs the `dist` gate, probes points, and reads
+echoes. A script holds only its own gates and checks. Two rules keep the scripts from drifting apart:
+
+- **A number a check needs comes from the part.** A `.scad` echoes it at top level as
+  `echo(name = value)`, and the script reads that line; the value is never retyped into the script.
+- **A group that uses another group's part runs that group's script** rather than repeating its gates.
+  `500-ExternalGear/render-all.rs` runs `600-StrainWave/render-all.rs` first, because J3's stack
+  depends on the Flex Spline Attach.
+
+### Viewing an assembly
+
+An assembly `.scad` can be turned into a section viewer page, an orthographic model cut on a movable
+plane with its parts listed, grouped and labelled, by `scadmesh view` from `openscad-tools`. The
+assembly must be **viewable**:
+
+- A top-level `part` variable selects what it draws: `"all"`, or one part's id, drawn in its assembled
+  position.
+- Every value the page quotes is echoed at top level as `echo(name = value)`.
+
+A sidecar `<assembly>.view.json` beside it names the parts, colours and groups, the labels and camera
+presets, and the notes. It restates no dimension: part heights come from the exported meshes, and text
+quotes echoes through `{name}` placeholders. The format is in `openscad-tools`'
+`specs/003-CLI.md` § The view sidecar. The page is output, like any render:
+
+```
+scadmesh view exgear_assembly.view.json --out out/view
+```
+
+writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD exports each part
+once, so the page takes as long as the slowest part's render. `500-ExternalGear/exgear_assembly.scad`
+is the first viewable assembly.
 
 ### Measured state of the differential set
 

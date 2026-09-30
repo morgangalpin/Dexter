@@ -16,7 +16,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #100-001 | Base Clamp | 2 | `100-001_BaseClamp.stl` |  |
+| #100-001 | Base Clamp | 1 | `100-001_BaseClamp.stl` |  |
 | #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.stl` |  |
 | #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.stl` | ⚠️ |
 | #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` | ⚠️ |
@@ -75,7 +75,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #510-001 | External Gear | 1 | `510-001_ExternalGear.stl` |  |
-| #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.stl` |  |
+| #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat deepened in `revised` |
 | #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.stl` |  |
 | #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.stl` |  |
 | #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.stl` |  |
@@ -89,7 +89,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.stl` |  |
-| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.stl` |  |
+| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare removed in `revised`; J3 sets `hub_drop` |
 | #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.stl` |  |
 
 ## 700-Differential — Differential
