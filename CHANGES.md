@@ -982,7 +982,10 @@ anything version 3 does not independently specify
   before fitting it. 007.2 and `PART-INDEX.md` point #511-001 and #630-005 at their `.scad` files; C-101's
   body-length row says how each joint closes the drive and C-201's span row links it; 008.3 measures J3's
   motor before its Attach is printed; 008.4 step 9c, 008.5 step 2 and 008.8 step 5 lose the tap-back, and
-  the washers of 008.4 step 9d and 008.5 step 3 retain the free-running inner race.
+  the washers of 008.4 step 9d and 008.5 step 3 retain the free-running inner race. 007.2 states that
+  #511-001 and #630-005 print from `config="revised"`. Two restatements become links: 007.2's L3 rig
+  paragraph leaves the jig's correction to DC-11(h), and DC-11(h) leaves the spigot's section to 004. The
+  Models README's part and file counts are recounted from its directories.
 - **Status:** `[Specified]` — [DC-13](specs/009-Design-Completion.md#base-height-and-l1) is closed. The
   built height is confirmed under
   [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base checklist. J3's stack closes

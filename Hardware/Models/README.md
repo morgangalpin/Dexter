@@ -39,17 +39,17 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 
 | Directory | Parts | Files | What |
 |---|---|---|---|
-| [`100-Base/`](100-Base/) | 6 | 6 | Base clamp, mount, stator holder, code disc |
+| [`100-Base/`](100-Base/) | 7 | 8 | Base clamp, mount, mounting plate, stator holder, code disc |
 | [`200-ArmBody/`](200-ArmBody/) | 9 | 8 | Arm body, stator holder and balancers, belt directors |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap is `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 4 | Wave gen coupler, flex spline attach and cap; the Attach is `.scad` |
-| [`700-Differential/`](700-Differential/) | 10 | 14 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
+| [`700-Differential/`](700-Differential/) | 10 | 16 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
-| [`950-Tooling/`](950-Tooling/) | 2 | 10 | Solder jigs and glue-rig jig bodies |
-| [`Reference/`](#reference) | — | 228 | Not printed for a build. See below |
+| [`950-Tooling/`](950-Tooling/) | 2 | 11 | Solder jigs and glue-rig jig bodies |
+| [`Reference/`](#reference) | — | 222 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -73,7 +73,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
 | [`Reference/meshes/`](Reference/meshes/) | 13 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap and `600-StrainWave/`'s Flex Spline Attach. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
-| [`Reference/superseded/`](Reference/superseded/) | 1 | Earlier revisions of parts the build no longer uses. `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
+| [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
 
@@ -176,7 +176,7 @@ depends on no proprietary tool. Four conventions keep the transition legible:
   gated against, and leaving it in the component directory invites printing the mesh instead of the
   `.scad`. A **converted** part therefore has no `.stl` beside its `.scad`, and which groups have been
   converted is visible from a listing of `Reference/meshes/`. The rule is about a part, not a directory:
-  `100-Base/` holds `110-004_BaseMountingPlate.scad` beside five meshes because that part was *authored*
+  `100-Base/` holds `110-004_BaseMountingPlate.scad` beside six meshes because that part was *authored*
   rather than converted, and the meshes belong to parts nothing has rewritten yet. What a directory must
   never hold is a `.scad` and an `.stl` of the **same** part.
 - **Wrap a nested `difference()` in `render()`, not the cut that follows it.** OpenSCAD's *preview*
@@ -210,7 +210,7 @@ boxes, diameter and face-position bands, cross-sections, tooth counts). Use that
 for converting the remaining groups.
 
 **Printing the differential therefore takes one command first**: `rust-script render-all.rs` writes the
-nine meshes into `700-Differential/out/`, which is deliberately untracked — a rendered mesh is a build
+ten meshes to print into `700-Differential/out/revised/`. `out/` is deliberately untracked — a rendered mesh is a build
 artifact, and tracking it would leave two copies of the same geometry to disagree. Everything the render
 is checked against is under
 [`Reference/meshes/700-Differential/`](Reference/meshes/700-Differential/).
