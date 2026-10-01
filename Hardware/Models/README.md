@@ -72,7 +72,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 13 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap and `600-StrainWave/`'s Flex Spline Attach. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 16 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -100,6 +100,20 @@ bounding box unchanged and the volume 0.028 mm³ — four parts in ten million �
 a second closed shell that shares no edge with the body, the 18 × 20 × 20 mm block on the spigot axis at
 x 26.500..44.500, y ±10.000, z −35.000..−15.000, so this is a multi-body export rather than one unioned
 solid. That is not a defect: two shells convert as readily as one.
+
+**A second tangency, not yet corrected.** `500-ExternalGear/510-001_ExternalGear.stl` fails the same way.
+Two of its surfaces share 91 edges on one ring in the part's frame, at x 21.215 and r ≈ 33.7, so
+`scadmesh repair` finds no boundary loop and CGAL still refuses the mesh. Any boolean on the gear stops at
+`The given mesh is not closed`, which is why `500-ExternalGear/render-all.rs` checks the Stator Holder's
+fit in the gear by sections rather than by an intersection. The End Arm Hub's correction applies:
+
+```
+scadmesh pinch 500-ExternalGear/510-001_ExternalGear.stl --out 500-ExternalGear/510-001_ExternalGear.stl
+```
+
+It adds 182 triangles, leaves the bounding box unchanged, and adds 0.708 mm³ to the volume (1 part in
+10⁵). Pinching alone does not make the Stator Holder clash render. Its keys meet the gear's slots
+line-to-line, and CGAL cannot intersect the coincident faces either.
 
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
@@ -299,6 +313,13 @@ echoes. A script holds only its own gates and checks. Two rules keep the scripts
 - **A group that uses another group's part runs that group's script** rather than repeating its gates.
   `500-ExternalGear/render-all.rs` runs `600-StrainWave/render-all.rs` first, because J3's stack
   depends on the Flex Spline Attach.
+
+Two checks are shared across groups. `check_seat` probes a Stator Holder's revised seat against C-201's
+hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states
+it, rather than as the seat library cuts it, so the probes test the library. `clash_free` renders an
+assembly's `clash` pair. It passes when the intersection is empty or has no volume (a seat, where two
+parts share a face), and fails when CGAL cannot intersect the pair at all, because a failed boolean
+returns one of its operands.
 
 ### Measured state of the differential set
 

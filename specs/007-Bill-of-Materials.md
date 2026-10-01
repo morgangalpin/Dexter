@@ -91,9 +91,10 @@ Builds the **base (J1)** and **pivot (J2)** motor assemblies — 2 of the 3 stra
 | #630-006 | Flex Spline Cap | 3D print | 1 | |
 | #641-002 | M2 × 12 mm bolts | Off the shelf | 6 | |
 | #641-003 | M2 × 20 mm bolts | Off the shelf | 4 | |
-| #642-003 | M3 × 12 mm socket head screws | Off the shelf | 6 | |
+| #642-003 | M3 × 12 mm socket head screws | Off the shelf | 10 | 4 Attach, 6 circular spline |
 | #642-006 | M3 × 8 mm hex cap bolt | Off the shelf | 2 | |
 | #660-001 | M2 nuts | Off the shelf | 10 | |
+| #660-002 | M3 nuts | Off the shelf | 6 | Circular spline, in the Stator Holder |
 | #670-001 | M2 washers | Off the shelf | 4 | |
 | #670-003 | #6 washers | Off the shelf | 4 | |
 
@@ -225,10 +226,10 @@ Builds the **3rd strain-wave drive (J3 elbow)** plus the external gear housing.
 | #630-006 | Flex Spline Cap | 3D print | 1 | |
 | #641-002 | M2 × 12 mm bolts | Off the shelf | 6 | |
 | #641-003 | M2 × 20 mm bolts | Off the shelf | 4 | |
-| #642-003 | M3 × 12 mm socket head screws | Off the shelf | 6 | |
+| #642-003 | M3 × 12 mm socket head screws | Off the shelf | 10 | 4 End Cap, 6 circular spline |
 | #642-006 | M3 × 8 mm hex cap bolt | Off the shelf | 2 | |
 | #660-001 | M2 nuts | Off the shelf | 10 | |
-| #660-002 | M3 nuts | Off the shelf | 6 | |
+| #660-002 | M3 nuts | Off the shelf | 12 | 4 End Cap, 2 all-thread, 6 circular spline |
 | #670-001 | M2 washers | Off the shelf | 4 | |
 | #670-003 | #6 washers | Off the shelf | 4 | |
 
@@ -333,7 +334,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | Part | Total | Catalog |
 |---|---|---|
 | M2 nuts | 41 | [C-604](007.1-Parts-Catalog.md#6-fasteners) |
-| M3 nuts | 44 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 nuts | 62 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 washers | 20 | [C-605](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 washers | 16 | [C-613](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 × 12 mm bolts | 20 | [C-601](007.1-Parts-Catalog.md#6-fasteners) |
@@ -343,7 +344,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M3 × 8 mm bolts | 8 | [C-607](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 8 mm hex cap bolt | 6 | [C-608](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 10 mm bolts | 3 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
-| M3 × 12 mm socket head screws | 22 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 12 mm socket head screws | 34 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 20 mm bolts | 5 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 bolt + 2 washers + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |

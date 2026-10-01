@@ -37,14 +37,15 @@
      "text": "The circular spline. The Mount Top's 6810 takes the spline's Ø50h6 outside diameter over the spline's top {top_6810_on_spline} mm. The spline turns with the Stator Holder and the External Gear, so this bearing is the output's third support.",
      "focus": {"label": "Show the journal in section", "preset": "Top bearing", "hide": ["mount"]}},
     {"heading": "How J3's stack closes",
-     "text": "Two revised prints close the motor chain on the output chain. The drop follows the motor body: measure it (008.3), set MOTOR_LEN, and print J3's Attach with the new j3_hub_drop.",
+     "text": "Three revised prints close the motor chain on the output chain: the End Cap, the Attach, and the Stator Holder, whose floor keeps the drive where the first two put it. The drop follows the motor body: measure it (008.3), set MOTOR_LEN, and print J3's Attach with the new j3_hub_drop.",
      "rows": [
        {"text": "End Cap seat raised (#511-001, revised)", "value": "{seat_raise}"},
        {"text": "Attach hub face lowered (#630-005, J3)", "value": "{j3_hub_drop}"},
        {"text": "Upper 6810 inner race above the motor face", "value": "{upper_6810_above_motor}"},
        {"text": "Upper 6810 inner race below the hub face", "value": "{upper_6810_below_hub}"},
        {"text": "Top 6810 bore on the spline's Ø50h6", "value": "{top_6810_on_spline}"},
-       {"text": "Stator Holder flange below the Mount Top", "value": "{stator_below_top}"},
+       {"text": "Stator Holder rim below the Mount Top's 6810", "value": "{stator_below_top}"},
+       {"text": "Stator Holder end above the Attach's hub face", "value": "{stator_above_hub}"},
        {"text": "External Gear's bottom face above the floor plate", "value": "{gear_above_floor}"},
        {"text": "Gear and holder inside the Mount's bore, radial, at least", "value": "{rotor_inside_bore}"}]},
     {"heading": "Not drawn",
@@ -52,6 +53,7 @@
        "Nut Holders A/B (#520-003/-004) and the two all-threads",
        "Wave Gen Coupler (#630-004); a tool sets its depth",
        "Angle and rotate motors in the Mount's front pockets",
+       "The six M3 screws and nuts that hold the circular spline in the Stator Holder",
        "Vendor parts are envelopes: motor from C-101, drive from the XB1-AS-C-32 drawing, bearings at catalogue size"]}
   ],
   "overlap": ["bearing_top", "circular_spline"]

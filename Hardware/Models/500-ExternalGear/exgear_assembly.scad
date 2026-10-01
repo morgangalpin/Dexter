@@ -31,12 +31,13 @@
 //      land, the journals for the External Gear's two 6810s: the lower one
 //      stands on the floor bosses around the End Cap's land, and the gear's
 //      lower seat shoulder sits on it; the gear's upper seat shoulder carries
-//      the upper one, on the Attach's land. The Stator Holder's keyed spigot
-//      goes into the gear's notched end; its recess, facing up, takes the
-//      circular spline, whose Ø38h7 step stands on the recess floor and whose
-//      six Ø4.5 holes on Ø44 ride the holder's pegs.
+//      the upper one, on the Attach's land. The Stator Holder's eight keys go
+//      into the gear's notched end until their end chamfers bottom in the
+//      slots'; its recess, facing up, takes the circular spline, whose flange
+//      stands on the recess floor with its Ø38h7 step in the holder's pilot,
+//      screwed down through its six holes on Ø44.
 //
-// THE CLOSURE. Two revisions close the chains on each other, and the asserts
+// THE CLOSURE. Three revisions close the chains on each other, and the asserts
 // below hold them:
 //
 //   - The End Cap's seat is raised seat_raise into the cap (#511-001,
@@ -49,6 +50,11 @@
 //     ATTACH_HUB_DROP follows MOTOR_LEN: set MOTOR_LEN to the measured body
 //     length (008.3) and print J3's Attach with hub_drop set to the
 //     j3_hub_drop echoed below.
+//   - The Stator Holder (#511-002, revised) seats the spline's flange on a
+//     floor lowered FLOOR_DROP toward the gear, which keeps the drive where
+//     the two revisions above put it, stands the holder's end clear of the
+//     Attach's hub face, and leaves the spline reaching into the Mount Top's
+//     6810.
 //
 // Above the drive the Mount Top's 6810 sits in a seat exactly 7.000 mm deep
 // (z 93.000..100.000), and its Ø50 bore takes the circular spline's Ø50h6
@@ -61,16 +67,23 @@
 // NOT DRAWN. Nut Holders A/B (#520-003/-004) and the two all-threads — the
 // slots the holders take in the Mount are unmeasured. The Wave Gen Coupler
 // (#630-004), whose depth is set by a tool, not by a face. The angle and
-// rotate motors, which bolt to the Mount's two front pockets.
+// rotate motors, which bolt to the Mount's two front pockets. The six M3
+// screws and nuts that hold the spline in the Stator Holder.
+//
+// CLASH. Set clash to two names from PARTS and the file renders their
+// intersection instead; an empty top-level object means the pair is clear.
 //
 // Vendor parts are envelopes: the drive from the manufacturer drawing, the
 // motor from C-101, the bearings from their catalogue size.
 
 use <511-001_ExGearMotorEndCap.scad>
+use <511-002_ExGearStatorHolder.scad>
 use <../600-StrainWave/630-005_FlexSplineAttach.scad>
+use <../600-StrainWave/c201_spline_seat.scad>
 
 part    = "all";    // "all", or one name from PARTS for per-part export
 section = false;    // true cuts the model on the XZ plane to show the stack
+clash   = [];       // two names from PARTS: render their intersection
 
 $fn = 96;
 
@@ -90,10 +103,12 @@ GEAR_UPPER_SHLDR = 25.243;   // #510-001 upper seat shoulder
 GEAR_KEYED_END   = 44.250;   // #510-001 notched end face
 GEAR_BOTTOM      = -32.263;  // #510-001 end face over the floor
 ROTOR_R          = 36.977;   // #510-001 and #511-002, largest radius
-STATOR_SEAT      = 1.000;    // #511-002 flange face on the gear's end
-STATOR_RECESS    = -4.000;   // #511-002 Ø50 recess floor
+STATOR_SEAT      = stator_seat();             // #511-002 face on the gear's end
+STATOR_FLOOR     = stator_floor("revised");   // #511-002 floor the spline's flange stands on
+STATOR_RIM       = stator_rim("revised");     // #511-002 rim, toward the Mount Top
+STATOR_END       = stator_end();              // #511-002 spigot's end, toward the Attach
 MOTOR_LEN        = 48.000;   // C-101 body length; replace with the measured one
-DRIVE_SPAN       = 23.500;   // XB1-AS-C-32 mounting face to mounting face
+DRIVE_SPAN       = drive_span();              // C-201 mounting face to mounting face
 B6810            = [50, 65, 7];
 
 // --- Placement --------------------------------------------------------------
@@ -105,7 +120,9 @@ BRG_LOW  = BOSS_TOP;                           // lower 6810, on the bosses
 GEAR_C   = BRG_LOW + B6810[2] - GEAR_LOWER_SHLDR;  // world z = gear x + GEAR_C
 BRG_UP   = GEAR_UPPER_SHLDR + GEAR_C;
 STATOR_Z = GEAR_KEYED_END + GEAR_C + STATOR_SEAT;  // Stator flipped: world = STATOR_Z - z
-CS_FACE  = STATOR_Z - STATOR_RECESS + 8;       // circular spline outer face, on its holder
+CS_FACE  = STATOR_Z - STATOR_FLOOR + spline_flange()[1];  // circular spline outer face, on its holder
+HOLDER_END = STATOR_Z - STATOR_END;            // the holder's end, over the Attach
+HOLDER_RIM = STATOR_Z - STATOR_RIM;            // the holder's rim, under the Mount Top
 ATTACH_HUB_DROP = ATTACH_Z + ATTACH_HUB + DRIVE_SPAN - CS_FACE;
 HUB_F    = ATTACH_Z + attach_hub_face("revised", ATTACH_HUB_DROP);  // flex spline hub face
 CS_NOM   = HUB_F + DRIVE_SPAN;                 // the circular spline face, on its motor
@@ -117,6 +134,9 @@ assert(BRG_UP + B6810[2] < HUB_F, "upper 6810 inner race runs off the Attach's l
 assert(ATTACH_HUB_DROP >= 0, "the drive stands lower on its motor than on its holder; the Attach cannot rise");
 assert(GEAR_BOTTOM + GEAR_C > MOUNT_FLOOR, "the External Gear reaches the floor plate");
 assert(MOUNT_NEAR_R > ROTOR_R, "the External Gear or the Stator Holder reaches the Mount's bore");
+assert(HOLDER_END > HUB_F, "the Stator Holder reaches the Attach's hub face");
+assert(HOLDER_RIM < BRG_TOP, "the Stator Holder's rim reaches the Mount Top's 6810");
+assert(CS_FACE > BRG_TOP, "the circular spline does not reach the Mount Top's 6810");
 
 // Named, so scripts and the section viewer (exgear_assembly.view.json) read
 // them; every length is mm.
@@ -126,7 +146,9 @@ echo(j3_hub_drop = ATTACH_HUB_DROP);                     // print J3's Attach: -
 echo(upper_6810_above_motor = BRG_UP - MOTOR_F);         // inner race bottom over the motor face
 echo(upper_6810_below_hub = HUB_F - BRG_UP - B6810[2]);  // inner race top under the hub face
 echo(top_6810_on_spline = CS_FACE - BRG_TOP);            // the circular spline's Ø50h6 within the Mount Top's bore
-echo(stator_below_top = BRG_TOP - (STATOR_Z + 7));       // Stator Holder flange under the Mount Top
+echo(stator_below_top = BRG_TOP - HOLDER_RIM);           // Stator Holder rim under the Mount Top's 6810
+echo(stator_above_hub = HOLDER_END - HUB_F);             // Stator Holder end over the Attach's hub face
+echo(stator_on_gear = GEAR_KEYED_END + STATOR_SEAT);     // gear x = this - holder z, where the two share a plane
 echo(gear_above_floor = GEAR_BOTTOM + GEAR_C - MOUNT_FLOOR);  // External Gear's bottom face over the floor plate
 echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Holder inside the Mount's bore, radial, at least
 
@@ -142,7 +164,7 @@ module fs_cap()    color("#e0a458") translate([0, 0, HUB_F + 2.4])
 module gear()      color("#4f86c6") multmatrix([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, GEAR_C]])
                      import("510-001_ExternalGear.stl");
 module stator()    color("#c65f4f") translate([0, 0, STATOR_Z]) rotate([180, 0, 0])
-                     import("511-002_ExGearStatorHolder.stl");
+                     ex_gear_stator_holder("revised");
 
 module tube(od, id, h) difference() { cylinder(d = od, h = h); translate([0, 0, -1]) cylinder(d = id, h = h + 2); }
 
@@ -168,13 +190,7 @@ module flexspline() color("#8c8c8c") translate([0, 0, HUB_F]) {
   translate([0, 0, DRIVE_SPAN - 6]) tube(35.5, 33.9, 6);  // teeth band, inside the circular spline
 }
 
-module circular_spline() color("#6f6f6f") translate([0, 0, CS_FACE - 8]) {
-  tube(38, 35.5, 2);                     // Ø38h7 step, on the holder's floor
-  translate([0, 0, 2]) difference() {
-    tube(50, 35.5, 6);
-    for (a = [0 : 60 : 300]) rotate(a + 30) translate([22, 0, -1]) cylinder(d = 4.5, h = 8);
-  }
-}
+module circular_spline() color("#6f6f6f") translate([0, 0, CS_FACE]) circular_spline_envelope();
 
 module wave_gen() color("#a0a0a0") translate([0, 0, CS_FACE - 6]) {
   tube(33.9, 14, 6);                     // plug and bearing, inside the teeth band
@@ -204,7 +220,9 @@ module draw(p) {
 
 module assembly() for (p = PARTS) if (part == "all" || part == p) draw(p);
 
-if (section)
+if (len(clash) == 2)
+  intersection() { draw(clash[0]); draw(clash[1]); }
+else if (section)
   difference() { assembly(); translate([-200, 0, -50]) cube([400, 200, 300]); }
 else
   assembly();

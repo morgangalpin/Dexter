@@ -879,10 +879,12 @@ anything version 3 does not independently specify
   [009.2](specs/009.2-Test-Build-Manifest.md), [010](specs/010-Versioning.md),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/500-ExternalGear/exgear_assembly.scad` (new),
   `exgear_assembly.view.json` (new), `500-ExternalGear/511-001_ExGearMotorEndCap.scad` (new),
-  `600-StrainWave/630-005_FlexSplineAttach.scad` (new), both groups' `render-all.rs` (new), the shared
-  `render-check/` crate (new), `700-Differential/render-all.rs`, the two meshes moved to
-  `Reference/meshes/`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
-  `Hardware/Models/MANIFEST.csv`.
+  `600-StrainWave/630-005_FlexSplineAttach.scad` (new), `600-StrainWave/c201_spline_seat.scad` (new),
+  `100-Base/110-002_BaseStatorHolder.scad` (new), `200-ArmBody/200-002_PivotStatorHolder.scad` (new),
+  `500-ExternalGear/511-002_ExGearStatorHolder.scad` (new), the `render-all.rs` of `100-Base`,
+  `200-ArmBody`, `500-ExternalGear` and `600-StrainWave` (new), the shared `render-check/` crate (new),
+  `700-Differential/render-all.rs`, the five meshes moved to `Reference/meshes/`,
+  `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`, `Hardware/Models/MANIFEST.csv`.
 - **Amends:** [CR-3A2](#cr-3a2-bolted-base-and-doubled-base-clamp) (the doubled clamp; the bolted base
   stands),
   [CR-3A9](#cr-3a9-base-mounting-plate-specified-two-link-datums-withdrawn-two-model-mirrors-replaced)
@@ -899,7 +901,11 @@ anything version 3 does not independently specify
   totalled 8. [008.7](specs/008-Assembly.md#0087-end-arm-hub) step 1 inserted a 6810 into each Axis
   Intersection half, against [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub)'s two 6807s. The
   [007.9](specs/007-Bill-of-Materials.md#0079-external-gear-mount--differential-motors) 6810 was consumed
-  by no step in 008. #511-001 and #630-005 were the HD set's meshes. J1's and J2's far 6810 was pushed off
+  by no step in 008. #511-001 and #630-005 were the HD set's meshes, and so were the three Stator Holders
+  (#110-002, #200-002, #511-002). C-201's table gave the circular spline 6 × Ø4.5 holes on Ø44 and the
+  Attach 6 × Ø3.5, and [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) was closed on the
+  holders and the Attach matching the drawing. 008.4 steps 10–11 and 008.5 steps 4–5 screwed 4 M2 × 16 mm
+  bolts into each holder and fixed the spline with 2 M3 × 12 mm bolts. J1's and J2's far 6810 was pushed off
   its shoulder on assembly and tapped back ([008.4](specs/008-Assembly.md#0084-main-pivot) step 9c,
   [008.5](specs/008-Assembly.md#0085-arm-body) step 2), and J3's was pressed "~38 mm" with the same
   instruction ([008.8](specs/008-Assembly.md#0088-external-gear) step 5).
@@ -959,6 +965,25 @@ anything version 3 does not independently specify
     flare; that is the push-out their steps handled. On the continued land it runs free, retained by the
     #6 washers on the counterbore floors, which the revision keeps at z 7.000. Their Stator Holders ride
     the all-thread nuts, which take up the drive's span, so they need no drop.
+  - **The three Stator Holders seat C-201's circular spline.** Per the drawing, the spline is a Ø50h6
+    flange 6 mm thick with **6 × Ø3.5 on Ø44** and a **Ø38h7 step** 2 mm long. The holders' meshes carry
+    4 hollow Ø3.5 pegs on Ø43 at 90° and 2 × Ø3.0 holes on Ø43 at 45°, a layout for a different spline
+    that meets at most two of its six holes. Neither the Base holder nor the Ex Gear holder has a Ø38 pilot,
+    so the step lands on the floor and holds the flange 2 mm off it. Each holder is now OpenSCAD source.
+    `config="previous"` reproduces its mesh within 0.026 mm. `config="revised"` cuts one shared seat,
+    `c201_spline_seat.scad`: the flange on the floor, the step in a Ø38 pilot 2.2 mm deep, and 6 × M3 ×
+    12 mm screws into nuts in hex pockets opened from the back face. The Pivot holder's bore behind the
+    seat closes from Ø38 to Ø36 so each pocket keeps a 1.25 mm wall.
+  - **The Ex Gear Stator Holder seats on its keys' end chamfers.** Its eight 4.0 mm keys fill the gear's
+    eight slots line to line. When their 45° end chamfers bottom in the slots', the holder's z 4.000 lies
+    on the gear's end face, 3 mm higher than the first placement put it, where its cone and keys cut the
+    gear's bore. With the flange on the floor, the revised holder's floor and rim drop 1.000 mm toward
+    the gear, which keeps the drive where J3's two revised prints put it: the holder's end stands 2.5 mm
+    over the Attach's hub face, and its rim 0.987 mm under the Mount Top's 6810. Every other echoed value
+    is unchanged.
+  - **The Flex Spline Attach's hub does not match the flexspline's.** It carries 6 × Ø2.0 on Ø12 in a
+    Ø19.0 recess, against the drawing's Ø22.5 hub with 6 × Ø4.5 on Ø17. Its Ø44 circle is the NEMA 17
+    31 mm square. DC-1 reopens on that interface.
   - **The section view is reusable.** `scadmesh view` (openscad-tools) writes a section viewer for any
     assembly that follows the Models README's viewable-assembly convention, from a sidecar that names the
     parts, labels and notes and takes every number from the assembly's echoes;
@@ -971,10 +996,11 @@ anything version 3 does not independently specify
 - **Re-derive:** 003's L1 row and chain row carry 231.50 mm; 004 replaces the double-clamp paragraph with
   the single clamp and the stack table, and drops the Base open item; 006's `LinkLengths` block carries
   `231500`, with the second deviation from the shipped file called out (`Defaults.make_ins` itself is not
-  edited, per CR-3A12); #100-001 goes to qty 1; M3 × 20 mm goes to 5 and M3 nuts to 44; printed pieces go
+  edited, per CR-3A12); #100-001 goes to qty 1; M3 × 20 mm goes to 5, M3 × 12 mm to 34 and M3 nuts to 62,
+  the last two with the spline's 6 screws and 6 nuts per joint in 7.3 and 7.8; printed pieces go
   to 108 (119 with tooling); 008.2 step 6 places the clamp's nut; 008.4 steps 4 and 9 name the end caps,
   press the lower bearing to its shoulder, and seat the Base Motor End Cap's bearing flush in the upper
-  bore; 008.4 step 18 installs one clamp; 009.1 § 3.1 measures from the plate's top
+  bore; 008.4 step 17 installs one clamp; 009.1 § 3.1 measures from the plate's top
   face (the Base Mount Bottom's mounting face) rather than its bottom, and becomes a pass/fail
   confirmation of L1; `robot_assembly.scad` seats the Main Pivot on the printed Base Long's top and
   asserts that the stack sums to L1. The derived maximum reach does not include L1 and is unchanged.
@@ -992,10 +1018,23 @@ anything version 3 does not independently specify
   gate loses J3, which Stage 4 builds, and Stage 4's draw list loses a repeated 007.9 line.
   `exgear_assembly.scad` also asserts and echoes the External Gear's clearance to the Mount's floor plate
   and bore, which the section view shows again. The bore is centred behind the drive axis, so the least
-  radial clearance is at its edges rather than at its back.
+  radial clearance is at its edges rather than at its back. 008.3 step 12 mounts the spline in its holder
+  once for all three joints. 008.4 steps 10–11 and 008.5 steps 4–5 each become one step that links it,
+  and the later steps renumber, so 007.1's C-101 row and 008.2 and 009.1 cite 008.4 steps 12–16 and 17.
+  008.8 step 7 links it too, and step 8 seats the keys. 007.1's C-201 table takes the drawing's hole sets,
+  ties Ø38h7 to the pilot, and its model-set check states both mismatches. 007.2 and `PART-INDEX.md`
+  point the three holders at their `.scad` files, and 007.2 prints them from `config="revised"`.
+  `exgear_assembly.scad` places the revised holder from its own seat functions and draws the spline from
+  the seat library, asserts that the holder clears the Attach and the Mount Top's 6810, and takes a
+  `clash` pair. `500-ExternalGear/render-all.rs` checks the holder against its neighbours by
+  intersection, and against the gear by sections, because the gear mesh touches itself on one ring.
+  The Models README records that defect and its correction.
 - **Status:** `[Specified]` — [DC-13](specs/009-Design-Completion.md#base-height-and-l1) is closed. The
   built height is confirmed under
   [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base checklist. J3's stack closes
   in `exgear_assembly.scad`, whose asserts hold it for the measured motor length; the fit is confirmed on
   the first built J3 by
-  [009.1 § 3.3](specs/009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack).
+  [009.1 § 3.3](specs/009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack). The
+  circular spline's seat is `[Specified]` in all three holders.
+  [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) is `[Provisional]` on the Flex Spline
+  Attach's hub interface.

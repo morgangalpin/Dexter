@@ -20,7 +20,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.stl` |  |
 | #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.stl` | ⚠️ |
 | #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` | ⚠️ |
-| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.stl` |  |
+| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline in `revised` |
 | #110-004 | Base Mounting Plate | 1 | `110-004_BaseMountingPlate.scad` | machined, not printed |
 | #120-001 | Base Long | 1 | `120-001_BaseLong.stl` |  |
 
@@ -31,7 +31,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.stl` |  |
-| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.stl` |  |
+| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised` |
 | #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.stl` |  |
 | #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.stl` |  |
 | #210-001 | Belt Director Caps | 3 | `210-001_IdlerPlug.stl` | ⚠️ |
@@ -76,7 +76,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 |---|---|---|---|---|
 | #510-001 | External Gear | 1 | `510-001_ExternalGear.stl` |  |
 | #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat deepened in `revised` |
-| #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.stl` |  |
+| #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.scad` | seats the C-201 spline in `revised`; floor lowered to close J3's stack |
 | #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.stl` |  |
 | #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.stl` |  |
 | #520-003 | Nut Holder A | 1 | `520-003_ExGearNutHold.stl` | ⚠️ |

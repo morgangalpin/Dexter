@@ -27,7 +27,7 @@ committed but does not yet reproduce its reference geometry.
 
 | ID | Item | Priority | Blocks | What is still open | Status |
 |---|---|---|---|---|---|
-| DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | — | `[Specified]` ✔ closed |
+| DC-1 | [Strain-wave component set](#strain-wave-component-set) | **P1** | J1–J3 drives | The Flex Spline Attach's hub interface to the flexspline | `[Provisional]` |
 | DC-2 | [Differential detail design](#differential-detail-design) | **P1** | J4/J5 wrist | — | `[Specified]` ✔ closed |
 | DC-3 | [Wrist reduction ratio](#wrist-reduction-ratio) | P2 | J4/J5 resolution | — | `[Specified]` ✔ closed |
 | DC-4 | [Base plate](#base-plate) | P2 | Base mounting | — | `[Specified]` ✔ closed |
@@ -42,9 +42,10 @@ committed but does not yet reproduce its reference geometry.
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
+**Completion progress.** DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
-of work: **design authored here** (DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
+of work: **design authored here** (DC-1, DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10,
+DC-11).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -65,23 +66,30 @@ the mounting home is tracked separately rather than left implicit inside a close
 ---
 
 ## Strain-wave component set
-**DC-1 · P1 · Requirement: REQ-STR-2 · Specified in [004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive)** — ✔ **closed**
+**DC-1 · P1 · Requirement: REQ-STR-2 · Specified in [004](004-Mechanical-Architecture.md#base-joints-j1j3-strain-wave-drive)** — `[Provisional]`
 
-**Closed.** The part is identified, quoted, and dimensionally confirmed against the printed adapters it
-mates to. Vendor, part number, price, lead time, the interface dimensions from the manufacturer drawing,
-and the cross-check against the built STL geometry are all specified in
+The part is identified and quoted. Vendor, part number, price, lead time, the interface dimensions from
+the manufacturer drawing, and the cross-check against the printed adapters are specified in
 [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set). Start this order before anything
 else; it carries the longest lead time in the build.
+
+The circular spline's side is designed: the three Stator Holders' `config="revised"` seats it, from the
+shared [`c201_spline_seat.scad`](../Hardware/Models/600-StrainWave/c201_spline_seat.scad).
+
+**Open: the flexspline's side.** The Flex Spline Attach (`#630-005`) and Flex Spline Cap (`#630-006`)
+clamp the flexspline's hub with 6 × Ø2.0 screws on Ø12 through a Ø19.0 recess. The drawing's hub is
+Ø22.5, with 6 × Ø4.5 on Ø17 about a Ø11H7 bore, so the two do not fasten together as drawn.
 
 *Cone Drive (conedrive.com) remains a viable alternate source — same size-14, 52:1 spec, and the printed
 adapters' `_ConeDrive`-suffixed CAD names and the maintenance schedule's Cone Drive lubricant
 ([006](006-Firmware-and-Calibration.md#maintenance)) reflect that this was the design's original target
 vendor. HanZhen is the one actually quoted.*
 
-**Definition of done — met:** a named, quotable part whose mating dimensions are confirmed against the
-printed adapters. What remains is the order itself: the set is on 9–12 week lead time, and a physically
-received unit is confirmed against the drawing before the final adapters are printed
-([007.2](007.2-Printed-Parts.md)). `[Specified]`.
+**Definition of done:** a named, quotable part whose mating dimensions the printed adapters meet. The
+Attach and Cap carry the drawing's hub pattern in a `config="revised"` checked by
+`600-StrainWave/render-all.rs`, and [008.3](008-Assembly.md#0083-harmonic-drive-motors) steps 4–7 fasten
+the hub through it. A physically received unit is confirmed against the drawing before the final adapters
+are printed ([007.2](007.2-Printed-Parts.md)).
 
 ## Differential detail design
 **DC-2 · P1 · Requirement: REQ-DOF-1, REQ-STR-3 · Specified in [004](004-Mechanical-Architecture.md#wrist-and-differential-j4j5)** — ✔ **closed**

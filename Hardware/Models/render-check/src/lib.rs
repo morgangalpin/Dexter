@@ -255,9 +255,139 @@ pub fn probe(stl: &str, points: &[[f64; 3]], ctx: &Ctx) -> Result<Vec<bool>> {
     Ok(probes.iter().map(|p| p["inside"].as_bool().unwrap_or(false)).collect())
 }
 
+/// How an assembly clash render came out. OpenSCAD reports an empty
+/// intersection by refusing to export it; a seat, where two parts share a
+/// face, exports a surface with no volume. Both are clear. A CGAL failure
+/// returns one operand as the result, so its output says nothing about the
+/// pair, and the check fails rather than measure it.
+#[derive(Debug, PartialEq)]
+pub enum Clash {
+    Clear,
+    Overlap(f64),
+    Unjudged,
+}
+
+/// Overlap below this, in mm³, is contact rather than interference.
+pub const CLASH_TOL: f64 = 1e-3;
+
+/// Judge a clash render from its stderr, and the exported volume when there
+/// was one.
+pub fn clash_verdict(stderr: &str, volume: Option<f64>) -> Clash {
+    if stderr.contains("CGAL error") || stderr.contains("not closed") {
+        return Clash::Unjudged;
+    }
+    match volume {
+        None if stderr.contains("top level object is empty") => Clash::Clear,
+        None => Clash::Unjudged,
+        Some(v) if v.abs() < CLASH_TOL => Clash::Clear,
+        Some(v) => Clash::Overlap(v.abs()),
+    }
+}
+
+/// Render the intersection of parts `a` and `b` of an assembly that takes a
+/// two-name `clash` list, and record whether they are clear of each other.
+pub fn clash_free(scad: &str, a: &str, b: &str, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let out = format!("out/clash-{a}-{b}.stl");
+    let _ = std::fs::remove_file(ctx.dir.join(&out));
+    let define = format!("clash=[\"{a}\",\"{b}\"]");
+    let r = run(&ctx.openscad, &["-o", &out, "-D", &define, scad], &ctx.dir)?;
+    let volume = if ctx.dir.join(&out).exists() {
+        let (_, info) = sm_json(&["info", &out], ctx)?;
+        info[0]["volume_mm3"].as_f64()
+    } else {
+        None
+    };
+    let (label, ok) = match clash_verdict(&r.stderr, volume) {
+        Clash::Clear => (format!("{a} clear of {b}"), true),
+        Clash::Overlap(v) => (format!("{a} clear of {b} (overlap {v:.3} mm3)"), false),
+        Clash::Unjudged => (format!("{a} clear of {b} (OpenSCAD could not intersect them)"), false),
+    };
+    tally.record(&label, ok);
+    Ok(())
+}
+
+/// C-201's circular spline hole pattern, 6 on Ø44 from 30 deg (007.1 C-201).
+/// Stated here rather than read from the seat library, so the probes check
+/// that library instead of repeating it.
+pub const SPLINE_HOLES: (f64, f64, usize) = (22.0, 30.0, 6);
+/// The retired pattern: pegs on Ø43 at 0/90/180/270, screw holes at 45 deg.
+pub const OLD_PEGS_R: f64 = 21.5;
+
+/// A point the seat must leave as material (`true`) or void.
+pub struct SeatProbe {
+    pub label: String,
+    pub at: [f64; 3],
+    pub solid: bool,
+}
+
+/// The probes that say a holder seats C-201: `floor` is the floor's height in
+/// the part's frame and `facing` is +1 when the recess opens toward +Z, -1
+/// toward -Z. Depths are below the floor, into the part.
+pub fn seat_probe_points(floor: f64, facing: f64) -> Vec<SeatProbe> {
+    let z = |depth: f64| floor - facing * depth;
+    let polar = |r: f64, deg: f64, depth: f64| {
+        let a = deg.to_radians();
+        [r * a.cos(), r * a.sin(), z(depth)]
+    };
+    let mut p = vec![
+        SeatProbe { label: "floor, material under it".into(), at: polar(23.0, 0.0, 0.1), solid: true },
+        SeatProbe { label: "floor, void over it".into(), at: polar(23.0, 0.0, -0.1), solid: false },
+        SeatProbe { label: "pilot, void in it".into(), at: polar(18.5, 0.0, 2.1), solid: false },
+        SeatProbe { label: "pilot floor, material under it".into(), at: polar(18.5, 0.0, 2.3), solid: true },
+        SeatProbe { label: "old peg, gone".into(), at: polar(OLD_PEGS_R, 0.0, -2.0), solid: false },
+        SeatProbe { label: "old peg bore, filled".into(), at: polar(OLD_PEGS_R, 0.0, 1.0), solid: true },
+        SeatProbe { label: "old screw hole, filled".into(), at: polar(OLD_PEGS_R, 45.0, 1.0), solid: true },
+    ];
+    let (r, first, n) = SPLINE_HOLES;
+    for i in 0..n {
+        let deg = first + 360.0 / n as f64 * i as f64;
+        p.push(SeatProbe { label: format!("hole at {deg} deg, clearance"), at: polar(r, deg, 1.0), solid: false });
+        p.push(SeatProbe { label: format!("hole at {deg} deg, nut pocket"), at: polar(r, deg, 3.0), solid: false });
+        p.push(SeatProbe { label: format!("hole at {deg} deg, pocket wall"), at: polar(r + 3.0, deg, 3.0), solid: true });
+    }
+    p
+}
+
+/// Render a Stator Holder's revised config to `out/revised/<stem>.stl` and
+/// probe C-201's seat at the floor the part echoes as `seat_floor`.
+pub fn check_seat(scad: &str, stem: &str, facing: f64, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
+    let stl = format!("out/revised/{stem}.stl");
+    let r = render(scad, &stl, "revised", ctx, tally)?;
+    let floor: f64 = echoed(&r.stderr, "seat_floor = ").context("seat_floor not echoed")?.parse()?;
+    let probes = seat_probe_points(floor, facing);
+    let points: Vec<[f64; 3]> = probes.iter().map(|p| p.at).collect();
+    for (p, inside) in probes.iter().zip(probe(&stl, &points, ctx)?) {
+        tally.record(&format!("{stem} (revised) seat: {}", p.label), inside == p.solid);
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn clash_verdict_tells_contact_from_overlap_and_failure() {
+        assert_eq!(clash_verdict("Current top level object is empty.", None), Clash::Clear);
+        assert_eq!(clash_verdict("Simple: no", Some(-4.7e-11)), Clash::Clear);
+        assert_eq!(clash_verdict("Simple: yes", Some(-2.5)), Clash::Overlap(2.5));
+        assert_eq!(clash_verdict("ERROR: CGAL error in CGALUtils", Some(40.0)), Clash::Unjudged);
+        assert_eq!(clash_verdict("ERROR: The given mesh is not closed!", None), Clash::Unjudged);
+        assert_eq!(clash_verdict("ERROR: something else", None), Clash::Unjudged);
+    }
+
+    #[test]
+    fn seat_probes_run_into_the_part_from_either_facing() {
+        let up = seat_probe_points(5.0, 1.0);
+        let down = seat_probe_points(11.0, -1.0);
+        assert_eq!(up.len(), 7 + 18);
+        let pilot = |p: &[SeatProbe]| p.iter().find(|s| s.label.starts_with("pilot floor")).unwrap().at[2];
+        assert!((pilot(&up) - 2.7).abs() < 1e-9);
+        assert!((pilot(&down) - 13.3).abs() < 1e-9);
+        let hole = up.iter().find(|s| s.label == "hole at 90 deg, clearance").unwrap();
+        assert!(hole.at[0].abs() < 1e-9 && (hole.at[1] - 22.0).abs() < 1e-9 && !hole.solid);
+    }
 
     #[test]
     fn diagnostics_keeps_complaints_and_drops_chatter() {
