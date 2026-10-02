@@ -86,14 +86,18 @@ function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
 // a clearance hole for wire -- so the bore is modelled concentric and the
 // 0.143 mm shows up as this part's whole excursion past the 0.15 mm tolerance,
 // 0.011% of samples.
+//
+// In "revised" the bearing fits take the PRESS clearance (diff_params.scad):
+// the Ø12 MR128 seat grows and the Ø17 stub, which the 6703 in 710-001's
+// pocket rides on, shrinks. The crown's Ø23 bore grows in crown_bore_fit().
 BODY_PROFILE = [
     [ 6.500,  4.000],   // bottom face, Ø13 bore mouth
     [ 6.500,  4.500],   // Ø13 wall -- the lip inside the bottom opening
     [ 6.250,  4.500],   // step in to the funnel mouth, 0.25 mm wide
     [ 4.250,  6.500],   // 45-degree funnel down to the wire bore
     [ 4.250, 13.500],   // Ø8.5 wire bore
-    [ 6.000, 13.500],   // Ø12 MR128 seat
-    [ 6.000, 17.000],
+    [ 6.000 + PRESS, 13.500],   // Ø12 MR128 seat
+    [ 6.000 + PRESS, 17.000],
     [ 9.000, 17.000],   // Ø18 sleeve bore
     [ 9.000, 21.000],
     [12.000, 21.000],   // Ø24 mouth (buried: the crown's Ø23 bore is smaller)
@@ -114,8 +118,8 @@ BODY_PROFILE = [
     [ 8.599,  8.687],
     [ 8.544,  8.548],
     [ 8.511,  8.402],
-    [ 8.500,  8.253],
-    [ 8.500,  4.000],   // Ø17 wire-guide stub
+    [ 8.500 - PRESS,  8.253],
+    [ 8.500 - PRESS,  4.000],   // Ø17 wire-guide stub
 ];
 
 // The bottom lip, stated once because it is easy to lose in simplification:
@@ -184,12 +188,24 @@ module crown() {
     up(BEVEL_APEX_Z) bevel_crown(BEVEL_ENVELOPE_INNER);
 }
 
+// The crown bore's PRESS clearance, cut rather than drawn into CROWN_BLANK so
+// the blank's foot stays on the parting cone. The body fills the bore below
+// its Ø24 mouth at z 21, where the 6703's outer race bears, so the cut starts
+// there and runs to where the inner cone closes the bore.
+CROWN_BORE_SPAN = [21.000, CROWN_BLANK[3][1]];
+
+module crown_bore_fit()
+    if (PRESS > 0)
+        up(CROWN_BORE_SPAN[0]) cylinder(d = fit_bore(CROWN_BORE_D, PRESS),
+                                        h = CROWN_BORE_SPAN[1] - CROWN_BORE_SPAN[0] + epsilon);
+
 module split_gear_bottom() {
     difference() {
         union() {
             rotate_extrude() polygon(BODY_PROFILE);
             crown();
         }
+        crown_bore_fit();
         for (a = BRAD_A)
             zrot(a) up(BRAD_Z) right(BRAD_FLOOR) yrot(90)
                 cyl(d = BRAD_HOLE_D, h = BEVEL_OD / 2 - BRAD_FLOOR, anchor = BOTTOM);

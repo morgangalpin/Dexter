@@ -179,16 +179,35 @@ pub fn judge(r: &Run, what: &str, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
-/// Render `scad` to `out` with `-D` definitions, and judge the run.
-pub fn render_with(scad: &str, out: &str, defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
+/// The OpenSCAD arguments that render `scad` to `out` with `-D` definitions,
+/// and `extra` before the source.
+fn render_args<'a>(scad: &'a str, out: &'a str, defines: &[&'a str], extra: &[&'a str]) -> Vec<&'a str> {
     let mut args = vec!["-o", out];
     for d in defines {
         args.extend(["-D", d]);
     }
+    args.extend(extra);
     args.push(scad);
-    let r = run(&ctx.openscad, &args, &ctx.dir)?;
+    args
+}
+
+fn render_judged(scad: &str, args: &[&str], defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
+    let r = run(&ctx.openscad, args, &ctx.dir)?;
     judge(&r, &format!("{scad} ({})", defines.join(", ")), tally)?;
     Ok(r)
+}
+
+/// Render `scad` to `out` with `-D` definitions, and judge the run.
+pub fn render_with(scad: &str, out: &str, defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
+    render_judged(scad, &render_args(scad, out, defines, &[]), defines, ctx, tally)
+}
+
+/// As `render_with`, but to a binary STL. OpenSCAD's ASCII export rounds to
+/// six significant digits, which can leave a section plane cutting a mesh
+/// whose neighbouring facets no longer quite meet, so `slice` returns open
+/// polylines; a section taken for its area wants the float32 export.
+pub fn render_binary(scad: &str, out: &str, defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
+    render_judged(scad, &render_args(scad, out, defines, &["--export-format", "binstl"]), defines, ctx, tally)
 }
 
 /// Render one configuration of one part.
@@ -348,8 +367,23 @@ pub fn seat_probe_points(floor: f64, facing: f64) -> Vec<SeatProbe> {
     p
 }
 
+/// The seat's print fits, from the drawing's nominals: the flange's Ø50h6 in
+/// the recess, the step's Ø38h7 in the pilot, and the M3 nut's outer flat in
+/// the pocket on the hole at 30 deg.
+pub fn seat_fit_probes(floor: f64, facing: f64) -> Vec<FitProbe> {
+    let z = |depth: f64| floor - facing * depth;
+    let (c30, s30) = (30f64.to_radians().cos(), 30f64.to_radians().sin());
+    let flat = SPLINE_HOLES.0 + 5.5 / 2.0;
+    vec![
+        FitProbe { label: "recess on the flange", at: [25.0, 0.0, z(-1.5)], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+        FitProbe { label: "pilot on the step", at: [19.0, 0.0, z(1.1)], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+        FitProbe { label: "M3 nut pocket", at: [flat * c30, flat * s30, z(3.5)], toward: [-c30, -s30, 0.0], fit: Fit::Slip },
+    ]
+}
+
 /// Render a Stator Holder's revised config to `out/revised/<stem>.stl` and
-/// probe C-201's seat at the floor the part echoes as `seat_floor`.
+/// probe C-201's seat, and its fits, at the floor the part echoes as
+/// `seat_floor`.
 pub fn check_seat(scad: &str, stem: &str, facing: f64, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
     let stl = format!("out/revised/{stem}.stl");
@@ -360,12 +394,111 @@ pub fn check_seat(scad: &str, stem: &str, facing: f64, ctx: &Ctx, tally: &mut Ta
     for (p, inside) in probes.iter().zip(probe(&stl, &points, ctx)?) {
         tally.record(&format!("{stem} (revised) seat: {}", p.label), inside == p.solid);
     }
+    check_fits(&stl, &format!("{stem} (revised) seat"), &seat_fit_probes(floor, facing), ctx, tally)
+}
+
+/// A print-fit class of `../print_fit.scad`.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Fit {
+    Slip,
+    Press,
+}
+
+/// A value assigned in an OpenSCAD source as `NAME = value;`.
+pub fn scad_constant(source: &str, name: &str) -> Option<f64> {
+    source.lines().find_map(|line| {
+        let (lhs, rhs) = line.split_once('=')?;
+        if lhs.trim() != name {
+            return None;
+        }
+        rhs.split(';').next()?.trim().parse().ok()
+    })
+}
+
+/// The two print-fit clearances per side, read from the library every part
+/// includes, so the checks follow it when a machine is qualified.
+pub fn print_fit(ctx: &Ctx) -> Result<(f64, f64)> {
+    let path = ctx.dir.join("../print_fit.scad");
+    let source = std::fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
+    let get = |name| scad_constant(&source, name).with_context(|| format!("{name} not in print_fit.scad"));
+    Ok((get("FIT_SLIP")?, get("FIT_PRESS")?))
+}
+
+/// One fit on a revised render: `at` lies on the mate's nominal surface and
+/// `toward` is the unit direction from the part toward the mate. The part's
+/// wall must stand back from `at` by the class clearance, so a point halfway
+/// into that gap is void and one just behind the wall is material.
+pub struct FitProbe {
+    pub label: &'static str,
+    pub at: [f64; 3],
+    pub toward: [f64; 3],
+    pub fit: Fit,
+}
+
+/// How far behind the drawn wall the material probe sits.
+const FIT_WALL_PROBE: f64 = 0.05;
+
+/// The gap and wall points of a probe at clearance `c`.
+pub fn fit_points(p: &FitProbe, c: f64) -> ([f64; 3], [f64; 3]) {
+    let back = |d: f64| [p.at[0] - p.toward[0] * d, p.at[1] - p.toward[1] * d, p.at[2] - p.toward[2] * d];
+    (back(c / 2.0), back(c + FIT_WALL_PROBE))
+}
+
+/// Check every fit of a revised render against the class clearances.
+pub fn check_fits(stl: &str, part: &str, probes: &[FitProbe], ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let (slip, press) = print_fit(ctx)?;
+    let mut points = Vec::new();
+    for p in probes {
+        let c = if p.fit == Fit::Slip { slip } else { press };
+        let (gap, wall) = fit_points(p, c);
+        points.push(gap);
+        points.push(wall);
+    }
+    let inside = probe(stl, &points, ctx)?;
+    for (p, pair) in probes.iter().zip(inside.chunks(2)) {
+        let class = if p.fit == Fit::Slip { "slip" } else { "press" };
+        tally.record(&format!("{part} fit, {} ({class}): gap open, wall behind it", p.label), !pair[0] && pair[1]);
+    }
     Ok(())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn scad_constant_reads_an_assignment_and_ignores_the_rest() {
+        let src = "// FIT_SLIP = 9;\nFIT_SLIP    = 0.15;\nFIT_PRESS = 0.05; // per side\nfunction f() = 1;";
+        assert_eq!(scad_constant(src, "FIT_SLIP"), Some(0.15));
+        assert_eq!(scad_constant(src, "FIT_PRESS"), Some(0.05));
+        assert_eq!(scad_constant(src, "MISSING"), None);
+    }
+
+    #[test]
+    fn render_args_put_definitions_and_extras_before_the_source() {
+        let args = render_args("p.scad", "o.stl", &["a=1", "b=2"], &["--export-format", "binstl"]);
+        assert_eq!(args, vec!["-o", "o.stl", "-D", "a=1", "-D", "b=2", "--export-format", "binstl", "p.scad"]);
+        assert_eq!(render_args("p.scad", "o.stl", &[], &[]), vec!["-o", "o.stl", "p.scad"]);
+    }
+
+    #[test]
+    fn seat_fits_run_into_the_part_from_either_facing() {
+        let up = seat_fit_probes(5.0, 1.0);
+        let down = seat_fit_probes(11.0, -1.0);
+        assert_eq!(up.len(), 3);
+        assert!((up[0].at[2] - 6.5).abs() < 1e-9 && (down[0].at[2] - 9.5).abs() < 1e-9);
+        assert!((up[1].at[2] - 3.9).abs() < 1e-9 && (down[1].at[2] - 12.1).abs() < 1e-9);
+        let r = (up[2].at[0].powi(2) + up[2].at[1].powi(2)).sqrt();
+        assert!((r - 24.75).abs() < 1e-9);
+    }
+
+    #[test]
+    fn fit_points_stand_back_from_the_mate() {
+        let p = FitProbe { label: "bore", at: [5.0, 0.0, 1.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip };
+        let (gap, wall) = fit_points(&p, 0.2);
+        assert!((gap[0] - 5.1).abs() < 1e-12 && (wall[0] - 5.25).abs() < 1e-12);
+        assert_eq!((gap[2], wall[2]), (1.0, 1.0));
+    }
 
     #[test]
     fn clash_verdict_tells_contact_from_overlap_and_failure() {

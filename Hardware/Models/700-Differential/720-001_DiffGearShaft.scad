@@ -30,6 +30,7 @@
 // bottom of the file.
 
 include <diff_bevel.scad>
+use <720-002_DiffGearAxle.scad>
 
 /* [Reference detail] */
 // Reproduce the twelve Ø0.2 through-holes the reference mesh carries (WALL
@@ -38,9 +39,13 @@ include <diff_bevel.scad>
 wall_holes = false;
 
 /* [Hidden] */
-Z0          = -10.96;   // shaft start (front journal end)
+Z0_MEASURED = -10.96;   // shaft start (front journal end), as measured
 Z1          = 49.64;    // shaft end (rear journal end)
-JOURNAL_D   = 17.0;     // 6703 inner-race journals, both ends
+// The bearing fits take the PRESS clearance (diff_params.scad) in "revised":
+// the 6703 journals and the 6705's Ø25 seat shrink, the MR128 seats grow.
+// The band's bond to #720-004 takes its clearance in that part's bore.
+JOURNAL_D   = fit_pin(17.0, PRESS);   // 6703 inner-race journals, both ends
+D6705_D     = fit_pin(BRG_6705[0], PRESS);   // the 6705's inner race, z 28.04..34.04
 FRONT_STEPS = [[11.54, 19.0], [13.040, 23.0]];  // [z, Ø] steps before the gear
 D27_D       = 27.0;     // collar behind the gear
 D27_TOP     = 28.04;    // Ø27 section top
@@ -54,9 +59,27 @@ D19B_TOP    = 44.04;    // Ø19 collar top / rear journal start, rear 6703 face
 // the ring (008.6).
 COLLAR_D    = config == "previous" ? 25.0 : gt2_root_d(BAND_TIP_D) - 0.2;
 BORE_D      = 10.0;     // rod clearance bore
-SEAT_D      = 12.0;     // MR128 press seats
+SEAT_D      = fit_bore(12.0, PRESS);  // MR128 press seats
 SEAT_FRONT  = 3.0;      // front seat depth
 SEAT_REAR   = 2.7;      // rear seat depth
+
+// The front end. #720-002's boss is the spacer that stops the axle on the
+// front MR128's inner race, and the MR128 stands BRG_MR128[2] - SEAT_FRONT
+// proud of this end. As measured, that face lies 1.84 mm beyond the boss's
+// tip, so the two overlap. In "revised" the front journal -- the plain Ø17
+// run between the two 6703s -- is shorter by front_drop(), which brings the
+// seat back until the MR128's face is the boss's tip. Both bevels keep their
+// apexes on C, so the mesh does not move; Diff Body B's front 6703 seat goes
+// deeper by the same amount (730-002), and the hub's shoulder stands
+// 2.5 mm off this end instead of 0.66.
+Z0 = config == "previous" ? Z0_MEASURED
+   : BEVEL_APEX_SHAFT - (BEVEL_APEX_AXLE - boss_z()[1]) + BRG_MR128[2] - SEAT_FRONT;
+
+// How far the revised front end, and every seat on it, stands nearer C than
+// the measured one; and the front MR128's seat floor in this part's frame.
+// Functions, for 730-002 and diff_assembly.scad, which `use` this file.
+function front_drop()       = Z0 - Z0_MEASURED;
+function front_seat_floor() = Z0 + SEAT_FRONT;
 
 // Where the shared crown's apex sits on this shaft's own axis. Measured
 // directly on this part's mesh: the top-land (face) cone fitted from
@@ -205,6 +228,18 @@ module crown() {
         bevel_crown(CROWN_ENVELOPE);
 }
 
+// The volume this crown's teeth sweep as the shaft turns, as a meridian in
+// diff_bevel.scad's gear frame (BEVEL_ZONE's counterpart): the flat toe from
+// root to face cone, the face cone out to the tip cylinder, the tip land, the
+// back cone and the root cone. A function, for 730-002, which `use`s this file
+// and keeps its running clearance off it.
+function crown_zone() = [for (p = [
+    [shaft_r(SHAFT_ROOT, TOE_PLANE), TOE_PLANE],
+    shaft_meet(BACK_CONE, SHAFT_ROOT),
+    CROWN_TIP_BACK,
+    [TIP_R, shaft_z(SHAFT_TIP, TIP_R)],
+    [shaft_r(SHAFT_TIP, TOE_PLANE), TOE_PLANE]]) bevel_pt(p)];
+
 // ------------------------------------------------------------------ hub ----
 // Everything the crown stands on, from the Ø23 step to the Ø27 collar: the
 // Ø23 land ahead of the teeth, the shared root cone under them, the back
@@ -304,7 +339,7 @@ module diff_gear_shaft() {
             gear_hub();
             crown();
             up(D27_TOP - epsilon)
-                cyl(d=25.0, h=D25_TOP - D27_TOP + epsilon, anchor=BOTTOM);
+                cyl(d=D6705_D, h=D25_TOP - D27_TOP + epsilon, anchor=BOTTOM);
             up(D25_TOP - epsilon)
                 linear_extrude(PULLEY_TOP - D25_TOP + 2*epsilon)
                     band_teeth_2d();

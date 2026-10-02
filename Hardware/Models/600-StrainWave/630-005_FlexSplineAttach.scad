@@ -8,7 +8,8 @@
 //   config = "previous" — faithful recreation of the reference mesh
 //                         (../Reference/meshes/600-StrainWave/).
 //   config = "revised"  — the flare below the land removed, so the land runs
-//                         to the motor face, and the hub interface lowered by
+//                         to the motor face; the hub interface cut for
+//                         C-201's flexspline; and the hub face lowered by
 //                         hub_drop. What sets hub_drop, and why the flare
 //                         goes, is recorded in
 //                         ../500-ExternalGear/exgear_assembly.scad.
@@ -47,14 +48,44 @@
 //     motor holes, 31.0 square     Ø3.5                   -1 .. 7
 //     their counterbores           Ø10.3, floor at 7.0    7 .. 9
 //
-// The six M2 screws of 008.3 step 7 enter from below through the head
-// pockets, pass the hub and end in the Flex Spline Cap. hub_drop shortens
-// their path through this part by the same amount, and 008.3 already sizes
-// them by the thread left showing, so no fastener changes.
+// The reference's hub interface (the Ø19 recess and its Ø3.3 nubs on Ø12) is
+// not C-201's. The revised hub interface is cut for the flexspline hub of
+// c201_spline_seat.scad, which stands on a flat hub face:
+//
+//     spigot, into the Ø11H7 bore  Ø11, 0.3 lead          top .. top + 2.2
+//     nubs, one per Ø4.5 hole      Ø4.5, on Ø17           top .. top + 2.2
+//     hub screw holes, in the nubs Ø2.0 (M2), from 0 deg  3.75 .. top + 2.2
+//     their head pockets           Ø3.8 (the M2 head)     2 .. 3.75
+//
+// The spigot centres the hub, and the nubs carry the drive's torque in
+// shear. Both stop 0.2 short of the hub's inner face, where the Flex Spline
+// Cap bears.
+//
+// FITS (../print_fit.scad), revised only. The sizes above are the mates'
+// nominals; each fit draws its class clearance per side:
+//
+//     land, in the 6810's Ø50 bore         press
+//     lugs, on the motor's 42.3 body       press: they centre the motor,
+//                                          and with it the wave generator,
+//                                          on the flexspline's axis
+//     spigot and nubs, in the hub          press
+//     hub screw holes and head pockets     slip
+//
+// The motor holes (Ø3.5 for M3), their Ø10.3 counterbores and the Ø23 pilot
+// over the motor's Ø22 boss already clear by more and keep their size.
+//
+// The six M2 screws of 008.3 enter from below through the head pockets,
+// pass the hub and end in nuts in the Flex Spline Cap, so they are driven
+// before the Attach goes on the motor. hub_drop shortens their path through
+// this part by the same amount; the Cap's file asserts the screw's reach at
+// the longest path, a drop of zero.
 //
 // The counterbore floors stay at z = 7.000 in both configs: in J1 and J2 the
 // #6 washers under the motor screws sit there and overhang the land onto the
 // far 6810's inner race.
+
+include <../print_fit.scad>
+use <c201_spline_seat.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -91,9 +122,19 @@ NUB_D         = 3.300;
 MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.500;
 CBORE         = [10.300, 7.000];   // diameter, floor
+// Revised hub interface, for c201_spline_seat.scad's flexspline hub.
+SPIGOT_LEAD   = 0.300;             // the spigot's lead chamfer
+HUB_CLEAR     = 0.200;             // spigot and nub tops under the hub's inner face
+M2            = [2.000, 3.800];    // screw and head diameters
 
 function attach_motor_face() = MOTOR_FACE;
 function attach_hub_face(cfg = config, drop = hub_drop) = cfg == "previous" ? HUB_FACE : HUB_FACE - drop;
+function attach_head_seat() = HEAD_POCKET[1];
+
+function slip(cfg) = fit_clearances(cfg)[0];
+function press(cfg) = fit_clearances(cfg)[1];
+function land_r(cfg) = LAND_R - press(cfg);
+function lug_flat(cfg) = LUG_FLAT + press(cfg);
 
 // --- 2D outlines -----------------------------------------------------------
 module convex_round(r) offset(r = r) offset(delta = -r) children();
@@ -106,13 +147,13 @@ module notch_cutters(half = NOTCH[0], reach = 40)
 // The land's outline: the R25 disc less the four notches. The mouth rounds
 // are tangent to R25 but not to the notch sides, which they meet at an angle:
 // rounds of a notch narrower by the difference, then the notch cut to width.
-module land_2d()
+module land_2d(cfg)
     concave_fillet(NOTCH_FILLET) intersection() {
         convex_round(MOUTH_ROUND[0]) difference() {
-            circle(r = LAND_R);
+            circle(r = land_r(cfg));
             notch_cutters(NOTCH[0] - (MOUTH_ROUND[0] - MOUTH_ROUND[1]));
         }
-        difference() { circle(r = LAND_R + 1); notch_cutters(); }
+        difference() { circle(r = land_r(cfg) + 1); notch_cutters(); }
     }
 
 // The notched outline the lugs are cut from, square-mouthed.
@@ -155,24 +196,24 @@ function lug_layers(cfg) = concat(
      [MOTOR_FACE, LUG_R - 0.500, 0.200]],
     cfg == "previous" ? [[-FLARE_ROUND - epsilon, LAND_R + FLARE_ROUND, 0.200]] : []);
 
-module one_lug_2d(r, tip)
+module one_lug_2d(r, tip, flat)
     intersection() {
         convex_round(max(tip, 0.001)) intersection() {
             circle(r = r);
-            convex_round(LUG_EDGE) difference() { flare_2d(); square(2 * LUG_FLAT, center = true); }
+            convex_round(LUG_EDGE) difference() { flare_2d(); square(2 * flat, center = true); }
         }
-        translate([0, LUG_FLAT - 1]) square(LUG_R + 1);
+        translate([0, flat - 1]) square(LUG_R + 1);
     }
 
 module lugs(cfg)
     for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0]) hull()
-        for (l = lug_layers(cfg)) translate([0, 0, l[0]]) linear_extrude(epsilon) one_lug_2d(l[1], l[2]);
+        for (l = lug_layers(cfg)) translate([0, 0, l[0]]) linear_extrude(epsilon) one_lug_2d(l[1], l[2], lug_flat(cfg));
 
 // Round the lugs' bottom inner edge, and fillet their inner face into the
 // underside of the body.
-module lug_bottom_rounds()
+module lug_bottom_rounds(cfg)
     for (a = [0 : 90 : 270]) rotate(a)
-        translate([-LUG_R, LUG_FLAT, LUG_Z]) rotate([90, 0, 90])
+        translate([-LUG_R, lug_flat(cfg), LUG_Z]) rotate([90, 0, 90])
             linear_extrude(2 * LUG_R) difference() {
                 translate([-epsilon, -epsilon]) square(LUG_EDGE + epsilon);
                 translate([LUG_EDGE, LUG_EDGE]) circle(r = LUG_EDGE);
@@ -188,10 +229,10 @@ module root_fillet_section()
 // One lug's root fillet: along its inner face from the notch-side corner
 // round to ROOT_FILLET_END, short of the tip,
 // and swept round that corner round up to the notch's side.
-module one_root_fillet() {
-    corner = [NOTCH[0] + LUG_EDGE, LUG_FLAT + LUG_EDGE, MOTOR_FACE];
+module one_root_fillet(cfg) {
+    corner = [NOTCH[0] + LUG_EDGE, lug_flat(cfg) + LUG_EDGE, MOTOR_FACE];
     intersection() {
-        translate([corner[0] - epsilon, LUG_FLAT, MOTOR_FACE]) rotate([90, 0, 90])
+        translate([corner[0] - epsilon, lug_flat(cfg), MOTOR_FACE]) rotate([90, 0, 90])
             linear_extrude(LUG_R) root_fillet_section();
         cylinder(r = ROOT_FILLET_END, h = 20, center = true);
     }
@@ -202,36 +243,56 @@ module one_root_fillet() {
     }
 }
 
-module lug_root_fillets()
-    for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0]) one_root_fillet();
+module lug_root_fillets(cfg)
+    for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0]) one_root_fillet(cfg);
 
-module body(cfg, top) {
-    translate([0, 0, MOTOR_FACE]) linear_extrude(top - MOTOR_FACE) land_2d();
-    if (cfg == "previous") flare();
-    difference() { lugs(cfg); lug_bottom_rounds(); }
-    lug_root_fillets();
+// The revised hub seat's height above the hub face: the spigot's and the nubs'.
+function seat_rise() = fs_hub()[1] - HUB_CLEAR;
+
+// The revised spigot and nubs, standing on the hub face at z = 0.
+module hub_seat(cfg) {
+    spigot_r = fit_pin(fs_bore_d(), press(cfg)) / 2;
+    rotate_extrude() polygon([
+        [0, -epsilon], [spigot_r, -epsilon], [spigot_r, seat_rise() - SPIGOT_LEAD],
+        [spigot_r - SPIGOT_LEAD, seat_rise()], [0, seat_rise()]]);
+    fs_hub_holes() translate([0, 0, -epsilon])
+        cylinder(d = fit_pin(fs_holes()[0], press(cfg)), h = seat_rise() + epsilon, $fn = 48);
 }
 
-module hub_holes() for (a = [0 : 60 : 300]) rotate(a) translate([HUB_PCD / 2, 0]) children();
+module body(cfg, top) {
+    translate([0, 0, MOTOR_FACE]) linear_extrude(top - MOTOR_FACE) land_2d(cfg);
+    if (cfg == "previous") flare();
+    else translate([0, 0, top]) hub_seat(cfg);
+    difference() { lugs(cfg); lug_bottom_rounds(cfg); }
+    lug_root_fillets(cfg);
+}
 
-// The centre bore with its ridge, as a revolved void.
-module centre_bore()
+module hub_holes(cfg) {
+    if (cfg == "previous") for (a = [0 : 60 : 300]) rotate(a) translate([HUB_PCD / 2, 0]) children();
+    else fs_hub_holes() children();
+}
+
+// The centre bore with its ridge, as a revolved void, open to `top`.
+module centre_bore(top)
     rotate_extrude() polygon([
         [0, PILOT[1] - epsilon], [BORE_D / 2, PILOT[1] - epsilon],
         [BORE_D / 2, RIDGE[1] - RIDGE[3]], [RIDGE[0] / 2, RIDGE[1]],
         [RIDGE[0] / 2, RIDGE[2]], [BORE_D / 2, RIDGE[2] + RIDGE[3]],
-        [BORE_D / 2, BORE_TOP + epsilon], [0, BORE_TOP + epsilon]]);
+        [BORE_D / 2, top + epsilon], [0, top + epsilon]]);
 
-module cuts(top) {
+module cuts(cfg, top) {
+    seat_top = cfg == "previous" ? top : top + seat_rise();
     translate([0, 0, MOTOR_FACE - epsilon]) cylinder(d = PILOT[0], h = PILOT[1] - MOTOR_FACE + epsilon);
-    centre_bore();
-    hub_holes() {
-        translate([0, 0, PILOT[1] - epsilon]) cylinder(d = HEAD_POCKET[0], h = HEAD_POCKET[1] - PILOT[1] + epsilon, $fn = 48);
-        translate([0, 0, HEAD_POCKET[1] - epsilon]) cylinder(d = HUB_HOLE_D, h = top, $fn = 48);
+    centre_bore(cfg == "previous" ? BORE_TOP : seat_top);
+    head_d = cfg == "previous" ? HEAD_POCKET[0] : fit_bore(M2[1], slip(cfg));
+    hole_d = cfg == "previous" ? HUB_HOLE_D : fit_bore(M2[0], slip(cfg));
+    hub_holes(cfg) {
+        translate([0, 0, PILOT[1] - epsilon]) cylinder(d = head_d, h = HEAD_POCKET[1] - PILOT[1] + epsilon, $fn = 48);
+        translate([0, 0, HEAD_POCKET[1] - epsilon]) cylinder(d = hole_d, h = seat_top, $fn = 48);
     }
-    translate([0, 0, top - RECESS[1]]) linear_extrude(RECESS[1] + 1) difference() {
+    if (cfg == "previous") translate([0, 0, top - RECESS[1]]) linear_extrude(RECESS[1] + 1) difference() {
         circle(d = RECESS[0]);
-        hub_holes() circle(d = NUB_D, $fn = 48);
+        hub_holes(cfg) circle(d = NUB_D, $fn = 48);
     }
     for (x = [-1, 1], y = [-1, 1]) translate([x, y, 0] * MOTOR_PITCH / 2) {
         translate([0, 0, MOTOR_FACE - 1]) cylinder(d = MOTOR_HOLE_D, h = CBORE[1] - MOTOR_FACE + 1 + epsilon, $fn = 48);
@@ -241,9 +302,11 @@ module cuts(top) {
 
 module flex_spline_attach(cfg = config, drop = hub_drop) {
     top = attach_hub_face(cfg, drop);
-    assert(top - RECESS[1] > HEAD_POCKET[1], "hub recess would break into the head pockets");
+    // The reference's recess left 2.5 over the head pockets; the revised
+    // seat keeps that much material under its flat hub face.
+    assert(top - RECESS[1] > HEAD_POCKET[1], "the hub face comes too near the head pockets");
     assert(top > CBORE[1], "hub face must stay above the counterbore floors");
-    difference() { body(cfg, top); cuts(top); }
+    difference() { body(cfg, top); cuts(cfg, top); }
 }
 
 flex_spline_attach();

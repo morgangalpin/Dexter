@@ -52,6 +52,18 @@
 // The mouth, lug and ring corner rounds are each tangent to one side only:
 // the lug and ring corners were rounded on a notch 0.15 narrower, the land's
 // mouths on a disc 0.115 larger.
+//
+// FITS (../print_fit.scad), revised only, per side:
+//
+//     land, in the 6810's Ø50 bore         press
+//     lugs, on the motor's 42.3 body       press: they centre the motor
+//     motor holes, on M3                   slip, over Ø3.0
+//     their nut traps, on the M3 nut       slip
+//
+// The Ø22.5 bore over the motor's Ø22 boss already clears by more and keeps
+// its size.
+
+include <../print_fit.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -87,8 +99,14 @@ MOTOR_HOLE_D  = 3.200;
 NUT           = [5.500, 3.000];    // across flats, depth above the seat
 LEAD_IN       = [6.000, 8.000, 6.000];   // Ø at its floor, Ø at the top, floor z
 
+M3_D          = 3.000;     // the motor screws' nominal diameter
+
 function end_cap_top() = TOP;
 function end_cap_seat(cfg = config, raise = seat_raise) = cfg == "previous" ? SEAT : SEAT + raise;
+
+// The press clearance moves the land in and the lugs out; `c` below is it.
+function slip(cfg) = fit_clearances(cfg)[0];
+function press(cfg) = fit_clearances(cfg)[1];
 
 // --- 2D outlines -----------------------------------------------------------
 module convex_round(r) offset(r = r) offset(delta = -r) children();
@@ -98,10 +116,10 @@ module notch_cutters(half = NOTCH[0], reach = 40)
         translate([NOTCH[1], -half]) square([reach, 2 * half]);
 
 // The land: R25 less the notches, the mouths rounded tangent to the sides.
-module land_2d()
+module land_2d(c)
     intersection() {
-        circle(r = LAND_R);
-        convex_round(MOUTH[0]) difference() { circle(r = LAND_R + MOUTH[1]); notch_cutters(); }
+        circle(r = LAND_R - c);
+        convex_round(MOUTH[0]) difference() { circle(r = LAND_R - c + MOUTH[1]); notch_cutters(); }
     }
 
 // One quarter of the ring, between the notches at 0 and 90 deg, with corner
@@ -123,9 +141,9 @@ module ring_quarter_2d(corner) {
 function lug_corner_outer() =
     let (y = NOTCH[0] - NARROWER + RING_CORNER) [y, sqrt(pow(RING_R - RING_CORNER, 2) - y * y)];
 
-module lug_2d() {
-    c_notch = [NOTCH[0] - NARROWER + LUG_EDGE, LUG_FLAT + LUG_EDGE];
-    c_end   = [LUG_END, LUG_FLAT + LUG_EDGE];
+module lug_2d(c) {
+    c_notch = [NOTCH[0] - NARROWER + LUG_EDGE, LUG_FLAT + c + LUG_EDGE];
+    c_end   = [LUG_END, LUG_FLAT + c + LUG_EDGE];
     c_outer = lug_corner_outer();
     a1 = atan2(c_end[1], c_end[0]);
     a2 = atan2(c_outer[1], c_outer[0]);
@@ -157,12 +175,12 @@ module ring()
 
 // A lug with its bottom edges rounded: the hull of its outline shrunk along
 // the round.
-module one_lug()
+module one_lug(c)
     hull() {
         for (t = [0 : 15 : 90])
             translate([0, 0, LUG_Z + LUG_EDGE * (1 - cos(t))]) linear_extrude(epsilon)
-                offset(r = -LUG_EDGE * (1 - sin(t)) - (t == 90 ? 0 : 0.001)) lug_2d();
-        translate([0, 0, SEAT - epsilon]) linear_extrude(2 * epsilon) lug_2d();
+                offset(r = -LUG_EDGE * (1 - sin(t)) - (t == 90 ? 0 : 0.001)) lug_2d(c);
+        translate([0, 0, SEAT - epsilon]) linear_extrude(2 * epsilon) lug_2d(c);
     }
 
 module each_lug() for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0]) children();
@@ -180,12 +198,12 @@ module fillet_ring(centre, z)
 
 // One lug's root fillet, at seat height z: along its face, and round its end
 // and its notch-side corner, up to the notch side and the ring's radius.
-module one_root_fillet(z) {
-    c_notch = [NOTCH[0] - NARROWER + LUG_EDGE, LUG_FLAT + LUG_EDGE];
-    c_end   = [LUG_END, LUG_FLAT + LUG_EDGE];
+module one_root_fillet(z, c) {
+    c_notch = [NOTCH[0] - NARROWER + LUG_EDGE, LUG_FLAT + c + LUG_EDGE];
+    c_end   = [LUG_END, LUG_FLAT + c + LUG_EDGE];
     intersection() {
         union() {
-            translate([c_notch[0], LUG_FLAT, z]) rotate([90, 0, 90])
+            translate([c_notch[0], LUG_FLAT + c, z]) rotate([90, 0, 90])
                 linear_extrude(c_end[0] - c_notch[0]) root_fillet_section();
             fillet_ring(c_end, z);
             fillet_ring(c_notch, z);
@@ -195,11 +213,11 @@ module one_root_fillet(z) {
     }
 }
 
-module body(s) {
-    translate([0, 0, SEAT]) linear_extrude(TOP - SEAT) land_2d();
+module body(s, c) {
+    translate([0, 0, SEAT]) linear_extrude(TOP - SEAT) land_2d(c);
     ring();
-    each_lug() one_lug();
-    each_lug() one_root_fillet(s);
+    each_lug() one_lug(c);
+    each_lug() one_root_fillet(s, c);
 }
 
 // --- Cuts ------------------------------------------------------------------
@@ -293,9 +311,9 @@ module top_chamfer(c) hull() {
 
 // The chamfer run on round a land mouth: a cone about the round's centre, over
 // the round's arc from the notch side out to the land's edge.
-module mouth_chamfer(c) {
+module mouth_chamfer(c, land_r) {
     y = NOTCH[0] + MOUTH[0];
-    centre = [sqrt(pow(LAND_R + MOUTH[1] - MOUTH[0], 2) - y * y), y];
+    centre = [sqrt(pow(land_r + MOUTH[1] - MOUTH[0], 2) - y * y), y];
     m = 0.1;
     translate(centre) rotate(-90) rotate_extrude(angle = 90 + atan2(centre[1], centre[0]), $fn = 96)
         polygon([[MOUTH[0] - c - m, TOP + m], [MOUTH[0] + m, TOP + m], [MOUTH[0] + m, TOP - c - m]]);
@@ -306,29 +324,32 @@ module slot_2d()translate([SLOT[1], -SLOT[0]]) square([RING_R, 2 * SLOT[0]]);
 module motor_holes()
     for (a = [45 : 90 : 315]) rotate(a) translate([MOTOR_PITCH / sqrt(2), 0]) children();
 
-module cuts(s) {
+module cuts(s, cfg) {
+    c = press(cfg);
+    land_r = LAND_R - c;
+    hole_d = cfg == "previous" ? MOTOR_HOLE_D : fit_bore(M3_D, slip(cfg));
     translate([0, 0, SEAT - 1]) cylinder(r = BORE_R, h = TOP - SEAT + 2);
     edge_round(BORE_R, s, BORE_ROUND);
     channel(s);
     translate([0, 0, s]) linear_extrude(TOP - s + 1) slot_2d();
     for (a = [0 : 90 : 270]) rotate(a) top_chamfer(NOTCH_CHAMFER) translate([NOTCH[1], -NOTCH[0]]) square([RING_R, 2 * NOTCH[0]]);
-    for (a = [0 : 90 : 270], k = [0, 1]) rotate(a) mirror([0, k, 0]) mouth_chamfer(NOTCH_CHAMFER);
+    for (a = [0 : 90 : 270], k = [0, 1]) rotate(a) mirror([0, k, 0]) mouth_chamfer(NOTCH_CHAMFER, land_r);
     top_chamfer(NOTCH_CHAMFER) slot_2d();
-    rotate_extrude() polygon([[LAND_R - LAND_CHAMFER - epsilon, TOP + epsilon], [LAND_R + 1, TOP + epsilon],
-                              [LAND_R + 1, TOP - LAND_CHAMFER - 1 - 2 * epsilon]]);
+    rotate_extrude() polygon([[land_r - LAND_CHAMFER - epsilon, TOP + epsilon], [land_r + 1, TOP + epsilon],
+                              [land_r + 1, TOP - LAND_CHAMFER - 1 - 2 * epsilon]]);
     motor_holes() {
-        translate([0, 0, SEAT - 1]) cylinder(d = MOTOR_HOLE_D, h = TOP - SEAT + 2, $fn = 48);
-        translate([0, 0, s - epsilon]) rotate(-30) cylinder(r = NUT[0] / sqrt(3), h = NUT[1] + epsilon, $fn = 6);
+        translate([0, 0, SEAT - 1]) cylinder(d = hole_d, h = TOP - SEAT + 2, $fn = 48);
+        translate([0, 0, s - epsilon]) rotate(-30) cylinder(r = fit_bore(NUT[0], slip(cfg)) / sqrt(3), h = NUT[1] + epsilon, $fn = 6);
         translate([0, 0, LEAD_IN[2]]) cylinder(d1 = LEAD_IN[0], d2 = LEAD_IN[1] + 2 * epsilon, h = TOP - LEAD_IN[2] + epsilon, $fn = 96);
     }
     if (s > SEAT)   // the deeper pocket: the motor's square, up to the raised seat
-        translate([0, 0, SEAT - epsilon]) linear_extrude(s - SEAT + epsilon) square(2 * LUG_FLAT, center = true);
+        translate([0, 0, SEAT - epsilon]) linear_extrude(s - SEAT + epsilon) square(2 * (LUG_FLAT + c), center = true);
 }
 
 module ex_gear_motor_end_cap(cfg = config, raise = seat_raise) {
     s = end_cap_seat(cfg, raise);
     assert(s + NUT[1] < LEAD_IN[2], "nut traps would reach the lead-ins");
-    difference() { body(s); cuts(s); }
+    difference() { body(s, press(cfg)); cuts(s, cfg); }
 }
 
 ex_gear_motor_end_cap();

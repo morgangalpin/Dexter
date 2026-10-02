@@ -14,6 +14,12 @@
 // inner 2 mm of the rim, and re-drills the access holes through the new rim at
 // ACCESS_D, a shade over the reference's Ø3 so the new bore contains the old
 // one rather than running along it.
+//
+// FITS (../print_fit.scad), revised only: the hub's Ø8 bore on the stainless
+// rod opens by the press clearance; its set-screw holes, and its nut slots,
+// which hold an M3 nut (5.5 x 2.4) line-to-line in a 5.5 x 2.5 section, open
+// by the slip clearance. They exist only in the mesh, so external_pulley.scad's
+// hub_fit() opens them over HUB, the hub's radius and z span.
 
 include <external_pulley.scad>
 
@@ -25,12 +31,13 @@ ACCESS_Z   = 26.5;
 ACCESS_ANG = [60, 180, 300];
 ACCESS_D   = 3.1;
 ACCESS_R   = [23.0, EXT_TIP_R + 2.0];   // radial span the drill runs over
+HUB        = [10.0, 23.5, 32.0, 4.0];   // the hub: radius, the web's z span, the rod bore's radius
 
 module external_outer_pulley() {
     if (config == "previous")
         external_pulley("430-001_ExternalOuterPulley.stl", R_CUT, RIM_LOWER, RIM_UPPER);
     else difference() {
-        external_pulley("430-001_ExternalOuterPulley.stl", R_CUT, RIM_LOWER, RIM_UPPER);
+        external_pulley("430-001_ExternalOuterPulley.stl", R_CUT, RIM_LOWER, RIM_UPPER, HUB);
         for (a = ACCESS_ANG)
             rotate([0, 0, a]) translate([ACCESS_R[0], 0, ACCESS_Z]) rotate([0, 90, 0])
                 cylinder(d = ACCESS_D, h = ACCESS_R[1] - ACCESS_R[0], $fn = 48);

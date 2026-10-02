@@ -239,8 +239,10 @@ end-effector wiring bundle passes through the differential's hollow bore.
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
   `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
   `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
-  parameter sets are selectable: `config="previous"` reproduces the previous version's built differential;
-  `config="revised"` meets the [interface below](#differential-interface). Physical build validation
+  parameter sets are selectable: `config="revised"` meets the [interface below](#differential-interface)
+  and is the default, the configuration the model set is worked on and printed from;
+  `config="previous"` reproduces the previous version's built differential, is selected with `-D`, and
+  is what the reference gates measure. Physical build validation
   (binding, wiring survival, code-disk reads) remains in
   [DC-9](009-Design-Completion.md#performance-characterization).
 

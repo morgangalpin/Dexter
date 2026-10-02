@@ -2,25 +2,32 @@
 // parametric differential model set (DC-2, specs/009-Design-Completion.md).
 //
 // Every part file includes this file. Two parameter sets are selectable:
-//   config = "previous" — faithful recreation of the previous version's
-//                         differential; renders match the reference STLs.
 //   config = "revised"  — the DC-2 authored configuration meeting the
 //                         interface in specs/004 § Differential interface: it
 //                         fits the HDI-940 cover envelope and drills the Split
-//                         Gear's brad holes on one axis. No configuration here
-//                         reaches the firmware file's L4 = 59.50 mm, and none
-//                         is meant to: L4 is specified at 39.50 mm in
-//                         specs/003 § Link lengths, and no part here is driven
-//                         to either figure.
+//                         Gear's brad holes on one axis.
+//   config = "previous" — faithful recreation of the previous version's
+//                         differential; renders match the reference STLs.
+// No configuration here reaches the firmware file's L4 = 59.50 mm, and none is
+// meant to: L4 is specified at 39.50 mm in specs/003 § Link lengths, and no
+// part here is driven to either figure.
+//
+// "revised" is the default, and is the setting to keep: it is the model set
+// that is worked on and printed (specs/004 § Wrist and differential), so a
+// file opened or rendered without a -D sees the new models. "previous" is
+// selected with -D config="previous" when the reference meshes are wanted;
+// render-all.rs names the configuration on every render, so its gates do not
+// depend on this default.
 //
 // Dimensions are stated once here; part files and specs reference them.
 
 include <BOSL2/std.scad>
 include <../gt2_pulley.scad>
+include <../print_fit.scad>
 
 /* [Configuration] */
-// Parameter set: previous (matches reference STLs) or revised (004 interface)
-config = "previous"; // [previous, revised]
+// Parameter set: revised (004 interface, the default) or previous (matches reference STLs)
+config = "revised"; // [revised, previous]
 
 /* [Hidden] */
 $fn = 128;
@@ -47,6 +54,16 @@ epsilon = 0.01;
 // harness gates on can see it.
 DRAW_JOINT = 0.001;
 
+// The print-fit clearances every part draws, per side (../print_fit.scad):
+// zero in "previous", which is the reference meshes, and the classes'
+// values in "revised". PRESS is for a bought mate (bearings, the CF rod,
+// tube and strakes), SLIP for a printed mate and fastener clearances, and
+// RUN for a gap between parts that turn past each other without touching.
+// Each part's header says which of its features take which.
+SLIP  = fit_clearances(config)[0];
+PRESS = fit_clearances(config)[1];
+RUN   = fit_clearances(config)[2];
+
 // ---------------------------------------------------------------------------
 // Off-the-shelf interfaces (007.1 parts catalog: [ID, OD, width] in mm).
 // Parts reference these rather than restating a diameter, so re-specifying a
@@ -61,6 +78,8 @@ BRG_MR128 = [8, 12, 3.5];   // #620-002, 4 seats: shaft ends, and one per Split
 BRG_MR85  = [5, 8, 2.5];    // #620-001, into the Diff Gear Axle's back bore
 THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 
+L3_TUBE_ID  = 20.07;        // C-505 L3 tube's inside dimension, over Body A's
+                            //   20 x 20 arm spigot
 CF_ROD_D    = 8;            // #720-006 CF rod OD
 CF_ROD_ID   = 6;            // #720-006 CF rod bore; the tool conductors' path
 CF_ROD_LEN  = 96;           // reference: cut length, set by 008.6 not by geometry

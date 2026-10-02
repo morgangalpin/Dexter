@@ -58,12 +58,13 @@ H            = 22.0;    // overall height (J4 axis along Z)
 
 // Bearing ladder, bottom up: [diameter, z_low, z_high]. Measured on the
 // reference's own sections, not taken from the bearing catalogue, so a seat
-// that was cut oversize stays oversize.
+// that was cut oversize stays oversize. In "revised" the two seats take the
+// PRESS clearance (diff_params.scad).
 LADDER = [
-    [BRG_6703[1], 0.0,  5.0],    // Ø23 6703 seat
+    [fit_bore(BRG_6703[1], PRESS), 0.0,  5.0],    // Ø23 6703 seat
     [20.0,        5.0,  6.0],    // Ø20 waist, into the open middle
     [26.0,       16.0, 17.0],    // Ø26 spacer shoulder
-    [BRG_6705[1], 17.0, H],      // Ø32 6705 seat
+    [fit_bore(BRG_6705[1], PRESS), 17.0, H],      // Ø32 6705 seat
 ];
 
 HUB_D        = 40.0;            // plate hub diameter, z 0..6 and 16..20
@@ -91,7 +92,12 @@ POST         = [8.0, RELIEF_R, RELIEF_R + 4.0];
 // overall width, "revised" trims the arm to fit the HDI-940 cover envelope.
 ARM_TIP      = -(BODY_A_LEN - TOP_D / 2);
 ARM_STEP_X   = -36.0;           // where the outer section meets the plates
-ARM_FAR      = [20.0, 20.0, 4.0];  // [width y, height z, corner radius]
+// [width y, height z, corner radius]. The section is the spigot the L3 tube
+// is bonded over: measured 20 x 20 against the tube's 20.07, and in
+// "revised" the tube's bore less the PRESS clearance per side, which leaves
+// the adhesive its gap.
+ARM_FAR      = config == "previous" ? [20.0, 20.0, 4.0]
+             : [fit_pin(L3_TUBE_ID, PRESS), fit_pin(L3_TUBE_ID, PRESS), 4.0 - PRESS];
 ARM_FAR_Z    = 11.0;            // centre of the rounded section
 
 // Belt slot. The waist is the slot proper; over the boxy arm (x from the tip
@@ -111,7 +117,9 @@ SCREW_FLAT   = 1.800;             // clearance holes are D-shaped: flat this far
 SCREW_TAP    = 3.194;             // Ø above SCREW_CLEAR[1], round and coaxial
 PIN_POS      = [[-32.621, 4.0], [-32.621, -4.0]];
 PIN          = [3.99, 18.652];    // Ø, floor z — 3.348 deep, not the 2.6 once
-                                  // authored, and not the round 3.0 it looks like
+                                  // authored, and not the round 3.0 it looks like.
+                                  // No assembly step names what they take, so
+                                  // they carry no print-fit clearance
 
 // Code-disk end-stop pockets. Not round holes: each is an annular sector
 // closed by two flat end faces, described in pocket_2d().
@@ -169,10 +177,12 @@ module arm_top_2d() {
 // same trap for exactly collinear vertices).
 module arm_mid_2d() {
     a0 = atan2(-11.0, -sqrt(RELIEF_R^2 - 11.0^2)) + 360;   // flank meets relief
+    // Over the spigot, from the tip to ARM_STEP_X, the sides are the spigot's.
+    w = ARM_FAR[0] / 2;
     polygon(concat(
-        [[ARM_TIP, -10.0], [ARM_STEP_X, -10.0], [ARM_STEP_X, -11.0]],
+        [[ARM_TIP, -w], [ARM_STEP_X, -w], [ARM_STEP_X, -11.0]],
         arc_pts(RELIEF_R, a0, 360 - a0),
-        [[ARM_STEP_X, 11.0], [ARM_STEP_X, 10.0], [ARM_TIP, 10.0]]
+        [[ARM_STEP_X, 11.0], [ARM_STEP_X, w], [ARM_TIP, w]]
     ));
 }
 

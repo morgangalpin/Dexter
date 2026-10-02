@@ -14,9 +14,19 @@
 //! ```
 
 use anyhow::Result;
-use render_check::{check_seat, dist_gate, Ctx, DistGate, Tally};
+use render_check::{check_fits, check_seat, dist_gate, Ctx, DistGate, Fit, FitProbe, Tally};
 
 const REF_DIR: &str = "../Reference/meshes/200-ArmBody";
+
+/// The revised #200-002's own print fits: its Ø65 body in the Arm Body's Ø65
+/// bore, probed at 45 deg, clear of the flange's ears, and the +X ear slot on
+/// a Stator Balancer's 3.9 x 9.9 shank, centred at r 35.516. The seat's fits
+/// are check_seat's.
+const HOLDER_FITS: [FitProbe; 3] = [
+    FitProbe { label: "body in the Arm Body", at: [22.9810, 22.9810, 8.0], toward: [0.7071, 0.7071, 0.0], fit: Fit::Slip },
+    FitProbe { label: "ear slot's outer face", at: [37.466, 0.0, 1.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
+    FitProbe { label: "ear slot's side", at: [35.516, 4.95, 1.0], toward: [0.0, -1.0, 0.0], fit: Fit::Slip },
+];
 
 const DIST_GATES: [DistGate; 1] = [DistGate {
     stem: "200-002",
@@ -30,7 +40,8 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
         dist_gate(gate, REF_DIR, ctx, tally)?;
     }
     // The Pivot Stator Holder's recess opens toward -z.
-    check_seat("200-002_PivotStatorHolder.scad", "200-002", -1.0, ctx, tally)
+    check_seat("200-002_PivotStatorHolder.scad", "200-002", -1.0, ctx, tally)?;
+    check_fits("out/revised/200-002.stl", "200-002 (revised)", &HOLDER_FITS, ctx, tally)
 }
 
 fn main() -> Result<()> {

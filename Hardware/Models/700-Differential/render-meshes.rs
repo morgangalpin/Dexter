@@ -57,7 +57,9 @@
 //! loosely as it is.
 //!
 //! Both sets are build output and neither is tracked. Run this after editing
-//! any part, or set `geometry = "scad"` in the assembly and skip it.
+//! any part, or set `geometry = "scad"` in the assembly and skip it. The one
+//! argument is the configuration, `revised` when omitted, as in
+//! `diff_params.scad`; `./render-meshes.rs previous` builds the reference set.
 //!
 //! ```cargo
 //! [dependencies]
@@ -236,7 +238,7 @@ fn main() -> Result<()> {
     let dir = script_dir()?;
     let openscad = tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", &dir);
     let scadmesh = tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", &dir);
-    let config = std::env::args().nth(1).unwrap_or_else(|| "previous".into());
+    let config = std::env::args().nth(1).unwrap_or_else(|| "revised".into());
     std::fs::create_dir_all(dir.join(OUT_DIR))?;
 
     let parts = parts_for(&config);

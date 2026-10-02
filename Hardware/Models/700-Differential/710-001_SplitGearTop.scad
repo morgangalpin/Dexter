@@ -82,13 +82,16 @@ function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
 // a brad hole sits there, so the cage is severed at that angle between
 // z 11.500 and 12.999; the two loops are rejoined along r = 14.000 and
 // r = 17.500, which is what the sections either side of the gap measure.
+//
+// The two bearing seats take the PRESS clearance (diff_params.scad) in
+// "revised"; the rest of the profile is as measured.
 BODY_PROFILE = [
-    [ 5.994, -1.000],   // Ø12 MR128 seat, from the base
-    [ 6.000,  3.000],
+    [ 5.994 + PRESS, -1.000],   // Ø12 MR128 seat, from the base
+    [ 6.000 + PRESS,  3.000],
     [ 4.241,  3.000],   // step in to the Ø8.5 through-bore
     [ 4.241,  4.000],
-    [11.500,  4.000],   // step out to the Ø23 6703 seat
-    [11.490,  8.750],
+    [11.500 + PRESS,  4.000],   // step out to the Ø23 6703 seat
+    [11.490 + PRESS,  8.750],
     [11.942,  8.750],   // chamfer up into the Ø28 core cavity
     [11.977,  8.782],
     [12.100,  8.866],
@@ -158,9 +161,18 @@ WINDOW_Z   = [11.500, 14.500];
 BRAD_HOLE_D = 1.497;
 BRAD_ANG    = [0, 90, 180, 270];
 
-// #710-005 CF strakes, 5.6 x 2.5 mm in section, slotted from the base.
-STRAKE    = [5.6, 2.5];
-STRAKE_R  = [13.000, 15.500];   // measured inner and outer faces
+// #710-005 CF strakes, slotted from the base. The reference's slots are
+// 5.6 x 2.5 on inner and outer faces at r 13.000 and 15.500. The strake is
+// C-502's 5.588 x 2.337 strip, so in "revised" each slot is the strip's
+// section plus the PRESS clearance per side, about the same centre, which
+// leaves the epoxy its gap. The reference's 2.5 already clears the strip's
+// 2.337 by more than that, so it keeps its 2.5.
+STRIP     = [5.588, 2.337];
+SLOT_REF  = [5.6, 2.5];
+STRAKE    = config == "previous" ? SLOT_REF
+          : [for (i = [0, 1]) max(SLOT_REF[i], fit_bore(STRIP[i], PRESS))];
+STRAKE_RC = 14.250;             // the slot's centre radius
+STRAKE_R  = [STRAKE_RC - STRAKE[1] / 2, STRAKE_RC + STRAKE[1] / 2];   // inner and outer faces
 STRAKE_ANG = [90, 210, 330];
 STRAKE_TOP = 8.000;
 

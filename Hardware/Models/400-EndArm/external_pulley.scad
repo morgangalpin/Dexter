@@ -14,6 +14,7 @@
 // did over the 90T one.
 
 include <../gt2_pulley.scad>
+include <../print_fit.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference mesh) or revised (108T, DC-12)
@@ -56,16 +57,42 @@ module external_rim(r_in, lower, upper) {
         }
 }
 
+// A hub's own fits exist only in the mesh, so its print-fit clearance is cut
+// by growing the mesh's voids: inside `hub` = [r, z0, z1] and outside r_in,
+// every void (bore, slots, holes) is swept by an octagonal prism whose flats
+// stand c off its axis, which moves each wall back by c, and by at most 1.08c
+// where a corner faces it. The hub's end faces lie outside the region and
+// stay where they are.
+module hub_fit(mesh, hub, c, r_in = 0)
+    minkowski() {
+        difference() {
+            translate([0, 0, hub[1] + epsilon]) cylinder(r = hub[0], h = hub[2] - hub[1] - 2 * epsilon, $fn = 64);
+            if (r_in > 0) cylinder(r = r_in, h = 200, center = true, $fn = 64);
+            import(str(REF_DIR, mesh), convexity = 8);
+        }
+        cylinder(r = c / cos(22.5), h = 2 * c, center = true, $fn = 8);
+    }
+
 // One External pulley: the reference as-is, or its inside kept to r_cut and
-// the 108T rim added outside.
-module external_pulley(mesh, r_cut, lower, upper) {
+// the 108T rim added outside. `hub`, when given, is [r, z0, z1, rod_r]: the
+// region hub_fit() opens, and the radius of the bore the rod runs in. The
+// whole region opens by the press clearance, for the rod; past rod_r + 0.5,
+// where only the set-screw holes and nut slots are, it opens again by the
+// slip clearance, for the fasteners.
+module external_pulley(mesh, r_cut, lower, upper, hub = undef) {
     if (config == "previous")
         import(str(REF_DIR, mesh), convexity = 8);
-    else union() {
-        intersection() {
-            import(str(REF_DIR, mesh), convexity = 8);
-            cylinder(r = r_cut, h = 200, center = true);
+    else difference() {
+        union() {
+            intersection() {
+                import(str(REF_DIR, mesh), convexity = 8);
+                cylinder(r = r_cut, h = 200, center = true);
+            }
+            external_rim(r_cut - RIM_OVERLAP, lower, upper);
         }
-        external_rim(r_cut - RIM_OVERLAP, lower, upper);
+        if (hub != undef) {
+            hub_fit(mesh, hub, fit_clearances(config)[1]);
+            hub_fit(mesh, hub, fit_clearances(config)[0], hub[3] + 0.5);
+        }
     }
 }

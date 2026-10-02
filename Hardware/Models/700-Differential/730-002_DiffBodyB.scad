@@ -81,20 +81,15 @@
 // candidate side 0.414 -> 0.397 and exposed the +X one, and cutting that took
 // it 0.397 -> 0.377, where the chimney fillets take over. See clip_round()
 // below for the geometry and for why each is a cylinder along y rather than a
-// revolve. Two things this cost, worth not relearning:
-//   - The -X corner was first read as a 45 degree chamfer of about 0.6 mm
-//     legs, from probing the reference's material boundary on a 0.05 mm grid.
-//     It is an R1 round. A probe grid coarser than the feature will report a
-//     chord as a face; take the section's own vertices instead, which sat on
-//     the arc to four decimals and named it outright.
-//   - Neither cut touches the 0.276 mm interference diff_assembly.scad
-//     records between this part's -X end flank and the axle bevel's toe cone,
-//     though the two look adjacent. The flank is the 45 degree cone at
-//     r 13.793..15.000 about the J4 axis; the corner is where the z = 34 clip
-//     truncates that same end at r ~ 13.0, a radius the flank never reaches.
-//     Measured, not assumed: the flank reads r = 13.7931 at x = 8.2929 both
-//     before and after the cuts, identical to four decimals. The stack-up
-//     stands as recorded and needs its own answer.
+// revolve. The -X corner was first read as a 45 degree chamfer of about 0.6 mm
+// legs, from probing the reference's material boundary on a 0.05 mm grid. It
+// is an R1 round. A probe grid coarser than the feature will report a chord as
+// a face; take the section's own vertices instead, which sat on the arc to
+// four decimals and named it outright.
+//
+// This part's overlaps with the three bevel crowns' toes are not residuals:
+// the reference carries them, and "revised" cuts them away. See TOE CLEARANCE
+// below.
 //
 // The encoder track used to be listed here as a further, undiagnosed residual
 // — the worst reference point at x = 46.875, r = 25.000 about the J4 axis.
@@ -123,7 +118,8 @@
 // House style is followed except for edge breaks: no chamfer or roundover is
 // added for printability, because every edge here has to match a measurement.
 
-include <diff_params.scad>
+include <diff_bevel.scad>          // and, through it, diff_params.scad
+use <720-001_DiffGearShaft.scad>
 
 /* [Hidden] */
 // The two axes, from diff_params.scad -- the assembly places this part by
@@ -242,15 +238,23 @@ COLLAR = [
 // lands, the Ø22 bevel relief between them, and the conical inner wall. The
 // profile doubles back at x 32.7..34.0 — that is a real annular groove
 // between the seat's end wall and the conical wall, not a measurement error.
+//
+// In "revised" both seats take the PRESS clearance (diff_params.scad): each
+// seat's mouth round shrinks by it, so the round still meets the wider seat
+// tangentially and leaves no lip where the bearing enters. The -X seat's step
+// also moves FRONT_DROP deeper, with the shaft land's start behind it: the
+// Diff Gear Shaft's front journal is that much shorter (720-001's
+// front_drop()), and its 6703 keeps its place on the journal's end.
+FRONT_DROP = front_drop();
 BORE = concat(
     [[ 0.000,   7.000],
      [12.500,   7.000]],
-    arcpts(12.500, 9.000, 1.000, 270, 180, 12),   // R1 off the -X end face
-    [[11.500,  13.800],   // Ø23.000 6703 seat
-     [10.500,  13.800],
-     [10.500,  14.000],
-     [ 9.750,  14.000]],
-    arcpts(9.750, 15.000, 1.000, 270, 180, 12),   // R1 into the shaft land
+    arcpts(12.500, 9.000, 1.000 - PRESS, 270, 180, 12),   // R1 off the -X end face
+    [[11.500 + PRESS,  13.800 + FRONT_DROP],   // Ø23.000 6703 seat
+     [10.500,  13.800 + FRONT_DROP],
+     [10.500,  14.000 + FRONT_DROP],
+     [ 9.750,  14.000 + FRONT_DROP]],
+    arcpts(9.750, 15.000 + FRONT_DROP, 1.000, 270, 180, 12),   // R1 into the shaft land
     [[ 8.750,  GROOVE_X[0]],                      // Ø17.500 shaft land
      [GROOVE_R, GROOVE_X[0]],                     // Ø22.000 bevel relief
      [GROOVE_R, GROOVE_X[1]],
@@ -259,9 +263,10 @@ BORE = concat(
     arcpts(9.750, 27.000, 1.000, 180, 90, 12),    // R1 out of the shaft land
     [[10.500,  28.000],
      [10.500,  28.200],
-     [11.500,  28.200],   // Ø23.000 6703 seat
-     [11.500,  33.000]],
-    arcpts(12.500, 33.000, 1.000, 180, 90, 12),   // R1 at the seat's mouth
+     [11.500 + PRESS,  28.200],   // Ø23.000 6703 seat
+     [11.500 + PRESS,  33.000]],
+    arcpts(12.500, 33.000, 1.000 - PRESS, 180, 90, 12),   // R1 at the seat's mouth
+    PRESS > 0 ? [[12.500, CYL_X]] : [],
     [[13.070,  CYL_X]],                           // the seat's end wall
     arcpts(13.070, 33.000, 1.000, 0, 45, 8),      // R1 -> (13.777, 33.707)
     [[14.784,  CONE_X],   // 45-degree groove flank
@@ -275,6 +280,11 @@ BORE = concat(
 // Column, revolved about Z. Every point on this meridian fits its surface to
 // better than 0.004 mm, so the ladder below is measured, not inferred from
 // the bearing catalogue.
+//
+// In "revised" the Ø17 journal (a 6703's inner race) and the Ø8 tube (two
+// MR128 inner races and the thrust washers) take the PRESS clearance
+// (diff_params.scad). The journal steps in by it at the foot of its R2
+// fillet, and the tube's 45-degree chamfer follows the tube in.
 // ---------------------------------------------------------------------------
 COLUMN = concat(
     [[0.000, 29.750],
@@ -285,11 +295,12 @@ COLUMN = concat(
      [7.200, CLIP_Z],
      [10.500, CLIP_Z]],
     arcpts(10.500, 36.000, 2.000, 270, 180, 16),  // R2 into the Ø17 journal
-    [[8.500, 40.500]],
-    arcpts(7.000, 40.500, 1.500, 0, 90, 16),      // R1.5 off it
+    PRESS > 0 ? [[8.500 - PRESS, 36.000]] : [],
+    [[8.500 - PRESS, 40.500]],
+    arcpts(7.000 - PRESS, 40.500, 1.500, 0, 90, 16),      // R1.5 off it
     [[4.500, 42.000],                             // flat annular shoulder
-     [4.000, 42.500],                             // 45-degree chamfer, 0.5 leg
-     [4.000, 72.000],                             // Ø8.000 thrust tube
+     [4.000 - PRESS, 42.500 + PRESS],             // 45-degree chamfer, 0.5 leg
+     [4.000 - PRESS, 72.000],                     // Ø8.000 thrust tube
      [0.000, 72.000]]
 );
 
@@ -770,6 +781,54 @@ module rim_slots() {
 }
 
 // ---------------------------------------------------------------------------
+// TOE CLEARANCE. Three bevel crowns turn against this part, with all three
+// apexes on its axis crossing: the Diff Gear Axle's on the J4 axis toward -X,
+// the Diff Gear Shaft's on the J4 axis toward +X, and the Split Gear's on the
+// column. Each crown's toe faces one end of this body: the axle's 45-degree toe
+// cone faces the -X end flank, the shaft's flat toe faces the barrel's +X end
+// wall at CYL_X, and the Split Gear's toe cone faces the chimney cone. As
+// measured, all three overlap: the flank stands 0.276 mm and the chimney cone
+// 0.296 mm inside their toe cones, and the end wall stands 0.042 mm past the
+// shaft's toe plane, which lies at x = 33.958.
+//
+// In "revised" this part keeps the RUN clearance (diff_params.scad) off the
+// volume each crown's teeth sweep. That volume is the teeth's meridian revolved
+// about the crown's axis, so growing the meridian by RUN and revolving it puts
+// RUN of clearance normal to every surface the teeth pass through. The cutter
+// comes from the gears' own cones, BEVEL_ZONE and 720-001's crown_zone(), so
+// no number is restated here. Each zone is in diff_bevel.scad's gear frame,
+// with the teeth at negative z, and is turned so the teeth point away from the
+// crossing:
+//   - the axle: gear +z onto this part's +x, so its teeth fall toward -X;
+//   - the shaft: gear +z onto -x, so its teeth fall toward +X;
+//   - the Split Gear: gear +z onto -z, so its teeth stand up the column.
+// What it takes, all near the toes: the -X flank comes in to a cone RUN off
+// the axle's toe and meets the front seat's mouth round just inside the end
+// face; the +X end wall steps back to RUN short of the shaft's toe plane; and
+// the chimney cone's corners, with both ends of the z = 34 clip, come back to
+// RUN off the Split Gear's toe. "previous" is the reference, and keeps all
+// three overlaps.
+//
+// The offset's corner arcs are drawn at TOE_ARC_FN, not the file's 128. Each
+// arc segment then sags 0.0024 mm inside the true RUN arc, and the meridian
+// keeps about 40 points rather than 130. CGAL's cost is in the revolve's
+// facets: against 5 min without the cutters, they cost 13 min at 128 and
+// 8 min at 32, and the two results lie 0.002 mm apart (`dist`, both ways).
+TOE_ARC_FN = 32;
+
+module toe_zone(zone) {
+    rotate_extrude() offset(r = RUN, $fn = TOE_ARC_FN) polygon(zone);
+}
+
+module toe_clearance() {
+    translate([COL_XY[0], J4_YZ[0], J4_YZ[1]]) {
+        yrot(90)  toe_zone(BEVEL_ZONE);       // Diff Gear Axle
+        yrot(-90) toe_zone(crown_zone());     // Diff Gear Shaft
+        xrot(180) toe_zone(BEVEL_ZONE);       // Split Gear
+    }
+}
+
+// ---------------------------------------------------------------------------
 // The part.
 // ---------------------------------------------------------------------------
 
@@ -800,6 +859,7 @@ module diff_body_b() {
         wire_lead();
         clip_round(END_X,  1);
         clip_round(CYL_X, -1);
+        if (config != "previous") toe_clearance();
         // These two render() calls are not cosmetic, and between them they are
         // the whole reason this part is usable to look at. Preview normalises
         // the tree to disjunctive normal form, and both calls are differences

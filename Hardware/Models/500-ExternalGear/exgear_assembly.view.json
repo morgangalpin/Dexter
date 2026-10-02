@@ -9,23 +9,18 @@
       {"id": "end_cap", "name": "Motor End Cap", "pn": "#511-001", "color": "#d99a45"},
       {"id": "motor", "name": "NEMA 17 motor", "pn": "C-101", "color": "#50565c"},
       {"id": "attach", "name": "Flex Spline Attach", "pn": "#630-005", "color": "#e3b060"},
-      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"},
-      {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"}]},
-    {"name": "Input", "role": "motor speed", "parts": [
-      {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"}]},
+      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"}]},
+    {"name": "Strain-wave set", "role": "C-201, HanZhen XB1-AS-C-32(14)-52", "parts": [
+      {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"},
+      {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"},
+      {"id": "circular_spline", "name": "Circular spline", "pn": "C-201", "color": "#2a9d8f"}]},
     {"name": "Output", "role": "turns", "parts": [
-      {"id": "circular_spline", "name": "Circular spline", "pn": "C-201", "color": "#2a9d8f"},
       {"id": "stator", "name": "Stator Holder", "pn": "#511-002", "color": "#c65f4f"},
       {"id": "gear", "name": "External Gear", "pn": "#510-001", "color": "#4f86c6"}]},
     {"name": "Bearings", "role": "6810, 50 × 65 × 7", "parts": [
       {"id": "bearing_lower", "name": "Lower, on End Cap land", "pn": "6810", "color": "#dcdcdc"},
       {"id": "bearing_upper", "name": "Upper, on Attach land", "pn": "6810", "color": "#dcdcdc"},
-      {"id": "bearing_top", "name": "Top, in Mount Top", "pn": "6810", "color": "#f0c419"}]}
-  ],
-  "labels": [
-    {"at": [25, 0], "part": "bearing_top", "text": "Top 6810 on spline Ø50h6 · {top_6810_on_spline}"},
-    {"at": [25, 0], "part": "bearing_upper", "text": "Upper 6810 on Attach land · {upper_6810_above_motor} over the motor"},
-    {"at": [25, 0], "part": "bearing_lower", "text": "Lower 6810 on End Cap land"}
+      {"id": "bearing_top", "name": "Top, in Mount Top", "pn": "6810", "color": "#dcdcdc"}]}
   ],
   "presets": [
     {"label": "Top bearing", "at": [26, 0], "part": "bearing_top", "span": 28},
@@ -54,6 +49,7 @@
        "Wave Gen Coupler (#630-004); a tool sets its depth",
        "Angle and rotate motors in the Mount's front pockets",
        "The six M3 screws and nuts that hold the circular spline in the Stator Holder",
+       "The six M2 screws and nuts that clamp the flexspline hub between the Attach and the Cap",
        "Vendor parts are envelopes: motor from C-101, drive from the XB1-AS-C-32 drawing, bearings at catalogue size"]}
   ],
   "overlap": ["bearing_top", "circular_spline"]

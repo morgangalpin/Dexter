@@ -42,7 +42,20 @@
 // In the revised config the M3 x 12 screws of the seat stand
 // seat_screw_tip() - FLOOR = 1.0 proud of the back face, inside the Ø50
 // circle, where only the drive turns.
+//
+// FITS (../print_fit.scad), revised only:
+//
+//     all-thread holes, on the M3 rod      slip
+//     their nut traps, on the M3 nut       slip
+//     recess, on the spline's flange       press, the seat's pilot press
+//                                          and its nut pockets slip:
+//                                          c201_spline_seat.scad
+//
+// The strake slots already clear a 12.6 x 3.2 strake by 0.2 on each face, and
+// the Ø65 body stands 1.35 inside the slots' inner faces; both keep their
+// size.
 
+include <../print_fit.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 
 /* [Configuration] */
@@ -81,13 +94,17 @@ module body() {
     translate([0, 0, FLANGE[0]]) linear_extrude(FLANGE[1] - FLANGE[0]) flange_2d();
 }
 
-module common_cuts() {
+function slip(cfg) = fit_clearances(cfg)[0];
+function press(cfg) = fit_clearances(cfg)[1];
+
+module common_cuts(cfg) {
+    s = slip(cfg);
     translate([0, 0, -epsilon]) cylinder(d = BORE_D, h = FLOOR + 2 * epsilon);
-    translate([0, 0, FLOOR]) cylinder(d = RECESS_D, h = FLANGE[1] - FLOOR + epsilon);
+    translate([0, 0, FLOOR]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = FLANGE[1] - FLOOR + epsilon);
     for (a = [30 : 60 : 330]) rotate(a) translate([THREAD_R, 0, 0]) {
-        translate([0, 0, FLANGE[0] - epsilon]) cylinder(d = THREAD_D, h = FLANGE[1] - FLANGE[0] + 2 * epsilon, $fn = 48);
+        translate([0, 0, FLANGE[0] - epsilon]) cylinder(d = fit_bore(THREAD_D, s), h = FLANGE[1] - FLANGE[0] + 2 * epsilon, $fn = 48);
         translate([0, 0, TRAP[1]]) linear_extrude(FLANGE[1] - TRAP[1] + epsilon)
-            rotate(30) circle(d = TRAP[0] / cos(30), $fn = 6);
+            rotate(30) circle(d = fit_bore(TRAP[0], s) / cos(30), $fn = 6);
     }
 }
 
@@ -104,9 +121,9 @@ module peg_and_screw_cuts() {
 module base_stator_holder(cfg = config) {
     if (cfg == "previous")
         translate(REF_AXIS)
-            difference() { union() { difference() { body(); common_cuts(); } pegs(); } peg_and_screw_cuts(); }
+            difference() { union() { difference() { body(); common_cuts(cfg); } pegs(); } peg_and_screw_cuts(); }
     else
-        difference() { body(); common_cuts(); translate([0, 0, FLOOR]) spline_seat_cuts(FLOOR); }
+        difference() { body(); common_cuts(cfg); translate([0, 0, FLOOR]) spline_seat_cuts(FLOOR, press(cfg), slip(cfg)); }
 }
 
 base_stator_holder();

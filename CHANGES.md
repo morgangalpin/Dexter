@@ -235,7 +235,8 @@ anything version 3 does not independently specify
   holds it is measured and located: the chimney base's four unfilleted junctions, now the worst point in
   both directions. Two unmodelled R1 edge breaks on the z = 34 clip have been cut along the way, taking
   the candidate side 0.414 → 0.397 → 0.377 mm; neither touches the 0.276 mm interference with the axle
-  bevel's toe cone, which is on a different surface and still needs its own answer. Whether the built
+  bevel's toe cone, which is on a different surface and is answered under
+  [CR-3A19](#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats). Whether the built
   shaft should carry the Ø0.2 wall holes at all is open under DC-11(k).
 
 ### CR-3A8: Wrist tooth-count decomposition; design status consolidated into 009
@@ -858,6 +859,7 @@ anything version 3 does not independently specify
 
 - **Affects:** [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
   [004 §Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+  [004 §Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5),
   [001 §5](specs/001-Overview.md#5-design-lineage), REQ-STR-4 in
   [002](specs/002-Requirements.md),
   [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
@@ -879,11 +881,17 @@ anything version 3 does not independently specify
   [009.2](specs/009.2-Test-Build-Manifest.md), [010](specs/010-Versioning.md),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/500-ExternalGear/exgear_assembly.scad` (new),
   `exgear_assembly.view.json` (new), `500-ExternalGear/511-001_ExGearMotorEndCap.scad` (new),
-  `600-StrainWave/630-005_FlexSplineAttach.scad` (new), `600-StrainWave/c201_spline_seat.scad` (new),
+  `600-StrainWave/630-005_FlexSplineAttach.scad` (new), `600-StrainWave/630-006_FlexSplineCap.scad` (new),
+  `600-StrainWave/c201_spline_seat.scad` (new),
   `100-Base/110-002_BaseStatorHolder.scad` (new), `200-ArmBody/200-002_PivotStatorHolder.scad` (new),
   `500-ExternalGear/511-002_ExGearStatorHolder.scad` (new), the `render-all.rs` of `100-Base`,
   `200-ArmBody`, `500-ExternalGear` and `600-StrainWave` (new), the shared `render-check/` crate (new),
-  `700-Differential/render-all.rs`, the five meshes moved to `Reference/meshes/`,
+  `700-Differential/render-all.rs`, `700-Differential/render-meshes.rs`,
+  `700-Differential/diff_assembly.scad`, `700-Differential/diff_bevel.scad`,
+  `700-Differential/diff_assembly.view.json` (new), the six meshes moved to `Reference/meshes/`,
+  `500-ExternalGear/510-001_ExternalGear.stl` (pinched), `Hardware/Models/print_fit.scad` (new),
+  `950-Tooling/fit_coupon.scad` (new), every part file under `700-Differential/` and `400-EndArm/`'s
+  External pulleys, [007.2 § Print fits](specs/007.2-Printed-Parts.md#print-fits) (new),
   `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`, `Hardware/Models/MANIFEST.csv`.
 - **Amends:** [CR-3A2](#cr-3a2-bolted-base-and-doubled-base-clamp) (the doubled clamp; the bolted base
   stands),
@@ -901,14 +909,18 @@ anything version 3 does not independently specify
   totalled 8. [008.7](specs/008-Assembly.md#0087-end-arm-hub) step 1 inserted a 6810 into each Axis
   Intersection half, against [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub)'s two 6807s. The
   [007.9](specs/007-Bill-of-Materials.md#0079-external-gear-mount--differential-motors) 6810 was consumed
-  by no step in 008. #511-001 and #630-005 were the HD set's meshes, and so were the three Stator Holders
-  (#110-002, #200-002, #511-002). C-201's table gave the circular spline 6 × Ø4.5 holes on Ø44 and the
+  by no step in 008. #511-001, #630-005 and #630-006 were the HD set's meshes, and so were the three
+  Stator Holders (#110-002, #200-002, #511-002). C-201's table gave the circular spline 6 × Ø4.5 holes on Ø44 and the
   Attach 6 × Ø3.5, and [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) was closed on the
   holders and the Attach matching the drawing. 008.4 steps 10–11 and 008.5 steps 4–5 screwed 4 M2 × 16 mm
   bolts into each holder and fixed the spline with 2 M3 × 12 mm bolts. J1's and J2's far 6810 was pushed off
   its shoulder on assembly and tapped back ([008.4](specs/008-Assembly.md#0084-main-pivot) step 9c,
   [008.5](specs/008-Assembly.md#0085-arm-body) step 2), and J3's was pressed "~38 mm" with the same
-  instruction ([008.8](specs/008-Assembly.md#0088-external-gear) step 5).
+  instruction ([008.8](specs/008-Assembly.md#0088-external-gear) step 5). `diff_params.scad` defaulted to
+  `config="previous"`, so a differential file opened or rendered without `-D` showed the reference parts.
+  The Diff Gear Axle's Ø9 boss ran 1.84 mm into the Diff Gear Shaft's front MR128, and its rod bore was a
+  slip fit that left 0.35 mm of wall. Diff Body B overlapped the toes of the three bevel crowns that turn in
+  it, and `diff_assembly.scad` recorded those overlaps rather than designing them out.
 - **Now:**
   - **The Base Long bottoms on the Base Mount Bottom's top face, at 98.000 mm.** Sectioning the CAD bodies
     shows the two parts sharing material over r 33–36 mm at that plane. The clamp seats on a shoulder at
@@ -973,7 +985,7 @@ anything version 3 does not independently specify
     `config="previous"` reproduces its mesh within 0.026 mm. `config="revised"` cuts one shared seat,
     `c201_spline_seat.scad`: the flange on the floor, the step in a Ø38 pilot 2.2 mm deep, and 6 × M3 ×
     12 mm screws into nuts in hex pockets opened from the back face. The Pivot holder's bore behind the
-    seat closes from Ø38 to Ø36 so each pocket keeps a 1.25 mm wall.
+    seat closes from Ø38 to Ø36 so each pocket keeps a wall to it.
   - **The Ex Gear Stator Holder seats on its keys' end chamfers.** Its eight 4.0 mm keys fill the gear's
     eight slots line to line. When their 45° end chamfers bottom in the slots', the holder's z 4.000 lies
     on the gear's end face, 3 mm higher than the first placement put it, where its cone and keys cut the
@@ -981,13 +993,58 @@ anything version 3 does not independently specify
     the gear, which keeps the drive where J3's two revised prints put it: the holder's end stands 2.5 mm
     over the Attach's hub face, and its rim 0.987 mm under the Mount Top's 6810. Every other echoed value
     is unchanged.
-  - **The Flex Spline Attach's hub does not match the flexspline's.** It carries 6 × Ø2.0 on Ø12 in a
-    Ø19.0 recess, against the drawing's Ø22.5 hub with 6 × Ø4.5 on Ø17. Its Ø44 circle is the NEMA 17
-    31 mm square. DC-1 reopens on that interface.
+  - **The Flex Spline Attach and Cap clamp C-201's flexspline hub.** Per the drawing, the hub is Ø22.5,
+    2.4 mm thick, with **6 × Ø4.5 on Ø17** about a **Ø11H7 bore**. The meshes carry 6 × Ø2.0 on Ø12 with
+    Ø3.3 nubs, about a Ø19.0 recess in the Attach and a Ø19 face on the Cap, a layout for a different hub.
+    The Attach's Ø44 circle is the NEMA 17 31 mm square. The Cap is now OpenSCAD source too, and
+    `config="previous"` reproduces its mesh within 0.005 mm. In `config="revised"` the Attach's hub face is
+    flat, with a spigot in the bore and six nubs in the holes. The Cap bears on the hub's inner face with a
+    Ø22 land and holds the nuts in traps 2.0 mm deep. The same six M2 × 12 mm screws pass through the
+    nubs, now with 0.75 mm to spare past the nut. Their heads sit under the Attach, so the hub is clamped
+    before the Attach goes on the motor.
+  - **Every printed part's `config="revised"` draws its fits with print clearance.** The parts had been
+    drawn line-to-line against what they mate with, which a printed part, slightly oversize, will not
+    go together on. One library, `print_fit.scad`, holds two clearances per side, and a fit's class
+    follows its mate:
+    - **press**, 0.05 mm, against a bought part the print is seated on, located by or bonded to: bearing
+      seats and journals, the motor lugs, the spline's recess and step, the hub's spigot and nubs, and
+      the slots, bores and spigots a strake, CF rod or CF tube is bonded to;
+    - **slip**, 0.15 mm, against another printed part, whatever the fit does (J2's body and the Stator
+      Balancers' slots, J3's core and keys, the Diff Keeper, the Diff Shaft Pulley's spline), and for
+      every fastener's clearance: screw holes, nut traps and pockets.
+
+    The same library holds a third clearance, **running**, 0.50 mm. It is not a fit: it is the gap
+    between two printed parts that turn past each other and must never touch.
+
+    A bought part is made to size, so a fit against it leaves room for one printed surface's error; two
+    printed parts each bring their own. A fit already drawn with at least its class's gap keeps it.
+    `config="previous"` draws none, so every dist gate is unchanged.
+    - The rules for which fits get none are in 007.2.
+    - The coupon is a model now, carrying each class.
+    - The slicer's dimensional compensation goes to zero, since the clearances carry the machine's fit.
   - **The section view is reusable.** `scadmesh view` (openscad-tools) writes a section viewer for any
     assembly that follows the Models README's viewable-assembly convention, from a sidecar that names the
     parts, labels and notes and takes every number from the assembly's echoes;
-    `exgear_assembly.view.json` is the first.
+    `exgear_assembly.view.json` is the first. `diff_assembly.view.json` is the second, and opens on the
+    Diff Gear Axle's boss on the front MR128. The page lists its labels beside its parts, so each one can
+    be hidden on its own or all together. The differential's view carries no labels.
+  - **Diff Body B runs clear of the three bevel crowns.** In `config="revised"` Body B keeps the running
+    clearance off the volume each crown's teeth sweep: the Diff Gear Axle's, the Diff Gear Shaft's and the
+    Split Gear's. That takes in its −X end flank, its +X end wall and its chimney cone's corners. The
+    cutter is each crown's tooth zone revolved about its axis, grown by the clearance, so it follows the
+    gears' own cones, and the gears keep their one shared crown.
+  - **The Diff Gear Axle's boss seats on the Diff Gear Shaft's front MR128.** The boss is the spacer that
+    stops the axle on that bearing's inner race (008.6 step 21's rod "until it stops"), holding the hub
+    off the shaft's end, which turns with the other input. In `config="revised"` the shaft's plain Ø17
+    front journal, between its two 6703s, is shorter by `front_drop()` (1.838 mm), and Diff Body B's
+    front 6703 seat is that much deeper, so the bearing's face is the boss's tip. Both bevels keep their
+    apexes on C, and the hub stands 2.5 mm off the shaft's end instead of 0.66. The boss's body grows to
+    Ø10.4; its tip keeps the measured Ø9 as a flat face, inside the MR128 inner ring's Ø9.05 land, and a
+    45° chamfer runs out to the body, clear of a shield or seal. With the press-fit Ø8.1 rod bore, its
+    wall is 1.15 mm, 0.45 across the tip face.
+  - **The differential defaults to `config="revised"`**, the configuration it is worked on and printed
+    from ([004](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5)). `config="previous"`
+    is selected with `-D`; `render-all.rs` names the configuration on every render, so no gate moves.
 - **Driver:** DC-13 could not be closed by a measurement whose outcome depended on how many clamps a
   builder fitted. A link length has to rest on positive stops that the parts define. A bearing row that no
   step consumes, or a step that consumes a bearing no row lists, is an order that arrives short or long at
@@ -1027,14 +1084,37 @@ anything version 3 does not independently specify
   `exgear_assembly.scad` places the revised holder from its own seat functions and draws the spline from
   the seat library, asserts that the holder clears the Attach and the Mount Top's 6810, and takes a
   `clash` pair. `500-ExternalGear/render-all.rs` checks the holder against its neighbours by
-  intersection, and against the gear by sections, because the gear mesh touches itself on one ring.
-  The Models README records that defect and its correction.
+  intersection, and against the gear by sections, because the keys fit the slots line to line. The gear
+  mesh touched itself on one ring, so CGAL refused it in any boolean; it is pinched in place, and the
+  Models README records the defect and the pairs that still fail inside CGAL. 008.3 steps 4–7 seat the hub on the
+  spigot and nubs, and clamp it with the Cap before mounting the Attach on the motor. 007.1's C-201 table
+  ties the hub, its bore and its holes to the Attach and the Cap. 007.2 and `PART-INDEX.md` point #630-006 at
+  its `.scad` file, and 007.2 prints it from `config="revised"`. The seat library also owns the hub's values
+  and the flexspline's envelope. `exgear_assembly.scad` draws the Cap from its source, land down on the hub,
+  and `500-ExternalGear/render-all.rs` checks the hub joint by intersection. Each part's header lists its
+  fits and classes. `render-check` reads the clearances from `print_fit.scad` and probes each listed fit in
+  every group's `render-all.rs`; J3's gear fit is checked at zero clearance and again at the slip
+  clearance. 007.2's print profile zeroes the slicer's compensation and specifies the coupon by its model,
+  and 007.1's C-502 entry, 008.6 step 11, 009's DC-11(d) row and 009.2's Stage 0 point to it rather than
+  state slot sizes. `diff_assembly.scad` takes the viewable shape, a `part` id per export, and echoes
+  the axle's boss wall, which `720-002_DiffGearAxle.scad` states as `boss_wall()`; 007.2 prints the
+  differential from the default; `render-meshes.rs` builds its cache in `revised` unless told otherwise.
+  `diff_assembly.scad` asserts that the boss's tip is the front MR128's face, and reads Body B's front
+  seat and the shaft's from 720-001's `front_drop()` and `front_seat_floor()`. 007.1's C-502 entry draws
+  `#710-001`'s slots at the press clearance; the coupon carries the strake slot and a Ø8 tube bore at
+  press, and keeps one slip bore for its printed peg. The External Outer Pulley's hub opens its rod bore
+  by press and its set-screw holes and nut slots by slip, and the Pivot Stator Holder's ear slots open
+  by slip over the Stator Balancers' shanks. 007.2 § Print fits adds the running row, and the coupon
+  does not carry it. `diff_bevel.scad` states the tooth zone as `BEVEL_ZONE`, and 720-001 states the
+  shaft's as `crown_zone()`. `diff_assembly.scad`'s `interference` takes any two parts as they sit, and
+  `700-Differential/render-all.rs` requires Body B against the axle, the shaft and both Split Gear halves
+  to render empty. The Models README points to those files for the figures. In openscad-tools, REQ-W-6
+  specifies the label toggles.
 - **Status:** `[Specified]` — [DC-13](specs/009-Design-Completion.md#base-height-and-l1) is closed. The
   built height is confirmed under
   [DC-9](specs/009-Design-Completion.md#performance-characterization)'s base checklist. J3's stack closes
   in `exgear_assembly.scad`, whose asserts hold it for the measured motor length; the fit is confirmed on
   the first built J3 by
-  [009.1 § 3.3](specs/009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack). The
-  circular spline's seat is `[Specified]` in all three holders.
-  [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) is `[Provisional]` on the Flex Spline
-  Attach's hub interface.
+  [009.1 § 3.3](specs/009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack). Both
+  halves of C-201 are seated: the circular spline in all three holders, and the flexspline hub between
+  the Attach and the Cap. [DC-1](specs/009-Design-Completion.md#strain-wave-component-set) stays closed.

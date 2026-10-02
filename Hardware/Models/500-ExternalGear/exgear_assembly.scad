@@ -23,7 +23,9 @@
 //      the axis, which is the motor body's half-width, so they are what grips
 //      the motor. Motor on the End Cap's seat, MOTOR_LEN long. The Flex Spline
 //      Attach on the motor face, its lugs down over the body the same way. The
-//      drive's flex spline hub on the Attach's hub face, and the manufacturer
+//      drive's flex spline hub on the Attach's hub face, over its spigot and
+//      six nubs, with the Flex Spline Cap (#630-006, revised) bearing on the
+//      hub from inside the cup, and the manufacturer
 //      drawing (XB1-AS-C-32) puts the circular spline's outer face 23.500 mm
 //      beyond that.
 //
@@ -68,7 +70,8 @@
 // slots the holders take in the Mount are unmeasured. The Wave Gen Coupler
 // (#630-004), whose depth is set by a tool, not by a face. The angle and
 // rotate motors, which bolt to the Mount's two front pockets. The six M3
-// screws and nuts that hold the spline in the Stator Holder.
+// screws and nuts that hold the spline in the Stator Holder, and the six M2
+// screws and nuts that clamp the flex spline hub.
 //
 // CLASH. Set clash to two names from PARTS and the file renders their
 // intersection instead; an empty top-level object means the pair is clear.
@@ -79,6 +82,7 @@
 use <511-001_ExGearMotorEndCap.scad>
 use <511-002_ExGearStatorHolder.scad>
 use <../600-StrainWave/630-005_FlexSplineAttach.scad>
+use <../600-StrainWave/630-006_FlexSplineCap.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 
 part    = "all";    // "all", or one name from PARTS for per-part export
@@ -159,8 +163,8 @@ module end_cap()   color("#e0a458") translate([0, 0, ENDCAP_Z]) rotate([180, 0, 
                      ex_gear_motor_end_cap("revised");
 module attach()    color("#e0a458") translate([0, 0, ATTACH_Z])
                      flex_spline_attach("revised", ATTACH_HUB_DROP);
-module fs_cap()    color("#e0a458") translate([0, 0, HUB_F + 2.4])
-                     import("../600-StrainWave/630-006_FlexSplineCap.stl");
+module fs_cap()    color("#e0a458") translate([0, 0, HUB_F + fs_hub()[1] + cap_face()]) rotate([180, 0, 0])
+                     flex_spline_cap("revised");
 module gear()      color("#4f86c6") multmatrix([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, GEAR_C]])
                      import("510-001_ExternalGear.stl");
 module stator()    color("#c65f4f") translate([0, 0, STATOR_Z]) rotate([180, 0, 0])
@@ -183,12 +187,7 @@ module motor() color("#5a5a5a") translate([0, 0, MOTOR_Z0]) {
   translate([0, 0, MOTOR_LEN]) cylinder(d = 5, h = 24);
 }
 
-module flexspline() color("#8c8c8c") translate([0, 0, HUB_F]) {
-  tube(22.5, 11, 2.4);                                 // hub
-  translate([0, 0, 2.4]) tube(35.5, 22.5, 0.6);        // diaphragm
-  translate([0, 0, 2.4]) tube(34.4, 33.9, DRIVE_SPAN - 8.4);
-  translate([0, 0, DRIVE_SPAN - 6]) tube(35.5, 33.9, 6);  // teeth band, inside the circular spline
-}
+module flexspline() color("#8c8c8c") translate([0, 0, HUB_F]) flexspline_envelope();
 
 module circular_spline() color("#6f6f6f") translate([0, 0, CS_FACE]) circular_spline_envelope();
 

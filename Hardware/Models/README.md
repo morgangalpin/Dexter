@@ -13,6 +13,11 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   a bounding box there: the differential is oriented by the L3 spigot Diff Body A carries and by the side
   its End Pulley faces, and where the measured cover bodies disagree with that the file reports the
   disagreement rather than moving the part into them.
+- **[print_fit.scad](print_fit.scad)** — the two print-fit clearances every part's `config="revised"`
+  draws its fits with, press and slip, and the running gap kept between parts that turn past each
+  other. Tune the two fits on
+  [`950-Tooling/fit_coupon.scad`](950-Tooling/fit_coupon.scad); the policy is
+  [007.2 § Print fits](../../specs/007.2-Printed-Parts.md#print-fits).
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
 - **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the
@@ -39,17 +44,17 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 
 | Directory | Parts | Files | What |
 |---|---|---|---|
-| [`100-Base/`](100-Base/) | 7 | 8 | Base clamp, mount, mounting plate, stator holder, code disc |
-| [`200-ArmBody/`](200-ArmBody/) | 9 | 8 | Arm body, stator holder and balancers, belt directors |
+| [`100-Base/`](100-Base/) | 7 | 9 | Base clamp, mount, mounting plate, stator holder, code disc; the Stator Holder is `.scad` |
+| [`200-ArmBody/`](200-ArmBody/) | 9 | 9 | Arm body, stator holder and balancers, belt directors; the Stator Holder is `.scad` |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
-| [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap is `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
-| [`600-StrainWave/`](600-StrainWave/) | 3 | 4 | Wave gen coupler, flex spline attach and cap; the Attach is `.scad` |
-| [`700-Differential/`](700-Differential/) | 10 | 16 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/` |
+| [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap and Stator Holder are `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
+| [`600-StrainWave/`](600-StrainWave/) | 3 | 5 | Wave gen coupler, flex spline attach and cap; the Attach and Cap are `.scad`, and `c201_spline_seat.scad` holds the drive's interface for them and the three Stator Holders |
+| [`700-Differential/`](700-Differential/) | 10 | 17 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set and has a section view |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
-| [`950-Tooling/`](950-Tooling/) | 2 | 11 | Solder jigs and glue-rig jig bodies |
-| [`Reference/`](#reference) | — | 222 | Not printed for a build. See below |
+| [`950-Tooling/`](950-Tooling/) | 2 | 12 | Solder jigs, glue-rig jig bodies, and the print-fit coupon |
+| [`Reference/`](#reference) | — | 226 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -72,7 +77,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 16 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 17 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -101,19 +106,21 @@ a second closed shell that shares no edge with the body, the 18 × 20 × 20 mm b
 x 26.500..44.500, y ±10.000, z −35.000..−15.000, so this is a multi-body export rather than one unioned
 solid. That is not a defect: two shells convert as readily as one.
 
-**A second tangency, not yet corrected.** `500-ExternalGear/510-001_ExternalGear.stl` fails the same way.
-Two of its surfaces share 91 edges on one ring in the part's frame, at x 21.215 and r ≈ 33.7, so
-`scadmesh repair` finds no boundary loop and CGAL still refuses the mesh. Any boolean on the gear stops at
-`The given mesh is not closed`, which is why `500-ExternalGear/render-all.rs` checks the Stator Holder's
-fit in the gear by sections rather than by an intersection. The End Arm Hub's correction applies:
+**A second tangency, corrected the same way.** `500-ExternalGear/510-001_ExternalGear.stl` failed the same
+way. Two of its surfaces shared 91 edges on one ring in the part's frame, at x 21.215 and r ≈ 33.7, so
+`scadmesh repair` found no boundary loop, CGAL refused the mesh, and every boolean on the gear stopped at
+`The given mesh is not closed`. It is corrected in place:
 
 ```
 scadmesh pinch 500-ExternalGear/510-001_ExternalGear.stl --out 500-ExternalGear/510-001_ExternalGear.stl
 ```
 
-It adds 182 triangles, leaves the bounding box unchanged, and adds 0.708 mm³ to the volume (1 part in
-10⁵). Pinching alone does not make the Stator Holder clash render. Its keys meet the gear's slots
-line-to-line, and CGAL cannot intersect the coincident faces either.
+That added 182 triangles, left the bounding box unchanged, and added 0.708 mm³ to the volume (1 part in
+10⁵). The gear now intersects with the Mount, the Mount Top and the lower 6810. Two pairs still fail
+inside CGAL's boolean (`applyBinaryOperator` asserts) and stay unjudged. The Stator Holder's keys meet
+the gear's slots line-to-line, which is why `500-ExternalGear/render-all.rs` checks that fit by sections.
+The upper 6810's assertion persists with its envelope shrunk to Ø64.9, so it is not the seat's Ø65; its
+cause is not isolated.
 
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
@@ -406,11 +413,11 @@ by a typed offset, and records each finding at the call site that exposes it.
   Ø1.45 probe on that axis with both halves as they sit: **empty in `revised`, not empty in `previous`**.
   The assembly draws the four brads only when both halves drill to one line, so the previous config still
   shows the disagreement by leaving them out.
-- **Three stack-ups are kept as measurements.** The Diff Gear Axle's Ø9 boss reaches 1.34 mm into the
-  shaft's front MR128 seat; Diff Body B's −X end flank sits 0.276 mm inside the axle bevel's toe cone,
-  and its chimney cone 0.296 mm inside the Split Gear's — the same 45° relief on perpendicular axes. The
-  two 0.28 mm figures cannot both be removed by moving Body B, since the differential centre lies on both
-  of its axes, and all three are the size of the residuals these parts already carry.
+- **Four stack-ups are kept as measurements in `config="previous"`, and `config="revised"` designs them
+  out.** The Diff Gear Axle's boss reaches into the shaft's front MR128 seat, and Diff Body B overlaps the
+  toes of all three bevel crowns that turn in it. `revised` seats the boss on that bearing and keeps Body B
+  the running clearance off each crown's swept teeth. The figures and constructions are in
+  [`diff_assembly.scad`](700-Differential/diff_assembly.scad)'s header and `730-002`'s TOE CLEARANCE.
 
 ## Viewing an assembly
 
@@ -443,7 +450,16 @@ scadmesh view exgear_assembly.view.json --out out/view
 miniserve out/view
 ```
 
-and open `http://localhost:8080/index.html`.
+and `700-Differential/` for the wrist differential, whose assembly imports the mesh cache that
+`render-meshes.rs` builds, so the cache is built first:
+
+```
+rust-script render-meshes.rs
+scadmesh view diff_assembly.view.json --out out/view
+miniserve out/view
+```
+
+Then open `http://localhost:8080/index.html`.
 
 - `scadmesh view` writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD
   exports each part in its own run, one after another, so the build takes the sum of the parts'

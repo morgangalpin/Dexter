@@ -92,10 +92,16 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
 2. Keep each strain-wave drive's top and bottom halves paired — they are matched at manufacture and are not
    interchangeable between drives.
 3. Remove first-layer print residue from the Flex Spline Attach.
-4. Lubricate, then press the flex spline onto the Flex Spline Attach with a press.
+4. Lubricate, then press the flex spline's hub onto the Flex Spline Attach with a press: its Ø11 bore over
+   the spigot and its six holes over the nubs.
 5. Separate them and inspect for print residue pushed into the attachment nubs during pressing; remove any.
-6. Secure the Flex Spline Attach to the motor with 4× M3 × 10 mm bolts (confirm size/qty against the build).
-7. Tighten the M2 bolts into the Flex Spline Cap until ~1/4" of thread shows through the far side.
+6. Clamp the hub, before the Attach goes on the motor, because the screw heads sit in its underside:
+   a. Refit the hub over the spigot and nubs.
+   b. Press an M2 nut into each of the Flex Spline Cap's six traps. Set the Cap inside the cup, its land
+      down on the hub and its holes over the nubs.
+   c. Drive 6× M2 × 12 mm screws up through the Attach's head pockets, the nubs and the hub into the nuts,
+      cross-pattern, until snug.
+7. Secure the Flex Spline Attach to the motor with 4× M3 × 10 mm bolts (confirm size/qty against the build).
 8. Press M3 nuts into the Wave Gen Coupler, insert M3 × 8 mm hex bolts to retain them, then epoxy over the
    nut heads to lock them; cure.
 9. Ream the Wave Gen Coupler and lubricate before sliding it onto the motor shaft.
@@ -197,9 +203,9 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
 8. Press the Split Gear Top into the Split Gear Bottom; rotate until the 4 holes show through the 4 windows.
 9. Through each window, insert a 1" #19 wire brad with super glue ~6 mm deep; trim flush once set.
 10. Push a zip-tie flat end into each window as far as it goes, hot-glue, and trim flush.
-11. Epoxy the 3 25 mm CF strakes into the Split Gear **Top** slots; cure. The three 5.6 × 2.5 mm slots are
-    cut from that part's base on r 13.000–15.500 at 90°, 210° and 330°, and run up to z 8.000; the Split
-    Gear Bottom carries no slot ([DC-11(e)](009-Design-Completion.md#procurement-data)).
+11. Epoxy the 3 25 mm CF strakes into the Split Gear **Top** slots; cure. The three slots are cut from
+    that part's base at 90°, 210° and 330° and run up to z 8.000. The Split Gear Bottom carries no slot
+    ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 12. Press the Diff Gear Shaft into Diff Body B.
 13. Coat the bore of the Diff Shaft Pulley (`#720-004`) with epoxy, and set it in Diff Body A's pulley
     chamber through the +X window, centred on the 6705. Press Diff Body B into Diff Body A (tight, fully

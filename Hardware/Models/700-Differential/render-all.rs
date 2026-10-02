@@ -36,7 +36,7 @@
 //! ```
 
 use anyhow::{Context, Result};
-use render_check::{diagnostics, dist_gate, render, run, sm_json, Ctx, DistGate, Tally};
+use render_check::{check_fits, diagnostics, dist_gate, render, run, sm_json, Ctx, DistGate, Fit, FitProbe, Tally};
 use serde_json::Value;
 
 /// Where the reference meshes live. They sit under `Reference/`, not beside
@@ -318,6 +318,67 @@ const REVISED_PARTS: [(&str, &str); 12] = [
     ("430-002", "../400-EndArm/430-002_ExternalInnerPulley.scad"),
 ];
 
+// The print fits of the revised renders (../print_fit.scad), each probed from
+// its mate's nominal surface in the part's own frame. A bought mate (a
+// bearing, or a strake, rod or tube bonded in) is a press fit; a printed mate
+// or a fastener's clearance is a slip fit.
+const SPLIT_TOP_FITS: [FitProbe; 4] = [
+    FitProbe { label: "MR128 seat", at: [4.2426, 4.2426, 1.0], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "6703 pocket", at: [8.1317, 8.1317, 6.0], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "strake slot's side", at: [2.794, 14.25, 3.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "strake slot's outer face", at: [0.0, 15.4185, 3.0], toward: [0.0, -1.0, 0.0], fit: Fit::Press },
+];
+const SPLIT_BOTTOM_FITS: [FitProbe; 3] = [
+    FitProbe { label: "Ø17 stub in the 6703", at: [6.0104, 6.0104, 6.0], toward: [0.7071, 0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "MR128 seat", at: [4.2426, 4.2426, 15.0], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "crown's 6703 bore", at: [8.1317, 8.1317, 21.5], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+];
+const KEEPER_FITS: [FitProbe; 1] = [
+    FitProbe { label: "bore on the Ø8 tube", at: [4.0, 0.0, 1.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
+];
+// 720-001 is exported turned onto +Y: its own (x, y, z) lies at (x, z, -y).
+const SHAFT_FITS: [FitProbe; 3] = [
+    FitProbe { label: "front 6703 journal", at: [8.5, 0.0, 0.0], toward: [1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "front MR128 seat", at: [6.0, -8.5, 0.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "6705's Ø25", at: [0.0, 31.0, -12.5], toward: [0.0, 0.0, -1.0], fit: Fit::Press },
+];
+const AXLE_FITS: [FitProbe; 2] = [
+    FitProbe { label: "MR85 seat", at: [4.0, 0.0, 0.75], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "CF rod bore", at: [4.0, 0.0, 7.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+];
+const END_PULLEY_FITS: [FitProbe; 1] = [
+    FitProbe { label: "CF rod bore, between the glue lobes", at: [4.0, 0.0, 22.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+];
+const BODY_A_FITS: [FitProbe; 3] = [
+    FitProbe { label: "6703 seat", at: [0.0, 11.5, 2.5], toward: [0.0, -1.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "6705 seat", at: [0.0, 16.0, 19.5], toward: [0.0, -1.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "arm spigot in the L3 tube", at: [-45.0, 10.035, 11.0], toward: [0.0, 1.0, 0.0], fit: Fit::Press },
+];
+// Body B's J4 tunnel runs along X at (y, z) = (-21, 21); its column along Z
+// at (x, y) = (21, -21).
+const BODY_B_FITS: [FitProbe; 3] = [
+    FitProbe { label: "-X 6703 seat", at: [11.0, -21.0, 32.5], toward: [0.0, 0.0, -1.0], fit: Fit::Press },
+    FitProbe { label: "column's 6703 journal", at: [29.5, -21.0, 38.0], toward: [1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "Ø8 tube in the MR128s", at: [25.0, -21.0, 55.0], toward: [1.0, 0.0, 0.0], fit: Fit::Press },
+];
+// The outer External pulley's hub: the Ø8 rod, and the M3 nut (5.5 across
+// flats) in the slot on 180 deg, whose 5.5 runs along Y.
+const OUTER_PULLEY_FITS: [FitProbe; 2] = [
+    FitProbe { label: "Ø8 rod bore", at: [4.0, 0.0, 28.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "set-screw nut slot", at: [-6.4, 2.75, 24.0], toward: [0.0, -1.0, 0.0], fit: Fit::Slip },
+];
+const REVISED_FITS: [(&str, &[FitProbe]); 9] = [
+    ("430-001", &OUTER_PULLEY_FITS),
+    ("710-001", &SPLIT_TOP_FITS),
+    ("710-002", &SPLIT_BOTTOM_FITS),
+    ("710-003", &KEEPER_FITS),
+    ("720-001", &SHAFT_FITS),
+    ("720-002", &AXLE_FITS),
+    ("720-003", &END_PULLEY_FITS),
+    ("730-001", &BODY_A_FITS),
+    ("730-002", &BODY_B_FITS),
+];
+
 /// The DC-12 tooth counts, on the revised renders: 16T -> 108T at the elbow
 /// and 40T -> 80T at the wrist. The shaft's band stays 40T as the spline
 /// #720-004 is keyed on. 430-001 is sectioned clear of its access holes.
@@ -359,10 +420,19 @@ const EXTENTS: [(&str, &str, &str); 2] = [
 
 const EXTENT_TOL: f64 = 0.02;
 
-/// Pairs of placed parts that must not overlap, rendered as their intersection
-/// from source. The ring sits inside Body A's chamber, where no extent check can
-/// reach.
-const INTERFERENCE: [(&str, &str); 1] = [("730-001", "720-004")];
+/// Pairs of parts that must not overlap as they sit, rendered as their
+/// intersection from source. The ring sits inside Body A's chamber, where no
+/// extent check can reach. Body B against each crown that turns in it is the
+/// running clearance 730-002's TOE CLEARANCE cuts; the Split Gear Top is
+/// listed beside the Bottom, which carries the toe, because both halves sweep
+/// the same zone.
+const INTERFERENCE: [(&str, &str); 5] = [
+    ("730-001", "720-004"),
+    ("730-002", "720-002"),
+    ("730-002", "720-001"),
+    ("730-002", "710-002"),
+    ("730-002", "710-001"),
+];
 
 fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for part in &CLONES {
@@ -478,6 +548,9 @@ fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
     for (id, scad) in &REVISED_PARTS {
         render(scad, &format!("out/revised/{id}.stl"), "revised", ctx, tally)?;
+    }
+    for (id, probes) in REVISED_FITS {
+        check_fits(&format!("out/revised/{id}.stl"), &format!("{id} (revised)"), probes, ctx, tally)?;
     }
     check_counts(ctx, tally, &REVISED_COUNTS)
 }

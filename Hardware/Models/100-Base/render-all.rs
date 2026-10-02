@@ -17,7 +17,7 @@
 //! ```
 
 use anyhow::Result;
-use render_check::{check_seat, dist_gate, run, Ctx, DistGate, Tally};
+use render_check::{check_fits, check_seat, dist_gate, run, Ctx, DistGate, Fit, FitProbe, Tally};
 
 const REF_DIR: &str = "../Reference/meshes/100-Base";
 
@@ -27,6 +27,14 @@ const DIST_GATES: [DistGate; 1] = [DistGate {
     reference: "110-002_BaseStatorHolder.stl",
     tol: 0.15,
 }];
+
+/// The revised #110-002's own print fits, on the all-thread hole at 30 deg
+/// (r 35.54): the M3 rod's surface on the hole's outer side, and the M3 nut's
+/// outer flat in its trap. The seat's fits are check_seat's.
+const HOLDER_FITS: [FitProbe; 2] = [
+    FitProbe { label: "all-thread hole", at: [32.0776, 18.52, 12.7], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
+    FitProbe { label: "all-thread nut trap", at: [33.1601, 19.145, 15.0], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
+];
 
 /// The Base Mounting Plate's script, run as it is and judged by its exit
 /// status.
@@ -45,7 +53,8 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
         dist_gate(gate, REF_DIR, ctx, tally)?;
     }
     // The Base Stator Holder's recess opens toward +z.
-    check_seat("110-002_BaseStatorHolder.scad", "110-002", 1.0, ctx, tally)
+    check_seat("110-002_BaseStatorHolder.scad", "110-002", 1.0, ctx, tally)?;
+    check_fits("out/revised/110-002.stl", "110-002 (revised)", &HOLDER_FITS, ctx, tally)
 }
 
 fn main() -> Result<()> {

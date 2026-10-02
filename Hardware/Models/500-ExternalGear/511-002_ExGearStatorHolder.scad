@@ -42,10 +42,27 @@
 //     their counterbores           Ø5.6                   5 .. 12
 //
 // The keys' section is the gear's socket to the micrometre (R32.5 core, eight
-// 4.0 keys to 34.1, both at 45 deg pitch), so both configs keep it. The z
-// -8.333 and -3.667 planes a histogram reports are tessellation rows on the
-// peg bores, not faces.
+// 4.0 keys to 34.1, both at 45 deg pitch). The z -8.333 and -3.667 planes a
+// histogram reports are tessellation rows on the peg bores, not faces.
+//
+// FITS (../print_fit.scad), revised only:
+//
+//     core and keys, in the gear's socket   slip, both being printed: the
+//                                           core, the keys' sides and their
+//                                           flat tops each stand in by it.
+//                                           The keys carry J3's output
+//                                           torque, so their play is the
+//                                           joint's backlash
+//     recess, on the spline's flange        press, the seat's pilot press
+//                                           and its nut pockets slip:
+//                                           c201_spline_seat.scad
+//
+// The keys' end chamfers keep their plane, r + z = 44.5, because their
+// bottoming in the slots' chamfers is the seat. The key's flat simply ends
+// higher on it, so the seat, the floor and every stack value
+// exgear_assembly.scad echoes are the same at any clearance.
 
+include <../print_fit.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 
 /* [Configuration] */
@@ -78,14 +95,22 @@ function stator_floor(cfg = config) = cfg == "previous" ? FLOOR : FLOOR + FLOOR_
 function stator_rim(cfg = config) = cfg == "previous" ? RIM : RIM + FLOOR_DROP;
 function stator_end() = END;
 
+// The keys' end chamfer, as the r + z its plane keeps.
+CHAMFER_PLANE = KEY[1] + END - KEY_CHAMFER;
+
+function slip(cfg) = fit_clearances(cfg)[0];
+function press(cfg) = fit_clearances(cfg)[1];
+
 // --- Body -------------------------------------------------------------------
 // The turned body: bore, recess, cylinder, cone, core.
 module body(cfg) {
     fl = stator_floor(cfg);
     rim = stator_rim(cfg);
+    recess_r = (cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg))) / 2;
+    core = CORE_R - slip(cfg);
     rotate_extrude() polygon([
-        [BORE_D / 2, END], [BORE_D / 2, fl], [RECESS_D / 2, fl], [RECESS_D / 2, rim],
-        [BODY_R, rim], [BODY_R, CONE_TOP], [CORE_R, CONE_TOP + BODY_R - CORE_R], [CORE_R, END]]);
+        [BORE_D / 2, END], [BORE_D / 2, fl], [recess_r, fl], [recess_r, rim],
+        [BODY_R, rim], [BODY_R, CONE_TOP], [core, CONE_TOP + BODY_R - core], [core, END]]);
 }
 
 // Everything beyond the cone's surface carried on past the core: the keys
@@ -96,13 +121,14 @@ module beyond_cone()
         [BODY_R + 1 - epsilon, CONE_TOP - 1], [BODY_R + 2, CONE_TOP - 1], [BODY_R + 2, END + 1],
         [BODY_R + CONE_TOP - END - 1 - epsilon, END + 1]]);
 
-// One key on +X: the flat and its end chamfer, extruded across its width.
-module key()
-    rotate([90, 0, 0]) linear_extrude(2 * KEY[0], center = true) polygon([
-        [CORE_R - 1, CONE_TOP], [KEY[1], CONE_TOP], [KEY[1], END - KEY_CHAMFER],
-        [KEY[1] - KEY_CHAMFER, END], [CORE_R - 1, END]]);
+// One key on +X: the flat and its end chamfer, extruded across its width,
+// each standing in from the slot by the clearance c.
+module key(c)
+    rotate([90, 0, 0]) linear_extrude(2 * (KEY[0] - c), center = true) polygon([
+        [CORE_R - 1, CONE_TOP], [KEY[1] - c, CONE_TOP], [KEY[1] - c, CHAMFER_PLANE - KEY[1] + c],
+        [CHAMFER_PLANE - END, END], [CORE_R - 1, END]]);
 
-module keys() intersection() { for (a = [0 : 45 : 315]) rotate(a) key(); beyond_cone(); }
+module keys(cfg) intersection() { for (a = [0 : 45 : 315]) rotate(a) key(slip(cfg)); beyond_cone(); }
 
 // --- Previous-only features ---------------------------------------------------
 module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, PEG[2]])
@@ -121,13 +147,13 @@ module screw_cuts() for (a = [45, 225]) rotate(a) translate([PEG_CIRCLE_R, 0, 0]
 // --- Part ---------------------------------------------------------------------
 module ex_gear_stator_holder(cfg = config) {
     if (cfg == "previous")
-        difference() { union() { body(cfg); keys(); pegs(); } peg_cuts(); screw_cuts(); }
+        difference() { union() { body(cfg); keys(cfg); pegs(); } peg_cuts(); screw_cuts(); }
     else
         // The seat's frame has its recess on +Z; this part's opens toward -Z.
         difference() {
-            union() { body(cfg); keys(); }
+            union() { body(cfg); keys(cfg); }
             translate([0, 0, stator_floor(cfg)]) mirror([0, 0, 1])
-                spline_seat_cuts(END - stator_floor(cfg));
+                spline_seat_cuts(END - stator_floor(cfg), press(cfg), slip(cfg));
         }
 }
 
