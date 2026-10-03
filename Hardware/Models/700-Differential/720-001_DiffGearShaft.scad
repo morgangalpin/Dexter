@@ -46,7 +46,14 @@ Z1          = 49.64;    // shaft end (rear journal end)
 // The band's bond to #720-004 takes its clearance in that part's bore.
 JOURNAL_D   = fit_pin(17.0, PRESS);   // 6703 inner-race journals, both ends
 D6705_D     = fit_pin(BRG_6705[0], PRESS);   // the 6705's inner race, z 28.04..34.04
-FRONT_STEPS = [[11.54, 19.0], [13.040, 23.0]];  // [z, Ø] steps before the gear
+// [z, Ø] steps before the gear. The Ø19 step is the shoulder Diff Body B's
+// rear 6703 bears on with its inner race. As measured it stands at 11.54,
+// 0.17 mm inside that bearing; "revised" brings it to the bearing's far face.
+// Shaft z runs with Body B's x, so the face is Body B's seat carried across
+// from its axis crossing, which this shaft's apex lands on.
+STEP_D19_Z  = config == "previous" ? 11.54
+            : BEVEL_APEX_SHAFT + BODY_B_REAR_SEAT + BRG_6703[2] - BODY_B_COL_XY[0];
+FRONT_STEPS = [[STEP_D19_Z, 19.0], [13.040, 23.0]];
 D27_D       = 27.0;     // collar behind the gear
 D27_TOP     = 28.04;    // Ø27 section top
 D25_TOP     = BAND_Z[0];   // Ø25 section top / band start

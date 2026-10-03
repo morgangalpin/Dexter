@@ -313,13 +313,17 @@ material and void either side of the faces it moved, and ends in `ALL CHECKS PAS
 The machinery is shared, not copied: the [`render-check/`](render-check/) crate, which each script takes
 as a path dependency, finds OpenSCAD and `scadmesh` (`$OPENSCAD` and `$SCADMESH` first), runs a render and
 fails it on any warning, a result CGAL reports as not simple, or an empty one, runs the `dist` gate, probes points, and reads
-echoes. A script holds only its own gates and checks. Two rules keep the scripts from drifting apart:
+echoes. A script holds only its own gates and checks. Three rules keep the scripts from drifting apart:
 
 - **A number a check needs comes from the part.** A `.scad` echoes it at top level as
   `echo(name = value)`, and the script reads that line; the value is never retyped into the script.
 - **A group that uses another group's part runs that group's script** rather than repeating its gates.
   `500-ExternalGear/render-all.rs` runs `600-StrainWave/render-all.rs` first, because J3's stack
   depends on the Flex Spline Attach.
+- **A group with more than one script states its parts once**, in its `parts.json`, which every script
+  reads through `render-check` (`group_parts`). `700-Differential/render-meshes.rs` builds its mesh cache
+  from the same list `render-all.rs` verifies, so an edited part reaches the assembly view and the gates
+  alike.
 
 Two checks are shared across groups. `check_seat` probes a Stator Holder's revised seat against C-201's
 hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states

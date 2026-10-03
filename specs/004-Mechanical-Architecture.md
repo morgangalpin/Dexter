@@ -341,7 +341,7 @@ J5 frame would stand it 39.500 mm further out, at 347.000 mm.
 
 **The bevel apex sits `C = 48.5335 mm` above Diff Body A's base plane**, derived from the Diff Gear
 Shaft's own apex and fixed by three separate seats in Body A that agree exactly: the rear 6703 face on the
-Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on the belt
+Ø20 waist shoulder, the Ø27 collar 4 mm above the spacer step, and the 40T pulley band centred on the belt
 slot. Body A's remaining datums are its 20 × 20 R4 section spanning z 1–21, its 6 × 6 belt slot at z 8–14,
 and a shell mirror-symmetric about z = 11.000 over z ∈ [2, 20].
 

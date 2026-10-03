@@ -36,7 +36,7 @@
 //! ```
 
 use anyhow::{Context, Result};
-use render_check::{check_fits, diagnostics, dist_gate, render, run, sm_json, Ctx, DistGate, Fit, FitProbe, Tally};
+use render_check::{check_fits, diagnostics, dist_gate, group_parts, render, run, sm_json, Ctx, DistGate, Fit, FitProbe, Tally};
 use serde_json::Value;
 
 /// Where the reference meshes live. They sit under `Reference/`, not beside
@@ -300,20 +300,11 @@ const DIAMS: [DiamCheck; 6] = [
 
 const DIAM_TOL: f64 = 0.05;
 
-/// The printed parts of the revised configuration, rendered to `out/revised/`.
-/// #720-004 exists in this configuration only. The two External pulleys are
-/// the elbow half of the same DC-12 train, so they are verified here too.
-const REVISED_PARTS: [(&str, &str); 12] = [
-    ("710-001", "710-001_SplitGearTop.scad"),
-    ("710-002", "710-002_SplitGearBottom.scad"),
-    ("710-003", "710-003_DiffKeeper.scad"),
-    ("710-004", "710-004_RotateCodeDisk.scad"),
-    ("720-001", "720-001_DiffGearShaft.scad"),
-    ("720-002", "720-002_DiffGearAxle.scad"),
-    ("720-003", "720-003_DiffEndPulley.scad"),
-    ("720-004", "720-004_DiffShaftPulley.scad"),
-    ("730-001", "730-001_DiffBodyA.scad"),
-    ("730-002", "730-002_DiffBodyB.scad"),
+/// The revised configuration renders to `out/revised/` every part this group's
+/// `parts.json` lists for it, and these two besides: the External pulleys are
+/// 400-EndArm's parts, but they are the elbow half of the same DC-12 train, so
+/// they are verified here too.
+const EXTERNAL_PARTS: [(&str, &str); 2] = [
     ("430-001", "../400-EndArm/430-001_ExternalOuterPulley.scad"),
     ("430-002", "../400-EndArm/430-002_ExternalInnerPulley.scad"),
 ];
@@ -425,13 +416,18 @@ const EXTENT_TOL: f64 = 0.02;
 /// extent check can reach. Body B against each crown that turns in it is the
 /// running clearance 730-002's TOE CLEARANCE keeps; the Split Gear Top is
 /// listed beside the Bottom, which carries the toe, because both halves sweep
-/// the same zone.
-const INTERFERENCE: [(&str, &str); 5] = [
+/// the same zone. Two bearing sets are listed against a part they seat in;
+/// both render empty with their shoulders on the races. The other bearing
+/// pairs return the face where a shoulder meets a race, at zero thickness,
+/// which this check cannot tell from an overlap, so they are not listed.
+const INTERFERENCE: [(&str, &str); 7] = [
     ("730-001", "720-004"),
     ("730-002", "720-002"),
     ("730-002", "720-001"),
     ("730-002", "710-002"),
     ("730-002", "710-001"),
+    ("brg_body_a", "730-001"),
+    ("brg_body_b", "710-002"),
 ];
 
 fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
@@ -546,7 +542,9 @@ fn check_assembly(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 /// Every part in the revised configuration, then the DC-12 counts on them.
 fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
-    for (id, scad) in &REVISED_PARTS {
+    let parts = group_parts(ctx, "revised")?;
+    let own = parts.iter().map(|(id, scad)| (id.as_str(), scad.as_str()));
+    for (id, scad) in own.chain(EXTERNAL_PARTS) {
         render(scad, &format!("out/revised/{id}.stl"), "revised", ctx, tally)?;
     }
     for (id, probes) in REVISED_FITS {

@@ -78,6 +78,13 @@ BRG_MR128 = [8, 12, 3.5];   // #620-002, 4 seats: shaft ends, and one per Split
 BRG_MR85  = [5, 8, 2.5];    // #620-001, into the Diff Gear Axle's back bore
 THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 
+// The bore of a shoulder that bears on a bearing's OUTER race: halfway across
+// the bearing's section. A shoulder bored any smaller also bears on the inner
+// race and brakes the bearing it locates. In "revised" every such shoulder is
+// bored to this; "previous" keeps the reference's own bores. Body A's Ø20
+// waist under its 6703 was already bored to it.
+function shoulder_bore(spec) = (spec[0] + spec[1]) / 2;
+
 L3_TUBE_ID  = 20.07;        // C-505 L3 tube's inside dimension, over Body A's
                             //   20 x 20 arm spigot
 CF_ROD_D    = 8;            // #720-006 CF rod OD
@@ -173,6 +180,16 @@ module pulley_teeth_2d() { gt2_teeth_2d(PULLEY_TEETH, PULLEY_TIP_D); }
 // ---------------------------------------------------------------------------
 BODY_B_J4_YZ  = [-21.0, 21.0];
 BODY_B_COL_XY = [ 21.0, -21.0];
+
+// Two of Diff Body B's bearing seats, in Body B's frame, stated here because
+// the parts on the other side of each bearing have to reach its far face:
+//   BODY_B_REAR_SEAT  the +X tunnel 6703's step, x. Its far face is where
+//                     720-001's Ø19 shoulder bears on the inner race.
+//   BODY_B_COL_SEAT   the column 6703, from the top of the journal's R2, z. Its
+//                     far face is where 710-002's crown-bore shoulder bears on
+//                     the outer race.
+BODY_B_REAR_SEAT = 28.200;
+BODY_B_COL_SEAT  = 36.000;
 
 // ---------------------------------------------------------------------------
 // L4, the J4 -> J5 offset (004 § Differential interface, specs/003)

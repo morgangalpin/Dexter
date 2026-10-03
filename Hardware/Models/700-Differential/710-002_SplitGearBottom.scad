@@ -90,17 +90,35 @@ function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
 // In "revised" the bearing fits take the PRESS clearance (diff_params.scad):
 // the Ø12 MR128 seat grows and the Ø17 stub, which the 6703 in 710-001's
 // pocket rides on, shrinks. The crown's Ø23 bore grows in crown_bore_fit().
+//
+// "revised" also moves the two shoulders that bear on a bearing's outer race:
+//   - the wire bore, the MR128 seat's floor, and the sleeve bore, the shoulder
+//     on Diff Body B's column 6703, are bored to shoulder_bore(); the
+//     reference's Ø8.5 and Ø18 each reach the inner race;
+//   - the sleeve's shoulder comes down to that 6703's far face. As measured it
+//     stands at z 21.000, 0.423 mm inside the bearing. This part's apex is on
+//     the axis crossing, so the face is Body B's seat carried across from it.
+WIRE_R  = config == "previous" ? 4.250 : shoulder_bore(BRG_MR128) / 2;
+SLEEVE_R = config == "previous" ? 9.000 : shoulder_bore(BRG_6703) / 2;
+COL_FACE = config == "previous" ? 21.000
+         : BEVEL_APEX_Z - (BODY_B_COL_SEAT + BRG_6703[2] - BODY_B_J4_YZ[1]);
+STUB_TOP = 8.253;   // where the stub meets its flank: the 6703's room ends here
+
+// For diff_assembly.scad, which `use`s this file and centres the 6703 between
+// this part's bottom face and STUB_TOP.
+function stub_top() = STUB_TOP;
+
 BODY_PROFILE = [
     [ 6.500,  4.000],   // bottom face, Ø13 bore mouth
     [ 6.500,  4.500],   // Ø13 wall -- the lip inside the bottom opening
     [ 6.250,  4.500],   // step in to the funnel mouth, 0.25 mm wide
-    [ 4.250,  6.500],   // 45-degree funnel down to the wire bore
-    [ 4.250, 13.500],   // Ø8.5 wire bore
+    [WIRE_R, 4.500 + 6.250 - WIRE_R],   // 45-degree funnel down to the wire bore
+    [WIRE_R, 13.500],   // wire bore, Ø8.5 / Ø10
     [ 6.000 + PRESS, 13.500],   // Ø12 MR128 seat
     [ 6.000 + PRESS, 17.000],
-    [ 9.000, 17.000],   // Ø18 sleeve bore
-    [ 9.000, 21.000],
-    [12.000, 21.000],   // Ø24 mouth (buried: the crown's Ø23 bore is smaller)
+    [SLEEVE_R, 17.000],   // sleeve bore, Ø18 / Ø20
+    [SLEEVE_R, COL_FACE],
+    [12.000, COL_FACE],   // Ø24 mouth (buried: the crown's Ø23 bore is smaller)
     [12.000, 22.000],
     [13.500, 22.000],   // top face, outer
     [13.500, 11.000],   // Ø27 wall
@@ -118,7 +136,7 @@ BODY_PROFILE = [
     [ 8.599,  8.687],
     [ 8.544,  8.548],
     [ 8.511,  8.402],
-    [ 8.500 - PRESS,  8.253],
+    [ 8.500 - PRESS, STUB_TOP],
     [ 8.500 - PRESS,  4.000],   // Ø17 wire-guide stub
 ];
 
@@ -190,9 +208,9 @@ module crown() {
 
 // The crown bore's PRESS clearance, cut rather than drawn into CROWN_BLANK so
 // the blank's foot stays on the parting cone. The body fills the bore below
-// its Ø24 mouth at z 21, where the 6703's outer race bears, so the cut starts
-// there and runs to where the inner cone closes the bore.
-CROWN_BORE_SPAN = [21.000, CROWN_BLANK[3][1]];
+// COL_FACE, where the 6703's outer race bears, so the cut starts there and
+// runs to where the inner cone closes the bore.
+CROWN_BORE_SPAN = [COL_FACE, CROWN_BLANK[3][1]];
 
 module crown_bore_fit()
     if (PRESS > 0)

@@ -887,7 +887,7 @@ anything version 3 does not independently specify
   `500-ExternalGear/511-002_ExGearStatorHolder.scad` (new), the `render-all.rs` of `100-Base`,
   `200-ArmBody`, `500-ExternalGear` and `600-StrainWave` (new), the shared `render-check/` crate (new),
   `700-Differential/render-all.rs`, `700-Differential/render-meshes.rs`,
-  `700-Differential/diff_assembly.scad`, `700-Differential/diff_bevel.scad`,
+  `700-Differential/parts.json` (new), `700-Differential/diff_assembly.scad`, `700-Differential/diff_bevel.scad`,
   `700-Differential/diff_assembly.view.json` (new), the six meshes moved to `Reference/meshes/`,
   `500-ExternalGear/510-001_ExternalGear.stl` (pinched), `Hardware/Models/print_fit.scad` (new),
   `950-Tooling/fit_coupon.scad` (new), every part file under `700-Differential/` and `400-EndArm/`'s
@@ -920,7 +920,12 @@ anything version 3 does not independently specify
   `config="previous"`, so a differential file opened or rendered without `-D` showed the reference parts.
   The Diff Gear Axle's Ø9 boss ran 1.84 mm into the Diff Gear Shaft's front MR128, and its rod bore was a
   slip fit that left 0.35 mm of wall. Diff Body B overlapped the toes of the three bevel crowns that turn in
-  it, and `diff_assembly.scad` recorded those overlaps rather than designing them out.
+  it, and `diff_assembly.scad` recorded those overlaps rather than designing them out. The Diff Gear
+  Shaft's Ø19 shoulder ran 0.17 mm into Body B's rear 6703, and the Split Gear Bottom's crown-bore
+  shoulder 0.42 mm into the column 6703. Four shoulders that locate a bearing by its outer race were bored
+  small enough to bear on its inner race as well: Body A's Ø26 under the 6705, the Split Gear Bottom's
+  Ø18 under the column 6703, and each Split Gear half's Ø8.5 under its MR128. The 6703 between the Split
+  Gear's halves was drawn on the Top's pocket floor, across both races.
 - **Now:**
   - **The Base Long bottoms on the Base Mount Bottom's top face, at 98.000 mm.** Sectioning the CAD bodies
     shows the two parts sharing material over r 33–36 mm at that plane. The clamp seats on a shoulder at
@@ -1044,6 +1049,13 @@ anything version 3 does not independently specify
     Ø10.4; its tip keeps the measured Ø9 as a flat face, inside the MR128 inner ring's Ø9.05 land, and a
     45° chamfer runs out to the body, clear of a shield or seal. With the press-fit Ø8.1 rod bore, its
     wall is 1.15 mm, 0.45 across the tip face.
+  - **Each bearing shoulder in the differential bears on one race.** In `config="revised"` a shoulder
+    against an outer race is bored to the bearing's mid-section, `shoulder_bore()` in `diff_params.scad`:
+    Ø28.5 in Body A under the 6705, Ø20 in the Split Gear Bottom under the column 6703, and Ø10 in both
+    Split Gear halves under their MR128s. The Diff Gear Shaft's Ø19 shoulder stops at the far face of
+    Body B's rear 6703, and the Split Gear Bottom's crown-bore shoulder at the far face of the column
+    6703; both faces are carried from Body B's seats, which `diff_params.scad` states. The Split Gear's
+    inner 6703 is drawn centred in its pocket, clear of both faces.
   - **The differential defaults to `config="revised"`**, the configuration it is worked on and printed
     from ([004](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5)). `config="previous"`
     is selected with `-D`; `render-all.rs` names the configuration on every render, so no gate moves.
@@ -1101,6 +1113,8 @@ anything version 3 does not independently specify
   state slot sizes. `diff_assembly.scad` takes the viewable shape, a `part` id per export, and echoes
   the axle's boss wall, which `720-002_DiffGearAxle.scad` states as `boss_wall()`; 007.2 prints the
   differential from the default; `render-meshes.rs` builds its cache in `revised` unless told otherwise.
+  `700-Differential/parts.json` lists the differential's printed parts and the configurations each
+  exists in; `render-meshes.rs` and `render-all.rs` both read it through `render-check`.
   `diff_assembly.scad` asserts that the boss's tip is the front MR128's face, and reads Body B's front
   seat and the shaft's from 720-001's `front_drop()` and `front_seat_floor()`. 007.1's C-502 entry draws
   `#710-001`'s slots at the press clearance; the coupon carries the strake slot and a Ø8 tube bore at
@@ -1110,7 +1124,8 @@ anything version 3 does not independently specify
   does not carry it. `diff_bevel.scad` states the tooth zone as `BEVEL_ZONE`, and 720-001 states the
   shaft's as `crown_zone()`. `diff_assembly.scad`'s `interference` takes any two parts as they sit, and
   `700-Differential/render-all.rs` requires Body B against the axle, the shaft and both Split Gear halves
-  to render empty. It also requires Body B to render empty against the three crowns' tooth zones grown
+  to render empty, and Body A's bearings against Body A and Body B's against the Split Gear Bottom. It
+  also requires Body B to render empty against the three crowns' tooth zones grown
   to just under the clearance, which checks the clearance itself. The Models README points to those
   files for the figures. In openscad-tools, REQ-W-6
   specifies the label toggles.

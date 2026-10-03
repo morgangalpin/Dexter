@@ -84,12 +84,15 @@ function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
 // r = 17.500, which is what the sections either side of the gap measure.
 //
 // The two bearing seats take the PRESS clearance (diff_params.scad) in
-// "revised"; the rest of the profile is as measured.
+// "revised", and the web the MR128 bears on is bored to shoulder_bore(), so
+// that it bears on the outer race alone; the reference's Ø8.5 reaches the
+// inner race. The rest of the profile is as measured.
+WEB_R = config == "previous" ? 4.241 : shoulder_bore(BRG_MR128) / 2;
 BODY_PROFILE = [
     [ 5.994 + PRESS, -1.000],   // Ø12 MR128 seat, from the base
     [ 6.000 + PRESS,  3.000],
-    [ 4.241,  3.000],   // step in to the Ø8.5 through-bore
-    [ 4.241,  4.000],
+    [ WEB_R,  3.000],   // step in to the through-bore, Ø8.5 / Ø10
+    [ WEB_R,  4.000],
     [11.500 + PRESS,  4.000],   // step out to the Ø23 6703 seat
     [11.490 + PRESS,  8.750],
     [11.942,  8.750],   // chamfer up into the Ø28 core cavity

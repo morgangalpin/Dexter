@@ -1,5 +1,6 @@
-//! Shared machinery for the per-group `render-all.rs` scripts: finding
-//! OpenSCAD and `scadmesh`, running them, holding a render to silence, and
+//! Shared machinery for the per-group `render-all.rs` scripts and the
+//! scripts that render beside them: finding OpenSCAD and `scadmesh`, running
+//! them, reading a group's part list, holding a render to silence, and
 //! tallying the verdicts. Each group's script owns its own checks and calls
 //! into this crate for everything else, through a path dependency:
 //!
@@ -78,6 +79,40 @@ impl Ctx {
             .context("RUST_SCRIPT_BASE_PATH unset - run this file as a rust-script")?;
         Ctx::new(PathBuf::from(base))
     }
+}
+
+/// The file in a group directory that lists the group's printed parts, for
+/// every script that renders them to read rather than restate. It is a JSON
+/// array of `{"id", "scad"}` objects, in render order; an entry that exists
+/// in only some configurations names them in `"configs"`, and one without
+/// that field is in every configuration.
+pub const PARTS_FILE: &str = "parts.json";
+
+/// The `(id, scad)` pairs a part list's text holds for `config`, in order.
+pub fn parts_in(text: &str, config: &str) -> Result<Vec<(String, String)>> {
+    let list: Value = serde_json::from_str(text).context("parsing the part list")?;
+    let entries = list.as_array().context("the part list is not a JSON array")?;
+    let mut parts = Vec::new();
+    for e in entries {
+        let field = |k: &str| e[k].as_str().map(str::to_owned).with_context(|| format!("part entry without a string \"{k}\": {e}"));
+        let (id, scad) = (field("id")?, field("scad")?);
+        let included = match &e["configs"] {
+            Value::Null => true,
+            Value::Array(cs) => cs.iter().any(|c| c.as_str() == Some(config)),
+            other => bail!("{id}: \"configs\" is not an array: {other}"),
+        };
+        if included {
+            parts.push((id, scad));
+        }
+    }
+    Ok(parts)
+}
+
+/// The parts of `config` that the group's `PARTS_FILE` lists.
+pub fn group_parts(ctx: &Ctx, config: &str) -> Result<Vec<(String, String)>> {
+    let path = ctx.dir.join(PARTS_FILE);
+    let text = std::fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
+    parts_in(&text, config).with_context(|| format!("in {}", path.display()))
 }
 
 /// A finished tool run. Both streams are kept: `scadmesh` reports on stdout,
@@ -472,6 +507,35 @@ mod tests {
         assert_eq!(scad_constant(src, "FIT_SLIP"), Some(0.15));
         assert_eq!(scad_constant(src, "FIT_PRESS"), Some(0.05));
         assert_eq!(scad_constant(src, "MISSING"), None);
+    }
+
+    #[test]
+    fn parts_in_keeps_order_and_filters_by_configuration() {
+        let list = r#"[{"id": "a", "scad": "a.scad"},
+                       {"id": "b", "scad": "b.scad", "configs": ["revised"]},
+                       {"id": "c", "scad": "c.scad"}]"#;
+        let ids = |config| parts_in(list, config).unwrap().into_iter().map(|(id, _)| id).collect::<Vec<_>>();
+        assert_eq!(ids("revised"), ["a", "b", "c"]);
+        assert_eq!(ids("previous"), ["a", "c"]);
+        assert_eq!(parts_in(list, "revised").unwrap()[1].1, "b.scad");
+    }
+
+    #[test]
+    fn parts_in_refuses_a_malformed_list() {
+        assert!(parts_in("{}", "revised").is_err());
+        assert!(parts_in("[{\"id\": \"a\"}]", "revised").is_err());
+        assert!(parts_in("[{\"id\": \"a\", \"scad\": \"a.scad\", \"configs\": \"revised\"}]", "revised").is_err());
+        assert!(parts_in("not json", "revised").is_err());
+    }
+
+    #[test]
+    fn group_parts_reads_the_list_beside_the_script() {
+        let dir = std::env::temp_dir().join(format!("render-check-parts-{}", std::process::id()));
+        let ctx = Ctx::new(dir.clone()).unwrap();
+        assert!(group_parts(&ctx, "revised").is_err());
+        std::fs::write(dir.join(PARTS_FILE), r#"[{"id": "a", "scad": "a.scad"}]"#).unwrap();
+        assert_eq!(group_parts(&ctx, "revised").unwrap(), [("a".to_string(), "a.scad".to_string())]);
+        std::fs::remove_dir_all(dir).unwrap();
     }
 
     #[test]

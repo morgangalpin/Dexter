@@ -16,7 +16,7 @@
 //   1. The shaft in Body A. Diff Body A's three seats over-determine where the
 //      Diff Gear Shaft sits and agree exactly. The shaft's rear 6703 face
 //      (shaft z 44.040) lands on the Ø20 waist shoulder at A z 5.000; its
-//      Ø27 collar (shaft 28.040) lands 4 mm above the Ø26 step, at A z 21.000,
+//      Ø27 collar (shaft 28.040) lands 4 mm above the spacer step, at A z 21.000,
 //      so the 6705 is trapped between two measured shoulders; and its pulley
 //      band falls on A z 7.000..15.000, centred on z = 11, which is the belt
 //      slot's own centre. All three want SHAFT_Z0 = 49.040 and nothing else.
@@ -245,15 +245,17 @@ AXLE_CLOCK  = BEVEL_PITCH_ANG / 2;
 // and those are read from diff_bevel.scad and diff_params.scad above.
 // ---------------------------------------------------------------------------
 SEAT_A_6703  =  1.000;   // 730-001 Ø23 seat, against the Ø20 waist at z 5
-SEAT_A_6705  = 17.000;   // 730-001 Ø32 seat, against the Ø26 shoulder at z 17
+SEAT_A_6705  = 17.000;   // 730-001 Ø32 seat, against the spacer shoulder at z 17
 SEAT_B_FRONT =  9.800 + front_drop();   // 730-002 Ø23 seat, against its step at x 13.8 + front_drop()
-SEAT_B_REAR  = 28.200;   // 730-002 Ø23 seat, against its step at x 28.2
-SEAT_B_COL   = 36.000;   // 730-002 Ø17 column journal, off the R2 at z 36
+SEAT_B_REAR  = BODY_B_REAR_SEAT;   // 730-002 Ø23 seat, against its step
+SEAT_B_COL   = BODY_B_COL_SEAT;    // 730-002 Ø17 column journal, off the R2
 SEAT_SHAFT_F = SHAFT_Z0 - front_seat_floor();   // 720-001 front Ø12 seat floor, 3.0 deep from Z0
 SEAT_SHAFT_R = -1.400;   // 720-001 rear Ø12 seat, 2.7 deep from Z1
 SEAT_SG_TOP  = -0.500;   // 710-001 Ø12 MR128 seat, against its step at z 3
 SEAT_SG_BOT  = 13.500;   // 710-002 Ø12 MR128 seat, z 13.5..17.0 — a 3.5 fit
-SEAT_SG_6703 =  4.000;   // 710-001 Ø23 pocket, floored where 710-002 bottoms
+// 710-001 Ø23 pocket, centred between its floor at z 4, where 710-002 bottoms,
+// and 710-002's stub top — see SPLIT 6703 below.
+SEAT_SG_6703 = (4.000 + stub_top() - BRG_6703[2]) / 2;
 MR85_PROUD   =  1.000;   // 720-002's back, "~1 mm proud" -- 008.6 step 19
 
 // The brads' two ends, both radii on the Split Gear's own axis: a brad is
@@ -510,7 +512,9 @@ module bearings(p) color(STEEL_C) {
 // halves together and turns one against the other to clock the teeth. It
 // carries that rotation, and thereafter stands as a ground Ø17/Ø23
 // concentricity bush. Its races turning together once the brads are in is the
-// finished state, not a defect.
+// finished state, not a defect. Its seats locate it radially and nothing
+// locates it axially, so it is drawn centred in the void, clear of both faces:
+// sat on the pocket floor it would bear on that floor with both races.
 
 // Where Body A and the input-pulley parts sit. The carrier's J4 turn is the
 // caller's.

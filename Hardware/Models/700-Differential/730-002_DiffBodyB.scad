@@ -302,8 +302,8 @@ BORE = concat(
      [ 8.750,  27.000]],
     arcpts(9.750, 27.000, 1.000, 180, 90, 12),    // R1 out of the shaft land
     [[10.500,  28.000],
-     [10.500,  28.200],
-     [11.500 + PRESS,  28.200],   // Ø23.000 6703 seat
+     [10.500,  BODY_B_REAR_SEAT],
+     [11.500 + PRESS,  BODY_B_REAR_SEAT],   // Ø23.000 6703 seat
      [11.500 + PRESS,  REAR_END_X - 1]],
     arcpts(12.500, REAR_END_X - 1, 1.000 - PRESS, 180, 90, 12),   // R1 at the seat's mouth
     PRESS > 0 ? [[12.500, REAR_END_X]] : [],
@@ -331,8 +331,8 @@ COLUMN = concat(
      [7.200, 31.500],
      [7.200, CLIP_Z],
      [10.500, CLIP_Z]],
-    arcpts(10.500, 36.000, 2.000, 270, 180, 16),  // R2 into the Ø17 journal
-    PRESS > 0 ? [[8.500 - PRESS, 36.000]] : [],
+    arcpts(10.500, BODY_B_COL_SEAT, 2.000, 270, 180, 16),  // R2 into the Ø17 journal
+    PRESS > 0 ? [[8.500 - PRESS, BODY_B_COL_SEAT]] : [],
     [[8.500 - PRESS, 40.500]],
     arcpts(7.000 - PRESS, 40.500, 1.500, 0, 90, 16),      // R1.5 off it
     [[4.500, 42.000],                             // flat annular shoulder

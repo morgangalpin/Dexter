@@ -59,11 +59,13 @@ H            = 22.0;    // overall height (J4 axis along Z)
 // Bearing ladder, bottom up: [diameter, z_low, z_high]. Measured on the
 // reference's own sections, not taken from the bearing catalogue, so a seat
 // that was cut oversize stays oversize. In "revised" the two seats take the
-// PRESS clearance (diff_params.scad).
+// PRESS clearance (diff_params.scad), and the spacer shoulder under the 6705
+// is bored to shoulder_bore(): the reference's Ø26 reaches the inner race.
 LADDER = [
     [fit_bore(BRG_6703[1], PRESS), 0.0,  5.0],    // Ø23 6703 seat
     [20.0,        5.0,  6.0],    // Ø20 waist, into the open middle
-    [26.0,       16.0, 17.0],    // Ø26 spacer shoulder
+    [config == "previous" ? 26.0 : shoulder_bore(BRG_6705),
+                 16.0, 17.0],    // spacer shoulder, Ø26 / Ø28.5
     [fit_bore(BRG_6705[1], PRESS), 17.0, H],      // Ø32 6705 seat
 ];
 
