@@ -1030,9 +1030,11 @@ anything version 3 does not independently specify
     be hidden on its own or all together. The differential's view carries no labels.
   - **Diff Body B runs clear of the three bevel crowns.** In `config="revised"` Body B keeps the running
     clearance off the volume each crown's teeth sweep: the Diff Gear Axle's, the Diff Gear Shaft's and the
-    Split Gear's. That takes in its −X end flank, its +X end wall and its chimney cone's corners. The
-    cutter is each crown's tooth zone revolved about its axis, grown by the clearance, so it follows the
-    gears' own cones, and the gears keep their one shared crown.
+    Split Gear's. Each surface facing a toe is parallel to it, and each is moved whole to stand the
+    clearance off it, so no cut leaves a ridge. The −X end moves 0.983 mm along the tunnel, rounds and
+    all. The +X end face stands back to 33.458 and runs flat out to the collar's cone, filling the
+    groove that was there. The chimney cone comes in 1.003 mm, which trims its corners. Every figure
+    follows from the gears' own toe cone and toe plane, and the gears keep their one shared crown.
   - **The Diff Gear Axle's boss seats on the Diff Gear Shaft's front MR128.** The boss is the spacer that
     stops the axle on that bearing's inner race (008.6 step 21's rod "until it stops"), holding the hub
     off the shaft's end, which turns with the other input. In `config="revised"` the shaft's plain Ø17
@@ -1108,7 +1110,9 @@ anything version 3 does not independently specify
   does not carry it. `diff_bevel.scad` states the tooth zone as `BEVEL_ZONE`, and 720-001 states the
   shaft's as `crown_zone()`. `diff_assembly.scad`'s `interference` takes any two parts as they sit, and
   `700-Differential/render-all.rs` requires Body B against the axle, the shaft and both Split Gear halves
-  to render empty. The Models README points to those files for the figures. In openscad-tools, REQ-W-6
+  to render empty. It also requires Body B to render empty against the three crowns' tooth zones grown
+  to just under the clearance, which checks the clearance itself. The Models README points to those
+  files for the figures. In openscad-tools, REQ-W-6
   specifies the label toggles.
 - **Status:** `[Specified]` — [DC-13](specs/009-Design-Completion.md#base-height-and-l1) is closed. The
   built height is confirmed under

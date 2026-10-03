@@ -88,8 +88,8 @@
 // four decimals and named it outright.
 //
 // This part's overlaps with the three bevel crowns' toes are not residuals:
-// the reference carries them, and "revised" cuts them away. See TOE CLEARANCE
-// below.
+// the reference carries them, and "revised" moves the facing surfaces clear of
+// them. See TOE CLEARANCE below.
 //
 // The encoder track used to be listed here as a further, undiagnosed residual
 // — the worst reference point at x = 46.875, r = 25.000 about the J4 axis.
@@ -122,22 +122,41 @@ include <diff_bevel.scad>          // and, through it, diff_params.scad
 use <720-001_DiffGearShaft.scad>
 
 /* [Hidden] */
+// true draws the part's overlap with the crowns' keep-out instead of the part;
+// render-all.rs sets it and requires an empty result. See TOE CLEARANCE.
+keepout_check = false;
+
 // The two axes, from diff_params.scad -- the assembly places this part by
 // putting their crossing on the differential centre, and reads them from there.
 J4_YZ  = BODY_B_J4_YZ;    // tunnel / pivot axis (y, z); runs along X
 COL_XY = BODY_B_COL_XY;   // column axis (x, y); runs along Z
+
+// The running clearance off a 45-degree bevel toe, as the d + r of the surface
+// that faces it: d along the crown's axis from the crossing, r out from it.
+// See TOE CLEARANCE below.
+assert(BEVEL_INNER[1] == 1, "the toe cone is no longer 45 degrees");
+TOE_C = BEVEL_INNER[0] - RUN * sqrt(2);
 
 CLIP_Z    = 34.0;         // the flat face the chimney base rounds onto
 FLAT_Y    = 12.460;       // vertical side flats, +/- this about the mirror plane
 FLAT_Z0   = 30.2195;      // where they start: 21 + sqrt(15.5^2 - FLAT_Y^2)
 TOP_R     = 1.414;        // round from those flats onto the z = 34 face
 BOSS_X    = 10.988;       // the chimney base's x walls, +/- this about the column
-CHIM_C    = 47.520;       // chimney base cone: rho = CHIM_C - z (45 degrees)
+CHIM_C    = config == "previous" ? 47.520   // chimney base cone: rho = CHIM_C - z
+          : J4_YZ[1] + TOE_C;              // (45 degrees); see TOE CLEARANCE
 CHIM_R    = 1.000;        // round from that cone onto the z = 34 face
 
 CONE_X    = 32.700;       // where the shell turns conical
 CYL_X     = 34.000;       // beyond here the top is cut by planes through the
 CONE_ANG  = 35.0;         // axis at this angle, rather than by the chimney
+
+// The barrel's two ends. In "revised" each stands RUN off the crown toe it
+// faces -- see TOE CLEARANCE. FLANK_C is the -X flank's r = x + FLANK_C.
+FLANK_C     = 5.500;
+FRONT_SHIFT = config == "previous" ? 0
+            : FLANK_C - (TOE_C - COL_XY[0]);
+REAR_END_X  = config == "previous" ? CYL_X
+            : COL_XY[0] - crown_zone()[0][1] - RUN;
 
 RIM_OD    = 29.4925;      // mating rim, against Diff Body A's Ø60 plate
 RIM_X     = [45.700, 47.000];
@@ -203,16 +222,20 @@ function arcpts(cx, cy, r, a0, a1, n = 24) =
 //
 // The -X end is a narrow radial face at x = 8.000, only 0.586 mm tall,
 // reached by an R1 round from the 45-degree flank; the matching R1 round on
-// the bore side is in BORE below.
-BARREL = concat(
+// the bore side is in BORE below. In "revised" the whole end, both rounds
+// included, stands FRONT_SHIFT further along +X.
+BARREL_FRONT = concat(
     [[ 0.000,   8.000],
      [12.500,   8.000],   // inner round's tangent on the end face
      [13.086,   8.000]],  // outer round's tangent on the end face
     arcpts(13.086, 9.000, 1.000, 270, 315, 8),   // R1 -> (13.793, 8.293)
-    [[15.000,   9.452],   // 45-degree flank, r = x + 5.5
+    [[15.000,   9.452],   // 45-degree flank, r = x + FLANK_C
      [15.483,   9.586],   // small shoulder onto the cylinder
-     [15.500,   9.700],
-     [15.500,  CONE_X],
+     [15.500,   9.700]]
+);
+BARREL = concat(
+    [for (p = BARREL_FRONT) [p[0], p[1] + FRONT_SHIFT]],
+    [[15.500,  CONE_X],
      // Past CONE_X the barrel carries only the 6703 seat's end wall — the
      // "lip" that an x = 33 section shows as a near-full ring, r 11.5 to
      // 14.484, capped by the chimney rather than by the 35-degree planes.
@@ -246,10 +269,27 @@ COLLAR = [
 // Diff Gear Shaft's front journal is that much shorter (720-001's
 // front_drop()), and its 6703 keeps its place on the journal's end.
 FRONT_DROP = front_drop();
+
+// The collar's conical inner wall, [r, x] at each end.
+INNER_WALL = [[15.483, CONE_X], [22.000, 39.200]];
+function inner_wall_r(x) = INNER_WALL[0][0] + (INNER_WALL[1][0] - INNER_WALL[0][0])
+                         * (x - INNER_WALL[0][1]) / (INNER_WALL[1][1] - INNER_WALL[0][1]);
+
+// The reference's +X end: the seat's end wall, then an annular groove down to
+// x = CONE_X before the conical inner wall. In "revised" the end face runs
+// flat from the seat's mouth round straight out to that wall instead -- see
+// TOE CLEARANCE.
+REAR_GROOVE = concat(
+    [[13.070,  CYL_X]],                           // the seat's end wall
+    arcpts(13.070, 33.000, 1.000, 0, 45, 8),      // R1 -> (13.777, 33.707)
+    [[14.784,  CONE_X],                           // 45-degree groove flank
+     INNER_WALL[0]]
+);
+
 BORE = concat(
     [[ 0.000,   7.000],
      [12.500,   7.000]],
-    arcpts(12.500, 9.000, 1.000 - PRESS, 270, 180, 12),   // R1 off the -X end face
+    arcpts(12.500, 9.000 + FRONT_SHIFT, 1.000 - PRESS, 270, 180, 12),   // R1 off the -X end face
     [[11.500 + PRESS,  13.800 + FRONT_DROP],   // Ø23.000 6703 seat
      [10.500,  13.800 + FRONT_DROP],
      [10.500,  14.000 + FRONT_DROP],
@@ -264,14 +304,11 @@ BORE = concat(
     [[10.500,  28.000],
      [10.500,  28.200],
      [11.500 + PRESS,  28.200],   // Ø23.000 6703 seat
-     [11.500 + PRESS,  33.000]],
-    arcpts(12.500, 33.000, 1.000 - PRESS, 180, 90, 12),   // R1 at the seat's mouth
-    PRESS > 0 ? [[12.500, CYL_X]] : [],
-    [[13.070,  CYL_X]],                           // the seat's end wall
-    arcpts(13.070, 33.000, 1.000, 0, 45, 8),      // R1 -> (13.777, 33.707)
-    [[14.784,  CONE_X],   // 45-degree groove flank
-     [15.483,  CONE_X],
-     [22.000,  39.200],   // conical inner wall, 2.5 mm thick
+     [11.500 + PRESS,  REAR_END_X - 1]],
+    arcpts(12.500, REAR_END_X - 1, 1.000 - PRESS, 180, 90, 12),   // R1 at the seat's mouth
+    PRESS > 0 ? [[12.500, REAR_END_X]] : [],
+    config == "previous" ? REAR_GROOVE : [[inner_wall_r(REAR_END_X), REAR_END_X]],
+    [INNER_WALL[1],                          // conical inner wall, 2.5 mm thick
      [22.000,  48.000],
      [ 0.000,  48.000]]
 );
@@ -467,6 +504,9 @@ module wire_lead() {
 // -21 and -25 -- where a revolve at this radius would move 0.1 mm between the
 // first pair and 0.6 mm across the second.
 //
+// (Those are the reference's faces. In "revised" both end faces move -- see
+// TOE CLEARANCE -- and each round moves with its face.)
+//
 // R1 both, centres (9.000, 33.000) and (33.000, 33.000): the same 12.000 mm
 // either side of the column axis at x = 21, as the end faces themselves are
 // the same 13.000 mm either side of it. Tangency to both faces fixes each
@@ -498,7 +538,7 @@ module wire_lead() {
 // y = -38.1 and y = -3.9. Between those the cutter's z = 33.000 side is
 // outside the material; the top face it is breaking only spans the flats,
 // y = -33.46 .. -8.54, so the bound costs nothing.
-END_X    = 8.000;         // the -X end face; the +X one is CYL_X
+END_X    = 8.000 + FRONT_SHIFT;   // the -X end face; the +X one is REAR_END_X
 END_R    = 1.000;         // round from each end face onto the z = 34 clip
 END_ROUND_Y = [-36, -6];  // spans the z = 34 face, inside the collar's reach
 
@@ -792,39 +832,48 @@ module rim_slots() {
 // shaft's toe plane, which lies at x = 33.958.
 //
 // In "revised" this part keeps the RUN clearance (diff_params.scad) off the
-// volume each crown's teeth sweep. That volume is the teeth's meridian revolved
-// about the crown's axis, so growing the meridian by RUN and revolving it puts
-// RUN of clearance normal to every surface the teeth pass through. The cutter
-// comes from the gears' own cones, BEVEL_ZONE and 720-001's crown_zone(), so
-// no number is restated here. Each zone is in diff_bevel.scad's gear frame,
-// with the teeth at negative z, and is turned so the teeth point away from the
-// crossing:
+// volume each crown's teeth sweep. Each facing surface is parallel to the toe it
+// faces, so each is moved, over its whole extent, to stand RUN off that toe:
+//   - the -X end, rounds and flank together, moves FRONT_SHIFT along +X, which
+//     puts the 45-degree flank at d + r = TOE_C about the crossing;
+//   - the +X end face is REAR_END_X, RUN short of the shaft's toe plane, and
+//     runs flat from the seat's mouth round out to the collar's conical wall,
+//     filling the reference's groove;
+//   - the chimney cone is rho = CHIM_C - z, which is d + rho = TOE_C about the
+//     crossing along the column.
+// TOE_C is the 45-degree toe cone BEVEL_INNER brought RUN toward the crossing,
+// and the shaft's toe plane is 720-001's crown_zone(), so no number is restated
+// here. Each crown's teeth lie wholly on the far side of its toe surface, so a
+// surface parallel to it and RUN short of it is RUN clear of every tooth.
+// "previous" is the reference, and keeps all three overlaps.
+//
+// The surfaces are moved rather than cut. A cutter shaped to the swept teeth
+// covers only the band between their root and tip cones, and leaves the
+// reference surface standing on either side of that band: a knife edge where
+// the -X cut met the front seat's mouth round, a step ridge beyond the tip
+// cone, a V groove at the +X end, and notched chimney corners.
+//
+// toe_keepout() is that swept volume, grown by `grow`, and is not cut from the
+// part. With `keepout_check` set the file draws the part's overlap with it
+// instead of the part; render-all.rs requires that empty at RUN - KEEPOUT_TOL.
+// Each zone is in diff_bevel.scad's gear frame, with the teeth at negative z,
+// and is turned so the teeth point away from the crossing:
 //   - the axle: gear +z onto this part's +x, so its teeth fall toward -X;
 //   - the shaft: gear +z onto -x, so its teeth fall toward +X;
 //   - the Split Gear: gear +z onto -z, so its teeth stand up the column.
-// What it takes, all near the toes: the -X flank comes in to a cone RUN off
-// the axle's toe and meets the front seat's mouth round just inside the end
-// face; the +X end wall steps back to RUN short of the shaft's toe plane; and
-// the chimney cone's corners, with both ends of the z = 34 clip, come back to
-// RUN off the Split Gear's toe. "previous" is the reference, and keeps all
-// three overlaps.
-//
-// The offset's corner arcs are drawn at TOE_ARC_FN, not the file's 128. Each
-// arc segment then sags 0.0024 mm inside the true RUN arc, and the meridian
-// keeps about 40 points rather than 130. CGAL's cost is in the revolve's
-// facets: against 5 min without the cutters, they cost 13 min at 128 and
-// 8 min at 32, and the two results lie 0.002 mm apart (`dist`, both ways).
-TOE_ARC_FN = 32;
+// The offset's corner arcs are drawn at $fn 32, which sags 0.0024 mm inside
+// the true arc, well inside KEEPOUT_TOL.
+KEEPOUT_TOL = 0.050;
 
-module toe_zone(zone) {
-    rotate_extrude() offset(r = RUN, $fn = TOE_ARC_FN) polygon(zone);
+module toe_zone(zone, grow) {
+    rotate_extrude() offset(r = grow, $fn = 32) polygon(zone);
 }
 
-module toe_clearance() {
+module toe_keepout(grow) {
     translate([COL_XY[0], J4_YZ[0], J4_YZ[1]]) {
-        yrot(90)  toe_zone(BEVEL_ZONE);       // Diff Gear Axle
-        yrot(-90) toe_zone(crown_zone());     // Diff Gear Shaft
-        xrot(180) toe_zone(BEVEL_ZONE);       // Split Gear
+        yrot(90)  toe_zone(BEVEL_ZONE, grow);       // Diff Gear Axle
+        yrot(-90) toe_zone(crown_zone(), grow);     // Diff Gear Shaft
+        xrot(180) toe_zone(BEVEL_ZONE, grow);       // Split Gear
     }
 }
 
@@ -858,8 +907,7 @@ module diff_body_b() {
             linear_extrude(WIRE_POLY_Z[1] - WIRE_POLY_Z[0]) polygon(WIRE_POLY);
         wire_lead();
         clip_round(END_X,  1);
-        clip_round(CYL_X, -1);
-        if (config != "previous") toe_clearance();
+        clip_round(REAR_END_X, -1);
         // These two render() calls are not cosmetic, and between them they are
         // the whole reason this part is usable to look at. Preview normalises
         // the tree to disjunctive normal form, and both calls are differences
@@ -921,4 +969,7 @@ module diff_body_b() {
     }
 }
 
-diff_body_b();
+if (keepout_check)
+    intersection() { diff_body_b(); toe_keepout(RUN - KEEPOUT_TOL); }
+else
+    diff_body_b();

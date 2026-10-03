@@ -423,7 +423,7 @@ const EXTENT_TOL: f64 = 0.02;
 /// Pairs of parts that must not overlap as they sit, rendered as their
 /// intersection from source. The ring sits inside Body A's chamber, where no
 /// extent check can reach. Body B against each crown that turns in it is the
-/// running clearance 730-002's TOE CLEARANCE cuts; the Split Gear Top is
+/// running clearance 730-002's TOE CLEARANCE keeps; the Split Gear Top is
 /// listed beside the Bottom, which carries the toe, because both halves sweep
 /// the same zone.
 const INTERFERENCE: [(&str, &str); 5] = [
@@ -593,24 +593,43 @@ fn check_extents(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
-/// Each pair's overlap, rendered from source: clean only if OpenSCAD reports
-/// the top level object empty and says nothing else.
+/// Renders `args` and reports whether the result is clean: only if OpenSCAD
+/// reports the top level object empty and says nothing else.
+fn renders_empty(args: &[&str], ctx: &Ctx) -> Result<bool> {
+    let r = run(&ctx.openscad, args, &ctx.dir)?;
+    let complaints = diagnostics(&r.stderr);
+    let empty = complaints.len() == 1 && complaints[0].contains("top level object is empty");
+    if !empty {
+        for line in &complaints {
+            println!("      {line}");
+        }
+    }
+    Ok(empty)
+}
+
+/// Each pair's overlap, rendered from source.
 fn check_interference(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for (a, b) in &INTERFERENCE {
         let pair = format!("interference=[\"{a}\",\"{b}\"]");
         let out = format!("out/revised/interference-{a}-{b}.stl");
-        let r = run(&ctx.openscad,
-                    &["-o", &out, "-D", "config=\"revised\"", "-D", "geometry=\"scad\"",
-                      "-D", &pair, "diff_assembly.scad"], &ctx.dir)?;
-        let complaints = diagnostics(&r.stderr);
-        let empty = complaints.len() == 1 && complaints[0].contains("top level object is empty");
-        if !empty {
-            for line in &complaints {
-                println!("      {line}");
-            }
-        }
+        let empty = renders_empty(&["-o", &out, "-D", "config=\"revised\"",
+                                    "-D", "geometry=\"scad\"", "-D", &pair,
+                                    "diff_assembly.scad"], ctx)?;
         tally.record(&format!("{a} and {b} do not overlap (revised)"), empty);
     }
+    Ok(())
+}
+
+/// Body B against the volume the three crowns' teeth sweep, grown by just
+/// under the running clearance. Where the interference pairs show only that
+/// Body B and the gears do not touch, this shows the clearance itself. See
+/// 730-002's TOE CLEARANCE.
+fn check_keepout(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let empty = renders_empty(&["-o", "out/revised/keepout-730-002.stl",
+                                "-D", "config=\"revised\"", "-D", "keepout_check=true",
+                                "730-002_DiffBodyB.scad"], ctx)?;
+    tally.record("730-002 keeps the running clearance off the three crowns' teeth (revised)",
+                 empty);
     Ok(())
 }
 
@@ -627,7 +646,8 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_assembly(ctx, tally)?;
     check_revised(ctx, tally)?;
     check_extents(ctx, tally)?;
-    check_interference(ctx, tally)
+    check_interference(ctx, tally)?;
+    check_keepout(ctx, tally)
 }
 
 fn main() -> Result<()> {
