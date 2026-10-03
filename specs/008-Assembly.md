@@ -78,28 +78,49 @@ Parts: [007.2](007-Bill-of-Materials.md#0072-base).
 5. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washers, and nut,
    or clamp the same four corners to a T-slot table. The plate must be fixed down, not left resting —
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
-6. Assemble each Base Clamp: place an M3 washer on the hex side and thread in an M3 × 20 mm bolt from the
-   other side. Assemble **both** clamps (the clamps are installed later, in [008.4](#0084-main-pivot) step
-   18).
+6. Assemble the Base Clamp: place an M3 nut in the hex pocket on one ear and thread in an M3 × 20 mm bolt
+   from the counterbored ear. The clamp is installed later, in [008.4](#0084-main-pivot) step 17.
 
 ## 008.3 Harmonic Drive Motors
 Parts: [007.3](007-Bill-of-Materials.md#0073-harmonic-drive-motors). Builds the base (J1) and pivot (J2)
-motor assemblies (repeat for the J3 external-gear motor in [008.8](#0088-external-gear)).
+motor assemblies (repeat for the J3 external-gear motor in [008.8](#0088-external-gear)). Before printing J3's
+Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
+[`exgear_assembly.scad`](../Hardware/Models/500-ExternalGear/exgear_assembly.scad), and print the Attach with the
+`hub_drop` that file echoes as `j3_hub_drop` ([007.2](007.2-Printed-Parts.md#printed-parts)).
 
 1. Assemble one drive at a time.
 2. Keep each strain-wave drive's top and bottom halves paired — they are matched at manufacture and are not
    interchangeable between drives.
 3. Remove first-layer print residue from the Flex Spline Attach.
-4. Lubricate, then press the flex spline onto the Flex Spline Attach with a press.
+4. Lubricate, then press the flex spline's hub onto the Flex Spline Attach with a press: its Ø11 bore over
+   the spigot and its six holes over the nubs.
 5. Separate them and inspect for print residue pushed into the attachment nubs during pressing; remove any.
-6. Secure the Flex Spline Attach to the motor with 4× M3 × 10 mm bolts (confirm size/qty against the build).
-7. Tighten the M2 bolts into the Flex Spline Cap until ~1/4" of thread shows through the far side.
+6. Clamp the hub, before the Attach goes on the motor, because the screw heads sit in its underside:
+   a. Refit the hub over the spigot and nubs.
+   b. Press an M2 nut into each of the Flex Spline Cap's six traps. Set the Cap inside the cup, its land
+      down on the hub and its holes over the nubs.
+   c. Drive 6× M2 × 12 mm screws up through the Attach's head pockets, the nubs and the hub into the nuts,
+      cross-pattern, until snug.
+7. Secure the Flex Spline Attach to the motor with 4× M3 × 10 mm bolts (confirm size/qty against the build).
 8. Press M3 nuts into the Wave Gen Coupler, insert M3 × 8 mm hex bolts to retain them, then epoxy over the
    nut heads to lock them; cure.
 9. Ream the Wave Gen Coupler and lubricate before sliding it onto the motor shaft.
-10. Use the wave-generator depth-setting tool to set the coupler depth on the shaft.
+10. Use the wave-generator depth-setting tool to set the coupler depth on the shaft. The depth puts the wave
+    generator where the drive's drawing puts it against the flex spline: its hub's outer face the overall
+    axial length [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the
+    flex spline's mounting face. J3's Attach carries that face lower on its motor by its `hub_drop`, so a
+    tool that gauges from the motor face is reset for J3.
 11. Tighten the M3 × 8 mm hex bolts evenly (alternate a few turns each) until snug — do not over-tighten the
     printed mount.
+12. Mount the drive's top half, its circular spline, in the joint's Stator Holder (`#110-002`, `#200-002` or
+    `#511-002`, printed `config="revised"`):
+    a. Press an M3 nut into each of the six hex pockets in the holder's back face and push it to the
+       pocket's end.
+    b. Seat the circular spline in the recess, stamped "52" outward, with its Ø38 step in the pilot bore
+       and its six holes over the pockets.
+    c. Drive 6× M3 × 12 mm socket-head screws through the spline into the nuts, cross-pattern, until snug.
+       In the Base and Pivot holders the tips stand 1 mm proud of the back face, inside the drive's
+       Ø50 circle.
 
 ## 008.4 Main Pivot
 Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor assemblies from
@@ -109,58 +130,56 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
    both the body holes and strake ends.
 2. Epoxy both ends at once — internal weep holes connect them and epoxy mixes inside; wipe weeped excess.
 3. Confirm both strake sets protrude by about the same distance once seated.
-4. Press the Pivot Motor End Caps onto two 6810 bearings.
+4. Press the two Motor End Caps — Base `#311-001` and Pivot `#312-001` — onto two 6810 bearings.
 5. Slide the two-sided Pivot Code Disk onto the Main Pivot, flat side facing away from the body.
 6. Epoxy the Pivot Motor End Caps to the Main Pivot; orient the long-end cap's notch toward the motor-wire
    hole in the long end (short-end cap orientation is free — its wire hole is centered).
 7. Feed the two motor assemblies' wires through the side holes and pull them through.
 8. Epoxy the motor bottoms, End Cap faces, and the strake-to-motor contact areas.
 9. Mount the Main Pivot onto the Base:
-   a. Press a 6810 bearing ~38 mm (1.5") into the Base Long (mallet + aluminum drift if it resists).
+   a. From the Base Long's lower end, press a 6810 bearing into the lower bore until it stops on the bore's
+      shoulder, 35.5 mm (about 1½″) in (mallet + aluminum drift if it resists).
    b. Align the Base Code Disk with the 3 strakes and press to snap in.
-   c. Push the Base Long (wires up) onto the Main Pivot until fully seated; if the bearing pushes out, invert
-      and tap back.
-   d. Remove the Flex Spline Attach socket-head screws one at a time, adding a #6 washer under each to hold
-      the bearing and lock the motor while adhesive cures.
-10. Lubricate 4× M2 × 16 mm bolts, place them in the Base Stator Holder, and screw down.
-11. Seat the strain-wave top in the Base Stator Holder, stamped "52" outward, aligning the two threaded
-    holes; secure with 2× M3 × 12 mm socket-head bolts.
-12. Slide the Base Stator Holder onto the Base Long strakes, pressing down while occasionally rotating the
+   c. Push the Base Long, lower end up (wires up), onto the Main Pivot until the Base Motor End Cap's bearing
+      bottoms in the Base Long's upper bore, flush with its top face.
+   d. Remove the Flex Spline Attach socket-head screws one at a time, adding a #6 washer under each; the
+      washers retain the lower bearing's inner race, which runs free on the Attach's land, and lock the motor
+      while adhesive cures.
+10. Mount the strain-wave top in the Base Stator Holder ([008.3](#0083-harmonic-drive-motors) step 12).
+11. Slide the Base Stator Holder onto the Base Long strakes, pressing down while occasionally rotating the
     motor shaft.
-13. Prepare 3× M3 × 105 mm all-thread: apply threadlocker, thread an M3 nut flush at one end.
-14. Slide the Base Stator Holder fully onto the strakes.
-15. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
-16. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
-17. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
-18. Install **both** Base Clamps (from [008.2](#0082-base) step 6), stacked: remove the Base Long, slide both
-    clamps onto the Base Mount, reinstall the Base Long, and tighten both clamps. They stack face to face
-    with no spacer, the lower one seating on the Base Mount's shoulder — see
-    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Record the resulting
-    mounting-face-to-J2 height for [DC-13](009-Design-Completion.md#base-height-and-l1).
+12. Prepare 3× M3 × 105 mm all-thread: apply threadlocker, thread an M3 nut flush at one end.
+13. Slide the Base Stator Holder fully onto the strakes.
+14. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
+15. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
+16. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
+17. Install the Base Clamp (from [008.2](#0082-base) step 6): remove the Base Long, slide the clamp onto the
+    Base Mount until it seats on the shoulder, reinstall the Base Long fully down on the Base Mount's top
+    face, and tighten the clamp — see
+    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Measure the
+    mounting-face-to-J2 height per
+    [009.1 § 3.1](009.1-Performance-Characterization-Protocol.md#test-31-mounting-face-to-j2-axis).
 
 ## 008.5 Arm Body
 Parts: [007.5](007-Bill-of-Materials.md#0075-arm-body).
 
 1. Press a 6810 bearing ~38 mm into the Arm Body.
-2. Slide the Arm Body over the Pivot Motor and snap in; tap the bearing back with mallet + drift if it backs
-   out.
-3. Remove the M3 × 12 mm socket-head screws one at a time, adding a #6 washer under each, and retighten to
-   lock the bearing.
-4. Lubricate 4× M2 × 16 mm bolts in the Pivot Stator Holder and screw down.
-5. Seat the strain-wave top in the Pivot Stator Holder, "52" outward, aligning the threaded holes; secure
-   with 2× M3 × 12 mm socket-head bolts.
-6. Slide the Pivot Stator Holder onto the Arm Body, pressing while rotating the motor shaft.
-7. Tap the 4 Stator Balancers into place with light mallet taps (they are fragile).
-8. Assemble the Belt Directors:
+2. Slide the Arm Body over the Pivot Motor and snap in.
+3. Remove the M3 × 12 mm socket-head screws one at a time, adding a #6 washer under each, and retighten; the
+   washers retain the bearing's inner race on the Flex Spline Attach's land.
+4. Mount the strain-wave top in the Pivot Stator Holder ([008.3](#0083-harmonic-drive-motors) step 12).
+5. Slide the Pivot Stator Holder onto the Arm Body, pressing while rotating the motor shaft.
+6. Tap the 4 Stator Balancers into place with light mallet taps (they are fragile).
+7. Assemble the Belt Directors:
    a. Press the 6 MR128 bearings **onto** the belt director shanks, two per body — the shank is the bearing
       bore, not a housing ([007.2](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)).
    b. Apply a drop of super glue **inside** each Belt Director (not on the cap — cap glue can seep into and
       lock the bearing).
    c. Push the Large and Small Belt Directors through front to back, then press the Caps in from the back.
-9. Idler: fit the MR85 bearing onto the Idler Plug shaft, then screw in the M2 × 20 mm bolt back to front.
-10. Hold the Belt Director Pulley between the two halves, push the Idler Plug through back to front, and press
+8. Idler: fit the MR85 bearing onto the Idler Plug shaft, then screw in the M2 × 20 mm bolt back to front.
+9. Hold the Belt Director Pulley between the two halves, push the Idler Plug through back to front, and press
     together.
-11. Place the M3 washer, then M2 washer, then M2 nut, and tighten.
+10. Place the M3 washer, then M2 washer, then M2 nut, and tighten.
 
 ## 008.6 Differential
 Parts: [007.6](007-Bill-of-Materials.md#0076-differential). Parametric source in
@@ -184,9 +203,9 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
 8. Press the Split Gear Top into the Split Gear Bottom; rotate until the 4 holes show through the 4 windows.
 9. Through each window, insert a 1" #19 wire brad with super glue ~6 mm deep; trim flush once set.
 10. Push a zip-tie flat end into each window as far as it goes, hot-glue, and trim flush.
-11. Epoxy the 3 25 mm CF strakes into the Split Gear **Top** slots; cure. The three 5.6 × 2.5 mm slots are
-    cut from that part's base on r 13.000–15.500 at 90°, 210° and 330°, and run up to z 8.000; the Split
-    Gear Bottom carries no slot ([DC-11(e)](009-Design-Completion.md#procurement-data)).
+11. Epoxy the 3 25 mm CF strakes into the Split Gear **Top** slots; cure. The three slots are cut from
+    that part's base at 90°, 210° and 330° and run up to z 8.000. The Split Gear Bottom carries no slot
+    ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 12. Press the Diff Gear Shaft into Diff Body B.
 13. Coat the bore of the Diff Shaft Pulley (`#720-004`) with epoxy, and set it in Diff Body A's pulley
     chamber through the +X window, centred on the 6705. Press Diff Body B into Diff Body A (tight, fully
@@ -218,7 +237,7 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
 ## 008.7 End Arm Hub
 Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 
-1. Insert a 6810 bearing into each Axis Intersection half.
+1. Insert a 6807 bearing into each Axis Intersection half.
 2. Press the New Belt Pulley into the Arm-Body-side half.
 3. Epoxy the holes on the Arm-Body-side Axis Intersection.
 4. Epoxy the mirrored other half and join the two; epoxy the remaining holes for the 48 mm strakes.
@@ -254,26 +273,28 @@ Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 
 ## 008.8 External Gear
 Parts: [007.8](007-Bill-of-Materials.md#0078-external-gear). Builds the 3rd strain-wave drive (J3) — follow
-[008.3](#0083-harmonic-drive-motors) steps 1–11 for the drive, then:
+[008.3](#0083-harmonic-drive-motors) steps 1–11 for the drive, then the steps below.
+[009.1 § 3.3](009.1-Performance-Characterization-Protocol.md#test-33-j3-drive-stack) is taken between steps 6
+and 13, while the drive is open.
 
 1. Place 4 M3 nuts into the hex nut holders on the Ex Gear Motor End Cap.
 2. Screw M3 × 10 mm bolts into those nuts from the underside.
 3. Feed the motor wires through the End Cap.
 4. Epoxy the motor bottom and End Cap top and join, aligning the notch with the wire exit; then pull the
    bolts away from the End Cap so the nuts seat inward.
-5. Press one 6810 ~38 mm into the External Gear (tap back if it pushes out); press the second 6810 into the
-   top.
+5. Press one 6810 ~38 mm into the External Gear; press the second 6810 into the top. The upper one's inner
+   race runs free on the Flex Spline Attach's land.
 6. Replace the temporary bolts one at a time with M3 × 12 mm socket-head bolts and #6 washers, cross-pattern.
-7. Mount the strain-wave top to the Ex Gear Stator Holder: "52" outward, threaded holes aligned, lubricate
-   the bolt shafts, secure with 2× M3 × 12 mm socket-head bolts.
-8. Slide the Ex Gear Stator Holder onto the External Gear, aligning the notches, pressing while rotating the
-   shaft until hand-tight.
+7. Mount the strain-wave top in the Ex Gear Stator Holder ([008.3](#0083-harmonic-drive-motors) step 12).
+8. Slide the Ex Gear Stator Holder onto the External Gear, its eight keys in the gear's slots, pressing while
+   rotating the shaft until the keys bottom in the slots.
 9. Place M3 nuts into Nut Holder A/B, slide into the Ex Gear Mount (curvature sets orientation), seated to
    accept the all-thread.
 10. Feed the motor wires through the Ex Gear Mount hole, slide onto the strake holes, press hand-tight.
 11. Install 4× M3 × 12 mm socket-head bolts to secure the External Gear.
 12. Thread 2 M3 nuts onto one end of an M3 × 46 mm all-thread, tightened together.
-13. Fit the Ex Gear Mount Top over the External Gear, insert the all-thread, and tighten.
+13. Press a 6810 into the Ex Gear Mount Top's bearing seat from the underside until it stops on the seat's
+    shoulder. Fit the Mount Top over the External Gear, insert the all-thread, and tighten.
 14. Install the angle and rotate motors: feed each shaft back to front through the mount, wires toward the arm
     shaft.
 15. Place M3 washers on 4× M3 × 8 mm bolts, insert through the mount front, tighten cross-pattern until each

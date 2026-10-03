@@ -251,6 +251,19 @@ BEVEL_ENVELOPE_INNER = [
     bevel_meet(BEVEL_INNER, BEVEL_ROOT_UNDER),
 ];
 
+// The volume a turning gear's teeth sweep, as a meridian: root cone, heel
+// cone, crown ring, face cone and toe. Revolved, it is everything the teeth
+// pass through, so a part that must stay clear of a running gear stays clear
+// of this. It sits on the real root cone and not on BEVEL_ENVELOPE's inner
+// edge, which runs down the toe cone to r ~ 4.5, under the gear's own hub.
+BEVEL_ZONE = [
+    BEVEL_INNER_ROOT,
+    BEVEL_HEEL_ROOT,
+    BEVEL_RING[0],
+    BEVEL_RING[1],
+    BEVEL_INNER_TIP,
+];
+
 echo(str("diff_bevel: ", BEVEL_TEETH, "T, ring Ø", BEVEL_OD,
          " at z ", BEVEL_RING[0].y, ", teeth ", BEVEL_HEEL_ROOT.y,
          " .. ", BEVEL_INNER_TIP.y));

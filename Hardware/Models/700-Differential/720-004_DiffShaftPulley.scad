@@ -22,7 +22,8 @@ assert(config == "revised",
 /* [Hidden] */
 FLANGE_H    = 0.75;     // each flange; leaves a 6.5 mm belt band
 FLANGE_OVER = 0.5;      // flange radius over the tooth tip
-SPLINE_GAP  = 0.1;      // radial gap over the band, taken up by the epoxy
+SPLINE_GAP  = SLIP;     // radial gap over the band, taken up by the epoxy: the
+                        //   print-fit clearance for a bond (diff_params.scad)
 
 RING_H      = BAND_Z[1] - BAND_Z[0];
 FLANGE_R    = PULLEY_TIP_D / 2 + FLANGE_OVER;

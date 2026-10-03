@@ -291,32 +291,48 @@ ENV_C    = [0.45, 0.55, 0.70, 0.22];
 // bounding box says so.
 // ---------------------------------------------------------------------------
 
+// The base stack, from specs/004 § Base mounting plate. Each part seats on a
+// face of the one below it: the long member on the base mount's top face, and
+// the Main Pivot's base on the 6810 that sits flush in the long member's top.
+// The clamp is not in the stack — it seats on the mount's 82.000 shoulder,
+// below the top face, and sets no height. L1 is the sum.
+BASE_SEAT_Y   = 98.000;   // #110-001 top face
+BASE_LONG_H   = 96.000;   // #120-001, the printed part
+PIVOT_J2_H    = 37.500;   // #300-001, J2 axis above its base
+BASE_LONG_TOP = BASE_SEAT_Y + BASE_LONG_H;
+L1_BUILT      = BASE_LONG_TOP + PIVOT_J2_H;
+assert(abs(L1_BUILT - 231.500) < 1e-6, "the base stack no longer sums to specs/003's L1");
+
 // Base group. All three sit on the J1 axis, which is this frame's y, and each
 // model is drawn with that axis on its own z — so one quarter turn about x
 // serves all three and only the height along the arm differs. The heights are
-// the CAD bodies' own: the base mount's foot on y = 0, the clamp's underside
-// on y = 82.000, the long member's on y = 98.000.
+// the stack's: the base mount's foot on y = 0, the clamp's underside on its
+// shoulder at y = 82.000, the long member's on the mount's top face.
 module place_base() {
     color(PRINT_C) {
         xrot(-90) import("100-Base/110-001_BaseMountBottom.stl", convexity = 8);
         back( 82) xrot(-90) import("100-Base/100-001_BaseClamp.stl", convexity = 8);
-        back(126) xrot(-90) import("100-Base/120-001_BaseLong.stl", convexity = 8);
+        // The model's own z runs -28.000..68.000.
+        back(BASE_SEAT_Y + 28) xrot(-90) import("100-Base/120-001_BaseLong.stl", convexity = 8);
     }
 }
 
 // Main Pivot. Its own z is the J1 axis and its own x is this frame's z: the
 // model spans x -32.500..55.000 and the CAD body spans z -32.500..55.000, the
 // same two numbers, which is what identifies the mapping. Placed with its base
-// plane on the J1 station.
+// plane on the long member's top face, BASE_LONG_TOP.
 //
 // The model is 6.5 mm taller along the J1 axis than the CAD body (71.500
 // against 65.000) and 4.0 mm narrower across the arm (67.965 against 72.000),
 // and the CAD body is not symmetric about the arm plane while the model is.
-// Two revisions of one part. It is placed on the mating plane — the J1
-// station, where it meets the long member — so the difference shows at the far
-// end instead of being split between the two ends.
+// Two revisions of one part. It is placed on the mating plane, where it meets
+// the long member, so the difference shows at the far end instead of being
+// split between the two ends. That plane is the printed long member's top,
+// 0.300 mm above the J1 station because the CAD body is that much shorter, so
+// this part's J2 bore stands the same 0.300 mm above the J2 station; every
+// part above it stays on the CAD chain.
 module place_main_pivot() {
-    color(PRINT_C) back(J1_STN.y) xrot(-90) zrot(-90)
+    color(PRINT_C) back(BASE_LONG_TOP) xrot(-90) zrot(-90)
         import("300-Pivot/300-001_MainPivot.stl", convexity = 8);
 }
 
@@ -465,6 +481,8 @@ UNPLACED = [
    "harness, gripper and build fixtures"],
 ];
 
+echo(str("base stack: L1 = ", L1_BUILT, " mm; the J2 station is at ", J2_STN.y,
+         ", ", L1_BUILT - J2_STN.y, " mm below the printed stack's J2 axis"));
 echo(str("robot_assembly: J2..J3 = ", J3_STN.y - J2_STN.y,
          "  J3..J4 = ", J4_STN.y - J3_STN.y,
          "  J4..J5 = ", J5_STN.y - J4_STN.y, " mm along the arm"));

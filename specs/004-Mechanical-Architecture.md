@@ -100,9 +100,9 @@ merely *rests* on the bench would need impractical mass to resist that: a 250 ×
 ≈4.9 kg supplies only ≈6 N·m of restoring moment, so it tips. **The plate must therefore be fixed to the
 work surface**, at which point the moment reacts as bolt tension of ≈300 N at the far bolt, well within an
 M6's capacity. Through-bolting the four corner holes is the specified method; clamping the plate to a
-T-slot table by the same corners is equivalent if each clamp is rated to that tension. **The base clamps
-are not part of this load path** — they join the Base Long to the Base Mount inside the base column and
-carry no plate-to-bench load.
+T-slot table by the same corners is equivalent if each clamp is rated to that tension. **The base clamp is
+not part of this load path** — it grips the strakes on the Base Mount's spigot and carries no
+plate-to-bench load.
 
 The work-surface fastener is **M6 bolt, property class 8.8 or better, with a plain washer under the head
 and under the nut, and a nut — 4 sets**. Length is **9.5 mm plate + work-surface thickness + 12 mm** for
@@ -112,25 +112,30 @@ its underside for the nuts; where it does not, use the T-slot clamp alternative 
 **Design intent: the plate is a permanent bench fixture; the robot base bolts onto it and can be removed as
 a unit while the plate stays fixed.**
 
-**Double base clamp.** The base-to-pivot joint uses a **doubled** (stacked) base clamp.
+**Base clamp.** The Base Long joins the Base Mount Bottom on the strakes epoxied into both
+([008.2](008-Assembly.md#0082-base)), and **one** base clamp grips that joint.
 
-The two clamps stack face to face with no spacer. Each is **15.000 mm** tall with flat, parallel end faces,
-and the Base Mount Bottom presents a seating shoulder at **97.000 mm** above its mounting face, 1.000 mm
-below its top face. The pair therefore occupies **97.000 → 127.000 mm** above the mounting face. The clamp
-sets the Base Long's axial position — the tube's lower end bottoms on nothing — so the second clamp raises
-the Base Long, the J2 axis, and every height above it by **15.000 mm**.
+The Base Mount Bottom's top 16.000 mm is a spigot, grooved for the six strakes, above a seating shoulder at
+**82.000 mm** over its mounting face. The clamp is **15.000 mm** tall with a **Ø74.500 mm** bore, split on
+one side; it seats on the shoulder, occupying **82.000 → 97.000 mm**, and its bore closes the strakes into
+the spigot's grooves. It is tightened with one M3 × 20 mm bolt ([C-611](007.1-Parts-Catalog.md#6-fasteners))
+across the split. The spigot has room for one clamp.
 
-Each clamp closes with one M3 × 20 mm bolt ([C-611](007.1-Parts-Catalog.md#6-fasteners)) through the
-Ø3.500 mm holes in the Base Long's ±35.540 mm faces.
+**The base stack.** The clamp sets no height. Each part above the mounting face seats on a face of the part
+below it, so L1 ([003 § Link lengths](003-Kinematics.md#link-lengths)) is the sum of printed dimensions:
 
-The height this produces does not agree with L1; the disagreement is
-[DC-13](009-Design-Completion.md#base-height-and-l1).
+| Station | Height above the mounting face | Set by |
+|---|---|---|
+| Base Mount Bottom top face; the Base Long seats on it | 98.000 mm | `#110-001` |
+| Base Long top face; the Base Motor End Cap's 6810 bottoms in the upper bore flush with it, and the Main Pivot's base rests on that bearing's inner race | 194.000 mm | `#120-001`, 96.000 mm tall |
+| **J2 axis** | **231.500 mm = L1** | `#300-001`, axis 37.500 mm above its base |
 
 **Base rotation drive.** J1 is driven by a strain-wave base motor (see below); the base structure carries
 the Base Code Disk and stator for the J1 encoder and reduction.
 
-*Source: wiki `Dynamics.md` (bolted base, double clamp); CAD parts `HDI-110-001_BaseMountBottom`,
-`HDI-110-002_BaseClamp`, and `HDI-220-001_BaseLong`, and their placements in the base chain.*
+*Source: wiki `Dynamics.md` (bolted base); CAD parts `HDI-110-001_BaseMountBottom`,
+`HDI-110-002_BaseClamp`, and `HDI-220-001_BaseLong`, and their placements in the base chain; printed parts
+`#120-001` and `#300-001` ([007.2](007.2-Printed-Parts.md)).*
 
 ## Base joints J1–J3: strain-wave drive
 
@@ -234,8 +239,10 @@ end-effector wiring bundle passes through the differential's hollow bore.
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
   `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
   `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
-  parameter sets are selectable: `config="previous"` reproduces the previous version's built differential;
-  `config="revised"` meets the [interface below](#differential-interface). Physical build validation
+  parameter sets are selectable: `config="revised"` meets the [interface below](#differential-interface)
+  and is the default, the configuration the model set is worked on and printed from;
+  `config="previous"` reproduces the previous version's built differential, is selected with `-D`, and
+  is what the reference gates measure. Physical build validation
   (binding, wiring survival, code-disk reads) remains in
   [DC-9](009-Design-Completion.md#performance-characterization).
 
@@ -334,7 +341,7 @@ J5 frame would stand it 39.500 mm further out, at 347.000 mm.
 
 **The bevel apex sits `C = 48.5335 mm` above Diff Body A's base plane**, derived from the Diff Gear
 Shaft's own apex and fixed by three separate seats in Body A that agree exactly: the rear 6703 face on the
-Ø20 waist shoulder, the Ø27 collar 4 mm above the Ø26 step, and the 40T pulley band centred on the belt
+Ø20 waist shoulder, the Ø27 collar 4 mm above the spacer step, and the 40T pulley band centred on the belt
 slot. Body A's remaining datums are its 20 × 20 R4 section spanning z 1–21, its 6 × 6 belt slot at z 8–14,
 and a shell mirror-symmetric about z = 11.000 over z ∈ [2, 20].
 
@@ -373,7 +380,6 @@ A subassembly not listed here has nothing open.
 
 | Subassembly | Joints | Drive | What is open |
 |---|---|---|---|
-| Base | J1 support | — | Base height against L1 — [DC-13](009-Design-Completion.md#base-height-and-l1) |
 | Arm Body (L2) | J3 support | belt routing | — |
 | End Arm Hub (L3) | J3–J4 | belt transfer | External pulleys 108T in `config="revised"` — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |
 | Differential | J4, J5 | belt → differential | Input pulleys 80T in `config="revised"` — [DC-12](009-Design-Completion.md#wrist-pulley-rework) |

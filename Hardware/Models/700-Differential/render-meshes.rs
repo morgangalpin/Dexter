@@ -57,61 +57,23 @@
 //! loosely as it is.
 //!
 //! Both sets are build output and neither is tracked. Run this after editing
-//! any part, or set `geometry = "scad"` in the assembly and skip it.
+//! any part, or set `geometry = "scad"` in the assembly and skip it. The one
+//! argument is the configuration, `revised` when omitted, as in
+//! `diff_params.scad`; `./render-meshes.rs previous` builds the reference set.
+//!
+//! The parts it builds are the ones `parts.json` lists for that configuration,
+//! the same list `render-all.rs` renders, so the two cannot drift apart. Each
+//! part's id is the name `diff_assembly.scad` imports its mesh by.
 //!
 //! ```cargo
 //! [dependencies]
 //! anyhow = "1"
 //! serde_json = "1"
+//! render-check = { path = "../render-check" }
 //! ```
 
 use anyhow::{Context, Result, bail};
-use serde_json::Value;
-use std::path::{Path, PathBuf};
-use std::process::Command;
-
-/// Absolute paths tried for OpenSCAD before falling back to `$PATH`. The `.exe`
-/// rather than the `.com` wrapper, for the reason `render-all.rs` records: this
-/// script reads the two streams apart.
-const OPENSCAD_CANDIDATES: [&str; 3] = [
-    "C:/Program Files/OpenSCAD/openscad.exe",
-    "/usr/bin/openscad",
-    "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD",
-];
-
-/// Paths tried for `scadmesh`, relative to this script's directory, as
-/// `render-all.rs` documents. Falls back to `$PATH`, or set `$SCADMESH`.
-const SCADMESH_CANDIDATES: [&str; 2] = [
-    "../../../../../openscad-tools/target/release/scadmesh.exe",
-    "../../../../../openscad-tools/target/release/scadmesh",
-];
-
-/// The nine printed parts, and the id `diff_assembly.scad` imports each by.
-/// The ids are the part numbers without the descriptive tail, matching what
-/// `render-all.rs` already names its own output.
-const PARTS: [(&str, &str); 9] = [
-    ("710-001", "710-001_SplitGearTop.scad"),
-    ("710-002", "710-002_SplitGearBottom.scad"),
-    ("710-003", "710-003_DiffKeeper.scad"),
-    ("710-004", "710-004_RotateCodeDisk.scad"),
-    ("720-001", "720-001_DiffGearShaft.scad"),
-    ("720-002", "720-002_DiffGearAxle.scad"),
-    ("720-003", "720-003_DiffEndPulley.scad"),
-    ("730-001", "730-001_DiffBodyA.scad"),
-    ("730-002", "730-002_DiffBodyB.scad"),
-];
-
-/// Parts that exist only in the revised configuration: #720-004, the 80T ring
-/// over the shaft's band (DC-12). Its file asserts the configuration.
-const REVISED_PARTS: [(&str, &str); 1] = [
-    ("720-004", "720-004_DiffShaftPulley.scad"),
-];
-
-/// The parts a configuration builds.
-fn parts_for(config: &str) -> Vec<(&'static str, &'static str)> {
-    let extra: &[(&str, &str)] = if config == "revised" { &REVISED_PARTS } else { &[] };
-    PARTS.iter().chain(extra).copied().collect()
-}
+use render_check::{group_parts, run, sm_json, Ctx};
 
 const OUT_DIR: &str = "out/asm";
 
@@ -129,76 +91,39 @@ const MAX_SPAN: &str = "3";
 /// volume to about six figures and the last one is noise.
 const VOLUME_EPS: f64 = 1.0e-3;
 
-fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> String {
-    if let Ok(v) = std::env::var(env_key) {
-        return v;
-    }
-    for c in candidates {
-        let path = dir.join(c);
-        if path.exists() {
-            return path.to_string_lossy().into_owned();
-        }
-    }
-    name.to_string()
-}
-
-fn script_dir() -> Result<PathBuf> {
-    let base = std::env::var("RUST_SCRIPT_BASE_PATH")
-        .context("RUST_SCRIPT_BASE_PATH unset - run this file as a rust-script")?;
-    Ok(PathBuf::from(base))
-}
-
 /// Render one part. The mesh is exported in the part file's own top-level
 /// orientation, which for 720-001, 720-003 and 720-004 is not the module's
 /// frame; the assembly's `part()` undoes each, and says so there.
-fn render(openscad: &str, dir: &Path, scad: &str, out: &str,
-          config: &str) -> Result<()> {
+fn render(ctx: &Ctx, scad: &str, out: &str, config: &str) -> Result<()> {
     let define = format!("config=\"{config}\"");
-    let r = Command::new(openscad)
-        .args(["-o", out, "--export-format=binstl", "-D", &define, scad])
-        .current_dir(dir)
-        .output()
-        .with_context(|| format!("running OpenSCAD on {scad}"))?;
-    if !r.status.success() {
-        bail!("OpenSCAD failed rendering {scad}:\n{}",
-              String::from_utf8_lossy(&r.stderr).trim_end());
+    let r = run(&ctx.openscad,
+                &["-o", out, "--export-format=binstl", "-D", &define, scad],
+                &ctx.dir)?;
+    if !r.ok {
+        bail!("OpenSCAD failed rendering {scad}:\n{}", r.stderr.trim_end());
     }
     Ok(())
 }
 
-/// Run one `scadmesh` subcommand and parse its report, keeping the exit code:
-/// `pinch` says through it whether a builder can take what it wrote.
-fn sm(scadmesh: &str, dir: &Path, args: &[&str]) -> Result<(bool, Value)> {
-    let r = Command::new(scadmesh)
-        .args(args)
-        .arg("--json")
-        .current_dir(dir)
-        .output()
-        .with_context(|| format!("running scadmesh {}", args[0]))?;
-    let text = String::from_utf8_lossy(&r.stdout);
-    let json = serde_json::from_str(&text)
-        .with_context(|| format!("parsing scadmesh {} output: {text}", args[0]))?;
-    Ok((r.status.success(), json))
-}
-
 /// The volume a mesh encloses, as `scadmesh info` measures it.
-fn volume(scadmesh: &str, dir: &Path, path: &str) -> Result<f64> {
-    let (_, json) = sm(scadmesh, dir, &["info", path])?;
+fn volume(ctx: &Ctx, path: &str) -> Result<f64> {
+    let (_, json) = sm_json(&["info", path], ctx)?;
     json[0]["volume_mm3"]
         .as_f64()
         .with_context(|| format!("no volume reported for {path}"))
 }
 
 /// Settle, repair and pinch one mesh in place, returning what each step did.
+/// `pinch` says through its exit code whether a builder can take the result.
 ///
 /// The steps take their own defaults for the vertex lattice and the weld
 /// tolerance, which are the same 1e-6 mm OpenSCAD itself uses.
-fn solidify(scadmesh: &str, dir: &Path, path: &str) -> Result<Vec<String>> {
+fn solidify(ctx: &Ctx, path: &str) -> Result<Vec<String>> {
     let mut notes = Vec::new();
-    let (_, s) = sm(scadmesh, dir, &["settle", path, "--out", path])?;
-    let (_, r) = sm(scadmesh, dir,
-                    &["repair", path, "--max-span", MAX_SPAN, "--out", path])?;
-    let (ok, p) = sm(scadmesh, dir, &["pinch", path, "--out", path])?;
+    let (_, s) = sm_json(&["settle", path, "--out", path], ctx)?;
+    let (_, r) = sm_json(&["repair", path, "--max-span", MAX_SPAN, "--out", path],
+                         ctx)?;
+    let (ok, p) = sm_json(&["pinch", path, "--out", path], ctx)?;
     let contacts = p["contacts"].as_array().map_or(0, |a| a.len()) as u64;
     for (n, label) in [(s["merged"].as_u64().unwrap_or(0), "vertices settled"),
                        (r["filled"].as_u64().unwrap_or(0), "gaps filled"),
@@ -216,37 +141,34 @@ fn solidify(scadmesh: &str, dir: &Path, path: &str) -> Result<Vec<String>> {
 }
 
 /// Build one part's mesh and make it renderable, returning the line to print.
-fn build(openscad: &str, scadmesh: &str, dir: &Path, id: &str, scad: &str,
-         config: &str) -> Result<String> {
+fn build(ctx: &Ctx, id: &str, scad: &str, config: &str) -> Result<String> {
     let out = format!("{OUT_DIR}/{id}.stl");
-    render(openscad, dir, scad, &out, config)?;
-    let before = volume(scadmesh, dir, &out)?;
-    let notes = solidify(scadmesh, dir, &out)?;
-    let after = volume(scadmesh, dir, &out)?;
+    render(ctx, scad, &out, config)?;
+    let before = volume(ctx, &out)?;
+    let notes = solidify(ctx, &out)?;
+    let after = volume(ctx, &out)?;
     if (after - before).abs() > VOLUME_EPS {
         bail!("{out} enclosed {before} mm3 as rendered and {after} mm3 once \
                made renderable; nothing here may move geometry");
     }
-    let bytes = std::fs::metadata(dir.join(&out))?.len();
+    let bytes = std::fs::metadata(ctx.dir.join(&out))?.len();
     Ok(format!("{} KiB{}{}", bytes / 1024,
                if notes.is_empty() { "" } else { "  " }, notes.join(", ")))
 }
 
 fn main() -> Result<()> {
-    let dir = script_dir()?;
-    let openscad = tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", &dir);
-    let scadmesh = tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", &dir);
-    let config = std::env::args().nth(1).unwrap_or_else(|| "previous".into());
-    std::fs::create_dir_all(dir.join(OUT_DIR))?;
+    let ctx = Ctx::for_script()?;
+    let config = std::env::args().nth(1).unwrap_or_else(|| "revised".into());
+    std::fs::create_dir_all(ctx.dir.join(OUT_DIR))?;
 
-    let parts = parts_for(&config);
+    let parts = group_parts(&ctx, &config)?;
     println!("Rendering {} parts to {OUT_DIR}/ ({config}, binary STL)",
              parts.len());
     for (id, scad) in &parts {
         print!("  {id} ... ");
         use std::io::Write;
         std::io::stdout().flush().ok();
-        println!("{}", build(&openscad, &scadmesh, &dir, id, scad, &config)?);
+        println!("{}", build(&ctx, id, scad, &config)?);
     }
     println!("Done. Open diff_assembly.scad with geometry = \"stl\".");
     Ok(())
