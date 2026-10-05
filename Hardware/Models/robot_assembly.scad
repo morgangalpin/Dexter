@@ -120,6 +120,8 @@ use <700-Differential/diff_assembly.scad>
 // same `-D config=` switch as the differential (DC-12).
 use <400-EndArm/430-001_ExternalOuterPulley.scad>
 use <400-EndArm/430-002_ExternalInnerPulley.scad>
+// Converted base parts are sources too, drawn in the same configuration.
+use <100-Base/100-001_BaseClamp.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -311,7 +313,7 @@ assert(abs(L1_BUILT - 231.500) < 1e-6, "the base stack no longer sums to specs/0
 module place_base() {
     color(PRINT_C) {
         xrot(-90) import("100-Base/110-001_BaseMountBottom.stl", convexity = 8);
-        back( 82) xrot(-90) import("100-Base/100-001_BaseClamp.stl", convexity = 8);
+        back( 82) xrot(-90) base_clamp();
         // The model's own z runs -28.000..68.000.
         back(BASE_SEAT_Y + 28) xrot(-90) import("100-Base/120-001_BaseLong.stl", convexity = 8);
     }

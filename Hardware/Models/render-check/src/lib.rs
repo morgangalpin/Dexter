@@ -285,6 +285,47 @@ pub fn dist_gate(gate: &DistGate, ref_dir: &str, ctx: &Ctx, tally: &mut Tally) -
     Ok(())
 }
 
+/// One layer of a part drawn as stacked 2D profiles: the profile the part
+/// draws for `layer = "<layer>"`, checked against the reference's section at
+/// `at`, mid-layer, before anything is extruded.
+pub struct OutlineGate {
+    pub stem: &'static str,
+    pub scad: &'static str,
+    pub reference: &'static str,
+    pub layer: &'static str,
+    pub at: f64,
+    pub tol: f64,
+}
+
+/// The tally line for an outline gate's `scadmesh outline --json` report.
+pub fn outline_label(gate: &OutlineGate, report: &Value) -> String {
+    let num = |k: &str| report[k].as_f64().unwrap_or(f64::NAN);
+    format!(
+        "{} {} profile vs section at z {} (hausdorff {:.3} mm, tol {} mm; area {:.3} vs {:.3} mm2)",
+        gate.stem,
+        gate.layer,
+        gate.at,
+        num("hausdorff"),
+        gate.tol,
+        num("candidate_area"),
+        num("reference_area"),
+    )
+}
+
+/// Export the gate's profile to `out/2d/<stem>-<layer>.svg` and measure it
+/// against the reference's section.
+pub fn outline_gate(gate: &OutlineGate, ref_dir: &str, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    std::fs::create_dir_all(ctx.dir.join("out/2d"))?;
+    let svg = format!("out/2d/{}-{}.svg", gate.stem, gate.layer);
+    let layer = format!("layer=\"{}\"", gate.layer);
+    render_with(gate.scad, &svg, &["config=\"previous\"", &layer], ctx, tally)?;
+    let reference = format!("{ref_dir}/{}", gate.reference);
+    let (at, tol) = (format!("--at={}", gate.at), gate.tol.to_string());
+    let (ok, report) = sm_json(&["outline", &svg, &reference, &at, "--tol", &tol], ctx)?;
+    tally.record(&outline_label(gate, &report), ok);
+    Ok(())
+}
+
 /// Read `ECHO: "<prefix><value>"` or `ECHO: <name> = <value>` off OpenSCAD's
 /// stderr: the text after `tag` on the first line carrying it, with any
 /// closing quote removed.
@@ -536,6 +577,17 @@ mod tests {
         std::fs::write(dir.join(PARTS_FILE), r#"[{"id": "a", "scad": "a.scad"}]"#).unwrap();
         assert_eq!(group_parts(&ctx, "revised").unwrap(), [("a".to_string(), "a.scad".to_string())]);
         std::fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn an_outline_label_carries_the_distance_and_both_areas() {
+        let gate = OutlineGate { stem: "p", scad: "p.scad", reference: "p.stl", layer: "upper", at: 0.9, tol: 0.15 };
+        let report = serde_json::json!({"hausdorff": 0.0213, "candidate_area": 10.0, "reference_area": 9.5});
+        assert_eq!(
+            outline_label(&gate, &report),
+            "p upper profile vs section at z 0.9 (hausdorff 0.021 mm, tol 0.15 mm; area 10.000 vs 9.500 mm2)"
+        );
+        assert!(outline_label(&gate, &serde_json::json!({})).contains("NaN"));
     }
 
     #[test]

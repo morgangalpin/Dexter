@@ -1046,3 +1046,29 @@ anything version 3 does not independently specify
     zones the gates grow. Each part's header lists its fits and classes, and `render-meshes.rs` builds in
     `config="revised"` unless told otherwise. The Models README recounts its parts and files and points to
     the `render-all.rs` files for the gates' figures.
+
+### CR-3A20: Mesh-only printed parts converted to OpenSCAD
+
+- **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
+  [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
+  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
+  `Hardware/Models/MANIFEST.csv`, and each converted group below.
+  - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad` and their
+    `.view.json` sidecars (new), and `render-all.rs`. Both meshes moved to `Reference/meshes/100-Base/`.
+  - `Hardware/Models/render-check/` gains `outline_gate`.
+- **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
+  as a mesh, so changing one meant re-deriving it.
+- **Now:** Each converted part is a `.scad` with two configurations. `config="previous"` recreates the
+  mesh and is gated on `scadmesh dist` at ±0.15 mm against it. `config="revised"` draws the part's print
+  fits from `print_fit.scad`. Each part's header owns its measured dimensions and fit list, and a view
+  sidecar names its features on the reference mesh and overlays the two renders on it.
+  - **100-Base:** the Base Clamp (`#100-001`). Its bolt hole, nut trap and head counterbore take the slip
+    clearance in `revised`. Its bore takes none, because it is a clamping bore closed by the bolt.
+    `robot_assembly.scad` draws the clamp from source.
+  - **100-Base:** the Base Code Disc (`#100-002`), drawn as two 2D profiles and extruded. Each
+    profile is gated on its own against the mesh's section (`scadmesh outline`) before the part's
+    `dist` gate. Its bore takes the slip clearance on the Base Stator Holder's body in `revised`.
+- **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
+- **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
+- **Re-derive:** Print each converted part from `config="revised"`. Run the group's `render-all.rs`
+  after editing a part.

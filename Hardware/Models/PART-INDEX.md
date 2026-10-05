@@ -16,8 +16,8 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #100-001 | Base Clamp | 1 | `100-001_BaseClamp.stl` |  |
-| #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.stl` |  |
+| #100-001 | Base Clamp | 1 | `100-001_BaseClamp.scad` | print fits on the bolt in `revised` |
+| #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.scad` | print fit on the bore in `revised` |
 | #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.stl` | ⚠️ |
 | #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` | ⚠️ |
 | #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline in `revised` |

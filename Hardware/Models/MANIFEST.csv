@@ -1,13 +1,15 @@
 path,group,bytes,stl_format_triangles,sha256
-100-Base/100-001_BaseClamp.stl,100-Base,64384,binary/1286,9b55f56b492ca696c0ae7042affb9650e6579a8d54d41905a752584c7d3d2a6d
-100-Base/100-002_BaseCodeDisc.stl,100-Base,543984,binary/10878,0bdaa80baee89ce79e9f7f0d93cc465e2af78a4fdd9193ce333aa5eec3b41d24
+100-Base/100-001_BaseClamp.scad,100-Base,3587,,51a7378dda37a91dc21b70386d4a1036b3e4a66e02395ebffb045d56ae5fd8dd
+100-Base/100-001_BaseClamp.view.json,100-Base,1929,,c4ca773a86192299fda742ceca36f6e108b5bb048b987ae79f407e3f7feeb1c6
+100-Base/100-002_BaseCodeDisc.scad,100-Base,4749,,0a9ad08e5a374920fa1fe15f1de90d538622b277393dc29c33d19c741f0cce1b
+100-Base/100-002_BaseCodeDisc.view.json,100-Base,2141,,144a46a57ff1173f4c446750a44882cde7aafe4ae73082c485ce994775942ed4
 100-Base/100-003_PivotSkirt.stl,100-Base,643884,binary/12876,724ff942946ea193285a76632c347d2e301f2df9a478fe43476fcb635b595b76
 100-Base/110-001_BaseMountBottom.stl,100-Base,1297684,binary/25952,ab267f075900979a450d31f280a4da22ae9952a2c04070e1fd8dce04c00d2bde
 100-Base/110-002_BaseStatorHolder.scad,100-Base,6081,,3783f2455e8483528f3e028ea06fa6ad468620c356626e56e2cb54d6cb1a88de
 100-Base/110-004_BaseMountingPlate.scad,100-Base,4529,,200bdfc92d5502a4e2668ec3bd2d58ad2ab579d9e27ec734450e1d95e7c73a45
 100-Base/120-001_BaseLong.stl,100-Base,2494584,binary/49890,3cb16524af106a31ba4a333640d433d0aa8c87351bb8fb3d617896419df39392
 100-Base/check.rs,100-Base,8477,,8b6cbb3037185800e42bb9ea7f8b37a2b5f2cea6f739700c56031ec9d85c56df
-100-Base/render-all.rs,100-Base,2517,,2d8d3b131ac209a79eafe824139331b63fea4b0b19ab23c64fcd9dde61952a46
+100-Base/render-all.rs,100-Base,4896,,3c54c18f6d763e4ea36cd84d75d4e0f0e482c86a4f52ee99157df8e4feeb271f
 200-ArmBody/200-001_ArmBody.stl,200-ArmBody,597384,binary/11946,ad4e940ddeb9112b37bff3407eb3418fe9bcae975306e7736b903768b71d86b4
 200-ArmBody/200-002_PivotStatorHolder.scad,200-ArmBody,6078,,023e8a2900591c9d1b0b4ed06654d4dc2e0352b37137ff6d1c385ac032b9f9df
 200-ArmBody/200-003_StatorBalancer.stl,200-ArmBody,1084,binary/20,d11fd9d1a81e233789f9bc1e2050f6af2972403298d3b67afae8408ff632f70b
@@ -137,6 +139,8 @@ Reference/inventor/ValveRatcheKeep.ipt,Reference,136192,,d112591556451a51f6dc6ae
 Reference/inventor/ValveRatchetArm.ipt,Reference,787968,,5e92170fc0a3f2fdb0b504ef2217a516d72c983c3979da298f877a0773e16d4d
 Reference/meshes/400-EndArm/430-001_ExternalOuterPulley.stl,Reference,1222684,binary/24452,bff2085fa819fad169d53cd3b30a2264bfc9bc80122e9582c3c07235e7091407
 Reference/meshes/400-EndArm/430-002_ExternalInnerPulley.stl,Reference,1173084,binary/23460,9cb028a2bb8248f9985cf04827faa623f643205fba28354302e7502e2e2fa8ef
+Reference/meshes/100-Base/100-001_BaseClamp.stl,Reference,64384,binary/1286,9b55f56b492ca696c0ae7042affb9650e6579a8d54d41905a752584c7d3d2a6d
+Reference/meshes/100-Base/100-002_BaseCodeDisc.stl,Reference,543984,binary/10878,0bdaa80baee89ce79e9f7f0d93cc465e2af78a4fdd9193ce333aa5eec3b41d24
 Reference/meshes/100-Base/110-002_BaseStatorHolder.stl,Reference,174284,binary/3484,07867eff5357bb8cde43083fc9417b8b63cda3b1427b873b7604aaea4fa01dd0
 Reference/meshes/200-ArmBody/200-002_PivotStatorHolder.stl,Reference,156884,binary/3136,8f9b00915564390f3be53fcd5221e3c7f3aee057cc0d2dfd690b03f3a88daec6
 Reference/meshes/500-ExternalGear/511-001_ExGearMotorEndCap.stl,Reference,584384,binary/11686,5361b6e534a039528a125a095cf5742bdd5d3d225f860efdbec5d2050180cfb3
@@ -350,5 +354,5 @@ Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl,Reference,77484,bi
 gt2_pulley.scad,(all),1827,,a40f4f8d41dec6c2214095d15a754497b4faa660c2096bb920ec633b3b87e02b
 print_fit.scad,(all),1755,,24a3373389a664140e0acdfda8655092a1d049e85e5e416836d02752ccc34116
 render-check/Cargo.toml,(all),216,,aec45b08b4dddaedfa83d432d9fe910b649226287f298641c989aa2ea382f956
-render-check/src/lib.rs,(all),28276,,f2e84e7fa574624d46ea97c468deba68a8484fad60b2e66d46f3da82d1091479
-robot_assembly.scad,(all),28792,,6d692e6090e2464d47ab0321c287c4341334e65a767ab4a5ae9727227b801b68
+render-check/src/lib.rs,(all),30486,,cdf89a762e2c5b326cda935d578689231eecfe2c6417c28c9e140b25f6780d28
+robot_assembly.scad,(all),28861,,f640fb8a1e0e99ff7dabdbe8ebbbeeb2a9832b6dc3d74ad825c3c1c9931a7e99
