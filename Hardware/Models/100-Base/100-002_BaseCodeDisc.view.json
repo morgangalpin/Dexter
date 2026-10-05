@@ -1,0 +1,32 @@
+{
+  "title": "Base Code Disc",
+  "subtitle": "#100-002 · reference mesh and 100-002_BaseCodeDisc.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1, 1.2],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Base Code Disc", "pn": "#100-002", "color": "#9aa7b4", "stl": "../Reference/meshes/100-Base/100-002_BaseCodeDisc.stl"}]},
+    {"name": "Renders", "role": "render-all.rs", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/100-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/100-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-33.34, -33.34, 0.8], "text": "D1 outer edge Ø94.3"},
+    {"at": [-37.6, 13.7, 1.6], "text": "F1 top face (F2 bottom, 1.6 below)"},
+    {"at": [22.98, 22.98, 0.8], "text": "B1 bore Ø65.0"},
+    {"at": [35.28, 20.37, 0.8], "text": "N1 notch R5.2, ×6, R1 blends"},
+    {"at": [35.65, 0, 1.6], "text": "S1 strake slot 12.7 × 3.3, ×6"},
+    {"at": [44.475, 0, 1.6], "text": "C1 code slit 4.0 × 0.8, ×200"},
+    {"at": [-44.475, 0, 0], "text": "G1 underside groove Ø85.9–Ø92.0, 0.2 deep"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 100, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 100, "from": [0, 0, -1]},
+    {"label": "Slits", "at": [44.475, 0, 0.8], "span": 10, "from": [0.15, -0.3, 1]},
+    {"label": "Groove, from below", "at": [-44.475, 0, 0], "span": 10, "from": [-0.3, -0.3, -1]},
+    {"label": "Notch and slot", "at": [34, 10, 0.8], "span": 26, "from": [0, 0, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one opens B1 by the slip clearance. The 2D profiles each layer is extruded from are gated separately in render-all.rs, and the dimensions and fits are in 100-002_BaseCodeDisc.scad's header. Run render-all.rs before building this page, because the renders are its output."}
+  ]
+}
