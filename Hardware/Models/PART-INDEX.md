@@ -16,11 +16,11 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #100-001 | Base Clamp | 2 | `100-001_BaseClamp.stl` |  |
+| #100-001 | Base Clamp | 1 | `100-001_BaseClamp.stl` |  |
 | #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.stl` |  |
 | #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.stl` | ⚠️ |
 | #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` | ⚠️ |
-| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.stl` |  |
+| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline in `revised` |
 | #110-004 | Base Mounting Plate | 1 | `110-004_BaseMountingPlate.scad` | machined, not printed |
 | #120-001 | Base Long | 1 | `120-001_BaseLong.stl` |  |
 
@@ -31,7 +31,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.stl` |  |
-| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.stl` |  |
+| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised` |
 | #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.stl` |  |
 | #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.stl` |  |
 | #210-001 | Belt Director Caps | 3 | `210-001_IdlerPlug.stl` | ⚠️ |
@@ -75,8 +75,8 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #510-001 | External Gear | 1 | `510-001_ExternalGear.stl` |  |
-| #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.stl` |  |
-| #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.stl` |  |
+| #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat deepened in `revised` |
+| #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.scad` | seats the C-201 spline in `revised`; floor lowered to close J3's stack |
 | #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.stl` |  |
 | #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.stl` |  |
 | #520-003 | Nut Holder A | 1 | `520-003_ExGearNutHold.stl` | ⚠️ |
@@ -89,8 +89,8 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.stl` |  |
-| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.stl` |  |
-| #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.stl` |  |
+| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare removed and C-201 hub seated in `revised`; J3 sets `hub_drop` |
+| #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.scad` | C-201 hub clamped in `revised` |
 
 ## 700-Differential — Differential
 
@@ -214,3 +214,10 @@ the span each one jigs in
 and the `.stl` is rendered from it: the file shortens the shipped body by 2.000 mm so the pair holds the
 specified L3 span ([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)), and the mesh it edits is kept as
 `Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.
+
+## Print-fit coupon
+
+`950-Tooling/fit_coupon.scad` is the coupon a machine is qualified on before the part set is printed. It
+carries no PBS number, because it is not a robot part. It is
+[007.2 § Print fits](../../specs/007.2-Printed-Parts.md#print-fits)'s, and it draws its fits from
+`print_fit.scad` exactly as the parts do.

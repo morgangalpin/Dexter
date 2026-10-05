@@ -55,7 +55,9 @@ DISK_OD      = 52.5;    // disk outside diameter
 DISK_H       = 1.0;     // disk thickness
 HUB_OD       = 40.2;    // hub outside diameter
 HUB_H        = 3.0;     // hub height (from the disk base)
-BORE_D       = 37.5;    // center bore (over the Split Gear body)
+BORE_D       = 37.5;    // center bore (over the Split Gear body). It already
+                        //   clears 710-001's Ø37 by 0.25 a side, more than
+                        //   SLIP, so it takes no print-fit clearance
 RECESS       = [43.0, 50.0, 0.2];   // underside recess annulus [ID, OD, depth]
 SLOT_SPAN    = [42.0, 51.0];        // slot radial span [inner Ø, outer Ø]
 SLOT_W       = 0.7;     // slot width (beam opening)

@@ -1,0 +1,10 @@
+[package]
+name = "render-check"
+version = "0.1.0"
+edition = "2021"
+description = "Shared machinery for the per-group render-all.rs verification scripts."
+publish = false
+
+[dependencies]
+anyhow = "1"
+serde_json = "1"

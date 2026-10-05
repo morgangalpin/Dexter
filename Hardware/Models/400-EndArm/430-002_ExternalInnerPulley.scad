@@ -8,6 +8,11 @@
 //
 // "revised" keeps everything inside R_CUT — the hub, the spokes and the inner
 // 1.4 mm of the rim — and adds the 108T rim outside it.
+//
+// FITS (../print_fit.scad): none to add. The bore's three 5.0 x 2.0 slots
+// take the C-503 strakes (1.45 x 4.50) of #421-002 with at least 0.25 a side,
+// and the Ø9.2 bore clears the Ø8 rod by 0.6; both already exceed either
+// class.
 
 include <external_pulley.scad>
 

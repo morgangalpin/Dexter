@@ -82,7 +82,11 @@ include <diff_params.scad>
 
 /* [Hidden] */
 OD           = 15.0;     // ring outside diameter
-BORE_D       = 8.0;      // seat bore (slides over the Ø8 shaft / CF rod)
+// Seat bore: slides over Body B's printed Ø8 tube and is glued there, so in
+// "revised" it takes the SLIP clearance (diff_params.scad), which also holds
+// the adhesive.
+// It must stay under RELIEF_D, or the lower fillet has no arc to turn.
+BORE_D       = fit_bore(8.0, SLIP);
 RELIEF_D     = 8.5;      // relief bore diameter
 FLARE_TOP_D  = 9.9;      // flare diameter at the top face
 RELIEF_BOT   = 3.0;      // relief starts; lower fillet ends here
@@ -99,6 +103,7 @@ SEAT_TOP     = RELIEF_BOT - FIL_R * sin(LOWER_FIL_A);       // 2.4638097
 // to open by exactly twice the fillet radius; assert it rather than assume it.
 assert(abs((FLARE_TOP_D - RELIEF_D)/2 - FIL_R) < 1e-9,
        "upper fillet is not tangent to both the relief wall and the top face");
+assert(BORE_D < RELIEF_D, "the seat bore must stay inside the relief bore");
 
 module diff_keeper() {
     // Six and nine points reproduce the reference's ring spacing (see header).

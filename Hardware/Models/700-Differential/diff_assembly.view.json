@@ -1,0 +1,44 @@
+{
+  "scad": "diff_assembly.scad",
+  "title": "Wrist differential",
+  "subtitle": "diff_assembly.scad · config {config} · geometry {geometry} · J4 at {j4_ang}° · orthographic, cut on XZ",
+  "groups": [
+    {"name": "Housings", "role": "Body A static, Body B turns on J4", "parts": [
+      {"id": "730-001", "name": "Diff Body A", "pn": "#730-001", "color": "#9aa3ad"},
+      {"id": "730-002", "name": "Diff Body B", "pn": "#730-002", "color": "#b8bdc7"}]},
+    {"name": "Input A", "role": "the CF rod and its bevel", "parts": [
+      {"id": "720-002", "name": "Diff Gear Axle", "pn": "#720-002", "color": "#e07b39"},
+      {"id": "720-003", "name": "Diff End Pulley", "pn": "#720-003", "color": "#d4ad6b"},
+      {"id": "cf_rod", "name": "CF rod", "pn": "C-506", "color": "#29292e"},
+      {"id": "mr85", "name": "MR85, in the axle's back", "pn": "MR85", "color": "#dcdcdc"}]},
+    {"name": "Input B", "role": "the hollow shaft and its bevel", "parts": [
+      {"id": "720-001", "name": "Diff Gear Shaft", "pn": "#720-001", "color": "#c99a4e"},
+      {"id": "720-004", "name": "Diff Shaft Pulley", "pn": "#720-004", "color": "#b8873f"}]},
+    {"name": "Output", "role": "the split bevel, turns on J5", "parts": [
+      {"id": "710-001", "name": "Split Gear Top", "pn": "#710-001", "color": "#d9b77a"},
+      {"id": "710-002", "name": "Split Gear Bottom", "pn": "#710-002", "color": "#c4a265"},
+      {"id": "710-004", "name": "Rotate Code Disk", "pn": "#710-004", "color": "#4d525c"},
+      {"id": "710-003", "name": "Diff Keeper", "pn": "#710-003", "color": "#a7adb8"}]},
+    {"name": "Bearings and stacks", "role": "catalogue size", "parts": [
+      {"id": "brg_body_a", "name": "J4 pivot in Body A, 6703 and 6705", "color": "#8c99a8"},
+      {"id": "brg_body_b", "name": "Body B tunnel and column, three 6703", "color": "#8c99a8"},
+      {"id": "brg_shaft", "name": "Shaft end seats, two MR128", "color": "#8c99a8"},
+      {"id": "brg_split", "name": "Split Gear, two MR128 and a 6703", "color": "#8c99a8"},
+      {"id": "thrust_stack", "name": "Needle thrust stack", "color": "#7d8794"},
+      {"id": "brads", "name": "Split Gear brads", "color": "#6f7782"}]}
+  ],
+  "presets": [
+    {"label": "Axle boss", "at": [5, 0, 59.5], "span": 14},
+    {"label": "Diff Gear Axle", "at": [0, 0], "part": "720-002", "span": 24}
+  ],
+  "notes": [
+    {"heading": "The Diff Gear Axle's boss", "emphasis": true,
+     "text": "The boss is the Ø{axle_boss_d} collar, 2 mm tall, that hangs below the axle's hub around the CF rod. It is the spacer that stops the axle on the Diff Gear Shaft's front MR128: its tip face lands on the bearing's inner race, and a chamfer takes its edge clear of the shield. That holds the hub off the shaft's end, which turns with the other input. The rod bore is Ø{axle_rod_bore}, so the boss has {axle_boss_wall} mm of wall around it, and {axle_boss_face_wall} mm across its tip face, against {axle_boss_wall_measured} mm on the reference part. The boss runs from z {axle_boss_z_low} to {axle_boss_z_high}. The MR85 is pressed into the axle's flat back, and the CF rod is epoxied in the bore below it.",
+     "focus": {"label": "Show the boss in section", "preset": "Axle boss", "hide": ["730-002", "brg_body_b"]}},
+    {"heading": "Not drawn",
+     "items": [
+       "What the MR85's Ø5 rides on: it closes the wrist above, outside this model set",
+       "Screws and nuts",
+       "Bearings are envelopes at catalogue size"]}
+  ]
+}

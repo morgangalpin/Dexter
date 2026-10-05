@@ -32,37 +32,12 @@
 //! [dependencies]
 //! anyhow = "1"
 //! serde_json = "1"
+//! render-check = { path = "../render-check" }
 //! ```
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
+use render_check::{check_fits, diagnostics, dist_gate, group_parts, render, run, sm_json, Ctx, DistGate, Fit, FitProbe, Tally};
 use serde_json::Value;
-use std::path::{Path, PathBuf};
-use std::process::Command;
-
-/// Absolute paths tried for OpenSCAD before falling back to `$PATH`.
-///
-/// `openscad.exe` is deliberate on Windows, and the choice is not obvious.
-/// That binary is built for the GUI subsystem, so run from an interactive
-/// console it attaches to no terminal and appears to print nothing — which is
-/// why the install also ships `openscad.com`, a wrapper that republishes
-/// everything on stdout. The wrapper is the wrong tool here: this script reads
-/// stdout and stderr apart, and the diagnostics it needs are the stderr ones.
-/// Redirected to a pipe, as `Command::output` does, `openscad.exe` writes
-/// them there correctly. Use `openscad.com` when reading by eye, `.exe` when
-/// reading by program.
-const OPENSCAD_CANDIDATES: [&str; 3] = [
-    "C:/Program Files/OpenSCAD/openscad.exe",
-    "/usr/bin/openscad",
-    "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD",
-];
-
-/// Paths tried for `scadmesh`, relative to this script's directory: the
-/// standalone `openscad-tools` project checked out beside this repository's
-/// parent. Falls back to `$PATH`, or set `$SCADMESH`.
-const SCADMESH_CANDIDATES: [&str; 2] = [
-    "../../../../../openscad-tools/target/release/scadmesh.exe",
-    "../../../../../openscad-tools/target/release/scadmesh",
-];
 
 /// Where the reference meshes live. They sit under `Reference/`, not beside
 /// the `.scad` files, because for these nine parts the `.scad` is the source of
@@ -238,16 +213,6 @@ const CLONES: [ClonePart; 7] = [
                          "--ignore-plane=6.0,11.8", "--ignore-plane=-2.74,-2.62"] },
 ];
 
-/// A part reproduced closely enough to be gated on two-sided surface
-/// distance. `tol` is the Hausdorff limit in mm; the render must sit inside
-/// it in both directions, with no sampled point over.
-struct DistGate {
-    stem: &'static str,
-    scad: &'static str,
-    reference: &'static str,
-    tol: f64,
-}
-
 /// Body B joins this table when it is rebuilt as a faithful recreation.
 const DIST_GATES: [DistGate; 1] = [DistGate {
     stem: "730-001",
@@ -335,22 +300,74 @@ const DIAMS: [DiamCheck; 6] = [
 
 const DIAM_TOL: f64 = 0.05;
 
-/// The printed parts of the revised configuration, rendered to `out/revised/`.
-/// #720-004 exists in this configuration only. The two External pulleys are
-/// the elbow half of the same DC-12 train, so they are verified here too.
-const REVISED_PARTS: [(&str, &str); 12] = [
-    ("710-001", "710-001_SplitGearTop.scad"),
-    ("710-002", "710-002_SplitGearBottom.scad"),
-    ("710-003", "710-003_DiffKeeper.scad"),
-    ("710-004", "710-004_RotateCodeDisk.scad"),
-    ("720-001", "720-001_DiffGearShaft.scad"),
-    ("720-002", "720-002_DiffGearAxle.scad"),
-    ("720-003", "720-003_DiffEndPulley.scad"),
-    ("720-004", "720-004_DiffShaftPulley.scad"),
-    ("730-001", "730-001_DiffBodyA.scad"),
-    ("730-002", "730-002_DiffBodyB.scad"),
+/// The revised configuration renders to `out/revised/` every part this group's
+/// `parts.json` lists for it, and these two besides: the External pulleys are
+/// 400-EndArm's parts, but they are the elbow half of the same DC-12 train, so
+/// they are verified here too.
+const EXTERNAL_PARTS: [(&str, &str); 2] = [
     ("430-001", "../400-EndArm/430-001_ExternalOuterPulley.scad"),
     ("430-002", "../400-EndArm/430-002_ExternalInnerPulley.scad"),
+];
+
+// The print fits of the revised renders (../print_fit.scad), each probed from
+// its mate's nominal surface in the part's own frame. A bought mate (a
+// bearing, or a strake, rod or tube bonded in) is a press fit; a printed mate
+// or a fastener's clearance is a slip fit.
+const SPLIT_TOP_FITS: [FitProbe; 4] = [
+    FitProbe { label: "MR128 seat", at: [4.2426, 4.2426, 1.0], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "6703 pocket", at: [8.1317, 8.1317, 6.0], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "strake slot's side", at: [2.794, 14.25, 3.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "strake slot's outer face", at: [0.0, 15.4185, 3.0], toward: [0.0, -1.0, 0.0], fit: Fit::Press },
+];
+const SPLIT_BOTTOM_FITS: [FitProbe; 3] = [
+    FitProbe { label: "Ø17 stub in the 6703", at: [6.0104, 6.0104, 6.0], toward: [0.7071, 0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "MR128 seat", at: [4.2426, 4.2426, 15.0], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+    FitProbe { label: "crown's 6703 bore", at: [8.1317, 8.1317, 21.5], toward: [-0.7071, -0.7071, 0.0], fit: Fit::Press },
+];
+const KEEPER_FITS: [FitProbe; 1] = [
+    FitProbe { label: "bore on the Ø8 tube", at: [4.0, 0.0, 1.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
+];
+// 720-001 is exported turned onto +Y: its own (x, y, z) lies at (x, z, -y).
+const SHAFT_FITS: [FitProbe; 3] = [
+    FitProbe { label: "front 6703 journal", at: [8.5, 0.0, 0.0], toward: [1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "front MR128 seat", at: [6.0, -8.5, 0.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "6705's Ø25", at: [0.0, 31.0, -12.5], toward: [0.0, 0.0, -1.0], fit: Fit::Press },
+];
+const AXLE_FITS: [FitProbe; 2] = [
+    FitProbe { label: "MR85 seat", at: [4.0, 0.0, 0.75], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "CF rod bore", at: [4.0, 0.0, 7.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+];
+const END_PULLEY_FITS: [FitProbe; 1] = [
+    FitProbe { label: "CF rod bore, between the glue lobes", at: [4.0, 0.0, 22.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+];
+const BODY_A_FITS: [FitProbe; 3] = [
+    FitProbe { label: "6703 seat", at: [0.0, 11.5, 2.5], toward: [0.0, -1.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "6705 seat", at: [0.0, 16.0, 19.5], toward: [0.0, -1.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "arm spigot in the L3 tube", at: [-45.0, 10.035, 11.0], toward: [0.0, 1.0, 0.0], fit: Fit::Press },
+];
+// Body B's J4 tunnel runs along X at (y, z) = (-21, 21); its column along Z
+// at (x, y) = (21, -21).
+const BODY_B_FITS: [FitProbe; 3] = [
+    FitProbe { label: "-X 6703 seat", at: [11.0, -21.0, 32.5], toward: [0.0, 0.0, -1.0], fit: Fit::Press },
+    FitProbe { label: "column's 6703 journal", at: [29.5, -21.0, 38.0], toward: [1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "Ø8 tube in the MR128s", at: [25.0, -21.0, 55.0], toward: [1.0, 0.0, 0.0], fit: Fit::Press },
+];
+// The outer External pulley's hub: the Ø8 rod, and the M3 nut (5.5 across
+// flats) in the slot on 180 deg, whose 5.5 runs along Y.
+const OUTER_PULLEY_FITS: [FitProbe; 2] = [
+    FitProbe { label: "Ø8 rod bore", at: [4.0, 0.0, 28.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Press },
+    FitProbe { label: "set-screw nut slot", at: [-6.4, 2.75, 24.0], toward: [0.0, -1.0, 0.0], fit: Fit::Slip },
+];
+const REVISED_FITS: [(&str, &[FitProbe]); 9] = [
+    ("430-001", &OUTER_PULLEY_FITS),
+    ("710-001", &SPLIT_TOP_FITS),
+    ("710-002", &SPLIT_BOTTOM_FITS),
+    ("710-003", &KEEPER_FITS),
+    ("720-001", &SHAFT_FITS),
+    ("720-002", &AXLE_FITS),
+    ("720-003", &END_PULLEY_FITS),
+    ("730-001", &BODY_A_FITS),
+    ("730-002", &BODY_B_FITS),
 ];
 
 /// The DC-12 tooth counts, on the revised renders: 16T -> 108T at the elbow
@@ -394,143 +411,24 @@ const EXTENTS: [(&str, &str, &str); 2] = [
 
 const EXTENT_TOL: f64 = 0.02;
 
-/// Pairs of placed parts that must not overlap, rendered as their intersection
-/// from source. The ring sits inside Body A's chamber, where no extent check can
-/// reach.
-const INTERFERENCE: [(&str, &str); 1] = [("730-001", "720-004")];
-
-/// Resolve a tool: `$env_key` wins, then the first existing candidate
-/// (resolved relative to `dir`), then the bare name via `$PATH`.
-fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> String {
-    if let Ok(v) = std::env::var(env_key) {
-        return v;
-    }
-    for c in candidates {
-        let path = dir.join(c);
-        if path.exists() {
-            return path.to_string_lossy().into_owned();
-        }
-    }
-    name.to_string()
-}
-
-fn script_dir() -> Result<PathBuf> {
-    let base = std::env::var("RUST_SCRIPT_BASE_PATH")
-        .context("RUST_SCRIPT_BASE_PATH unset - run this file as a rust-script")?;
-    Ok(PathBuf::from(base))
-}
-
-/// A finished tool run. Both streams are kept: `scadmesh` reports on stdout,
-/// OpenSCAD diagnoses on stderr, and neither can stand in for the other.
-struct Run {
-    ok: bool,
-    stdout: String,
-    stderr: String,
-}
-
-fn run(exe: &str, args: &[&str], dir: &Path) -> Result<Run> {
-    let out = Command::new(exe)
-        .args(args)
-        .current_dir(dir)
-        .output()
-        .with_context(|| {
-            format!("running {exe} - set $OPENSCAD / $SCADMESH if it is not on PATH")
-        })?;
-    Ok(Run {
-        ok: out.status.success(),
-        stdout: String::from_utf8_lossy(&out.stdout).into_owned(),
-        stderr: String::from_utf8_lossy(&out.stderr).into_owned(),
-    })
-}
-
-/// The lines on OpenSCAD's stderr that mean the mesh cannot be trusted,
-/// picked out of the cache and timing chatter that surrounds them.
-///
-/// The exit status cannot do this job. OpenSCAD exits 0 for `ERROR: The given
-/// mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron`, which is the
-/// one diagnostic that most directly invalidates an export, and 0 again for
-/// every `WARNING:`. It exits 1 only when the top level object comes out
-/// empty or a script-level assertion fails. So a render that quietly dropped a
-/// subtree, or silently ignored a misspelled variable, used to reach the
-/// measurements as if nothing had happened, and whatever the measurements then
-/// said was reported as a PASS.
-///
-/// `Simple: no` is caught as well as the explicit complaints. It sits in the
-/// summary block rather than in a warning, and it is how a self-intersecting
-/// or non-manifold export announces itself while OpenSCAD exits 0 and writes
-/// the file. A `.csg` export evaluates no geometry and prints no such block,
-/// so the assembly is simply not asked the question.
-///
-/// Nothing here is filtered as benign. These nine parts render clean today,
-/// and the point of the check is to notice the first one that stops.
-fn diagnostics(stderr: &str) -> Vec<&str> {
-    const MARKERS: [&str; 4] = ["ERROR:", "WARNING:", "UI-WARNING:", "TRACE:"];
-    stderr
-        .lines()
-        .map(str::trim)
-        .filter(|line| {
-            MARKERS.iter().any(|m| line.starts_with(m))
-                || line.contains("not a simple polyhedron")
-                || line.contains("top level object is empty")
-                || line.contains("nonplanar faces")
-                || (line.starts_with("Simple:") && line.ends_with("no"))
-        })
-        .collect()
-}
-
-/// Render one configuration of one part, and hold it to rendering silently.
-/// The tally entry is deliberately separate from the measurements that follow:
-/// a part that warns and then measures well has not passed, it has measured a
-/// mesh nobody should be measuring.
-fn render(scad: &str, out_stl: &str, config: &str, ctx: &Ctx,
-          tally: &mut Tally) -> Result<()> {
-    let define = format!("config=\"{config}\"");
-    let r = run(&ctx.openscad, &["-o", out_stl, "-D", &define, scad], &ctx.dir)?;
-    judge(&r, scad, config, tally)
-}
-
-/// Hold a finished OpenSCAD run to exiting cleanly and rendering silently.
-fn judge(r: &Run, scad: &str, config: &str, tally: &mut Tally) -> Result<()> {
-    if !r.ok {
-        bail!("OpenSCAD failed rendering {scad} ({config}):\n{}",
-              r.stderr.trim_end());
-    }
-    let complaints = diagnostics(&r.stderr);
-    for line in &complaints {
-        println!("      {line}");
-    }
-    tally.record(&format!("{scad} ({config}) renders without diagnostics"),
-                 complaints.is_empty());
-    Ok(())
-}
-
-fn sm_json(args: &[&str], ctx: &Ctx) -> Result<(bool, Value)> {
-    let mut full: Vec<&str> = args.to_vec();
-    full.push("--json");
-    let r = run(&ctx.scadmesh, &full, &ctx.dir)?;
-    let json = serde_json::from_str(&r.stdout)
-        .with_context(|| format!("parsing scadmesh output for {args:?}"))?;
-    Ok((r.ok, json))
-}
-
-struct Ctx {
-    dir: PathBuf,
-    openscad: String,
-    scadmesh: String,
-}
-
-struct Tally {
-    failures: usize,
-}
-
-impl Tally {
-    fn record(&mut self, label: &str, ok: bool) {
-        println!("{}  {label}", if ok { "PASS" } else { "FAIL" });
-        if !ok {
-            self.failures += 1;
-        }
-    }
-}
+/// Pairs of parts that must not overlap as they sit, rendered as their
+/// intersection from source. The ring sits inside Body A's chamber, where no
+/// extent check can reach. Body B against each crown that turns in it is the
+/// running clearance 730-002's TOE CLEARANCE keeps; the Split Gear Top is
+/// listed beside the Bottom, which carries the toe, because both halves sweep
+/// the same zone. Two bearing sets are listed against a part they seat in;
+/// both render empty with their shoulders on the races. The other bearing
+/// pairs return the face where a shoulder meets a race, at zero thickness,
+/// which this check cannot tell from an overlap, so they are not listed.
+const INTERFERENCE: [(&str, &str); 7] = [
+    ("730-001", "720-004"),
+    ("730-002", "720-002"),
+    ("730-002", "720-001"),
+    ("730-002", "710-002"),
+    ("730-002", "710-001"),
+    ("brg_body_a", "730-001"),
+    ("brg_body_b", "710-002"),
+];
 
 fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for part in &CLONES {
@@ -581,19 +479,8 @@ fn check_clones(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 /// Render each gated housing and measure its surface against the reference.
 /// The render is left at `out/<stem>.stl` for the interface checks to reuse.
 fn check_dist_gates(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    for part in &DIST_GATES {
-        let out_stl = format!("out/{}.stl", part.stem);
-        render(part.scad, &out_stl, "previous", ctx, tally)?;
-        let tol = part.tol.to_string();
-        let reference = ref_path(part.reference);
-        let (ok, report) =
-            sm_json(&["dist", &out_stl, &reference, "--tol", &tol], ctx)?;
-        let worst = report["hausdorff"].as_f64().unwrap_or(f64::NAN);
-        tally.record(
-            &format!("{} surface vs reference (hausdorff {worst:.3} mm, tol {tol} mm)",
-                     part.stem),
-            ok,
-        );
+    for gate in &DIST_GATES {
+        dist_gate(gate, REF_DIR, ctx, tally)?;
     }
     Ok(())
 }
@@ -655,8 +542,13 @@ fn check_assembly(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
 /// Every part in the revised configuration, then the DC-12 counts on them.
 fn check_revised(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
-    for (id, scad) in &REVISED_PARTS {
+    let parts = group_parts(ctx, "revised")?;
+    let own = parts.iter().map(|(id, scad)| (id.as_str(), scad.as_str()));
+    for (id, scad) in own.chain(EXTERNAL_PARTS) {
         render(scad, &format!("out/revised/{id}.stl"), "revised", ctx, tally)?;
+    }
+    for (id, probes) in REVISED_FITS {
+        check_fits(&format!("out/revised/{id}.stl"), &format!("{id} (revised)"), probes, ctx, tally)?;
     }
     check_counts(ctx, tally, &REVISED_COUNTS)
 }
@@ -699,35 +591,44 @@ fn check_extents(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     Ok(())
 }
 
-/// Each pair's overlap, rendered from source: clean only if OpenSCAD reports
-/// the top level object empty and says nothing else.
+/// Renders `args` and reports whether the result is clean: only if OpenSCAD
+/// reports the top level object empty and says nothing else.
+fn renders_empty(args: &[&str], ctx: &Ctx) -> Result<bool> {
+    let r = run(&ctx.openscad, args, &ctx.dir)?;
+    let complaints = diagnostics(&r.stderr);
+    let empty = complaints.len() == 1 && complaints[0].contains("top level object is empty");
+    if !empty {
+        for line in &complaints {
+            println!("      {line}");
+        }
+    }
+    Ok(empty)
+}
+
+/// Each pair's overlap, rendered from source.
 fn check_interference(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for (a, b) in &INTERFERENCE {
         let pair = format!("interference=[\"{a}\",\"{b}\"]");
         let out = format!("out/revised/interference-{a}-{b}.stl");
-        let r = run(&ctx.openscad,
-                    &["-o", &out, "-D", "config=\"revised\"", "-D", "geometry=\"scad\"",
-                      "-D", &pair, "diff_assembly.scad"], &ctx.dir)?;
-        let complaints = diagnostics(&r.stderr);
-        let empty = complaints.len() == 1 && complaints[0].contains("top level object is empty");
-        if !empty {
-            for line in &complaints {
-                println!("      {line}");
-            }
-        }
+        let empty = renders_empty(&["-o", &out, "-D", "config=\"revised\"",
+                                    "-D", "geometry=\"scad\"", "-D", &pair,
+                                    "diff_assembly.scad"], ctx)?;
         tally.record(&format!("{a} and {b} do not overlap (revised)"), empty);
     }
     Ok(())
 }
 
-fn context() -> Result<Ctx> {
-    let dir = script_dir()?;
-    std::fs::create_dir_all(dir.join("out"))?;
-    Ok(Ctx {
-        openscad: tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", &dir),
-        scadmesh: tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", &dir),
-        dir,
-    })
+/// Body B against the volume the three crowns' teeth sweep, grown by just
+/// under the running clearance. Where the interference pairs show only that
+/// Body B and the gears do not touch, this shows the clearance itself. See
+/// 730-002's TOE CLEARANCE.
+fn check_keepout(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let empty = renders_empty(&["-o", "out/revised/keepout-730-002.stl",
+                                "-D", "config=\"revised\"", "-D", "keepout_check=true",
+                                "730-002_DiffBodyB.scad"], ctx)?;
+    tally.record("730-002 keeps the running clearance off the three crowns' teeth (revised)",
+                 empty);
+    Ok(())
 }
 
 /// Order matters: everything `check_counts` measures has to have been rendered
@@ -743,22 +644,13 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_assembly(ctx, tally)?;
     check_revised(ctx, tally)?;
     check_extents(ctx, tally)?;
-    check_interference(ctx, tally)
-}
-
-fn finish(tally: &Tally) -> ! {
-    println!();
-    if tally.failures == 0 {
-        println!("ALL CHECKS PASSED");
-        std::process::exit(0);
-    }
-    println!("{} CHECK(S) FAILED", tally.failures);
-    std::process::exit(1);
+    check_interference(ctx, tally)?;
+    check_keepout(ctx, tally)
 }
 
 fn main() -> Result<()> {
-    let ctx = context()?;
-    let mut tally = Tally { failures: 0 };
+    let ctx = Ctx::for_script()?;
+    let mut tally = Tally::default();
     verify(&ctx, &mut tally)?;
-    finish(&tally)
+    tally.finish()
 }

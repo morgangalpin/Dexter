@@ -653,10 +653,12 @@ module tooth_band() {
 // Everything cut away, in the same reference coordinates as the body: the Ø8
 // rod bore over the full height, the three glue lobes (the measured lobed
 // section clipped by its 45-degree entry cone), and the three web slots,
-// which run right through.
+// which run right through. The rod is epoxied in, and in "revised" its bore
+// takes the PRESS clearance (diff_params.scad); the profile's own Ø8 wall
+// then lies inside the cut.
 module pulley_cuts() {
     h = Z1 - Z0 + 2*epsilon;
-    up(Z0 - epsilon) cyl(d = CF_ROD_D, h = h, anchor = BOTTOM);
+    up(Z0 - epsilon) cyl(d = fit_bore(CF_ROD_D, PRESS), h = h, anchor = BOTTOM);
     intersection() {
         up(Z0 - epsilon) linear_extrude(h) polygon(BORE_LOBED);
         up(LOBE_APEX_Z) cyl(r1 = 0, r2 = Z1 + epsilon - LOBE_APEX_Z,
