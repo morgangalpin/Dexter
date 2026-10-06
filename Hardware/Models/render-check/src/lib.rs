@@ -285,14 +285,17 @@ pub fn dist_gate(gate: &DistGate, ref_dir: &str, ctx: &Ctx, tally: &mut Tally) -
     Ok(())
 }
 
-/// One layer of a part drawn as stacked 2D profiles: the profile the part
-/// draws for `layer = "<layer>"`, checked against the reference's section at
-/// `at`, mid-layer, before anything is extruded.
+/// One 2D profile a part is built from: the profile the part draws for
+/// `layer = "<layer>"`, checked against the reference's section across
+/// `axis` at `at` before anything is extruded. A stacked part is cut across
+/// z mid-layer; a part swept or extruded along another axis is cut across
+/// that axis, in the coordinates `scadmesh slice` reports for it.
 pub struct OutlineGate {
     pub stem: &'static str,
     pub scad: &'static str,
     pub reference: &'static str,
     pub layer: &'static str,
+    pub axis: &'static str,
     pub at: f64,
     pub tol: f64,
 }
@@ -301,9 +304,10 @@ pub struct OutlineGate {
 pub fn outline_label(gate: &OutlineGate, report: &Value) -> String {
     let num = |k: &str| report[k].as_f64().unwrap_or(f64::NAN);
     format!(
-        "{} {} profile vs section at z {} (hausdorff {:.3} mm, tol {} mm; area {:.3} vs {:.3} mm2)",
+        "{} {} profile vs section at {} {} (hausdorff {:.3} mm, tol {} mm; area {:.3} vs {:.3} mm2)",
         gate.stem,
         gate.layer,
+        gate.axis,
         gate.at,
         num("hausdorff"),
         gate.tol,
@@ -320,10 +324,26 @@ pub fn outline_gate(gate: &OutlineGate, ref_dir: &str, ctx: &Ctx, tally: &mut Ta
     let layer = format!("layer=\"{}\"", gate.layer);
     render_with(gate.scad, &svg, &["config=\"previous\"", &layer], ctx, tally)?;
     let reference = format!("{ref_dir}/{}", gate.reference);
-    let (at, tol) = (format!("--at={}", gate.at), gate.tol.to_string());
-    let (ok, report) = sm_json(&["outline", &svg, &reference, &at, "--tol", &tol], ctx)?;
+    let args = outline_args(gate, &svg, &reference);
+    let (ok, report) = sm_json(&args.iter().map(String::as_str).collect::<Vec<_>>(), ctx)?;
     tally.record(&outline_label(gate, &report), ok);
     Ok(())
+}
+
+/// The `scadmesh outline` arguments for a gate's exported profile.
+pub fn outline_args(gate: &OutlineGate, svg: &str, reference: &str) -> Vec<String> {
+    [
+        "outline",
+        svg,
+        reference,
+        "--axis",
+        gate.axis,
+        &format!("--at={}", gate.at),
+        "--tol",
+        &gate.tol.to_string(),
+    ]
+    .map(String::from)
+    .to_vec()
 }
 
 /// Read `ECHO: "<prefix><value>"` or `ECHO: <name> = <value>` off OpenSCAD's
@@ -581,13 +601,29 @@ mod tests {
 
     #[test]
     fn an_outline_label_carries_the_distance_and_both_areas() {
-        let gate = OutlineGate { stem: "p", scad: "p.scad", reference: "p.stl", layer: "upper", at: 0.9, tol: 0.15 };
+        let gate = OutlineGate { stem: "p", scad: "p.scad", reference: "p.stl", layer: "upper", axis: "z", at: 0.9, tol: 0.15 };
         let report = serde_json::json!({"hausdorff": 0.0213, "candidate_area": 10.0, "reference_area": 9.5});
         assert_eq!(
             outline_label(&gate, &report),
             "p upper profile vs section at z 0.9 (hausdorff 0.021 mm, tol 0.15 mm; area 10.000 vs 9.500 mm2)"
         );
         assert!(outline_label(&gate, &serde_json::json!({})).contains("NaN"));
+    }
+
+    #[test]
+    fn an_outline_label_names_the_section_axis() {
+        let gate = OutlineGate { stem: "p", scad: "p.scad", reference: "p.stl", layer: "skirt", axis: "y", at: -5.0, tol: 0.15 };
+        let report = serde_json::json!({"hausdorff": 0.131, "candidate_area": 425.8, "reference_area": 427.2});
+        assert!(outline_label(&gate, &report).starts_with("p skirt profile vs section at y -5 "));
+    }
+
+    #[test]
+    fn an_outline_gate_cuts_the_reference_on_its_axis() {
+        let gate = OutlineGate { stem: "p", scad: "p.scad", reference: "p.stl", layer: "frame", axis: "x", at: -20.0, tol: 0.15 };
+        assert_eq!(
+            outline_args(&gate, "out/2d/p-frame.svg", "ref/p.stl"),
+            ["outline", "out/2d/p-frame.svg", "ref/p.stl", "--axis", "x", "--at=-20", "--tol", "0.15"]
+        );
     }
 
     #[test]

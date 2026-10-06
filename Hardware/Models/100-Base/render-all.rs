@@ -24,7 +24,7 @@ use render_check::{
 
 const REF_DIR: &str = "../Reference/meshes/100-Base";
 
-const DIST_GATES: [DistGate; 3] = [
+const DIST_GATES: [DistGate; 4] = [
     DistGate {
         stem: "100-001",
         scad: "100-001_BaseClamp.scad",
@@ -35,6 +35,12 @@ const DIST_GATES: [DistGate; 3] = [
         stem: "100-002",
         scad: "100-002_BaseCodeDisc.scad",
         reference: "100-002_BaseCodeDisc.stl",
+        tol: 0.15,
+    },
+    DistGate {
+        stem: "100-003",
+        scad: "100-003_PivotSkirt.scad",
+        reference: "100-003_PivotSkirt.stl",
         tol: 0.15,
     },
     DistGate {
@@ -56,13 +62,16 @@ const CLAMP_FITS: [FitProbe; 3] = [
 ];
 
 /// #100-002 is drawn as two 2D profiles, each checked against the reference's
-/// section mid-layer before the part is extruded.
-const OUTLINE_GATES: [OutlineGate; 2] = [
+/// section mid-layer before the part is extruded. #100-003's skirt section is
+/// checked across y just above the plug's crest, and its frame profile
+/// across the flange, where the top face's sweep is a plain extrusion.
+const OUTLINE_GATES: [OutlineGate; 4] = [
     OutlineGate {
         stem: "100-002",
         scad: "100-002_BaseCodeDisc.scad",
         reference: "100-002_BaseCodeDisc.stl",
         layer: "lower",
+        axis: "z",
         at: 0.1,
         tol: 0.15,
     },
@@ -71,9 +80,35 @@ const OUTLINE_GATES: [OutlineGate; 2] = [
         scad: "100-002_BaseCodeDisc.scad",
         reference: "100-002_BaseCodeDisc.stl",
         layer: "upper",
+        axis: "z",
         at: 0.9,
         tol: 0.15,
     },
+    OutlineGate {
+        stem: "100-003",
+        scad: "100-003_PivotSkirt.scad",
+        reference: "100-003_PivotSkirt.stl",
+        layer: "skirt",
+        axis: "y",
+        at: -4.0,
+        tol: 0.15,
+    },
+    OutlineGate {
+        stem: "100-003",
+        scad: "100-003_PivotSkirt.scad",
+        reference: "100-003_PivotSkirt.stl",
+        layer: "frame",
+        axis: "x",
+        at: -20.0,
+        tol: 0.15,
+    },
+];
+
+/// The revised #100-003's print fits: H1's Ø3 screw holes at 0° and 45°,
+/// mid-collar, on the M3 screw's surface on its +y side.
+const SKIRT_FITS: [FitProbe; 2] = [
+    FitProbe { label: "H1 screw hole, 0°", at: [34.0, 13.5, 0.0], toward: [0.0, -1.0, 0.0], fit: Fit::Slip },
+    FitProbe { label: "H1 screw hole, 45°", at: [24.0416, 13.5, 24.0416], toward: [0.0, -1.0, 0.0], fit: Fit::Slip },
 ];
 
 /// The revised #100-002's print fit: B1 on the Base Stator Holder's Ø65 body,
@@ -114,6 +149,8 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_fits("out/revised/100-001.stl", "100-001 (revised)", &CLAMP_FITS, ctx, tally)?;
     render("100-002_BaseCodeDisc.scad", "out/revised/100-002.stl", "revised", ctx, tally)?;
     check_fits("out/revised/100-002.stl", "100-002 (revised)", &DISC_FITS, ctx, tally)?;
+    render("100-003_PivotSkirt.scad", "out/revised/100-003.stl", "revised", ctx, tally)?;
+    check_fits("out/revised/100-003.stl", "100-003 (revised)", &SKIRT_FITS, ctx, tally)?;
     // The Base Stator Holder's recess opens toward +z.
     check_seat("110-002_BaseStatorHolder.scad", "110-002", 1.0, ctx, tally)?;
     check_fits("out/revised/110-002.stl", "110-002 (revised)", &HOLDER_FITS, ctx, tally)

@@ -1,0 +1,36 @@
+{
+  "title": "Base Mount Bottom",
+  "subtitle": "#110-001 · reference mesh · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1, 1.2],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Base Mount Bottom", "pn": "#110-001", "color": "#9aa7b4", "stl": "110-001_BaseMountBottom.stl"}]}
+  ],
+  "labels": [
+    {"at": [-25, -58, 11], "text": "F1 flange: Ø85 ∪ 4 arms 50 wide to ±75, z 0–16, R5 top edge"},
+    {"at": [-62.5, 12.5, 16], "text": "H1 mounting holes ×8 Ø6.0, cbore Ø10.0 z 10–16"},
+    {"at": [57, 0, 24.5], "text": "G1 gussets on ±X: 17 wide, top 30.75° to z 33.18"},
+    {"at": [-36.81, -21.25, 70], "text": "T1 tower Ø85.0 to shoulder z 82"},
+    {"at": [-37.28, 0, 90], "text": "S1 spigot Ø74.56, z 82–98"},
+    {"at": [30.875, 17.826, 98], "text": "K1 strake slots ×6, 13.0 × 3.6 on r 35.651, floor z 4"},
+    {"at": [0, -42.48, 41], "text": "W1 windows ×6: ellipse 18.48 × 43.0, centre z 41"},
+    {"at": [0, 26.97, 90], "text": "B1 bore Ø53.95, z 33–98"},
+    {"at": [-9.97, 0, 8], "text": "B2 bore Ø20.0 through the hub"},
+    {"at": [0, 22.062, 15], "text": "H2 hub holes ×6 Ø8.0 on r 22.062, cbore Ø14.0 from z 15"},
+    {"at": [20, 0, 28], "text": "R1 floor: 6 ribs under the columns, scooped between"},
+    {"at": [0, -52, 16], "text": "M1 marking: arrow −Y and \"X\", engraved 1.0"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 49], "span": 160, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0, 49], "span": 160, "from": [0, 0, -1]},
+    {"label": "Gusset", "at": [55, 0, 22], "span": 60, "from": [0.3, -1, 0.3]},
+    {"label": "Window", "at": [0, -42, 41], "span": 60, "from": [0, -1, 0.15]},
+    {"label": "Spigot and slots", "at": [0, 0, 88], "span": 60, "from": [-1, -1, 0.8]},
+    {"label": "Floor", "at": [0, 0, 22], "span": 60, "from": [0.15, -0.35, 1]},
+    {"label": "Marking", "at": [3, -54, 16], "span": 26, "from": [0, -0.001, 1]}
+  ],
+  "notes": [
+    {"heading": "Frame", "text": "The J1 axis is +Z through the origin, and z = 0 is the mounting face the Base Mounting Plate bolts to. The ±X arms carry the gussets (G1); the windows (W1) and strake slots (K1) sit at 30° + 60°k, between the tower's six columns. This is the bolted v9 part exported from dde/HDIMeterModel.gltf; the onshape KP0001 STEP is the un-bolted predecessor and is not a source. Toggle the section cut to look at the floor (R1) and the hub (B2, H2)."}
+  ]
+}
