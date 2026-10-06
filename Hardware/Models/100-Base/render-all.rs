@@ -19,12 +19,15 @@
 
 use anyhow::Result;
 use render_check::{
-    check_fits, check_seat, dist_gate, outline_gate, render, run, Ctx, DistGate, Fit, FitProbe, OutlineGate, Tally,
+    check_fits, check_seat, dist_gate, outline_gate, probe, render, run, Ctx, DistGate, Fit, FitProbe, OutlineGate,
+    Tally,
 };
 
 const REF_DIR: &str = "../Reference/meshes/100-Base";
 
-const DIST_GATES: [DistGate; 4] = [
+/// #110-001's mesh is coarse (its tower's facets lie 0.226 inside the circle the part draws), so it is
+/// gated at ±0.25; its header owns the measurement.
+const DIST_GATES: [DistGate; 5] = [
     DistGate {
         stem: "100-001",
         scad: "100-001_BaseClamp.scad",
@@ -42,6 +45,12 @@ const DIST_GATES: [DistGate; 4] = [
         scad: "100-003_PivotSkirt.scad",
         reference: "100-003_PivotSkirt.stl",
         tol: 0.15,
+    },
+    DistGate {
+        stem: "110-001",
+        scad: "110-001_BaseMountBottom.scad",
+        reference: "110-001_BaseMountBottom.stl",
+        tol: 0.25,
     },
     DistGate {
         stem: "110-002",
@@ -65,7 +74,9 @@ const CLAMP_FITS: [FitProbe; 3] = [
 /// section mid-layer before the part is extruded. #100-003's skirt section is
 /// checked across y just above the plug's crest, and its frame profile
 /// across the flange, where the top face's sweep is a plain extrusion.
-const OUTLINE_GATES: [OutlineGate; 4] = [
+/// #110-001's are checked through every through-hole and slot below the
+/// counterbores, and through the spigot.
+const OUTLINE_GATES: [OutlineGate; 6] = [
     OutlineGate {
         stem: "100-002",
         scad: "100-002_BaseCodeDisc.scad",
@@ -102,6 +113,24 @@ const OUTLINE_GATES: [OutlineGate; 4] = [
         at: -20.0,
         tol: 0.15,
     },
+    OutlineGate {
+        stem: "110-001",
+        scad: "110-001_BaseMountBottom.scad",
+        reference: "110-001_BaseMountBottom.stl",
+        layer: "base",
+        axis: "z",
+        at: 5.0,
+        tol: 0.15,
+    },
+    OutlineGate {
+        stem: "110-001",
+        scad: "110-001_BaseMountBottom.scad",
+        reference: "110-001_BaseMountBottom.stl",
+        layer: "spigot",
+        axis: "z",
+        at: 90.0,
+        tol: 0.15,
+    },
 ];
 
 /// The revised #100-003's print fits: H1's Ø3 screw holes at 0° and 45°,
@@ -124,6 +153,33 @@ const HOLDER_FITS: [FitProbe; 2] = [
     FitProbe { label: "all-thread hole", at: [32.0776, 18.52, 12.7], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
     FitProbe { label: "all-thread nut trap", at: [33.1601, 19.145, 15.0], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
 ];
+
+/// The revised #110-001's print fits, on H1 at (62.5, 12.5): the M6 screw's
+/// Ø6 shank at z 5 and its Ø10 head at z 13, each on its +x side.
+const MOUNT_FITS: [FitProbe; 2] = [
+    FitProbe { label: "H1 hole", at: [65.5, 12.5, 5.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
+    FitProbe { label: "H1 counterbore", at: [67.5, 12.5, 13.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
+];
+
+/// R1's plateau on the 0° rib's +y side, at r 15.0 and 8.25°, and its mirror
+/// across the 30° window: z 24.000 on the reference, 23.813 trimmed. Each pair
+/// is [above the trimmed floor, below it]; previous holds the first point, and
+/// revised must not.
+const PLATEAU_PROBES: [(&str, [[f64; 3]; 2]); 2] = [
+    ("R1 plateau, 8.25°", [[14.84477, 2.15239, 23.9], [14.84477, 2.15239, 23.7]]),
+    ("R1 plateau, 51.75°", [[9.28641, 11.77975, 23.9], [9.28641, 11.77975, 23.7]]),
+];
+
+/// Probe the revised #110-001's floor where the plateaus were: void above the
+/// trimmed surface, material below it.
+fn check_plateaus(stl: &str, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let points: Vec<[f64; 3]> = PLATEAU_PROBES.iter().flat_map(|(_, p)| *p).collect();
+    let inside = probe(stl, &points, ctx)?;
+    for ((label, _), pair) in PLATEAU_PROBES.iter().zip(inside.chunks(2)) {
+        tally.record(&format!("110-001 (revised), {label}: trimmed, floor below it"), !pair[0] && pair[1]);
+    }
+    Ok(())
+}
 
 /// The Base Mounting Plate's script, run as it is and judged by its exit
 /// status.
@@ -151,6 +207,9 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_fits("out/revised/100-002.stl", "100-002 (revised)", &DISC_FITS, ctx, tally)?;
     render("100-003_PivotSkirt.scad", "out/revised/100-003.stl", "revised", ctx, tally)?;
     check_fits("out/revised/100-003.stl", "100-003 (revised)", &SKIRT_FITS, ctx, tally)?;
+    render("110-001_BaseMountBottom.scad", "out/revised/110-001.stl", "revised", ctx, tally)?;
+    check_fits("out/revised/110-001.stl", "110-001 (revised)", &MOUNT_FITS, ctx, tally)?;
+    check_plateaus("out/revised/110-001.stl", ctx, tally)?;
     // The Base Stator Holder's recess opens toward +z.
     check_seat("110-002_BaseStatorHolder.scad", "110-002", 1.0, ctx, tally)?;
     check_fits("out/revised/110-002.stl", "110-002 (revised)", &HOLDER_FITS, ctx, tally)

@@ -89,10 +89,11 @@ the robot on its plate. Coordinates are from the J1 axis, in the plate's plane:
 **The bolt is M6 socket head cap, 8 off, 18 mm long.** It passes through the flange and takes 8 mm of
 thread in the plate, leaving 1.5 mm of tapped depth unused so that nothing protrudes below the plate.
 
-The flange is printed at **Ø6.000 through with a Ø10.000 × 6.0 mm counterbore** on its upper face, which
-is under size for M6 on both diameters. The flange is therefore **opened on assembly to Ø6.6 through and
-Ø11.0 counterbore** ([008.2](008-Assembly.md#0082-base)). The head seats on the counterbore floor and is
-driven from inside the base, which is open above it.
+The flange's holes take the screw's **Ø6.0 shank through, and its Ø10.0 head in a 6.0 mm deep
+counterbore** on its upper face, each at the fastener clearance of
+[007.2 § Print fits](007.2-Printed-Parts.md#print-fits). They are printed so (`config="revised"` of
+`#110-001`), and nothing is drilled at assembly. The head seats on the counterbore floor and is driven
+from inside the base, which is open above it.
 
 **Stability rationale.** The worst-case static overturning moment — the arm fully extended, moving-link mass
 lumped near mid-reach plus payload at full reach, with a ×2 dynamic factor — is ≈ **45 N·m**. A plate that

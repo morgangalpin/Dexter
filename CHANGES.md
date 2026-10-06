@@ -1051,11 +1051,14 @@ anything version 3 does not independently specify
 
 - **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
   [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
+  [004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+  [008.2](specs/008-Assembly.md#0082-base) and [009.1](specs/009.1-Performance-Characterization-Protocol.md),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
   `Hardware/Models/MANIFEST.csv`, and each converted group below.
   - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad`,
-    `100-003_PivotSkirt.scad` and their `.view.json` sidecars (new), and `render-all.rs`. Their meshes
-    moved to `Reference/meshes/100-Base/`.
+    `100-003_PivotSkirt.scad`, `110-001_BaseMountBottom.scad` with its generated floor table
+    `110-001_BaseMountBottom_floor.scad`, and their `.view.json` sidecars (new), and `render-all.rs`.
+    Their meshes moved to `Reference/meshes/100-Base/`.
   - `Hardware/Models/render-check/` gains `outline_gate`, which checks a profile across any axis.
 - **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
   as a mesh, so changing one meant re-deriving it.
@@ -1077,6 +1080,23 @@ anything version 3 does not independently specify
 
     Its three screw holes take the slip clearance in `revised`. What its collar, slots and lug pocket
     mate with is not recorded, so they take none.
+  - **100-Base:** the Base Mount Bottom (`#110-001`), a region split:
+    - the tower and spigot are one revolved profile;
+    - the flange is the arms' outline swept up with its round, and each gusset is a convex core grown
+      by a ball, so its top edges are rolling-ball rounds;
+    - the windows' rounds are lofted rolling-ball cutters;
+    - the tower's floor is a measured surface, sampled from the mesh over half a 60° sector and
+      mirrored, with exact cutters for every bore, counterbore and window through it.
+
+    Its mounting holes take the slip clearance on the M6 screw's shank and head in `revised`, so 008.2
+    no longer opens them at assembly
+    ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate)). `revised`
+    also trims the twelve z 24.000 plateaus the mesh carries on the floor beside its hub holes.
+    Its strake slots already clear the strakes, and its spigot is clamped. What its bores and hub holes
+    mate with is not recorded; they take their fits once virtual assembly shows it. Its mesh is coarse
+    (the tower's facets lie 0.226 inside the circle), so its `dist` gate is ±0.25.
+    `robot_assembly.scad` draws it from source, and `check.rs` reads its mesh from
+    `Reference/meshes/100-Base/` to check the Base Mounting Plate's holes against.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run the group's `render-all.rs`

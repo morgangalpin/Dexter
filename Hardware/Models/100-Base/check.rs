@@ -10,8 +10,9 @@
 //!
 //! The plate is authored, not recreated, so there is no reference mesh and
 //! most of its geometry is a free choice. Exactly one thing about it is not:
-//! the eight robot-side holes must line up with the mounting holes on
-//! `110-001_BaseMountBottom.stl`. That mesh is therefore the reference, and
+//! the eight robot-side holes must line up with the mounting holes on the Base
+//! Mount Bottom's original mesh,
+//! `../Reference/meshes/100-Base/110-001_BaseMountBottom.stl`. That mesh is therefore the reference, and
 //! the centres are read off it here rather than copied from the spec — a
 //! transcription this script trusted would be a transcription nothing checks.
 //!
@@ -218,7 +219,7 @@ fn main() -> Result<()> {
     std::fs::create_dir_all(&out)?;
     let stl = out.join("110-004_BaseMountingPlate.stl");
     let dxf = out.join("110-004_BaseMountingPlate.dxf");
-    let mount = dir.join("110-001_BaseMountBottom.stl");
+    let mount = dir.join("../Reference/meshes/100-Base/110-001_BaseMountBottom.stl");
 
     println!("#110-004 Base Mounting Plate");
     render(&openscad, &src, &stl, false)?;
