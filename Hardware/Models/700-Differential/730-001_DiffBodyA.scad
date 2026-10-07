@@ -335,5 +335,5 @@ module diff_body_a() {
     }
 }
 
-echo(body_a_box = body_a_box());   // render-all.rs checks it against the render
+echo(body_a_box = body_a_box());   // render.rs --verify checks it against the render
 diff_body_a();

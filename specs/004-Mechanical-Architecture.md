@@ -238,7 +238,7 @@ end-effector wiring bundle passes through the differential's hollow bore.
 - **Differential detail.** The differential detail design is **authored** as parametric
   OpenSCAD source in [`Hardware/Models/700-Differential/`](../Hardware/Models/700-Differential/): one
   `.scad` per part beside its mesh, shared dimensions in `diff_params.scad`, placements in
-  `diff_assembly.scad`, and a `render-all.rs` script that renders and verifies every part. Two
+  `diff_assembly.scad`, and a `render.json` that `render.rs` uses to render and verify every part. Two
   parameter sets are selectable: `config="revised"` meets the [interface below](#differential-interface)
   and is the default, the configuration the model set is worked on and printed from;
   `config="previous"` reproduces the previous version's built differential, is selected with `-D`, and

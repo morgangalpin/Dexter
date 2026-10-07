@@ -52,7 +52,7 @@
 // 58.985 x 80.492, hausdorff 0.377 mm, rms 0.048 / 0.045, p95 0.136 both
 // ways, 1.0% of candidate points and 0.5% of reference points outside
 // tolerance. That FAILS the 0.15 mm gate on max, so 730-002 is deliberately
-// absent from render-all.rs's DIST_GATES; add it there when, and only when,
+// absent from the dist_gate checks of render.json; add it there when, and only when,
 // it passes. (Quote the volume to one decimal: OpenSCAD's tessellation is
 // not bit-stable run to run, and two renders of this file differed by 8
 // triangles and 0.004 mm3.) Measure against the SEGMENTED reference, not the
@@ -123,7 +123,7 @@ use <720-001_DiffGearShaft.scad>
 
 /* [Hidden] */
 // true draws the part's overlap with the crowns' keep-out instead of the part;
-// render-all.rs sets it and requires an empty result. See TOE CLEARANCE.
+// render.rs --verify sets it and requires an empty result. See TOE CLEARANCE.
 keepout_check = false;
 
 // The two axes, from diff_params.scad -- the assembly places this part by
@@ -855,7 +855,7 @@ module rim_slots() {
 //
 // toe_keepout() is that swept volume, grown by `grow`, and is not cut from the
 // part. With `keepout_check` set the file draws the part's overlap with it
-// instead of the part; render-all.rs requires that empty at RUN - KEEPOUT_TOL.
+// instead of the part; render.rs --verify requires that empty at RUN - KEEPOUT_TOL.
 // Each zone is in diff_bevel.scad's gear frame, with the teeth at negative z,
 // and is turned so the teeth point away from the crossing:
 //   - the axle: gear +z onto this part's +x, so its teeth fall toward -X;

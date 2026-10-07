@@ -1,13 +1,13 @@
-//! Shared machinery for the per-group `render-all.rs` scripts and the
-//! scripts that render beside them: finding OpenSCAD and `scadmesh`, running
-//! them, reading a group's part list, holding a render to silence, and
-//! tallying the verdicts. Each group's script owns its own checks and calls
-//! into this crate for everything else, through a path dependency:
+//! Shared machinery for the `render.rs` program: finding OpenSCAD and
+//! `scadmesh`, running them, reading their diagnostics, and the seat and fit
+//! probes that the check kinds share. The program and its `render.json`
+//! schema are owned by `specs/009.3-Render-Program.md`; `render.rs` takes
+//! this crate as a path dependency:
 //!
 //! ```text
 //! //! ```cargo
 //! //! [dependencies]
-//! //! render-check = { path = "../render-check" }
+//! //! render-check = { path = "render-check" }
 //! //! ```
 //! ```
 
@@ -19,7 +19,7 @@ pub mod plan;
 pub mod program;
 pub mod sched;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result};
 use serde_json::Value;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -80,20 +80,6 @@ impl Ctx {
             dir,
         })
     }
-
-    /// The context for the script rust-script is running.
-    pub fn for_script() -> Result<Ctx> {
-        let base = std::env::var("RUST_SCRIPT_BASE_PATH")
-            .context("RUST_SCRIPT_BASE_PATH unset - run this file as a rust-script")?;
-        Ctx::new(PathBuf::from(base))
-    }
-}
-/// The `(id, scad)` pairs of the parts the group's `render.json` lists for
-/// `config`, in render order. The schema is owned by
-/// `specs/009.3-Render-Program.md`.
-pub fn group_parts(ctx: &Ctx, config: &str) -> Result<Vec<(String, String)>> {
-    let cfg = config::load(&ctx.dir)?;
-    Ok(cfg.parts_for(config).into_iter().map(|p| (p.id.clone(), p.scad.clone())).collect())
 }
 
 /// A finished tool run. Both streams are kept: `scadmesh` reports on stdout,
@@ -150,87 +136,6 @@ pub fn diagnostics(stderr: &str) -> Vec<&str> {
         .collect()
 }
 
-/// Pass/fail bookkeeping for one script run.
-#[derive(Default)]
-pub struct Tally {
-    pub failures: usize,
-}
-
-impl Tally {
-    pub fn record(&mut self, label: &str, ok: bool) {
-        println!("{}  {label}", if ok { "PASS" } else { "FAIL" });
-        if !ok {
-            self.failures += 1;
-        }
-    }
-
-    /// The closing line a script prints, and the exit status it returns.
-    pub fn verdict(&self) -> (String, i32) {
-        match self.failures {
-            0 => ("ALL CHECKS PASSED".into(), 0),
-            n => (format!("{n} CHECK(S) FAILED"), 1),
-        }
-    }
-
-    pub fn finish(&self) -> ! {
-        let (line, code) = self.verdict();
-        println!("\n{line}");
-        std::process::exit(code);
-    }
-}
-
-/// Hold a finished OpenSCAD run to exiting cleanly and rendering silently.
-/// The tally entry is deliberately separate from the measurements that follow:
-/// a part that warns and then measures well has not passed, it has measured a
-/// mesh nobody should be measuring.
-pub fn judge(r: &Run, what: &str, tally: &mut Tally) -> Result<()> {
-    if !r.ok {
-        bail!("OpenSCAD failed on {what}:\n{}", r.stderr.trim_end());
-    }
-    let complaints = diagnostics(&r.stderr);
-    for line in &complaints {
-        println!("      {line}");
-    }
-    tally.record(&format!("{what} renders without diagnostics"), complaints.is_empty());
-    Ok(())
-}
-
-/// The OpenSCAD arguments that render `scad` to `out` with `-D` definitions,
-/// and `extra` before the source.
-fn render_args<'a>(scad: &'a str, out: &'a str, defines: &[&'a str], extra: &[&'a str]) -> Vec<&'a str> {
-    let mut args = vec!["-o", out];
-    for d in defines {
-        args.extend(["-D", d]);
-    }
-    args.extend(extra);
-    args.push(scad);
-    args
-}
-
-fn render_judged(scad: &str, args: &[&str], defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
-    let r = run(&ctx.openscad, args, &ctx.dir)?;
-    judge(&r, &format!("{scad} ({})", defines.join(", ")), tally)?;
-    Ok(r)
-}
-
-/// Render `scad` to `out` with `-D` definitions, and judge the run.
-pub fn render_with(scad: &str, out: &str, defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
-    render_judged(scad, &render_args(scad, out, defines, &[]), defines, ctx, tally)
-}
-
-/// As `render_with`, but to a binary STL. OpenSCAD's ASCII export rounds to
-/// six significant digits, which can leave a section plane cutting a mesh
-/// whose neighbouring facets no longer quite meet, so `slice` returns open
-/// polylines; a section taken for its area wants the float32 export.
-pub fn render_binary(scad: &str, out: &str, defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
-    render_judged(scad, &render_args(scad, out, defines, &["--export-format", "binstl"]), defines, ctx, tally)
-}
-
-/// Render one configuration of one part.
-pub fn render(scad: &str, out: &str, config: &str, ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
-    render_with(scad, out, &[&format!("config=\"{config}\"")], ctx, tally)
-}
-
 /// Run `scadmesh <args> --json` and parse its report.
 pub fn sm_json(args: &[&str], ctx: &Ctx) -> Result<(bool, Value)> {
     let mut full: Vec<&str> = args.to_vec();
@@ -238,32 +143,6 @@ pub fn sm_json(args: &[&str], ctx: &Ctx) -> Result<(bool, Value)> {
     let r = run(&ctx.scadmesh, &full, &ctx.dir)?;
     let json = serde_json::from_str(&r.stdout).with_context(|| format!("parsing scadmesh output for {args:?}"))?;
     Ok((r.ok, json))
-}
-
-/// A part reproduced closely enough to be gated on two-sided surface
-/// distance. `tol` is the Hausdorff limit in mm; the render must sit inside
-/// it in both directions, with no sampled point over.
-pub struct DistGate {
-    pub stem: &'static str,
-    pub scad: &'static str,
-    pub reference: &'static str,
-    pub tol: f64,
-}
-
-/// Render the gate's part faithfully to `out/<stem>.stl` and measure its
-/// surface against `ref_dir/<reference>`.
-pub fn dist_gate(gate: &DistGate, ref_dir: &str, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    let out = format!("out/{}.stl", gate.stem);
-    render(gate.scad, &out, "previous", ctx, tally)?;
-    let tol = gate.tol.to_string();
-    let reference = format!("{ref_dir}/{}", gate.reference);
-    let (ok, report) = sm_json(&["dist", &out, &reference, "--tol", &tol], ctx)?;
-    let worst = report["hausdorff"].as_f64().unwrap_or(f64::NAN);
-    tally.record(
-        &format!("{} surface vs reference (hausdorff {worst:.3} mm, tol {tol} mm)", gate.stem),
-        ok,
-    );
-    Ok(())
 }
 
 /// Read `ECHO: "<prefix><value>"` or `ECHO: <name> = <value>` off OpenSCAD's
@@ -275,19 +154,6 @@ pub fn echoed<'a>(stderr: &'a str, tag: &str) -> Option<&'a str> {
         let rest = rest.strip_prefix('"').unwrap_or(rest);
         Some(rest.strip_prefix(tag)?.trim_end_matches('"'))
     })
-}
-
-/// Probe points with `scadmesh solid`, returning inside/outside per point.
-pub fn probe(stl: &str, points: &[[f64; 3]], ctx: &Ctx) -> Result<Vec<bool>> {
-    let args: Vec<String> = points
-        .iter()
-        .map(|p| format!("--probe={},{},{}", p[0], p[1], p[2]))
-        .collect();
-    let mut full = vec!["solid", stl];
-    full.extend(args.iter().map(String::as_str));
-    let (_, json) = sm_json(&full, ctx)?;
-    let probes = json["probes"].as_array().context("scadmesh solid emitted no probes")?;
-    Ok(probes.iter().map(|p| p["inside"].as_bool().unwrap_or(false)).collect())
 }
 
 /// How an assembly clash render came out. OpenSCAD reports an empty
@@ -317,28 +183,6 @@ pub fn clash_verdict(stderr: &str, volume: Option<f64>) -> Clash {
         Some(v) if v.abs() < CLASH_TOL => Clash::Clear,
         Some(v) => Clash::Overlap(v.abs()),
     }
-}
-
-/// Render the intersection of parts `a` and `b` of an assembly that takes a
-/// two-name `clash` list, and record whether they are clear of each other.
-pub fn clash_free(scad: &str, a: &str, b: &str, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    let out = format!("out/clash-{a}-{b}.stl");
-    let _ = std::fs::remove_file(ctx.dir.join(&out));
-    let define = format!("clash=[\"{a}\",\"{b}\"]");
-    let r = run(&ctx.openscad, &["-o", &out, "-D", &define, scad], &ctx.dir)?;
-    let volume = if ctx.dir.join(&out).exists() {
-        let (_, info) = sm_json(&["info", &out], ctx)?;
-        info[0]["volume_mm3"].as_f64()
-    } else {
-        None
-    };
-    let (label, ok) = match clash_verdict(&r.stderr, volume) {
-        Clash::Clear => (format!("{a} clear of {b}"), true),
-        Clash::Overlap(v) => (format!("{a} clear of {b} (overlap {v:.3} mm3)"), false),
-        Clash::Unjudged => (format!("{a} clear of {b} (OpenSCAD could not intersect them)"), false),
-    };
-    tally.record(&label, ok);
-    Ok(())
 }
 
 /// C-201's circular spline hole pattern, 6 on Ø44 from 30 deg (007.1 C-201).
@@ -397,22 +241,6 @@ pub fn seat_fit_probes(floor: f64, facing: f64) -> Vec<FitProbe> {
     ]
 }
 
-/// Render a Stator Holder's revised config to `out/revised/<stem>.stl` and
-/// probe C-201's seat, and its fits, at the floor the part echoes as
-/// `seat_floor`.
-pub fn check_seat(scad: &str, stem: &str, facing: f64, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
-    let stl = format!("out/revised/{stem}.stl");
-    let r = render(scad, &stl, "revised", ctx, tally)?;
-    let floor: f64 = echoed(&r.stderr, "seat_floor = ").context("seat_floor not echoed")?.parse()?;
-    let probes = seat_probe_points(floor, facing);
-    let points: Vec<[f64; 3]> = probes.iter().map(|p| p.at).collect();
-    for (p, inside) in probes.iter().zip(probe(&stl, &points, ctx)?) {
-        tally.record(&format!("{stem} (revised) seat: {}", p.label), inside == p.solid);
-    }
-    check_fits(&stl, &format!("{stem} (revised) seat"), &seat_fit_probes(floor, facing), ctx, tally)
-}
-
 /// A print-fit class of `../print_fit.scad`.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Fit {
@@ -433,13 +261,6 @@ pub fn scad_constant(source: &str, name: &str) -> Option<f64> {
 
 /// The two print-fit clearances per side, read from the library every part
 /// includes, so the checks follow it when a machine is qualified.
-pub fn print_fit(ctx: &Ctx) -> Result<(f64, f64)> {
-    let path = ctx.dir.join("../print_fit.scad");
-    let source = std::fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
-    let get = |name| scad_constant(&source, name).with_context(|| format!("{name} not in print_fit.scad"));
-    Ok((get("FIT_SLIP")?, get("FIT_PRESS")?))
-}
-
 /// One fit on a revised render: `at` lies on the mate's nominal surface and
 /// `toward` is the unit direction from the part toward the mate. The part's
 /// wall must stand back from `at` by the class clearance, so a point halfway
@@ -460,24 +281,6 @@ pub fn fit_points(p: &FitProbe, c: f64) -> ([f64; 3], [f64; 3]) {
     (back(c / 2.0), back(c + FIT_WALL_PROBE))
 }
 
-/// Check every fit of a revised render against the class clearances.
-pub fn check_fits(stl: &str, part: &str, probes: &[FitProbe], ctx: &Ctx, tally: &mut Tally) -> Result<()> {
-    let (slip, press) = print_fit(ctx)?;
-    let mut points = Vec::new();
-    for p in probes {
-        let c = if p.fit == Fit::Slip { slip } else { press };
-        let (gap, wall) = fit_points(p, c);
-        points.push(gap);
-        points.push(wall);
-    }
-    let inside = probe(stl, &points, ctx)?;
-    for (p, pair) in probes.iter().zip(inside.chunks(2)) {
-        let class = if p.fit == Fit::Slip { "slip" } else { "press" };
-        tally.record(&format!("{part} fit, {} ({class}): gap open, wall behind it", p.label), !pair[0] && pair[1]);
-    }
-    Ok(())
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -488,25 +291,6 @@ mod tests {
         assert_eq!(scad_constant(src, "FIT_SLIP"), Some(0.15));
         assert_eq!(scad_constant(src, "FIT_PRESS"), Some(0.05));
         assert_eq!(scad_constant(src, "MISSING"), None);
-    }
-
-    #[test]
-    fn group_parts_reads_the_config_beside_the_script() {
-        let dir = std::env::temp_dir().join(format!("render-check-parts-{}", std::process::id()));
-        let ctx = Ctx::new(dir.clone()).unwrap();
-        assert!(group_parts(&ctx, "revised").is_err());
-        let text = r#"{"parts": [{"id": "a", "scad": "a.scad"}, {"id": "b", "scad": "b.scad", "configs": ["revised"]}]}"#;
-        std::fs::write(dir.join(config::CONFIG_FILE), text).unwrap();
-        assert_eq!(group_parts(&ctx, "revised").unwrap().len(), 2);
-        assert_eq!(group_parts(&ctx, "previous").unwrap(), [("a".to_string(), "a.scad".to_string())]);
-        std::fs::remove_dir_all(dir).unwrap();
-    }
-
-    #[test]
-    fn render_args_put_definitions_and_extras_before_the_source() {
-        let args = render_args("p.scad", "o.stl", &["a=1", "b=2"], &["--export-format", "binstl"]);
-        assert_eq!(args, vec!["-o", "o.stl", "-D", "a=1", "-D", "b=2", "--export-format", "binstl", "p.scad"]);
-        assert_eq!(render_args("p.scad", "o.stl", &[], &[]), vec!["-o", "o.stl", "p.scad"]);
     }
 
     #[test]
@@ -562,16 +346,6 @@ mod tests {
     }
 
     #[test]
-    fn tally_counts_failures_and_gives_the_verdict() {
-        let mut t = Tally::default();
-        t.record("a", true);
-        assert_eq!(t.verdict(), ("ALL CHECKS PASSED".into(), 0));
-        t.record("b", false);
-        t.record("c", false);
-        assert_eq!(t.verdict(), ("2 CHECK(S) FAILED".into(), 1));
-    }
-
-    #[test]
     fn tool_prefers_env_then_candidate_then_name() {
         let dir = Path::new(env!("CARGO_MANIFEST_DIR"));
         assert_eq!(tool("RENDER_CHECK_UNSET_VAR", &["nope"], "bare", dir), "bare");
@@ -587,18 +361,6 @@ mod tests {
         assert_eq!(echoed(err, "J3 Attach: -D hub_drop="), Some("0.687"));
         assert_eq!(echoed(err, "body_box = "), Some("[[0, 0], [1, 1]]"));
         assert_eq!(echoed(err, "missing"), None);
-    }
-
-    #[test]
-    fn judge_fails_hard_on_exit_and_softly_on_warnings() {
-        let mut t = Tally::default();
-        let bad = Run { ok: false, stdout: String::new(), stderr: "ERROR: assert".into() };
-        assert!(judge(&bad, "p", &mut t).is_err());
-        let noisy = Run { ok: true, stdout: String::new(), stderr: "WARNING: w".into() };
-        judge(&noisy, "p", &mut t).unwrap();
-        let clean = Run { ok: true, stdout: String::new(), stderr: "Volumes: 2".into() };
-        judge(&clean, "p", &mut t).unwrap();
-        assert_eq!(t.failures, 1);
     }
 
     #[test]

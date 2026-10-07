@@ -680,5 +680,5 @@ module diff_end_pulley() {
     down(Z0) diff_end_pulley_ref();
 }
 
-echo(end_pulley_box_ref = end_pulley_box_ref());   // render-all.rs checks it
+echo(end_pulley_box_ref = end_pulley_box_ref());   // render.rs --verify checks it
 diff_end_pulley_ref();

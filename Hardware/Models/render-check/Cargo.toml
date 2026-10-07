@@ -2,7 +2,7 @@
 name = "render-check"
 version = "0.1.0"
 edition = "2021"
-description = "Shared machinery for the per-group render-all.rs verification scripts."
+description = "Shared machinery for the render.rs parallel render program."
 publish = false
 
 [dependencies]
