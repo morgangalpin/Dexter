@@ -23,9 +23,8 @@
 //
 //     feature                      value                  z span
 //     body                         Ø65.0                  0 .. 12
-//     flange                       a dodecagon, corners on 30 deg from
-//                                  0 deg less 0.17 deg, rounded R10.075
-//                                  about centres 32.06 out     12 .. 16
+//     flange                       the Base Long's rounded dodecagon
+//                                  (base_dodecagon.scad)  12 .. 16
 //     strake slots, 6 on 0 deg     13.0 wide, r 33.85 .. 37.452   12 .. 16
 //     all-thread holes, 6 on 30    Ø3.0 on r 35.54        12 .. 16
 //     their nut traps              hex 5.5 AF, flats facing the axis
@@ -56,6 +55,7 @@
 // size.
 
 include <../print_fit.scad>
+include <base_dodecagon.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 
 /* [Configuration] */
@@ -69,7 +69,6 @@ epsilon = 0.01;
 REF_AXIS      = [-3.125, 5.413];   // the reference mesh's axis
 FLOOR         = 5.000;
 FLANGE        = [12.000, 16.000];  // bottom, top
-DODECAGON     = [32.060, 10.075, -0.170];  // corner centres' radius, corner radius, turn
 BODY_D        = 65.000;
 SLOT          = [33.850, 37.452, 6.500];   // inner and outer radius, half-width
 THREAD_R      = 35.540;
@@ -84,7 +83,7 @@ SCREW_D       = 3.000;
 // --- 2D outlines -----------------------------------------------------------
 module flange_2d()
     difference() {
-        rotate(DODECAGON[2]) offset(r = DODECAGON[1]) circle(r = DODECAGON[0], $fn = 12);
+        dodecagon_2d();
         for (a = [0 : 60 : 300]) rotate(a) translate([SLOT[0], -SLOT[2]]) square([SLOT[1] - SLOT[0], 2 * SLOT[2]]);
     }
 

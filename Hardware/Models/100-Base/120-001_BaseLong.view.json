@@ -1,0 +1,36 @@
+{
+  "title": "Base Long",
+  "subtitle": "#120-001 · reference mesh and 120-001_BaseLong.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1, 1.2],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Base Long", "pn": "#120-001", "color": "#9aa7b4", "stl": "../Reference/meshes/100-Base/120-001_BaseLong.stl"}]},
+    {"name": "Renders", "role": "render-all.rs", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/120-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/120-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-28.94, -29.11, -10], "text": "D1 body: rounded dodecagon, corners R10.075 on centres 32.06 out (flats 41.05, corners 42.14), z -28–68"},
+    {"at": [22.98, -22.98, -25], "text": "B1 lower bore Ø65.0, z -28–7 (35.0 deep)"},
+    {"at": [-22.98, 22.98, 66], "text": "B2 upper bore Ø65.0, z 61–68 (7.0 deep)"},
+    {"at": [21.21, 21.21, 10], "text": "B3 centre bore Ø60.0, z 7–61"},
+    {"at": [-35.65, 0, 68], "text": "K1 strake slots ×6, 13.0 × 3.6 on r 33.85–37.45, at 0° + 60°k, through"},
+    {"at": [-30.78, -17.77, 68], "text": "H1 all-thread holes ×6 Ø3.5 on r 35.54, at 30° + 60°k, through"},
+    {"at": [-39.13, -12.53, 37], "text": "W1 windows ×12: ellipse 5.0 × 38.0, centre z 37, along the flat's normal; R5 rounds both faces"},
+    {"at": [-43.25, 0, 53], "text": "R1 ribs ×6 on the strake columns: Ø86.5, top z 53.0, 12.8 wide; underside R2 round and R2 fillet"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 20], "span": 100, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0, 20], "span": 100, "from": [0, 0, -1]},
+    {"label": "Window", "at": [-39.13, -12.53, 37], "span": 50, "from": [-0.96, -0.31, 0.15]},
+    {"label": "Windows inside", "at": [-30, -10, 37], "span": 50, "from": [0.96, 0.31, 0.2]},
+    {"label": "Rib", "at": [-43, 0, 51.5], "span": 22, "from": [-1, -0.35, 0.35]},
+    {"label": "Rib profile", "at": [-42.5, 0, 51], "span": 8, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Frame", "text": "The J1 axis is +Z through the origin, as the mesh is exported: the bottom face, which seats on the Base Mount Bottom's top face, is at z = -28 and the top face at z = 68. The strake slots (K1) and the strake columns sit at 0° + 60°k, the all-thread holes (H1) and the narrow columns at 30° + 60°k, and the twelve windows (W1) between them. The dodecagon's corners are on 30°k + 0.18°, the same outline as the Base Stator Holder's flange. Toggle the section cut to see the bores (B1, B2, B3) and the windows' inner rounds."},
+    {"heading": "Windows", "text": "Each window's throat is a 5.0 × 38.0 ellipse, centred z 37.0, constant through the 1 mm land at mid-wall (r 35–36). Its axis is parallel to the normal of the flat it opens through, not radial, and it crosses mid-wall (r 35.5) 11.836° from the narrow column it stands beside, so the two windows either side of a narrow column mirror each other. R5 rolling-ball rounds blend it into the outer flat and into the Ø60 bore; beside each narrow column the inner rounds of the two windows meet. The bore's round stops on the plane z 15 at each window's lower end."},
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render opens B1's seat and B2 by the press clearance and B1's way in by the slip clearance (Bottom preset, section cut). The dimensions and fits are in 120-001_BaseLong.scad's header. This part renders with OpenSCAD's Manifold engine; run render-all.rs before building this page, because the renders are its output."}
+  ]
+}

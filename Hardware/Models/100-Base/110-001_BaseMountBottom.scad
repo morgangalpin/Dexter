@@ -15,7 +15,8 @@
 //
 //     tower    T1, S1, B1    one revolved profile, an annulus from z 0 to the spigot's top
 //     rounds   W1            each window's R5 rounds, lofted rolling-ball cutters on the tower's
-//                            outer face and on the bore's face, cut from the tower alone
+//                            outer face and on the bore's face (window_round.scad), cut from the
+//                            tower alone
 //     flange   F1            the arms' plan outline swept up with its R5 top edge (offset_sweep)
 //     gussets  G1            the side profile on each side's own convex plan, both shrunk by R2 and
 //                            grown back by a ball (minkowski), the three sides intersected: every
@@ -98,6 +99,7 @@ include <BOSL2/std.scad>
 include <BOSL2/rounding.scad>
 include <../print_fit.scad>
 include <110-001_BaseMountBottom_floor.scad>
+use <window_round.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -130,10 +132,12 @@ GUSSET_HALF = 8.500;
 WALL_X      = [15.000, 25.000];
 GUSSET_R    = 2.000;
 
-// W1, the windows: semi-axes [across, up], centre height and round.
+// W1, the windows: semi-axes [across, up], centre height and round. W1 is the window as
+// window_round.scad takes it, on a radial axis.
 WINDOW     = [9.610, 20.500];
 WINDOW_Z   = 41.000;
 WINDOW_R   = 5.000;
+W1         = [WINDOW.x, WINDOW.y, WINDOW_Z, 0];
 
 // K1, the strake slots: [centre radius, radial width, length], floor, and chamfer.
 SLOT       = [35.651, 3.602, 13.000];
@@ -190,47 +194,12 @@ module tower() {
                               [SPIGOT_R, TOP_Z], [BORE_R, TOP_Z]]);
 }
 
-// ---- W1, the windows' rounds
-
-// A window's local frame: x out along its axis, y across it, z up. The ellipse's point at angle psi
-// from the top, and its normal into the material, in [y, z].
-function window_point(psi) = [WINDOW.x * sin(psi), WINDOW_Z + WINDOW.y * cos(psi)];
-function window_normal(psi) = let (n = [sin(psi) / WINDOW.x, cos(psi) / WINDOW.y]) n / norm(n);
-
-// The ball's arc where the window leaves a cylindrical face of radius rf about Z, at psi: side +1
-// for the tower's outer face (material inside it), -1 for the bore's (material outside it). The ball's
-// centre is r off the window's wall and r off the face; the section runs from a point pushed into the
-// window, round the corner pushed into the void, to a point pushed off the face, then back along the
-// arc.
-function window_round_section(psi, rf, side, r = WINDOW_R, n = 10) = let (
-    p  = window_point(psi),
-    m  = window_normal(psi),
-    q  = p + r * m,
-    c  = [sqrt((rf - side * r) ^ 2 - q.x ^ 2), q.x, q.y],
-    n1 = [0, -m.x, -m.y],
-    n2 = side * [c.x, c.y, 0] / norm([c.x, c.y]),
-    a  = acos(n1 * n2),
-    b  = (n1 + n2) / norm(n1 + n2),
-    e  = 0.3
-) concat([c + (r + e) * n1, c + r * (n1 + n2) / (1 + n1 * n2) + 2 * e * b, c + (r + e) * n2],
-         [for (j = [0 : n]) let (f = j / n) c + r * (sin((1 - f) * a) * n2 + sin(f * a) * n1) / sin(a)]);
-
-// One window's round on one face, lofted round the whole edge.
-module window_round(rf, side, segments = 120) {
-    sections = [for (i = [0 : segments - 1]) window_round_section(360 * i / segments, rf, side)];
-    m = len(sections[0]);
-    polyhedron(
-        points = [for (s = sections) each s],
-        faces = [for (i = [0 : segments - 1], j = [0 : m - 1])
-            let (a = i * m, b = ((i + 1) % segments) * m, q = (j + 1) % m)
-            each side > 0 ? [[a + j, b + j, b + q], [a + j, b + q, a + q]]
-                          : [[a + j, b + q, b + j], [a + j, a + q, b + q]]]);
-}
+// ---- W1, the windows' rounds (window_round.scad), on the tower's face and on the bore's
 
 module window_rounds() {
     for (a = BAYS) zrot(a) {
-        window_round(TOWER_R, 1);
-        window_round(BORE_R, -1);
+        window_round(W1, ["cyl", TOWER_R, 1], WINDOW_R);
+        window_round(W1, ["cyl", BORE_R, -1], WINDOW_R);
     }
 }
 
@@ -340,11 +309,9 @@ module floor_body() {
 
 // ---- Cutters
 
-module window_2d() { translate([0, WINDOW_Z]) scale(WINDOW) circle(r = 1); }
-
 // The windows' prisms, from the axis out through the tower.
 module windows() {
-    for (a = BAYS) zrot(a) zrot(90) xrot(90) linear_extrude(TOWER_R + 5) window_2d();
+    for (a = BAYS) zrot(a) window_prism(W1, 0, TOWER_R + 5);
 }
 
 module slot_2d() { translate([SLOT[0], 0]) square([SLOT[1], SLOT[2]], center = true); }
@@ -385,9 +352,9 @@ module slots() {
         intersection() {
             hull() {
                 zrot(90) xrot(90) up(inner - SLOT_CHAMF - 0.5) linear_extrude(epsilon)
-                    offset(r = -0.5) window_2d();
+                    offset(r = -0.5) window_2d(W1);
                 zrot(90) xrot(90) up(inner + 0.5 - epsilon) linear_extrude(epsilon)
-                    offset(r = SLOT_CHAMF + 0.5) window_2d();
+                    offset(r = SLOT_CHAMF + 0.5) window_2d(W1);
             }
             translate([inner - SLOT_CHAMF - 0.5, -SLOT[2] / 2, 0]) cube([SLOT_CHAMF + 1, SLOT[2], WINDOW_Z]);
         }

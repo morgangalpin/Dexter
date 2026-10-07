@@ -22,7 +22,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.scad` | ⚠️; print fits on the mounting holes in `revised` |
 | #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline in `revised` |
 | #110-004 | Base Mounting Plate | 1 | `110-004_BaseMountingPlate.scad` | machined, not printed |
-| #120-001 | Base Long | 1 | `120-001_BaseLong.stl` |  |
+| #120-001 | Base Long | 1 | `120-001_BaseLong.scad` | print fits on the bearing bores in `revised` |
 
 ## 200-ArmBody — Arm body and belt directors
 

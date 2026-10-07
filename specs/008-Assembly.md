@@ -135,7 +135,8 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
 8. Epoxy the motor bottoms, End Cap faces, and the strake-to-motor contact areas.
 9. Mount the Main Pivot onto the Base:
    a. From the Base Long's lower end, press a 6810 bearing into the lower bore until it stops on the bore's
-      shoulder, 35.5 mm (about 1½″) in (mallet + aluminum drift if it resists).
+      shoulder, whose depth [`120-001_BaseLong.scad`](../Hardware/Models/100-Base/120-001_BaseLong.scad)
+      gives (mallet + aluminum drift if it resists).
    b. Align the Base Code Disk with the 3 strakes and press to snap in.
    c. Push the Base Long, lower end up (wires up), onto the Main Pivot until the Base Motor End Cap's bearing
       bottoms in the Base Long's upper bore, flush with its top face.

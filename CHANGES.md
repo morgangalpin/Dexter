@@ -1052,14 +1052,18 @@ anything version 3 does not independently specify
 - **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
   [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
   [004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
-  [008.2](specs/008-Assembly.md#0082-base) and [009.1](specs/009.1-Performance-Characterization-Protocol.md),
+  [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot) and
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
   `Hardware/Models/MANIFEST.csv`, and each converted group below.
   - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad`,
     `100-003_PivotSkirt.scad`, `110-001_BaseMountBottom.scad` with its generated floor table
-    `110-001_BaseMountBottom_floor.scad`, and their `.view.json` sidecars (new), and `render-all.rs`.
-    Their meshes moved to `Reference/meshes/100-Base/`.
-  - `Hardware/Models/render-check/` gains `outline_gate`, which checks a profile across any axis.
+    `110-001_BaseMountBottom_floor.scad`, `120-001_BaseLong.scad` with its generated rib table
+    `120-001_BaseLong_rib.scad`, their `.view.json` sidecars, and the shared `base_dodecagon.scad` and
+    `window_round.scad` (new); `110-002_BaseStatorHolder.scad` and `render-all.rs`. Their meshes moved
+    to `Reference/meshes/100-Base/`.
+  - `Hardware/Models/render-check/` gains `outline_gate`, which checks a profile across any axis, and
+    `Ctx::manifold`, which renders a part with an OpenSCAD Nightly's Manifold engine.
 - **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
   as a mesh, so changing one meant re-deriving it.
 - **Now:** Each converted part is a `.scad` with two configurations. `config="previous"` recreates the
@@ -1097,6 +1101,20 @@ anything version 3 does not independently specify
     (the tower's facets lie 0.226 inside the circle), so its `dist` gate is ±0.25.
     `robot_assembly.scad` draws it from source, and `check.rs` reads its mesh from
     `Reference/meshes/100-Base/` to check the Base Mounting Plate's holes against.
+  - **100-Base:** the Base Long (`#120-001`), built side by side:
+    - one side of its rounded dodecagon is mirrored into a pair, and the pairs are patterned round
+      the axis, each corner rounded by an edge mask;
+    - each pair's two windows are elliptical prisms with lofted rolling-ball rounds on both faces;
+    - its six ribs are lofted through sections measured from the mesh.
+
+    Its bearing bores take the press clearance on the 6810s in `revised`, and the 28 mm the lower
+    bearing is pushed through to its seat takes the slip clearance. Its strake slots and all-thread
+    holes already clear what passes through them. Its outline is the Base Stator Holder's flange's,
+    so both now take it from `base_dodecagon.scad`. Its windows' rounds and the Base Mount Bottom's
+    share `window_round.scad`. 008.4 takes the lower bore's depth from its header (35.0 mm, not
+    35.5). `robot_assembly.scad` draws it from source. It is the first part rendered with OpenSCAD's
+    Manifold engine: OpenSCAD 2021.01's CGAL asserts on its windows' cuts and drops them
+    ([Checking a group](Hardware/Models/README.md#checking-a-group)).
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run the group's `render-all.rs`

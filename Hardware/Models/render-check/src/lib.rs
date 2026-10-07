@@ -54,11 +54,41 @@ pub fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> Strin
         .map_or_else(|| name.to_string(), |p| p.to_string_lossy().into_owned())
 }
 
-/// Where the tools run and which binaries they are.
+/// The newest snapshot directory under `root` that holds the binary `exe`.
+/// Snapshots are named by their date, so the greatest name is the newest.
+pub fn newest_under(root: &Path, exe: &str) -> Option<PathBuf> {
+    let mut found: Vec<PathBuf> = std::fs::read_dir(root)
+        .ok()?
+        .filter_map(|e| e.ok())
+        .map(|e| e.path().join(exe))
+        .filter(|p| p.exists())
+        .collect();
+    found.sort();
+    found.pop()
+}
+
+/// OpenSCAD with the Manifold geometry engine, for the parts whose cuts the
+/// installed release's CGAL cannot make (the README's "Checking a group" lists
+/// them): `$OPENSCAD_MANIFOLD`, then the newest Nightly snapshot unpacked under
+/// `%LOCALAPPDATA%/Programs/OpenSCAD-Nightly/`, then `openscad-nightly` via
+/// `$PATH`.
+pub fn manifold_openscad() -> String {
+    if let Ok(v) = std::env::var("OPENSCAD_MANIFOLD") {
+        return v;
+    }
+    std::env::var_os("LOCALAPPDATA")
+        .and_then(|d| newest_under(&PathBuf::from(d).join("Programs/OpenSCAD-Nightly"), "openscad.exe"))
+        .map_or_else(|| "openscad-nightly".to_string(), |p| p.to_string_lossy().into_owned())
+}
+
+/// Where the tools run and which binaries they are. `engine` holds the
+/// arguments that choose OpenSCAD's geometry engine, passed before any other.
+#[derive(Clone)]
 pub struct Ctx {
     pub dir: PathBuf,
     pub openscad: String,
     pub scadmesh: String,
+    pub engine: Vec<String>,
 }
 
 impl Ctx {
@@ -69,8 +99,19 @@ impl Ctx {
         Ok(Ctx {
             openscad: tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", here),
             scadmesh: tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", here),
+            engine: Vec::new(),
             dir,
         })
+    }
+
+    /// The same context, rendering with `openscad` and `engine`.
+    pub fn with_engine(&self, openscad: &str, engine: &[&str]) -> Ctx {
+        Ctx { openscad: openscad.to_string(), engine: engine.iter().map(|a| a.to_string()).collect(), ..self.clone() }
+    }
+
+    /// The same context, rendering with OpenSCAD's Manifold engine.
+    pub fn manifold(&self) -> Ctx {
+        self.with_engine(&manifold_openscad(), &["--backend=manifold"])
     }
 
     /// The context for the script rust-script is running.
@@ -226,8 +267,13 @@ fn render_args<'a>(scad: &'a str, out: &'a str, defines: &[&'a str], extra: &[&'
     args
 }
 
+/// The full argument list an OpenSCAD run takes in `ctx`: its engine's, then `args`.
+fn openscad_args<'a>(ctx: &'a Ctx, args: &[&'a str]) -> Vec<&'a str> {
+    ctx.engine.iter().map(String::as_str).chain(args.iter().copied()).collect()
+}
+
 fn render_judged(scad: &str, args: &[&str], defines: &[&str], ctx: &Ctx, tally: &mut Tally) -> Result<Run> {
-    let r = run(&ctx.openscad, args, &ctx.dir)?;
+    let r = run(&ctx.openscad, &openscad_args(ctx, args), &ctx.dir)?;
     judge(&r, &format!("{scad} ({})", defines.join(", ")), tally)?;
     Ok(r)
 }
@@ -405,7 +451,7 @@ pub fn clash_free(scad: &str, a: &str, b: &str, ctx: &Ctx, tally: &mut Tally) ->
     let out = format!("out/clash-{a}-{b}.stl");
     let _ = std::fs::remove_file(ctx.dir.join(&out));
     let define = format!("clash=[\"{a}\",\"{b}\"]");
-    let r = run(&ctx.openscad, &["-o", &out, "-D", &define, scad], &ctx.dir)?;
+    let r = run(&ctx.openscad, &openscad_args(ctx, &["-o", &out, "-D", &define, scad]), &ctx.dir)?;
     let volume = if ctx.dir.join(&out).exists() {
         let (_, info) = sm_json(&["info", &out], ctx)?;
         info[0]["volume_mm3"].as_f64()
@@ -624,6 +670,34 @@ mod tests {
             outline_args(&gate, "out/2d/p-frame.svg", "ref/p.stl"),
             ["outline", "out/2d/p-frame.svg", "ref/p.stl", "--axis", "x", "--at=-20", "--tol", "0.15"]
         );
+    }
+
+    #[test]
+    fn newest_under_picks_the_latest_snapshot_that_holds_the_binary() {
+        let root = std::env::temp_dir().join(format!("render-check-nightly-{}", std::process::id()));
+        assert_eq!(newest_under(&root, "openscad.exe"), None);
+        for (snapshot, has_exe) in [("OpenSCAD-2026.10.03", true), ("OpenSCAD-2026.10.05", true), ("OpenSCAD-2026.10.09", false)] {
+            let d = root.join(snapshot);
+            std::fs::create_dir_all(&d).unwrap();
+            if has_exe {
+                std::fs::write(d.join("openscad.exe"), "").unwrap();
+            }
+        }
+        assert_eq!(newest_under(&root, "openscad.exe"), Some(root.join("OpenSCAD-2026.10.05").join("openscad.exe")));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn an_engine_context_runs_its_binary_with_its_arguments_first() {
+        let dir = std::env::temp_dir().join(format!("render-check-engine-{}", std::process::id()));
+        let ctx = Ctx::new(dir.clone()).unwrap();
+        assert!(ctx.engine.is_empty());
+        assert_eq!(openscad_args(&ctx, &["-o", "o.stl", "p.scad"]), ["-o", "o.stl", "p.scad"]);
+        let m = ctx.with_engine("nightly", &["--backend=manifold"]);
+        assert_eq!((m.openscad.as_str(), m.dir.clone(), m.scadmesh.clone()), ("nightly", ctx.dir.clone(), ctx.scadmesh.clone()));
+        assert_eq!(openscad_args(&m, &["-o", "o.stl", "p.scad"]), ["--backend=manifold", "-o", "o.stl", "p.scad"]);
+        assert_eq!(ctx.manifold().engine, ["--backend=manifold"]);
+        std::fs::remove_dir_all(dir).unwrap();
     }
 
     #[test]

@@ -60,6 +60,14 @@ const DIST_GATES: [DistGate; 5] = [
     },
 ];
 
+/// #120-001 renders with OpenSCAD's Manifold engine; its header says why.
+const MANIFOLD_DIST_GATE: DistGate = DistGate {
+    stem: "120-001",
+    scad: "120-001_BaseLong.scad",
+    reference: "120-001_BaseLong.stl",
+    tol: 0.15,
+};
+
 /// The revised #100-001's print fits, on its bolt axis (x 41.125, z 7.5,
 /// along Y): the M3 bolt's surface on B1's outer side between the split and
 /// the nut, and the inner flats of B2's nut and B3's head, where the wall
@@ -161,6 +169,14 @@ const MOUNT_FITS: [FitProbe; 2] = [
     FitProbe { label: "H1 counterbore", at: [67.5, 12.5, 13.0], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
 ];
 
+/// The revised #120-001's print fits, on the 6810s' Ø65 outer races at 15°, where the wall behind
+/// each bore is whole: B1's way in at z -14, B1's seat at z 3.5, and B2 at z 64.5.
+const BASE_LONG_FITS: [FitProbe; 3] = [
+    FitProbe { label: "B1 way in", at: [31.39259, 8.41162, -14.0], toward: [-0.965926, -0.258819, 0.0], fit: Fit::Slip },
+    FitProbe { label: "B1 seat", at: [31.39259, 8.41162, 3.5], toward: [-0.965926, -0.258819, 0.0], fit: Fit::Press },
+    FitProbe { label: "B2", at: [31.39259, 8.41162, 64.5], toward: [-0.965926, -0.258819, 0.0], fit: Fit::Press },
+];
+
 /// R1's plateau on the 0° rib's +y side, at r 15.0 and 8.25°, and its mirror
 /// across the 30° window: z 24.000 on the reference, 23.813 trimmed. Each pair
 /// is [above the trimmed floor, below it]; previous holds the first point, and
@@ -200,6 +216,8 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     for gate in &DIST_GATES {
         dist_gate(gate, REF_DIR, ctx, tally)?;
     }
+    let manifold = ctx.manifold();
+    dist_gate(&MANIFOLD_DIST_GATE, REF_DIR, &manifold, tally)?;
     std::fs::create_dir_all(ctx.dir.join("out/revised"))?;
     render("100-001_BaseClamp.scad", "out/revised/100-001.stl", "revised", ctx, tally)?;
     check_fits("out/revised/100-001.stl", "100-001 (revised)", &CLAMP_FITS, ctx, tally)?;
@@ -212,7 +230,9 @@ fn verify(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     check_plateaus("out/revised/110-001.stl", ctx, tally)?;
     // The Base Stator Holder's recess opens toward +z.
     check_seat("110-002_BaseStatorHolder.scad", "110-002", 1.0, ctx, tally)?;
-    check_fits("out/revised/110-002.stl", "110-002 (revised)", &HOLDER_FITS, ctx, tally)
+    check_fits("out/revised/110-002.stl", "110-002 (revised)", &HOLDER_FITS, ctx, tally)?;
+    render("120-001_BaseLong.scad", "out/revised/120-001.stl", "revised", &manifold, tally)?;
+    check_fits("out/revised/120-001.stl", "120-001 (revised)", &BASE_LONG_FITS, ctx, tally)
 }
 
 fn main() -> Result<()> {

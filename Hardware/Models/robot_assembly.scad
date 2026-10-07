@@ -123,6 +123,7 @@ use <400-EndArm/430-002_ExternalInnerPulley.scad>
 // Converted base parts are sources too, drawn in the same configuration.
 use <100-Base/100-001_BaseClamp.scad>
 use <100-Base/110-001_BaseMountBottom.scad>
+use <100-Base/120-001_BaseLong.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -316,7 +317,7 @@ module place_base() {
         xrot(-90) base_mount_bottom();
         back( 82) xrot(-90) base_clamp();
         // The model's own z runs -28.000..68.000.
-        back(BASE_SEAT_Y + 28) xrot(-90) import("100-Base/120-001_BaseLong.stl", convexity = 8);
+        back(BASE_SEAT_Y + 28) xrot(-90) base_long();
     }
 }
 
