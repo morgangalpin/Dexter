@@ -320,10 +320,13 @@ echoes. A script holds only its own gates and checks. Three rules keep the scrip
 - **A group that uses another group's part runs that group's script** rather than repeating its gates.
   `500-ExternalGear/render-all.rs` runs `600-StrainWave/render-all.rs` first, because J3's stack
   depends on the Flex Spline Attach.
-- **A group with more than one script states its parts once**, in its `parts.json`, which every script
-  reads through `render-check` (`group_parts`). `700-Differential/render-meshes.rs` builds its mesh cache
-  from the same list `render-all.rs` verifies, so an edited part reaches the assembly view and the gates
-  alike.
+- **A group states its parts once**, in the `parts` of its `render.json`, whose schema is owned by
+  `specs/009.3-Render-Program.md`. Every script reads it through `render-check` (`group_parts`), and
+  `render.rs --meshes` builds the mesh cache from the same list the checks verify, so an edited part
+  reaches the assembly view and the gates alike.
+- **`render.rs` is cached by rust-script.** An edit to `render-check/` does not rebuild it. After changing
+  the crate, run `rust-script --force render.rs ...` once, then `rust-script render.rs ...`; running
+  `./render.rs` directly can use an older build. `700-Differential --verify` takes about 34 minutes.
 
 Two checks are shared across groups. `check_seat` probes a Stator Holder's revised seat against C-201's
 hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states

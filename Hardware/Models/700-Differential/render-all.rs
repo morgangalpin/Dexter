@@ -301,7 +301,7 @@ const DIAMS: [DiamCheck; 6] = [
 const DIAM_TOL: f64 = 0.05;
 
 /// The revised configuration renders to `out/revised/` every part this group's
-/// `parts.json` lists for it, and these two besides: the External pulleys are
+/// `render.json` lists for it, and these two besides: the External pulleys are
 /// 400-EndArm's parts, but they are the elbow half of the same DC-12 train, so
 /// they are verified here too.
 const EXTERNAL_PARTS: [(&str, &str); 2] = [

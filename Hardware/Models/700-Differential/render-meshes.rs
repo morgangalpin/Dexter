@@ -61,7 +61,7 @@
 //! argument is the configuration, `revised` when omitted, as in
 //! `diff_params.scad`; `./render-meshes.rs previous` builds the reference set.
 //!
-//! The parts it builds are the ones `parts.json` lists for that configuration,
+//! The parts it builds are the ones `render.json` lists for that configuration,
 //! the same list `render-all.rs` renders, so the two cannot drift apart. Each
 //! part's id is the name `diff_assembly.scad` imports its mesh by.
 //!
