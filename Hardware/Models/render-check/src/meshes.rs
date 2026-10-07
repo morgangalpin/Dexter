@@ -37,6 +37,12 @@ pub trait Tools: Send + Sync {
     fn read(&self, path: &str) -> Result<String> {
         bail!("this toolset cannot read {path}")
     }
+    /// Whether a tool wrote `path`.
+    fn exists(&self, _path: &str) -> bool {
+        false
+    }
+    /// Delete `path` if present, so a stale file cannot stand for a tool's output.
+    fn remove(&self, _path: &str) {}
     /// Create the directory that will hold `path`, so a tool can write there.
     fn ensure_parent(&self, _path: &str) -> Result<()> {
         Ok(())
@@ -44,6 +50,14 @@ pub trait Tools: Send + Sync {
 }
 
 impl Tools for Ctx {
+    fn exists(&self, path: &str) -> bool {
+        self.dir.join(path).exists()
+    }
+
+    fn remove(&self, path: &str) {
+        let _ = std::fs::remove_file(self.dir.join(path));
+    }
+
     fn read(&self, path: &str) -> Result<String> {
         std::fs::read_to_string(self.dir.join(path)).with_context(|| format!("reading {path}"))
     }

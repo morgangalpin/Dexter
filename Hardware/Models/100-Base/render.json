@@ -1,0 +1,22 @@
+{
+  "ref_dir": "../Reference/meshes/100-Base",
+  "checks": [
+    {"kind": "plate", "id": "plate-110-004", "scad": "110-004_BaseMountingPlate.scad",
+     "out": "out/110-004_BaseMountingPlate.stl", "drawing": "out/110-004_BaseMountingPlate.dxf",
+     "size": [200.0, 200.0, 9.5], "reference": "110-001_BaseMountBottom.stl",
+     "reference_at": 0.5, "reference_diameter": 6.0, "reference_count": 8, "plate_at": -4.75,
+     "tapped_diameter": 5.0, "bench_diameter": 6.6, "bench_count": 4,
+     "note": "The verification contract behind DC-4 in specs/009-Design-Completion.md. The eight robot-side holes are the only 6 mm loops on the mount's section inside its 10 mm flange, and the plate's tapped 5 mm holes must land on them. The four 6.6 mm holes are the bench side."},
+    {"kind": "dist_gate", "id": "dist-110-002", "part": "110-002", "config": "previous",
+     "scad": "110-002_BaseStatorHolder.scad", "out": "out/110-002.stl", "reference": "110-002_BaseStatorHolder.stl", "tol": 0.15},
+    {"kind": "seat", "id": "seat-110-002", "part": "110-002", "facing": 1,
+     "scad": "110-002_BaseStatorHolder.scad", "out": "out/revised/110-002.stl",
+     "note": "The Base Stator Holder's recess opens toward +z."},
+    {"kind": "fits", "id": "fits-110-002", "part": "110-002 (revised)", "stl": "out/revised/110-002.stl", "after": ["seat-110-002"],
+     "note": "The revised #110-002's own print fits, on the all-thread hole at 30 deg (r 35.54): the M3 rod's surface on the hole's outer side, and the M3 nut's outer flat in its trap. The seat's fits are the seat kind's.",
+     "probes": [
+       {"label": "all-thread hole", "at": [32.0776, 18.52, 12.7], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"},
+       {"label": "all-thread nut trap", "at": [33.1601, 19.145, 15.0], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"}
+     ]}
+  ]
+}

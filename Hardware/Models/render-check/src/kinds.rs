@@ -4,14 +4,20 @@
 //! kinds and their schema are owned by `specs/009.3-Render-Program.md`; the
 //! fields a kind reads are documented at the head of its module.
 
+pub mod clash;
 pub mod clone;
 pub mod counts;
 pub mod diameters;
 pub mod dist_gate;
 pub mod empty;
 pub mod extents;
+pub mod face;
 pub mod fits;
+pub mod plate;
+pub mod gear_fit;
+pub mod probes;
 pub mod render;
+pub mod seat;
 
 use crate::config::Check;
 use crate::meshes::Tools;
@@ -78,8 +84,21 @@ impl<'a> Fields<'a> {
         self.v[key].as_u64().ok_or_else(|| self.missing(key, "a whole number"))
     }
 
+    pub fn f64_list(&self, key: &str) -> Result<Vec<f64>> {
+        let list = self.v[key].as_array().ok_or_else(|| self.missing(key, "a list of numbers"))?;
+        list.iter().map(|n| n.as_f64().ok_or_else(|| self.missing(key, "a list of numbers"))).collect()
+    }
+
+    pub fn opt_f64(&self, key: &str) -> Option<f64> {
+        self.v[key].as_f64()
+    }
+
     pub fn f64_or(&self, key: &str, default: f64) -> f64 {
         self.v[key].as_f64().unwrap_or(default)
+    }
+
+    pub fn v_bool(&self, key: &str) -> Result<bool> {
+        self.v[key].as_bool().ok_or_else(|| self.missing(key, "true or false"))
     }
 
     pub fn str_or(&self, key: &str, default: &'a str) -> &'a str {
@@ -128,16 +147,28 @@ pub fn reference_path(env: &Env, f: &Fields) -> Result<String> {
     Ok(format!("{dir}/{}", f.str("reference")?))
 }
 
+/// A number echoed as `ECHO: <name> = <value>` in OpenSCAD's stderr or an echo log.
+pub fn echoed_number(text: &str, name: &str) -> Result<f64> {
+    let value = crate::echoed(text, &format!("{name} = ")).with_context(|| format!("{name} not echoed"))?;
+    value.parse().with_context(|| format!("{name} is not a number: {value}"))
+}
+
 /// Run OpenSCAD on `scad` into `out` and hold the run to exiting cleanly and
 /// rendering silently. The diagnostics are a verdict of their own, separate
 /// from the measurements that follow: a part that warns and then measures well
 /// has not passed, it has measured a mesh nobody should be measuring.
 pub fn render_judged(env: &Env, scad: &str, out: &str, defines: &[String], rep: &mut Report) -> Result<Run> {
+    render_extra(env, scad, out, defines, &[], rep)
+}
+
+/// As `render_judged`, with `extra` OpenSCAD flags such as `--export-format binstl`.
+pub fn render_extra(env: &Env, scad: &str, out: &str, defines: &[String], extra: &[&str], rep: &mut Report) -> Result<Run> {
     env.tools.ensure_parent(out)?;
     let mut args = vec!["-o", out];
     for d in defines {
         args.extend(["-D", d]);
     }
+    args.extend(extra);
     args.push(scad);
     let r = env.tools.openscad(&args)?;
     if !r.ok {
@@ -158,6 +189,12 @@ fn dispatch(env: &Env, check: &Check, rep: &mut Report) -> Result<()> {
         "counts" => counts::run(env, &f, rep),
         "diameters" => diameters::run(env, &f, rep),
         "fits" => fits::run(env, &f, rep),
+        "clash" => clash::run(env, &f, rep),
+        "face" => face::run(env, &f, rep),
+        "gear_fit" => gear_fit::run(env, &f, rep),
+        "plate" => plate::run(env, &f, rep),
+        "probes" => probes::run(env, &f, rep),
+        "seat" => seat::run(env, &f, rep),
         "extents" => extents::run(env, &f, rep),
         "interference" => empty::interference(env, &f, rep),
         "keepout" => empty::keepout(env, &f, rep),
@@ -190,6 +227,9 @@ pub mod testing {
         pub scadmesh_ok: bool,
         pub reports: HashMap<&'static str, Value>,
         pub files: HashMap<&'static str, &'static str>,
+        pub present: Vec<&'static str>,
+        /// Answers chosen by the mesh path in the request, ahead of `reports`.
+        pub by_path: Vec<(&'static str, Value)>,
     }
 
     impl Default for Fake {
@@ -207,6 +247,8 @@ pub mod testing {
                 scadmesh_ok: true,
                 reports: HashMap::new(),
                 files: HashMap::new(),
+                present: vec![],
+                by_path: vec![],
             }
         }
 
@@ -228,11 +270,21 @@ pub mod testing {
 
         fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
             self.calls.lock().unwrap().push(format!("scadmesh {}", args.join(" ")));
-            Ok((self.scadmesh_ok, self.reports.get(args[0]).cloned().unwrap_or(Value::Null)))
+            let line = args.join(" ");
+            let by_path = self.by_path.iter().find(|(p, _)| line.contains(p)).map(|(_, v)| v.clone());
+            Ok((self.scadmesh_ok, by_path.or_else(|| self.reports.get(args[0]).cloned()).unwrap_or(Value::Null)))
         }
 
         fn size(&self, _: &str) -> Result<u64> {
             Ok(0)
+        }
+
+        fn exists(&self, path: &str) -> bool {
+            self.present.contains(&path)
+        }
+
+        fn remove(&self, path: &str) {
+            self.calls.lock().unwrap().push(format!("remove {path}"));
         }
 
         fn read(&self, path: &str) -> Result<String> {
@@ -292,8 +344,8 @@ mod tests {
 
     #[test]
     fn an_unknown_kind_and_a_missing_field_are_failed_verdicts() {
-        let o = check("seat", json!({}), &Fake::new());
-        assert!(!o.ok && o.output.contains("\"seat\" is not yet ported"), "{}", o.output);
+        let o = check("assembly_echo", json!({}), &Fake::new());
+        assert!(!o.ok && o.output.contains("\"assembly_echo\" is not yet ported"), "{}", o.output);
         let o = check("render", json!({}), &Fake::new());
         assert!(!o.ok && o.output.contains("\"scad\""), "{}", o.output);
     }

@@ -15,46 +15,58 @@ use super::{Env, Fields, Report};
 use crate::{fit_points, scad_constant, Fit, FitProbe};
 use anyhow::{bail, Context, Result};
 
-const DEFAULT_LIBRARY: &str = "../print_fit.scad";
+pub const DEFAULT_LIBRARY: &str = "../print_fit.scad";
+
+/// One fit to check: where the mate's surface is, which way the mate lies, and the class.
+pub struct FitSpec {
+    pub label: String,
+    pub at: [f64; 3],
+    pub toward: [f64; 3],
+    pub slip: bool,
+}
 
 pub fn run(env: &Env, f: &Fields, rep: &mut Report) -> Result<()> {
-    let (slip, press) = clearances(env, f.str_or("print_fit", DEFAULT_LIBRARY))?;
-    let probes = f.items("probes")?;
+    let specs = f.items("probes")?.iter().map(spec).collect::<Result<Vec<_>>>()?;
+    judge(env, f.str_or("print_fit", DEFAULT_LIBRARY), f.str("stl")?, f.str("part")?, &specs, rep)
+}
+
+/// Probe every fit of `stl` against the class clearances of `library`.
+pub fn judge(env: &Env, library: &str, stl: &str, part: &str, specs: &[FitSpec], rep: &mut Report) -> Result<()> {
+    let (slip, press) = clearances(env, library)?;
     let mut points = Vec::new();
-    for p in &probes {
-        let (gap, wall) = fit_points(&to_probe(p)?, if is_slip(p)? { slip } else { press });
+    for s in specs {
+        let (gap, wall) = fit_points(&to_probe(s), if s.slip { slip } else { press });
         points.extend([gap, wall]);
     }
-    let inside = solid(env, f.str("stl")?, &points)?;
-    for (p, pair) in probes.iter().zip(inside.chunks(2)) {
-        let class = if is_slip(p)? { "slip" } else { "press" };
-        let label = format!("{} fit, {} ({class}): gap open, wall behind it", f.str("part")?, p.str("label")?);
-        rep.record(&label, !pair[0] && pair[1]);
+    let inside = solid(env, stl, &points)?;
+    for (s, pair) in specs.iter().zip(inside.chunks(2)) {
+        let class = if s.slip { "slip" } else { "press" };
+        rep.record(&format!("{part} fit, {} ({class}): gap open, wall behind it", s.label), !pair[0] && pair[1]);
     }
     Ok(())
 }
 
-fn is_slip(p: &Fields) -> Result<bool> {
-    match p.str("fit")? {
-        "slip" => Ok(true),
-        "press" => Ok(false),
+fn spec(p: &Fields) -> Result<FitSpec> {
+    let slip = match p.str("fit")? {
+        "slip" => true,
+        "press" => false,
         other => bail!("fit \"{other}\" is neither slip nor press"),
-    }
+    };
+    Ok(FitSpec { label: p.str("label")?.to_owned(), at: p.point("at")?, toward: p.point("toward")?, slip })
 }
 
-fn to_probe(p: &Fields) -> Result<FitProbe> {
-    let fit = if is_slip(p)? { Fit::Slip } else { Fit::Press };
-    Ok(FitProbe { label: "", at: p.point("at")?, toward: p.point("toward")?, fit })
+fn to_probe(s: &FitSpec) -> FitProbe {
+    FitProbe { label: "", at: s.at, toward: s.toward, fit: if s.slip { Fit::Slip } else { Fit::Press } }
 }
 
-fn clearances(env: &Env, library: &str) -> Result<(f64, f64)> {
+pub fn clearances(env: &Env, library: &str) -> Result<(f64, f64)> {
     let source = env.tools.read(library)?;
     let get = |name| scad_constant(&source, name).with_context(|| format!("{name} not in {library}"));
     Ok((get("FIT_SLIP")?, get("FIT_PRESS")?))
 }
 
 /// `scadmesh solid` inside/outside for each point, in order.
-fn solid(env: &Env, stl: &str, points: &[[f64; 3]]) -> Result<Vec<bool>> {
+pub fn solid(env: &Env, stl: &str, points: &[[f64; 3]]) -> Result<Vec<bool>> {
     let flags: Vec<String> = points.iter().map(|p| format!("--probe={},{},{}", p[0], p[1], p[2])).collect();
     let mut args = vec!["solid", stl];
     args.extend(flags.iter().map(String::as_str));
