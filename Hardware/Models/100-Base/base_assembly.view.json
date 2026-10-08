@@ -1,0 +1,70 @@
+{
+  "scad": "base_assembly.scad",
+  "title": "Base stack",
+  "subtitle": "base_assembly.scad · 004's stack, Long on the Mount at z {long_bottom_z} · J1 drive closed from the End Cap, motor {motor_len} mm · orthographic, cut on XZ",
+  "groups": [
+    {"name": "Base", "role": "fixed", "parts": [
+      {"id": "plate", "name": "Base Mounting Plate", "pn": "#110-004", "color": "#7d8794"},
+      {"id": "mount", "name": "Base Mount Bottom", "pn": "#110-001", "color": "#9aa7b4"},
+      {"id": "clamp", "name": "Base Clamp", "pn": "#100-001", "color": "#d99a45"},
+      {"id": "long", "name": "Base Long", "pn": "#120-001", "color": "#b8c4cf"},
+      {"id": "disc", "name": "Base Code Disc", "pn": "#100-002", "color": "#2f6db5"},
+      {"id": "strakes_mount", "name": "Strakes epoxied in the Mount", "pn": "C-501", "color": "#29292e"},
+      {"id": "strakes_long", "name": "Strakes epoxied in the Long", "pn": "C-501", "color": "#3d3d44"},
+      {"id": "threads", "name": "All-threads, 105 mm M3", "color": "#6f7782"},
+      {"id": "holder", "name": "Base Stator Holder", "pn": "#110-002", "color": "#c65f4f"},
+      {"id": "circular_spline", "name": "Circular spline", "pn": "C-201", "color": "#2a9d8f"}]},
+    {"name": "Turns on J1", "role": "hangs from the Main Pivot", "parts": [
+      {"id": "pivot", "name": "Main Pivot, context from 300-Pivot", "pn": "#300-001", "color": "#d4ad6b"},
+      {"id": "skirt", "name": "Pivot Skirt", "pn": "#100-003", "color": "#5b9be0"},
+      {"id": "end_cap", "name": "Base Motor End Cap", "pn": "#311-001", "color": "#e0a458"},
+      {"id": "motor", "name": "J1 motor", "pn": "C-101", "color": "#50565c"},
+      {"id": "attach", "name": "Flex Spline Attach", "pn": "#630-005", "color": "#e3b060"},
+      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"},
+      {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"},
+      {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"}]},
+    {"name": "Bearings", "role": "6810, 50 × 65 × 7, in the Long", "parts": [
+      {"id": "bearing_upper", "name": "Upper, on the End Cap's land", "pn": "6810", "color": "#dcdcdc"},
+      {"id": "bearing_lower", "name": "Lower, on the Attach's land", "pn": "6810", "color": "#dcdcdc"}]}
+  ],
+  "labels": [
+    {"at": [-38, 0, 97], "text": "Holder flange across the Long/Mount joint"},
+    {"at": [21, 0, 103], "text": "Circular spline, face at z {spline_face_z}"},
+    {"at": [29, 0, 129.5], "text": "Lower 6810"},
+    {"at": [29, 0, 190.5], "text": "Upper 6810"},
+    {"at": [46, 0, 194.8], "text": "Code disc on the Long's top face"},
+    {"at": [49, 0, 181], "text": "Pivot Skirt round the disc"},
+    {"at": [-15, 0, 133.734], "text": "Motor face, z {motor_face_z}"}
+  ],
+  "presets": [
+    {"label": "J1 joint", "at": [0, 0, 194], "span": 120},
+    {"label": "Drive in the Long", "at": [0, 0, 150], "span": 120},
+    {"label": "Holder at the joint", "at": [25, 0, 100], "span": 40}
+  ],
+  "notes": [
+    {"heading": "The holder doesn't fit between the Long and the Mount", "emphasis": true,
+     "text": "J1's drive hangs from the End Cap: motor, Attach, flexspline, then the circular spline {spline_face_z} up, with the Base Stator Holder seated on it. That puts the holder's 4 mm flange across the joint where 004 seats the Long on the Mount: {holder_into_long} mm up into the Long and {holder_into_mount} mm into the Mount. A different motor length moves the holder (007.1 C-101), but only up or down: with the Long seated on the Mount there is no gap for it at any length.",
+     "focus": {"label": "Show the holder in section", "preset": "Holder at the joint", "hide": ["clamp", "strakes_mount", "strakes_long"]}},
+    {"heading": "How J1's stack closes",
+     "text": "Each part is placed on the one above it, from the End Cap, which sits flush with the Long's top face in the upper 6810. Motor length is C-101's {motor_len} mm.",
+     "rows": [
+       {"text": "Motor face above the lower 6810", "value": "{motor_above_6810}"},
+       {"text": "Attach's land beyond the lower 6810, below", "value": "{land_below_6810}"},
+       {"text": "Holder flange into the Long", "value": "{holder_into_long}", "warn": true},
+       {"text": "Holder flange into the Mount", "value": "{holder_into_mount}", "warn": true},
+       {"text": "All-thread above the Long's top face, for washer and nut", "value": "{thread_above_long}"}]},
+    {"heading": "The J1 joint",
+     "text": "The disc lies on the Long's top face, on the Long's strakes standing {strake_proud} mm proud, with its notches over the all-threads. The Pivot Skirt hangs from the Main Pivot (turned 180° from its own frame) on three M3 screws in its lower side holes, z {skirt_span}, its round part reaching {skirt_above_long} mm above the Long's top face; the disc's edge is {disc_skirt_radial} mm inside it.",
+     "rows": [
+       {"text": "Long's strakes below its bottom face", "value": "{long_strake_below_long}"},
+       {"text": "Mount's strakes above its top face", "value": "{mount_strake_above_mount}"}]},
+    {"heading": "Not drawn",
+     "items": [
+       "The Wave Gen Coupler (#630-004); a tool sets its depth",
+       "The J1 opto block that reads the disc",
+       "Nuts, washers and screws",
+       "Strake depths are 008.2's: the Mount's bottomed in their slots, the Long's about 6 mm proud",
+       "Vendor parts are envelopes: motor from C-101, C-201 from the XB1-AS-C-32 drawing, bearings at catalogue size"]}
+  ],
+  "overlap": ["holder", "mount"]
+}

@@ -116,6 +116,19 @@ module flexspline_envelope() {
     }
 }
 
+// The wave generator, in the circular spline's frame (its outer face at
+// z = 0, the drive below); for assembly placement only. An envelope: the
+// plug and its bearing inside the teeth band, and the hub standing 5.0
+// beyond the drive face.
+module wave_generator_envelope()
+    translate([0, 0, -6]) {
+        wg_tube(33.900, 14.000, 6);
+        translate([0, 0, -4]) wg_tube(14.000, 6.000, 15);
+    }
+
+module wg_tube(od, id, h)
+    difference() { cylinder(d = od, h = h); translate([0, 0, -1]) cylinder(d = id, h = h + 2); }
+
 // The circular spline as the drawing gives it, outer face at z = 0 and the
 // step below; for assembly placement only.
 module circular_spline_envelope()

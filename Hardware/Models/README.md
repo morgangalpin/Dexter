@@ -471,6 +471,16 @@ scadmesh view diff_assembly.view.json --out out/view
 miniserve out/view
 ```
 
+and `100-Base/` for the base stack. Its `render-meshes.rs` renders nothing: it copies `render-all.rs`'s
+revised renders into the cache as binary STL, and stops if a part's source is newer than its render, so
+`render-all.rs` runs first whenever a part has changed:
+
+```
+rust-script render-meshes.rs
+scadmesh view base_assembly.view.json --out out/view
+miniserve out/view
+```
+
 Then open `http://localhost:8080/index.html`.
 
 - `scadmesh view` writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD
