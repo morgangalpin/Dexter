@@ -104,8 +104,8 @@
 //
 // RENDERING IT. A preview needs nothing but this file. A full render asks CGAL
 // for a closed solid of everything drawn, the nine meshes 700-Differential/
-// imports included, so it needs the cache 700-Differential/render-meshes.rs
-// writes, which makes each mesh renderable as it goes: that script's header
+// imports included, so it needs the cache that render.rs --meshes
+// builds, which makes each mesh renderable as it goes: the render program's header
 // says why a mesh that previews correctly can still stop a render, and running
 // it is the one step this file cannot take for itself. Expect minutes rather
 // than seconds either way, since a render converts every imported mesh.
@@ -532,7 +532,7 @@ assert(abs(ARM_AXIS.z - L3_TUBE_Z) < 5.0 && abs(ARM_AXIS.x) < 0.001,
 assert(ARM_TIP_Y < WRIST_C.y && L3_FAR_LAP > 0,
        "C-505 must lap Body A's spigot, which must face the elbow");
 // Body A's envelope is the forearm skin (specs/004 § Differential interface).
-// Its extent is the part's own statement, which render-all.rs holds to the
+// Its extent is the part's own statement, which render.rs --verify holds to the
 // render, so this bounds the part as built in either configuration.
 assert(box_inside(BODY_A_W, ENV_L3_SKIN),
        "Diff Body A is outside the forearm skin");

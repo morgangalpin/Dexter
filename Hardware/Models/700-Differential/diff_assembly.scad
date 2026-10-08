@@ -108,7 +108,7 @@
 //     three can be removed by moving Body B, since C must lie on both of its
 //     axes. "revised" reshapes Body B instead, keeping the RUN clearance off
 //     each crown's swept teeth. 730-002's TOE CLEARANCE owns the figures and
-//     the construction, and render-all.rs requires each pair to render empty.
+//     the construction, and render.rs --verify requires each pair to render empty.
 //
 // Kinematic conformance (specs/003 § Link lengths, 004). In a bevel
 // differential the J4 and J5 axes *intersect* — at the differential centre C —
@@ -154,20 +154,20 @@
 // meshes matters more than whether:
 //
 //   from source                              36 s, 1204 tree elements
-//   importing out/, as render-all.rs writes  84 s,  111 tree elements
+//   importing out/, as render.rs --verify writes  84 s,  111 tree elements
 //   importing out/asm/, the same as binary    2 s,  111 tree elements
 //
 // The middle row is the trap, and it is the format rather than the meshes:
-// render-all.rs writes ASCII STL and OpenSCAD's ASCII parser costs 21.4 s on
+// render.rs --verify writes ASCII STL and OpenSCAD's ASCII parser costs 21.4 s on
 // 730-002's 8.3 MB alone, against 0.4 s for the same 43374 facets as a 2.2 MB
 // binary. Importing is what makes the model cheap to ORBIT — the tree falls by
 // a factor of eleven either way — and binary is what makes it cheap to OPEN.
 //
-// So this file reads out/asm/, which render-meshes.rs writes as binary and
-// which is nobody's measurement; render-all.rs's own out/ is left exactly as
+// So this file reads out/asm/, which render.rs --meshes writes as binary and
+// which is nobody's measurement; render.rs --verify's own out/ is left exactly as
 // it is, because those meshes are the DC-2 gate. Both are build output and
 // neither is tracked (see .gitignore). If the view comes up empty, run
-//   ./render-meshes.rs            # or: ./render-meshes.rs previous
+//   ./render.rs 700-Differential --meshes         # or: ./render.rs 700-Differential --meshes --config previous
 // Set geometry = "scad" to build from source instead, which is what the .scad
 // files being the record means, and what a `-D config=` switch needs: an
 // imported mesh was fixed at whatever configuration rendered it, so a cache
@@ -201,7 +201,7 @@ J4_ANG = 0;         // [-90:1:90]
 // Draw the bearings and the CF rod.
 show_hardware = true;
 // Draw only where two parts overlap as they sit, e.g. ["730-001", "720-004"].
-// Any two ids from PARTS. render-all.rs sets it and requires an empty result;
+// Any two ids from PARTS. render.rs --verify sets it and requires an empty result;
 // [] draws the assembly.
 interference = [];
 // "all", or one id from PARTS: that part alone, in its assembled place. The
@@ -343,7 +343,7 @@ module in_axle() {
 // ---------------------------------------------------------------------------
 // The printed parts, from whichever source `geometry` selects.
 //
-// Three meshes are not in their module's frame. render-all.rs exports each
+// Three meshes are not in their module's frame. render.rs --verify exports each
 // file's own top-level call and three of those carry a placement: 720-001 is
 // exported in the reference's Y-up orientation, 720-003 in the reference's
 // z, PULLEY_REF_Z0 above its module's base, and 720-004 based at z = 0 for
@@ -582,7 +582,7 @@ assert(BEVEL_APEX_SPLIT > -BEVEL_INNER_TIP.y,
 //
 // The End Pulley hangs off the rod's far end, below Body A: their extents must
 // not overlap along J4, whatever the pulley's size. #720-004 sits inside Body
-// A's chamber, which no extent can check; render-all.rs renders that pair's
+// A's chamber, which no extent can check; render.rs --verify renders that pair's
 // overlap instead.
 assert(diff_end_pulley_box()[1].z < diff_body_a_box()[0].z,
        "the Diff End Pulley reaches Diff Body A");

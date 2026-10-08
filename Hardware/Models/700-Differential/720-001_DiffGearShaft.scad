@@ -188,7 +188,7 @@ TOE_PLANE = 13.4643;
 // and measured against the reference mesh the bounding box comes in 0.768 mm
 // short -- not 0.785, because the gear's transverse extent is set by the land
 // corners of the tooth nearest the axis rather than by the tip cylinder
-// itself. That term is deliberate, and it is why render-all.rs gives 720-001
+// itself. That term is deliberate, and it is why render.rs --verify gives 720-001
 // the loosest tolerance of the seven with the bbox check named in its comment.
 // Holding the diameter instead scores 0.047 mm there, and two-sided surface
 // distance is 0.568 mm outward either way against 0.456 inward rather than
@@ -313,7 +313,7 @@ module gear_hub() {
 // the reference set carries anything like them. The built shaft omits them
 // (007.2 owns that print instruction), and `wall_holes` defaults false to
 // match. The cut is kept so the reference-faithful state stays one flag
-// away. render-all.rs gates the solid shaft, and says there how.
+// away. render.rs --verify gates the solid shaft, and says there how.
 WALL_HOLE_D   = 0.2;
 WALL_HOLE_PCD = 15.5;
 WALL_HOLE_N   = 12;

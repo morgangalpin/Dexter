@@ -77,7 +77,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 17 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; each group's `render-all.rs` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 17 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -118,7 +118,7 @@ scadmesh pinch 500-ExternalGear/510-001_ExternalGear.stl --out 500-ExternalGear/
 That added 182 triangles, left the bounding box unchanged, and added 0.708 mm³ to the volume (1 part in
 10⁵). The gear now intersects with the Mount, the Mount Top and the lower 6810. Two pairs still fail
 inside CGAL's boolean (`applyBinaryOperator` asserts) and stay unjudged. The Stator Holder's keys meet
-the gear's slots line-to-line, which is why `500-ExternalGear/render-all.rs` checks that fit by sections.
+the gear's slots line-to-line, which is why `render.rs --verify` checks that fit by sections.
 The upper 6810's assertion persists with its envelope shrunk to Ø64.9, so it is not the seat's Ø65; its
 cause is not isolated.
 
@@ -224,13 +224,13 @@ depends on no proprietary tool. Four conventions keep the transition legible:
 
 **`700-Differential/` is fully converted** (DC-2,
 [specs/009](../../specs/009-Design-Completion.md#differential-detail-design)): one `.scad` per part,
-shared dimensions in `diff_params.scad`, placements in `diff_assembly.scad`, and `render-all.rs` to render
+shared dimensions in `diff_params.scad`, placements in `diff_assembly.scad`, and `render.json` for `render.rs` to render
 both configurations and dimensionally verify each render against its reference STL with `scadmesh`
 (from the standalone `openscad-tools` project, checked out beside this repository's parent — bounding
 boxes, diameter and face-position bands, cross-sections, tooth counts). Use that directory as the template
 for converting the remaining groups.
 
-**Printing the differential therefore takes one command first**: `rust-script render-all.rs` writes the
+**Printing the differential therefore takes one command first**: `./render.rs 700-Differential --meshes` writes the
 ten meshes to print into `700-Differential/out/revised/`. `out/` is deliberately untracked — a rendered mesh is a build
 artifact, and tracking it would leave two copies of the same geometry to disagree. Everything the render
 is checked against is under
@@ -305,30 +305,34 @@ crown is measured (`diff_bevel.scad`) and meets the ordinary surface check with 
 
 ### Checking a group
 
-Every group with `.scad` parts carries a `render-all.rs` (`rust-script render-all.rs`, run from the group
-directory). It renders the group's parts into its untracked `out/`, gates each faithful render against
-its mesh under `Reference/meshes/<group>/` by the contract above, checks the revised geometry by probing
-material and void either side of the faces it moved, and ends in `ALL CHECKS PASSED` or a failure count.
+Every group with `.scad` parts carries a `render.json`, and `./render.rs <group> --verify` (run from this
+directory; `all` takes every group) checks it. It renders the group's parts into the group's untracked
+`out/`, gates each faithful render against its mesh under `Reference/meshes/<group>/` by the contract above,
+checks the revised geometry by probing material and void either side of the faces it moved, and ends in
+`ALL CHECKS PASSED` or a failure count. The work runs in parallel; the schema, the check kinds and the
+scheduling rules are owned by [`specs/009.3-Render-Program.md`](../../specs/009.3-Render-Program.md).
 
-The machinery is shared, not copied: the [`render-check/`](render-check/) crate, which each script takes
+The machinery is shared, not copied: the [`render-check/`](render-check/) crate, which `render.rs` takes
 as a path dependency, finds OpenSCAD and `scadmesh` (`$OPENSCAD` and `$SCADMESH` first), runs a render and
 fails it on any warning, a result CGAL reports as not simple, or an empty one, runs the `dist` gate, probes points, and reads
-echoes. A script holds only its own gates and checks. Three rules keep the scripts from drifting apart:
+echoes. A group's `render.json` holds only its own gates and checks. Three rules keep the groups from drifting apart:
 
 - **A number a check needs comes from the part.** A `.scad` echoes it at top level as
-  `echo(name = value)`, and the script reads that line; the value is never retyped into the script.
-- **A group that uses another group's part runs that group's script** rather than repeating its gates.
-  `500-ExternalGear/render-all.rs` runs `600-StrainWave/render-all.rs` first, because J3's stack
+  `echo(name = value)`, and the check reads that line; the value is never retyped into `render.json`.
+- **A group that uses another group's part waits on that group's jobs** rather than repeating its gates.
+  `500-ExternalGear/render.json` waits on `600-StrainWave/*` for face-630-005-j3, because J3's stack
   depends on the Flex Spline Attach.
-- **A group with more than one script states its parts once**, in its `parts.json`, which every script
-  reads through `render-check` (`group_parts`). `700-Differential/render-meshes.rs` builds its mesh cache
-  from the same list `render-all.rs` verifies, so an edited part reaches the assembly view and the gates
-  alike.
+- **A group states its parts once**, in the `parts` of its `render.json`.
+  `render.rs --meshes` builds the mesh cache from the same list the checks verify, so an edited part
+  reaches the assembly view and the gates alike.
+- **`render.rs` is cached by rust-script.** An edit to `render-check/` does not rebuild it. After changing
+  the crate, run `rust-script --force render.rs ...` once, then `rust-script render.rs ...`; running
+  `./render.rs` directly can use an older build. `700-Differential --verify` takes about 34 minutes.
 
-Two checks are shared across groups. `check_seat` probes a Stator Holder's revised seat against C-201's
+Two checks are shared across groups. The `seat` kind probes a Stator Holder's revised seat against C-201's
 hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states
-it, rather than as the seat library cuts it, so the probes test the library. `clash_free` renders an
-assembly's `clash` pair. It passes when the intersection is empty or has no volume (a seat, where two
+it, rather than as the seat library cuts it, so the probes test the library. The `clash` kind renders an
+assembly's pair. It passes when the intersection is empty or has no volume (a seat, where two
 parts share a face), and fails when CGAL cannot intersect the pair at all, because a failed boolean
 returns one of its operands.
 
@@ -455,10 +459,10 @@ miniserve out/view
 ```
 
 and `700-Differential/` for the wrist differential, whose assembly imports the mesh cache that
-`render-meshes.rs` builds, so the cache is built first:
+`render.rs --meshes` builds, so the cache is built first:
 
 ```
-rust-script render-meshes.rs
+./render.rs 700-Differential --meshes
 scadmesh view diff_assembly.view.json --out out/view
 miniserve out/view
 ```

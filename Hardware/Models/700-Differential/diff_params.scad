@@ -16,7 +16,7 @@
 // that is worked on and printed (specs/004 § Wrist and differential), so a
 // file opened or rendered without a -D sees the new models. "previous" is
 // selected with -D config="previous" when the reference meshes are wanted;
-// render-all.rs names the configuration on every render, so its gates do not
+// render.rs --verify names the configuration on every render, so its gates do not
 // depend on this default.
 //
 // Dimensions are stated once here; part files and specs reference them.
@@ -146,7 +146,7 @@ BEVEL_MOD     = BEVEL_OD / (BEVEL_TEETH + 2*cos(45));
 // has to be in the chamber before it does (specs/008 § 008.6).
 //
 // PULLEY_TEETH is the count the belt meets: 40 in "previous", which is what
-// both references measure and what the dist gates in render-all.rs compare
+// both references measure and what the dist gates in render.rs --verify compare
 // against, and 80 in "revised", the 40T -> 80T stage-2 of the 13.5:1 train
 // (specs/004 § Wrist and differential). A measured 40T keeps its measured
 // tip; any other count takes the GT2 standard's.

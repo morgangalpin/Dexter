@@ -97,7 +97,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 [007.2 §](../../specs/007.2-Printed-Parts.md#differential--0076)
 
 This is the one group whose files are `.scad`, not `.stl`: the source of record is parametric and the
-printable mesh is rendered from it by [`render-all.rs`](700-Differential/render-all.rs) into
+printable mesh is rendered from it by [`render.rs --verify`](render.rs) into
 `700-Differential/out/`, which is not tracked. Each part's original mesh is kept as what the render is
 measured against, under [`Reference/meshes/700-Differential/`](Reference/meshes/700-Differential/) on the
 shared stem.

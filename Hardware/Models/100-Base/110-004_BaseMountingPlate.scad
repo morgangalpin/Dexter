@@ -17,7 +17,7 @@
 //
 // The robot-side pattern is not a free choice: it is measured off
 // HDI-110-001_BaseMountBottom, whose flange presents eight Ø6.000 mm holes in
-// pairs on its four edges. `check.rs` asserts the centres below against that
+// pairs on its four edges. `render.rs --verify` asserts the centres below against that
 // part's own mesh, so an edit that moves a hole fails rather than quietly
 // producing a plate that will not bolt on.
 //
