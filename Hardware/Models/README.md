@@ -18,6 +18,11 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   other. Tune the two fits on
   [`950-Tooling/fit_coupon.scad`](950-Tooling/fit_coupon.scad); the policy is
   [007.2 § Print fits](../../specs/007.2-Printed-Parts.md#print-fits).
+- **[assembly-clash.rs](assembly-clash.rs)** — exports an assembly's parts and runs `scadmesh clash` on
+  them: overlaps, print-fit clearances, and parts bridging both races of a bearing. It reads the
+  clearances from `print_fit.scad` and the parts from `<assembly>.clash.json`; the rules are
+  `openscad-tools/specs/003-CLI.md` § The clash manifest, and the `assembly-clearance` skill is the
+  procedure.
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
 - **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the

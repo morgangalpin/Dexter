@@ -557,13 +557,20 @@ pub fn scad_constant(source: &str, name: &str) -> Option<f64> {
     })
 }
 
-/// The two print-fit clearances per side, read from the library every part
-/// includes, so the checks follow it when a machine is qualified.
-pub fn print_fit(ctx: &Ctx) -> Result<(f64, f64)> {
+/// The three print-fit clearances per side, read from the library every part
+/// includes, so the checks follow it when a machine is qualified: slip, press
+/// and run.
+pub fn print_fits(ctx: &Ctx) -> Result<(f64, f64, f64)> {
     let path = ctx.dir.join("../print_fit.scad");
     let source = std::fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
     let get = |name| scad_constant(&source, name).with_context(|| format!("{name} not in print_fit.scad"));
-    Ok((get("FIT_SLIP")?, get("FIT_PRESS")?))
+    Ok((get("FIT_SLIP")?, get("FIT_PRESS")?, get("FIT_RUN")?))
+}
+
+/// The slip and press clearances per side.
+pub fn print_fit(ctx: &Ctx) -> Result<(f64, f64)> {
+    let (slip, press, _) = print_fits(ctx)?;
+    Ok((slip, press))
 }
 
 /// One fit on a revised render: `at` lies on the mate's nominal surface and

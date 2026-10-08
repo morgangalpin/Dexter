@@ -64,6 +64,9 @@
 //
 // CLASH. Set clash to two names from PARTS and the file renders their
 // intersection instead; an empty top-level object means the pair is clear.
+// The whole assembly is checked by assembly-clash.rs against
+// base_assembly.clash.json. A bearing there is three parts, <bearing>_inner,
+// _outer and _shield, which `part` draws one at a time and PARTS does not list.
 //
 // Vendor parts are envelopes: the 6810s at catalogue size, C-201 from the
 // manufacturer drawing, the motor from C-101, the strakes and all-threads as
@@ -171,11 +174,17 @@ module holder()  color("#c65f4f") translate([0, 0, HOLDER_Z]) rotate(SLOT_TURN) 
 
 module tube(od, id, h) difference() { cylinder(d = od, h = h); translate([0, 0, -1]) cylinder(d = id, h = h + 2); }
 
-module bearing(z0) color("#dcdcdc") translate([0, 0, z0]) {
-  tube(B6810[1], 60.5, B6810[2]);        // outer race
-  tube(54.5, B6810[0], B6810[2]);        // inner race
-  translate([0, 0, 0.6]) tube(60.5, 54.5, B6810[2] - 1.2);  // shields
+BEARINGS = [["bearing_lower", BRG_LOW], ["bearing_upper", BRG_UP]];
+RACES    = ["outer", "inner", "shield"];
+RACE_PARTS = [for (b = BEARINGS, r = RACES) str(b[0], "_", r)];   // `part` only, not in PARTS
+
+module bearing_race(z0, race) translate([0, 0, z0]) {
+  if (race == "outer")  tube(B6810[1], 60.5, B6810[2]);
+  if (race == "inner")  tube(54.5, B6810[0], B6810[2]);
+  if (race == "shield") translate([0, 0, 0.6]) tube(60.5, 54.5, B6810[2] - 1.2);
 }
+
+module bearing(z0) color("#dcdcdc") for (r = RACES) bearing_race(z0, r);
 
 // C-201 is drawn in the circular spline's frame turned over, outer face down.
 module drive_frame() translate([0, 0, CS_FACE]) rotate(SLOT_TURN) rotate([180, 0, 0]) children();
@@ -214,9 +223,13 @@ module draw(p) {
   if (p == "holder")          holder();
   if (p == "bearing_lower")   bearing(BRG_LOW);
   if (p == "bearing_upper")   bearing(BRG_UP);
+  for (b = BEARINGS, r = RACES) if (p == str(b[0], "_", r)) color("#dcdcdc") bearing_race(b[1], r);
 }
 
-module assembly() for (p = PARTS) if (part == "all" || part == p) draw(p);
+module assembly() {
+  for (p = PARTS)      if (part == "all" || part == p) draw(p);
+  for (p = RACE_PARTS) if (part == p) draw(p);
+}
 
 if (len(clash) == 2)
   intersection() { draw(clash[0]); draw(clash[1]); }

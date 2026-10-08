@@ -1,0 +1,29 @@
+{
+  "parts": [
+    {"id": "plate",           "kind": "bought",   "side": "fixed"},
+    {"id": "mount",           "kind": "printed",  "side": "fixed"},
+    {"id": "clamp",           "kind": "printed",  "side": "fixed"},
+    {"id": "long",            "kind": "printed",  "side": "fixed"},
+    {"id": "strakes_mount",   "kind": "bought",   "side": "fixed"},
+    {"id": "strakes_long",    "kind": "bought",   "side": "fixed"},
+    {"id": "threads",         "kind": "fastener", "side": "fixed"},
+    {"id": "disc",            "kind": "printed",  "side": "fixed"},
+    {"id": "holder",          "kind": "printed",  "side": "fixed"},
+    {"id": "circular_spline", "kind": "bought",   "side": "fixed"},
+    {"id": "pivot",           "kind": "printed",  "side": "turning"},
+    {"id": "skirt",           "kind": "printed",  "side": "turning"},
+    {"id": "end_cap",         "kind": "printed",  "side": "turning"},
+    {"id": "motor",           "kind": "bought",   "side": "turning"},
+    {"id": "attach",          "kind": "printed",  "side": "turning"},
+    {"id": "fs_cap",          "kind": "printed",  "side": "turning"},
+    {"id": "flexspline",      "kind": "bought",   "side": "turning"},
+    {"id": "wave_gen",        "kind": "bought",   "side": "turning"},
+    {"id": "bearing_lower_inner",  "kind": "bought", "side": "turning", "bearing": "bearing_lower", "race": "inner"},
+    {"id": "bearing_lower_outer",  "kind": "bought", "side": "fixed",   "bearing": "bearing_lower", "race": "outer"},
+    {"id": "bearing_lower_shield", "kind": "bought", "side": "fixed",   "bearing": "bearing_lower", "race": "shield"},
+    {"id": "bearing_upper_inner",  "kind": "bought", "side": "turning", "bearing": "bearing_upper", "race": "inner"},
+    {"id": "bearing_upper_outer",  "kind": "bought", "side": "fixed",   "bearing": "bearing_upper", "race": "outer"},
+    {"id": "bearing_upper_shield", "kind": "bought", "side": "fixed",   "bearing": "bearing_upper", "race": "shield"}
+  ],
+  "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"]]
+}
