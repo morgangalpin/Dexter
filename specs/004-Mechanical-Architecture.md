@@ -117,9 +117,11 @@ a unit while the plate stays fixed.**
 ([008.2](008-Assembly.md#0082-base)), and **one** base clamp grips that joint.
 
 The Base Mount Bottom's top 16.000 mm is a spigot, grooved for the six strakes, above a seating shoulder at
-**82.000 mm** over its mounting face. The clamp is **15.000 mm** tall with a **Ø74.500 mm** bore, split on
-one side; it seats on the shoulder, occupying **82.000 → 97.000 mm**, and its bore closes the strakes into
-the spigot's grooves. It is tightened with one M3 × 20 mm bolt ([C-611](007.1-Parts-Catalog.md#6-fasteners))
+**82.000 mm** over its mounting face. The clamp is **15.000 mm** tall, split on one side, with a bore that
+clears the strakes' outer corners by the press clearance and the spigot by more than slip
+([`100-001_BaseClamp.scad`](../Hardware/Models/100-Base/100-001_BaseClamp.scad) sizes it); it seats on the
+shoulder, occupying **82.000 → 97.000 mm**, and the bolt flexes it onto the strakes, closing them into the
+spigot's grooves. It is tightened with one M3 × 20 mm bolt ([C-611](007.1-Parts-Catalog.md#6-fasteners))
 across the split. The spigot has room for one clamp.
 
 **The base stack.** The clamp sets no height. Each part above the mounting face seats on a face of the part
@@ -127,9 +129,15 @@ below it, so L1 ([003 § Link lengths](003-Kinematics.md#link-lengths)) is the s
 
 | Station | Height above the mounting face | Set by |
 |---|---|---|
-| Base Mount Bottom top face; the Base Long seats on it | 98.000 mm | `#110-001` |
-| Base Long top face; the Base Motor End Cap's 6810 bottoms in the upper bore flush with it, and the Main Pivot's base rests on that bearing's inner race | 194.000 mm | `#120-001`, 96.000 mm tall |
-| **J2 axis** | **231.500 mm = L1** | `#300-001`, axis 37.500 mm above its base |
+| Base Mount Bottom top face; the Base Stator Holder's flange seats on it | 98.000 mm | `#110-001` |
+| Base Stator Holder flange's back face; the Base Long seats on it | 102.000 mm | `#110-002`, its flange 4.000 mm thick |
+| Base Long top face; the Base Motor End Cap's 6810 bottoms in the upper bore flush with it, and the Main Pivot's base rests on that bearing's inner race | 198.000 mm | `#120-001`, 96.000 mm tall |
+| **J2 axis** | **235.500 mm = L1** | `#300-001`, axis 37.500 mm above its base |
+
+The holder's flange is the Base Long's own outline, wider than the spigot, so it lies between the two. The
+three all-threads tie it to the Base Long: each rod's lower nut is captured in a trap in the flange's face,
+which the Base Mount Bottom's top face closes, and its upper nut bears on the Base Long's top face
+([008.4](008-Assembly.md#0084-main-pivot) steps 12–16).
 
 **Base rotation drive.** J1 is driven by a strain-wave base motor (see below); the base structure carries
 the Base Code Disk and stator for the J1 encoder and reduction.

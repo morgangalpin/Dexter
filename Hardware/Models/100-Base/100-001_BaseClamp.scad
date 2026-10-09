@@ -5,7 +5,8 @@
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/100-Base/), in that mesh's frame.
-//   config = "revised"  — the same part with print-fit clearances on the bolt's three features.
+//   config = "revised"  — the ring moved RING_RISE outward so its bore clears the strakes and the
+//                         spigot (FITS), and print-fit clearances on the bolt's three features.
 //
 // FRAME. The axis is on +Z through the origin, the bottom face is at z = 0, and the split is on +X.
 // The reference mesh is already in this frame.
@@ -31,8 +32,16 @@
 //     B2, on the M3 nut              slip
 //     B3, on the M3 bolt's head      slip
 //
-// R2 takes no clearance. It is a clamping bore, closed onto the strakes by the bolt, so S1 takes up
-// whatever the print leaves.
+//     R2, on the six C-501 strakes     press, on their outer corners
+//     R2, on the Mount's S1 spigot     slip
+//
+// R2 is a clamping bore: the bolt closes S1 and the ring flexes onto the strakes. The strakes stand in
+// the Mount's K1 slots, 12.700 × 3.175 on r 35.651, so their flat outer faces put their corners at
+// r 37.776, outside the Ø74.604 spigot; a bore at the reference's R2 cuts 0.53 into each corner and
+// 0.05 into the spigot. Revised moves the whole ring outward by RING_RISE, until R2 clears the corners
+// by the press clearance, which clears the spigot by more than slip. The wall, S1 and B1–B3 move with
+// it, unchanged. R2 is drawn circumscribing its circle, so no facet comes inside the clearance; closing
+// it onto the corners takes about 0.3 of S1's 1.000.
 
 include <BOSL2/std.scad>
 include <../print_fit.scad>
@@ -53,16 +62,31 @@ HEAD_D    = 5.500;                     // B3
 NUT_FROM  = 7.500;                     // y where B2 starts
 HEAD_FROM = -9.000;                    // y where B3 starts
 
-SLIP = fit_clearances(config)[0];
+// What R2 fits, revised only: the C-501 strake (tangential, radial) on the Mount's K1 centre radius,
+// and the Mount's S1 spigot.
+STRAKE    = [12.700, 3.175];
+STRAKE_R  = 35.651;
+SPIGOT_D  = 74.604;
+
+SLIP  = fit_clearances(config)[0];
+PRESS = fit_clearances(config)[1];
+
+// The strakes' outer corners, and the ring's outward move that clears them and the spigot.
+STRAKE_CORNER_R = norm([STRAKE_R + STRAKE[1] / 2, STRAKE[0] / 2]);
+RING_RISE = config == "previous" ? 0
+          : max(STRAKE_CORNER_R + PRESS, SPIGOT_D / 2 + SLIP) - RING[0];
+BORE_R  = RING[0] + RING_RISE;
+OUTER_R = RING[1] + RING_RISE;
 
 // The bolt axis: mid-radius of the wall, mid-height.
-BOLT_X = (RING[0] + RING[1]) / 2;
+BOLT_X = (BORE_R + OUTER_R) / 2;
 BOLT_Z = RING[2] / 2;
 // Far enough along Y for B2 and B3 to clear R1.
-BOLT_REACH = RING[1] + 1;
+BOLT_REACH = OUTER_R + 1;
 
 echo(bolt_axis_x = BOLT_X);
 echo(bolt_axis_z = BOLT_Z);
+echo(bore_d = 2 * BORE_R);
 
 // A round cutter on the bolt axis from y0 to y1.
 module bolt_cyl(d, y0, y1) {
@@ -77,13 +101,13 @@ module nut_prism(af, y0, y1) {
 }
 
 module split_slot() {
-    translate([RING[0] - 1, -SPLIT_W / 2, -1])
-        cube([RING[1] - RING[0] + 2, SPLIT_W, RING[2] + 2]);
+    translate([BORE_R - 1, -SPLIT_W / 2, -1])
+        cube([OUTER_R - BORE_R + 2, SPLIT_W, RING[2] + 2]);
 }
 
 module base_clamp() {
     difference() {
-        tube(h = RING[2], or = RING[1], ir = RING[0], anchor = BOTTOM);
+        tube(h = RING[2], or = OUTER_R, ir = BORE_R, circum = config != "previous", realign = false, anchor = BOTTOM);
         split_slot();
         bolt_cyl(fit_bore(BOLT_D, SLIP), -BOLT_REACH, BOLT_REACH);
         nut_prism(fit_bore(NUT_AF, SLIP), NUT_FROM, BOLT_REACH);

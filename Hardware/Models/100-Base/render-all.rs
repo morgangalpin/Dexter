@@ -68,14 +68,16 @@ const MANIFOLD_DIST_GATE: DistGate = DistGate {
     tol: 0.15,
 };
 
-/// The revised #100-001's print fits, on its bolt axis (x 41.125, z 7.5,
-/// along Y): the M3 bolt's surface on B1's outer side between the split and
-/// the nut, and the inner flats of B2's nut and B3's head, where the wall
-/// behind them is whole.
-const CLAMP_FITS: [FitProbe; 3] = [
-    FitProbe { label: "B1 bolt hole", at: [42.625, 3.0, 7.5], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
-    FitProbe { label: "B2 nut trap", at: [38.375, 9.0, 7.5], toward: [1.0, 0.0, 0.0], fit: Fit::Slip },
-    FitProbe { label: "B3 head counterbore", at: [38.375, -9.5, 7.5], toward: [1.0, 0.0, 0.0], fit: Fit::Slip },
+/// The revised #100-001's print fits, on its bolt axis (x 41.701, z 7.5,
+/// along Y; the ring moved 0.57603 outward): the M3 bolt's surface on B1's
+/// outer side between the split and the nut, and the inner flats of B2's nut
+/// and B3's head, where the wall behind them is whole; and R2 on the outer
+/// corner of the strake at 90°, which sets R2 (it clears the spigot by more).
+const CLAMP_FITS: [FitProbe; 4] = [
+    FitProbe { label: "B1 bolt hole", at: [43.20103, 3.0, 7.5], toward: [-1.0, 0.0, 0.0], fit: Fit::Slip },
+    FitProbe { label: "B2 nut trap", at: [38.95103, 9.0, 7.5], toward: [1.0, 0.0, 0.0], fit: Fit::Slip },
+    FitProbe { label: "B3 head counterbore", at: [38.95103, -9.5, 7.5], toward: [1.0, 0.0, 0.0], fit: Fit::Slip },
+    FitProbe { label: "R2 on a strake corner", at: [6.35, 37.2385, 7.5], toward: [-0.168096, -0.985771, 0.0], fit: Fit::Press },
 ];
 
 /// #100-002 is drawn as two 2D profiles, each checked against the reference's
@@ -156,10 +158,11 @@ const DISC_FITS: [FitProbe; 1] = [
 
 /// The revised #110-002's own print fits, on the all-thread hole at 30 deg
 /// (r 35.54): the M3 rod's surface on the hole's outer side, and the M3 nut's
-/// outer flat in its trap. The seat's fits are check_seat's.
+/// outer flat in its trap, in the revised flange (z 13.234 .. 17.234). The
+/// seat's fits are check_seat's.
 const HOLDER_FITS: [FitProbe; 2] = [
-    FitProbe { label: "all-thread hole", at: [32.0776, 18.52, 12.7], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
-    FitProbe { label: "all-thread nut trap", at: [33.1601, 19.145, 15.0], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
+    FitProbe { label: "all-thread hole", at: [32.0776, 18.52, 13.934], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
+    FitProbe { label: "all-thread nut trap", at: [33.1601, 19.145, 16.234], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
 ];
 
 /// The revised #110-001's print fits, on H1 at (62.5, 12.5): the M6 screw's

@@ -1051,10 +1051,15 @@ anything version 3 does not independently specify
 
 - **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
   [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
+  [009 §Base height and L1](specs/009-Design-Completion.md#base-height-and-l1),
+  [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
   [004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
-  [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot) and
-  [009.1](specs/009.1-Performance-Characterization-Protocol.md),
-  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
+  [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
+  007.1 [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md) and
+  [009.2](specs/009.2-Test-Build-Manifest.md),
+  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
   `Hardware/Models/MANIFEST.csv`, and each converted group below.
   - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad`,
     `100-003_PivotSkirt.scad`, `110-001_BaseMountBottom.scad` with its generated floor table
@@ -1064,14 +1069,20 @@ anything version 3 does not independently specify
     to `Reference/meshes/100-Base/`.
   - `Hardware/Models/render-check/` gains `outline_gate`, which checks a profile across any axis, and
     `Ctx::manifold`, which renders a part with an OpenSCAD Nightly's Manifold engine.
+- **Amends:** [CR-3A19](#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats)
+  (L1 = 231.50 mm, with the Base Long seated on the Base Mount Bottom).
 - **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
-  as a mesh, so changing one meant re-deriving it.
+  as a mesh, so changing one meant re-deriving it. The base stack seated the Base Long directly on the Base
+  Mount Bottom's top face, and L1 was 231.50 mm.
 - **Now:** Each converted part is a `.scad` with two configurations. `config="previous"` recreates the
   mesh and is gated on `scadmesh dist` at ±0.15 mm against it. `config="revised"` draws the part's print
   fits from `print_fit.scad`. Each part's header owns its measured dimensions and fit list, and a view
   sidecar names its features on the reference mesh and overlays the two renders on it.
   - **100-Base:** the Base Clamp (`#100-001`). Its bolt hole, nut trap and head counterbore take the slip
-    clearance in `revised`. Its bore takes none, because it is a clamping bore closed by the bolt.
+    clearance in `revised`. The reference's Ø74.500 bore cut 0.53 mm into each strake's outer corners,
+    which a flat strake's face puts outside the spigot, and 0.05 mm into the spigot, so `revised` moves
+    the whole ring outward until its bore clears the corners by the press clearance; the bolt flexes it
+    onto them ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate)).
     `robot_assembly.scad` draws the clamp from source.
   - **100-Base:** the Base Code Disc (`#100-002`), drawn as two 2D profiles and extruded. Each
     profile is gated on its own against the mesh's section (`scadmesh outline`) before the part's
@@ -1115,6 +1126,18 @@ anything version 3 does not independently specify
     35.5). `robot_assembly.scad` draws it from source. It is the first part rendered with OpenSCAD's
     Manifold engine: OpenSCAD 2021.01's CGAL asserts on its windows' cuts and drops them
     ([Checking a group](Hardware/Models/README.md#checking-a-group)).
+  - **100-Base:** the Base Stator Holder's flange is in the base stack. The base's virtual assembly
+    (`base_assembly.scad`, checked by `assembly-clash.rs`) put the flange, which is the Base Long's own
+    outline, across the joint where the Base Long seated on the Base Mount Bottom, with the all-thread
+    ends in the Mount and the flange's rim in the Base Clamp. The holder now seats on the Mount's top
+    face and the Base Long on its flange, which raises everything above by the flange's 4.000 mm:
+    **L1 = 235.50 mm** ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+    [003 §Link lengths](specs/003-Kinematics.md#link-lengths)). The firmware file's 235.20 mm, which
+    CR-3A19 found no seated stack to produce, is the CAD chain's 231.200 mm with the flange added. The
+    stack fixes J1's holder, so J1's drive closes through it: the revised holder's flange stands
+    further along its body, where a 48 mm motor closes the stack
+    ([C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)). The all-threads do not
+    thread into the Mount: each rod's lower nut is captured in the flange's face.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run the group's `render-all.rs`

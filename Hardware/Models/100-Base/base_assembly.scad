@@ -13,9 +13,12 @@
 //   - The Base Mounting Plate under the mounting face; its frame already
 //     puts its top face on z = 0.
 //   - The Base Clamp on the Mount's shoulder, MOUNT_SHOULDER.
-//   - The Base Long's bottom face on the Mount's top face, MOUNT_TOP. Its
-//     strake slots are on 0° + 60°k and the Mount's on 30° + 60°k, so it is
-//     turned 30° to put each strake in both.
+//   - The Base Stator Holder (#110-002, revised) turned over, its flange's
+//     face on the Mount's top face, MOUNT_TOP, and turned 30° like the Long.
+//     Its flange is the Long's own outline, so it lies between the two.
+//   - The Base Long's bottom face on the holder flange's back. Its strake
+//     slots are on 0° + 60°k and the Mount's on 30° + 60°k, so it is turned
+//     30° to put each strake in both.
 //   - The Base Code Disc on the Long's top face, turned with it: its slots
 //     take the Long's strakes where they stand STRAKE_PROUD above the face,
 //     and its notches the all-threads.
@@ -30,9 +33,8 @@
 // round the disc. Its round part is an arc, x -35.6 .. 55, its lug on +X.
 //
 // J1'S DRIVE closes from the top. 007.1 C-101 makes the End Cap the fixed
-// datum, and in J1 the motor's body length moves the Stator Holder, which the
-// all-threads take up (008.4 steps 12–16). So each part below is placed on
-// the one above it:
+// datum, and the stack above fixes the Stator Holder, so the drive must close
+// between them. Each part below is placed on the one above it:
 //
 //   - The Base Motor End Cap (#311-001) in the upper 6810: its land, z
 //     CAP_LAND, is the bearing's width, so the bearing on the land's shoulder
@@ -40,13 +42,16 @@
 //   - The motor's rear on the cap's seat, CAP_SEAT, its face MOTOR_LEN below.
 //   - The Flex Spline Attach (#630-005, revised, no hub drop) on the motor
 //     face, its land in the lower 6810 on the Long's shoulder; the
-//     flexspline's hub on its hub face, the Flex Spline Cap inside the cup.
+//     flexspline's hub on its hub face, its holes on the Attach's nubs, the
+//     Flex Spline Cap inside the cup.
 //   - The circular spline drive_span() below the hub face, the wave generator
-//     inside it, and the Base Stator Holder (#110-002, revised) on the
-//     spline's flange, turned 30° like the Long.
+//     inside it.
 //
-// Where that leaves the holder against the Long and the Mount is echoed,
-// not chosen: holder_into_long and holder_into_mount.
+// The spline's flange must then bear on the holder's recess floor. The
+// revised holder's flange stands FLANGE_RISE further along its body for
+// that, at the C-101 body length MOTOR_LEN, and the file asserts it: a
+// different motor length leaves a gap or an interference at the floor,
+// echoed as drive_gap.
 //
 // STRAKES. Six 133 mm CF strakes (C-501) in alternate slots, three
 // epoxied in each part (008.2 step 2): the Mount's three bottomed in its
@@ -73,6 +78,7 @@
 // plain prisms.
 
 use <110-004_BaseMountingPlate.scad>
+use <110-002_BaseStatorHolder.scad>
 use <../600-StrainWave/630-005_FlexSplineAttach.scad>
 use <../600-StrainWave/630-006_FlexSplineCap.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
@@ -91,8 +97,8 @@ MOUNT_SLOT_Z   = 4.000;            // #110-001 strake slots' bottom
 LONG_BOTTOM    = -28.000;          // #120-001 bottom face
 LONG_TOP       = 68.000;           // #120-001 top face
 LONG_SHOULDER  = 7.000;            // #120-001 lower bore's shoulder
-HOLDER_FLANGE  = [12.000, 16.000]; // #110-002 flange: back, face
-HOLDER_FLOOR   = 5.000;            // #110-002 recess floor
+HOLDER_FLANGE  = holder_flange("revised");  // #110-002 flange: back, face
+HOLDER_FLOOR   = holder_floor();            // #110-002 recess floor
 DISC_D         = 94.300;           // #100-002 D1
 SKIRT_R        = 48.000;           // #100-003 S1, inside
 SKIRT_DROP     = 26.000;           // #100-003 S1, below y = 0
@@ -113,7 +119,10 @@ MOTOR_LEN      = 48.000;           // C-101 body length; replace with the measur
 B6810          = [50, 65, 7];
 
 // --- Placement --------------------------------------------------------------
-LONG_Z     = MOUNT_TOP - LONG_BOTTOM;    // world = Long z + LONG_Z
+HOLDER_FACE = MOUNT_TOP;
+HOLDER_Z   = HOLDER_FACE + HOLDER_FLANGE[1];  // holder flipped: world = HOLDER_Z - z
+HOLDER_BACK = HOLDER_Z - HOLDER_FLANGE[0];
+LONG_Z     = HOLDER_BACK - LONG_BOTTOM;  // world = Long z + LONG_Z
 LONG_TOP_Z = LONG_TOP + LONG_Z;
 BRG_LOW    = LONG_SHOULDER - B6810[2] + LONG_Z;
 BRG_UP     = LONG_TOP_Z - B6810[2];
@@ -124,9 +133,7 @@ MOTOR_F    = MOTOR_REAR - MOTOR_LEN;     // motor face, looking down
 ATTACH_Z   = MOTOR_F + attach_motor_face();  // Attach flipped: world = ATTACH_Z - z
 HUB_F      = ATTACH_Z - attach_hub_face("revised", 0);  // flexspline hub face
 CS_FACE    = HUB_F - drive_span();       // circular spline outer face, looking down
-HOLDER_Z   = CS_FACE + spline_flange()[1] + HOLDER_FLOOR;  // holder flipped: world = HOLDER_Z - z
-HOLDER_BACK = HOLDER_Z - HOLDER_FLANGE[0];
-HOLDER_FACE = HOLDER_Z - HOLDER_FLANGE[1];
+DRIVE_GAP  = HOLDER_Z - HOLDER_FLOOR - spline_flange()[1] - CS_FACE;  // holder floor above the spline's flange
 MOUNT_STRAKE_Z = MOUNT_SLOT_Z;
 LONG_STRAKE_Z  = LONG_TOP_Z + STRAKE_PROUD - STRAKE[2];
 
@@ -134,25 +141,28 @@ assert(abs(CAP_LAND[1] - CAP_LAND[0] - B6810[2]) < 1e-9, "the End Cap's land is 
 assert(CAP_LAND[1] == CAP_TOP, "the upper 6810 is not flush with the End Cap's top face");
 assert(MOTOR_F > BRG_LOW + B6810[2], "the motor face passes into the lower 6810");
 assert(HUB_F < BRG_LOW, "the lower 6810 runs off the Attach's land, which spans the hub face to the motor face");
+assert(abs(DRIVE_GAP) < 1e-6, "J1's drive does not close on the Stator Holder's floor; see drive_gap");
 
 // Named, so scripts and the section viewer (base_assembly.view.json) read
 // them; every length is mm.
-echo(long_bottom_z = MOUNT_TOP);
+echo(long_bottom_z = HOLDER_BACK);
+echo(holder_flange_z = str(HOLDER_FACE, " .. ", HOLDER_BACK));
 echo(long_top_z = LONG_TOP_Z);
 echo(motor_len = MOTOR_LEN);
 echo(motor_face_z = MOTOR_F);
 echo(motor_above_6810 = MOTOR_F - BRG_LOW - B6810[2]);   // motor face over the lower 6810
 echo(land_below_6810 = BRG_LOW - HUB_F);                 // the Attach's land, hub face to motor face, beyond the 6810 below
 echo(spline_face_z = CS_FACE);
-echo(holder_into_long = HOLDER_BACK - MOUNT_TOP);        // flange back above the Long's bottom face
-echo(holder_into_mount = MOUNT_TOP - HOLDER_FACE);       // flange face below the Mount's top face
+echo(drive_gap = DRIVE_GAP);                             // holder floor above the spline's flange; 0 closes
 echo(thread_above_long = HOLDER_FACE + THREAD[1] - LONG_TOP_Z);  // all-thread, for the washer and nut
 echo(disc_skirt_radial = SKIRT_R - DISC_D / 2);          // disc edge inside the skirt
 echo(skirt_span = str(SKIRT_Z - SKIRT_DROP, " .. ", SKIRT_Z + SKIRT_RISE));
 echo(skirt_above_long = SKIRT_Z - LONG_TOP_Z);          // round part's top over the Long's top face
-echo(long_strake_below_long = MOUNT_TOP - LONG_STRAKE_Z);  // Long's strakes, down into the Mount
+echo(long_strake_below_long = HOLDER_BACK - LONG_STRAKE_Z);  // Long's strakes, down through the holder into the Mount
 echo(mount_strake_above_mount = MOUNT_STRAKE_Z + STRAKE[2] - MOUNT_TOP);  // Mount's strakes, up into the Long
 echo(strake_proud = STRAKE_PROUD);
+// Where the viewer's cut, in its 0.5 steps, shows a clash that y = 0 misses.
+echo(cut_lugs = 10);                                            // a lug of the Attach and of the End Cap
 
 // --- Parts ------------------------------------------------------------------
 module printed(id) import(str("out/asm/", id, ".stl"), convexity = 10);
@@ -190,7 +200,7 @@ module bearing(z0) color("#dcdcdc") for (r = RACES) bearing_race(z0, r);
 module drive_frame() translate([0, 0, CS_FACE]) rotate(SLOT_TURN) rotate([180, 0, 0]) children();
 module circular_spline() color("#2a9d8f") drive_frame() circular_spline_envelope();
 module wave_gen()        color("#b58ac9") drive_frame() wave_generator_envelope();
-module flexspline()      color("#8f969c") translate([0, 0, HUB_F]) rotate(SLOT_TURN) rotate([180, 0, 0]) flexspline_envelope();
+module flexspline()      color("#8f969c") translate([0, 0, HUB_F]) rotate([180, 0, 0]) flexspline_envelope();
 
 module strake(a, z0) rotate(a) translate([STRAKE_R - STRAKE[1] / 2, -STRAKE[0] / 2, z0]) cube([STRAKE[1], STRAKE[0], STRAKE[2]]);
 module strakes_mount() color("#29292e") for (a = [30 : 120 : 270]) strake(a, MOUNT_STRAKE_Z);

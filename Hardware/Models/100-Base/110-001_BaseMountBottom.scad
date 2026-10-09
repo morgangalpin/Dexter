@@ -91,8 +91,8 @@
 //
 // The mesh draws H1 line-to-line on the screw, so it would be drilled out at assembly; revised prints
 // it to pass the screw. K1 keeps its size: it
-// clears the 12.6 × 3.2 strake by 0.2 per side already. S1 takes no fit, because the Base Clamp's
-// Ø74.500 bore is a clamping bore. What B1, B2 and H2 take is not recorded; they take no clearance
+// clears the 12.6 × 3.2 strake by 0.2 per side already. S1 takes no fit: the Base Clamp's
+// revised bore clears it, and the clamp grips the strakes (100-001_BaseClamp.scad). What B1, B2 and H2 take is not recorded; they take no clearance
 // until virtual assembly shows what mates with them, and then take their fits.
 
 include <BOSL2/std.scad>

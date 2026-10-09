@@ -148,12 +148,14 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
     motor shaft.
 12. Prepare 3× M3 × 105 mm all-thread: apply threadlocker, thread an M3 nut flush at one end.
 13. Slide the Base Stator Holder fully onto the strakes.
-14. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
-15. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
+14. Slide the 3 all-thread rods into every other hole of the Base Stator Holder from the flange's face, so
+    each rod's nut seats in the flange's nut trap.
+15. Set the Base Long onto the Base Mount, the Base Stator Holder's flange between them, and rotate until the
+    Main Pivot notch lines up with the rods.
 16. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
 17. Install the Base Clamp (from [008.2](#0082-base) step 5): remove the Base Long, slide the clamp onto the
-    Base Mount until it seats on the shoulder, reinstall the Base Long fully down on the Base Mount's top
-    face, and tighten the clamp — see
+    Base Mount until it seats on the shoulder, reinstall the Base Long with the Base Stator Holder's flange fully
+    down on the Base Mount's top face, and tighten the clamp — see
     [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Measure the
     mounting-face-to-J2 height per
     [009.1 § 3.1](009.1-Performance-Characterization-Protocol.md#test-31-mounting-face-to-j2-axis).

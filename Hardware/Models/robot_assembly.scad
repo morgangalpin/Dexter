@@ -124,6 +124,7 @@ use <400-EndArm/430-002_ExternalInnerPulley.scad>
 use <100-Base/100-001_BaseClamp.scad>
 use <100-Base/110-001_BaseMountBottom.scad>
 use <100-Base/120-001_BaseLong.scad>
+use <100-Base/110-002_BaseStatorHolder.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -296,28 +297,33 @@ ENV_C    = [0.45, 0.55, 0.70, 0.22];
 // ---------------------------------------------------------------------------
 
 // The base stack, from specs/004 § Base mounting plate. Each part seats on a
-// face of the one below it: the long member on the base mount's top face, and
-// the Main Pivot's base on the 6810 that sits flush in the long member's top.
-// The clamp is not in the stack — it seats on the mount's 82.000 shoulder,
-// below the top face, and sets no height. L1 is the sum.
+// face of the one below it: the Stator Holder's flange on the base mount's top
+// face, the long member on the flange, and the Main Pivot's base on the 6810
+// that sits flush in the long member's top. The clamp is not in the stack — it
+// seats on the mount's 82.000 shoulder, below the top face, and sets no
+// height. L1 is the sum.
 BASE_SEAT_Y   = 98.000;   // #110-001 top face
+HOLDER_FLANGE = holder_flange("revised");    // #110-002 flange: back, face, in its own z
+BASE_LONG_SEAT = BASE_SEAT_Y + HOLDER_FLANGE[1] - HOLDER_FLANGE[0];
 BASE_LONG_H   = 96.000;   // #120-001, the printed part
 PIVOT_J2_H    = 37.500;   // #300-001, J2 axis above its base
-BASE_LONG_TOP = BASE_SEAT_Y + BASE_LONG_H;
+BASE_LONG_TOP = BASE_LONG_SEAT + BASE_LONG_H;
 L1_BUILT      = BASE_LONG_TOP + PIVOT_J2_H;
-assert(abs(L1_BUILT - 231.500) < 1e-6, "the base stack no longer sums to specs/003's L1");
+assert(abs(L1_BUILT - 235.500) < 1e-6, "the base stack no longer sums to specs/003's L1");
 
 // Base group. All three sit on the J1 axis, which is this frame's y, and each
 // model is drawn with that axis on its own z — so one quarter turn about x
 // serves all three and only the height along the arm differs. The heights are
 // the stack's: the base mount's foot on y = 0, the clamp's underside on its
-// shoulder at y = 82.000, the long member's on the mount's top face.
+// shoulder at y = 82.000, the Stator Holder turned over with its flange's face
+// on the mount's top face, and the long member's underside on the flange.
 module place_base() {
     color(PRINT_C) {
         xrot(-90) base_mount_bottom();
         back( 82) xrot(-90) base_clamp();
+        back(BASE_SEAT_Y + HOLDER_FLANGE[1]) xrot(-90) xrot(180) base_stator_holder("revised");
         // The model's own z runs -28.000..68.000.
-        back(BASE_SEAT_Y + 28) xrot(-90) base_long();
+        back(BASE_LONG_SEAT + 28) xrot(-90) base_long();
     }
 }
 
@@ -332,9 +338,11 @@ module place_base() {
 // Two revisions of one part. It is placed on the mating plane, where it meets
 // the long member, so the difference shows at the far end instead of being
 // split between the two ends. That plane is the printed long member's top,
-// 0.300 mm above the J1 station because the CAD body is that much shorter, so
-// this part's J2 bore stands the same 0.300 mm above the J2 station; every
-// part above it stays on the CAD chain.
+// 4.300 mm above the J1 station: the CAD chain has no Stator Holder flange
+// under its long member, and its long member is 0.300 mm shorter. This part's
+// J2 bore stands the same 4.300 mm above the J2 station, while every part
+// above it stays on the CAD chain, so the Arm Body sits that far low against
+// it (the base stack echo below reports it).
 module place_main_pivot() {
     color(PRINT_C) back(BASE_LONG_TOP) xrot(-90) zrot(-90)
         import("300-Pivot/300-001_MainPivot.stl", convexity = 8);
@@ -477,8 +485,8 @@ UNPLACED = [
    "holds the L2 tube's far end 37.500 mm from the J3 axis, but its model is not in the End Arm group's frame and its own channel has not been located"],
   ["#100-002, #300-002, #410-003 code disks",
    "each on its joint's axis, but the seat that sets its height is unmeasured"],
-  ["600-StrainWave, stator holders, motor end caps",
-   "the drives at J1, J2 and J3; no mating feature measured yet"],
+  ["600-StrainWave, the J2 and J3 stator holders, motor end caps",
+   "the drives at J1, J2 and J3, but for the Base Stator Holder, which is in the base stack; no mating feature measured yet"],
   ["500-ExternalGear, 6 parts",
    "the CAD body places the mount low on the base, well off the arm axis; the model's frame has not been matched to it"],
   ["800-Harness 18 parts, 900-ToolInterface, 950-Tooling",
