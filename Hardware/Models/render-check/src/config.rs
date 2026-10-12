@@ -18,6 +18,8 @@ pub struct Part {
     /// The configurations the part exists in; `None` means all of them.
     pub configs: Option<Vec<String>>,
     pub meshes: bool,
+    /// The geometry engine that renders the part; `None` is the installed one.
+    pub engine: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -95,6 +97,7 @@ fn part(v: &Value) -> Result<Part> {
         scad: req_str(v, "scad")?,
         configs: strings(v, "configs")?,
         meshes: v["meshes"].as_bool().unwrap_or(true),
+        engine: opt_str(v, "engine")?,
     })
 }
 
@@ -152,7 +155,7 @@ mod tests {
     const SAMPLE: &str = r#"{
         "ref_dir": "../Reference/meshes/700-Differential",
         "parts": [
-            {"id": "730-001", "scad": "730-001_DiffBodyA.scad"},
+            {"id": "730-001", "scad": "730-001_DiffBodyA.scad", "engine": "manifold"},
             {"id": "720-004", "scad": "720-004_DiffShaftPulley.scad", "configs": ["revised"], "meshes": false}
         ],
         "checks": [
@@ -168,6 +171,7 @@ mod tests {
         assert_eq!(c.parts.len(), 2);
         assert!(c.parts[0].meshes && c.parts[0].configs.is_none());
         assert!(!c.parts[1].meshes);
+        assert_eq!((c.parts[0].engine.as_deref(), c.parts[1].engine.as_deref()), (Some("manifold"), None));
         assert_eq!(c.checks[1].after, ["gate", "600-StrainWave/630-005"]);
         assert_eq!(c.checks[1].weight, 2);
         assert_eq!(c.checks[0].fields["tol"], 0.15);

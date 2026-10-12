@@ -9,7 +9,8 @@
     {"kind": "face", "id": "face-511-001", "part": "511-001 (revised)", "config": "revised",
      "scad": "511-001_ExGearMotorEndCap.scad", "out": "out/revised/511-001.stl", "face_echo": "end_cap_seat",
      "faces": [{"name": "seat", "at": [0.0, -16.0, 0.0], "up": false}],
-     "note": "The revised End Cap: its seat where the part says it is, read in the motor square clear of the bore, the channel and the nut traps. The seat faces the motor, which lies below it in the part's frame."},
+     "probes": [{"label": "channel's side rounded into the bore", "at": [9.56, 6.06, 0.0], "offset": 0.9, "solid": false}],
+     "note": "The revised End Cap: its seat where the part says it is, read in the motor square clear of the bore, the channel and the nut traps. The seat faces the motor, which lies below it in the part's frame. The revised channel's sides are rounded into the bore: a point 0.06 inside the sharp edge, 0.9 above the seat, lies outside the round."},
     {"kind": "fits", "id": "fits-511-001", "part": "511-001 (revised)", "stl": "out/revised/511-001.stl", "after": ["face-511-001"],
      "note": "The 6810's 50 mm bore over the land, the motor's 42.292 square on a lug, and the M3 screw and nut at the motor hole on 45 deg (centre 15.5, 15.5).",
      "probes": [

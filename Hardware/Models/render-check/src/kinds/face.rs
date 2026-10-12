@@ -7,7 +7,10 @@
 //! looking toward +Z. A face without `z` stands at the height the render echoes
 //! as the name in `face_echo`. `defines_from_echo`, a list of `{define, file,
 //! name}`, passes a value another job echoed into a log file as a definition,
-//! so the render matches what an assembly asked for.
+//! so the render matches what an assembly asked for. `probes`, a list of
+//! `{label, at: [x, y, 0], offset, solid}`, judges a point `offset` above the
+//! echoed face height (a face without `face_echo` may not carry probes): material
+//! when `solid` is true, void otherwise.
 
 use super::fits::solid;
 use super::{config_defines, echoed_number, render_judged, Env, Fields, Report};
@@ -28,6 +31,22 @@ pub fn run(env: &Env, f: &Fields, rep: &mut Report) -> Result<()> {
             None => echoed_number(&r.stderr, f.str("face_echo")?)?,
         };
         probe_face(env, f.str("part")?, out, &face, z, rep)?;
+    }
+    probe_offsets(env, f, out, &r.stderr, rep)
+}
+
+/// The `probes`, each a stated offset from the echoed face height.
+fn probe_offsets(env: &Env, f: &Fields, stl: &str, stderr: &str, rep: &mut Report) -> Result<()> {
+    let items = f.items_or_empty("probes")?;
+    if items.is_empty() {
+        return Ok(());
+    }
+    let seat = echoed_number(stderr, f.str("face_echo")?)?;
+    for item in items {
+        let [x, y, _] = item.point("at")?;
+        let at = [x, y, ((seat + item.f64("offset")?) * 1e6).round() / 1e6];
+        let got = solid(env, stl, &[at])?[0];
+        rep.record(&format!("{} {}", f.str("part")?, item.str("label")?), got == item.v_bool("solid")?);
     }
     Ok(())
 }
@@ -69,6 +88,20 @@ mod tests {
         assert_eq!(f.calls()[1], "scadmesh solid out/c.stl --probe=0,-16,4.6 --probe=0,-16,4.4");
         assert!(!check("face", fields(), &fake("ECHO: end_cap_seat = 4.5\n", [true, true])).ok);
         assert!(!check("face", fields(), &fake("ECHO: end_cap_seat = 4.5\n", [false, false])).ok);
+    }
+
+    #[test]
+    fn a_probe_is_an_offset_above_the_echoed_face() {
+        let mut v = fields();
+        v["probes"] = json!([{"label": "side round", "at": [9.56, 6.06, 0.0], "offset": 0.9, "solid": true}]);
+        let mut f = Fake::new().with("solid", json!({"probes": [{"inside": true}, {"inside": false}]}));
+        f.stderr = "ECHO: end_cap_seat = -1.2
+".into();
+        let o = check("face", v.clone(), &f);
+        assert!(o.ok && o.output.contains("511-001 (revised) side round"), "{}", o.output);
+        assert_eq!(f.calls()[2], "scadmesh solid out/c.stl --probe=9.56,6.06,-0.3");
+        v["probes"][0]["solid"] = json!(false);
+        assert!(!check("face", v, &f).ok);
     }
 
     #[test]

@@ -13,6 +13,7 @@ pub mod empty;
 pub mod extents;
 pub mod face;
 pub mod fits;
+pub mod outline;
 pub mod plate;
 pub mod gear_fit;
 pub mod probes;
@@ -20,7 +21,7 @@ pub mod render;
 pub mod seat;
 
 use crate::config::Check;
-use crate::meshes::Tools;
+use crate::meshes::{Engine, Tools};
 use crate::sched::Outcome;
 use crate::{diagnostics, Run};
 use anyhow::{anyhow, bail, Context, Result};
@@ -192,6 +193,7 @@ fn dispatch(env: &Env, check: &Check, rep: &mut Report) -> Result<()> {
         "clash" => clash::run(env, &f, rep),
         "face" => face::run(env, &f, rep),
         "gear_fit" => gear_fit::run(env, &f, rep),
+        "outline" => outline::run(env, &f, rep),
         "plate" => plate::run(env, &f, rep),
         "probes" => probes::run(env, &f, rep),
         "seat" => seat::run(env, &f, rep),
@@ -202,10 +204,13 @@ fn dispatch(env: &Env, check: &Check, rep: &mut Report) -> Result<()> {
     }
 }
 
-/// Run one check. An error anywhere in it is a failed verdict, not a crash.
+/// Run one check, on the geometry engine its `engine` field names. An error
+/// anywhere in it is a failed verdict, not a crash.
 pub fn run_check(env: &Env, check: &Check) -> Outcome {
     let mut rep = Report::default();
-    if let Err(e) = dispatch(env, check, &mut rep) {
+    let outcome = Engine::new(env.tools, check.fields["engine"].as_str())
+        .and_then(|tools| dispatch(&Env { tools: &tools, ref_dir: env.ref_dir }, check, &mut rep));
+    if let Err(e) = outcome {
         rep.note(&format!("error: {e:#}"));
         rep.failures += 1;
     }
@@ -265,6 +270,11 @@ pub mod testing {
     impl Tools for Fake {
         fn openscad(&self, args: &[&str]) -> Result<Run> {
             self.calls.lock().unwrap().push(format!("openscad {}", args.join(" ")));
+            Ok(Run { ok: self.openscad_ok, stdout: String::new(), stderr: self.stderr.clone() })
+        }
+
+        fn openscad_manifold(&self, args: &[&str]) -> Result<Run> {
+            self.calls.lock().unwrap().push(format!("openscad-manifold {}", args.join(" ")));
             Ok(Run { ok: self.openscad_ok, stdout: String::new(), stderr: self.stderr.clone() })
         }
 

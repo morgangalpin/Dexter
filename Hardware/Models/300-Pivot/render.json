@@ -1,0 +1,67 @@
+{
+  "ref_dir": "../Reference/meshes/300-Pivot",
+  "parts": [
+    {"id": "300-001", "scad": "300-001_MainPivot.scad", "engine": "manifold"},
+    {"id": "311-001", "scad": "311-001_MotorEndCapBase.scad"}
+  ],
+  "checks": [
+    {"kind": "dist_gate", "id": "dist-300-001", "part": "300-001",
+     "config": "previous", "engine": "manifold", "scad": "300-001_MainPivot.scad", "out": "out/300-001.stl", "reference": "300-001_MainPivot.stl", "tol": 0.15,
+     "note": "#300-001 renders on OpenSCAD's Manifold engine only: under CGAL its swept and lofted blends leave non-planar faces and a mesh that is not a valid 2-manifold."},
+    {"kind": "render", "id": "render-300-001", "config": "revised",
+     "engine": "manifold", "scad": "300-001_MainPivot.scad", "out": "out/revised/300-001.stl"},
+    {"kind": "probes", "id": "probes-300-001", "part": "300-001 (revised)",
+     "stl": "out/revised/300-001.stl", "after": ["render-300-001"],
+     "note": "The revised #300-001. The drum's underside stands the running clearance (0.5) above the 1.6-thick code disc, at z 2.1, outside the 55 mm land, which is unchanged. The side faces stand back the slip clearance (0.15) from the skirt's collar all the way up, but keep a pad where each of the three bosses backs the collar's face, 11.9 mm about the screw at z 15 on 180 deg and +-135 deg, above the collar's chamfer (z 15.94); the +X face is unchanged.",
+     "items": [
+       {"label": "drum underside clear of the code disc (z 2.0, r 29.5)", "at": [0.0, -29.5, 2.0], "solid": false},
+       {"label": "drum underside at z 2.1 (material above)", "at": [0.0, -29.5, 2.2], "solid": true},
+       {"label": "land unchanged at r 27", "at": [0.0, -27.0, 1.8], "solid": true},
+       {"label": "pad under the 180 deg boss", "at": [-32.45, 4.0, 17.0], "solid": true},
+       {"label": "pad under the 135 deg boss", "at": [-22.945, 22.945, 19.0], "solid": true},
+       {"label": "-X face trimmed beside its nut trap, below the collar", "at": [-32.45, 3.5, 13.0], "solid": false},
+       {"label": "-X face stands back above the collar", "at": [-32.45, -8.0, 26.0], "solid": false},
+       {"label": "-X face stands back below the spacers", "at": [-32.45, -8.0, 11.0], "solid": false},
+       {"label": "-X face stands back up to its top round", "at": [-32.45, -8.0, 60.0], "solid": false},
+       {"label": "-X face stands at the slip clearance", "at": [-32.3, -8.0, 40.0], "solid": true},
+       {"label": "+X face unchanged beside the collar", "at": [35.45, 0.0, 19.0], "solid": true},
+       {"label": "+Y face trimmed beside the bosses", "at": [10.0, 32.45, 19.0], "solid": false}
+     ]},
+    {"kind": "fits", "id": "fits-300-001", "part": "300-001 (revised)",
+     "stl": "out/revised/300-001.stl", "after": ["render-300-001"],
+     "note": "The revised #300-001's slip fits under the skirt's collar, each from the collar's inner face (apothem 32.5), clear of the pads.",
+     "probes": [
+       {"label": "-X face under the collar", "at": [-32.5, -8.0, 19.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "+Y face under the collar", "at": [10.0, 32.5, 19.0], "toward": [0.0, 1.0, 0.0], "fit": "slip"},
+       {"label": "-Y face under the collar", "at": [0.0, -32.5, 19.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "135 deg face under the collar", "at": [-22.981, 22.981, 22.0], "toward": [-0.7071, 0.7071, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "dist_gate", "id": "dist-311-001", "part": "311-001",
+     "config": "previous", "scad": "311-001_MotorEndCapBase.scad", "out": "out/311-001.stl", "reference": "311-001_MotorEndCapBase.stl", "tol": 0.15,
+     "note": "#311-001 renders on CGAL, as #511-001 does: under Manifold the wire channel's lofted blend leaves an open seam and specks."},
+    {"kind": "render", "id": "render-311-001", "config": "revised",
+     "scad": "311-001_MotorEndCapBase.scad", "out": "out/revised/311-001.stl"},
+    {"kind": "probes", "id": "probes-311-001", "part": "311-001 (revised)",
+     "stl": "out/revised/311-001.stl", "after": ["render-311-001"],
+     "note": "The revised #311-001: the root fillets trimmed off the lugs' faces, the channel's sides rounded into the bore (the point lies 0.06 inside the sharp edge, 0.9 above the seat at z -1.65), the channel stopped at the lug's corner, and the step left as drawn.",
+     "items": [
+       {"label": "no root fillet on a lug's face", "at": [21.1, 10.0, -1.8], "solid": false},
+       {"label": "wire channel open at +X", "at": [15.0, 0.0, -1.0], "solid": false},
+       {"label": "channel's side rounded into the bore", "at": [9.56, 6.06, -0.75], "solid": false},
+       {"label": "lug's corner standing under the channel", "at": [21.7, 6.45, -1.6], "solid": true},
+       {"label": "top face at z 10.5 (material below)", "at": [0.0, -20.0, 10.4], "solid": true},
+       {"label": "ring at r 26 below the land's foot", "at": [18.38, 18.38, 3.4], "solid": true},
+       {"label": "no ring at r 26 above the land's foot", "at": [18.38, 18.38, 3.6], "solid": false},
+       {"label": "lug down to z -6.7", "at": [23.5, 10.0, -6.6], "solid": true}
+     ]},
+    {"kind": "fits", "id": "fits-311-001", "part": "311-001 (revised)",
+     "stl": "out/revised/311-001.stl", "after": ["render-311-001"],
+     "note": "The revised #311-001's print fits: the 6810's 50 mm bore over the land, the motor's 42.292 square on a lug, the motor's rear face under the seat, and the M3 screw in the motor hole on 45 deg (centre 15.5, 15.5).",
+     "probes": [
+       {"label": "land in the 6810", "at": [17.6777, 17.6777, 7.0], "toward": [0.7071, 0.7071, 0.0], "fit": "press"},
+       {"label": "lug on the motor", "at": [21.146, 10.0, -4.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "seat on the motor's rear", "at": [15.0, 8.0, -1.7], "toward": [0.0, 0.0, -1.0], "fit": "press"},
+       {"label": "M3 hole", "at": [16.5607, 16.5607, 4.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "slip"}
+     ]}
+  ]
+}

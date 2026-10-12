@@ -1046,3 +1046,149 @@ anything version 3 does not independently specify
     zones the gates grow. Each part's header lists its fits and classes, and `render-meshes.rs` builds in
     `config="revised"` unless told otherwise. The Models README recounts its parts and files and points to
     the `render-all.rs` files for the gates' figures.
+
+### CR-3A20: Mesh-only printed parts converted to OpenSCAD
+
+- **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
+  [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
+  [009 §Base height and L1](specs/009-Design-Completion.md#base-height-and-l1),
+  [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
+  [004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+  [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
+  007.1 [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md) and
+  [009.2](specs/009.2-Test-Build-Manifest.md),
+  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
+  `Hardware/Models/MANIFEST.csv`, and each converted group below.
+  - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad`,
+    `100-003_PivotSkirt.scad`, `110-001_BaseMountBottom.scad` with its generated floor table
+    `110-001_BaseMountBottom_floor.scad`, `120-001_BaseLong.scad` with its generated rib table
+    `120-001_BaseLong_rib.scad`, their `.view.json` sidecars, and the shared `base_dodecagon.scad` and
+    `window_round.scad` (new); `110-002_BaseStatorHolder.scad` and its `render.json` checks. Their meshes moved
+    to `Reference/meshes/100-Base/`.
+  - `Hardware/Models/300-Pivot/`: `300-001_MainPivot.scad`, its `.view.json` sidecar,
+    `311-001_MotorEndCapBase.scad` and `render.json` (new). Their meshes moved to
+    `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
+    lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
+    now runs onto the channel's ceiling fillets as a ball that touches both surfaces, where it stood up
+    to 0.1 mm off the fillet in a lip. The channel now runs on until it meets a lug or opens into the
+    notch, and the lugs' root fillets run up onto its seat rounds, as both references have them; it
+    stopped at the notch floor, leaving the fillets as a ledge under it. In `revised` the channel's
+    sides are rounded into the bore, as its ceiling is, down to the seat, and #511-001's raised seat
+    pockets the lugs' corner rounds as well as the motor's square.
+  - `Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad` and its `render.json` checks.
+  - `Hardware/Models/600-StrainWave/c201_spline_seat.scad`: C-201's flexspline and wave-generator
+    envelopes.
+  - `Hardware/Models/render-check/` gains the `outline` check kind, which checks a profile across any
+    axis, and the `engine` field of a part or check, which renders it with an OpenSCAD Nightly's Manifold
+    engine ([009.3](specs/009.3-Render-Program.md)). `100-Base/render.json` and `300-Pivot/render.json`
+    carry the gates, probes and fits of the converted parts; `300-Pivot/render.json` is new.
+- **Amends:** [CR-3A19](#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats)
+  (L1 = 231.50 mm, with the Base Long seated on the Base Mount Bottom).
+- **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
+  as a mesh, so changing one meant re-deriving it. The base stack seated the Base Long directly on the Base
+  Mount Bottom's top face, and L1 was 231.50 mm.
+- **Now:** Each converted part is a `.scad` with two configurations. `config="previous"` recreates the
+  mesh and is gated on `scadmesh dist` at ±0.15 mm against it. `config="revised"` draws the part's print
+  fits from `print_fit.scad`. Each part's header owns its measured dimensions and fit list, and a view
+  sidecar names its features on the reference mesh and overlays the two renders on it.
+  - **100-Base:** the Base Clamp (`#100-001`). Its bolt hole, nut trap and head counterbore take the slip
+    clearance in `revised`. The reference's Ø74.500 bore cut 0.53 mm into each strake's outer corners,
+    which a flat strake's face puts outside the spigot, and 0.05 mm into the spigot, so `revised` moves
+    the whole ring outward until its bore clears the corners by the press clearance; the bolt flexes it
+    onto them ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate)).
+    `robot_assembly.scad` draws the clamp from source.
+  - **100-Base:** the Base Code Disc (`#100-002`), drawn as two 2D profiles and extruded. Each
+    profile is gated on its own against the mesh's section (`scadmesh outline`) before the part's
+    `dist` gate. Its bore takes the slip clearance on the Base Stator Holder's body in `revised`.
+  - **100-Base:** the Pivot Skirt (`#100-003`), a region split:
+    - the round skirt is one section extruded along its axis;
+    - the octagonal frame is one profile swept along an open octagon path, which `outline_gate`
+      checks across the flange;
+    - the lug and its hood are each a 2D section extruded along its own leg.
+
+    Its three screw holes take the slip clearance in `revised`. What its collar, slots and lug pocket
+    mate with is not recorded, so they take none.
+  - **100-Base:** the Base Mount Bottom (`#110-001`), a region split:
+    - the tower and spigot are one revolved profile;
+    - the flange is the arms' outline swept up with its round, and each gusset is a convex core grown
+      by a ball, so its top edges are rolling-ball rounds;
+    - the windows' rounds are lofted rolling-ball cutters;
+    - the tower's floor is a measured surface, sampled from the mesh over half a 60° sector and
+      mirrored, with exact cutters for every bore, counterbore and window through it.
+
+    Its mounting holes take the slip clearance on the M6 screw's shank and head in `revised`, so 008.2
+    no longer opens them at assembly
+    ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate)). `revised`
+    also trims the twelve z 24.000 plateaus the mesh carries on the floor beside its hub holes.
+    Its strake slots already clear the strakes, and its spigot is clamped. What its bores and hub holes
+    mate with is not recorded; they take their fits once virtual assembly shows it. Its mesh is coarse
+    (the tower's facets lie 0.226 inside the circle), so its `dist` gate is ±0.25.
+    `robot_assembly.scad` draws it from source, and the `plate` check of `100-Base/render.json` reads its mesh from
+    `Reference/meshes/100-Base/` to check the Base Mounting Plate's holes against.
+  - **100-Base:** the Base Long (`#120-001`), built side by side:
+    - one side of its rounded dodecagon is mirrored into a pair, and the pairs are patterned round
+      the axis, each corner rounded by an edge mask;
+    - each pair's two windows are elliptical prisms with lofted rolling-ball rounds on both faces;
+    - its six ribs are lofted through sections measured from the mesh.
+
+    Its bearing bores take the press clearance on the 6810s in `revised`, and the 28 mm the lower
+    bearing is pushed through to its seat takes the slip clearance. Its strake slots and all-thread
+    holes already clear what passes through them. Its outline is the Base Stator Holder's flange's,
+    so both now take it from `base_dodecagon.scad`. Its windows' rounds and the Base Mount Bottom's
+    share `window_round.scad`. 008.4 takes the lower bore's depth from its header (35.0 mm, not
+    35.5). `robot_assembly.scad` draws it from source. It is the first part rendered with OpenSCAD's
+    Manifold engine: OpenSCAD 2021.01's CGAL asserts on its windows' cuts and drops them
+    ([Checking a group](Hardware/Models/README.md#checking-a-group)).
+  - **100-Base:** the Base Stator Holder's flange is in the base stack. The base's virtual assembly
+    (`base_assembly.scad`, checked by `assembly-clash.rs`) put the flange, which is the Base Long's own
+    outline, across the joint where the Base Long seated on the Base Mount Bottom, with the all-thread
+    ends in the Mount and the flange's rim in the Base Clamp. The holder now seats on the Mount's top
+    face and the Base Long on its flange, which raises everything above by the flange's 4.000 mm:
+    **L1 = 235.50 mm** ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+    [003 §Link lengths](specs/003-Kinematics.md#link-lengths)). The firmware file's 235.20 mm, which
+    CR-3A19 found no seated stack to produce, is the CAD chain's 231.200 mm with the flange added. The
+    stack fixes J1's holder, so J1's drive closes through it: the revised holder's flange stands
+    further along its body, where a 48 mm motor closes the stack
+    ([C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)). The all-threads do not
+    thread into the Mount: each rod's lower nut is captured in the flange's face.
+  - **300-Pivot:** the Main Pivot (`#300-001`), a region split: the body is its outline swept with its
+    top edges rounded, cut at the +X end by four chamfers, and its +X face rounded all round by the
+    chamfered section swept to it; the J1 and J2 ends are one drum-and-windows pattern turned 45°, and
+    the flange is a revolved profile. Where rounds and fillets meet, each is the rolling ball the
+    reference was made with, lofted along its centre's path in the reference's order, and the rounds
+    that fade out have their setbacks measured by angle. `revised` clears what the base assembly's
+    clash check found it closer than its class to: the drum's underside stands the running clearance
+    above the Base Code Disc, and the side faces, and the J1 drum with them, stand the slip clearance
+    back from the Pivot Skirt's collar all the way up, but for a pad at each of the skirt's three
+    screws, which is a seat. The disc's thickness and the collar's span come from the two parts' files.
+    `base_assembly.scad` draws it from the `render.rs --meshes` build of its revised render and `robot_assembly.scad` from
+    source. Its five side-hole nut traps take the same M3 nut and are drawn one size in both configs,
+    although the reference's -135° trap is 0.2 mm larger. Its `previous` config passes the `dist` gate.
+  - **300-Pivot:** the Base Motor End Cap (`#311-001`): its notched outline, with the bore and the motor
+    holes, extruded full height; a cylinder cut above the land's foot for the step, and the motor's
+    square cut below the seat for the lugs; then the wire channel, shared with the Ex Gear Motor End Cap,
+    and the edges. Its lugs' corners, and the seat's edges at the three notches the channel does not
+    open into, are rounded on a notch 0.15 mm narrower, and its root fillets are R0.5, as the reference
+    has them. `revised` presses the land into the upper 6810 and the lugs onto the motor, trims
+    the lugs' root fillets off the motor's square rear edge, which they stood on, and trims the seat
+    back the press clearance off the motor's rear face, where the bore's round ran out on it. Its seat is at
+    z -1.700, not the -1.766 `base_assembly.scad` placed the motor on, so the motor and J1's drive stand
+    0.066 mm higher and the revised Base Stator Holder's flange rises 0.066 mm more.
+    `base_assembly.scad` reads the seat and the land from the part's file and draws its revised render.
+    It draws the 6810 envelopes at 360 facets, so their bore's chords stay within the clash check's
+    facet slack of the land.
+  - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
+    tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
+    oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.
+    The Base Stator Holder's bore clears the cup by more than the running clearance, which the guessed
+    Ø34.4 cup did not.
+  - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
+    motor's square front edge, which they stood on. Its bore's Ø5.0 ridge grips the motor's shaft line to
+    line by design, and `base_assembly.clash.json` records it as an exception to the clash check.
+- **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
+- **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
+- **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
+  after editing a part.

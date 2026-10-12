@@ -238,15 +238,17 @@ that follows from it ([006](006-Firmware-and-Calibration.md#firmware-defaults-de
 ## Base height and L1
 **DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths), [004](004-Mechanical-Architecture.md#base-mounting-plate)** — ✔ **closed**
 
-**Closed by analysis.** L1 is **231.50 mm**, the height of the J2 axis above the mounting face, specified
+**Closed by analysis.** L1 is **235.50 mm**, the height of the J2 axis above the mounting face, specified
 in [003 § Link lengths](003-Kinematics.md#link-lengths). It is set by the base stack specified in
 [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate), where every height rests
-on a face the next part seats on. The clamp is not in that stack, so it does not move L1, and the spigot
-the clamp fits has room for one. The firmware file's 235.20 mm is a
-height no seated stack of the build's parts produces; it is superseded, and
-[006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) carries the line to write. The
-evidence, and the doubled clamp withdrawn with it, are recorded in
-[CR-3A19](../CHANGES.md#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats).
+on a face the next part seats on, the Base Stator Holder's flange among them. The clamp is not in that
+stack, so it does not move L1, and the spigot the clamp fits has room for one. The firmware file's
+235.20 mm is the CAD chain's station with the flange added, on the CAD's shorter Base Long; it is
+superseded, and [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) carries the line
+to write. The evidence, and the doubled clamp withdrawn with it, are recorded in
+[CR-3A19](../CHANGES.md#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats),
+and the flange's place in the stack in
+[CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad).
 
 **Definition of done — met:** L1 specified against a stack of positive stops, and
 [003 § Link lengths](003-Kinematics.md#link-lengths) and the `LinkLengths` line reconciled to it.
@@ -502,8 +504,9 @@ limits editing the design rather than ordering or printing it — this item's re
 and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
-set has full parametric source ([DC-2](#differential-detail-design)), and the `openscad-tools` measurement
-utilities built for it apply to every remaining mesh-only part.
+set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base` has it
+([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in
 [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) (see row a), its 48 mm body read as the

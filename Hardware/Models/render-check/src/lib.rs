@@ -62,6 +62,33 @@ pub fn tool(env_key: &str, candidates: &[&str], name: &str, dir: &Path) -> Strin
         .map_or_else(|| name.to_string(), |p| p.to_string_lossy().into_owned())
 }
 
+/// The newest snapshot directory under `root` that holds the binary `exe`.
+/// Snapshots are named by their date, so the greatest name is the newest.
+pub fn newest_under(root: &Path, exe: &str) -> Option<PathBuf> {
+    let mut found: Vec<PathBuf> = std::fs::read_dir(root)
+        .ok()?
+        .filter_map(|e| e.ok())
+        .map(|e| e.path().join(exe))
+        .filter(|p| p.exists())
+        .collect();
+    found.sort();
+    found.pop()
+}
+
+/// OpenSCAD with the Manifold geometry engine, for the parts whose cuts the
+/// installed release's CGAL cannot make (a part or check names it with
+/// `"engine": "manifold"`): `$OPENSCAD_MANIFOLD`, then the newest Nightly
+/// snapshot unpacked under `%LOCALAPPDATA%/Programs/OpenSCAD-Nightly/`, then
+/// `openscad-nightly` via `$PATH`.
+pub fn manifold_openscad() -> String {
+    if let Ok(v) = std::env::var("OPENSCAD_MANIFOLD") {
+        return v;
+    }
+    std::env::var_os("LOCALAPPDATA")
+        .and_then(|d| newest_under(&PathBuf::from(d).join("Programs/OpenSCAD-Nightly"), "openscad.exe"))
+        .map_or_else(|| "openscad-nightly".to_string(), |p| p.to_string_lossy().into_owned())
+}
+
 /// Where the tools run and which binaries they are.
 pub struct Ctx {
     pub dir: PathBuf,
@@ -259,8 +286,14 @@ pub fn scad_constant(source: &str, name: &str) -> Option<f64> {
     })
 }
 
-/// The two print-fit clearances per side, read from the library every part
-/// includes, so the checks follow it when a machine is qualified.
+/// The slip, press and run clearances per side, read from the source of the
+/// library every part includes (`print_fit.scad`), so a check follows it when a
+/// machine is qualified.
+pub fn print_fits(source: &str) -> Result<(f64, f64, f64)> {
+    let get = |name| scad_constant(source, name).with_context(|| format!("{name} is not in the print-fit library"));
+    Ok((get("FIT_SLIP")?, get("FIT_PRESS")?, get("FIT_RUN")?))
+}
+
 /// One fit on a revised render: `at` lies on the mate's nominal surface and
 /// `toward` is the unit direction from the part toward the mate. The part's
 /// wall must stand back from `at` by the class clearance, so a point halfway
@@ -291,6 +324,18 @@ mod tests {
         assert_eq!(scad_constant(src, "FIT_SLIP"), Some(0.15));
         assert_eq!(scad_constant(src, "FIT_PRESS"), Some(0.05));
         assert_eq!(scad_constant(src, "MISSING"), None);
+    }
+
+    #[test]
+    fn print_fits_read_all_three_clearances() {
+        let src = "FIT_SLIP  = 0.15;
+FIT_PRESS = 0.05;
+FIT_RUN   = 0.50;
+";
+        assert_eq!(print_fits(src).unwrap(), (0.15, 0.05, 0.5));
+        assert!(print_fits("FIT_SLIP = 0.15;
+FIT_PRESS = 0.05;
+").unwrap_err().to_string().contains("FIT_RUN"));
     }
 
     #[test]
@@ -353,6 +398,21 @@ mod tests {
         assert!(found.ends_with("Cargo.toml"));
         std::env::set_var("RENDER_CHECK_SET_VAR", "from-env");
         assert_eq!(tool("RENDER_CHECK_SET_VAR", &["Cargo.toml"], "bare", dir), "from-env");
+    }
+
+    #[test]
+    fn newest_under_picks_the_latest_snapshot_that_holds_the_binary() {
+        let root = std::env::temp_dir().join(format!("render-check-nightly-{}", std::process::id()));
+        assert_eq!(newest_under(&root, "openscad.exe"), None);
+        for (snapshot, has_exe) in [("OpenSCAD-2026.10.03", true), ("OpenSCAD-2026.10.05", true), ("OpenSCAD-2026.10.09", false)] {
+            let d = root.join(snapshot);
+            std::fs::create_dir_all(&d).unwrap();
+            if has_exe {
+                std::fs::write(d.join("openscad.exe"), "").unwrap();
+            }
+        }
+        assert_eq!(newest_under(&root, "openscad.exe"), Some(root.join("OpenSCAD-2026.10.05").join("openscad.exe")));
+        std::fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

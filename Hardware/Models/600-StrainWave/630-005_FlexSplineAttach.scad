@@ -74,6 +74,14 @@
 // The motor holes (Ø3.5 for M3), their Ø10.3 counterbores and the Ø23 pilot
 // over the motor's Ø22 boss already clear by more and keep their size.
 //
+// The revised lugs' root fillets are trimmed to the motor's square, grown by
+// the press clearance: the motor's front edge is square, and the fillets
+// would stand on it and hold the motor off its face.
+//
+// The centre bore's Ø5.0 ridge keeps its size in both configs. It grips the
+// motor's Ø5 shaft line to line, which the clash check of an assembly takes
+// as an exception (../100-Base/base_assembly.clash.json).
+//
 // The six M2 screws of 008.3 enter from below through the head pockets,
 // pass the hub and end in nuts in the Flex Spline Cap, so they are driven
 // before the Attach goes on the motor. hub_drop shortens their path through
@@ -246,6 +254,15 @@ module one_root_fillet(cfg) {
 module lug_root_fillets(cfg)
     for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0]) one_root_fillet(cfg);
 
+// The revised fillets, less the motor's square grown by the press clearance:
+// what is left rounds the lugs' notch-side corners only.
+module trimmed_root_fillets(cfg)
+    difference() {
+        lug_root_fillets(cfg);
+        translate([0, 0, LUG_Z - 1]) linear_extrude(MOTOR_FACE - LUG_Z + 2)
+            square(2 * lug_flat(cfg), center = true);
+    }
+
 // The revised hub seat's height above the hub face: the spigot's and the nubs'.
 function seat_rise() = fs_hub()[1] - HUB_CLEAR;
 
@@ -264,7 +281,8 @@ module body(cfg, top) {
     if (cfg == "previous") flare();
     else translate([0, 0, top]) hub_seat(cfg);
     difference() { lugs(cfg); lug_bottom_rounds(cfg); }
-    lug_root_fillets(cfg);
+    if (cfg == "previous") lug_root_fillets(cfg);
+    else trimmed_root_fillets(cfg);
 }
 
 module hub_holes(cfg) {

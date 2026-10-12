@@ -25,7 +25,8 @@
        {"label": "screw hole open through the nub", "at": [8.5, 0.0, 10.5], "solid": false},
        {"label": "screw hole open under the hub face", "at": [8.5, 0.0, 6.0], "solid": false},
        {"label": "hub face clear between the nubs", "at": [7.361, 4.25, 9.1], "solid": false},
-       {"label": "no 19 mm recess under the hub face", "at": [5.196, 3.0, 8.0], "solid": true}
+       {"label": "no 19 mm recess under the hub face", "at": [5.196, 3.0, 8.0], "solid": true},
+       {"label": "no root fillet under the motor's edge", "at": [10.0, 21.096, -1.1], "solid": false}
      ]},
     {"kind": "fits", "id": "fits-630-005", "part": "630-005 (revised)", "stl": "out/revised/630-005.stl",
      "after": ["render-revised-630-005"],

@@ -84,6 +84,7 @@ use <511-002_ExGearStatorHolder.scad>
 use <../600-StrainWave/630-005_FlexSplineAttach.scad>
 use <../600-StrainWave/630-006_FlexSplineCap.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
+use <../c101_motor.scad>
 
 part    = "all";    // "all", or one name from PARTS for per-part export
 section = false;    // true cuts the model on the XZ plane to show the stack
@@ -178,23 +179,13 @@ module bearing(z0) color("#d9d9d9") translate([0, 0, z0]) {
   translate([0, 0, 0.6]) tube(60.5, 54.5, B6810[2] - 1.2);  // shields
 }
 
-module motor() color("#5a5a5a") translate([0, 0, MOTOR_Z0]) {
-  intersection() {
-    translate([-21.15, -21.15, 0]) cube([42.3, 42.3, MOTOR_LEN]);
-    cylinder(d = 50.8, h = MOTOR_LEN);
-  }
-  translate([0, 0, MOTOR_LEN]) cylinder(d = 22, h = 2);
-  translate([0, 0, MOTOR_LEN]) cylinder(d = 5, h = 24);
-}
+module motor() color("#5a5a5a") translate([0, 0, MOTOR_Z0]) c101_motor_envelope(MOTOR_LEN);
 
 module flexspline() color("#8c8c8c") translate([0, 0, HUB_F]) flexspline_envelope();
 
 module circular_spline() color("#6f6f6f") translate([0, 0, CS_FACE]) circular_spline_envelope();
 
-module wave_gen() color("#a0a0a0") translate([0, 0, CS_FACE - 6]) {
-  tube(33.9, 14, 6);                     // plug and bearing, inside the teeth band
-  translate([0, 0, 11 - 15]) tube(14, 6, 15);  // hub, 5.0 beyond the drive face
-}
+module wave_gen() color("#a0a0a0") translate([0, 0, CS_FACE]) wave_generator_envelope();
 
 PARTS = ["mount", "mount_top", "end_cap", "motor", "attach", "fs_cap", "flexspline",
          "circular_spline", "wave_gen", "bearing_lower", "bearing_upper", "bearing_top",

@@ -1,0 +1,31 @@
+{
+  "title": "Base Clamp",
+  "subtitle": "#100-001 · reference mesh and 100-001_BaseClamp.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Base Clamp", "pn": "#100-001", "color": "#9aa7b4", "stl": "../Reference/meshes/100-Base/100-001_BaseClamp.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/100-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/100-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-31.82, -31.82, 7.5], "text": "R1 outer wall Ø90"},
+    {"at": [26.34, 26.34, 10], "text": "R2 bore Ø74.5"},
+    {"at": [0, -41.1, 15], "text": "F1 top face (F2 bottom, 15 below)"},
+    {"at": [41.1, 0, 15], "text": "S1 split slot, 1.0 wide"},
+    {"at": [41.122, 0, 7.5], "text": "B1 bolt hole Ø3"},
+    {"at": [41.122, 14, 7.5], "text": "B2 nut trap, hex 5.5 AF"},
+    {"at": [41.122, -14, 7.5], "text": "B3 head counterbore Ø5.5"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 100, "from": [0, 0, 1]},
+    {"label": "Split, from +X", "at": [41.1, 0, 7.5], "span": 26, "from": [1, 0, 0]},
+    {"label": "Nut side", "at": [41.1, 12, 7.5], "span": 26, "from": [0.35, 1, 0.25]},
+    {"label": "Head side", "at": [41.1, -12, 7.5], "span": 26, "from": [0.35, -1, 0.25]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render opens B1–B3 by the slip clearance. The dimensions and fits are in 100-001_BaseClamp.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

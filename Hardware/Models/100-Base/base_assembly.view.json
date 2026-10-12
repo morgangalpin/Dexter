@@ -1,0 +1,94 @@
+{
+  "scad": "base_assembly.scad",
+  "title": "Base stack",
+  "subtitle": "base_assembly.scad · 004's stack, the Stator Holder's flange on the Mount at z {holder_flange_z}, the Long on it · J1 drive closed from the End Cap, motor {motor_len} mm · orthographic, cut on XZ",
+  "groups": [
+    {"name": "Base", "role": "fixed", "parts": [
+      {"id": "plate", "name": "Base Mounting Plate", "pn": "#110-004", "color": "#7d8794"},
+      {"id": "mount", "name": "Base Mount Bottom", "pn": "#110-001", "color": "#9aa7b4"},
+      {"id": "clamp", "name": "Base Clamp", "pn": "#100-001", "color": "#d99a45"},
+      {"id": "long", "name": "Base Long", "pn": "#120-001", "color": "#b8c4cf"},
+      {"id": "disc", "name": "Base Code Disc", "pn": "#100-002", "color": "#2f6db5"},
+      {"id": "strakes_mount", "name": "Strakes epoxied in the Mount", "pn": "C-501", "color": "#29292e"},
+      {"id": "strakes_long", "name": "Strakes epoxied in the Long", "pn": "C-501", "color": "#3d3d44"},
+      {"id": "threads", "name": "All-threads, 105 mm M3", "color": "#6f7782"},
+      {"id": "holder", "name": "Base Stator Holder", "pn": "#110-002", "color": "#c65f4f"},
+      {"id": "circular_spline", "name": "Circular spline", "pn": "C-201", "color": "#2a9d8f"}]},
+    {"name": "Turns on J1", "role": "hangs from the Main Pivot", "parts": [
+      {"id": "pivot", "name": "Main Pivot, revised", "pn": "#300-001", "color": "#d4ad6b"},
+      {"id": "skirt", "name": "Pivot Skirt", "pn": "#100-003", "color": "#5b9be0"},
+      {"id": "end_cap", "name": "Base Motor End Cap", "pn": "#311-001", "color": "#e0a458"},
+      {"id": "motor", "name": "J1 motor", "pn": "C-101", "color": "#50565c"},
+      {"id": "attach", "name": "Flex Spline Attach", "pn": "#630-005", "color": "#e3b060"},
+      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"},
+      {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"},
+      {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"}]},
+    {"name": "Bearings", "role": "6810, 50 × 65 × 7, in the Long", "parts": [
+      {"id": "bearing_upper", "name": "Upper, on the End Cap's land", "pn": "6810", "color": "#dcdcdc"},
+      {"id": "bearing_lower", "name": "Lower, on the Attach's land", "pn": "6810", "color": "#dcdcdc"}]}
+  ],
+  "labels": [
+    {"at": [-38, 0, 100], "text": "Stator Holder flange, z {holder_flange_z}"},
+    {"at": [35.5, 0, 100], "text": "All-thread, its nut in the flange's trap"},
+    {"at": [21, 0, 107], "text": "Circular spline, face at z {spline_face_z}"},
+    {"at": [29, 0, 133.5], "text": "Lower 6810"},
+    {"at": [29, 0, 194.5], "text": "Upper 6810"},
+    {"at": [46, 0, 198.8], "text": "Code disc on the Long's top face"},
+    {"at": [49, 0, 185], "text": "Pivot Skirt round the disc"},
+    {"at": [-15, 0, 137.734], "text": "Motor face, z {motor_face_z}"},
+    {"at": [2.5, 0, 132.5], "text": "Exception: the Attach's ridge grips the motor's shaft"},
+    {"at": [21.2, 10, 137.9], "text": "Attach lug, its root fillet trimmed off the motor's front edge (cut at y {cut_lugs})"},
+    {"at": [21.2, 10, 184.4], "text": "End Cap lug, its root fillet trimmed off the motor's rear edge (cut at y {cut_lugs})"},
+    {"at": [17.64, 17.64, 194.5], "text": "End Cap land, the press clearance inside the upper 6810 (slide the cut to y 16.8)"},
+    {"at": [-12, 0, 185.9], "text": "End Cap seat, the press clearance above the motor's rear"}
+  ],
+  "presets": [
+    {"label": "J1 joint", "at": [0, 0, 198], "span": 120},
+    {"label": "Drive in the Long", "at": [0, 0, 154], "span": 120},
+    {"label": "Holder in the stack", "at": [-1, 0, 100], "span": 48},
+    {"label": "Drive hub", "at": [10, 0, 120], "span": 30},
+    {"label": "Attach lugs", "at": [21.15, 0, 138], "span": 3},
+    {"label": "End Cap lugs", "at": [21.15, 0, 184.6], "span": 3},
+    {"label": "End Cap land", "at": [16.8, 0, 194.5], "span": 16},
+    {"label": "End Cap seat", "at": [-12, 0, 186], "span": 3},
+    {"label": "Disc and skirt", "at": [20, 0, 208], "span": 30}
+  ],
+  "notes": [
+    {"heading": "The Stator Holder is in the base stack", "emphasis": true,
+     "text": "The Base Stator Holder's flange is the Base Long's own outline, so it lies between the Long and the Mount: its face on the Mount's top face and the Long on its back, z {holder_flange_z} (004 § Base mounting plate). The all-threads tie it to the Long; each rod's lower nut is captured in the trap in the flange's face, and the rods thread into nothing in the Mount. The stack fixes the holder, so J1's drive, hung from the End Cap, must close on its recess floor: the revised holder's flange stands further along its body for that, at C-101's {motor_len} mm body. The gap left at the floor is {drive_gap} mm.",
+     "focus": {"label": "Show the holder in section", "preset": "Holder in the stack", "hide": ["strakes_mount", "strakes_long"]}},
+    {"heading": "Clash check",
+     "text": "assembly-clash.rs checks every pair against its class (base_assembly.clash.json); the depths and gaps it measured are in out/clash.log. Every pair clears its class, and one contact is accepted as drawn:",
+     "items": [
+       "Exception, motor and Attach: the Attach's Ø5.0 bore ridge grips the motor's Ø5 shaft line to line, by design; the manifest's exceptions set it aside."],
+     "focus": {"label": "Show the shaft's grip", "preset": "Drive hub", "hide": ["strakes_mount", "strakes_long", "threads"]}},
+    {"heading": "Drive hub",
+     "text": "The Attach's nubs stand in the flexspline's hub holes, and the Flex Spline Cap's holes are on them. The wave generator holds the flexspline's open end oval, so both are drawn oval at one phase (c201_spline_seat.scad), and the cup stands clear of the holder's bore by more than the running clearance.",
+     "focus": {"label": "Show the drive hub", "preset": "Drive hub", "hide": ["strakes_mount", "strakes_long", "threads"]}},
+    {"heading": "Motor lugs, End Cap and shaft",
+     "text": "Slide the cut to y {cut_lugs}. The Attach grips the motor's front with eight lugs and the End Cap grips its rear the same way. In the reference parts each lug's root fillet fills the corner the motor's square edge sits in. The revised Attach and End Cap trim the fillets off the motor's square, and stand each lug the press clearance off the motor's side. The revised End Cap's land stands the press clearance inside the upper 6810's inner race, and its seat the press clearance above the motor's rear face. On the axis, the Attach's ridge grips the motor's shaft (see Clash check).",
+     "focus": {"label": "Show the Attach's lugs", "preset": "Attach lugs", "hide": ["strakes_mount", "strakes_long", "threads", "clamp"]}},
+    {"heading": "Code disc and Pivot Skirt",
+     "text": "The disc is fixed and the Main Pivot turns over it: the revised pivot's drum stands the running clearance above the disc, outside its land on the 6810. The Skirt's collar lies on the pivot's flats; the revised pivot's flats stand the slip clearance back from it, all the way up, but for a pad at each of the three screws, where the boss behind the collar is drawn onto it as a seat (300-001_MainPivot.scad).",
+     "focus": {"label": "Show the disc's edge", "preset": "Disc and skirt", "hide": ["strakes_mount", "strakes_long"]}},
+    {"heading": "How J1's stack closes",
+     "text": "Each part is placed on the one above it, from the End Cap, which sits flush with the Long's top face in the upper 6810, down to the circular spline, whose flange must bear on the Stator Holder's floor. Motor length is C-101's {motor_len} mm.",
+     "rows": [
+       {"text": "Motor face above the lower 6810", "value": "{motor_above_6810}"},
+       {"text": "Attach's land beyond the lower 6810, below", "value": "{land_below_6810}"},
+       {"text": "Holder floor above the spline's flange; 0 closes", "value": "{drive_gap}"},
+       {"text": "All-thread above the Long's top face, for washer and nut", "value": "{thread_above_long}"}]},
+    {"heading": "The J1 joint",
+     "text": "The disc lies on the Long's top face, on the Long's strakes standing {strake_proud} mm proud, with its notches over the all-threads. The Pivot Skirt hangs from the Main Pivot (turned 180° from its own frame) on three M3 screws in its lower side holes, z {skirt_span}, its round part reaching {skirt_above_long} mm above the Long's top face; the disc's edge is {disc_skirt_radial} mm inside it.",
+     "rows": [
+       {"text": "Long's strakes below its bottom face", "value": "{long_strake_below_long}"},
+       {"text": "Mount's strakes above its top face", "value": "{mount_strake_above_mount}"}]},
+    {"heading": "Not drawn",
+     "items": [
+       "The Wave Gen Coupler (#630-004); a tool sets its depth",
+       "The J1 opto block that reads the disc",
+       "Nuts, washers and screws",
+       "Strake depths are 008.2's: the Mount's bottomed in their slots, the Long's about 6 mm proud",
+       "Vendor parts are envelopes: motor from C-101, C-201 from the XB1-AS-C-32 drawing and the flexspline cup as measured, bearings at catalogue size"]}
+  ]
+}

@@ -25,6 +25,22 @@ mod tests {
     }
 
     #[test]
+    fn a_manifold_check_renders_with_the_manifold_engine() {
+        let fake = Fake::new();
+        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "engine": "manifold"}), &fake);
+        assert!(o.ok, "{}", o.output);
+        assert_eq!(fake.calls(), vec!["openscad-manifold -o out/a.stl a.scad"]);
+    }
+
+    #[test]
+    fn an_unknown_engine_fails_the_check() {
+        let fake = Fake::new();
+        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "engine": "cgl"}), &fake);
+        assert!(!o.ok && o.output.contains("engine \"cgl\""), "{}", o.output);
+        assert!(fake.calls().is_empty());
+    }
+
+    #[test]
     fn an_assertion_failure_fails_the_check() {
         let mut fake = Fake::new();
         fake.openscad_ok = false;

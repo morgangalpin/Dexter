@@ -18,6 +18,11 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   other. Tune the two fits on
   [`950-Tooling/fit_coupon.scad`](950-Tooling/fit_coupon.scad); the policy is
   [007.2 § Print fits](../../specs/007.2-Printed-Parts.md#print-fits).
+- **[assembly-clash.rs](assembly-clash.rs)** — exports an assembly's parts and runs `scadmesh clash` on
+  them: overlaps, print-fit clearances, and parts bridging both races of a bearing. It reads the
+  clearances from `print_fit.scad` and the parts from `<assembly>.clash.json`; the rules are
+  `openscad-tools/specs/003-CLI.md` § The clash manifest, and the `assembly-clearance` skill is the
+  procedure.
 - **[PART-INDEX.md](PART-INDEX.md)** — every part in
   [007.2](../../specs/007.2-Printed-Parts.md#printed-parts) with its file, grouped as the directories are.
 - **[MANIFEST.csv](MANIFEST.csv)** — every model and model-source file (meshes, CAD, `.scad`, and the
@@ -44,7 +49,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 
 | Directory | Parts | Files | What |
 |---|---|---|---|
-| [`100-Base/`](100-Base/) | 7 | 9 | Base clamp, mount, mounting plate, stator holder, code disc; the Stator Holder is `.scad` |
+| [`100-Base/`](100-Base/) | 7 | 18 | Base clamp, mount, mounting plate, stator holder, code disc, pivot skirt, long member; the Clamp, the Code Disc, the Pivot Skirt, the Mount Bottom (with its measured floor table), the Stator Holder and the Base Long (with its measured rib table) are `.scad`; `base_dodecagon.scad` holds the outline the Base Long and the Stator Holder share, and `window_round.scad` the window rounds the Base Long and the Mount Bottom share |
 | [`200-ArmBody/`](200-ArmBody/) | 9 | 9 | Arm body, stator holder and balancers, belt directors; the Stator Holder is `.scad` |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
@@ -77,7 +82,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 17 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 24 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot and Base Motor End Cap, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -197,7 +202,7 @@ depends on no proprietary tool. Four conventions keep the transition legible:
   gated against, and leaving it in the component directory invites printing the mesh instead of the
   `.scad`. A **converted** part therefore has no `.stl` beside its `.scad`, and which groups have been
   converted is visible from a listing of `Reference/meshes/`. The rule is about a part, not a directory:
-  `100-Base/` holds `110-004_BaseMountingPlate.scad` beside six meshes because that part was *authored*
+  `100-Base/` holds `110-004_BaseMountingPlate.scad` beside meshes because that part was *authored*
   rather than converted, and the meshes belong to parts nothing has rewritten yet. What a directory must
   never hold is a `.scad` and an `.stl` of the **same** part.
 - **Wrap a nested `difference()` in `render()`, not the cut that follows it.** OpenSCAD's *preview*
@@ -328,6 +333,15 @@ echoes. A group's `render.json` holds only its own gates and checks. Three rules
 - **`render.rs` is cached by rust-script.** An edit to `render-check/` does not rebuild it. After changing
   the crate, run `rust-script --force render.rs ...` once, then `rust-script render.rs ...`; running
   `./render.rs` directly can use an older build. `700-Differential --verify` takes about 34 minutes.
+
+Parts render with the installed OpenSCAD 2021.01 and its CGAL engine, except those whose header says
+**RENDER WITH MANIFOLD**: their cuts make CGAL assert, and it drops cutters when it does. The group's
+`render.json` names `"engine": "manifold"` for those parts and checks, which run an OpenSCAD Nightly with
+`--backend=manifold`: `$OPENSCAD_MANIFOLD` if set, else the newest snapshot unpacked under
+`%LOCALAPPDATA%\Programs\OpenSCAD-Nightly\` (the `.zip` from
+[files.openscad.org/snapshots](https://files.openscad.org/snapshots/), checked against its `.sha256`),
+else `openscad-nightly` on `PATH`. Today that is `100-Base/120-001_BaseLong.scad` and
+`300-Pivot/300-001_MainPivot.scad`.
 
 Two checks are shared across groups. The `seat` kind probes a Stator Holder's revised seat against C-201's
 hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states
@@ -464,6 +478,17 @@ and `700-Differential/` for the wrist differential, whose assembly imports the m
 ```
 ./render.rs 700-Differential --meshes
 scadmesh view diff_assembly.view.json --out out/view
+miniserve out/view
+```
+
+and `100-Base/` for the base stack, whose assembly imports the caches of both `100-Base` and
+`300-Pivot` (the Main Pivot and the Base Motor End Cap), so both are built first:
+
+```
+./render.rs 300-Pivot --meshes
+./render.rs 100-Base --meshes
+cd 100-Base
+scadmesh view base_assembly.view.json --out out/view
 miniserve out/view
 ```
 
