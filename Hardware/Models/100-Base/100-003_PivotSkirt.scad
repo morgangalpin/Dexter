@@ -139,6 +139,14 @@ HEAD_FROM = 7.017;                     // d where the Ø6.2 starts
 HOLE_ROUND = 1.000;                    // H1's edge round, at every face its holes cross
 SCREW_D   = 3.000;
 
+// For the Main Pivot (#300-001), which the collar's inner face (O4) stands on:
+// the y span of that face, from where O4's chamfer reaches it to the top; and
+// the screw bosses (H1) behind it, which the screws draw onto the pivot, and
+// the spacers round the screws, flush with that face below it: y, the
+// bosses' Ø, the spacers' Ø, angles.
+function skirt_collar_y() = [CHAMFER - COLLAR[0], TOP_Y];
+function skirt_boss() = [BOSS_Y, BOSS_D, SPACER_D, BOSS_ANGLES];
+
 // The lug, L1 and L2, and its pocket, L3.
 LUG_C     = [49.830, 3.990];           // L1 corner centres [x, ±z]
 LUG_R     = 5.170;

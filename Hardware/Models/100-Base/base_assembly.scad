@@ -63,7 +63,11 @@
 // GEOMETRY. The 100-Base parts are the binary mesh cache render-meshes.rs
 // builds in out/asm/ from render-all.rs's revised renders, so run render-all.rs
 // and then render-meshes.rs first. Building them here from source would take
-// over an hour, and a `use`d file keeps its own `config`. The plate, the
+// over an hour, and a `use`d file keeps its own `config`. The Main Pivot
+// is ../300-Pivot/render-all.rs's binary revised render; its source includes
+// BOSL2, whose transforms a `use` would bring here unset. The Base Motor End
+// Cap is that script's revised render too, because it renders on CGAL; its
+// faces come from its source. The plate, the
 // Attach and the Cap are built from source; they are quick, and the last two
 // take their config as an argument.
 //
@@ -83,6 +87,7 @@ use <../600-StrainWave/630-005_FlexSplineAttach.scad>
 use <../600-StrainWave/630-006_FlexSplineCap.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 use <../c101_motor.scad>
+use <../300-Pivot/311-001_MotorEndCapBase.scad>
 
 part     = "all";   // "all", or one name from PARTS for per-part export
 section  = false;   // true cuts the model on the XZ plane
@@ -105,9 +110,9 @@ SKIRT_DROP     = 26.000;           // #100-003 S1, below y = 0
 SKIRT_RISE     = 20.000;           // #100-003 frame, above y = 0
 BOSS_Y         = 12.000;           // #100-003 H1, the screw holes' y
 PIVOT_HOLE_Z   = 15.000;           // #300-001 side screw holes at 180° and ±45°, above its base
-CAP_TOP        = 10.500;           // #311-001 top face, on the Main Pivot
-CAP_LAND       = [3.500, 10.500];  // #311-001 Ø50 land, the 6810's journal
-CAP_SEAT       = -1.766;           // #311-001 face the motor's rear bears on
+CAP_LAND       = cap_land();       // #311-001 Ø50 land, the 6810's journal; its top is the top face, on the Main Pivot
+CAP_TOP        = CAP_LAND[1];
+CAP_SEAT       = cap_seat();       // #311-001 the motor's rear; the revised seat stands the press clearance above it
 PIVOT_TURN     = 180;              // #300-001 about J1, onto the skirt
 SLOT_TURN      = 30;               // #120-001, #110-002 and #100-002 slots on 0°, the Mount's on 30°
 STRAKE         = [12.700, 3.175, 133.000];  // C-501, tangential, radial, length
@@ -117,6 +122,8 @@ THREAD         = [3.000, 105.000]; // M3 all-thread
 THREAD_R       = 35.540;           // the all-thread holes' radius, shared
 MOTOR_LEN      = 48.000;           // C-101 body length; replace with the measured one
 B6810          = [50, 65, 7];
+B6810_FN       = 360;              // facets: at 96 the Ø50 bore's chords stand 0.013 inside the
+                                   // circle, more than the clash check's facet slack
 
 // --- Placement --------------------------------------------------------------
 HOLDER_FACE = MOUNT_TOP;
@@ -138,7 +145,6 @@ MOUNT_STRAKE_Z = MOUNT_SLOT_Z;
 LONG_STRAKE_Z  = LONG_TOP_Z + STRAKE_PROUD - STRAKE[2];
 
 assert(abs(CAP_LAND[1] - CAP_LAND[0] - B6810[2]) < 1e-9, "the End Cap's land is not the 6810's width");
-assert(CAP_LAND[1] == CAP_TOP, "the upper 6810 is not flush with the End Cap's top face");
 assert(MOTOR_F > BRG_LOW + B6810[2], "the motor face passes into the lower 6810");
 assert(HUB_F < BRG_LOW, "the lower 6810 runs off the Attach's land, which spans the hub face to the motor face");
 assert(abs(DRIVE_GAP) < 1e-6, "J1's drive does not close on the Stator Holder's floor; see drive_gap");
@@ -153,7 +159,7 @@ echo(motor_face_z = MOTOR_F);
 echo(motor_above_6810 = MOTOR_F - BRG_LOW - B6810[2]);   // motor face over the lower 6810
 echo(land_below_6810 = BRG_LOW - HUB_F);                 // the Attach's land, hub face to motor face, beyond the 6810 below
 echo(spline_face_z = CS_FACE);
-echo(drive_gap = DRIVE_GAP);                             // holder floor above the spline's flange; 0 closes
+echo(drive_gap = round(DRIVE_GAP * 1000) / 1000 + 0);   // holder floor above the spline's flange; 0 closes (+ 0 clears -0)
 echo(thread_above_long = HOLDER_FACE + THREAD[1] - LONG_TOP_Z);  // all-thread, for the washer and nut
 echo(disc_skirt_radial = SKIRT_R - DISC_D / 2);          // disc edge inside the skirt
 echo(skirt_span = str(SKIRT_Z - SKIRT_DROP, " .. ", SKIRT_Z + SKIRT_RISE));
@@ -174,9 +180,9 @@ module long()    color("#b8c4cf") translate([0, 0, LONG_Z]) rotate(SLOT_TURN) pr
 module disc()    color("#2f6db5") translate([0, 0, LONG_TOP_Z]) rotate(SLOT_TURN) printed("100-002");
 module skirt()   color("#5b9be0") translate([0, 0, SKIRT_Z]) rotate([90, 0, 0]) printed("100-003");
 module pivot()   color("#d4ad6b") translate([0, 0, LONG_TOP_Z]) rotate(PIVOT_TURN)
-                   import("../300-Pivot/300-001_MainPivot.stl", convexity = 8);
+                   import("../300-Pivot/out/revised/300-001.stl", convexity = 10);
 module end_cap() color("#e0a458") translate([0, 0, CAP_Z])
-                   import("../300-Pivot/311-001_MotorEndCapBase.stl", convexity = 8);
+                   import("../300-Pivot/out/revised/311-001.stl", convexity = 8);
 module motor()   color("#50565c") translate([0, 0, MOTOR_REAR]) rotate([180, 0, 0]) c101_motor_envelope(MOTOR_LEN);
 module attach()  color("#e3b060") translate([0, 0, ATTACH_Z]) rotate([180, 0, 0]) flex_spline_attach("revised", 0);
 module fs_cap()  color("#c98a3a") translate([0, 0, HUB_F - fs_hub()[1] - cap_face()]) flex_spline_cap("revised");
@@ -188,7 +194,7 @@ BEARINGS = [["bearing_lower", BRG_LOW], ["bearing_upper", BRG_UP]];
 RACES    = ["outer", "inner", "shield"];
 RACE_PARTS = [for (b = BEARINGS, r = RACES) str(b[0], "_", r)];   // `part` only, not in PARTS
 
-module bearing_race(z0, race) translate([0, 0, z0]) {
+module bearing_race(z0, race, $fn = B6810_FN) translate([0, 0, z0]) {
   if (race == "outer")  tube(B6810[1], 60.5, B6810[2]);
   if (race == "inner")  tube(54.5, B6810[0], B6810[2]);
   if (race == "shield") translate([0, 0, 0.6]) tube(60.5, 54.5, B6810[2] - 1.2);
@@ -197,9 +203,11 @@ module bearing_race(z0, race) translate([0, 0, z0]) {
 module bearing(z0) color("#dcdcdc") for (r = RACES) bearing_race(z0, r);
 
 // C-201 is drawn in the circular spline's frame turned over, outer face down.
-module drive_frame() translate([0, 0, CS_FACE]) rotate(SLOT_TURN) rotate([180, 0, 0]) children();
+// The spline's holes follow the holder's slots; the wave generator keeps the
+// flexspline's phase, whose oval it holds.
+module drive_frame(turn = SLOT_TURN) translate([0, 0, CS_FACE]) rotate(turn) rotate([180, 0, 0]) children();
 module circular_spline() color("#2a9d8f") drive_frame() circular_spline_envelope();
-module wave_gen()        color("#b58ac9") drive_frame() wave_generator_envelope();
+module wave_gen()        color("#b58ac9") drive_frame(0) wave_generator_envelope();
 module flexspline()      color("#8f969c") translate([0, 0, HUB_F]) rotate([180, 0, 0]) flexspline_envelope();
 
 module strake(a, z0) rotate(a) translate([STRAKE_R - STRAKE[1] / 2, -STRAKE[0] / 2, z0]) cube([STRAKE[1], STRAKE[0], STRAKE[2]]);

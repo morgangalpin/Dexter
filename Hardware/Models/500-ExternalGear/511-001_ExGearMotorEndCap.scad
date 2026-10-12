@@ -38,11 +38,14 @@
 //                                  R0.5 bottom edges      -7.2 .. -2.2
 //     their root fillets           R0.5, round the end and the corner
 //     centre bore                  Ø22.5, R1 round into the seat   through
-//     wire channel, +x             11.96 wide at mid-height, ceiling at
-//                                  z -0.2 with R1 fillets, R1 rounds into
-//                                  the seat, from the bore to the notch;
-//                                  the bore round follows the fillets
-//                                  at a constant 1.0 setback
+//     wire channel, +x             ../end_cap_channel.scad, 11.96 wide at
+//                                  mid-height, ceiling at z -0.2 with R1
+//                                  fillets, R1 rounds into the seat, from
+//                                  the bore until it meets a lug or opens
+//                                  into the notch; the bore round follows
+//                                  the fillets at a constant 1.0 setback,
+//                                  and the lugs' root fillets run up onto
+//                                  its seat rounds
 //     wire slot, +x notch          3.0 wide, floor r 18.146   -0.2 .. 7
 //     motor holes, 31.0 square     Ø3.2                   0.8 .. 6
 //     their nut traps              hex 5.5 AF, flats facing the axis
@@ -61,9 +64,14 @@
 //     their nut traps, on the M3 nut       slip
 //
 // The Ø22.5 bore over the motor's Ø22 boss already clears by more and keeps
-// its size.
+// its size. The deeper pocket is the motor's pocket (../end_cap_channel.scad),
+// so the lugs' corner rounds run on up to the raised seat. The revised
+// channel's sides are rounded into the bore, as its ceiling is, from the
+// ceiling down to the seat (end_cap_channel.scad, round_sides). The reference
+// meets them sharp.
 
 include <../print_fit.scad>
+use <../end_cap_channel.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -185,124 +193,53 @@ module one_lug(c)
 
 module each_lug() for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0]) children();
 
-// The root fillet's section: u away from the lug's face, v up to the seat.
+// The root fillet's section: u away from the lug's face, v up to the seat; its
+// facets on the shared fillet's 5 deg steps.
 module root_fillet_section()
     difference() {
         translate([-LUG_EDGE, -LUG_EDGE]) square(LUG_EDGE + epsilon);
-        translate([-LUG_EDGE, -LUG_EDGE]) circle(r = LUG_EDGE, $fn = 32);
+        translate([-LUG_EDGE, -LUG_EDGE]) circle(r = LUG_EDGE, $fn = 72);
     }
 
 module fillet_ring(centre, z)
     translate([centre[0], centre[1], z]) rotate_extrude($fn = 48)
         translate([LUG_EDGE, 0]) mirror([1, 0]) root_fillet_section();
 
-// One lug's root fillet, at seat height z: along its face, and round its end
-// and its notch-side corner, up to the notch side and the ring's radius.
-module one_root_fillet(z, c) {
-    c_notch = [NOTCH[0] - NARROWER + LUG_EDGE, LUG_FLAT + c + LUG_EDGE];
-    c_end   = [LUG_END, LUG_FLAT + c + LUG_EDGE];
+// One lug's root fillet, at seat height z: round its notch-side corner and
+// along its face (../end_cap_channel.scad, whose frame has the face along y),
+// and round its end, up to the notch side and the ring's radius. Given `ch`,
+// it runs up onto the channel's seat round.
+module one_root_fillet(z, c, ch) {
+    c_end = [LUG_END, LUG_FLAT + c + LUG_EDGE];
     intersection() {
         union() {
-            translate([c_notch[0], LUG_FLAT + c, z]) rotate([90, 0, 90])
-                linear_extrude(c_end[0] - c_notch[0]) root_fillet_section();
+            mirror([1, -1, 0])
+                root_fillet(z, ch, LUG_FLAT + c, NOTCH[0] - NARROWER + LUG_EDGE, LUG_EDGE, LUG_EDGE, LUG_END,
+                            [NOTCH[0], NOTCH[1], 0]);
             fillet_ring(c_end, z);
-            fillet_ring(c_notch, z);
         }
         translate([NOTCH[0], 0, z - 1]) cube([RING_R, RING_R, 2]);
         cylinder(r = RING_R, h = 20, center = true);
     }
 }
 
+// The lugs' root fillets; those at the +x notch (a = 270) meet the channel.
+// Under a raised seat the deeper pocket leaves none along the faces.
+module root_fillets(s, cfg)
+    difference() {
+        for (a = [0 : 90 : 270], m = [0, 1]) rotate(a) mirror([m, 0, 0])
+            one_root_fillet(s, press(cfg), a == 270 ? CHANNEL : undef);
+        if (s > SEAT)
+            translate([0, 0, s - 1]) linear_extrude(2) square(2 * (LUG_FLAT + press(cfg)), center = true);
+    }
+
 module body(s, c) {
     translate([0, 0, SEAT]) linear_extrude(TOP - SEAT) land_2d(c);
     ring();
     each_lug() one_lug(c);
-    each_lug() one_root_fillet(s, c);
 }
 
 // --- Cuts ------------------------------------------------------------------
-// A round on the edge where a vertical wall at radius r0 meets a face at z,
-// the material lying beyond r0 and above z; the cutter reaches `under` below z.
-module edge_round(r0, z, r, under = epsilon)
-    translate([0, 0, z]) rotate_extrude() polygon([
-        [r0 - epsilon, -under], [r0 + r, -under],
-        for (t = [0 : 10 : 90]) [r0 + r - r * sin(t), r - r * cos(t)],
-        [r0 - epsilon, r]]);
-
-// The wire channel's section, y across and z up from the seat.
-module channel_2d() {
-    w = CHANNEL[0]; h = CHANNEL[1]; r = CHANNEL[2];
-    half = [[w + r, -epsilon],
-            for (t = [10 : 10 : 80]) [w + r - r * sin(t), r - r * cos(t)],
-            [w, r],
-            for (t = [10 : 10 : 80]) [w - r + r * cos(t), r + r * sin(t)],
-            [w - r, h]];
-    polygon(concat([[0, -epsilon]], half, [for (i = [len(half) - 1 : -1 : 0]) [-half[i][0], half[i][1]]]));
-}
-
-// The bore's round runs on round the ceiling's side fillets at a constant
-// setback of BORE_ROUND on both faces, not at a constant radius: at fillet
-// angle t (0 at the wall, 90 at the flat) the ball touches the bore and the
-// fillet BORE_ROUND from their seam, so its radius grows from R1 at the flat
-// to R1.81 at the wall as the faces open out. It stops at the plane of the
-// channel's wall, so toward the wall it narrows onto the bore to the seam, and
-// below the fillets the wall meets the bore sharp.
-function unit(v) = v / norm(v);
-function blend_station(t, s) =   // [seam, nb, nc, ub, uc, ball radius]
-    let (y = CHANNEL[0] - CHANNEL[2] + CHANNEL[2] * cos(t),
-         seam = [sqrt(BORE_R * BORE_R - y * y), y, s + CHANNEL[2] + CHANNEL[2] * sin(t)],
-         nb = -[seam[0], seam[1], 0] / BORE_R,   // face normals, into the void
-         nc = -[0, cos(t), sin(t)],
-         edge = unit(cross(nb, nc)),
-         ub0 = unit(cross(edge, nb)), ub = ub0 * nc > 0 ? -ub0 : ub0,   // along each face,
-         uc0 = unit(cross(edge, nc)), uc = uc0 * nb > 0 ? -uc0 : uc0,   // away from the seam
-         radius = BORE_ROUND * tan(acos(ub * uc) / 2))
-    [seam, nb, nc, ub, uc, radius];
-
-// The cutter's section at fillet angle t, in the plane square to the seam: from
-// a point in the void past the seam, out along the bore to the ball, round the
-// ball's near side, and back along the fillet. The ends sit 0.1 into the void
-// so no cutter face lies on a face the part has.
-function blend_section(t, s, arc = 12) =
-    let (b = blend_station(t, s), seam = b[0], nb = b[1], nc = b[2], m = 0.1,
-         centre = seam + BORE_ROUND * b[3] - b[5] * nb)
-    concat([seam + m * (nb + nc), seam + BORE_ROUND * b[3] + m * nb],
-           [for (k = [0 : arc]) centre + b[5] * unit((arc - k) * nb + k * nc)],
-           [seam + BORE_ROUND * b[4] + m * nc]);
-
-// The sections lofted from the wall (t 0) to the flat (t 90).
-module side_blend(s, step = 2.5) {
-    stations = [for (t = [0 : step : 90]) blend_section(t, s)];
-    n = len(stations[0]);
-    last = len(stations) - 1;
-    polyhedron(
-        points = [for (sec = stations) each sec],
-        faces = concat(
-            // The caps are fans of triangles: a section is planar only to rounding,
-            // and CGAL rejects an n-gon that is not exactly planar.
-            [for (k = [1 : n - 2]) [0, k, k + 1]],
-            [for (k = [1 : n - 2]) [last * n, last * n + k + 1, last * n + k]],
-            [for (i = [0 : last - 1], k = [0 : n - 1]) each [
-                [i * n + k, (i + 1) * n + k, (i + 1) * n + (k + 1) % n],
-                [i * n + k, (i + 1) * n + (k + 1) % n, i * n + (k + 1) % n]]]));
-}
-
-module channel(s) {
-    translate([0, 0, s]) rotate([90, 0, 90]) linear_extrude(NOTCH[1] + epsilon) channel_2d();
-    intersection() {   // the bore's round into the channel's flat ceiling, out to
-                       // the radial plane through the seam's end, where side_blend
-                       // takes over
-        edge_round(BORE_R, s + CHANNEL[1], BORE_ROUND, under = 0.05);   // past the fillets' chords
-        a = asin((CHANNEL[0] - CHANNEL[2]) / BORE_R) + 0.5;   // lapping side_blend
-        translate([0, 0, s]) linear_extrude(2 * CHANNEL[1])
-            polygon([[0, 0], RING_R * [cos(a), -sin(a)], RING_R * [cos(a), sin(a)]]);
-    }
-    for (m = [0, 1]) mirror([0, m, 0]) intersection() {   // not onto the bore past the wall
-        side_blend(s);
-        translate([0, 0, s]) cube([RING_R, CHANNEL[0], 3 * CHANNEL[1]]);
-    }
-}
-
 // A cutter that chamfers the top edges of a convex notch outline.
 module top_chamfer(c) hull() {
     translate([0, 0, TOP - c]) linear_extrude(epsilon) children();
@@ -330,7 +267,10 @@ module cuts(s, cfg) {
     hole_d = cfg == "previous" ? MOTOR_HOLE_D : fit_bore(M3_D, slip(cfg));
     translate([0, 0, SEAT - 1]) cylinder(r = BORE_R, h = TOP - SEAT + 2);
     edge_round(BORE_R, s, BORE_ROUND);
-    channel(s);
+    wire_channel(s, [BORE_R, BORE_ROUND], CHANNEL, RING_R, round_sides = cfg != "previous") {
+        motor_pocket_2d(LUG_FLAT + c, NOTCH[0] - NARROWER, LUG_EDGE, RING_R);
+        notch_cutters();
+    }
     translate([0, 0, s]) linear_extrude(TOP - s + 1) slot_2d();
     for (a = [0 : 90 : 270]) rotate(a) top_chamfer(NOTCH_CHAMFER) translate([NOTCH[1], -NOTCH[0]]) square([RING_R, 2 * NOTCH[0]]);
     for (a = [0 : 90 : 270], k = [0, 1]) rotate(a) mirror([0, k, 0]) mouth_chamfer(NOTCH_CHAMFER, land_r);
@@ -342,14 +282,20 @@ module cuts(s, cfg) {
         translate([0, 0, s - epsilon]) rotate(-30) cylinder(r = fit_bore(NUT[0], slip(cfg)) / sqrt(3), h = NUT[1] + epsilon, $fn = 6);
         translate([0, 0, LEAD_IN[2]]) cylinder(d1 = LEAD_IN[0], d2 = LEAD_IN[1] + 2 * epsilon, h = TOP - LEAD_IN[2] + epsilon, $fn = 96);
     }
-    if (s > SEAT)   // the deeper pocket: the motor's square, up to the raised seat
-        translate([0, 0, SEAT - epsilon]) linear_extrude(s - SEAT + epsilon) square(2 * (LUG_FLAT + c), center = true);
+    if (s > SEAT)   // the deeper pocket: the motor's, up to the raised seat
+        translate([0, 0, SEAT - epsilon]) linear_extrude(s - SEAT + epsilon)
+            motor_pocket_2d(LUG_FLAT + c, NOTCH[0] - NARROWER, LUG_EDGE, RING_R);
 }
 
+// The root fillets go on last: the cuts would take them with the deeper
+// pocket, and the channel where they run up onto its seat rounds.
 module ex_gear_motor_end_cap(cfg = config, raise = seat_raise) {
     s = end_cap_seat(cfg, raise);
     assert(s + NUT[1] < LEAD_IN[2], "nut traps would reach the lead-ins");
-    difference() { body(s, press(cfg)); cuts(s, cfg); }
+    union() {
+        difference() { body(s, press(cfg)); cuts(s, cfg); }
+        root_fillets(s, cfg);
+    }
 }
 
 ex_gear_motor_end_cap();

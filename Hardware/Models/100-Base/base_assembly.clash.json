@@ -25,5 +25,9 @@
     {"id": "bearing_upper_outer",  "kind": "bought", "side": "fixed",   "bearing": "bearing_upper", "race": "outer"},
     {"id": "bearing_upper_shield", "kind": "bought", "side": "fixed",   "bearing": "bearing_upper", "race": "shield"}
   ],
-  "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"]]
+  "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"]],
+  "exceptions": [
+    {"pair": ["motor", "attach"], "at": [0, 0, 132.5], "radius": 3,
+     "reason": "the Attach's Ø5.0 bore ridge grips the motor's Ø5 shaft line to line, by design"}
+  ]
 }

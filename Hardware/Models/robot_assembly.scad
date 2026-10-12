@@ -125,6 +125,7 @@ use <100-Base/100-001_BaseClamp.scad>
 use <100-Base/110-001_BaseMountBottom.scad>
 use <100-Base/120-001_BaseLong.scad>
 use <100-Base/110-002_BaseStatorHolder.scad>
+use <300-Pivot/300-001_MainPivot.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -344,8 +345,7 @@ module place_base() {
 // above it stays on the CAD chain, so the Arm Body sits that far low against
 // it (the base stack echo below reports it).
 module place_main_pivot() {
-    color(PRINT_C) back(BASE_LONG_TOP) xrot(-90) zrot(-90)
-        import("300-Pivot/300-001_MainPivot.stl", convexity = 8);
+    color(PRINT_C) back(BASE_LONG_TOP) xrot(-90) zrot(-90) main_pivot("revised");
 }
 
 // Arm Body. Already drawn in a frame parallel to this one: its own z is this

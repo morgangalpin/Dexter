@@ -51,7 +51,7 @@ struct Probe {
 /// C-201's hub stands on the flat hub face: the spigot fills its Ø11 bore and
 /// a nub each of its Ø4.5 holes on Ø17, both 2.2 high, and the reference's
 /// Ø19 recess and its hole circle on Ø12 are gone.
-const ATTACH_REVISED: [Probe; 14] = [
+const ATTACH_REVISED: [Probe; 15] = [
     Probe { label: "counterbore floor at z 7.0 (material below)", at: [17.0, 17.0, 6.9], solid: true },
     Probe { label: "counterbore floor at z 7.0 (void above)", at: [17.0, 17.0, 7.1], solid: false },
     Probe { label: "hub face at z 9.0 (material below)", at: [12.0, 0.0, 8.9], solid: true },
@@ -66,6 +66,7 @@ const ATTACH_REVISED: [Probe; 14] = [
     Probe { label: "screw hole open under the hub face", at: [8.5, 0.0, 6.0], solid: false },
     Probe { label: "hub face clear between the nubs", at: [7.361, 4.25, 9.1], solid: false },
     Probe { label: "no Ø19 recess under the hub face", at: [5.196, 3.0, 8.0], solid: true },
+    Probe { label: "no root fillet under the motor's edge", at: [10.0, 21.096, -1.1], solid: false },
 ];
 
 /// The revised #630-006: a Ø22 land bears on the hub, its Ø25 body 0.5 off

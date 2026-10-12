@@ -130,7 +130,16 @@ fn check_end_cap(ctx: &Ctx, tally: &mut Tally) -> Result<()> {
     let r = render("511-001_ExGearMotorEndCap.scad", stl, "revised", ctx, tally)?;
     let seat = echoed_number(&r.stderr, "end_cap_seat")?;
     probe_face(stl, "511-001 (revised)", [0.0, -16.0], seat, false, "seat", ctx, tally)?;
+    probe_side_round(stl, seat, ctx, tally)?;
     check_fits(stl, "511-001 (revised)", &END_CAP_FITS, ctx, tally)
+}
+
+/// The revised channel's sides are rounded into the bore: a point 0.06 inside
+/// the sharp edge, 0.9 above the seat, lies outside the round.
+fn probe_side_round(stl: &str, seat: f64, ctx: &Ctx, tally: &mut Tally) -> Result<()> {
+    let inside = probe(stl, &[[9.56, 6.06, seat + 0.9]], ctx)?;
+    tally.record("511-001 (revised) channel's side rounded into the bore", !inside[0]);
+    Ok(())
 }
 
 /// The two loop areas of a section, largest first.

@@ -1067,6 +1067,20 @@ anything version 3 does not independently specify
     `120-001_BaseLong_rib.scad`, their `.view.json` sidecars, and the shared `base_dodecagon.scad` and
     `window_round.scad` (new); `110-002_BaseStatorHolder.scad` and `render-all.rs`. Their meshes moved
     to `Reference/meshes/100-Base/`.
+  - `Hardware/Models/300-Pivot/`: `300-001_MainPivot.scad`, its `.view.json` sidecar,
+    `311-001_MotorEndCapBase.scad` and `render-all.rs` (new). Their meshes moved to
+    `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
+    lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
+    now runs onto the channel's ceiling fillets as a ball that touches both surfaces, where it stood up
+    to 0.1 mm off the fillet in a lip. The channel now runs on until it meets a lug or opens into the
+    notch, and the lugs' root fillets run up onto its seat rounds, as both references have them; it
+    stopped at the notch floor, leaving the fillets as a ledge under it. In `revised` the channel's
+    sides are rounded into the bore, as its ceiling is, down to the seat, and #511-001's raised seat
+    pockets the lugs' corner rounds as well as the motor's square.
+  - `Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad` and its `render-all.rs`.
+  - `Hardware/Models/600-StrainWave/c201_spline_seat.scad`: C-201's flexspline and wave-generator
+    envelopes.
   - `Hardware/Models/render-check/` gains `outline_gate`, which checks a profile across any axis, and
     `Ctx::manifold`, which renders a part with an OpenSCAD Nightly's Manifold engine.
 - **Amends:** [CR-3A19](#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats)
@@ -1138,6 +1152,40 @@ anything version 3 does not independently specify
     further along its body, where a 48 mm motor closes the stack
     ([C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)). The all-threads do not
     thread into the Mount: each rod's lower nut is captured in the flange's face.
+  - **300-Pivot:** the Main Pivot (`#300-001`), a region split: the body is its outline swept with its
+    top edges rounded, cut at the +X end by four chamfers, and its +X face rounded all round by the
+    chamfered section swept to it; the J1 and J2 ends are one drum-and-windows pattern turned 45°, and
+    the flange is a revolved profile. Where rounds and fillets meet, each is the rolling ball the
+    reference was made with, lofted along its centre's path in the reference's order, and the rounds
+    that fade out have their setbacks measured by angle. `revised` clears what the base assembly's
+    clash check found it closer than its class to: the drum's underside stands the running clearance
+    above the Base Code Disc, and the side faces, and the J1 drum with them, stand the slip clearance
+    back from the Pivot Skirt's collar all the way up, but for a pad at each of the skirt's three
+    screws, which is a seat. The disc's thickness and the collar's span come from the two parts' files.
+    `base_assembly.scad` draws it from `render-all.rs`'s revised render and `robot_assembly.scad` from
+    source. Its five side-hole nut traps take the same M3 nut and are drawn one size in both configs,
+    although the reference's -135° trap is 0.2 mm larger. Its `previous` config passes the `dist` gate.
+  - **300-Pivot:** the Base Motor End Cap (`#311-001`): its notched outline, with the bore and the motor
+    holes, extruded full height; a cylinder cut above the land's foot for the step, and the motor's
+    square cut below the seat for the lugs; then the wire channel, shared with the Ex Gear Motor End Cap,
+    and the edges. Its lugs' corners, and the seat's edges at the three notches the channel does not
+    open into, are rounded on a notch 0.15 mm narrower, and its root fillets are R0.5, as the reference
+    has them. `revised` presses the land into the upper 6810 and the lugs onto the motor, trims
+    the lugs' root fillets off the motor's square rear edge, which they stood on, and trims the seat
+    back the press clearance off the motor's rear face, where the bore's round ran out on it. Its seat is at
+    z -1.700, not the -1.766 `base_assembly.scad` placed the motor on, so the motor and J1's drive stand
+    0.066 mm higher and the revised Base Stator Holder's flange rises 0.066 mm more.
+    `base_assembly.scad` reads the seat and the land from the part's file and draws its revised render.
+    It draws the 6810 envelopes at 360 facets, so their bore's chords stay within the clash check's
+    facet slack of the land.
+  - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
+    tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
+    oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.
+    The Base Stator Holder's bore clears the cup by more than the running clearance, which the guessed
+    Ø34.4 cup did not.
+  - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
+    motor's square front edge, which they stood on. Its bore's Ø5.0 ridge grips the motor's shaft line to
+    line by design, and `base_assembly.clash.json` records it as an exception to the clash check.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run the group's `render-all.rs`

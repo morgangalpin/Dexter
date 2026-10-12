@@ -69,6 +69,9 @@ SLITS   = [200, 0];
 
 SLIP = fit_clearances(config)[0];
 
+// The disc's thickness, which the Main Pivot (#300-001) clears above it.
+function code_disc_height() = HEIGHT;
+
 // Children placed at `n` equal angles from `start`, each on its own +X.
 module ring_of(pattern) {
     for (k = [0 : pattern[0] - 1])

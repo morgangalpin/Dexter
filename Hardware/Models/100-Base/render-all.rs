@@ -158,11 +158,11 @@ const DISC_FITS: [FitProbe; 1] = [
 
 /// The revised #110-002's own print fits, on the all-thread hole at 30 deg
 /// (r 35.54): the M3 rod's surface on the hole's outer side, and the M3 nut's
-/// outer flat in its trap, in the revised flange (z 13.234 .. 17.234). The
+/// outer flat in its trap, in the revised flange (z 13.300 .. 17.300). The
 /// seat's fits are check_seat's.
 const HOLDER_FITS: [FitProbe; 2] = [
-    FitProbe { label: "all-thread hole", at: [32.0776, 18.52, 13.934], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
-    FitProbe { label: "all-thread nut trap", at: [33.1601, 19.145, 16.234], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
+    FitProbe { label: "all-thread hole", at: [32.0776, 18.52, 14.0], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
+    FitProbe { label: "all-thread nut trap", at: [33.1601, 19.145, 16.3], toward: [-0.866025, -0.5, 0.0], fit: Fit::Slip },
 ];
 
 /// The revised #110-001's print fits, on H1 at (62.5, 12.5): the M6 screw's

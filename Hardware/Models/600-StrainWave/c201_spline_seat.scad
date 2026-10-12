@@ -57,6 +57,15 @@ FS_HUB        = [22.500, 2.400];    // Ø, thickness
 FS_BORE_D     = 11.000;             // H7
 FS_HOLES      = [4.500, 17.000];    // Ø, circle Ø
 FS_HOLE_COUNT = 6;
+// The flexspline's cup, measured (Ø as [major, minor] where it is oval) but
+// for the three estimates.
+FS_CUP_CLOSED    = 32.600;             // Ø at the closed end, round
+FS_CUP_OPEN      = [32.950, 32.070];   // Ø just above the teeth band
+FS_CUP_TEETH     = [34.290, 33.030];   // Ø over the teeth band
+FS_CUP_MOUTH     = [32.840, 31.340];   // bore Ø in the teeth band
+FS_CUP_TEETH_LEN = 6.000;              // estimate
+FS_CUP_WALL      = 0.250;              // estimate, at the closed end
+FS_CUP_BOTTOM    = 0.600;              // estimate
 
 PILOT_DEPTH   = 2.200;              // below the floor; the step is 2.000 long
 BOLT_HOLE_D   = 3.400;              // M3 clearance
@@ -100,29 +109,42 @@ module spline_seat_cuts(back, press, slip) {
 
 // The flexspline, hub face at z = 0 and the cup above it; for assembly
 // placement only. The hub, its bore and its holes are the drawing's. The
-// cup's Ø35.5 teeth band, its Ø34.4 x 0.25 wall and its 0.6 bottom are an
-// envelope: the drawing leaves them undimensioned.
+// drawing leaves the cup undimensioned, so the FS_CUP_* values are measured
+// on the drive with the wave generator in it, which holds the open end oval,
+// its major axis on X here. The cup tapers from round at its closed end to
+// that oval at the teeth band, inside and out.
 module flexspline_envelope() {
-    bottom = 0.600;
+    teeth_z = DRIVE_SPAN - FS_CUP_TEETH_LEN;
+    closed_bore = FS_CUP_CLOSED - 2 * FS_CUP_WALL;
     difference() {
         union() {
             cylinder(d = FS_HUB[0], h = FS_HUB[1], $fn = 144);
-            translate([0, 0, FS_HUB[1] - bottom]) cylinder(d = 34.400, h = DRIVE_SPAN - 6 - FS_HUB[1] + bottom, $fn = 144);
-            translate([0, 0, DRIVE_SPAN - 6]) cylinder(d = 35.500, h = 6, $fn = 144);
+            translate([0, 0, FS_HUB[1] - FS_CUP_BOTTOM])
+                oval_taper([FS_CUP_CLOSED, FS_CUP_CLOSED], FS_CUP_OPEN, teeth_z - FS_HUB[1] + FS_CUP_BOTTOM);
+            translate([0, 0, teeth_z - epsilon]) linear_extrude(FS_CUP_TEETH_LEN + epsilon) oval(FS_CUP_TEETH);
         }
-        translate([0, 0, FS_HUB[1]]) cylinder(d = 33.900, h = DRIVE_SPAN, $fn = 144);
+        translate([0, 0, FS_HUB[1]]) oval_taper([closed_bore, closed_bore], FS_CUP_MOUTH, teeth_z - FS_HUB[1]);
+        translate([0, 0, teeth_z - epsilon]) linear_extrude(FS_CUP_TEETH_LEN + 1) oval(FS_CUP_MOUTH);
         translate([0, 0, -1]) cylinder(d = FS_BORE_D, h = FS_HUB[1] + 2, $fn = 144);
         fs_hub_holes() translate([0, 0, -1]) cylinder(d = FS_HOLES[0], h = FS_HUB[1] + 2, $fn = 48);
     }
 }
 
+// An ellipse of diameters d = [x, y], and a prism of height h that tapers
+// from one to another.
+module oval(d) scale(d) circle(d = 1, $fn = 144);
+module oval_taper(d0, d1, h) linear_extrude(h, scale = [d1[0] / d0[0], d1[1] / d0[1]]) oval(d0);
+
 // The wave generator, in the circular spline's frame (its outer face at
 // z = 0, the drive below); for assembly placement only. An envelope: the
-// plug and its bearing inside the teeth band, and the hub standing 5.0
-// beyond the drive face.
+// plug and its bearing fill the flexspline's oval bore in the teeth band,
+// at the flexspline's phase, and the hub stands 5.0 beyond the drive face.
 module wave_generator_envelope()
-    translate([0, 0, -6]) {
-        wg_tube(33.900, 14.000, 6);
+    translate([0, 0, -FS_CUP_TEETH_LEN]) {
+        difference() {
+            linear_extrude(FS_CUP_TEETH_LEN) oval(FS_CUP_MOUTH);
+            translate([0, 0, -1]) cylinder(d = 14.000, h = FS_CUP_TEETH_LEN + 2);
+        }
         translate([0, 0, -4]) wg_tube(14.000, 6.000, 15);
     }
 
@@ -130,13 +152,14 @@ module wg_tube(od, id, h)
     difference() { cylinder(d = od, h = h); translate([0, 0, -1]) cylinder(d = id, h = h + 2); }
 
 // The circular spline as the drawing gives it, outer face at z = 0 and the
-// step below; for assembly placement only.
+// step below; for assembly placement only. Its bore is the flexspline's
+// teeth band across the major axis, where the two mesh.
 module circular_spline_envelope()
     difference() {
         union() {
             translate([0, 0, -CS_FLANGE[1]]) cylinder(d = CS_FLANGE[0], h = CS_FLANGE[1], $fn = 144);
             translate([0, 0, -CS_FLANGE[1] - CS_STEP[1]]) cylinder(d = CS_STEP[0], h = CS_STEP[1] + epsilon, $fn = 144);
         }
-        translate([0, 0, -20]) cylinder(d = 35.500, h = 30, $fn = 144);
+        translate([0, 0, -20]) cylinder(d = FS_CUP_TEETH[0], h = 30, $fn = 144);
         seat_holes() translate([0, 0, -10]) cylinder(d = CS_HOLES[0], h = 20, $fn = 48);
     }
