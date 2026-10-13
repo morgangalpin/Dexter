@@ -273,11 +273,6 @@ pub mod testing {
             Ok(Run { ok: self.openscad_ok, stdout: String::new(), stderr: self.stderr.clone() })
         }
 
-        fn openscad_manifold(&self, args: &[&str]) -> Result<Run> {
-            self.calls.lock().unwrap().push(format!("openscad-manifold {}", args.join(" ")));
-            Ok(Run { ok: self.openscad_ok, stdout: String::new(), stderr: self.stderr.clone() })
-        }
-
         fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
             self.calls.lock().unwrap().push(format!("scadmesh {}", args.join(" ")));
             let line = args.join(" ");

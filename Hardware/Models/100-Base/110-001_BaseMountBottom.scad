@@ -94,6 +94,11 @@
 // clears the 12.6 × 3.2 strake by 0.2 per side already. S1 takes no fit: the Base Clamp's
 // revised bore clears it, and the clamp grips the strakes (100-001_BaseClamp.scad). What B1, B2 and H2 take is not recorded; they take no clearance
 // until virtual assembly shows what mates with them, and then take their fits.
+//
+// NOT YET ON MANIFOLD. Under Manifold the `previous` render stands up to 7.2 off the reference beside
+// the windows, where the tower's face meets the flange, though its volume is within 0.04%; CGAL
+// passes the dist gate. 100-Base/render.json names "cgal" for this part and its checks until the
+// difference is found.
 
 include <BOSL2/std.scad>
 include <BOSL2/rounding.scad>
@@ -298,12 +303,14 @@ module floor_body() {
         [FLOOR_R[i] * cos(floor_angle(j)), FLOOR_R[i] * sin(floor_angle(j)), 0]];
     t = function(i, j) i * na + j % na;
     b = function(o, j) nr * na + o * na + j % na;
-    polyhedron(concat(top, bottom), concat(
+    // Faces are listed anticlockwise from outside, so each is reversed into OpenSCAD's clockwise
+    // order. CGAL forgives the inside-out solid; Manifold subtracts it from the union.
+    polyhedron(concat(top, bottom), [for (f = concat(
         [for (i = [0 : nr - 2]) for (j = [0 : na - 1])
             each [[t(i, j), t(i + 1, j), t(i + 1, j + 1)], [t(i, j), t(i + 1, j + 1), t(i, j + 1)]]],
         [for (j = [0 : na - 1]) [b(0, j), b(0, j + 1), b(1, j + 1), b(1, j)]],
         [for (j = [0 : na - 1]) [t(0, j), t(0, j + 1), b(0, j + 1), b(0, j)]],
-        [for (j = [0 : na - 1]) [t(nr - 1, j), b(1, j), b(1, j + 1), t(nr - 1, j + 1)]]),
+        [for (j = [0 : na - 1]) [t(nr - 1, j), b(1, j), b(1, j + 1), t(nr - 1, j + 1)]])) reverse(f)],
         convexity = 10);
 }
 

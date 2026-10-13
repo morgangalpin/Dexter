@@ -18,7 +18,7 @@ pub struct Part {
     /// The configurations the part exists in; `None` means all of them.
     pub configs: Option<Vec<String>>,
     pub meshes: bool,
-    /// The geometry engine that renders the part; `None` is the installed one.
+    /// The geometry backend that renders the part; `None` is Manifold.
     pub engine: Option<String>,
 }
 

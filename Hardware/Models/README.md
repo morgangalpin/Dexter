@@ -350,14 +350,12 @@ echoes. A group's `render.json` holds only its own gates and checks. Three rules
   the crate, run `rust-script --force render.rs ...` once, then `rust-script render.rs ...`; running
   `./render.rs` directly can use an older build. `700-Differential --verify` takes about 34 minutes.
 
-Parts render with the installed OpenSCAD 2021.01 and its CGAL engine, except those whose header says
-**RENDER WITH MANIFOLD**: their cuts make CGAL assert, and it drops cutters when it does. The group's
-`render.json` names `"engine": "manifold"` for those parts and checks, which run an OpenSCAD Nightly with
-`--backend=manifold`: `$OPENSCAD_MANIFOLD` if set, else the newest snapshot unpacked under
-`%LOCALAPPDATA%\Programs\OpenSCAD-Nightly\` (the `.zip` from
-[files.openscad.org/snapshots](https://files.openscad.org/snapshots/), checked against its `.sha256`),
-else `openscad-nightly` on `PATH`. Today that is `100-Base/120-001_BaseLong.scad` and
-`300-Pivot/300-001_MainPivot.scad`.
+Parts render on an OpenSCAD development snapshot with the Manifold engine. Which binary runs and how a
+part opts into CGAL are owned by [009.3](../../specs/009.3-Render-Program.md#config-grouprenderjson).
+To install a snapshot, download the newest `.zip` from
+[files.openscad.org/snapshots](https://files.openscad.org/snapshots/), check it against its `.sha256`,
+and unpack it under `%LOCALAPPDATA%\Programs\OpenSCAD-Nightly\`. To make it the `openscad` on `PATH`,
+point a junction `OpenSCAD-Nightly\current` at the snapshot folder and put `current` on the user `PATH`.
 
 Two checks are shared across groups. The `seat` kind probes a Stator Holder's revised seat against C-201's
 hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states

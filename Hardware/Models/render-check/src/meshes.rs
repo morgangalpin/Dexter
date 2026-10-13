@@ -8,7 +8,7 @@
 use crate::config::GroupConfig;
 use crate::plan::Job;
 use crate::sched::Outcome;
-use crate::{manifold_openscad, run, sm_json, Ctx, Run};
+use crate::{run, sm_json, Ctx, Run};
 use anyhow::{bail, Context, Result};
 use serde_json::Value;
 
@@ -29,10 +29,6 @@ pub const VOLUME_EPS: f64 = 1.0e-3;
 pub trait Tools: Send + Sync {
     /// Run OpenSCAD with `args`.
     fn openscad(&self, args: &[&str]) -> Result<Run>;
-    /// Run OpenSCAD with the Manifold engine. A toolset with one engine runs its own.
-    fn openscad_manifold(&self, args: &[&str]) -> Result<Run> {
-        self.openscad(args)
-    }
     /// Run `scadmesh <args> --json`; returns the exit status and the report.
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)>;
     /// The size in bytes of a file written by a tool.
@@ -77,12 +73,6 @@ impl Tools for Ctx {
         run(&self.openscad, args, &self.dir)
     }
 
-    fn openscad_manifold(&self, args: &[&str]) -> Result<Run> {
-        let mut full = vec!["--backend=manifold"];
-        full.extend(args);
-        run(&manifold_openscad(), &full, &self.dir)
-    }
-
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
         sm_json(args, self)
     }
@@ -92,31 +82,28 @@ impl Tools for Ctx {
     }
 }
 
-/// The geometry engine a part or check names with `"engine"`: absent or
-/// `"cgal"` renders with the installed OpenSCAD, `"manifold"` with the
-/// Manifold build.
+/// The geometry backend a part or check names with `"engine"`, passed to
+/// OpenSCAD as `--backend=<engine>`; absent is `"manifold"`.
 pub struct Engine<'a> {
     inner: &'a dyn Tools,
-    manifold: bool,
+    backend: &'static str,
 }
 
 impl<'a> Engine<'a> {
     pub fn new(inner: &'a dyn Tools, name: Option<&str>) -> Result<Engine<'a>> {
         match name {
-            None | Some("cgal") => Ok(Engine { inner, manifold: false }),
-            Some("manifold") => Ok(Engine { inner, manifold: true }),
-            Some(other) => bail!("engine \"{other}\" is not \"cgal\" or \"manifold\""),
+            None | Some("manifold") => Ok(Engine { inner, backend: "--backend=manifold" }),
+            Some("cgal") => Ok(Engine { inner, backend: "--backend=cgal" }),
+            Some(other) => bail!("engine \"{other}\" is not \"manifold\" or \"cgal\""),
         }
     }
 }
 
 impl Tools for Engine<'_> {
     fn openscad(&self, args: &[&str]) -> Result<Run> {
-        if self.manifold {
-            self.inner.openscad_manifold(args)
-        } else {
-            self.inner.openscad(args)
-        }
+        let mut full = vec![self.backend];
+        full.extend(args);
+        self.inner.openscad(&full)
     }
 
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
@@ -383,5 +370,38 @@ mod tests {
         assert!(ctx.openscad(&["x"]).is_err());
         assert!(ctx.scadmesh(&["x"]).is_err());
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_context_reads_writes_and_removes_files_in_its_group() {
+        let dir = std::env::temp_dir().join(format!("render-check-files-{}", std::process::id()));
+        let ctx = Ctx { dir: dir.clone(), openscad: String::new(), scadmesh: String::new() };
+        ctx.ensure_parent("sub/f.txt").unwrap();
+        std::fs::write(dir.join("sub/f.txt"), "text").unwrap();
+        assert!(ctx.exists("sub/f.txt"));
+        assert_eq!(ctx.read("sub/f.txt").unwrap(), "text");
+        ctx.remove("sub/f.txt");
+        assert!(!ctx.exists("sub/f.txt") && ctx.read("sub/f.txt").is_err());
+        assert!(ctx.ensure_parent("").is_ok());
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn a_toolset_without_files_reads_nothing() {
+        struct NoFiles;
+        impl Tools for NoFiles {
+            fn openscad(&self, _: &[&str]) -> Result<Run> {
+                bail!("unused")
+            }
+            fn scadmesh(&self, _: &[&str]) -> Result<(bool, Value)> {
+                bail!("unused")
+            }
+            fn size(&self, _: &str) -> Result<u64> {
+                bail!("unused")
+            }
+        }
+        NoFiles.remove("f");
+        assert!(!NoFiles.exists("f") && NoFiles.read("f").is_err());
+        assert!(NoFiles.openscad(&[]).is_err() && NoFiles.scadmesh(&[]).is_err() && NoFiles.size("f").is_err());
     }
 }

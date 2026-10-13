@@ -44,7 +44,7 @@ mod tests {
         let o = check("clash", fields(), &f);
         assert!(o.ok && o.output.contains("stator clear of attach"), "{}", o.output);
         assert_eq!(f.calls()[0], "remove out/clash.stl");
-        assert_eq!(f.calls()[1], "openscad -o out/clash.stl -D clash=[\"stator\",\"attach\"] asm.scad");
+        assert_eq!(f.calls()[1], "openscad --backend=manifold -o out/clash.stl -D clash=[\"stator\",\"attach\"] asm.scad");
     }
 
     #[test]

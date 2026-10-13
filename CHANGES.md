@@ -1218,3 +1218,30 @@ anything version 3 does not independently specify
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
   after editing a part.
+
+### CR-3A21: Every part renders on OpenSCAD's Manifold engine
+
+- **Affects:** [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson),
+  `Hardware/Models/render-check/` (`lib.rs`, `meshes.rs` and the check kinds' tests),
+  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `100-Base/render.json`,
+  `300-Pivot/render.json`, and the headers of `120-001_BaseLong.scad` and `300-001_MainPivot.scad`.
+- **Amends:** [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad) (the `engine` field).
+- **Was:** Parts rendered on OpenSCAD 2021.01's CGAL. A part opted into an OpenSCAD Nightly's Manifold
+  engine with `"engine": "manifold"`, found through `$OPENSCAD_MANIFOLD`.
+- **Now:** One OpenSCAD development snapshot renders everything, found through `$OPENSCAD`. `engine`
+  selects its `--backend`. Manifold is the default, so the six `"engine": "manifold"` fields are gone,
+  and `"cgal"` is the opt-out.
+  - Two hand-built solids were inside out: `110-001`'s floor (`floor_body()`) and the end caps' side
+    blend (`end_cap_channel.scad`, `side_blend()`). CGAL forgives an inside-out solid; Manifold
+    subtracts it from the union. Both are now wound outward. `311-001` and `511-001` now pass their
+    dist gates on Manifold at 0.149 and 0.119 mm, the same as on CGAL.
+  - `110-001` and `710-001` still miss their gates on Manifold (7.2 mm beside `110-001`'s windows;
+    0.365 mm on `710-001`), so they and their own checks name `"cgal"`, on which they pass.
+  - `100-003`'s dist gate fails on both of the snapshot's engines: 1.754 mm on Manifold, along the lug's
+    bend round, and 0.576 mm with a 2-manifold warning on CGAL. It passed only on 2021.01's CGAL, so it
+    is open until the bend round is drawn so that both engines take it.
+- **Driver:** Fillets. BOSL2's `fillet()`, `join_prism()`, `offset_sweep()` and `minkowski`-based
+  rounding are slow on CGAL, and CGAL asserts on the tangent cutters a fillet makes.
+- **Status:** `[Specified]`.
+- **Re-derive:** Install a snapshot as `Hardware/Models/README.md` describes, then run
+  `rust-script --force render.rs ... --verify` once, so `render.rs` is rebuilt against the crate.

@@ -21,15 +21,23 @@ mod tests {
         let fake = Fake::new();
         let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "config": "previous"}), &fake);
         assert!(o.ok, "{}", o.output);
-        assert_eq!(fake.calls(), vec!["openscad -o out/a.stl -D config=\"previous\" a.scad"]);
+        assert_eq!(fake.calls(), vec!["openscad --backend=manifold -o out/a.stl -D config=\"previous\" a.scad"]);
     }
 
     #[test]
-    fn a_manifold_check_renders_with_the_manifold_engine() {
+    fn a_check_without_an_engine_renders_on_manifold() {
         let fake = Fake::new();
-        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "engine": "manifold"}), &fake);
+        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl"}), &fake);
         assert!(o.ok, "{}", o.output);
-        assert_eq!(fake.calls(), vec!["openscad-manifold -o out/a.stl a.scad"]);
+        assert_eq!(fake.calls(), vec!["openscad --backend=manifold -o out/a.stl a.scad"]);
+    }
+
+    #[test]
+    fn a_cgal_check_renders_on_cgal() {
+        let fake = Fake::new();
+        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "engine": "cgal"}), &fake);
+        assert!(o.ok, "{}", o.output);
+        assert_eq!(fake.calls(), vec!["openscad --backend=cgal -o out/a.stl a.scad"]);
     }
 
     #[test]

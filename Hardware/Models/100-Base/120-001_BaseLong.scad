@@ -35,10 +35,8 @@
 // full R5. Beside the narrow column a window's outer round runs 1.43 onto the corner's
 // round, which falls 0.10 below the flat there; the round is drawn for the flat throughout.
 //
-// RENDER WITH MANIFOLD. OpenSCAD 2021.01's CGAL asserts on the windows' cuts in every arrangement
-// tried, and drops cutters when it does. 100-Base/render.json names the "manifold" engine for this
-// part, which render.rs runs as an OpenSCAD Nightly with --backend=manifold; 2021.01 does not render
-// it correctly.
+// NOT ON CGAL. CGAL asserts on the windows' cuts in every arrangement tried, and drops cutters when
+// it does. Render on Manifold, the default engine; never name "cgal" for this part.
 //
 // Measured from the reference with scadmesh planes/slice/arcs/pattern/solid/transform. The feature IDs
 // are those of 120-001_BaseLong.view.json, which labels each one on the mesh:

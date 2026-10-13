@@ -80,7 +80,7 @@ mod tests {
         assert!(o.ok, "{}", o.output);
         assert!(o.output.contains("is the gear's socket at holder z 6 (100.00 vs 100.00 mm2)"), "{}", o.output);
         assert!(o.output.contains("stands in by the slip clearance at holder z 6 (20.00 mm2, ~20.0 expected)"), "{}", o.output);
-        assert_eq!(f.calls()[0], "openscad -o out/n.bin.stl -D config=\"revised\" -D FIT_SLIP=0 --export-format binstl h.scad");
+        assert_eq!(f.calls()[0], "openscad --backend=manifold -o out/n.bin.stl -D config=\"revised\" -D FIT_SLIP=0 --export-format binstl h.scad");
         assert!(f.calls().contains(&"scadmesh slice g.stl --axis x --at=14".to_string()), "{:?}", f.calls());
     }
 

@@ -59,7 +59,7 @@ mod tests {
             o.output
         );
         let calls = fake.calls();
-        assert_eq!(calls[0], "openscad -o out/2d/100-003-skirt.svg -D config=\"previous\" -D layer=\"skirt\" p.scad");
+        assert_eq!(calls[0], "openscad --backend=manifold -o out/2d/100-003-skirt.svg -D config=\"previous\" -D layer=\"skirt\" p.scad");
         assert_eq!(calls[1], "scadmesh outline out/2d/100-003-skirt.svg ref/p.stl --axis y --at=-4 --tol 0.15");
     }
 
