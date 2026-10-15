@@ -50,7 +50,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | Directory | Parts | Files | What |
 |---|---|---|---|
 | [`100-Base/`](100-Base/) | 7 | 18 | Base clamp, mount, mounting plate, stator holder, code disc, pivot skirt, long member; the Clamp, the Code Disc, the Pivot Skirt, the Mount Bottom (with its measured floor table), the Stator Holder and the Base Long (with its measured rib table) are `.scad`; `base_dodecagon.scad` holds the outline the Base Long and the Stator Holder share, and `window_round.scad` the window rounds the Base Long and the Mount Bottom share |
-| [`200-ArmBody/`](200-ArmBody/) | 9 | 9 | Arm body, stator holder and balancers, belt directors; the Stator Holder is `.scad` |
+| [`200-ArmBody/`](200-ArmBody/) | 9 | 17 | Arm body, stator holder and balancers, belt directors; every part is `.scad`; `arm_body_outline.scad` holds the outline the Arm Body and the Stator Holder share, and `belt_director.scad` the sleeve both Belt Directors are |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap and Stator Holder are `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
@@ -82,7 +82,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 24 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot and Base Motor End Cap, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 31 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s Motor End Cap, `600-StrainWave/`'s Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot and Base Motor End Cap, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -127,6 +127,22 @@ the gear's slots line-to-line, which is why `render.rs --verify` checks that fit
 The upper 6810's assertion persists with its envelope shrunk to Ø64.9, so it is not the seat's Ø65; its
 cause is not isolated.
 
+**A slit, closed in place.** `Reference/meshes/200-ArmBody/200-001_ArmBody.stl` was closed and passed
+`scadmesh repair` and `scadmesh pinch` (no boundary loop, no shared edge), yet it held a zero-width
+slit: where lug column C's plates meet the tube at 135°, the plate's edge faces and the tube wall face
+each other at no separation, on the line (−26.297, 25.313)–(−25.834, 25.822) over z 55.75–60.25 and
+77.25–79.5. Both sides of it are material, so the faces are interior, and they made every section
+through it return a spurious sliver (a 0.69 mm outline miss at z 58, and surface samples up to 0.56 mm
+from a faithful recreation). It is closed by uniting the mesh with a patch of material on that line,
+0.05 each side and 0.06 past each end, inside the two bodies:
+
+```
+union() { import("200-001_ArmBody.stl"); patch(55.75, 60.25); patch(77.25, 79.5); }   // OpenSCAD, Manifold
+```
+
+exported as binary STL: 12,008 triangles for 11,946, the bounding box unchanged, and the volume
+0.077 mm³ — five parts in ten million — larger.
+
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
 
@@ -139,7 +155,7 @@ place:
   holes through a 10 mm flange. That is now the file, exported from `dde/HDIMeterModel.gltf` in the part's
   own frame. **This was found by re-checking a file the manifest was perfectly happy with** — the previous
   entry was a valid, closed, correctly named mesh of the wrong revision.
-- `200-ArmBody/200-001_ArmBody.stl` was not the Arm Body. It held
+- `200-ArmBody/200-001_ArmBody.stl` (now `Reference/meshes/200-ArmBody/`) was not the Arm Body. It held
   `ArmBodyFrontStrakeMED.stl` — a 20-triangle 4.9 × 9.9 × 32 mm block — byte for byte, so the mirror
   had matched the archive's `ArmBody*` prefix rather than the part. The Arm Body is
   `ArmBodyWEncode.stl` in [thing:3781990](https://www.thingiverse.com/thing:3781990) (11,946 triangles,

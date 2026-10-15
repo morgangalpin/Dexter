@@ -126,6 +126,7 @@ use <100-Base/110-001_BaseMountBottom.scad>
 use <100-Base/120-001_BaseLong.scad>
 use <100-Base/110-002_BaseStatorHolder.scad>
 use <300-Pivot/300-001_MainPivot.scad>
+use <200-ArmBody/200-001_ArmBody.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -357,8 +358,7 @@ module place_main_pivot() {
 // The CAD body runs 23.4 mm further along the arm than the model. That end is
 // the cone-drive boss, which the printed part does not carry.
 module place_arm_body() {
-    color(PRINT_C) translate([0, J2_STN.y, 62.000])
-        import("200-ArmBody/200-001_ArmBody.stl", convexity = 8);
+    color(PRINT_C) translate([0, J2_STN.y, 62.000]) arm_body("revised");
 }
 
 // End Arm group. The models in 400-EndArm/ that sit on the J3 axis share one

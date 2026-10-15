@@ -504,8 +504,8 @@ limits editing the design rather than ordering or printing it — this item's re
 and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
-set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base` has it
-([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base` and in
+`200-ArmBody` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
 measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in

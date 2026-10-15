@@ -1,8 +1,9 @@
 // GT2 timing-pulley tooth ring, shared by every printed GT2 pulley in the
 // model set: the differential's inputs (700-Differential) and the External
-// pulleys at the elbow (400-EndArm). Include it; it defines constants.
+// pulleys at the elbow (400-EndArm), and the arm's Belt Director Pulley
+// (200-ArmBody). Include it; it defines constants.
 //
-// The tooth form is the one measured on the built 40T pulleys (720-003,
+// The first tooth form is the one measured on the built 40T pulleys (720-003,
 // 720-001's band): a tip circle with one round groove per tooth. The groove is
 // R0.8, and its bottom sits GT2_TOOTH_H inside the tip circle -- measured as
 // tip Ø24.970 over root Ø23.400. Stating the groove by its depth rather than
@@ -33,5 +34,28 @@ module gt2_teeth_2d(n, tip_d = undef) {
         circle(d = td);
         for (i = [0 : n - 1])
             rotate(i * 360 / n) translate([gc, 0]) circle(r = GT2_GROOVE_R);
+    }
+}
+
+// The second form, measured on the 26T Belt Director Pulley (210-002): a
+// narrower groove whose edges are rounded into the tip circle, the shape of
+// the GT2 standard's tooth rather than the 40T pulleys' plain cut. Its depth is
+// the same GT2_TOOTH_H (measured tip Ø16.053 over groove bottom Ø14.478); the
+// groove is R0.61 and each tip edge is rounded GT2_TIP_ROUND, which leaves a
+// short land on the tip circle. R0.20 fits the mesh's section to 0.020 mm;
+// R0.10 and R0.25 fit to 0.059 and 0.031.
+GT2_ROUNDED_GROOVE_R = 0.61;   // groove radius (measured, 26T)
+GT2_TIP_ROUND        = 0.20;   // tip edges' round (fitted by outline, 26T)
+
+// 2D section of the rounded-tip ring: gt2_teeth_2d's construction with the
+// narrower groove, then every tip edge rounded by an opening. The grooves are
+// on 0 deg + k * 360/n, as gt2_teeth_2d's are.
+module gt2_teeth_rounded_2d(n, tip_d = undef) {
+    td = is_undef(tip_d) ? gt2_tip_d(n) : tip_d;
+    gc = td / 2 - GT2_TOOTH_H + GT2_ROUNDED_GROOVE_R;
+    offset(r = GT2_TIP_ROUND) offset(r = -GT2_TIP_ROUND) difference() {
+        circle(d = td);
+        for (i = [0 : n - 1])
+            rotate(i * 360 / n) translate([gc, 0]) circle(r = GT2_ROUNDED_GROOVE_R);
     }
 }

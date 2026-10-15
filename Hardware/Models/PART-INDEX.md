@@ -30,15 +30,15 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.stl` |  |
+| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.scad` | `revised` fillets C onto the +Y box as D is, and the -Y ear onto its box as the +Y ear is; fits wait for the arm body's assembly |
 | #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised` |
-| #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.stl` |  |
-| #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.stl` |  |
-| #210-001 | Belt Director Caps | 3 | `210-001_IdlerPlug.stl` | ⚠️ |
-| #210-002 | Belt Director Pulley | 1 | `210-002_BeltDirectorPulley.stl` |  |
-| #210-003 | Idler Plug | 1 | `210-001_IdlerPlug.stl` | ⚠️ |
-| #210-004 | Small Belt Director | 2 | `210-004_SmallBeltDirector.stl` |  |
-| #210-005 | Large Belt Director | 1 | `210-005_LargeBeltDirector.stl` |  |
+| #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.scad` | fits wait for the arm body's assembly |
+| #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.scad` | fits wait for the arm body's assembly |
+| #210-001 | Belt Director Caps | 3 | `210-001_IdlerPlug.scad` | ⚠️ |
+| #210-002 | Belt Director Pulley | 1 | `210-002_BeltDirectorPulley.scad` | fits wait for the arm body's assembly |
+| #210-003 | Idler Plug | 1 | `210-001_IdlerPlug.scad` | ⚠️; fits wait for the arm body's assembly |
+| #210-004 | Small Belt Director | 2 | `210-004_SmallBeltDirector.scad` | fits wait for the arm body's assembly |
+| #210-005 | Large Belt Director | 1 | `210-005_LargeBeltDirector.scad` | fits wait for the arm body's assembly |
 
 ## 300-Pivot — Main pivot and motor end caps
 
@@ -166,7 +166,7 @@ Two files each satisfy two BOM lines. They are stored once, under the lower numb
 
 | File | Also serves | Status |
 |---|---|---|
-| `200-ArmBody/210-001_IdlerPlug.stl` | #210-003 Idler Plug | No file named "Belt Director Cap" exists in any archive; `IdlerPlug` is the assumed geometry ([008.5](../../specs/008-Assembly.md) presses caps in behind the bearings). Whether #210-001 and #210-003 are one part or two is **unresolved** |
+| `200-ArmBody/210-001_IdlerPlug.scad` | #210-003 Idler Plug | No file named "Belt Director Cap" exists in any archive; `IdlerPlug` is the assumed geometry ([008.5](../../specs/008-Assembly.md) presses caps in behind the bearings). Whether #210-001 and #210-003 are one part or two is **unresolved** |
 | `500-ExternalGear/520-003_ExGearNutHold.stl` | #520-004 Nut Holder B | Only one `ExGearNutHold` geometry exists for the two BOM lines |
 
 ## Parts shipped as an A/B pair

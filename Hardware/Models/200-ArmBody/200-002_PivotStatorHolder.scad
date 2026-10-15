@@ -19,10 +19,8 @@
 // fourfold about the axis except the screw holes, which are twofold:
 //
 //     feature                      value                  z span
-//     flange                       R36.5, four ears on 0/90/180/270
-//                                  to 41.547 with R4 corners, R4
-//                                  fillets into the R36.5      0 .. 2
-//     ear slots                    10.0 x 4.0, r 33.516 .. 37.516   0 .. 2
+//     flange, with its ear slots   the Arm Body's outline  0 .. 2
+//                                  (arm_body_outline.scad)
 //     body                         Ø65.0                  2 .. 16
 //     recess                       Ø50.0                  0 .. 11
 //     bore                         Ø38.0                  11 .. 16
@@ -51,6 +49,7 @@
 // the drive's torque. Each slot opens about its own centre.
 
 include <../print_fit.scad>
+include <arm_body_outline.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 
 /* [Configuration] */
@@ -63,10 +62,8 @@ epsilon = 0.01;
 
 FLOOR         = 11.000;
 BACK          = 16.000;
-FLANGE        = [36.500, 2.000];   // radius, top
-EAR           = [37.547, 5.031, 4.000];   // corner centres' x and ±y, their radius
-SLOT          = [33.516, 37.516, 5.000];  // inner and outer radius, half-width
-SHANK         = [3.900, 9.900];    // a Stator Balancer's shank: radial, across
+FLANGE_TOP    = 2.000;             // the flange's outline is arm_body_outline.scad's
+SHANK        = [3.900, 9.900];    // a Stator Balancer's shank: radial, across
 BODY_D        = 65.000;
 RECESS_D      = 50.000;
 BORE_D        = [38.000, 36.000];  // previous, revised
@@ -77,30 +74,23 @@ SCREW_D       = 3.000;
 function pivot_floor() = FLOOR;
 
 // --- 2D outlines -----------------------------------------------------------
-module concave_fillet(r) offset(r = -r) offset(delta = r) children();
-
 function slip(cfg) = fit_clearances(cfg)[0];
 function press(cfg) = fit_clearances(cfg)[1];
 
 // An ear slot's [radial, across] size: the measured slot, or the shank's
 // section plus the slip clearance, whichever is larger.
-function slot_size(cfg) = [max(SLOT[1] - SLOT[0], fit_bore(SHANK[0], slip(cfg))),
-                           max(2 * SLOT[2], fit_bore(SHANK[1], slip(cfg)))];
+function slot_size(cfg) = [max(ARM_BODY_SLOT[1] - ARM_BODY_SLOT[0], fit_bore(SHANK[0], slip(cfg))),
+                           max(2 * ARM_BODY_SLOT[2], fit_bore(SHANK[1], slip(cfg)))];
 
 module flange_2d(cfg)
     difference() {
-        concave_fillet(EAR[2]) union() {
-            circle(r = FLANGE[0]);
-            for (a = [0 : 90 : 270]) rotate(a)
-                offset(r = EAR[2]) translate([FLANGE[0] - EAR[2] - 1, -EAR[1]])
-                    square([EAR[0] - FLANGE[0] + EAR[2] + 1, 2 * EAR[1]]);
-        }
-        for (a = [0 : 90 : 270]) rotate(a) translate([(SLOT[0] + SLOT[1]) / 2, 0]) square(slot_size(cfg), center = true);
+        arm_body_outline_2d();
+        arm_body_slots_2d(slot_size(cfg));
     }
 
 // --- Part ------------------------------------------------------------------
 module body(cfg) {
-    linear_extrude(FLANGE[1]) flange_2d(cfg);
+    linear_extrude(FLANGE_TOP) flange_2d(cfg);
     cylinder(d = fit_pin(BODY_D, slip(cfg)), h = BACK);
 }
 
@@ -109,12 +99,12 @@ module turned_cuts(cfg) {
     translate([0, 0, FLOOR - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = BACK - FLOOR + 2 * epsilon);
 }
 
-module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE[1]])
-    cylinder(d = PEG[0], h = FLOOR - FLANGE[1] + epsilon, $fn = 48);
+module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE_TOP])
+    cylinder(d = PEG[0], h = FLOOR - FLANGE_TOP + epsilon, $fn = 48);
 
 module peg_and_screw_cuts() {
-    for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE[1] - epsilon])
-        cylinder(d = PEG[1], h = BACK - FLANGE[1] + 2 * epsilon, $fn = 48);
+    for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE_TOP - epsilon])
+        cylinder(d = PEG[1], h = BACK - FLANGE_TOP + 2 * epsilon, $fn = 48);
     for (a = [-45, 135]) rotate(a) translate([PEG_CIRCLE_R, 0, FLOOR - epsilon])
         cylinder(d = SCREW_D, h = BACK - FLOOR + 2 * epsilon, $fn = 48);
 }
