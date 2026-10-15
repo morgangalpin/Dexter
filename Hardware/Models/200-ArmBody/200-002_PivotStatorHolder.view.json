@@ -1,0 +1,32 @@
+{
+  "title": "Pivot Stator Holder",
+  "subtitle": "#200-002 · reference mesh and 200-002_PivotStatorHolder.scad renders · feature names for the conversion",
+  "from": [0.5, -1, 0.5],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Pivot Stator Holder", "pn": "#200-002", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/200-002_PivotStatorHolder.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/200-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/200-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 41.547, 1], "text": "F1 flange, z 0–2: the Arm Body's outline, R36.5 with four ears to r 41.547"},
+    {"at": [35.516, 0, 2], "text": "K1 ear slots ×4, 4.0 × 10.0 on r 35.516, through F1"},
+    {"at": [-22.98, -22.98, 9], "text": "B1 body Ø65.0, z 2–16"},
+    {"at": [-17.68, 17.68, 0], "text": "R1 recess Ø50.0, z 0–11"},
+    {"at": [0, -19, 16], "text": "B2 bore Ø38.0 (revised Ø36.0), z 11–16"},
+    {"at": [21.5, 0, 2], "text": "P1 pegs ×4 on Ø43 at 0/90/180/270°, Ø3.5 with Ø2.0 through, z 2–11"},
+    {"at": [15.20, -15.20, 16], "text": "H1 screw holes ×2 on Ø43 at −45°/135°, Ø3.0, z 11–16"},
+    {"at": [19.05, 11, 16], "text": "S1 C-201 seat (revised): 6 × Ø3.4 on Ø44, M3 nut pockets from the back face"}
+  ],
+  "presets": [
+    {"label": "Recess side", "at": [0, 0, 8], "span": 90, "from": [0, 0, -1]},
+    {"label": "Back face", "at": [0, 0, 8], "span": 90, "from": [0, 0, 1]},
+    {"label": "Ear slot", "at": [35.5, 0, 1], "span": 20, "from": [1, -1, 1]},
+    {"label": "Section", "at": [0, 0, 8], "span": 30, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Frame", "text": "The reference's own: the J2 axis on +Z, the recess opening at z 0, its floor at z 11, the back face at z 16. The body slides into the Arm Body's Ø65 bore; the ear slots ride the Stator Balancers' shanks."},
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render replaces the pegs and the two screw holes with the shared C-201 spline seat, closes the bore to Ø36, and draws its fits. The dimensions are in 200-002_PivotStatorHolder.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
