@@ -1,0 +1,24 @@
+{
+  "title": "Idler Plug",
+  "subtitle": "#210-003 · reference mesh and 210-003_IdlerPlug.scad renders · feature names for the conversion",
+  "cut": true,
+  "from": [1, -1, 0.6],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Idler Plug", "pn": "#210-003", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/210-001_IdlerPlug.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/210-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/210-003.stl", "shown": true}]}
+  ],
+  "labels": [
+    {"at": [3.0, 0, 2.5], "text": "previous S1 shank Ø6.0, z 0–5, solid"},
+    {"at": [5.5, 0, 15.0], "text": "revised H1 head Ø11.0 x 2.0, edge R1, on the upper plate"},
+    {"at": [2.45, 0, 7.0], "text": "revised S1 tube Ø4.9, 14.6 long, B1 bore Ø2.3"}
+  ],
+  "presets": [
+    {"label": "Section", "at": [0, 0, 7.5], "span": 20, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the recreation of the reference mesh. The revised render is the plug the D column's through hole takes: a tube as deep as the column, bored for the M2 bolt. The dimensions are in 210-003_IdlerPlug.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

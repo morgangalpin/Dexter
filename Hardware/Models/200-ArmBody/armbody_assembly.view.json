@@ -1,0 +1,42 @@
+{
+  "scad": "armbody_assembly.scad",
+  "title": "Arm Body stack",
+  "subtitle": "armbody_assembly.scad · the Holder on the Balancers' lips, the belt directors in the lug columns · orthographic, cut on XZ",
+  "groups": [
+    {"name": "Arm Body", "role": "fixed", "parts": [
+      {"id": "arm_body", "name": "Arm Body", "pn": "#200-001", "color": "#9aa7b4"},
+      {"id": "holder", "name": "Pivot Stator Holder", "pn": "#200-002", "color": "#c65f4f"},
+      {"id": "balancers", "name": "Stator Balancers ×4", "pn": "#200-003", "color": "#d99a45"},
+      {"id": "bearing_6810", "name": "J2 bearing, in the bore under L1", "pn": "6810", "color": "#dcdcdc"}]},
+    {"name": "Belt directors", "role": "lug columns A, B and C", "parts": [
+      {"id": "directors", "name": "Large (A) and Small (B, C) Belt Directors", "pn": "#210-005 / #210-004", "color": "#2f6db5"},
+      {"id": "caps", "name": "Belt Director Caps ×3, on the shanks' ends", "pn": "#210-001", "color": "#5b9be0"},
+      {"id": "bearings_mr128", "name": "MR128s in the plate pockets", "pn": "MR128", "color": "#dcdcdc"}]},
+    {"name": "Idler column D", "role": "provisional placement", "parts": [
+      {"id": "idler_plug", "name": "Idler Plug, through both plates", "pn": "#210-003", "color": "#5b9be0"},
+      {"id": "idler_bearing", "name": "MR85 on the plug", "pn": "MR85", "color": "#dcdcdc"},
+      {"id": "pulley", "name": "Belt Director Pulley", "pn": "#210-002", "color": "#4f86c6"}]}
+  ],
+  "labels": [
+    {"at": [0, 0, 96], "text": "Holder's back face on the Balancers' lips, z 96"},
+    {"at": [35.5, 0, 91], "text": "Arm Body top face, z 91; the flange stands {holder_flange_gap} mm over it"},
+    {"at": [0, 0, -3.5], "text": "6810 under the L1 ledge"}
+  ],
+  "presets": [
+    {"label": "Whole arm body", "at": [0, 20, 45], "span": 150},
+    {"label": "Holder and balancers", "at": [35.5, 0, 90], "span": 40},
+    {"label": "Lug columns", "at": [0, 35, 70], "span": 90},
+    {"label": "Idler column", "at": [35, 51.5, 64], "span": 40},
+    {"label": "J2 bearing", "at": [0, 0, -3], "span": 40}
+  ],
+  "notes": [
+    {"heading": "Provisional placements", "emphasis": true,
+     "text": "No spec places these parts, so each is placed by the feature it carries and should be checked by eye. The holder stands {holder_flange_gap} mm above the Arm Body's top face because the Balancers' lips are at z 96 and bear on its back. The Belt Director Caps sit on the upper bearings' inner races, and each shank ends flush with its bearing.",
+     "focus": {"label": "Show the idler column", "preset": "Idler column"}},
+    {"heading": "Not drawn",
+     "items": [
+       "The Calibration Arrows (#200-006): no part or spec places them on the arm",
+       "The M2 bolt, washers and nut on the Idler Plug",
+       "J2's drive: the spline, the motor and the wave generator belong to 600-StrainWave and 300-Pivot"]}
+  ]
+}

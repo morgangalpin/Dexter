@@ -1070,6 +1070,12 @@ anything version 3 does not independently specify
   - `Hardware/Models/300-Pivot/`: `300-001_MainPivot.scad`, its `.view.json` sidecar,
     `311-001_MotorEndCapBase.scad` and `render.json` (new). Their meshes moved to
     `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
+    `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
+    `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
+    shared `arm_body_outline.scad` and `belt_director.scad` (new); `200-002_PivotStatorHolder.scad` and
+    `render.json`. Their meshes moved to `Reference/meshes/200-ArmBody/`.
+  - `Hardware/Models/gt2_pulley.scad` gains a second tooth form, `gt2_teeth_rounded_2d`.
   - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
     lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
     now runs onto the channel's ceiling fillets as a ball that touches both surfaces, where it stood up
@@ -1188,6 +1194,26 @@ anything version 3 does not independently specify
   - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
     motor's square front edge, which they stood on. Its bore's Ø5.0 ridge grips the motor's shaft line to
     line by design, and `base_assembly.clash.json` records it as an exception to the clash check.
+  - **200-ArmBody:** the Stator Balancer (`#200-003`, an L section extruded), the Idler Plug
+    (`#210-001`/`#210-003`, revolved), both Belt Directors (`#210-004`, `#210-005`, one revolved sleeve in
+    `belt_director.scad` at two lengths), the Belt Director Pulley (`#210-002`, two flanges and a tooth
+    ring, the ring gated by `outline`) and the Calibration Arrows (`#200-006`, a revolved hub and cup with
+    the arm and post extruded, the arm's top edges chamfered). Their fits, and the pulley's teeth against
+    the pulleys it routes between, wait for the arm body's virtual assembly, so `revised` draws none yet.
+    The pulley's teeth are not the 40T pulleys' plain round groove but a narrower groove rounded into the
+    tip, so `gt2_pulley.scad` carries both forms. The Pivot Stator Holder's flange is the Arm Body's own
+    outline, so both take it from `arm_body_outline.scad`.
+  - **200-ArmBody, the Arm Body (`#200-001`):** a region split in `200-001_ArmBody.scad`: the tube and ears,
+    the boxes cut by the cone envelope, the windows, the encoder flap, the four lug columns as
+    sandwiches of extruded plates and webs with one stepped hole each, the collar, and the cuts. D's
+    fill and its fillets are balls rolled along each edge, each one smooth skin of its section at
+    stations along the edge, the ball eased down round D's corner; the +Y ear has its R1 fillet onto
+    the box's cone, which the -Y ear lacks in the reference. `revised` gives C the same fillets as D
+    (its edge turning the corner onto the box's side as D's does), and both ears their fillet along
+    the cone's edge with the tube, where `previous` keeps the cone under C's plate. The mesh held a zero-width slit between a plate and the tube, closed in place (README
+    § Known defects). `dist` is held at 0.65 and not 0.15: three joins between the fillets stay 0.4
+    to 0.47 off the mesh, where the CAD blends and a ball's path does not. `robot_assembly.scad`
+    draws the part from the source.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`

@@ -1,0 +1,24 @@
+{
+  "title": "Small Belt Director",
+  "subtitle": "#210-004 · reference mesh and 210-004_SmallBeltDirector.scad renders · feature names for the conversion",
+  "cut": true,
+  "from": [1, -1, 0.6],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Small Belt Director", "pn": "#210-004", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/210-004_SmallBeltDirector.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/210-004.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/210-004.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [5.5, 0, -0.25], "text": "H1 head Ø11.0 × 0.5, z −0.5–0 (revised: Ø9.5 × 2.0, edge R1)"},
+    {"at": [4.0, 0, 17], "text": "S1 shank Ø8.0 (the MR128 bore), z 0–17"},
+    {"at": [2.35, 0, 17], "text": "B1 core Ø4.7, blind, floor at z 0"}
+  ],
+  "presets": [
+    {"label": "Section", "at": [0, 0, 8], "span": 21, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render draws the head as belt_director.scad's disc and the shank at the press clearance. The dimensions are in belt_director.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

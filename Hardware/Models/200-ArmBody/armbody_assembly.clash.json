@@ -1,0 +1,31 @@
+{
+  "parts": [
+    {"id": "arm_body",       "kind": "printed", "side": "fixed"},
+    {"id": "holder",         "kind": "printed", "side": "fixed"},
+    {"id": "balancers",      "kind": "printed", "side": "fixed"},
+    {"id": "bearing_6810",   "kind": "bought",  "side": "fixed"},
+    {"id": "directors",      "kind": "printed", "side": "fixed"},
+    {"id": "caps",           "kind": "printed", "side": "fixed"},
+    {"id": "bearings_mr128", "kind": "bought",  "side": "fixed"},
+    {"id": "idler_plug",     "kind": "printed", "side": "fixed"},
+    {"id": "idler_bearing",  "kind": "bought",  "side": "fixed"},
+    {"id": "pulley",         "kind": "printed", "side": "fixed"}
+  ],
+  "engaged": [],
+  "exceptions": [
+    {"pair": ["arm_body", "balancers"], "at": [35.516, 0, 90], "radius": 8,
+     "reason": "the balancer is tapped into K1 at the press clearance by design, as the reference has it"},
+    {"pair": ["arm_body", "balancers"], "at": [-35.516, 0, 90], "radius": 8,
+     "reason": "the balancer is tapped into K1 at the press clearance by design, as the reference has it"},
+    {"pair": ["arm_body", "balancers"], "at": [0, 35.516, 90], "radius": 8,
+     "reason": "the balancer is tapped into K1 at the press clearance by design, as the reference has it"},
+    {"pair": ["arm_body", "balancers"], "at": [0, -35.516, 90], "radius": 8,
+     "reason": "the balancer is tapped into K1 at the press clearance by design, as the reference has it"},
+    {"pair": ["directors", "caps"], "at": [-40.638, 14.634, 79.25], "radius": 4,
+     "reason": "the cap's plug presses into the director's core at the press clearance by design: a slip gap would let it fall out"},
+    {"pair": ["directors", "caps"], "at": [40.638, 14.634, 79.25], "radius": 4,
+     "reason": "the cap's plug presses into the director's core at the press clearance by design: a slip gap would let it fall out"},
+    {"pair": ["directors", "caps"], "at": [-33.029, 38.547, 69.85], "radius": 4,
+     "reason": "the cap's plug presses into the director's core at the press clearance by design: a slip gap would let it fall out"}
+  ]
+}

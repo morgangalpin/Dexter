@@ -1,0 +1,32 @@
+{
+  "title": "Calibration Arrows",
+  "subtitle": "#200-006 · reference mesh and 200-006_CalibrationArrows.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Calibration Arrows", "pn": "#200-006", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/200-006_CalibrationArrows.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/200-006.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/200-006.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -10, 2], "text": "D1 hub Ø20, z −1 to 4.5"},
+    {"at": [0, -15, 10.5], "text": "C1 cup: 45° cone out to the Ø30 flange, z 4.5–10.5"},
+    {"at": [0, 7.5, 6], "text": "C2 recess Ø15, floor z 5, 45° out to Ø21 at the top"},
+    {"at": [-18, -5, 0], "text": "A1 arm 10 wide, z −1 to 3, 45° point at x −31"},
+    {"at": [-18, -4, 2], "text": "A3 arm chamfers 2 × 2, both long top edges"},
+    {"at": [-31, 0, 8], "text": "A2 pointer post, an arrowhead x −31 to −28, to z ≈ 8"},
+    {"at": [-2.5, 0, 5], "text": "H1 D-bore Ø5.0, flat at x 2.0"},
+    {"at": [5, 2.75, 5], "text": "N1 nut slot 2.5 × 5.5, x 3.75–6.25"},
+    {"at": [10, 0, 2.5], "text": "S1 set-screw hole Ø3 along +X, centre z 2.5"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [-8, 0, 5], "span": 34, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [-8, 0, 5], "span": 34, "from": [0, 0, -1]},
+    {"label": "Set screw, from +X", "at": [10, 0, 3], "span": 16, "from": [1, 0, 0.1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render draws no fits yet; they wait for the arm body's assembly. The dimensions are in 200-006_CalibrationArrows.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

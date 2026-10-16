@@ -41,10 +41,11 @@ committed but does not yet reproduce its reference geometry.
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | — | `[Specified]` ✔ closed |
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
+| DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
-of work: **design authored here** (DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
+of work: **design authored here** (DC-14, DC-15), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -504,8 +505,8 @@ limits editing the design rather than ordering or printing it — this item's re
 and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
-set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base` has it
-([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base` and in
+`200-ArmBody` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
 measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in
@@ -526,3 +527,28 @@ row j); (k) **done** — `#720-001` prints solid, and the `wall_holes` default m
 [the archives](#the-model-archives-are-a-single-point-of-failure)). **One item remains, and it is not a
 design question**: the coupon print. It does not block starting the long-lead items in
 [DC-1](#strain-wave-component-set). `[Provisional]`.
+
+## Arm Body placement
+**DC-15 · P2 · Requirement: REQ-STR-5 · Specified in [008.5](008-Assembly.md#0085-arm-body)**
+
+**Open:** where each part of the Arm Body stands. [008.5](008-Assembly.md#0085-arm-body) orders the
+operations and says what goes into what, and from which side ("front to back", "back to front"), but states no
+position along an axis for any part and ties neither direction to the frame of a model. No document owns one. The model set has no assembly
+for the arm body from CAD to confirm one against, so every part of
+[`armbody_assembly.scad`](../Hardware/Models/200-ArmBody/armbody_assembly.scad) is placed by a feature it
+carries, as an inference to be confirmed or replaced:
+
+- the Pivot Stator Holder's height in the bore and the span its flange stands over the Arm Body's top face;
+- the four Stator Balancers' position in the K1 slots, and the lip that bears on the holder;
+- the 6810's seat: 008.5 step 1 presses it "~38 mm" into the Arm Body, and the Arm Body's L1 ledge seats it at
+  z -7 .. 0;
+- each Belt Director's end-for-end direction and its MR128s' seats, in columns A, B and C, and the Belt Director
+  Caps on the upper bearings' inner races, the shanks ending flush with the bearings (B's lower plate is extended 0.7 so B and C stand as far apart);
+- the idler column D: the Idler Plug through both plates with its head on the upper one, the MR85 on it and the
+  Belt Director Pulley between the plates;
+- the Calibration Arrows (`#200-006`), for which no document says where they stand.
+
+**Definition of done:** each part's placement stated in [008.5](008-Assembly.md#0085-arm-body) or
+[004](004-Mechanical-Architecture.md) by the feature it is located from; the model's inferences replaced by
+those values; and the fits the part headers still defer (the Calibration Arrows' and the flap's holes) settled in the parts.
+`[Provisional]`.
