@@ -1224,12 +1224,13 @@ anything version 3 does not independently specify
 - **Affects:** [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson),
   `Hardware/Models/render-check/` (`lib.rs`, `meshes.rs` and the check kinds' tests),
   `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `100-Base/render.json`,
-  `300-Pivot/render.json`, and the headers of `120-001_BaseLong.scad` and `300-001_MainPivot.scad`.
+  `200-ArmBody/render.json`, `300-Pivot/render.json`, and the headers of `120-001_BaseLong.scad`,
+  `300-001_MainPivot.scad` and `311-001_MotorEndCapBase.scad`.
 - **Amends:** [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad) (the `engine` field).
 - **Was:** Parts rendered on OpenSCAD 2021.01's CGAL. A part opted into an OpenSCAD Nightly's Manifold
   engine with `"engine": "manifold"`, found through `$OPENSCAD_MANIFOLD`.
 - **Now:** One OpenSCAD development snapshot renders everything, found through `$OPENSCAD`. `engine`
-  selects its `--backend`. Manifold is the default, so the six `"engine": "manifold"` fields are gone,
+  selects its `--backend`. Manifold is the default, so the `"engine": "manifold"` fields are gone,
   and `"cgal"` is the opt-out.
   - Two hand-built solids were inside out: `110-001`'s floor (`floor_body()`) and the end caps' side
     blend (`end_cap_channel.scad`, `side_blend()`). CGAL forgives an inside-out solid; Manifold
@@ -1240,6 +1241,9 @@ anything version 3 does not independently specify
   - `100-003`'s dist gate fails on both of the snapshot's engines: 1.754 mm on Manifold, along the lug's
     bend round, and 0.576 mm with a 2-manifold warning on CGAL. It passed only on 2021.01's CGAL, so it
     is open until the bend round is drawn so that both engines take it.
+  - `200-ArmBody`'s parts render on Manifold, and its outlines, fits and assembly clash check pass.
+    The dist gates of `210-003` (2.997 mm), `210-004` and `210-005` (0.250 mm each) fail with the same
+    figures on CGAL, so the engine does not cause them; they are open with the arm body's conversion.
 - **Driver:** Fillets. BOSL2's `fillet()`, `join_prism()`, `offset_sweep()` and `minkowski`-based
   rounding are slow on CGAL, and CGAL asserts on the tangent cutters a fillet makes.
 - **Status:** `[Specified]`.

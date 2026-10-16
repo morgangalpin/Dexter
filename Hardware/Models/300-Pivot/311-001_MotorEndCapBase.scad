@@ -72,9 +72,6 @@
 // square, and they would stand on it. None is left along the faces; round
 // the corners what is left stands off the motor. The Ø22.5 bore over the
 // motor's Ø22 boss already clears by more and keeps its size.
-//
-// RENDER WITH CGAL, as #511-001: under Manifold the channel's lofted blend
-// leaves an open seam.
 
 include <../print_fit.scad>
 use <../end_cap_channel.scad>
