@@ -30,9 +30,9 @@ mounting plate — see [Moving to OpenSCAD](#moving-to-openscad).
   Sizes and hashes are of the **repository** bytes, so text files are counted with LF line endings — on a
   Windows checkout (`core.autocrlf=true`) the working-tree file is larger than its row says. Compare a
   text file by normalizing CRLF to LF first; binary files compare directly. The text set is `.step`
-  (ISO-10303-21 is ASCII), `.scad`, `.rs`, `.json` and `.md`; `.stl`, `.f3d`, `.ipt`, `.dwg`, `.skp`
+  (ISO-10303-21 is ASCII), `.scad`, `.rs`, `.json`, `.toml` and `.md`; `.stl`, `.f3d`, `.ipt`, `.dwg`, `.skp`
   and `.skb` compare directly. The group column is the file's directory; a file that belongs to no one
-  component group is grouped `(all)`.
+  component group is grouped `(all)`. [manifest.rs](manifest.rs) writes it: it lists what git tracks or would track, less the derived and configuration files (this manifest, PART-INDEX.md, this README, `render.json`), keeps the order of the rows already there, and appends new files; `--check` fails when it is out of date.
 
 ## Layout
 
@@ -50,7 +50,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | Directory | Parts | Files | What |
 |---|---|---|---|
 | [`100-Base/`](100-Base/) | 7 | 18 | Base clamp, mount, mounting plate, stator holder, code disc, pivot skirt, long member; the Clamp, the Code Disc, the Pivot Skirt, the Mount Bottom (with its measured floor table), the Stator Holder and the Base Long (with its measured rib table) are `.scad`; `base_dodecagon.scad` holds the outline the Base Long and the Stator Holder share, and `window_round.scad` the window rounds the Base Long and the Mount Bottom share |
-| [`200-ArmBody/`](200-ArmBody/) | 9 | 17 | Arm body, stator holder and balancers, belt directors; every part is `.scad`; `arm_body_outline.scad` holds the outline the Arm Body and the Stator Holder share, and `belt_director.scad` the sleeve both Belt Directors are |
+| [`200-ArmBody/`](200-ArmBody/) | 9 | 23 | Arm body, stator holder and balancers, belt directors; every part is `.scad`; `arm_body_outline.scad` holds the outline the Arm Body and the Stator Holder share, and `belt_director.scad` the sleeve both Belt Directors are |
 | [`300-Pivot/`](300-Pivot/) | 4 | 4 | Main pivot, code disk, motor end caps |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap and Stator Holder are `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
@@ -508,7 +508,16 @@ scadmesh view base_assembly.view.json --out out/view
 miniserve out/view
 ```
 
-Then open `http://localhost:8080/index.html`.
+and `200-ArmBody/` for the arm body, whose assembly imports only the `200-ArmBody` cache:
+
+```
+./render.rs 200-ArmBody --meshes
+cd 200-ArmBody
+scadmesh view armbody_assembly.view.json --out out/view/armbody_assembly
+miniserve out/view
+```
+
+Then open `http://localhost:8080/index.html`, or `http://localhost:8080/armbody_assembly/` for the arm body.
 
 - `scadmesh view` writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD
   exports each part in its own run, one after another, so the build takes the sum of the parts'
@@ -581,7 +590,7 @@ OnShape retrieval is documented [separately](Reference/onshape-v1/README.md#how-
 
 ## Regenerating
 
-`PART-INDEX.md` and `MANIFEST.csv` are derived artifacts. Regenerate them after adding or replacing model
+`PART-INDEX.md` is a derived artifact and `MANIFEST.csv` is written by `./manifest.rs`. Regenerate them after adding or replacing model
 files, and re-check them whenever
 [007.2](../../specs/007.2-Printed-Parts.md#regenerating-this-list) is regenerated.
 

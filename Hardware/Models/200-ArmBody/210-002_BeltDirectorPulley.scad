@@ -4,7 +4,7 @@
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/200-ArmBody/), in that mesh's frame.
-//   config = "revised"  — the same part. Its fits wait for the arm body's assembly (below).
+//   config = "revised"  — the same part, its bore at the press clearance to the MR85.
 //
 // FRAME. The reference's own: the axis on +Z through the origin, the part from z -8.136 to -0.744,
 // a tooth's tip centred on +X.
@@ -25,10 +25,11 @@
 //
 // `layer = "teeth"` or `"flange"` draws that layer's 2D profile, for the outline gate in render.json.
 //
-// FITS, deferred: B1 on the MR85's Ø8 outer race, and T1 against the belt and the pulleys it routes
-// between, are settled with the arm body's assembly (armbody_assembly), so revised draws none yet.
+// FITS (../print_fit.scad), revised only: B1 on the MR85's Ø8 outer race at the press clearance. T1 against the
+// belt and the pulleys it routes between is settled with the arm body's assembly (armbody_assembly).
 
 include <../gt2_pulley.scad>
+include <../print_fit.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -46,14 +47,17 @@ FLANGE_D = 17.313;
 BORE_D   = 8.000;
 Z        = [-8.136, -7.623, -1.257, -0.744];   // F2 bottom, F2 top, F1 bottom, F1 top
 
+// B1 is the MR85's outer race's seat: at the press clearance in `revised`.
+function bore_d() = fit_bore(BORE_D, fit_clearances(config)[1]);
+
 // --- 2D profiles -------------------------------------------------------------
 module teeth_2d()
     difference() {
         rotate(180 / TEETH) gt2_teeth_rounded_2d(TEETH, TIP_D);
-        circle(d = BORE_D);
+        circle(d = bore_d());
     }
 
-module flange_2d() difference() { circle(d = FLANGE_D); circle(d = BORE_D); }
+module flange_2d() difference() { circle(d = FLANGE_D); circle(d = bore_d()); }
 
 // --- Part ----------------------------------------------------------------------
 module belt_director_pulley(cfg = config) {

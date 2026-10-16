@@ -27,7 +27,7 @@
     {"at": [-45, 22, -1], "text": "F1 encoder flap, z −7 to −1, R53.5 edge, R7 corners"},
     {"at": [-38.118, 33.882, -1], "text": "H1 Ø3 ×2 (Ø4 cbore from z −2), H2 Ø1 ×2"},
     {"at": [-40.64, 14.635, 82.75], "text": "A lug column: plates z 55.75–60.25, 77.25–82.75"},
-    {"at": [40.64, 14.635, 82.75], "text": "B lug column: plates z 65.75–70.25, 77.25–82.75"},
+    {"at": [40.64, 14.635, 82.75], "text": "B lug column: plates z 65.75–70.25 (revised 65.05), 77.25–82.75"},
     {"at": [-33.031, 38.547, 72.35], "text": "C lug column: plates z 55.65–60.25 (cone below 57.65), 68.25–72.35, web"},
     {"at": [34.969, 51.547, 70.25], "text": "D idler column: plates z 55.65–60.25, 68.25–70.25 (Ø5), web"},
     {"at": [20.5, 48, 64], "text": "E1 post, past the belt slot y 42.547–45.547"},

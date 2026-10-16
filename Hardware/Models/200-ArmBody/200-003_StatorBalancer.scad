@@ -5,7 +5,7 @@
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/200-ArmBody/), in that mesh's frame.
-//   config = "revised"  — the same part. Its fits wait for the arm body's assembly (below).
+//   config = "revised"  — the same part. Its mates' fits are the Arm Body's K1 and the holder's ear slot, which carry them.
 //
 // FRAME. The reference's own, which is the Arm Body's assembly frame: the shank's inner face on
 // x = 0, the part from y 0 to 9.900 and from z 86 to 98.
@@ -17,9 +17,8 @@
 //     S1  shank     0 .. 3.900  by 86 .. 96     0 .. 9.900
 //     L1  lip       0 .. 4.900  by 96 .. 98     0 .. 9.900
 //
-// FITS, deferred: S1 in the Arm Body's 4.0 x 10.0 K1 slot (a tapped-in press) and in the holder's ear
-// slot (whose revised slip is the holder's) are settled with the arm body's assembly
-// (armbody_assembly), so revised draws none yet.
+// FITS: none drawn here. S1 stands in the Arm Body's K1 slot, 0.05 per side, the press clearance, and in
+// the holder's ear slot (whose revised slip is the holder's); each carries its own gap.
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised

@@ -7,8 +7,8 @@
 //                         (../Reference/meshes/200-ArmBody/), in that mesh's frame.
 //   config = "revised"  — the same part, with the C column's lower plate filleted onto the +Y box as
 //                         the D column's is, the -Y ear filleted onto its box as the +Y ear is, and
-//                         the top and bottom edges of X1's sides rounded. Its fits wait for the arm body's
-//                         assembly (below).
+//                         the top and bottom edges of X1's sides rounded, and drawn at its print fits
+//                         (below).
 //
 // FRAME. The reference's own: J2 on +Z through the origin, the bottom face at z = -7, the top at 91,
 // the L2 tube's socket on ±Y and the lug columns on the +Y half.
@@ -50,7 +50,7 @@
 //     H1  flap holes                  Ø3.000 x 2, counterbore Ø4.000 from z -2       -7 .. -1
 //     H2  flap holes                  Ø1.000 x 2                                     -7 .. -1
 //     A   lug column (-X)             plates z 55.75..60.25, 77.25..82.75, no web
-//     B   lug column (+X)             plates z 65.75..70.25, 77.25..82.75, no web
+//     B   lug column (+X)             plates z 65.75..70.25 (revised 65.05), 77.25..82.75, no web
 //     C   lug column                  plates z 55.65..60.25, 68.25..72.35, web
 //     D   idler column                plates z 55.65..60.25, 68.25..70.25, web
 //     E1  post beside D, E2 beside C  the webs' outboard part, past the belt slot    60.25 .. 68.25
@@ -64,7 +64,9 @@
 // (20, 45.549) filleted onto the left edge. The webs between the plates are the hulls less the belt
 // slot y 42.547 .. 45.547 (which leaves E1 and E2 standing) and a clearance about the column, R8 at C
 // and R11 at D. Each plate holds a Ø12 bearing pocket 3.5 deep from its outer face (4.5 on A and B's
-// upper plates) and a Ø9 hole through the rest; D's upper plate has a Ø5 hole.
+// upper plates) and a Ø9 hole through the rest; D's upper plate has a Ø5 hole. `revised` opens A's lower
+// pocket onto the face C's plate leaves over it, extends B's lower plate and pocket 0.7 down so its bearings stand as far
+// apart as C's (16.7 between their outer faces, one Small Belt Director for both), and gives D's lower plate the same Ø5 hole as its upper.
 //
 // D's fill and the fillets. D's lower plate stands on a fill on the box (x 16..20, y to 42.4, from z 45,
 // its +X end corner R2). The plate's x = 16 edge is relieved across the belt slot: a 45° line from
@@ -115,11 +117,19 @@
 //
 // `layer = "<name>"` draws the part's section at one height, for the outline gates in render.json.
 //
-// FITS, deferred: B1 on the 6810s and the Pivot Stator Holder, K1 on the Stator Balancers, the lug
-// pockets on the MR128s and the Ø9 holes on the Belt Directors, Q1 on the L2 tube (C-504), and the
-// flap's holes, are settled with the arm body's assembly (armbody_assembly).
+// FITS (../print_fit.scad), revised only, each at its mate's class:
+//   press  B1's 6810 seat below the ledge (Ø65.1; the bore above stays Ø65 for the Pivot Stator Holder,
+//          which is drawn at the slip clearance to it), the lug pockets on the MR128s (Ø12.1), Q1 on the
+//          L2 tube (C-504, +0.05 per side)
+//          the K1 slots on the Stator Balancers (4.0 x 10.0 round the 3.9 x 9.9 shank, as the reference has them:
+//          a tapped-in press, though both are printed)
+//   slip   D's Ø5 holes on the Idler Plug (Ø5.2), the
+//          M1 tie holes (Ø2.3) and N2 nut traps (4.3 AF) on an M2 rod and nut
+//   kept   the Ø9 holes, which are 0.5 per side to the Belt Directors' shanks, past the slip clearance
+// Deferred: the flap's holes (H1, H2), whose fasteners the model does not yet place.
 
 include <BOSL2/std.scad>
+include <../print_fit.scad>
 include <arm_body_outline.scad>
 
 /* [Configuration] */
@@ -208,12 +218,38 @@ PLATES = [
     ["B", 65.750, 70.250], ["B", 77.250, 82.750],
     ["C", 55.650, 60.250], ["C", 68.250, 72.350],
     ["D", 55.650, 60.250], ["D", 68.250, 70.250]];
+A_OPEN_Z = 55.650;                          // revised: A's pocket opens at C's lower plate face
+B_OPEN_Z = 65.050;                          // revised: B's lower plate and pocket open here, so B's bearings stand as far apart as C's
 WEB_Z  = [60.250, 68.250];                  // C's and D's webs
 HOLES = [
     ["A", COL_A, [[55.750, 6.0], [59.250, 4.5], [60.250, 6.0], [77.250, 4.5], [78.250, 6.0], [84.500, 6.0]]],
     ["B", COL_B, [[65.750, 6.0], [69.250, 4.5], [70.250, 6.0], [77.250, 4.5], [78.250, 6.0], [84.500, 6.0]]],
     ["C", COL_C, [[55.650, 6.0], [59.150, 4.5], [60.250, 6.0], [68.250, 4.5], [68.850, 6.0], [72.350, 6.0]]],
     ["D", COL_D, [[55.650, 6.0], [59.150, 4.5], [60.250, 6.0], [68.250, 2.5], [70.250, 2.5]]]];
+// `revised` changes two columns' steps. A's pocket opens at C's lower plate face, which `revised` draws
+// over it; cut from A's own face, a 0.1 mm skin would close the pocket on -Z, and the bearing could not be
+// pressed in from there as it is at B and C. D's lower plate takes the upper plate's Ø5 hole through,
+// replacing its Ø12 pocket and Ø9 hole, so the Idler Plug passes through both plates and its head stands
+// on the upper one.
+function column_steps(h, cfg) =
+    cfg == "previous" ? h[2]
+  : h[0] == "A" ? concat([[A_OPEN_Z, h[2][0][1]]], [for (i = [1 : len(h[2]) - 1]) h[2][i]])
+  : h[0] == "B" ? concat([[B_OPEN_Z, h[2][0][1]], [B_OPEN_Z + h[2][1][0] - h[2][0][0], h[2][1][1]]], [for (i = [2 : len(h[2]) - 1]) h[2][i]])
+  : h[0] == "D" ? concat([[h[2][0][0], h[2][3][1]]], [for (i = [2 : len(h[2]) - 1]) h[2][i]])
+  : h[2];
+
+// The fits (print_fit.scad): the Ø12 pockets are the MR128s' seats at the press clearance, and D's Ø5 holes
+// take the Idler Plug's tube (Ø4.9, the MR85's bore at the press clearance) at the slip clearance. The
+// Ø9 holes keep their 0.5 per side to the Belt Directors' Ø8 shanks, past the slip clearance, and the web's
+// R6 about D is not a seat. `previous` draws every clearance as zero, so its steps are the reference's.
+function slip(cfg)  = fit_clearances(cfg)[0];
+function press(cfg) = fit_clearances(cfg)[1];
+POCKET_D = 12.000;                          // the MR128's outer race
+PLUG_D   = 5.000;                           // the MR85's bore, which the Idler Plug's tube takes
+function pocket_r(cfg)   = fit_bore(POCKET_D, press(cfg)) / 2;
+function plug_hole_r(cfg) = fit_bore(fit_pin(PLUG_D, press(cfg)), slip(cfg)) / 2;
+function hole_steps(h, cfg) = [for (s = column_steps(h, cfg))
+    [s[0], s[1] == 6.0 && h[0] != "D" ? pocket_r(cfg) : s[1] == 2.5 ? plug_hole_r(cfg) : s[1]]];
 
 COLLAR   = [79.500, 83.500, 84.500, 4.000];  // flare start, flare end, top, growth
 
@@ -369,7 +405,8 @@ module web_2d()
 // In previous, C's lower plate stands on a cone about C below z C_BOSS[1]; revised draws it whole,
 // on a fill and fillets onto the box as D's is.
 module lugs(cfg) {
-    for (p = PLATES) let(z0 = cfg == "previous" && p[0] == "C" && p[1] == C_BOSS[0] ? C_BOSS[1] : p[1])
+    for (p = PLATES) let(z0 = cfg == "previous" && p[0] == "C" && p[1] == C_BOSS[0] ? C_BOSS[1]
+        : cfg == "revised" && p[0] == "B" && p[1] == PLATES[2][1] ? B_OPEN_Z : p[1])
         translate([0, 0, z0]) linear_extrude(p[2] - z0) plate_2d(p[0], p[1]);
     if (cfg == "previous") intersection() {
         translate([0, 0, C_BOSS[0]]) linear_extrude(C_BOSS[1] - C_BOSS[0] + epsilon) c_hull_2d();
@@ -599,12 +636,12 @@ module d_relief_cut()
         arc_pts(D_RELIEF[2], D_RELIEF[3], -90, -135, 12),
         [[D_FILL[0], D_RELIEF[0]], [D_FILL[0] - 1, D_RELIEF[0] + 1]]));
 
-module lug_hole_cuts()
-    for (h = HOLES) translate(h[1])
+module lug_hole_cuts(cfg)
+    for (h = HOLES) let(s = hole_steps(h, cfg), n = len(s)) translate(h[1])
         rotate_extrude($fn = 96) polygon(concat(
-            [[0, h[2][0][0] - epsilon]],
-            [for (i = [0 : len(h[2]) - 2]) each [[h[2][i][1], i == 0 ? h[2][0][0] - epsilon : h[2][i][0]], [h[2][i][1], h[2][i + 1][0]]]],
-            [[h[2][len(h[2]) - 1][1], h[2][len(h[2]) - 1][0] + epsilon], [0, h[2][len(h[2]) - 1][0] + epsilon]]));
+            [[0, s[0][0] - epsilon]],
+            [for (i = [0 : n - 2]) each [[s[i][1], i == 0 ? s[0][0] - epsilon : s[i][0]], [s[i][1], s[i + 1][0]]]],
+            [[s[n - 1][1], s[n - 1][0] + epsilon], [0, s[n - 1][0] + epsilon]]));
 
 // --- N1 ----------------------------------------------------------------------------------------
 // The +Y half above the ±X ears' top edges.
@@ -625,26 +662,39 @@ module collar_flare()
 module collar_top() translate([0, 0, COLLAR[1]]) linear_extrude(COLLAR[2] - COLLAR[1]) offset(r = COLLAR[3]) collar_base_2d();
 
 // --- Cuts --------------------------------------------------------------------------------------
-module bore_cut()
+// The fits, in `revised`: the 6810's seat below the ledge (B1, the bore keeps its Ø65 for the Pivot Stator
+// Holder, whose body is drawn at the slip clearance to it), the K1 slots on the Stator Balancers' 3.9 x 9.9
+// shanks at the press clearance (a tapped-in press: the reference's 4.0 x 10.0 already is that), Q1 on the 1" CF tube (C-504) at the press clearance, and the tie
+// holes and nut traps at the slip clearance to an M2 rod and nut (4.0 AF).
+BEARING_6810_D = 65.000;
+BALANCER      = [3.900, 9.900];             // #200-003's shank, radial depth by width
+M2_NUT_AF     = 4.000;
+function seat_r(cfg)  = fit_bore(BEARING_6810_D, press(cfg)) / 2;
+// K1 is drawn 4.0 x 10.0 round a 3.9 x 9.9 shank, which is the press clearance already: grown only if that is ever less.
+function slot_grow(cfg) = let(g = max(0, (fit_bore(BALANCER[0], press(cfg)) - ARM_BODY_SLOT[1] + ARM_BODY_SLOT[0]) / 2,
+                                 (fit_bore(BALANCER[1], press(cfg)) - 2 * ARM_BODY_SLOT[2]) / 2)) round(g * 1e6) / 1e6;
+
+module bore_cut(cfg)
     rotate_extrude() polygon([
-        [0, Z[0] - 1], [BORE_R, Z[0] - 1], [BORE_R, L1[0]], [LEDGE_R, L1[0]], [LEDGE_R, L1[1]],
+        [0, Z[0] - 1], [seat_r(cfg), Z[0] - 1], [seat_r(cfg), L1[0]], [LEDGE_R, L1[0]], [LEDGE_R, L1[1]],
         [BORE_R, L1[1]], [BORE_R, L2[0]], [LEDGE_R, L2[1]], [LEDGE_R, L2[2]], [BORE_R, L2[2]],
         [BORE_R, Z[1] + 1], [0, Z[1] + 1]]);
 
-module slot_cut() {
-    translate([0, 0, Z[0] - 1]) linear_extrude(Z[1] - Z[0] + 2) intersection() { arm_body_slots_2d(); square([2 * BOX[1], BOX[1]], center = true); }
-    translate([0, 0, SLOT_Y_FLOOR]) linear_extrude(Z[1] - SLOT_Y_FLOOR + 1) difference() { arm_body_slots_2d(); square([2 * BOX[1], BOX[1]], center = true); }
+module slot_cut(cfg) {
+    translate([0, 0, Z[0] - 1]) linear_extrude(Z[1] - Z[0] + 2) intersection() { offset(delta = slot_grow(cfg)) arm_body_slots_2d(); square([2 * BOX[1], BOX[1]], center = true); }
+    translate([0, 0, SLOT_Y_FLOOR]) linear_extrude(Z[1] - SLOT_Y_FLOOR + 1) difference() { offset(delta = slot_grow(cfg)) arm_body_slots_2d(); square([2 * BOX[1], BOX[1]], center = true); }
 }
 
-module socket_cut()
-    for (s = [-1, 1]) translate([-SOCKET[0], s > 0 ? SOCKET[3] : -BOX[1] - 1, SOCKET[1]])
-        cube([2 * SOCKET[0], BOX[1] - SOCKET[3] + 1, SOCKET[2] - SOCKET[1]]);
+module socket_cut(cfg)
+    let(g = press(cfg))
+    for (s = [-1, 1]) translate([-SOCKET[0] - g, s > 0 ? SOCKET[3] : -BOX[1] - 1, SOCKET[1] - g])
+        cube([2 * (SOCKET[0] + g), BOX[1] - SOCKET[3] + 1, SOCKET[2] - SOCKET[1] + 2 * g]);
 
-module tie_cuts()
+module tie_cuts(cfg)
     for (x = [-TIE[0], TIE[0]], z = TIE[1]) {
-        translate([x, 0, z]) rotate([90, 0, 0]) cylinder(d = TIE[2], h = 2 * BOX[1] + 4, center = true, $fn = 48);
+        translate([x, 0, z]) rotate([90, 0, 0]) cylinder(d = fit_bore(TIE[2], slip(cfg)), h = 2 * BOX[1] + 4, center = true, $fn = 48);
         for (s = [-1, 1]) translate([x, 0, z]) rotate([s * -90, 0, 0]) rotate([0, 0, 30 + 90 * (1 - s)])
-            cylinder(d = NUT[0] / cos(30), h = NUT[1], $fn = 6);
+            cylinder(d = (cfg == "previous" ? NUT[0] : fit_bore(M2_NUT_AF, slip(cfg))) / cos(30), h = NUT[1], $fn = 6);
     }
 
 // --- Part --------------------------------------------------------------------------------------
@@ -691,11 +741,11 @@ module arm_body(cfg = config)
     difference() {
         body(cfg);
         window_cut();
-        bore_cut();
-        slot_cut();
-        socket_cut();
-        tie_cuts();
-        lug_hole_cuts();
+        bore_cut(cfg);
+        slot_cut(cfg);
+        socket_cut(cfg);
+        tie_cuts(cfg);
+        lug_hole_cuts(cfg);
     }
 
 LAYERS = [["flap", -4.0], ["body", 50.0], ["window", 30.0], ["plates", 58.0], ["web", 64.0], ["upper", 71.5], ["top", 88.0]];

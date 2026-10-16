@@ -1,0 +1,20 @@
+{
+  "title": "Belt Director Cap",
+  "subtitle": "#210-001 · 210-001_BeltDirectorCap.scad revised render · no reference mesh exists",
+  "cut": true,
+  "from": [1, -1, 0.6],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/210-001.stl"}]}
+  ],
+  "labels": [
+    {"at": [4.75, 0, 1.0], "text": "Disc Ø9.5 x 2.0, outer edge R1: inner race only"},
+    {"at": [2.3, 0, -2.0], "text": "Plug Ø4.6, 5.0 long, solid"}
+  ],
+  "presets": [
+    {"label": "Section", "at": [0, 0, -1.5], "span": 14, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Dimensions", "text": "The disc and plug dimensions and their reasons are in belt_director.scad's header, which the Small and Large Belt Directors' heads share. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}
