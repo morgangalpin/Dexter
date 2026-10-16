@@ -333,7 +333,7 @@ module flange() difference() {
         intersection() {
             j2_axis() up(FLANGE_X) cylinder(d = FLANGE_D, h = X_FACE - FLANGE_X + epsilon, $fn = 360);
             // above the top face, and below it down through the +X face's round
-            translate([0, -50, BODY_Z[1] - TOP_R[1]]) cube([X_FACE + epsilon, 100, 20]);
+            translate([0, -50, BODY_Z[1] - TOP_R[1]]) cube([X_FACE, 100, 20]);
         }
         for (m = [0, 1]) mirror([0, m, 0]) flange_fillet();
     }

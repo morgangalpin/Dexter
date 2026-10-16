@@ -2,7 +2,9 @@
   "ref_dir": "../Reference/meshes/300-Pivot",
   "parts": [
     {"id": "300-001", "scad": "300-001_MainPivot.scad"},
-    {"id": "311-001", "scad": "311-001_MotorEndCapBase.scad"}
+    {"id": "300-002", "scad": "300-002_PivotCodeDisk.scad"},
+    {"id": "311-001", "scad": "311-001_MotorEndCapBase.scad"},
+    {"id": "312-001", "scad": "312-001_MotorEndCapPivot.scad"}
   ],
   "checks": [
     {"kind": "dist_gate", "id": "dist-300-001", "part": "300-001",
@@ -35,6 +37,23 @@
        {"label": "-Y face under the collar", "at": [0.0, -32.5, 19.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
        {"label": "135 deg face under the collar", "at": [-22.981, 22.981, 22.0], "toward": [-0.7071, 0.7071, 0.0], "fit": "slip"}
      ]},
+    {"kind": "outline", "id": "outline-300-002-lower", "part": "300-002", "config": "previous",
+     "scad": "300-002_PivotCodeDisk.scad", "out": "out/2d/300-002-lower.svg", "layer": "lower",
+     "reference": "300-002_PivotCodeDisk.stl", "axis": "z", "at": 0.1, "tol": 0.15,
+     "note": "#300-002 is drawn as two 2D profiles, each checked against the reference's section mid-layer before the part is extruded."},
+    {"kind": "outline", "id": "outline-300-002-upper", "part": "300-002", "config": "previous",
+     "scad": "300-002_PivotCodeDisk.scad", "out": "out/2d/300-002-upper.svg", "layer": "upper",
+     "reference": "300-002_PivotCodeDisk.stl", "axis": "z", "at": 0.9, "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-300-002", "part": "300-002",
+     "config": "previous", "scad": "300-002_PivotCodeDisk.scad", "out": "out/300-002.stl", "reference": "300-002_PivotCodeDisk.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-300-002", "config": "revised",
+     "scad": "300-002_PivotCodeDisk.scad", "out": "out/revised/300-002.stl"},
+    {"kind": "fits", "id": "fits-300-002", "part": "300-002 (revised)",
+     "stl": "out/revised/300-002.stl", "after": ["render-300-002"],
+     "note": "The revised #300-002's print fit: B1 on the Main Pivot's Ø53 J2 drum, on +X inside the hub, mid-height.",
+     "probes": [
+       {"label": "B1 bore", "at": [26.5, 0.0, 4.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
+     ]},
     {"kind": "dist_gate", "id": "dist-311-001", "part": "311-001",
      "config": "previous", "scad": "311-001_MotorEndCapBase.scad", "out": "out/311-001.stl", "reference": "311-001_MotorEndCapBase.stl", "tol": 0.15},
     {"kind": "render", "id": "render-311-001", "config": "revised",
@@ -55,6 +74,33 @@
     {"kind": "fits", "id": "fits-311-001", "part": "311-001 (revised)",
      "stl": "out/revised/311-001.stl", "after": ["render-311-001"],
      "note": "The revised #311-001's print fits: the 6810's 50 mm bore over the land, the motor's 42.292 square on a lug, the motor's rear face under the seat, and the M3 screw in the motor hole on 45 deg (centre 15.5, 15.5).",
+     "probes": [
+       {"label": "land in the 6810", "at": [17.6777, 17.6777, 7.0], "toward": [0.7071, 0.7071, 0.0], "fit": "press"},
+       {"label": "lug on the motor", "at": [21.146, 10.0, -4.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "seat on the motor's rear", "at": [15.0, 8.0, -1.7], "toward": [0.0, 0.0, -1.0], "fit": "press"},
+       {"label": "M3 hole", "at": [16.5607, 16.5607, 4.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "dist_gate", "id": "dist-312-001", "part": "312-001",
+     "config": "previous", "scad": "312-001_MotorEndCapPivot.scad", "out": "out/312-001.stl", "reference": "312-001_MotorEndCapPivot.stl", "tol": 0.15,
+     "note": "#312-001 renders on CGAL, as #311-001 does."},
+    {"kind": "render", "id": "render-312-001", "config": "revised",
+     "scad": "312-001_MotorEndCapPivot.scad", "out": "out/revised/312-001.stl"},
+    {"kind": "probes", "id": "probes-312-001", "part": "312-001 (revised)",
+     "stl": "out/revised/312-001.stl", "after": ["render-312-001"],
+     "note": "The revised #312-001: the outline at R26.5, not #311-001's 26.75, and the motor holes' Ø6 counterbores up to z 2.3, above which the holes are the Ø3.2 of the slip fit.",
+     "items": [
+       {"label": "ring inside R26.5 on the diagonal", "at": [18.5, 18.5, 1.0], "solid": true},
+       {"label": "no ring beyond R26.5 on the diagonal", "at": [18.8, 18.8, 1.0], "solid": false},
+       {"label": "counterbore open under its floor", "at": [18.0, 15.5, 1.0], "solid": false},
+       {"label": "counterbore's wall at Ø6", "at": [18.7, 15.5, 1.0], "solid": true},
+       {"label": "Ø3.2 hole open above the floor", "at": [16.9, 15.5, 4.0], "solid": false},
+       {"label": "floor over the counterbore at z 2.3", "at": [18.0, 15.5, 2.5], "solid": true},
+       {"label": "top face at z 10.5 (material below)", "at": [0.0, -20.0, 10.4], "solid": true},
+       {"label": "lug down to z -6.7", "at": [23.5, 10.0, -6.6], "solid": true}
+     ]},
+    {"kind": "fits", "id": "fits-312-001", "part": "312-001 (revised)",
+     "stl": "out/revised/312-001.stl", "after": ["render-312-001"],
+     "note": "The revised #312-001's print fits, the same four as #311-001's: the 6810's 50 mm bore over the land, the motor's 42.292 square on a lug, the motor's rear face under the seat, and the M3 screw in the motor hole on 45 deg (centre 15.5, 15.5).",
      "probes": [
        {"label": "land in the 6810", "at": [17.6777, 17.6777, 7.0], "toward": [0.7071, 0.7071, 0.0], "fit": "press"},
        {"label": "lug on the motor", "at": [21.146, 10.0, -4.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
