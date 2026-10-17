@@ -82,52 +82,42 @@ impl Tools for Ctx {
     }
 }
 
-/// The geometry backend a part or check names with `"engine"`, passed to
-/// OpenSCAD as `--backend=<engine>`; absent is `"manifold"`.
-pub struct Engine<'a> {
-    inner: &'a dyn Tools,
-    backend: &'static str,
-}
+/// The backend every render runs on, named to OpenSCAD so that a snapshot
+/// whose own default differs still renders on Manifold.
+pub const BACKEND: &str = "--backend=manifold";
 
-impl<'a> Engine<'a> {
-    pub fn new(inner: &'a dyn Tools, name: Option<&str>) -> Result<Engine<'a>> {
-        match name {
-            None | Some("manifold") => Ok(Engine { inner, backend: "--backend=manifold" }),
-            Some("cgal") => Ok(Engine { inner, backend: "--backend=cgal" }),
-            Some(other) => bail!("engine \"{other}\" is not \"manifold\" or \"cgal\""),
-        }
-    }
-}
+/// A toolset whose every OpenSCAD run is on Manifold.
+pub struct Manifold<'a>(pub &'a dyn Tools);
 
-impl Tools for Engine<'_> {
+impl Tools for Manifold<'_> {
     fn openscad(&self, args: &[&str]) -> Result<Run> {
-        let mut full = vec![self.backend];
+        let mut full = vec![BACKEND];
         full.extend(args);
-        self.inner.openscad(&full)
+        self.0.openscad(&full)
     }
 
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
-        self.inner.scadmesh(args)
+        self.0.scadmesh(args)
     }
 
     fn size(&self, path: &str) -> Result<u64> {
-        self.inner.size(path)
+        self.0.size(path)
     }
 
     fn read(&self, path: &str) -> Result<String> {
-        self.inner.read(path)
+        self.0.read(path)
     }
 
     fn exists(&self, path: &str) -> bool {
-        self.inner.exists(path)
+        self.0.exists(path)
     }
 
     fn remove(&self, path: &str) {
-        self.inner.remove(path)
+        self.0.remove(path)
     }
 
     fn ensure_parent(&self, path: &str) -> Result<()> {
-        self.inner.ensure_parent(path)
+        self.0.ensure_parent(path)
     }
 }
 
@@ -142,7 +132,6 @@ pub struct MeshWork {
     pub job: Job,
     pub id: String,
     pub scad: String,
-    pub engine: Option<String>,
 }
 
 /// One job per mesh part of `config`, in render order. Jobs are independent,
@@ -155,7 +144,6 @@ pub fn mesh_work(group: &str, cfg: &GroupConfig, config: &str) -> Vec<MeshWork> 
             job: Job { writes: vec![format!("{group}/{}", mesh_path(&p.id))], ..Job::new(&format!("{group}/mesh-{}", p.id)) },
             id: p.id.clone(),
             scad: p.scad.clone(),
-            engine: p.engine.clone(),
         })
         .collect()
 }
@@ -224,8 +212,7 @@ pub fn build_part(tools: &dyn Tools, id: &str, scad: &str, config: &str) -> Resu
 
 /// Run one mesh job, reporting its line or its failure.
 pub fn mesh_outcome(tools: &dyn Tools, work: &MeshWork, config: &str) -> Outcome {
-    let built = Engine::new(tools, work.engine.as_deref()).and_then(|t| build_part(&t, &work.id, &work.scad, config));
-    match built {
+    match build_part(&Manifold(tools), &work.id, &work.scad, config) {
         Ok(line) => Outcome { ok: true, output: format!("  {} ... {line}\n", work.id) },
         Err(e) => Outcome { ok: false, output: format!("  {} ... FAILED\n{e:#}\n", work.id) },
     }

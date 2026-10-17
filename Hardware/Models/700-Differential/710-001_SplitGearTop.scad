@@ -38,7 +38,7 @@
 //
 // `compare` therefore cannot be satisfied here at its default 0.001 mm
 // tolerance, and no edit to this file would change that. Run against ITSELF
-// with this part's ignore ranges the reference still fails, at 0.074 mm: the
+// with this part's ignore ranges the reference still fails, at 0.024 mm: the
 // check bins vertex radii and measures their spacing rather than a dimension.
 //
 // Built in that order:
@@ -60,11 +60,6 @@
 // through the four radial holes (008.6 steps 8-9) -- they are one set of teeth.
 //
 // Agreement, candidate→reference: see specs/009-Design-Completion.md § DC-2.
-//
-// NOT YET ON MANIFOLD. Under Manifold the clone check's worst deviation is
-// 0.365 mm against its 0.06 tolerance; CGAL gives 0.058. 700-Differential/
-// render.json names "cgal" for this part and its checks until the difference
-// is found.
 
 include <diff_bevel.scad>
 

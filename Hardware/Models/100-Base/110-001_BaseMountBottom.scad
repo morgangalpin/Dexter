@@ -94,11 +94,6 @@
 // clears the 12.6 × 3.2 strake by 0.2 per side already. S1 takes no fit: the Base Clamp's
 // revised bore clears it, and the clamp grips the strakes (100-001_BaseClamp.scad). What B1, B2 and H2 take is not recorded; they take no clearance
 // until virtual assembly shows what mates with them, and then take their fits.
-//
-// NOT YET ON MANIFOLD. Under Manifold the `previous` render stands up to 7.2 off the reference beside
-// the windows, where the tower's face meets the flange, though its volume is within 0.04%; CGAL
-// passes the dist gate. 100-Base/render.json names "cgal" for this part and its checks until the
-// difference is found.
 
 include <BOSL2/std.scad>
 include <BOSL2/rounding.scad>
@@ -122,6 +117,12 @@ SLIP = fit_clearances(config)[0];
 ARM        = [75.000, 50.000, 12.500];
 FLANGE_H   = 16.000;
 FLANGE_R   = 5.000;
+// How far the arms reach inside the tower's face. Cut on the face itself, the flange's inner face
+// lies on the tower's facets exactly (cylinder() and rotate_extrude() place the same vertices), and
+// Manifold keeps the two as an interior wall that stands 7.2 off the reference. 0.005 is enough to
+// overlap, and it fills the windows' rounds below the flange's top by too little to measure; at 0.02
+// the fill stands 0.305 off the round.
+FLANGE_LAP = 0.005;
 
 // T1, S1, B1: radii and heights.
 TOWER_R    = 42.500;
@@ -186,9 +187,9 @@ module flange() {
         // Triangulated: the sweep's quads between layers are not quite planar.
         vnf_polyhedron(vnf_triangulate(
             offset_sweep(cross_path(), height = FLANGE_H, top = os_circle(r = FLANGE_R), steps = 24)));
-        // The arms stop at the tower's face, on the tower's own facets: the windows' rounds dip
+        // The arms stop at the tower's face, FLANGE_LAP inside its facets: the windows' rounds dip
         // below the flange's top there, and inside, the floor stands lower than it.
-        down(1) cylinder(r = TOWER_R, h = FLANGE_H + 2);
+        down(1) cylinder(r = TOWER_R - FLANGE_LAP, h = FLANGE_H + 2);
     }
 }
 

@@ -1236,11 +1236,10 @@ anything version 3 does not independently specify
     blend (`end_cap_channel.scad`, `side_blend()`). CGAL forgives an inside-out solid; Manifold
     subtracts it from the union. Both are now wound outward. `311-001` and `511-001` now pass their
     dist gates on Manifold at 0.149 and 0.119 mm, the same as on CGAL.
-  - `110-001` and `710-001` still miss their gates on Manifold (7.2 mm beside `110-001`'s windows;
-    0.365 mm on `710-001`), so they and their own checks name `"cgal"`, on which they pass.
-  - `100-003`'s dist gate fails on both of the snapshot's engines: 1.754 mm on Manifold, along the lug's
-    bend round, and 0.576 mm with a 2-manifold warning on CGAL. It passed only on 2021.01's CGAL, so it
-    is open until the bend round is drawn so that both engines take it.
+  - `110-001` and `710-001` missed their gates on Manifold, so they and their own checks named `"cgal"`
+    until [CR-3A22](#cr-3a22-cgal-retired).
+  - `100-003`'s dist gate failed on both of the snapshot's engines; [CR-3A22](#cr-3a22-cgal-retired)
+    closes it on Manifold.
   - `200-ArmBody`'s parts render on Manifold, and its outlines, fits and assembly clash check pass.
     The dist gates of `210-003` (2.997 mm), `210-004` and `210-005` (0.250 mm each) fail with the same
     figures on CGAL, so the engine does not cause them; they are open with the arm body's conversion.
@@ -1249,3 +1248,34 @@ anything version 3 does not independently specify
 - **Status:** `[Specified]`.
 - **Re-derive:** Install a snapshot as `Hardware/Models/README.md` describes, then run
   `rust-script --force render.rs ... --verify` once, so `render.rs` is rebuilt against the crate.
+
+### CR-3A22: CGAL retired
+
+- **Affects:** [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson),
+  `Hardware/Models/render-check/` (`config.rs`, `meshes.rs`, `kinds.rs` and their tests),
+  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `100-Base/render.json`,
+  `300-Pivot/render.json`, `700-Differential/render.json`, `110-001_BaseMountBottom.scad`,
+  `100-003_PivotSkirt.scad`, `710-001_SplitGearTop.scad`, and comments in `120-001_BaseLong.scad`,
+  `300-001_MainPivot.scad`, `base_assembly.scad`, `robot_assembly.scad` and
+  `GlueRig_EndArmHubToDiff_B.scad`.
+- **Amends:** [CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine) (the `"cgal"` opt-out).
+- **Was:** A part or check could name `"engine": "cgal"`, and `110-001` and `710-001` did. `100-003`'s
+  dist gate failed on both engines.
+- **Now:** Every part and check renders on Manifold, and `render.json` refuses an `engine` field. All
+  three parts pass on Manifold:
+  - `110-001`: the flange was cut on the tower's own facets, so its inner face lay exactly on the
+    tower's face, and Manifold kept the shared face as a wall inside each arm. The arms now reach
+    `FLANGE_LAP` inside the tower (its comment gives the figures): dist 0.220 mm against
+    0.25.
+  - `100-003`: L1 and L2, and L3's two parts, each met on the plane where L2 starts, and Manifold kept
+    both shared faces as a wall across the lug. L1 and L3's part in it now run `SEAM_LAP` past the
+    plane (its comment gives the figures): dist 0.045 mm against 0.15.
+  - `710-001`: the Manifold render is CGAL's surface with fewer triangles, so its miss was `compare`
+    reading vertex rings in the reference's tooth toes that only CGAL's tessellation had matched. The
+    clone check now ignores those rings (its note gives the figures) and reads 0.058 mm on both engines.
+  The rule these fixes follow is owned by `Hardware/Models/README.md` (*A shared face is not a join*).
+- **Driver:** One engine to keep working. With every part passing on Manifold, the opt-out only let a
+  part drift onto an engine that is slow on fillets and that the gates no longer exercise.
+- **Status:** `[Specified]`.
+- **Re-derive:** `cargo test` in `render-check/`, then `rust-script --force render.rs <group> --verify`
+  for 100-Base, 300-Pivot and 700-Differential.

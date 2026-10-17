@@ -65,8 +65,9 @@
 // from source would take over an hour, and a `use`d file keeps its own
 // `config`. The Main Pivot is `render.rs 300-Pivot --meshes`'s revised render
 // in ../300-Pivot/out/asm/; its source includes BOSL2, whose transforms a
-// `use` would bring here unset. The Base Motor End Cap is that cache too,
-// because it renders on CGAL; its faces come from its source. The plate, the
+// `use` would bring here unset. The Base Motor End Cap is that cache too, since
+// a `use`d file keeps its own `config`; the faces placed against it come from
+// its source. The plate, the
 // Attach and the Cap are built from source; they are quick, and the last two
 // take their config as an argument.
 //

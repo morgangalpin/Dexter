@@ -187,7 +187,7 @@ pub fn echoed<'a>(stderr: &'a str, tag: &str) -> Option<&'a str> {
 
 /// How an assembly clash render came out. OpenSCAD reports an empty
 /// intersection by refusing to export it; a seat, where two parts share a
-/// face, exports a surface with no volume. Both are clear. A CGAL failure
+/// face, exports a surface with no volume. Both are clear. A failed boolean
 /// returns one operand as the result, so its output says nothing about the
 /// pair, and the check fails rather than measure it.
 #[derive(Debug, PartialEq)]

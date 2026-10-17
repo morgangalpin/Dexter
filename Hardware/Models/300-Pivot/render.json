@@ -6,8 +6,7 @@
   ],
   "checks": [
     {"kind": "dist_gate", "id": "dist-300-001", "part": "300-001",
-     "config": "previous", "scad": "300-001_MainPivot.scad", "out": "out/300-001.stl", "reference": "300-001_MainPivot.stl", "tol": 0.15,
-     "note": "#300-001 renders on OpenSCAD's Manifold engine only: under CGAL its swept and lofted blends leave non-planar faces and a mesh that is not a valid 2-manifold."},
+     "config": "previous", "scad": "300-001_MainPivot.scad", "out": "out/300-001.stl", "reference": "300-001_MainPivot.stl", "tol": 0.15},
     {"kind": "render", "id": "render-300-001", "config": "revised",
      "scad": "300-001_MainPivot.scad", "out": "out/revised/300-001.stl"},
     {"kind": "probes", "id": "probes-300-001", "part": "300-001 (revised)",
@@ -37,8 +36,7 @@
        {"label": "135 deg face under the collar", "at": [-22.981, 22.981, 22.0], "toward": [-0.7071, 0.7071, 0.0], "fit": "slip"}
      ]},
     {"kind": "dist_gate", "id": "dist-311-001", "part": "311-001",
-     "config": "previous", "scad": "311-001_MotorEndCapBase.scad", "out": "out/311-001.stl", "reference": "311-001_MotorEndCapBase.stl", "tol": 0.15,
-     "note": "#311-001 renders on CGAL, as #511-001 does: under Manifold the wire channel's lofted blend leaves an open seam and specks."},
+     "config": "previous", "scad": "311-001_MotorEndCapBase.scad", "out": "out/311-001.stl", "reference": "311-001_MotorEndCapBase.stl", "tol": 0.15},
     {"kind": "render", "id": "render-311-001", "config": "revised",
      "scad": "311-001_MotorEndCapBase.scad", "out": "out/revised/311-001.stl"},
     {"kind": "probes", "id": "probes-311-001", "part": "311-001 (revised)",

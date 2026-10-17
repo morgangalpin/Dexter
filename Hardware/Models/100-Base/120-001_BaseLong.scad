@@ -36,7 +36,7 @@
 // round, which falls 0.10 below the flat there; the round is drawn for the flat throughout.
 //
 // NOT ON CGAL. CGAL asserts on the windows' cuts in every arrangement tried, and drops cutters when
-// it does. Render on Manifold, the default engine; never name "cgal" for this part.
+// it does.
 //
 // Measured from the reference with scadmesh planes/slice/arcs/pattern/solid/transform. The feature IDs
 // are those of 120-001_BaseLong.view.json, which labels each one on the mesh:

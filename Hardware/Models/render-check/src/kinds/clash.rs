@@ -3,7 +3,7 @@
 //!
 //! OpenSCAD reports an empty intersection by refusing to export it; a seat,
 //! where two parts share a face, exports a surface with no volume. Both are
-//! clear. A CGAL failure returns one operand as the result, so its output says
+//! clear. A failed boolean returns one operand as the result, so its output says
 //! nothing about the pair, and the check fails rather than measure it.
 //!
 //! Fields: `scad`, `a`, `b`, `out`.

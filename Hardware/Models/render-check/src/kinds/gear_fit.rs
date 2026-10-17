@@ -1,6 +1,7 @@
-//! `gear_fit`: a Stator Holder against the External Gear. CGAL cannot take this
-//! pair at zero clearance: the keys then fit the slots line to line, and a
-//! boolean over coincident faces fails and returns an operand. The fit is
+//! `gear_fit`: a Stator Holder against the External Gear. A boolean cannot
+//! judge this pair at zero clearance: the keys then fit the slots line to line,
+//! and a boolean over coincident faces fails (CGAL returned an operand; Manifold
+//! keeps the shared faces as walls). The fit is
 //! checked where it is made instead, in each shared plane below the gear's end,
 //! between the spigot's outline (the holder's outer loop) and the socket's (the
 //! gear's inner loop). Drawn at zero clearance the two must be the same

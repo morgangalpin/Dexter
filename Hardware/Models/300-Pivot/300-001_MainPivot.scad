@@ -76,7 +76,7 @@
 // volume the reference's to 0.005%.
 //
 // NOT ON CGAL. Under CGAL the swept and lofted blends leave non-planar faces and a mesh that is not
-// a valid 2-manifold. Render on Manifold, the default engine; never name "cgal" for this part.
+// a valid 2-manifold.
 //
 // FITS (../print_fit.scad), revised only:
 //

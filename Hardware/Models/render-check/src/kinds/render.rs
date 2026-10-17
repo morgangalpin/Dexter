@@ -25,27 +25,11 @@ mod tests {
     }
 
     #[test]
-    fn a_check_without_an_engine_renders_on_manifold() {
+    fn a_check_without_a_configuration_renders_on_manifold() {
         let fake = Fake::new();
         let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl"}), &fake);
         assert!(o.ok, "{}", o.output);
         assert_eq!(fake.calls(), vec!["openscad --backend=manifold -o out/a.stl a.scad"]);
-    }
-
-    #[test]
-    fn a_cgal_check_renders_on_cgal() {
-        let fake = Fake::new();
-        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "engine": "cgal"}), &fake);
-        assert!(o.ok, "{}", o.output);
-        assert_eq!(fake.calls(), vec!["openscad --backend=cgal -o out/a.stl a.scad"]);
-    }
-
-    #[test]
-    fn an_unknown_engine_fails_the_check() {
-        let fake = Fake::new();
-        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "engine": "cgl"}), &fake);
-        assert!(!o.ok && o.output.contains("engine \"cgl\""), "{}", o.output);
-        assert!(fake.calls().is_empty());
     }
 
     #[test]
