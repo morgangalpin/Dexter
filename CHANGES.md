@@ -1080,6 +1080,8 @@ anything version 3 does not independently specify
     `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
     `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
     Their meshes moved to `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/500-ExternalGear/`: `520-003_ExGearNutHold.scad`, its `.view.json` sidecar and
+    `render.json`. Its mesh moved to `Reference/meshes/500-ExternalGear/`.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1220,6 +1222,11 @@ anything version 3 does not independently specify
     open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
+  - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and
+    extruded: the plate with the all-thread hole, and the nut trap above it. The reference held both
+    holders, mirror images of each other, in one mesh. `520-003_ExGearNutHold.scad` is now the one source
+    for both, and `holder` chooses A, B or both. Their curved face is the Ex Gear Mount's R38 bore.
+    `revised` draws the slip fits on the M3 all-thread hole and the nut trap.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.

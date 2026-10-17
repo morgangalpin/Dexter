@@ -1,6 +1,33 @@
 {
   "ref_dir": "../Reference/meshes/500-ExternalGear",
+  "parts": [
+    {"id": "511-001", "scad": "511-001_ExGearMotorEndCap.scad"},
+    {"id": "511-002", "scad": "511-002_ExGearStatorHolder.scad"},
+    {"id": "520-003", "scad": "520-003_ExGearNutHold.scad"}
+  ],
   "checks": [
+    {"kind": "outline", "id": "outline-520-003-plate", "part": "520-003", "config": "previous",
+     "scad": "520-003_ExGearNutHold.scad", "out": "out/2d/520-003-plate.svg", "layer": "plate",
+     "reference": "520-003_ExGearNutHold.stl", "axis": "z", "at": 0.6, "tol": 0.15,
+     "note": "#520-003/-004 are drawn as two 2D profiles, both holders in each, checked against the reference's section mid-layer before the part is extruded."},
+    {"kind": "outline", "id": "outline-520-003-trap", "part": "520-003", "config": "previous",
+     "scad": "520-003_ExGearNutHold.scad", "out": "out/2d/520-003-trap.svg", "layer": "trap",
+     "reference": "520-003_ExGearNutHold.stl", "axis": "z", "at": 2.4, "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-520-003", "part": "520-003", "config": "previous",
+     "scad": "520-003_ExGearNutHold.scad", "out": "out/520-003.stl", "reference": "520-003_ExGearNutHold.stl", "tol": 0.15,
+     "note": "Both holders, as the reference holds them: A, and B its mirror image about y 20."},
+    {"kind": "render", "id": "render-520-003", "config": "revised",
+     "scad": "520-003_ExGearNutHold.scad", "out": "out/revised/520-003.stl"},
+    {"kind": "fits", "id": "fits-520-003", "part": "520-003 (revised)", "stl": "out/revised/520-003.stl", "after": ["render-520-003"],
+     "note": "The revised holders' print fits: the M3 all-thread (Ø3.0) in H1, and the M3 nut (5.5 across flats) on a flat of N1, in Holder A at y 10 and Holder B at y 30.",
+     "probes": [
+       {"label": "A: H1 on the all-thread", "at": [-6.123, 10.0, 0.6], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "A: N1 on the nut's flat", "at": [-7.623, 12.75, 2.4], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "B: H1 on the all-thread", "at": [-6.123, 30.0, 0.6], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "B: N1 on the nut's flat", "at": [-7.623, 27.25, 2.4], "toward": [0.0, 1.0, 0.0], "fit": "slip"}
+     ]},
+
+
     {"kind": "dist_gate", "id": "dist-511-001", "part": "511-001", "config": "previous",
      "scad": "511-001_ExGearMotorEndCap.scad", "out": "out/511-001.stl", "reference": "511-001_ExGearMotorEndCap.stl", "tol": 0.15},
     {"kind": "dist_gate", "id": "dist-511-002", "part": "511-002", "config": "previous",
