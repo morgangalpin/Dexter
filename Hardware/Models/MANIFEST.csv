@@ -369,7 +369,7 @@ robot_assembly.scad,(all),29520,,3931d0d79f303198944e4b8f66f3563ec4233ccc06134a1
 100-Base/window_round.scad,100-Base,6522,,3558faba4a84fc50769537f7ce203fe24c43666b980a93486cf9d904d1983610
 100-Base/base_assembly.clash.json,100-Base,2239,,538dd3d8a53d953527298d8c37656552d3abfae12bff92e4e0708a11bac4d934
 200-ArmBody/200-001_ArmBody.view.json,200-ArmBody,4537,,585a70bfb6885561e7a332922a7d16a0f22c1550ab2bc7c9c662a7b6831135d0
-300-Pivot/300-001_MainPivot.scad,300-Pivot,39138,,efac25a4028d7992501e4ec0f99f798309562fb121648c4167ba8c55c700e079
+300-Pivot/300-001_MainPivot.scad,300-Pivot,40470,,af1b13f6baa98b8c82e68ea92024b79056eeb202ff0c90e8d6d8e5e90f45f7cc
 300-Pivot/300-001_MainPivot.view.json,300-Pivot,2999,,1585a687b7fa7578cc44e2331d0651e2ed90871b9e8299336d08e81849e7af18
 300-Pivot/311-001_MotorEndCapBase.scad,300-Pivot,13451,,c222e8a65f3695f8363965aca3a9754e377a45fd7006598d3e97ea8da6e9a286
 Reference/meshes/100-Base/100-001_BaseClamp.stl,Reference,64384,binary/1286,9b55f56b492ca696c0ae7042affb9650e6579a8d54d41905a752584c7d3d2a6d
@@ -417,7 +417,7 @@ Reference/onshape-v1/README.md,Reference,6693,,cdc48d0c6dfaf3af78f191a79ad7a6e33
 300-Pivot/312-001_MotorEndCapPivot.scad,300-Pivot,2416,,acb013111216769deac9b928d244f7598e3cda3202ca57877a76bdee402fb6cc
 300-Pivot/312-001_MotorEndCapPivot.view.json,300-Pivot,2198,,245c5bad9123ad249ff85762cf92376c6ebb2d1800dd858a64c31428337a8001
 300-Pivot/pivot_assembly.clash.json,300-Pivot,1492,,03a8bbf93bdabcf98e020a6ca3b8530171dd1b7bda6466d238449baaf8489cd8
-300-Pivot/pivot_assembly.scad,300-Pivot,6297,,50ab20a3438f54b6c32be4ad446e5338ee69728a204a61938955e8386d05d472
-300-Pivot/pivot_assembly.view.json,300-Pivot,3094,,f1d9f4544e960428f19f5ed79c7b22b2797e9b8051c0eed1d8e7f72abb570896
+300-Pivot/pivot_assembly.scad,300-Pivot,6617,,773f94e5dc753f45edfef1818b33be7fd13d6293adfcd5a311184a38531b0b60
+300-Pivot/pivot_assembly.view.json,300-Pivot,3159,,8b72ad1c599517752970da84d208805a267f0fd54d0403f9ccb86fd7afb8c4cc
 Reference/meshes/300-Pivot/300-002_PivotCodeDisk.stl,Reference,718784,binary/14374,0d955ff1545827ee67421ee9f420ee68d2220c589167cdf3f3b0dfcb260b9970
 Reference/meshes/300-Pivot/312-001_MotorEndCapPivot.stl,Reference,338584,binary/6770,a908b5d58994eae53ebae4b3625f18049addea5ab1a3c3d72e8e646418a8ecd4
