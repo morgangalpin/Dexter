@@ -47,9 +47,9 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #300-001 | Main Pivot | 1 | `300-001_MainPivot.scad` | clears the code disc and the skirt's collar in `revised` |
-| #300-002 | Pivot Code Disk | 1 | `300-002_PivotCodeDisk.stl` |  |
+| #300-002 | Pivot Code Disk | 1 | `300-002_PivotCodeDisk.scad` | `revised` opens the bore by the slip clearance on the J2 drum |
 | #311-001 | Motor End Cap (Base) | 1 | `311-001_MotorEndCapBase.scad` | press fits on the 6810 and the motor in `revised` |
-| #312-001 | Motor End Cap (Pivot) | 1 | `312-001_MotorEndCapPivot.stl` |  |
+| #312-001 | Motor End Cap (Pivot) | 1 | `312-001_MotorEndCapPivot.scad` | `include`s #311-001's source with its own outline and counterbores; press fits on the 6810 and the motor in `revised` |
 
 ## 400-EndArm — End arm hub and pulleys
 

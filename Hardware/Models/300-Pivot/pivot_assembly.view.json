@@ -1,0 +1,44 @@
+{
+  "scad": "pivot_assembly.scad",
+  "title": "Main Pivot stack",
+  "subtitle": "pivot_assembly.scad · the Base Motor End Cap on the J1 end, the Pivot Motor End Cap and the Pivot Code Disk on the J2 drum · orthographic, cut on XZ",
+  "groups": [
+    {"name": "Main Pivot", "role": "J1's turning body", "parts": [
+      {"id": "pivot", "name": "Main Pivot, revised", "pn": "#300-001", "color": "#d4ad6b"},
+      {"id": "code_disk", "name": "Pivot Code Disk", "pn": "#300-002", "color": "#2f6db5"}]},
+    {"name": "J1 end", "role": "the Base's drive hangs below the pivot", "parts": [
+      {"id": "j1_cap", "name": "Base Motor End Cap", "pn": "#311-001", "color": "#e0a458"},
+      {"id": "j1_motor", "name": "J1 motor", "pn": "C-101", "color": "#50565c"},
+      {"id": "bearing_j1", "name": "J1 6810, on the cap's land", "pn": "6810", "color": "#dcdcdc"}]},
+    {"name": "J2 end", "role": "J2's drive stands out along +X", "parts": [
+      {"id": "j2_cap", "name": "Pivot Motor End Cap", "pn": "#312-001", "color": "#c98a3a"},
+      {"id": "j2_motor", "name": "J2 motor", "pn": "C-101", "color": "#50565c"},
+      {"id": "bearing_j2", "name": "J2 6810, on the cap's land", "pn": "6810", "color": "#dcdcdc"}]}
+  ],
+  "labels": [
+    {"at": [0, -25, -3.5], "text": "J1 6810 on the Base cap's land, under the pivot's base face z 0"},
+    {"at": [-24, 0, -12.2], "text": "Base cap seat, z −12.2: J1 motor's rear"},
+    {"at": [41.7, 0, 84], "text": "Pivot Code Disk, flat face at x 41.7, away from the body"},
+    {"at": [38.5, 0, 9.5],"text": "Disk hub, its top on the body face x 35.5"},
+    {"at": [55, 0, 64], "text": "J2 end face x 55: the Pivot cap's top face"},
+    {"at": [58.5, 0, 70], "text": "J2 6810 on the Pivot cap's land, x 55…62"},
+    {"at": [67.2, 0, 62], "text": "Pivot cap seat, x 67.2: J2 motor's rear"},
+    {"at": [66, -9.35, 45], "text": "Wire channel turned {cable_turn}° toward H2, the cable hole in the end face"}
+  ],
+  "presets": [
+    {"label": "Whole pivot", "at": [30, 0, 30], "span": 170},
+    {"label": "J1 end", "at": [0, 0, -4], "span": 70},
+    {"label": "J2 end", "at": [62, 0, 37.5], "span": 70},
+    {"label": "Code disk", "at": [41.7, 0, 60], "span": 60},
+    {"label": "Pivot cap and H2", "at": [62, -9.35, 45], "span": 26}
+  ],
+  "notes": [
+    {"heading": "Provisional placements", "emphasis": true,
+     "text": "No spec fixes the Pivot Code Disk's turn about J2 or the Base cap's turn about J1: 008.4 step 6 leaves the Base cap's free, and the disk keeps its own frame's. The Pivot cap's wire channel is turned {cable_turn}° about J2 toward H2, the cable hole that opens in the end face: the turn nearest H2 that puts its motor holes on the pivot's H5. The Base cap is turned 180° about J1 from base_assembly.scad's frame, which turns the pivot 180° to put it in the Pivot Skirt. Spec 009 tracks these as DC-16."},
+    {"heading": "Not drawn",
+     "items": [
+       "The Base Long and the Arm Body that hold the 6810s' outer races",
+       "The strain-wave drives that close each motor: 600-StrainWave",
+       "The strakes in the pivot's slots, and the photointerrupters that read the code disks"]}
+  ]
+}

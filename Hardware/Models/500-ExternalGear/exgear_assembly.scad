@@ -112,7 +112,7 @@ STATOR_SEAT      = stator_seat();             // #511-002 face on the gear's end
 STATOR_FLOOR     = stator_floor("revised");   // #511-002 floor the spline's flange stands on
 STATOR_RIM       = stator_rim("revised");     // #511-002 rim, toward the Mount Top
 STATOR_END       = stator_end();              // #511-002 spigot's end, toward the Attach
-MOTOR_LEN        = 48.000;   // C-101 body length; replace with the measured one
+MOTOR_LEN        = c101_len();   // C-101 body length; replace with the measured one
 DRIVE_SPAN       = drive_span();              // C-201 mounting face to mounting face
 B6810            = [50, 65, 7];
 

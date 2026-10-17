@@ -120,7 +120,7 @@ STRAKE_R       = 35.651;           // the slots' centre radius, shared
 STRAKE_PROUD   = 6.000;            // above the Long's top face, 008.2 step 3
 THREAD         = [3.000, 105.000]; // M3 all-thread
 THREAD_R       = 35.540;           // the all-thread holes' radius, shared
-MOTOR_LEN      = 48.000;           // C-101 body length; replace with the measured one
+MOTOR_LEN      = c101_len();       // C-101 body length; replace with the measured one
 B6810          = [50, 65, 7];
 B6810_FN       = 360;              // facets: at 96 the Ø50 bore's chords stand 0.013 inside the
                                    // circle, more than the clash check's facet slack

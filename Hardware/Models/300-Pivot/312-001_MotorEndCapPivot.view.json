@@ -1,0 +1,32 @@
+{
+  "title": "Motor End Cap (Pivot)",
+  "subtitle": "#312-001 · reference mesh and 312-001_MotorEndCapPivot.scad renders · what differs from #311-001",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Motor End Cap (Pivot)", "pn": "#312-001", "color": "#d4ad6b", "stl": "../Reference/meshes/300-Pivot/312-001_MotorEndCapPivot.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/312-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/312-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -26.5, 0], "text": "O1 outline R26.5 (the Base cap's is 26.75), notched ×4"},
+    {"at": [15.5, 15.5, 2.3], "text": "H1 motor hole Ø3.2, counterbored Ø6.0 up to z 2.3"},
+    {"at": [-15.5, -15.5, 2.3], "text": "H1 counterbore floor, z 2.3"},
+    {"at": [0, 11.25, 10.5], "text": "centre bore Ø22.5, R1 round into the seat"},
+    {"at": [0, -25, 7], "text": "land R25, z 3.5…10.5, the 6810's journal"},
+    {"at": [23.5, -10, -4], "text": "lugs ×8, z −6.7…−1.7, on the motor's 42.292 square"},
+    {"at": [15, 0, -0.7], "text": "wire channel at +X, as #311-001's"},
+    {"at": [-10, 10, -1.7], "text": "seat z −1.7, the motor's rear face"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 10.5], "span": 60, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, 0, -2], "span": 60, "from": [0.3, -0.4, -1]},
+    {"label": "Counterbore", "at": [15.5, 15.5, 0], "span": 14, "from": [0.4, -0.6, -1]},
+    {"label": "Wire channel", "at": [15, 0, -0.7], "span": 22, "from": [0.4, -0.6, -1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one draws the same print fits as #311-001's. The part is #311-001's source with its outline and counterbores set, and its header names what else it keeps. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

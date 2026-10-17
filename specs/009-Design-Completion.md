@@ -42,10 +42,11 @@ committed but does not yet reproduce its reference geometry.
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 | DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
+| DC-16 | [Main Pivot placement](#main-pivot-placement) | P2 | Main Pivot fits, assembly review | The code disk's turn and the Pivot cap's, and what the disk's pegs engage | `[Provisional]` |
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
-of work: **design authored here** (DC-14, DC-15), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
+of work: **design authored here** (DC-14, DC-15, DC-16), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -505,8 +506,8 @@ limits editing the design rather than ordering or printing it — this item's re
 and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
-set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base` and in
-`200-ArmBody` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base`,
+`200-ArmBody` and `300-Pivot` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
 measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in
@@ -552,3 +553,29 @@ carries, as an inference to be confirmed or replaced:
 [004](004-Mechanical-Architecture.md) by the feature it is located from; the model's inferences replaced by
 those values; and the fits the part headers still defer (the Calibration Arrows' and the flap's holes) settled in the parts.
 `[Provisional]`.
+
+## Main Pivot placement
+**DC-16 · P2 · Requirement: REQ-STR-5 · Specified in [008.4](008-Assembly.md#0084-main-pivot)**
+
+**Open:** where three of the Main Pivot's parts stand about their axes. [008.4](008-Assembly.md#0084-main-pivot)
+says what goes onto what but fixes no turn about J2 and no part's position along it, and the model set has no
+assembly for the pivot from CAD to confirm one against. The seats along each axis follow from the parts'
+own faces, so [`pivot_assembly.scad`](../Hardware/Models/300-Pivot/pivot_assembly.scad) places each part
+by a feature it carries; these placements are inferences to be confirmed or replaced:
+
+- the Pivot Code Disk's turn about J2, which also places its two pegs. Its hub's top seats on the Main
+  Pivot's +X face, but 008.4 step 5 fixes no turn, so the model keeps the disk's own frame;
+- what the disk's pegs and their Ø1 holes engage. No document names a mate for them, and the Main Pivot's
+  +X face has no socket, so in the model the pegs' tops bear on that face in the hub's plane;
+- the Pivot Motor End Cap's turn about J2. Step 6 orients the cap's notch "toward the motor-wire hole".
+  The cap's four motor holes (Ø3.2, counterbored Ø6 on `#312-001`) line up with the Main Pivot's H5
+  (Ø3.0, an M3 tapping size) only at 45° + k·90°, so the model takes 45°, the turn nearest H2. That leaves
+  the wire channel's centre 6.2° short of H2's, still open into the Ø12 hole. 008.4 names no screws
+  into H5, so whether they run there is still to be confirmed;
+- the Base Motor End Cap's turn about J1. Step 6 leaves it free, so the model takes the turn that
+  [`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) gives the pivot, which keeps its
+  motor holes on H4.
+
+**Definition of done:** the disk's and the Pivot cap's turns stated in [008.4](008-Assembly.md#0084-main-pivot)
+by the feature each is located from, and the pegs' mate named; the model's inferences replaced by those
+values. `[Provisional]`.

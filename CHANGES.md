@@ -1052,6 +1052,7 @@ anything version 3 does not independently specify
 - **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
   [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
   [009 §Base height and L1](specs/009-Design-Completion.md#base-height-and-l1),
+  [009 §Main Pivot placement](specs/009-Design-Completion.md#main-pivot-placement),
   [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
   [004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
   [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
@@ -1059,7 +1060,9 @@ anything version 3 does not independently specify
   [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
   [009.1](specs/009.1-Performance-Characterization-Protocol.md) and
   [009.2](specs/009.2-Test-Build-Manifest.md),
-  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
+  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`,
+  `Hardware/Models/500-ExternalGear/exgear_assembly.scad`, `Hardware/Models/c101_motor.scad`,
+  `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
   `Hardware/Models/MANIFEST.csv`, and each converted group below.
   - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad`,
     `100-003_PivotSkirt.scad`, `110-001_BaseMountBottom.scad` with its generated floor table
@@ -1067,9 +1070,10 @@ anything version 3 does not independently specify
     `120-001_BaseLong_rib.scad`, their `.view.json` sidecars, and the shared `base_dodecagon.scad` and
     `window_round.scad` (new); `110-002_BaseStatorHolder.scad` and its `render.json` checks. Their meshes moved
     to `Reference/meshes/100-Base/`.
-  - `Hardware/Models/300-Pivot/`: `300-001_MainPivot.scad`, its `.view.json` sidecar,
-    `311-001_MotorEndCapBase.scad` and `render.json` (new). Their meshes moved to
-    `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/300-Pivot/`: `300-001_MainPivot.scad`, `300-002_PivotCodeDisk.scad`,
+    `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
+    `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
+    Their meshes moved to `Reference/meshes/300-Pivot/`.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1186,6 +1190,27 @@ anything version 3 does not independently specify
     `base_assembly.scad` reads the seat and the land from the part's file and draws its revised render.
     It draws the 6810 envelopes at 360 facets, so their bore's chords stay within the clash check's
     facet slack of the land.
+  - **300-Pivot:** the Pivot Code Disk (`#300-002`), drawn as two 2D profiles and extruded, as the Base
+    Code Disc is, with the hub and each peg revolved. The windows' corners are rounded by an opening of
+    the annulus between the spokes. Its bore takes the slip clearance on the Ø53 J2 drum in `revised`.
+  - **300-Pivot:** the Pivot Motor End Cap (`#312-001`) is the Base Motor End Cap with two features
+    changed: its outline's radius and the motor holes' counterbores. `312-001_MotorEndCapPivot.scad`
+    includes `311-001_MotorEndCapBase.scad` and sets those two, so the fits and every shared feature have
+    one source.
+  - **300-Pivot:** the pivot's virtual assembly (`pivot_assembly.scad`, checked by `assembly-clash.rs`)
+    places the Code Disk on the J2 drum, each Motor End Cap on its end with its 6810 and C-101, from the
+    `render.rs --meshes` build. It found the Main Pivot's flange standing 0.01 mm proud of the +X face
+    the disk's hub seats on, so the flange now ends on that face. The turns about J2 that no document
+    fixes are tracked as [DC-16](specs/009-Design-Completion.md#main-pivot-placement). The Pivot cap was
+    first turned to aim its wire channel straight at H2. That put its motor holes 6.2° off the pivot's H5,
+    so it now takes the turn nearest H2 that lines them up.
+  - **300-Pivot:** the Main Pivot's revised strake slots and nut traps are probed against their mates, as
+    007.2 requires. The tight S1 slot on 180° fitted the C-501 strip line to line across its width, and
+    the H6 traps stood 0.05 off the M3 nut where the slip fit needs 0.15. `revised` opens both to their
+    fits. The slots and holes that the reference already draws wider keep their size, and probes hold them
+    open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
+  - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
+    pivot assemblies read.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.
@@ -1270,6 +1295,9 @@ anything version 3 does not independently specify
   - `100-003`: L1 and L2, and L3's two parts, each met on the plane where L2 starts, and Manifold kept
     both shared faces as a wall across the lug. L1 and L3's part in it now run `SEAM_LAP` past the
     plane (its comment gives the figures): dist 0.045 mm against 0.15.
+  - `300-Pivot`: the CGAL notes in `300-001`, `311-001`, `312-001`, `pivot_assembly.scad`, the two cap view
+    sidecars and the `dist-312-001` check are gone. All 20 jobs of `render.rs 300-Pivot --verify` pass on
+    Manifold, `312-001` included, whose channel seam came from `side_blend()` ([CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine)).
   - `710-001`: the Manifold render is CGAL's surface with fewer triangles, so its miss was `compare`
     reading vertex rings in the reference's tooth toes that only CGAL's tessellation had matched. The
     clone check now ignores those rings (its note gives the figures) and reads 0.058 mm on both engines.

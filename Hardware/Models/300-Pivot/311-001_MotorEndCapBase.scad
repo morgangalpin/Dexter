@@ -17,29 +17,32 @@
 // feature is fourfold about the axis and mirror-symmetric about the axes and
 // diagonals, except the wire channel, which is at +x only:
 //
-//     feature                      value                  z span
-//     outline                      R26.750 less 4 notches at 0/90/180/270,
-//                                  13.0 wide, floor r 20.996, R1.15 floor
-//                                  fillets, sharp mouths  -6.7 .. 10.5
-//     centre bore                  Ø22.5, R1 round into the seat    through
-//     motor holes, 31.0 square     Ø3.2                   through
-//     land, the 6810's journal     R25.000; top edges, the notches' too,
-//                                  0.4 x 45 deg           3.5 .. 10.5
-//     ring below the land          the outline, the 6810's stop    -1.7 .. 3.5
-//     lugs, 8                      the outline less the 42.292 motor
-//                                  square; R0.5 at the notch-side corner;
-//                                  bottom edges R0.5 on the inner face,
-//                                  R0.3 round the rest but the outside
-//                                                         -6.7 .. -1.7
-//     their root fillets           R0.5, along the inner face and round
-//                                  the corner, under the seat
-//     seat edges at the notches    R0.5, but at +x, where the channel
-//                                  opens; the notch cuts them  -1.7 .. -1.557
-//     wire channel, +x             ../end_cap_channel.scad, 11.96 wide at
-//                                  mid-height, 2.0 high, R1 fillets and
-//                                  rounds, from the bore until it meets a
-//                                  lug or opens into the notch; the lugs'
-//                                  root fillets run up onto its seat rounds
+// The feature IDs are those of 311-001_MotorEndCapBase.view.json, which
+// labels each one on the mesh:
+//
+//     ID  feature                      value                  z span
+//     O1  outline                      R26.750 less 4 notches at 0/90/180/270,
+//                                      13.0 wide, floor r 20.996, R1.15 floor
+//                                      fillets, sharp mouths  -6.7 .. 10.5
+//     B1  centre bore                  Ø22.5, R1 round into the seat    through
+//     H1  motor holes, 31.0 square     Ø3.2                   through
+//     L1  land, the 6810's journal     R25.000; top edges, the notches' too,
+//                                      0.4 x 45 deg           3.5 .. 10.5
+//     R1  ring below the land          the outline, the 6810's stop    -1.7 .. 3.5
+//     G1  lugs, 8                      the outline less the 42.292 motor
+//                                      square; R0.5 at the notch-side corner;
+//                                      bottom edges R0.5 on the inner face,
+//                                      R0.3 round the rest but the outside
+//                                                             -6.7 .. -1.7
+//     F1  their root fillets           R0.5, along the inner face and round
+//                                      the corner, under the seat
+//     S1  seat edges at the notches    R0.5, but at +x, where the channel
+//                                      opens; the notch cuts them  -1.7 .. -1.557
+//     C1  wire channel, +x             ../end_cap_channel.scad, 11.96 wide at
+//                                      mid-height, 2.0 high, R1 fillets and
+//                                      rounds, from the bore until it meets a
+//                                      lug or opens into the notch; the lugs'
+//                                      root fillets run up onto its seat rounds
 //
 // The lugs' corner rounds and the seat's edge rounds were rounded on a notch
 // 0.15 narrower, and the notch cuts them: the corners are tangent to the inner
@@ -81,6 +84,8 @@ use <../end_cap_channel.scad>
 config = "previous"; // [previous, revised]
 
 /* [Hidden] */
+// Which part this file draws; #312-001 includes it and names its own.
+PART = "base";
 $fn = 144;
 epsilon = 0.01;
 
@@ -104,6 +109,7 @@ BORE_ROUND    = 1.000;
 CHANNEL       = [5.980, 2.000, 1.000];   // half-width at mid-height, height above the seat, round radius
 MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.200;
+COUNTERBORE   = undef;     // [Ø, z of the floor]: the motor holes' counterbores from the seat; #312-001's
 
 M3_D          = 3.000;     // the motor screws' nominal diameter
 
@@ -154,7 +160,7 @@ function face_end(cfg) = sqrt(pow(OUTLINE_R, 2) - pow(lug_flat(cfg), 2)) + 0.5;
 // The root fillets between the seat and each lug, along its inner face and
 // round its notch-side corner; at the +x notch they run up onto the channel's
 // seat rounds. None runs into a notch.
-// Each is cut to the section on its own: CGAL fails on the lot at once.
+// Each is cut to the section on its own.
 module root_fillets(cfg)
     for (a = [0 : 90 : 270], m = [0, 1]) intersection() {
         rotate(a) mirror([0, m, 0])
@@ -233,6 +239,12 @@ module channel(cfg)
     wire_channel(seat(cfg), [BORE_R, BORE_ROUND], CHANNEL, OUTLINE_R, round_sides = cfg != "previous")
         lug_cut_2d(cfg);
 
+// The motor holes' counterbores, from the lugs' foot up to their floor, which
+// stays where the screws' heads bear in either configuration.
+module counterbores()
+    if (!is_undef(COUNTERBORE))
+        motor_holes() translate([0, 0, LUG_Z]) cylinder(d = COUNTERBORE[0], h = COUNTERBORE[1] - LUG_Z, $fn = 72);
+
 module cuts(cfg) {
     land_r = LAND_R - press(cfg);
     translate([0, 0, FOOT]) difference() {   // the step: everything beyond the land
@@ -247,6 +259,7 @@ module cuts(cfg) {
     rotate_extrude() polygon([[land_r - TOP_CHAMFER - epsilon, TOP + epsilon], [land_r + 1, TOP + epsilon],
                               [land_r + 1, TOP - TOP_CHAMFER - 1 - 2 * epsilon]]);
     each_notch() top_chamfer(TOP_CHAMFER) notch_2d();
+    counterbores();
 }
 
 // The root fillets go on last: the cuts would take them with the motor's
@@ -258,5 +271,7 @@ module motor_end_cap_base(cfg = config)
         else trimmed_root_fillets(cfg);
     }
 
-motor_end_cap_base();
-echo(cap_seat = cap_seat());
+if (PART == "base") {
+    motor_end_cap_base();
+    echo(cap_seat = cap_seat());
+}
