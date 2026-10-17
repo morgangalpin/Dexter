@@ -200,6 +200,11 @@ function arc(c, r, a0, a1, n = 24) = [for (i = [0 : n]) c + r * [cos(a0 + (a1 - 
 // y on it at x. L3's two parts meet on the same plane.
 function leg2_y(x) = x - (BEND.x - BEND.y);
 
+// How far L1, and L3's part in it, run on past that plane into L2. Stopped on the plane, each meets
+// its L2 counterpart face to face, and Manifold keeps the shared face as a wall across the lug, 1.754
+// off the reference. Both seams need it.
+SEAM_LAP = 0.005;
+
 // ---- The frame profile, in [d, y]
 
 STEP_Y = RIDGE[0].y + RIDGE[1];       // O3's step, which the ridge round is tangent to
@@ -390,7 +395,7 @@ module lug() {
     // meet on one edge, which bend_round rounds.
     intersection() {
         along_y(0, 20) lug_fillets_2d();
-        plan() polygon([[LUG_INNER, 0], [70, 0], [70, leg2_y(70)], [LUG_INNER, leg2_y(LUG_INNER)]]);
+        plan() polygon([[LUG_INNER, 0], [70, 0], [70, leg2_y(70) + SEAM_LAP], [LUG_INNER, leg2_y(LUG_INNER) + SEAM_LAP]]);
         along_hood(-60, 10) difference() { translate([0, -20]) square([80, 40]); above_hood_2d(); }
     }
     // L2 from where it starts, and from where O1's taper begins, up to the top face, clear of O4's
@@ -470,7 +475,7 @@ module hood_pocket_2d() {
 module pocket() {
     intersection() {
         along_y(SKIRT_Y - 1, 20) pocket_2d();
-        plan() polygon([[40, -30], [80, -30], [80, leg2_y(80)], [40, leg2_y(40)]]);
+        plan() polygon([[40, -30], [80, -30], [80, leg2_y(80) + SEAM_LAP], [40, leg2_y(40) + SEAM_LAP]]);
     }
     intersection() {
         along_hood(-60, 5) hood_pocket_2d();

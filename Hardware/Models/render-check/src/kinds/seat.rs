@@ -61,7 +61,7 @@ mod tests {
         let o = check("seat", fields(), &f);
         assert!(o.output.contains("200-002 (revised) seat: floor, material under it"), "{}", o.output);
         assert!(o.output.contains("200-002 (revised) seat fit, recess on the flange (press)"), "{}", o.output);
-        assert!(f.calls()[0].starts_with("openscad -o out/revised/200-002.stl -D config=\"revised\" h.scad"));
+        assert!(f.calls()[0].starts_with("openscad --backend=manifold -o out/revised/200-002.stl -D config=\"revised\" h.scad"));
         assert!(!check("seat", fields(), &fake("ECHO: seat_floor = 5\n", false)).ok);
     }
 }

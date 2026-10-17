@@ -24,7 +24,7 @@ use serde_json::Value;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-/// Absolute paths tried for OpenSCAD before falling back to `$PATH`.
+/// The OpenSCAD binary looked for in a snapshot directory.
 ///
 /// `openscad.exe` is deliberate on Windows, and the choice is not obvious.
 /// That binary is built for the GUI subsystem, so run from an interactive
@@ -35,11 +35,10 @@ use std::process::Command;
 /// Redirected to a pipe, as `Command::output` does, `openscad.exe` writes
 /// them there correctly. Use `openscad.com` when reading by eye, `.exe` when
 /// reading by program.
-const OPENSCAD_CANDIDATES: [&str; 3] = [
-    "C:/Program Files/OpenSCAD/openscad.exe",
-    "/usr/bin/openscad",
-    "/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD",
-];
+const OPENSCAD_EXE: &str = "openscad.exe";
+
+/// Where OpenSCAD development snapshots are unpacked, under `%LOCALAPPDATA%`.
+const NIGHTLY_DIR: &str = "Programs/OpenSCAD-Nightly";
 
 /// Paths tried for `scadmesh`, relative to this crate: the standalone
 /// `openscad-tools` project checked out beside this repository's parent.
@@ -75,18 +74,21 @@ pub fn newest_under(root: &Path, exe: &str) -> Option<PathBuf> {
     found.pop()
 }
 
-/// OpenSCAD with the Manifold geometry engine, for the parts whose cuts the
-/// installed release's CGAL cannot make (a part or check names it with
-/// `"engine": "manifold"`): `$OPENSCAD_MANIFOLD`, then the newest Nightly
-/// snapshot unpacked under `%LOCALAPPDATA%/Programs/OpenSCAD-Nightly/`, then
-/// `openscad-nightly` via `$PATH`.
-pub fn manifold_openscad() -> String {
-    if let Ok(v) = std::env::var("OPENSCAD_MANIFOLD") {
-        return v;
-    }
-    std::env::var_os("LOCALAPPDATA")
-        .and_then(|d| newest_under(&PathBuf::from(d).join("Programs/OpenSCAD-Nightly"), "openscad.exe"))
-        .map_or_else(|| "openscad-nightly".to_string(), |p| p.to_string_lossy().into_owned())
+/// The OpenSCAD every render runs, in the order `specs/009.3-Render-Program.md`
+/// gives: `$OPENSCAD`, then the newest snapshot under
+/// `%LOCALAPPDATA%/Programs/OpenSCAD-Nightly/`, then `openscad` via `$PATH`.
+pub fn openscad_path() -> String {
+    resolve_openscad(std::env::var("OPENSCAD").ok(), std::env::var_os("LOCALAPPDATA").map(PathBuf::from))
+}
+
+/// [`openscad_path`] with its environment passed in.
+pub fn resolve_openscad(env: Option<String>, local_app_data: Option<PathBuf>) -> String {
+    env.or_else(|| {
+        local_app_data
+            .and_then(|d| newest_under(&d.join(NIGHTLY_DIR), OPENSCAD_EXE))
+            .map(|p| p.to_string_lossy().into_owned())
+    })
+    .unwrap_or_else(|| "openscad".to_string())
 }
 
 /// Where the tools run and which binaries they are.
@@ -102,7 +104,7 @@ impl Ctx {
         std::fs::create_dir_all(dir.join("out"))?;
         let here = Path::new(env!("CARGO_MANIFEST_DIR"));
         Ok(Ctx {
-            openscad: tool("OPENSCAD", &OPENSCAD_CANDIDATES, "openscad", here),
+            openscad: openscad_path(),
             scadmesh: tool("SCADMESH", &SCADMESH_CANDIDATES, "scadmesh", here),
             dir,
         })
@@ -185,7 +187,7 @@ pub fn echoed<'a>(stderr: &'a str, tag: &str) -> Option<&'a str> {
 
 /// How an assembly clash render came out. OpenSCAD reports an empty
 /// intersection by refusing to export it; a seat, where two parts share a
-/// face, exports a surface with no volume. Both are clear. A CGAL failure
+/// face, exports a surface with no volume. Both are clear. A failed boolean
 /// returns one operand as the result, so its output says nothing about the
 /// pair, and the check fails rather than measure it.
 #[derive(Debug, PartialEq)]
@@ -413,6 +415,20 @@ FIT_PRESS = 0.05;
         }
         assert_eq!(newest_under(&root, "openscad.exe"), Some(root.join("OpenSCAD-2026.10.05").join("openscad.exe")));
         std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn resolve_openscad_prefers_env_then_snapshot_then_path() {
+        let lad = std::env::temp_dir().join(format!("render-check-lad-{}", std::process::id()));
+        assert_eq!(resolve_openscad(None, None), "openscad");
+        assert_eq!(resolve_openscad(None, Some(lad.clone())), "openscad");
+        let snapshot = lad.join(NIGHTLY_DIR).join("OpenSCAD-2026.10.05");
+        std::fs::create_dir_all(&snapshot).unwrap();
+        std::fs::write(snapshot.join(OPENSCAD_EXE), "").unwrap();
+        let exe = snapshot.join(OPENSCAD_EXE).to_string_lossy().into_owned();
+        assert_eq!(resolve_openscad(None, Some(lad.clone())), exe);
+        assert_eq!(resolve_openscad(Some("from-env".into()), Some(lad.clone())), "from-env");
+        std::fs::remove_dir_all(lad).unwrap();
     }
 
     #[test]

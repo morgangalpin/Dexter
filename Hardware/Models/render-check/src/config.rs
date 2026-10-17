@@ -18,8 +18,6 @@ pub struct Part {
     /// The configurations the part exists in; `None` means all of them.
     pub configs: Option<Vec<String>>,
     pub meshes: bool,
-    /// The geometry engine that renders the part; `None` is the installed one.
-    pub engine: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -91,13 +89,22 @@ fn strings(v: &Value, key: &str) -> Result<Option<Vec<String>>> {
     }
 }
 
+/// Every render runs on Manifold, so an entry that still names an engine is
+/// refused rather than read as if it rendered elsewhere.
+fn no_engine(v: &Value) -> Result<()> {
+    if !v["engine"].is_null() {
+        bail!("\"engine\" is no longer read: every part and check renders on Manifold: {v}");
+    }
+    Ok(())
+}
+
 fn part(v: &Value) -> Result<Part> {
+    no_engine(v)?;
     Ok(Part {
         id: req_str(v, "id")?,
         scad: req_str(v, "scad")?,
         configs: strings(v, "configs")?,
         meshes: v["meshes"].as_bool().unwrap_or(true),
-        engine: opt_str(v, "engine")?,
     })
 }
 
@@ -110,6 +117,7 @@ fn writes(v: &Value) -> Result<Vec<String>> {
 }
 
 fn check(v: &Value) -> Result<Check> {
+    no_engine(v)?;
     let id = req_str(v, "id")?;
     let weight = match &v["weight"] {
         Value::Null => 1,
@@ -155,7 +163,7 @@ mod tests {
     const SAMPLE: &str = r#"{
         "ref_dir": "../Reference/meshes/700-Differential",
         "parts": [
-            {"id": "730-001", "scad": "730-001_DiffBodyA.scad", "engine": "manifold"},
+            {"id": "730-001", "scad": "730-001_DiffBodyA.scad"},
             {"id": "720-004", "scad": "720-004_DiffShaftPulley.scad", "configs": ["revised"], "meshes": false}
         ],
         "checks": [
@@ -171,7 +179,6 @@ mod tests {
         assert_eq!(c.parts.len(), 2);
         assert!(c.parts[0].meshes && c.parts[0].configs.is_none());
         assert!(!c.parts[1].meshes);
-        assert_eq!((c.parts[0].engine.as_deref(), c.parts[1].engine.as_deref()), (Some("manifold"), None));
         assert_eq!(c.checks[1].after, ["gate", "600-StrainWave/630-005"]);
         assert_eq!(c.checks[1].weight, 2);
         assert_eq!(c.checks[0].fields["tol"], 0.15);
@@ -212,6 +219,13 @@ mod tests {
         assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "weight": 0}]}"#).contains("weight"));
         assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "after": [1]}]}"#).contains("non-string"));
         assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "after": "b"}]}"#).contains("not an array"));
+    }
+
+    #[test]
+    fn an_entry_that_names_an_engine_is_refused() {
+        let bad = |t: &str| parse(t).unwrap_err().to_string();
+        assert!(bad(r#"{"parts": [{"id": "a", "scad": "a.scad", "engine": "cgal"}]}"#).contains("renders on Manifold"));
+        assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "engine": "manifold"}]}"#).contains("renders on Manifold"));
     }
 
     #[test]

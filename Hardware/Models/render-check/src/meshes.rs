@@ -8,7 +8,7 @@
 use crate::config::GroupConfig;
 use crate::plan::Job;
 use crate::sched::Outcome;
-use crate::{manifold_openscad, run, sm_json, Ctx, Run};
+use crate::{run, sm_json, Ctx, Run};
 use anyhow::{bail, Context, Result};
 use serde_json::Value;
 
@@ -29,10 +29,6 @@ pub const VOLUME_EPS: f64 = 1.0e-3;
 pub trait Tools: Send + Sync {
     /// Run OpenSCAD with `args`.
     fn openscad(&self, args: &[&str]) -> Result<Run>;
-    /// Run OpenSCAD with the Manifold engine. A toolset with one engine runs its own.
-    fn openscad_manifold(&self, args: &[&str]) -> Result<Run> {
-        self.openscad(args)
-    }
     /// Run `scadmesh <args> --json`; returns the exit status and the report.
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)>;
     /// The size in bytes of a file written by a tool.
@@ -77,12 +73,6 @@ impl Tools for Ctx {
         run(&self.openscad, args, &self.dir)
     }
 
-    fn openscad_manifold(&self, args: &[&str]) -> Result<Run> {
-        let mut full = vec!["--backend=manifold"];
-        full.extend(args);
-        run(&manifold_openscad(), &full, &self.dir)
-    }
-
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
         sm_json(args, self)
     }
@@ -92,55 +82,42 @@ impl Tools for Ctx {
     }
 }
 
-/// The geometry engine a part or check names with `"engine"`: absent or
-/// `"cgal"` renders with the installed OpenSCAD, `"manifold"` with the
-/// Manifold build.
-pub struct Engine<'a> {
-    inner: &'a dyn Tools,
-    manifold: bool,
-}
+/// The backend every render runs on, named to OpenSCAD so that a snapshot
+/// whose own default differs still renders on Manifold.
+pub const BACKEND: &str = "--backend=manifold";
 
-impl<'a> Engine<'a> {
-    pub fn new(inner: &'a dyn Tools, name: Option<&str>) -> Result<Engine<'a>> {
-        match name {
-            None | Some("cgal") => Ok(Engine { inner, manifold: false }),
-            Some("manifold") => Ok(Engine { inner, manifold: true }),
-            Some(other) => bail!("engine \"{other}\" is not \"cgal\" or \"manifold\""),
-        }
-    }
-}
+/// A toolset whose every OpenSCAD run is on Manifold.
+pub struct Manifold<'a>(pub &'a dyn Tools);
 
-impl Tools for Engine<'_> {
+impl Tools for Manifold<'_> {
     fn openscad(&self, args: &[&str]) -> Result<Run> {
-        if self.manifold {
-            self.inner.openscad_manifold(args)
-        } else {
-            self.inner.openscad(args)
-        }
+        let mut full = vec![BACKEND];
+        full.extend(args);
+        self.0.openscad(&full)
     }
 
     fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
-        self.inner.scadmesh(args)
+        self.0.scadmesh(args)
     }
 
     fn size(&self, path: &str) -> Result<u64> {
-        self.inner.size(path)
+        self.0.size(path)
     }
 
     fn read(&self, path: &str) -> Result<String> {
-        self.inner.read(path)
+        self.0.read(path)
     }
 
     fn exists(&self, path: &str) -> bool {
-        self.inner.exists(path)
+        self.0.exists(path)
     }
 
     fn remove(&self, path: &str) {
-        self.inner.remove(path)
+        self.0.remove(path)
     }
 
     fn ensure_parent(&self, path: &str) -> Result<()> {
-        self.inner.ensure_parent(path)
+        self.0.ensure_parent(path)
     }
 }
 
@@ -155,7 +132,6 @@ pub struct MeshWork {
     pub job: Job,
     pub id: String,
     pub scad: String,
-    pub engine: Option<String>,
 }
 
 /// One job per mesh part of `config`, in render order. Jobs are independent,
@@ -168,7 +144,6 @@ pub fn mesh_work(group: &str, cfg: &GroupConfig, config: &str) -> Vec<MeshWork> 
             job: Job { writes: vec![format!("{group}/{}", mesh_path(&p.id))], ..Job::new(&format!("{group}/mesh-{}", p.id)) },
             id: p.id.clone(),
             scad: p.scad.clone(),
-            engine: p.engine.clone(),
         })
         .collect()
 }
@@ -237,8 +212,7 @@ pub fn build_part(tools: &dyn Tools, id: &str, scad: &str, config: &str) -> Resu
 
 /// Run one mesh job, reporting its line or its failure.
 pub fn mesh_outcome(tools: &dyn Tools, work: &MeshWork, config: &str) -> Outcome {
-    let built = Engine::new(tools, work.engine.as_deref()).and_then(|t| build_part(&t, &work.id, &work.scad, config));
-    match built {
+    match build_part(&Manifold(tools), &work.id, &work.scad, config) {
         Ok(line) => Outcome { ok: true, output: format!("  {} ... {line}\n", work.id) },
         Err(e) => Outcome { ok: false, output: format!("  {} ... FAILED\n{e:#}\n", work.id) },
     }
@@ -383,5 +357,38 @@ mod tests {
         assert!(ctx.openscad(&["x"]).is_err());
         assert!(ctx.scadmesh(&["x"]).is_err());
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_context_reads_writes_and_removes_files_in_its_group() {
+        let dir = std::env::temp_dir().join(format!("render-check-files-{}", std::process::id()));
+        let ctx = Ctx { dir: dir.clone(), openscad: String::new(), scadmesh: String::new() };
+        ctx.ensure_parent("sub/f.txt").unwrap();
+        std::fs::write(dir.join("sub/f.txt"), "text").unwrap();
+        assert!(ctx.exists("sub/f.txt"));
+        assert_eq!(ctx.read("sub/f.txt").unwrap(), "text");
+        ctx.remove("sub/f.txt");
+        assert!(!ctx.exists("sub/f.txt") && ctx.read("sub/f.txt").is_err());
+        assert!(ctx.ensure_parent("").is_ok());
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn a_toolset_without_files_reads_nothing() {
+        struct NoFiles;
+        impl Tools for NoFiles {
+            fn openscad(&self, _: &[&str]) -> Result<Run> {
+                bail!("unused")
+            }
+            fn scadmesh(&self, _: &[&str]) -> Result<(bool, Value)> {
+                bail!("unused")
+            }
+            fn size(&self, _: &str) -> Result<u64> {
+                bail!("unused")
+            }
+        }
+        NoFiles.remove("f");
+        assert!(!NoFiles.exists("f") && NoFiles.read("f").is_err());
+        assert!(NoFiles.openscad(&[]).is_err() && NoFiles.scadmesh(&[]).is_err() && NoFiles.size("f").is_err());
     }
 }

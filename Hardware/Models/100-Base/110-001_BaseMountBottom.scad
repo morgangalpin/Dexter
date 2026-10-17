@@ -117,6 +117,12 @@ SLIP = fit_clearances(config)[0];
 ARM        = [75.000, 50.000, 12.500];
 FLANGE_H   = 16.000;
 FLANGE_R   = 5.000;
+// How far the arms reach inside the tower's face. Cut on the face itself, the flange's inner face
+// lies on the tower's facets exactly (cylinder() and rotate_extrude() place the same vertices), and
+// Manifold keeps the two as an interior wall that stands 7.2 off the reference. 0.005 is enough to
+// overlap, and it fills the windows' rounds below the flange's top by too little to measure; at 0.02
+// the fill stands 0.305 off the round.
+FLANGE_LAP = 0.005;
 
 // T1, S1, B1: radii and heights.
 TOWER_R    = 42.500;
@@ -181,9 +187,9 @@ module flange() {
         // Triangulated: the sweep's quads between layers are not quite planar.
         vnf_polyhedron(vnf_triangulate(
             offset_sweep(cross_path(), height = FLANGE_H, top = os_circle(r = FLANGE_R), steps = 24)));
-        // The arms stop at the tower's face, on the tower's own facets: the windows' rounds dip
+        // The arms stop at the tower's face, FLANGE_LAP inside its facets: the windows' rounds dip
         // below the flange's top there, and inside, the floor stands lower than it.
-        down(1) cylinder(r = TOWER_R, h = FLANGE_H + 2);
+        down(1) cylinder(r = TOWER_R - FLANGE_LAP, h = FLANGE_H + 2);
     }
 }
 
@@ -298,12 +304,14 @@ module floor_body() {
         [FLOOR_R[i] * cos(floor_angle(j)), FLOOR_R[i] * sin(floor_angle(j)), 0]];
     t = function(i, j) i * na + j % na;
     b = function(o, j) nr * na + o * na + j % na;
-    polyhedron(concat(top, bottom), concat(
+    // Faces are listed anticlockwise from outside, so each is reversed into OpenSCAD's clockwise
+    // order. CGAL forgives the inside-out solid; Manifold subtracts it from the union.
+    polyhedron(concat(top, bottom), [for (f = concat(
         [for (i = [0 : nr - 2]) for (j = [0 : na - 1])
             each [[t(i, j), t(i + 1, j), t(i + 1, j + 1)], [t(i, j), t(i + 1, j + 1), t(i, j + 1)]]],
         [for (j = [0 : na - 1]) [b(0, j), b(0, j + 1), b(1, j + 1), b(1, j)]],
         [for (j = [0 : na - 1]) [t(0, j), t(0, j + 1), b(0, j + 1), b(0, j)]],
-        [for (j = [0 : na - 1]) [t(nr - 1, j), b(1, j), b(1, j + 1), t(nr - 1, j + 1)]]),
+        [for (j = [0 : na - 1]) [t(nr - 1, j), b(1, j), b(1, j + 1), t(nr - 1, j + 1)]])) reverse(f)],
         convexity = 10);
 }
 

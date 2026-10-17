@@ -102,7 +102,7 @@
 // 16.0 mm of lap at the hub and 15.000 mm here, and nothing is drawn for the
 // span because nothing is missing from it.
 //
-// RENDERING IT. A preview needs nothing but this file. A full render asks CGAL
+// RENDERING IT. A preview needs nothing but this file. A full render asks OpenSCAD
 // for a closed solid of everything drawn, the nine meshes 700-Differential/
 // imports included, so it needs the cache that render.rs --meshes
 // builds, which makes each mesh renderable as it goes: the render program's header

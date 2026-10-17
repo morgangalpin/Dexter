@@ -56,7 +56,7 @@ mod tests {
         let f = fake("ECHO: box = [[0, 0, 0], [1, 2, 3]]\n", 3.01);
         let o = check("extents", fields(), &f);
         assert!(o.ok && o.output.contains("730-001 stated extent box matches its render (revised)"), "{}", o.output);
-        assert_eq!(f.calls()[0], "openscad -o out/a-extent.csg -D config=\"revised\" a.scad");
+        assert_eq!(f.calls()[0], "openscad --backend=manifold -o out/a-extent.csg -D config=\"revised\" a.scad");
     }
 
     #[test]

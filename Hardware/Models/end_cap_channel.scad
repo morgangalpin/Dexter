@@ -123,9 +123,11 @@ function blend_section(t, s, bore, ch, round_sides) =
            [b[3] + m * nc]);
 
 // The sections lofted from the wall (t 0) to the flat (t 90), and two steps
-// on along the flat, lapping the bore round there.
+// on along the flat, lapping the bore round there. They are listed from the
+// flat's end back to the wall, because the other order is inside out, which
+// Manifold subtracts from a union.
 module side_blend(s, bore, ch, round_sides, step = 2.5)
-    loft([for (t = [0 : step : 90 + 2 * step]) blend_section(t, s, bore, ch, round_sides)]);
+    loft([for (t = [90 + 2 * step : -step : 0]) blend_section(t, s, bore, ch, round_sides)]);
 
 // A ball about the x axis, its facets on the same 5 deg steps from -z as the
 // channel's seat round, so that the two meet facet for facet.

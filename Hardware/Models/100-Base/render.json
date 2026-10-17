@@ -6,7 +6,7 @@
     {"id": "100-003", "scad": "100-003_PivotSkirt.scad"},
     {"id": "110-001", "scad": "110-001_BaseMountBottom.scad"},
     {"id": "110-002", "scad": "110-002_BaseStatorHolder.scad"},
-    {"id": "120-001", "scad": "120-001_BaseLong.scad", "engine": "manifold"}
+    {"id": "120-001", "scad": "120-001_BaseLong.scad"}
   ],
   "checks": [
     {"kind": "plate", "id": "plate-110-004", "scad": "110-004_BaseMountingPlate.scad",
@@ -39,8 +39,7 @@
     {"kind": "dist_gate", "id": "dist-110-002", "part": "110-002",
      "config": "previous", "scad": "110-002_BaseStatorHolder.scad", "out": "out/110-002.stl", "reference": "110-002_BaseStatorHolder.stl", "tol": 0.15},
     {"kind": "dist_gate", "id": "dist-120-001", "part": "120-001",
-     "config": "previous", "scad": "120-001_BaseLong.scad", "out": "out/120-001.stl", "reference": "120-001_BaseLong.stl", "tol": 0.15, "engine": "manifold",
-     "note": "#120-001 renders with OpenSCAD's Manifold engine; its header says why."},
+     "config": "previous", "scad": "120-001_BaseLong.scad", "out": "out/120-001.stl", "reference": "120-001_BaseLong.stl", "tol": 0.15},
     {"kind": "render", "id": "render-100-001", "config": "revised",
      "scad": "100-001_BaseClamp.scad", "out": "out/revised/100-001.stl"},
     {"kind": "fits", "id": "fits-100-001", "part": "100-001 (revised)",
@@ -98,7 +97,7 @@
        {"label": "all-thread nut trap", "at": [33.1601, 19.145, 16.3], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"}
      ]},
     {"kind": "render", "id": "render-120-001", "config": "revised",
-     "scad": "120-001_BaseLong.scad", "out": "out/revised/120-001.stl", "engine": "manifold"},
+     "scad": "120-001_BaseLong.scad", "out": "out/revised/120-001.stl"},
     {"kind": "fits", "id": "fits-120-001", "part": "120-001 (revised)",
      "stl": "out/revised/120-001.stl", "after": ["render-120-001"],
      "note": "The revised #120-001's print fits, on the 6810s' 65 mm outer races at 15 deg, where the wall behind each bore is whole: B1's way in at z -14, B1's seat at z 3.5, and B2 at z 64.5.",

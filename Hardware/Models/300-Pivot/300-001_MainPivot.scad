@@ -75,8 +75,8 @@
 // GATE. render.rs gates the previous config on dist ±0.15: hausdorff 0.115,
 // volume the reference's to 0.005%.
 //
-// RENDER WITH MANIFOLD. Under CGAL the swept and lofted blends leave non-planar faces and a mesh that
-// is not a valid 2-manifold. 300-Pivot/render.json names the "manifold" engine for this part.
+// NOT ON CGAL. Under CGAL the swept and lofted blends leave non-planar faces and a mesh that is not
+// a valid 2-manifold.
 //
 // FITS (../print_fit.scad), revised only:
 //

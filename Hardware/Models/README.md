@@ -285,11 +285,14 @@ The contract every part in `700-Differential/` is held to:
   doubles the preview tree. Build cutters from single primitives, and cut each solid before unioning it
   into an array rather than after.
 - **A shared face is not a join.** Where a feature is trimmed to the surface of the blank it stands on,
-  CGAL returns the two as separate solids, the blank's face survives the union underneath the feature,
-  and the export carries interior surface — which `dist` then measures against nothing, reading over a
-  millimetre out on geometry that is dimensionally correct. Trim such a feature to a surface **offset
-  into** the blank (`BEVEL_ROOT_UNDER` offsets 0.35 mm) and let the overlap be buried. The `Volumes:`
-  line of the render log is the cheap check: a part modelled as one solid must report 2.
+  or two solids or two cutters are cut to one plane, the shared face survives the boolean, and the
+  export carries interior surface — which `dist` then measures against nothing, reading over a
+  millimetre out on geometry that is dimensionally correct. CGAL returns the two as separate solids;
+  Manifold keeps the face as a wall inside one, even where both sides carry the same vertices. Trim such a
+  feature to a surface **offset into** the blank (`BEVEL_ROOT_UNDER` offsets 0.35 mm) and let the overlap be
+  buried; where the offset would show, 0.005 mm is enough (`FLANGE_LAP` in `110-001`, `SEAM_LAP` in
+  `100-003`). The `Volumes:` line of the render log is the cheap check: a part modelled as one solid
+  must report 2.
 
 **The references are CAD assembly exports (`STLB ASM` headers) and they mislead in three ways.** Run
 `scadmesh segment` on a reference before measuring it.
@@ -350,20 +353,18 @@ echoes. A group's `render.json` holds only its own gates and checks. Three rules
   the crate, run `rust-script --force render.rs ...` once, then `rust-script render.rs ...`; running
   `./render.rs` directly can use an older build. `700-Differential --verify` takes about 34 minutes.
 
-Parts render with the installed OpenSCAD 2021.01 and its CGAL engine, except those whose header says
-**RENDER WITH MANIFOLD**: their cuts make CGAL assert, and it drops cutters when it does. The group's
-`render.json` names `"engine": "manifold"` for those parts and checks, which run an OpenSCAD Nightly with
-`--backend=manifold`: `$OPENSCAD_MANIFOLD` if set, else the newest snapshot unpacked under
-`%LOCALAPPDATA%\Programs\OpenSCAD-Nightly\` (the `.zip` from
-[files.openscad.org/snapshots](https://files.openscad.org/snapshots/), checked against its `.sha256`),
-else `openscad-nightly` on `PATH`. Today that is `100-Base/120-001_BaseLong.scad` and
-`300-Pivot/300-001_MainPivot.scad`.
+Parts render on an OpenSCAD development snapshot with the Manifold engine. Which binary runs, and that
+Manifold is the only engine, are owned by [009.3](../../specs/009.3-Render-Program.md#config-grouprenderjson).
+To install a snapshot, download the newest `.zip` from
+[files.openscad.org/snapshots](https://files.openscad.org/snapshots/), check it against its `.sha256`,
+and unpack it under `%LOCALAPPDATA%\Programs\OpenSCAD-Nightly\`. To make it the `openscad` on `PATH`,
+point a junction `OpenSCAD-Nightly\current` at the snapshot folder and put `current` on the user `PATH`.
 
 Two checks are shared across groups. The `seat` kind probes a Stator Holder's revised seat against C-201's
 hole pattern as [007.1](../../specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) states
 it, rather than as the seat library cuts it, so the probes test the library. The `clash` kind renders an
 assembly's pair. It passes when the intersection is empty or has no volume (a seat, where two
-parts share a face), and fails when CGAL cannot intersect the pair at all, because a failed boolean
+parts share a face), and fails when OpenSCAD cannot intersect the pair at all, because a failed boolean
 returns one of its operands.
 
 ### Measured state of the differential set

@@ -127,7 +127,7 @@ mod tests {
         let mut f = fake("ECHO: end_cap_seat = 4.5\n", [true, false]);
         f.files.insert("out/assembly.echo", "ECHO: j3_hub_drop = 0.687\n");
         assert!(check("face", v.clone(), &f).ok);
-        assert_eq!(f.calls()[0], "openscad -o out/c.stl -D config=\"revised\" -D a=1 -D hub_drop=0.687 c.scad");
+        assert_eq!(f.calls()[0], "openscad --backend=manifold -o out/c.stl -D config=\"revised\" -D a=1 -D hub_drop=0.687 c.scad");
         let o = check("face", v, &fake("", [true, false]));
         assert!(!o.ok && o.output.contains("no file out/assembly.echo"), "{}", o.output);
     }

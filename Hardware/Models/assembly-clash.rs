@@ -25,7 +25,8 @@
 //! ```
 
 use anyhow::{bail, Context, Result};
-use render_check::{diagnostics, manifold_openscad, print_fits, run, Ctx};
+use render_check::meshes::BACKEND;
+use render_check::{diagnostics, print_fits, run, Ctx};
 use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 
@@ -81,8 +82,8 @@ fn fresh(path: &Path, sources: SystemTime) -> bool {
 /// engine, and hold the render to silence.
 fn export_part(ctx: &Ctx, scad: &str, id: &str, out: &str) -> Result<()> {
     let define = format!("part=\"{id}\"");
-    let args = ["--backend=manifold", "-o", out, "--export-format=binstl", "-D", &define, scad];
-    let r = run(&manifold_openscad(), &args, &ctx.dir)?;
+    let args = [BACKEND, "-o", out, "--export-format=binstl", "-D", &define, scad];
+    let r = run(&ctx.openscad, &args, &ctx.dir)?;
     let complaints = diagnostics(&r.stderr);
     if !r.ok || !complaints.is_empty() {
         bail!("exporting {id} failed:\n{}", if r.ok { complaints.join("\n") } else { r.stderr.trim_end().to_string() });

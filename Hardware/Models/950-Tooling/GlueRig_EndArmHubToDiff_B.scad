@@ -26,8 +26,8 @@
 // The pre-correction mesh is kept at
 // ../Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl and is what
 // this file cuts; the corrected mesh is rendered over
-// GlueRig_EndArmHubToDiff_B.stl. Rendering it needs CGAL:
-//   openscad -o 950-Tooling/GlueRig_EndArmHubToDiff_B.stl \
+// GlueRig_EndArmHubToDiff_B.stl:
+//   openscad --backend=manifold -o 950-Tooling/GlueRig_EndArmHubToDiff_B.stl \
 //            950-Tooling/GlueRig_EndArmHubToDiff_B.scad
 // -----------------------------------------------------------------------------
 
