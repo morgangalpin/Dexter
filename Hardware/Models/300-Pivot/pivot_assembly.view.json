@@ -34,7 +34,7 @@
   ],
   "notes": [
     {"heading": "Provisional placements", "emphasis": true,
-     "text": "No spec fixes the Pivot Code Disk's turn about J2 or the Base cap's turn about J1: 008.4 step 6 leaves the Base cap's free, and the disk keeps its own frame's. The Pivot cap's wire channel is turned {cable_turn}° about J2 toward H2, the cable hole that opens in the end face. The Base cap is turned 180° about J1 from base_assembly.scad's frame, which turns the pivot 180° to put it in the Pivot Skirt. Spec 009 tracks these as DC-16."},
+     "text": "No spec fixes the Pivot Code Disk's turn about J2 or the Base cap's turn about J1: 008.4 step 6 leaves the Base cap's free, and the disk keeps its own frame's. The Pivot cap's wire channel is turned {cable_turn}° about J2 toward H2, the cable hole that opens in the end face: the turn nearest H2 that puts its motor holes on the pivot's H5. The Base cap is turned 180° about J1 from base_assembly.scad's frame, which turns the pivot 180° to put it in the Pivot Skirt. Spec 009 tracks these as DC-16."},
     {"heading": "Not drawn",
      "items": [
        "The Base Long and the Arm Body that hold the 6810s' outer races",

@@ -15,7 +15,9 @@
 //     this cap's turn free, since its wire hole is centred.
 //   - The Pivot Motor End Cap's top face on the J2 end face, its body beyond it along +X. Its
 //     wire channel, on +X in its own frame, is turned about J2 toward the cable hole (H2) that
-//     opens in the end face (008.4 step 6).
+//     opens in the end face (008.4 step 6), as near as its motor holes allow: their M3 screws
+//     run on into the pivot's H5, so the turn is 45° + k·90°, 6.2° short of H2's direction.
+//     The channel still opens into the Ø12 hole.
 //   - The Pivot Code Disk on the J2 drum, its hub's top on the pivot's X_FACE and its flat face
 //     away from the body (008.4 step 5). Nothing fixes its turn about J2, so it keeps its own
 //     frame's, its first slit toward the world's +Z.
@@ -52,7 +54,8 @@ B6810        = [50, 65, 7];
 B6810_FN     = 360;                      // facets: at 96 the Ø50 bore's chords stand inside the circle,
                                          // more than the clash check's facet slack
 BASE_TURN    = 180;                      // #311-001 about J1, as base_assembly.scad turns the pivot
-CABLE_TURN   = atan2(-CABLE_YZ[0], CABLE_YZ[1] - J2_Z);   // about J2: the channel, up at 0, toward H2
+H2_TURN      = atan2(-CABLE_YZ[0], CABLE_YZ[1] - J2_Z);   // about J2, up at 0: H2's direction
+CABLE_TURN   = 45 + 90 * round((H2_TURN - 45) / 90);      // the channel nearest H2 with the motor holes on H5
 
 // --- Frames -----------------------------------------------------------------
 // Each cap's own frame carried onto the pivot: the top face on the pivot's face, the cap beyond it.
@@ -60,7 +63,7 @@ module j1_cap_frame() translate([0, 0, -CAP_TOP]) rotate(BASE_TURN) children();
 module j2_cap_frame() translate([J2_END_X + CAP_TOP, 0, J2_Z]) rotate([CABLE_TURN, 0, 0]) rotate([0, -90, 0]) children();
 module disk_frame()   translate([X_FACE + HUB_HEIGHT, 0, J2_Z]) rotate([0, -90, 0]) children();
 
-echo(cable_turn = round(CABLE_TURN * 10) / 10);
+echo(cable_turn = CABLE_TURN, h2_turn = round(H2_TURN * 10) / 10);
 echo(j2_motor_rear_x = J2_END_X + CAP_TOP - CAP_SEAT);
 
 // --- Parts ------------------------------------------------------------------

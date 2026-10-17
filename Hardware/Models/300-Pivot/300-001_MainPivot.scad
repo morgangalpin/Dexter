@@ -85,9 +85,16 @@
 //                                            pad at each boss behind the
 //                                            collar, which is a seat:
 //                                            side_apothem(), skirt_pads()
+//     S1, S2 on the C-501 strip              press: strake_slot(); S1 at 180°
+//                                            opens across its width, which
+//                                            the reference draws line to line
+//     H6 traps on the M3 nut                 slip: trap_af(), 5.8 for 5.6
+//     H6, H7 holes on the M3 screw           slip: SIDE_D's 0.25 a side is
+//                                            already more, so it stays
 //
-// Every other face takes no clearance: the holes and nut traps keep the
-// reference's sizes, every trap TRAP_AF.
+// H4 and H5 keep the reference's Ø3.0: the motor end caps' M3 screws, whose
+// heads sit in #312-001's counterbores, cut their own thread in them. H8 keeps
+// its size, since 008.4 puts nothing in it.
 
 include <BOSL2/std.scad>
 include <BOSL2/rounding.scad>
@@ -138,6 +145,7 @@ J2_WINDOW = [3.300, 6.700];            // E2, from the J2 end face
 // S1, S2 strake slots
 SLOT      = [22.797, 3.601, 13.000];   // centre radius, radial, tangential
 SLOT_TIGHT = [22.797, 3.302, 12.700];  // S1 at 180°
+STRAKE    = [3.175, 12.700];           // the strip S1 and S2 take: C-501, .125" x .500" (007.1)
 J1_SLOT_TOP = 60.000;
 J2_SLOT_X = -24.448;
 // Holes
@@ -154,10 +162,11 @@ SIDE_D    = 3.500;                     // H6, H7
 SIDE_Z    = [15.000, 59.000];
 SIDE_DEPTH = [4.000, 5.000];           // hex trap, hole, from the face
 TRAP_AF   = 5.600;                     // H6 traps across flats: every one takes the same M3 nut
+M3_NUT_AF = 5.500;                     // that nut across flats: C-612, DIN 934 (007.1)
 SIDE_Y_X  = [-8.462, 15.533];          // on the ±Y faces
 // H6 traps: [face angle, x on a ±Y face (or undef), flats level]. The reference's
 // -135° trap is 5.8 across flats, the rest TRAP_AF; it takes the same nut, so
-// both configs draw it TRAP_AF.
+// the previous config draws it TRAP_AF, and the revised one trap_af().
 TRAPS     = [[180, undef, true], [135, undef, false], [-135, undef, false],
              [-90, SIDE_Y_X[0], false], [-90, SIDE_Y_X[1], false]];
 TOP_HOLE  = [2.000, 5.000];           // H8 Ø, depth
@@ -172,6 +181,13 @@ function cone_r(x) = CONE[0] - CONE[1] * (X_FACE - x);
 $side = APOTHEM;
 function side_apothem(cfg) = cfg == "revised" ? APOTHEM - fit_clearances(cfg)[0] : APOTHEM;
 function drum_d() = J1_DRUM_D - 2 * (APOTHEM - $side);
+
+// S1/S2's [centre radius, radial, tangential] for slot s, and H6's traps across
+// flats. The revised config opens each to its mate's press or slip fit where
+// the reference draws it tighter; a wider one keeps its size.
+function strake_slot(s, cfg) = cfg == "previous" ? s
+    : [s[0], max(s[1], fit_bore(STRAKE[0], fit_clearances(cfg)[1])), max(s[2], fit_bore(STRAKE[1], fit_clearances(cfg)[1]))];
+function trap_af(cfg) = cfg == "previous" ? TRAP_AF : max(TRAP_AF, fit_bore(M3_NUT_AF, fit_clearances(cfg)[0]));
 
 // --- 2D outlines -------------------------------------------------------------
 // B1/B2/N1, counter-clockwise from the -X face's lower end. N1 is the notch
@@ -198,8 +214,8 @@ module windows_2d(turn) rotate(turn) for (a = [45 : 90 : 315]) rotate(a)
     translate([WINDOW[1], -WINDOW[0]]) square([40, 2 * WINDOW[0]]);
 
 // S1/S2: slots on 0, 90, 180, 270 before `turn`; tight gives 180° its own size.
-module slots_2d(turn, tight) rotate(turn) for (a = [0 : 90 : 270])
-    let (s = (tight && a == 180) ? SLOT_TIGHT : SLOT) rotate(a)
+module slots_2d(turn, tight, cfg) rotate(turn) for (a = [0 : 90 : 270])
+    let (s = strake_slot((tight && a == 180) ? SLOT_TIGHT : SLOT, cfg)) rotate(a)
         translate([s[0] - s[1] / 2, -s[2] / 2])
             square([s[1], s[2]]);
 
@@ -401,10 +417,10 @@ function flange_round_section(a, s, n = 12) = let (
         [e + [s[0], 0.2], e + [-FLANGE_R - 0.1, 0.2], e + [-FLANGE_R - 0.1, -s[1]]])
 ) [for (p = pts) [p.x, p.y * sin(a), J2_Z + p.y * cos(a)]];
 
-module j1_cuts() {
+module j1_cuts(cfg) {
     down(epsilon) {
         cylinder(d = BORE_D, h = BODY_Z[1] + 2 * epsilon);                       // H1
-        linear_extrude(J1_SLOT_TOP + epsilon) slots_2d(0, true);                 // S1
+        linear_extrude(J1_SLOT_TOP + epsilon) slots_2d(0, true, cfg);            // S1
         linear_extrude(J1_PIN[1] + epsilon) pins_2d(0);                          // H4
     }
     up(J1_WINDOW[0]) linear_extrude(J1_WINDOW[1] - J1_WINDOW[0]) windows_2d(0);  // D3
@@ -413,9 +429,9 @@ module j1_cuts() {
 // The J2 end's cuts in a frame whose +Z is +X, origin on the end face.
 module j2_frame() translate([J2_END_X, 0, J2_Z]) rotate([0, -90, 0]) children();
 
-module j2_cuts() j2_frame() {
+module j2_cuts(cfg) j2_frame() {
     down(epsilon) {
-        linear_extrude(J2_END_X - J2_SLOT_X + epsilon) slots_2d(45, false);     // S2
+        linear_extrude(J2_END_X - J2_SLOT_X + epsilon) slots_2d(45, false, cfg); // S2
         linear_extrude(J2_END_X - J2_PIN_X + epsilon) pins_2d(45);              // H5
     }
     up(J2_WINDOW[0]) linear_extrude(J2_WINDOW[1] - J2_WINDOW[0]) windows_2d(45); // E2
@@ -503,12 +519,12 @@ function side_face_point(a, x) = is_undef(x) ? APOTHEM * [cos(a), sin(a)] : [x, 
 // Into the face at angle a: local +X is outward, the hole runs to -X.
 module on_face(a, x, z) translate([each side_face_point(a, x), z]) rotate(a) children();
 
-module side_holes() {
+module side_holes(cfg) {
     faces = concat([[180, undef], [135, undef], [-135, undef]], [for (x = SIDE_Y_X, a = [-90, 90]) [a, x]]);
     for (z = SIDE_Z, f = faces) on_face(f[0], f[1], z) translate([-SIDE_DEPTH[1], 0, 0])
         rotate([0, 90, 0]) cylinder(d = SIDE_D, h = SIDE_DEPTH[1] + 1, $fn = 48);
     for (t = TRAPS) on_face(t[0], t[1], SIDE_Z[0]) translate([-SIDE_DEPTH[0], 0, 0]) rotate([0, 90, 0])
-        linear_extrude(SIDE_DEPTH[0] + 1) rotate(t[2] ? 30 : 0) circle(d = TRAP_AF / cos(30), $fn = 6);
+        linear_extrude(SIDE_DEPTH[0] + 1) rotate(t[2] ? 30 : 0) circle(d = trap_af(cfg) / cos(30), $fn = 6);
     for (p = TOP_HOLES) render() intersection() {
         translate([p.x, p.y, BODY_Z[1] - TOP_HOLE[1]]) cylinder(d = TOP_HOLE[0], h = TOP_HOLE[1] + 1, $fn = 32);
         if (p.y != 0) along_x() polygon([[0, BODY_Z[1] - TOP_HOLE[1]], [sign(p.y) * TOP_HOLE_SLOPE, BODY_Z[1] - TOP_HOLE[1]],
@@ -658,10 +674,10 @@ module main_pivot(cfg = config) {
             flange();
             j2_drum();
         }
-        j1_cuts();
-        j2_cuts();
+        j1_cuts(cfg);
+        j2_cuts(cfg);
         cable_cuts();
-        side_holes();
+        side_holes(cfg);
     }
 }
 

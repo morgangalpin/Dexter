@@ -567,10 +567,14 @@ by a feature it carries; these placements are inferences to be confirmed or repl
   Pivot's +X face, but 008.4 step 5 fixes no turn, so the model keeps the disk's own frame;
 - what the disk's pegs and their Ø1 holes engage. No document names a mate for them, and the Main Pivot's
   +X face has no socket, so in the model the pegs' tops bear on that face in the hub's plane;
-- the Pivot Motor End Cap's turn about J2. Step 6 orients the cap's notch "toward the motor-wire hole",
-  which the model reads as aiming the wire channel's centre at H2's;
+- the Pivot Motor End Cap's turn about J2. Step 6 orients the cap's notch "toward the motor-wire hole".
+  The cap's four motor holes (Ø3.2, counterbored Ø6 on `#312-001`) line up with the Main Pivot's H5
+  (Ø3.0, an M3 tapping size) only at 45° + k·90°, so the model takes 45°, the turn nearest H2. That leaves
+  the wire channel's centre 6.2° short of H2's, still open into the Ø12 hole. 008.4 names no screws
+  into H5, so whether they run there is still to be confirmed;
 - the Base Motor End Cap's turn about J1. Step 6 leaves it free, so the model takes the turn that
-  [`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) gives the pivot.
+  [`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) gives the pivot, which keeps its
+  motor holes on H4.
 
 **Definition of done:** the disk's and the Pivot cap's turns stated in [008.4](008-Assembly.md#0084-main-pivot)
 by the feature each is located from, and the pegs' mate named; the model's inferences replaced by those

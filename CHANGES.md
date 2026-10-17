@@ -1201,7 +1201,14 @@ anything version 3 does not independently specify
     places the Code Disk on the J2 drum, each Motor End Cap on its end with its 6810 and C-101, from the
     `render.rs --meshes` build. It found the Main Pivot's flange standing 0.01 mm proud of the +X face
     the disk's hub seats on, so the flange now ends on that face. The turns about J2 that no document
-    fixes are tracked as [DC-16](specs/009-Design-Completion.md#main-pivot-placement).
+    fixes are tracked as [DC-16](specs/009-Design-Completion.md#main-pivot-placement). The Pivot cap was
+    first turned to aim its wire channel straight at H2. That put its motor holes 6.2° off the pivot's H5,
+    so it now takes the turn nearest H2 that lines them up.
+  - **300-Pivot:** the Main Pivot's revised strake slots and nut traps are probed against their mates, as
+    007.2 requires. The tight S1 slot on 180° fitted the C-501 strip line to line across its width, and
+    the H6 traps stood 0.05 off the M3 nut where the slip fit needs 0.15. `revised` opens both to their
+    fits. The slots and holes that the reference already draws wider keep their size, and probes hold them
+    open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
