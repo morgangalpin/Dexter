@@ -160,7 +160,7 @@ function face_end(cfg) = sqrt(pow(OUTLINE_R, 2) - pow(lug_flat(cfg), 2)) + 0.5;
 // The root fillets between the seat and each lug, along its inner face and
 // round its notch-side corner; at the +x notch they run up onto the channel's
 // seat rounds. None runs into a notch.
-// Each is cut to the section on its own: CGAL fails on the lot at once.
+// Each is cut to the section on its own.
 module root_fillets(cfg)
     for (a = [0 : 90 : 270], m = [0, 1]) intersection() {
         rotate(a) mirror([0, m, 0])

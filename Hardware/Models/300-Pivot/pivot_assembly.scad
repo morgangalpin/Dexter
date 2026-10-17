@@ -25,8 +25,8 @@
 //     seat, its body beyond it.
 //
 // GEOMETRY. The printed parts are the binary mesh cache `render.rs 300-Pivot --meshes` builds in
-// out/asm/, so run it first. The caps render on CGAL, which is slow, and a `use`d file keeps its
-// own `config`. Vendor parts are envelopes at catalogue size.
+// out/asm/, so run it first. A `use`d file keeps its own `config`. Vendor parts are envelopes at
+// catalogue size.
 //
 // CLASH. The whole assembly is checked by assembly-clash.rs against pivot_assembly.clash.json. A
 // bearing there is three parts, <bearing>_inner, _outer and _shield, which `part` draws one at a

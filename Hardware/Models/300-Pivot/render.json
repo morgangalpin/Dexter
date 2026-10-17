@@ -114,8 +114,7 @@
        {"label": "M3 hole", "at": [16.5607, 16.5607, 4.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "slip"}
      ]},
     {"kind": "dist_gate", "id": "dist-312-001", "part": "312-001",
-     "config": "previous", "scad": "312-001_MotorEndCapPivot.scad", "out": "out/312-001.stl", "reference": "312-001_MotorEndCapPivot.stl", "tol": 0.15,
-     "note": "#312-001 renders on CGAL, as #311-001 does."},
+     "config": "previous", "scad": "312-001_MotorEndCapPivot.scad", "out": "out/312-001.stl", "reference": "312-001_MotorEndCapPivot.stl", "tol": 0.15},
     {"kind": "render", "id": "render-312-001", "config": "revised",
      "scad": "312-001_MotorEndCapPivot.scad", "out": "out/revised/312-001.stl"},
     {"kind": "probes", "id": "probes-312-001", "part": "312-001 (revised)",

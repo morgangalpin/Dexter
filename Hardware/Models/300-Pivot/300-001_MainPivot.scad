@@ -75,9 +75,6 @@
 // GATE. render.rs gates the previous config on dist ±0.15: hausdorff 0.115,
 // volume the reference's to 0.005%.
 //
-// NOT ON CGAL. Under CGAL the swept and lofted blends leave non-planar faces and a mesh that is not
-// a valid 2-manifold.
-//
 // FITS (../print_fit.scad), revised only:
 //
 //     drum underside, over the code disc     run: land_h()

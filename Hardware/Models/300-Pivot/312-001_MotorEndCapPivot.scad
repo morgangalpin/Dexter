@@ -34,9 +34,6 @@
 // Every other feature is #311-001's to the gate's 0.15 mm: the notches, the
 // land and its chamfers, the lugs and their rounds, the root fillets, the seat,
 // the centre bore and the wire channel.
-//
-// RENDER WITH CGAL, as #311-001: under Manifold the channel's lofted blend
-// leaves an open seam.
 
 include <311-001_MotorEndCapBase.scad>
 

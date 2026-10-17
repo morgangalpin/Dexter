@@ -1295,6 +1295,9 @@ anything version 3 does not independently specify
   - `100-003`: L1 and L2, and L3's two parts, each met on the plane where L2 starts, and Manifold kept
     both shared faces as a wall across the lug. L1 and L3's part in it now run `SEAM_LAP` past the
     plane (its comment gives the figures): dist 0.045 mm against 0.15.
+  - `300-Pivot`: the CGAL notes in `300-001`, `311-001`, `312-001`, `pivot_assembly.scad`, the two cap view
+    sidecars and the `dist-312-001` check are gone. All 20 jobs of `render.rs 300-Pivot --verify` pass on
+    Manifold, `312-001` included, whose channel seam came from `side_blend()` ([CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine)).
   - `710-001`: the Manifold render is CGAL's surface with fewer triangles, so its miss was `compare`
     reading vertex rings in the reference's tooth toes that only CGAL's tessellation had matched. The
     clone check now ignores those rings (its note gives the figures) and reads 0.058 mm on both engines.
