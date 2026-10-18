@@ -49,9 +49,38 @@
                "--ignore-plane=6.0,11.8", "--ignore-plane=-2.74,-2.62"],
      "note": "The 1.500 mm was the crown solid's buried bottom edge at z 18.500, a knife edge 2 mm inside the merged part's material, which no correct model can carry a vertex on. The 17.250 plane range is the tessellation seam where the diameter 27 wall's outline drops from 430 points to 308 with the diameter and area unchanged."},
 
+    {"kind": "dist_gate", "id": "dist-710-003", "part": "710-003", "config": "previous",
+     "scad": "710-003_DiffKeeper.scad", "out": "out/dist/710-003.stl", "reference": "710-003_DiffKeeper.stl", "tol": 0.15,
+     "note": "Every part whose reference is one clean solid is gated on dist as well as clone, as every converted group's parts are; the Split Gear halves' references were united to get there (README, Known defects). Three stay on clone alone. 720-001 departs on purpose: its tooth tips are blunted to the shared crown's land (0.566 mm, clone-720-001's pinned deviation), and its reference carries twelve Ø0.2 wall holes the printed shaft omits (2.85 mm). 720-002's reference carries a zero-thickness sheet on its bottom face (1.338 mm, clone-720-002's note). 730-002 is not yet a faithful recreation (0.354 mm), and its reference holds six ~1 mm inside-out void shells (0.991 mm)."},
+    {"kind": "dist_gate", "id": "dist-710-001", "part": "710-001", "config": "previous",
+     "scad": "710-001_SplitGearTop.scad", "out": "out/dist/710-001.stl", "reference": "710-001_SplitGearTop.stl", "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-710-002", "part": "710-002", "config": "previous",
+     "scad": "710-002_SplitGearBottom.scad", "out": "out/dist/710-002.stl", "reference": "710-002_SplitGearBottom.stl", "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-710-004", "part": "710-004", "config": "previous",
+     "scad": "710-004_RotateCodeDisk.scad", "out": "out/dist/710-004.stl", "reference": "710-004_RotateCodeDisk.stl", "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-720-003", "part": "720-003", "config": "previous",
+     "scad": "720-003_DiffEndPulley.scad", "out": "out/dist/720-003.stl", "reference": "720-003_DiffEndPulley.stl", "tol": 0.15},
+
     {"kind": "dist_gate", "id": "dist-730-001", "part": "730-001", "config": "previous",
      "scad": "730-001_DiffBodyA.scad", "out": "out/730-001.stl", "reference": "730-001_DiffBodyA.stl", "tol": 0.15,
      "note": "The two housings are held to a stricter contract than the rest. compare matches feature planes and diameters, so a body can satisfy every mating interface while its shell is nothing like the reference: Body A passed its interface checks at 2.43x the reference's material. They are gated on dist, a two-sided surface distance, which catches a missing feature or a wrong hole shape. Body B joins when it is rebuilt as a faithful recreation."},
+    {"kind": "outline", "id": "outline-730-001-base", "part": "730-001", "config": "previous",
+     "scad": "730-001_DiffBodyA.scad", "out": "out/2d/730-001-base.svg", "layer": "base",
+     "reference": "730-001_DiffBodyA.stl", "axis": "z", "at": 0.5, "tol": 0.15,
+     "note": "#730-001 is built from extruded 2D outlines. Its section is constant over four spans, and each is checked mid-span against the reference's section; the part's LAYER_Z names them."},
+    {"kind": "outline", "id": "outline-730-001-middle", "part": "730-001", "config": "previous",
+     "scad": "730-001_DiffBodyA.scad", "out": "out/2d/730-001-middle.svg", "layer": "middle",
+     "reference": "730-001_DiffBodyA.stl", "axis": "z", "at": 11.0, "tol": 0.15},
+    {"kind": "outline", "id": "outline-730-001-upper", "part": "730-001", "config": "previous",
+     "scad": "730-001_DiffBodyA.scad", "out": "out/2d/730-001-upper.svg", "layer": "upper",
+     "reference": "730-001_DiffBodyA.stl", "axis": "z", "at": 16.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-730-001-top", "part": "730-001", "config": "previous",
+     "scad": "730-001_DiffBodyA.scad", "out": "out/2d/730-001-top.svg", "layer": "top",
+     "reference": "730-001_DiffBodyA.stl", "axis": "z", "at": 21.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-720-003-band", "part": "720-003", "config": "previous",
+     "scad": "720-003_DiffEndPulley.scad", "out": "out/2d/720-003-band.svg", "layer": "band",
+     "reference": "720-003_DiffEndPulley.stl", "axis": "z", "at": 23.5, "tol": 0.15,
+     "note": "#720-003's tooth band is one extruded sector, patterned; its section mid-band, with the bore, glue lobes and web slots through it, is checked against the reference's. #720-001's band is not gated this way: its reference carries twelve Ø0.2 wall holes through that section, which the printed shaft omits."},
     {"kind": "render", "id": "render-730-002", "config": "previous",
      "scad": "730-002_DiffBodyB.scad", "out": "out/730-002.stl"},
 
@@ -128,11 +157,13 @@
        {"label": "bore on the 8 mm tube", "at": [4.0, 0.0, 1.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
      ]},
     {"kind": "fits", "id": "fits-720-001", "part": "720-001 (revised)", "stl": "out/revised/720-001.stl", "after": ["render-revised-720-001"],
-     "note": "720-001 is exported turned onto +Y: its own (x, y, z) lies at (x, z, -y).",
+     "note": "720-001 is exported turned onto +Y: its own (x, y, z) lies at (x, z, -y). The rear journal (z 44.04..49.64) carries Body A's 6703, and the rear seat (2.7 deep from z 49.64) its MR128.",
      "probes": [
        {"label": "front 6703 journal", "at": [8.5, 0.0, 0.0], "toward": [1.0, 0.0, 0.0], "fit": "press"},
        {"label": "front MR128 seat", "at": [6.0, -8.5, 0.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
-       {"label": "6705's 25 mm", "at": [0.0, 31.0, -12.5], "toward": [0.0, 0.0, -1.0], "fit": "press"}
+       {"label": "6705's 25 mm", "at": [0.0, 31.0, -12.5], "toward": [0.0, 0.0, -1.0], "fit": "press"},
+       {"label": "rear 6703 journal", "at": [8.5, 46.0, 0.0], "toward": [1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "rear MR128 seat", "at": [6.0, 48.5, 0.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
      ]},
     {"kind": "fits", "id": "fits-720-002", "part": "720-002 (revised)", "stl": "out/revised/720-002.stl", "after": ["render-revised-720-002"],
      "probes": [
@@ -142,6 +173,23 @@
     {"kind": "fits", "id": "fits-720-003", "part": "720-003 (revised)", "stl": "out/revised/720-003.stl", "after": ["render-revised-720-003"],
      "probes": [
        {"label": "CF rod bore, between the glue lobes", "at": [4.0, 0.0, 22.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
+     ]},
+    {"kind": "fits", "id": "fits-720-004", "part": "720-004 (revised)", "stl": "out/revised/720-004.stl", "after": ["render-revised-720-004"],
+     "note": "The spline bore over the shaft's 40T band (slip, a printed mate), mid-band on a tooth land: the grooves lie on 0 deg + k * 9 deg, so 4.5 deg is mid-land at the tip radius 12.485.",
+     "probes": [
+       {"label": "spline bore on the band's tip land", "at": [12.4465, 0.9796, 4.0], "toward": [-0.99692, -0.07846, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "probes", "id": "probes-710-004-wide", "part": "710-004 (revised)", "stl": "out/revised/710-004.stl", "after": ["render-revised-710-004"],
+     "note": "The bore over 710-001's Ø37 body is drawn Ø37.5, wider than the slip fit, which 007.2 lets it keep: open at the slip clearance off the mate's surface (r 18.5) and material 0.3 off it.",
+     "items": [
+       {"label": "bore: open at the slip clearance", "at": [18.65, 0.0, 2.0], "solid": false},
+       {"label": "bore: wall within 0.3", "at": [18.8, 0.0, 2.0], "solid": true}
+     ]},
+    {"kind": "probes", "id": "probes-730-001-wide", "part": "730-001 (revised)", "stl": "out/revised/730-001.stl", "after": ["render-revised-730-001"],
+     "note": "The M3 screw's D-shaped clearance holes, Ø4.598 with a flat 1.8 off the axis on the outboard side, are wider than the slip fit, which 007.2 lets them keep: at the +Y screw (x -30, y 8.7), open at the slip clearance off the screw (r 1.5) toward the flat, and material just past the flat. The Ø3.194 hole above it is what the header calls tapped, and the Ø3.99 pins have no named mate, so neither is probed (see the part's header).",
+     "items": [
+       {"label": "screw clearance: open at the slip clearance", "at": [-30.0, 10.35, 10.0], "solid": false},
+       {"label": "screw clearance: flat within 0.35", "at": [-30.0, 10.55, 10.0], "solid": true}
      ]},
     {"kind": "fits", "id": "fits-730-001", "part": "730-001 (revised)", "stl": "out/revised/730-001.stl", "after": ["render-revised-730-001"],
      "probes": [
@@ -153,6 +201,7 @@
      "note": "Body B's J4 tunnel runs along X at (y, z) = (-21, 21); its column along Z at (x, y) = (21, -21).",
      "probes": [
        {"label": "-X 6703 seat", "at": [11.0, -21.0, 32.5], "toward": [0.0, 0.0, -1.0], "fit": "press"},
+       {"label": "+X 6703 seat", "at": [30.0, -21.0, 32.5], "toward": [0.0, 0.0, -1.0], "fit": "press"},
        {"label": "column's 6703 journal", "at": [29.5, -21.0, 38.0], "toward": [1.0, 0.0, 0.0], "fit": "press"},
        {"label": "8 mm tube in the MR128s", "at": [25.0, -21.0, 55.0], "toward": [1.0, 0.0, 0.0], "fit": "press"}
      ]},
@@ -181,24 +230,9 @@
     {"kind": "extents", "id": "extent-720-003-revised", "part": "720-003", "config": "revised", "after": ["render-revised-720-003"],
      "scad": "720-003_DiffEndPulley.scad", "name": "end_pulley_box_ref", "stl": "out/revised/720-003.stl", "out": "out/revised/720-003-extent.csg"},
 
-    {"kind": "interference", "id": "interference-730-001-720-004", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "730-001", "b": "720-004", "out": "out/revised/interference-730-001-720-004.stl",
-     "note": "The ring sits inside Body A's chamber, where no extent check can reach. Body B against each crown that turns in it is the running clearance 730-002's TOE CLEARANCE keeps; the Split Gear Top is listed beside the Bottom, which carries the toe, because both halves sweep the same zone. Two bearing sets are listed against a part they seat in; both render empty with their shoulders on the races. The other bearing pairs return the face where a shoulder meets a race, at zero thickness, which this check cannot tell from an overlap, so they are not listed."},
-    {"kind": "interference", "id": "interference-730-002-720-002", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "730-002", "b": "720-002", "out": "out/revised/interference-730-002-720-002.stl"},
-    {"kind": "interference", "id": "interference-730-002-720-001", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "730-002", "b": "720-001", "out": "out/revised/interference-730-002-720-001.stl"},
-    {"kind": "interference", "id": "interference-730-002-710-002", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "730-002", "b": "710-002", "out": "out/revised/interference-730-002-710-002.stl"},
-    {"kind": "interference", "id": "interference-730-002-710-001", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "730-002", "b": "710-001", "out": "out/revised/interference-730-002-710-001.stl"},
-    {"kind": "interference", "id": "interference-brg_body_a-730-001", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "brg_body_a", "b": "730-001", "out": "out/revised/interference-brg_body_a-730-001.stl"},
-    {"kind": "interference", "id": "interference-brg_body_b-710-002", "config": "revised", "scad": "diff_assembly.scad",
-     "a": "brg_body_b", "b": "710-002", "out": "out/revised/interference-brg_body_b-710-002.stl"},
     {"kind": "keepout", "id": "keepout-730-002", "config": "revised", "scad": "730-002_DiffBodyB.scad",
      "defines": ["keepout_check=true"], "out": "out/revised/keepout-730-002.stl",
      "label": "730-002 keeps the running clearance off the three crowns' teeth (revised)",
-     "note": "Body B against the volume the three crowns' teeth sweep, grown by just under the running clearance. Where the interference pairs show only that Body B and the gears do not touch, this shows the clearance itself. See 730-002's TOE CLEARANCE."}
+     "note": "Body B against the volume the three crowns' teeth sweep in a whole turn, grown by just under the running clearance. diff_assembly.clash.json checks every pair of the assembly for overlap and for its class's clearance, but at one turn of each gear; this check covers every turn. The assembly's pairwise interference checks, which held only that two parts did not overlap, are gone: the clash manifest covers each of them. See 730-002's TOE CLEARANCE."}
   ]
 }

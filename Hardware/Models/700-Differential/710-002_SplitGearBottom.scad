@@ -79,13 +79,13 @@ function bevel_pt(p)      = [p.x, p.y + BEVEL_APEX_Z];
 // on both sides -- so there is nothing there to model, and the ring stands as
 // a 0.250 mm plane mismatch.
 //
-// A fourth is deliberate. The reference's funnel and Ø8.5 wire bore are not on
-// the axis: circle fits at z 6.3, 6.5, 6.6, 6.7 and 6.9 all centre them on
-// (-0.039, 0.138), 0.143 mm off it, while every turned surface around them fits
-// the axis to 0.001 mm. That is a slip in the original, not a feature -- it is
-// a clearance hole for wire -- so the bore is modelled concentric and the
-// 0.143 mm shows up as this part's whole excursion past the 0.15 mm tolerance,
-// 0.011% of samples.
+// A fourth is a slip in the original. The reference's funnel and Ø8.5 wire
+// bore are not on the axis: circle fits at z 6.3, 6.5, 6.6, 6.7 and 6.9 all
+// centre them on (-0.039, 0.138), 0.143 mm off it, while every turned surface
+// around them fits the axis to 0.001 mm. It is a clearance hole for wire, so
+// "revised" bores it concentric; "previous" keeps the measured offset
+// (WIRE_OFFSET), which is what holds it inside its 0.15 mm dist gate. The funnel
+// and bore are therefore one revolved cutter, not part of the body's profile.
 //
 // In "revised" the bearing fits take the PRESS clearance (diff_params.scad):
 // the Ø12 MR128 seat grows and the Ø17 stub, which the 6703 in 710-001's
@@ -108,12 +108,26 @@ STUB_TOP = 8.253;   // where the stub meets its flank: the 6703's room ends here
 // this part's bottom face and STUB_TOP.
 function stub_top() = STUB_TOP;
 
+WIRE_OFFSET = config == "previous" ? [-0.039, 0.138] : [0, 0];
+
+// The funnel and the wire bore, revolved about their own axis: the funnel mouth
+// 0.25 mm inboard of the Ø13 wall at z 4.5, the 45-degree funnel, and the bore
+// up into the MR128 seat. Both ends reach past the faces they open into, into
+// the Ø13 mouth below and the seat above.
+WIRE_CUT = [
+    [ 0.000,  4.400],
+    [ 6.250,  4.400],
+    [ 6.250,  4.500],   // step in to the funnel mouth, 0.25 mm wide
+    [WIRE_R, 4.500 + 6.250 - WIRE_R],   // 45-degree funnel down to the wire bore
+    [WIRE_R, 13.600],   // wire bore, Ø8.5 / Ø10
+    [ 0.000, 13.600],
+];
+
 BODY_PROFILE = [
     [ 6.500,  4.000],   // bottom face, Ø13 bore mouth
     [ 6.500,  4.500],   // Ø13 wall -- the lip inside the bottom opening
-    [ 6.250,  4.500],   // step in to the funnel mouth, 0.25 mm wide
-    [WIRE_R, 4.500 + 6.250 - WIRE_R],   // 45-degree funnel down to the wire bore
-    [WIRE_R, 13.500],   // wire bore, Ø8.5 / Ø10
+    [ 0.000,  4.500],   // solid to the axis: WIRE_CUT takes the funnel and bore
+    [ 0.000, 13.500],
     [ 6.000 + PRESS, 13.500],   // Ø12 MR128 seat
     [ 6.000 + PRESS, 17.000],
     [SLEEVE_R, 17.000],   // sleeve bore, Ø18 / Ø20
@@ -224,6 +238,7 @@ module split_gear_bottom() {
             crown();
         }
         crown_bore_fit();
+        translate(WIRE_OFFSET) rotate_extrude() polygon(WIRE_CUT);
         for (a = BRAD_A)
             zrot(a) up(BRAD_Z) right(BRAD_FLOOR) yrot(90)
                 cyl(d = BRAD_HOLE_D, h = BEVEL_OD / 2 - BRAD_FLOOR, anchor = BOTTOM);

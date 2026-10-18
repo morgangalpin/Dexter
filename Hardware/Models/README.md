@@ -161,6 +161,30 @@ union() { import("200-001_ArmBody.stl"); patch(55.75, 60.25); patch(77.25, 79.5)
 exported as binary STL: 12,008 triangles for 11,946, the bounding box unchanged, and the volume
 0.077 mm³ — five parts in ten million — larger.
 
+**Two Split Gear halves, united in place.** `Reference/meshes/700-Differential/710-001_SplitGearTop.stl`
+and `710-002_SplitGearBottom.stl` were each exported as two overlapping solids, the cage and the bevel
+crown, never united. Each crown's back face, and in 710-002 its bottom edge on the parting cone, stood
+buried inside the other solid's material, so a surface distance read them as surface: 2.173 mm and
+2.251 mm from a faithful recreation, where the clone checks had masked them with ignore ranges. 710-002's
+cage was also not closed: the Ø13 mouth's wall ran on as a zero-thickness sheet inside the material, at
+r 6.500 from the mouth's floor at z 4.500 to z 13.000. Each pair is split into its two solids and united
+on Manifold; 710-002's union also takes a ring of material r 6.4–6.6 over z 4.5–13.1, which lies wholly
+inside the part and fills the sheet:
+
+```
+scadmesh segment <half>.stl --keep 0 --out s0.stl     # and --keep 1 --out s1.stl
+union() { import("s0.stl"); import("s1.stl"); }       // OpenSCAD, Manifold; 710-001
+union() { import("s0.stl"); import("s1.stl");          // 710-002
+          translate([0, 0, 4.5]) difference() {
+              cylinder(r = 6.6, h = 8.6, $fn = 360);
+              translate([0, 0, -1]) cylinder(r = 6.4, h = 20, $fn = 360); } }
+```
+
+exported as binary STL. Each is now one closed solid with its bounding box unchanged: 710-001 48,438
+triangles for 35,394 and 13,020.638 mm³ for the two solids' 13,739.342; 710-002 36,898 for 28,084 and
+7,001.519 mm³ for 7,352.584. The volumes fall by the overlap the two solids counted twice. Both halves
+are now gated on `dist` at ±0.15 mm.
+
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
 

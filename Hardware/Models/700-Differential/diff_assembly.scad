@@ -108,7 +108,15 @@
 //     three can be removed by moving Body B, since C must lie on both of its
 //     axes. "revised" reshapes Body B instead, keeping the RUN clearance off
 //     each crown's swept teeth. 730-002's TOE CLEARANCE owns the figures and
-//     the construction, and render.rs --verify requires each pair to render empty.
+//     the construction, and render.rs --verify's keepout-730-002 checks it over
+//     a whole turn of the gears.
+//
+// CLASH. The whole assembly is checked by assembly-clash.rs against
+// diff_assembly.clash.json, in the configuration the out/asm/ cache was built
+// in (revised). A bearing there is three parts, <name>_inner, _outer and
+// _shield (BEARINGS, below), which `part` draws one at a time and PARTS does
+// not list; their rings end where diff_params.scad's race model says. The
+// manifest's exceptions each state why a feature is accepted as drawn.
 //
 // Kinematic conformance (specs/003 § Link lengths, 004). In a bevel
 // differential the J4 and J5 axes *intersect* — at the differential centre C —
@@ -201,8 +209,8 @@ J4_ANG = 0;         // [-90:1:90]
 // Draw the bearings and the CF rod.
 show_hardware = true;
 // Draw only where two parts overlap as they sit, e.g. ["730-001", "720-004"].
-// Any two ids from PARTS. render.rs --verify sets it and requires an empty result;
-// [] draws the assembly.
+// Any two ids from PARTS, for a look at one pair; the clash check measures every
+// pair (see CLASH in the header). [] draws the assembly.
 interference = [];
 // "all", or one id from PARTS: that part alone, in its assembled place. The
 // section viewer exports the assembly one id at a time through it.
@@ -396,8 +404,12 @@ PARTS = ["730-001", "730-002", "720-001", "720-004", "720-002", "720-003",
 // The assembly is a module rather than a run of top-level calls so that a
 // parent composition can place it: ../robot_assembly.scad reaches it with
 // `use` and positions it by diff_centre(). Called at the end of this file, so
-// opening this file on its own is unchanged. `part` narrows it to one id.
-module diff_assembly() for (p = PARTS) if (part == "all" || part == p) draw(p);
+// opening this file on its own is unchanged. `part` narrows it to one id, or to
+// one bearing's race for the clash check (RACE_PARTS, below).
+module diff_assembly() {
+    for (p = PARTS) if (part == "all" || part == p) draw(p);
+    for (p = RACE_PARTS) if (part == p) draw(p);
+}
 
 // One id, in its assembled place. Body A alone is static: it is the wrist
 // frame the whole differential hangs on. Everything else is the carrier and
@@ -453,21 +465,6 @@ module carried(p) {
 module rod_and_stacks(p) {
     if (p == "cf_rod") color(CARBON_C) up(ROD_BOT) cf_rod();
 
-    // The MR85, pressed into the flat back of the Diff Gear Axle and standing
-    // 1 mm proud of it (008.6 step 19). Its OD is the Ø8 rod bore, so it takes
-    // the top 1.5 mm of that bore; what its Ø5 rides on closes the wrist above
-    // and is outside this model set, which ends here at the J4 axis. See
-    // ROD_TOP: this is what says the rod cannot be flush with that face.
-    if (p == "mr85") color(STEEL_C) in_axle() up(-MR85_PROUD) bearing(BRG_MR85);
-
-    // The needle thrust stack, on the 10.423 mm of Ø8 tube that stands proud
-    // of the Split Gear's base. It is located by the tube and carried by two
-    // FACES — 710-001's base annulus, r 5.994..18.500, against the keeper — so
-    // it never wanted a bore. Anchored on its own bottom face like the
-    // bearings, and drawn downward from that base.
-    if (p == "thrust_stack") color(STEEL_C) in_split()
-        up(SPLIT_BASE_Z - thrust_stack_h()) thrust_stack();
-
     // The four brads that lock the Split Gear's halves together. They are
     // drawn only when both halves drill to one line, which is a config choice
     // — see BRAD_Z in diff_params.scad. Under the reference heights there is
@@ -478,30 +475,75 @@ module rod_and_stacks(p) {
             zrot(a) right(BRAD_TIP_R) brad(BRAD_HEAD_R - BRAD_TIP_R);
 }
 
-module bearings(p) color(STEEL_C) {
+// Every stand-in bearing: its name, the set draw() takes it in, and its
+// catalogue triple. A set is one id for the section viewer; a bearing's name
+// is the stem of its three race parts for the clash check
+// (diff_assembly.clash.json), which `part` draws and PARTS does not list.
+BEARINGS = [
+    ["brg_a_6703",     "brg_body_a",   BRG_6703],
+    ["brg_a_6705",     "brg_body_a",   BRG_6705],
+    ["brg_b_front",    "brg_body_b",   BRG_6703],
+    ["brg_b_rear",     "brg_body_b",   BRG_6703],
+    ["brg_b_col",      "brg_body_b",   BRG_6703],
+    ["brg_shaft_f",    "brg_shaft",    BRG_MR128],
+    ["brg_shaft_r",    "brg_shaft",    BRG_MR128],
+    ["brg_split_top",  "brg_split",    BRG_MR128],
+    ["brg_split_bot",  "brg_split",    BRG_MR128],
+    ["brg_split_6703", "brg_split",    BRG_6703],
+    ["mr85",           "mr85",         BRG_MR85],
+    ["thrust",         "thrust_stack", THRUST_AXK0819],
+];
+RACES = ["inner", "outer", "shield"];
+RACE_PARTS = [for (b = BEARINGS, r = RACES) str(b[0], "_", r)];
+
+// Each bearing's own frame: its bottom face on its seat.
+module bearing_frame(name) {
     // J4 pivot, in Body A.
-    if (p == "brg_body_a") {
-        up(SEAT_A_6703) bearing(BRG_6703);
-        up(SEAT_A_6705) bearing(BRG_6705);
-    }
+    if (name == "brg_a_6703") up(SEAT_A_6703) children();
+    if (name == "brg_a_6705") up(SEAT_A_6705) children();
     // J4 pivot, in Body B's tunnel: the pair that spans the shaft's 22.5 mm
     // front journal. And J5: the column journal, in 710-002's Ø23 crown bore.
-    if (p == "brg_body_b") in_body_b() {
-        translate([SEAT_B_FRONT, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]]) yrot(90) bearing(BRG_6703);
-        translate([SEAT_B_REAR, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]]) yrot(90) bearing(BRG_6703);
-        translate([BODY_B_COL_XY[0], BODY_B_COL_XY[1], SEAT_B_COL]) bearing(BRG_6703);
-    }
+    if (name == "brg_b_front") in_body_b()
+        translate([SEAT_B_FRONT, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]]) yrot(90) children();
+    if (name == "brg_b_rear") in_body_b()
+        translate([SEAT_B_REAR, BODY_B_J4_YZ[0], BODY_B_J4_YZ[1]]) yrot(90) children();
+    if (name == "brg_b_col") in_body_b()
+        translate([BODY_B_COL_XY[0], BODY_B_COL_XY[1], SEAT_B_COL]) children();
     // The rod's two bearings, in the shaft's own end seats.
-    if (p == "brg_shaft") {
-        up(SEAT_SHAFT_F) bearing(BRG_MR128);
-        up(SEAT_SHAFT_R) bearing(BRG_MR128);
-    }
+    if (name == "brg_shaft_f") up(SEAT_SHAFT_F) children();
+    if (name == "brg_shaft_r") up(SEAT_SHAFT_R) children();
     // The Split Gear on Body B's Ø8 thrust tube, and the 6703 between its
     // halves — see SPLIT 6703 below.
-    if (p == "brg_split") in_split() {
-        up(SEAT_SG_TOP)  bearing(BRG_MR128);
-        up(SEAT_SG_BOT)  bearing(BRG_MR128);
-        up(SEAT_SG_6703) bearing(BRG_6703);
+    if (name == "brg_split_top")  in_split() up(SEAT_SG_TOP) children();
+    if (name == "brg_split_bot")  in_split() up(SEAT_SG_BOT) children();
+    if (name == "brg_split_6703") in_split() up(SEAT_SG_6703) children();
+    // The MR85, pressed into the flat back of the Diff Gear Axle and standing
+    // 1 mm proud of it (008.6 step 19). Its OD is the Ø8 rod bore, so it takes
+    // the top 1.5 mm of that bore; what its Ø5 rides on closes the wrist above
+    // and is outside this model set, which ends here at the J4 axis. See
+    // ROD_TOP: this is what says the rod cannot be flush with that face.
+    if (name == "mr85") in_axle() up(-MR85_PROUD) children();
+    // The needle thrust stack, on the 10.423 mm of Ø8 tube that stands proud
+    // of the Split Gear's base. It is located by the tube and carried by two
+    // FACES — 710-001's base annulus, r 5.994..18.500, against the keeper — so
+    // it never wanted a bore. Anchored on its own bottom face like the
+    // bearings, and drawn downward from that base.
+    if (name == "thrust") in_split() up(SPLIT_BASE_Z - thrust_stack_h()) children();
+}
+
+// One bearing whole, or one of its pieces.
+module stand_in(b, race = "all") bearing_frame(b[0]) {
+    if (b[0] == "thrust") {
+        if (race == "all") thrust_stack(b[2]); else thrust_piece(race, b[2]);
+    }
+    else if (race == "all") bearing(b[2]);
+    else bearing_race(b[2], race);
+}
+
+module bearings(p) color(STEEL_C) {
+    for (b = BEARINGS) {
+        if (p == b[1]) stand_in(b);
+        for (r = RACES) if (p == str(b[0], "_", r)) stand_in(b, r);
     }
 }
 
@@ -582,8 +624,8 @@ assert(BEVEL_APEX_SPLIT > -BEVEL_INNER_TIP.y,
 //
 // The End Pulley hangs off the rod's far end, below Body A: their extents must
 // not overlap along J4, whatever the pulley's size. #720-004 sits inside Body
-// A's chamber, which no extent can check; render.rs --verify renders that pair's
-// overlap instead.
+// A's chamber, which no extent can check; the clash check holds that pair to the
+// running clearance instead.
 assert(diff_end_pulley_box()[1].z < diff_body_a_box()[0].z,
        "the Diff End Pulley reaches Diff Body A");
 echo(str("Diff End Pulley top z=", diff_end_pulley_box()[1].z,

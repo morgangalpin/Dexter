@@ -30,9 +30,9 @@ HW_SHIELD = 0.35;   // how deep a shield sits below the race faces
 // surface here coincides with a surface of a part — the allowance
 // diff_params.scad defines, and the reason for it. The stand-in is what moves:
 // it is an illustration, and the seat is the part.
-module hw_ring(id, od, h) {
+module hw_ring(id, od, h, fn = HW_FN) {
     tube(id = id + 2 * DRAW_JOINT, od = od - 2 * DRAW_JOINT, h = h,
-         anchor = BOTTOM, $fn = HW_FN);
+         anchor = BOTTOM, $fn = fn);
 }
 
 // A deep-groove ball bearing: an outer race, an inner race, and a shield sunk
@@ -53,17 +53,44 @@ module bearing(spec) {
     }
 }
 
+// One piece of the same bearing, for the clash check (assembly-clash.rs): the
+// "outer" or "inner" race, or the "shield" between them, sunk as bearing()
+// sinks it. The check holds that no part touches both races, so a bearing has
+// to reach it as three solids. Drawn at HW_RACE_FN, because at HW_FN the inner
+// race's bore chords stand far enough inside the circle to read as a fit
+// tighter than the press clearance on the journal it rides on.
+HW_RACE_FN = 360;
+
+// The rings end where diff_params.scad's inner_ring_od() and outer_ring_id()
+// say, which is also what the parts' running faces are drawn to clear.
+module bearing_race(spec, race) {
+    id = spec[0];  od = spec[1];  w = spec[2];
+    shield = min(HW_SHIELD, w / 6);
+    if (race == "outer") hw_ring(outer_ring_id(spec), od, w, HW_RACE_FN);
+    if (race == "inner") hw_ring(id, inner_ring_od(spec), w, HW_RACE_FN);
+    if (race == "shield")
+        up(shield) tube(id = inner_ring_od(spec), od = outer_ring_id(spec),
+                        h = w - 2 * shield, anchor = BOTTOM, $fn = HW_RACE_FN);
+}
+
 // A needle roller thrust bearing between its two washer races (#710-006 is the
 // AXK cage; the two AS races are listed with it). Drawn as three stacked rings
 // because the stack's height is what the seat has to clear, and that is the
 // sum of all three rather than the cage alone.
 module thrust_stack(spec = THRUST_AXK0819, race_w = 1.0) {
+    for (piece = ["inner", "shield", "outer"]) thrust_piece(piece, spec, race_w);
+}
+
+// One piece of the stack, named as bearing_race() names a ball bearing's, so
+// the clash check can hold it to the same rule: "inner" is the bottom washer,
+// "shield" the needle cage, and "outer" the top washer.
+module thrust_piece(piece, spec = THRUST_AXK0819, race_w = 1.0) {
     id = spec[0];  od = spec[1];  w = spec[2];
-    hw_ring(id, od, race_w);
-    up(race_w)
-        tube(id = id + 0.5, od = od - 0.5, h = w, anchor = BOTTOM, $fn = HW_FN);
-    up(race_w + w)
-        hw_ring(id, od, race_w);
+    if (piece == "inner") hw_ring(id, od, race_w, HW_RACE_FN);
+    if (piece == "shield")
+        up(race_w)
+            tube(id = id + 0.5, od = od - 0.5, h = w, anchor = BOTTOM, $fn = HW_FN);
+    if (piece == "outer") up(race_w + w) hw_ring(id, od, race_w, HW_RACE_FN);
 }
 
 function thrust_stack_h(spec = THRUST_AXK0819, race_w = 1.0) =

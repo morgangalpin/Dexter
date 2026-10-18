@@ -94,7 +94,9 @@ BODY_PROFILE = [
     [ WEB_R,  3.000],   // step in to the through-bore, Ø8.5 / Ø10
     [ WEB_R,  4.000],
     [11.500 + PRESS,  4.000],   // step out to the Ø23 6703 seat
-    [11.490 + PRESS,  8.750],
+    // The reference's pocket narrows to Ø22.98 at its mouth; "revised" bores it
+    // straight, so the whole 6703 sits at the press clearance.
+    [(config == "previous" ? 11.490 : 11.500) + PRESS,  8.750],
     [11.942,  8.750],   // chamfer up into the Ø28 core cavity
     [11.977,  8.782],
     [12.100,  8.866],

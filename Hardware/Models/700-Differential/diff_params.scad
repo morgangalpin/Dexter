@@ -83,7 +83,27 @@ THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 // race and brakes the bearing it locates. In "revised" every such shoulder is
 // bored to this; "previous" keeps the reference's own bores. Body A's Ø20
 // waist under its 6703 was already bored to it.
-function shoulder_bore(spec) = (spec[0] + spec[1]) / 2;
+// A shoulder at that bore must also stand the running clearance off the inner
+// ring, which turns past it: an MR128's section is too narrow for both at
+// halfway, so its shoulders are bored to the clearance instead.
+function shoulder_bore(spec) =
+    max((spec[0] + spec[1]) / 2, inner_ring_od(spec) + 2 * RUN);
+
+// The diameter of a shoulder that bears on a bearing's INNER race alone:
+// halfway across the inner ring, so its edge stands clear of the shield, which
+// turns with the outer race. In "revised" every such shoulder is turned to
+// this; "previous" keeps the reference's own diameters.
+function inner_shoulder_d(spec) = (spec[0] + inner_ring_od(spec)) / 2;
+
+// Where a bearing's rings end, for the faces that have to clear them. Each ring
+// takes BRG_RING of the bearing's section and the shield the middle between
+// them, as 300-Pivot's 6810 stand-ins have it; the catalogue's own ring
+// diameters are not recorded in this project. diff_hardware.scad draws the
+// clash check's stand-in races to these, and a running face that turns past a
+// ring stands RUN off it.
+BRG_RING = 0.3;
+function inner_ring_od(spec) = spec[0] + BRG_RING * (spec[1] - spec[0]);
+function outer_ring_id(spec) = spec[1] - BRG_RING * (spec[1] - spec[0]);
 
 L3_TUBE_ID  = 20.07;        // C-505 L3 tube's inside dimension, over Body A's
                             //   20 x 20 arm spigot
