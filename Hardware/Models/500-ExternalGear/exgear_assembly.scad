@@ -81,6 +81,7 @@
 
 use <511-001_ExGearMotorEndCap.scad>
 use <511-002_ExGearStatorHolder.scad>
+use <520-002_ExGearMountTop.scad>
 use <../600-StrainWave/630-005_FlexSplineAttach.scad>
 use <../600-StrainWave/630-006_FlexSplineCap.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
@@ -98,7 +99,7 @@ MOUNT_FLOOR      = 4.000;    // #520-001 floor plate, top face
 // #520-001 bore: R 38.000 about (-0.655, 0), behind the drive axis, so it is
 // nearest the axis at its two edges, (-24.55, +/-29.54) over z 57..62.
 MOUNT_NEAR_R     = 38.410;
-TOP_SEAT         = [93.000, 100.000];  // #520-002 Ø65 seat, open face and shoulder
+TOP_SEAT         = mount_top_seat();    // #520-002 Ø65 seat, open face and shoulder
 ENDCAP_TOP       = end_cap_top();                // #511-001 face on the bosses
 ENDCAP_SEAT      = end_cap_seat("revised");      // #511-001 face the motor stands on
 ATTACH_SEAT      = attach_motor_face();          // #630-005 face on the motor
@@ -159,7 +160,7 @@ echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Hold
 
 // --- Parts ------------------------------------------------------------------
 module mount()     color("#9aa7b4") import("520-001_ExGearMount.stl");
-module mount_top() color("#b8c4cf") import("520-002_ExGearMountTop.stl");
+module mount_top() color("#b8c4cf") ex_gear_mount_top("revised");
 module end_cap()   color("#e0a458") translate([0, 0, ENDCAP_Z]) rotate([180, 0, 0])
                      ex_gear_motor_end_cap("revised");
 module attach()    color("#e0a458") translate([0, 0, ATTACH_Z])

@@ -3,9 +3,46 @@
   "parts": [
     {"id": "511-001", "scad": "511-001_ExGearMotorEndCap.scad"},
     {"id": "511-002", "scad": "511-002_ExGearStatorHolder.scad"},
+    {"id": "520-002", "scad": "520-002_ExGearMountTop.scad"},
     {"id": "520-003", "scad": "520-003_ExGearNutHold.scad"}
   ],
   "checks": [
+    {"kind": "outline", "id": "outline-520-002-rebate", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-rebate.svg", "layer": "rebate",
+     "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 79.5, "tol": 0.15,
+     "note": "#520-002 is a stack of 2D profiles, each checked against the reference's section mid-layer before the part is extruded. The block's two layers either side of the pockets are one profile."},
+    {"kind": "outline", "id": "outline-520-002-block", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-block.svg", "layer": "block",
+     "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 83.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-520-002-pockets", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-pockets.svg", "layer": "pockets",
+     "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 87.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-520-002-seat", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-seat.svg", "layer": "seat",
+     "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 96.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-520-002-shoulder", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-shoulder.svg", "layer": "shoulder",
+     "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 100.25, "tol": 0.15},
+    {"kind": "outline", "id": "outline-520-002-top", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-top.svg", "layer": "top",
+     "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 100.75, "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-520-002", "part": "520-002", "config": "previous",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/520-002.stl", "reference": "520-002_ExGearMountTop.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-520-002", "config": "revised",
+     "scad": "520-002_ExGearMountTop.scad", "out": "out/revised/520-002.stl"},
+    {"kind": "fits", "id": "fits-520-002", "part": "520-002 (revised)", "stl": "out/revised/520-002.stl", "after": ["render-520-002"],
+     "note": "The revised #520-002's print fits: the 6810's Ø65 outer race in B1 on +X mid-seat, and the M3 all-thread (Ø3.0) in H1 on +y, mid-block.",
+     "probes": [
+       {"label": "B1 on the 6810", "at": [32.5, 0.0, 96.5], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "H1 on the all-thread", "at": [-44.778, 10.0, 85.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "probes", "id": "probes-520-002", "part": "520-002 (revised)", "stl": "out/revised/520-002.stl", "after": ["render-520-002"],
+     "note": "B3 is drawn wider than a fit: it stands the running clearance (0.5) off the circular spline's Ø50, which turns in it, and keeps that gap.",
+     "items": [
+       {"label": "B3 open at the running clearance off the spline's Ø50", "at": [25.4, 0.0, 100.75], "solid": false},
+       {"label": "B3 wall within 0.3 of it", "at": [25.7, 0.0, 100.75], "solid": true}
+     ]},
+
     {"kind": "outline", "id": "outline-520-003-plate", "part": "520-003", "config": "previous",
      "scad": "520-003_ExGearNutHold.scad", "out": "out/2d/520-003-plate.svg", "layer": "plate",
      "reference": "520-003_ExGearNutHold.stl", "axis": "z", "at": 0.6, "tol": 0.15,

@@ -83,10 +83,12 @@ ROD_D     = 3.000;               // the M3 all-thread H1 takes
 NUT_AF    = 5.500;               // the M3 nut N1 takes
 MOUNT_C   = [-0.655, 0];         // the Mount bore's centre, in the Mount's frame
 
-SLIP = fit_clearances(config)[0];
+function hole_d(cfg) = cfg == "previous" ? HOLE_D : fit_bore(ROD_D, fit_clearances(cfg)[0]);
+function trap_af(cfg) = cfg == "previous" ? TRAP_AF : fit_bore(NUT_AF, fit_clearances(cfg)[0]);
 
-function hole_d() = config == "previous" ? HOLE_D : fit_bore(ROD_D, SLIP);
-function trap_af() = config == "previous" ? TRAP_AF : fit_bore(NUT_AF, SLIP);
+// For the assembly: the holder's thickness, and Holder A's hole axis.
+function nut_holder_height() = HEIGHT;
+function nut_holder_hole() = HOLE_C;
 
 // Holder A's outline: its rectangle less the Mount bore's disc.
 module outline_2d() {
@@ -96,38 +98,36 @@ module outline_2d() {
     }
 }
 
-module plate_2d() difference() { outline_2d(); translate(HOLE_C) circle(d = hole_d(), $fn = 96); }
+module plate_2d(cfg) difference() { outline_2d(); translate(HOLE_C) circle(d = hole_d(cfg), $fn = 96); }
 
 // A hexagon with its corners on +-x.
-module trap_2d() difference() { outline_2d(); translate(HOLE_C) circle(d = trap_af() / cos(30), $fn = 6); }
+module trap_2d(cfg) difference() { outline_2d(); translate(HOLE_C) circle(d = trap_af(cfg) / cos(30), $fn = 6); }
 
-module nut_holder_a() {
-    linear_extrude(PLATE_H + epsilon) plate_2d();
-    translate([0, 0, PLATE_H]) linear_extrude(HEIGHT - PLATE_H) trap_2d();
+module layer_a_2d(l, cfg) { if (l == "plate") plate_2d(cfg); else trap_2d(cfg); }
+
+module nut_holder_a(cfg) {
+    linear_extrude(PLATE_H + epsilon) plate_2d(cfg);
+    translate([0, 0, PLATE_H]) linear_extrude(HEIGHT - PLATE_H) trap_2d(cfg);
 }
 
 // Holder B is Holder A's mirror image about the plane between them.
 module mirror_b() translate([0, BORE_C.y]) mirror([0, 1, 0]) translate([0, -BORE_C.y]) children();
 
 // One holder, "A" or "B", in the reference's frame.
-module nut_holder(which) {
-    if (which == "A") nut_holder_a();
-    else mirror_b() nut_holder_a();
+module nut_holder(which, cfg = config) {
+    if (which == "A") nut_holder_a(cfg);
+    else mirror_b() nut_holder_a(cfg);
 }
 
 // Children drawn in this file's frame, moved to where they stand in the Mount's
 // frame (its bore's centre at MOUNT_C), at the Mount's height z0.
 module mount_place(z0) translate([MOUNT_C.x, MOUNT_C.y, z0]) rotate(180) translate(-BORE_C) children();
 
-module drawn(which) {
-    for (h = which == "both" ? ["A", "B"] : [which]) nut_holder(h);
-}
+function holders(which) = which == "both" ? ["A", "B"] : [which];
 
-module drawn_2d(which, l) {
-    for (h = which == "both" ? ["A", "B"] : [which])
-        if (h == "A") { if (l == "plate") plate_2d(); else trap_2d(); }
-        else mirror_b() { if (l == "plate") plate_2d(); else trap_2d(); }
-}
-
-if (layer == "part") drawn(holder);
-else drawn_2d(holder, layer);
+if (layer == "part")
+    for (h = holders(holder)) nut_holder(h, config);
+else
+    for (h = holders(holder))
+        if (h == "A") layer_a_2d(layer, config);
+        else mirror_b() layer_a_2d(layer, config);

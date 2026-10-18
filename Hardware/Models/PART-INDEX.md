@@ -78,7 +78,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat deepened in `revised` |
 | #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.scad` | seats the C-201 spline in `revised`; floor lowered to close J3's stack |
 | #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.stl` |  |
-| #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.stl` |  |
+| #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.scad` | `revised` presses the 6810 into its seat and slips the all-threads |
 | #520-003 | Nut Holder A | 1 | `520-003_ExGearNutHold.scad` | `holder="A"`; `revised` draws slip fits on the all-thread and the nut |
 | #520-004 | Nut Holder B | 1 | `520-003_ExGearNutHold.scad` | `holder="B"`, A's mirror image; `revised` draws slip fits on the all-thread and the nut |
 

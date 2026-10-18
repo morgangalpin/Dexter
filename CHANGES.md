@@ -1080,8 +1080,9 @@ anything version 3 does not independently specify
     `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
     `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
     Their meshes moved to `Reference/meshes/300-Pivot/`.
-  - `Hardware/Models/500-ExternalGear/`: `520-003_ExGearNutHold.scad`, its `.view.json` sidecar and
-    `render.json`. Its mesh moved to `Reference/meshes/500-ExternalGear/`.
+  - `Hardware/Models/500-ExternalGear/`: `520-002_ExGearMountTop.scad`,
+    `520-003_ExGearNutHold.scad`, their `.view.json` sidecars and `render.json`; `exgear_assembly.scad`
+    now `use`s the Mount Top. Their meshes moved to `Reference/meshes/500-ExternalGear/`.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1227,6 +1228,12 @@ anything version 3 does not independently specify
     holders, mirror images of each other, in one mesh. `520-003_ExGearNutHold.scad` is now the one source
     for both, and `holder` chooses A, B or both. Their curved face is the Ex Gear Mount's R38 bore.
     `revised` draws the slip fits on the M3 all-thread hole and the nut trap.
+  - **500-ExternalGear:** the Ex Gear Mount Top (`#520-002`), a stack of 2D profiles, each extruded: the
+    block under the plate with its rebate and pockets, and the plate with the seat's three steps. The
+    block's face is the Ex Gear Mount's R38 bore. `revised` draws the press fit on the 6810's outer race in
+    the Ø65 seat and the slip fit on the M3 all-threads. `exgear_assembly.scad` draws the part from its
+    source, `ex_gear_mount_top("revised")`, and reads the seat from `mount_top_seat()`, where it imported
+    the mesh.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.
