@@ -74,7 +74,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #510-001 | External Gear | 1 | `510-001_ExternalGear.stl` |  |
+| #510-001 | External Gear | 1 | `510-001_ExternalGear.scad` | `revised` presses both 6810s into their seats |
 | #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat deepened in `revised` |
 | #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.scad` | seats the C-201 spline in `revised`; floor lowered to close J3's stack |
 | #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.stl` |  |

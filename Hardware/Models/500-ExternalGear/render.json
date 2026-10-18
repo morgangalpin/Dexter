@@ -1,12 +1,45 @@
 {
   "ref_dir": "../Reference/meshes/500-ExternalGear",
   "parts": [
+    {"id": "510-001", "scad": "510-001_ExternalGear.scad"},
     {"id": "511-001", "scad": "511-001_ExGearMotorEndCap.scad"},
     {"id": "511-002", "scad": "511-002_ExGearStatorHolder.scad"},
     {"id": "520-002", "scad": "520-002_ExGearMountTop.scad"},
     {"id": "520-003", "scad": "520-003_ExGearNutHold.scad"}
   ],
   "checks": [
+    {"kind": "outline", "id": "outline-510-001-band", "part": "510-001", "config": "previous",
+     "scad": "510-001_ExternalGear.scad", "out": "out/2d/510-001-band.svg", "layer": "band",
+     "reference": "510-001_ExternalGear.stl", "axis": "x", "at": -4.0, "tol": 0.15,
+     "note": "#510-001's tooth ring and bore, checked against the reference's section mid-way along the lower band (the part's axis is the mesh's x). Both bands are the one ring."},
+    {"kind": "outline", "id": "outline-510-001-socket", "part": "510-001", "config": "previous",
+     "scad": "510-001_ExternalGear.scad", "out": "out/2d/510-001-socket.svg", "layer": "socket",
+     "reference": "510-001_ExternalGear.stl", "axis": "x", "at": 41.0, "tol": 0.15,
+     "note": "The notched end's section: the upper rim, the socket and the eight key slots."},
+    {"kind": "dist_gate", "id": "dist-510-001", "part": "510-001", "config": "previous",
+     "scad": "510-001_ExternalGear.scad", "out": "out/510-001.stl", "reference": "510-001_ExternalGear.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-510-001", "config": "revised",
+     "scad": "510-001_ExternalGear.scad", "out": "out/revised/510-001.stl"},
+    {"kind": "fits", "id": "fits-510-001", "part": "510-001 (revised)", "stl": "out/revised/510-001.stl", "after": ["render-510-001"],
+     "note": "The revised #510-001's print fits, in the reference's frame (axis along x): each 6810's Ø65 outer race in its seat, on +y mid-bearing.",
+     "probes": [
+       {"label": "B1 on the lower 6810", "at": [-28.263, 32.5, 0.0], "toward": [0.0, -1.0, 0.0], "fit": "press"},
+       {"label": "B4 on the upper 6810", "at": [28.743, 32.5, 0.0], "toward": [0.0, -1.0, 0.0], "fit": "press"}
+     ]},
+    {"kind": "probes", "id": "probes-510-001", "part": "510-001 (revised)", "stl": "out/revised/510-001.stl", "after": ["render-510-001"],
+     "note": "Above the upper 6810, B4 is the Stator Holder's socket, whose fit the holder draws: it keeps the reference's Ø65.",
+     "items": [
+       {"label": "socket wall just outside Ø65 above the bearing, between two slots (22.5 deg)", "at": [34.0, 30.053, 12.449], "solid": true},
+       {"label": "socket open just inside Ø65", "at": [34.0, 29.998, 12.426], "solid": false}
+     ]},
+    {"kind": "counts", "id": "counts-510-001", "after": ["render-510-001"],
+     "note": "The revised #510-001's teeth, counted on the section through each band: the dist gate would pass a ring a tooth short.",
+     "items": [
+       {"label": "510-001 lower band 100 teeth (revised)", "stl": "out/revised/510-001.stl",
+        "args": ["--axis", "x", "--band", "30.5,32.0", "--slice-at=-4.0"], "key": "radius_peaks", "expect": 100},
+       {"label": "510-001 upper band 100 teeth (revised)", "stl": "out/revised/510-001.stl",
+        "args": ["--axis", "x", "--band", "30.5,32.0", "--slice-at=10.0"], "key": "radius_peaks", "expect": 100}
+     ]},
     {"kind": "outline", "id": "outline-520-002-rebate", "part": "520-002", "config": "previous",
      "scad": "520-002_ExGearMountTop.scad", "out": "out/2d/520-002-rebate.svg", "layer": "rebate",
      "reference": "520-002_ExGearMountTop.stl", "axis": "z", "at": 79.5, "tol": 0.15,
@@ -99,7 +132,7 @@
      "note": "An echo export evaluates every assert in the assembly without meshing anything. Its log is the file the checks after it read their values from."},
     {"kind": "gear_fit", "id": "gear-fit-511-002", "after": ["assembly-echo"], "config": "revised",
      "scad": "511-002_ExGearStatorHolder.scad", "nominal_out": "out/revised/511-002-nominal.bin.stl", "fitted_out": "out/revised/511-002.bin.stl",
-     "gear": "510-001_ExternalGear.stl", "echo_file": "out/assembly.echo", "echo_name": "stator_on_gear",
+     "gear": "../Reference/meshes/500-ExternalGear/510-001_ExternalGear.stl", "echo_file": "out/assembly.echo", "echo_name": "stator_on_gear",
      "sections": [6.0, 9.0, 11.0], "outline": 230.0, "tol": 2.3,
      "note": "Holder heights (its own frame) at which its spigot must fill the gear's socket exactly: two in the keys, one in their end chamfers. The outline is the R32.5 core and the eight keys' sides. The tolerance is 0.01 mm of mean offset over it: faceting alone accounts for about 1 mm2 (the holder's R32.5 in 144 segments against the gear mesh's fewer), whereas a holder off its seat by the chamfer's 1.6 mm differs by over 100 mm2."},
 

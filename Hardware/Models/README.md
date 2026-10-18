@@ -53,7 +53,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`200-ArmBody/`](200-ArmBody/) | 9 | 23 | Arm body, stator holder and balancers, belt directors; every part is `.scad`; `arm_body_outline.scad` holds the outline the Arm Body and the Stator Holder share, and `belt_director.scad` the sleeve both Belt Directors are |
 | [`300-Pivot/`](300-Pivot/) | 4 | 12 | Main pivot, code disk, motor end caps; every part is `.scad`, and `312-001_MotorEndCapPivot.scad` is `311-001_MotorEndCapBase.scad`'s source with its own outline and counterbores; `pivot_assembly.scad` places the group with its motors and 6810s |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
-| [`500-ExternalGear/`](500-ExternalGear/) | 7 | 11 | External gear, stator holder, mount and nut holders; the Motor End Cap, Stator Holder, Mount Top and Nut Holders are `.scad`, and `520-003_ExGearNutHold.scad` draws both Nut Holders, A and B, from one source; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
+| [`500-ExternalGear/`](500-ExternalGear/) | 7 | 12 | External gear, stator holder, mount and nut holders; the External Gear, Motor End Cap, Stator Holder, Mount Top and Nut Holders are `.scad`, and `520-003_ExGearNutHold.scad` draws both Nut Holders, A and B, from one source; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 8 | Wave gen coupler, flex spline attach and cap; every part is `.scad`, and `c201_spline_seat.scad` holds the drive's interface for the Attach, the Cap and the three Stator Holders |
 | [`700-Differential/`](700-Differential/) | 10 | 17 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set and has a section view |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
@@ -111,13 +111,13 @@ a second closed shell that shares no edge with the body, the 18 × 20 × 20 mm b
 x 26.500..44.500, y ±10.000, z −35.000..−15.000, so this is a multi-body export rather than one unioned
 solid. That is not a defect: two shells convert as readily as one.
 
-**A second tangency, corrected the same way.** `500-ExternalGear/510-001_ExternalGear.stl` failed the same
+**A second tangency, corrected the same way.** `Reference/meshes/500-ExternalGear/510-001_ExternalGear.stl` failed the same
 way. Two of its surfaces shared 91 edges on one ring in the part's frame, at x 21.215 and r ≈ 33.7, so
 `scadmesh repair` found no boundary loop, CGAL refused the mesh, and every boolean on the gear stopped at
 `The given mesh is not closed`. It is corrected in place:
 
 ```
-scadmesh pinch 500-ExternalGear/510-001_ExternalGear.stl --out 500-ExternalGear/510-001_ExternalGear.stl
+scadmesh pinch Reference/meshes/500-ExternalGear/510-001_ExternalGear.stl --out Reference/meshes/500-ExternalGear/510-001_ExternalGear.stl
 ```
 
 That added 182 triangles, left the bounding box unchanged, and added 0.708 mm³ to the volume (1 part in
@@ -125,7 +125,7 @@ That added 182 triangles, left the bounding box unchanged, and added 0.708 mm³ 
 inside CGAL's boolean (`applyBinaryOperator` asserts) and stay unjudged. The Stator Holder's keys meet
 the gear's slots line-to-line, which is why `render.rs --verify` checks that fit by sections.
 The upper 6810's assertion persists with its envelope shrunk to Ø64.9, so it is not the seat's Ø65; its
-cause is not isolated.
+cause is not isolated. `510-001_ExternalGear.scad` draws that tangency as its G1 crack.
 
 **A slit, closed in place.** `Reference/meshes/200-ArmBody/200-001_ArmBody.stl` was closed and passed
 `scadmesh repair` and `scadmesh pinch` (no boundary loop, no shared edge), yet it held a zero-width

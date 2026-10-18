@@ -79,6 +79,7 @@
 // Vendor parts are envelopes: the drive from the manufacturer drawing, the
 // motor from C-101, the bearings from their catalogue size.
 
+use <510-001_ExternalGear.scad>
 use <511-001_ExGearMotorEndCap.scad>
 use <511-002_ExGearStatorHolder.scad>
 use <520-002_ExGearMountTop.scad>
@@ -104,11 +105,11 @@ ENDCAP_TOP       = end_cap_top();                // #511-001 face on the bosses
 ENDCAP_SEAT      = end_cap_seat("revised");      // #511-001 face the motor stands on
 ATTACH_SEAT      = attach_motor_face();          // #630-005 face on the motor
 ATTACH_HUB       = attach_hub_face("previous");  // #630-005 hub face before the drop
-GEAR_LOWER_SHLDR = -24.763;  // #510-001 lower seat shoulder, along its x
-GEAR_UPPER_SHLDR = 25.243;   // #510-001 upper seat shoulder
-GEAR_KEYED_END   = 44.250;   // #510-001 notched end face
-GEAR_BOTTOM      = -32.263;  // #510-001 end face over the floor
-ROTOR_R          = 36.977;   // #510-001 and #511-002, largest radius
+GEAR_LOWER_SHLDR = gear_lower_shoulder();  // #510-001 lower seat shoulder, along its axis
+GEAR_UPPER_SHLDR = gear_upper_shoulder();  // #510-001 upper seat shoulder
+GEAR_KEYED_END   = gear_keyed_end();       // #510-001 notched end face
+GEAR_BOTTOM      = gear_bottom();          // #510-001 end face over the floor
+ROTOR_R          = gear_rotor_r();         // #510-001 and #511-002, largest radius
 STATOR_SEAT      = stator_seat();             // #511-002 face on the gear's end
 STATOR_FLOOR     = stator_floor("revised");   // #511-002 floor the spline's flange stands on
 STATOR_RIM       = stator_rim("revised");     // #511-002 rim, toward the Mount Top
@@ -123,7 +124,7 @@ MOTOR_Z0 = ENDCAP_Z - ENDCAP_SEAT;
 MOTOR_F  = MOTOR_Z0 + MOTOR_LEN;               // motor face
 ATTACH_Z = MOTOR_F - ATTACH_SEAT;              // Attach frame origin
 BRG_LOW  = BOSS_TOP;                           // lower 6810, on the bosses
-GEAR_C   = BRG_LOW + B6810[2] - GEAR_LOWER_SHLDR;  // world z = gear x + GEAR_C
+GEAR_C   = BRG_LOW + B6810[2] - GEAR_LOWER_SHLDR;  // world z = gear z + GEAR_C
 BRG_UP   = GEAR_UPPER_SHLDR + GEAR_C;
 STATOR_Z = GEAR_KEYED_END + GEAR_C + STATOR_SEAT;  // Stator flipped: world = STATOR_Z - z
 CS_FACE  = STATOR_Z - STATOR_FLOOR + spline_flange()[1];  // circular spline outer face, on its holder
@@ -154,7 +155,7 @@ echo(upper_6810_below_hub = HUB_F - BRG_UP - B6810[2]);  // inner race top under
 echo(top_6810_on_spline = CS_FACE - BRG_TOP);            // the circular spline's Ø50h6 within the Mount Top's bore
 echo(stator_below_top = BRG_TOP - HOLDER_RIM);           // Stator Holder rim under the Mount Top's 6810
 echo(stator_above_hub = HOLDER_END - HUB_F);             // Stator Holder end over the Attach's hub face
-echo(stator_on_gear = GEAR_KEYED_END + STATOR_SEAT);     // gear x = this - holder z, where the two share a plane
+echo(stator_on_gear = GEAR_KEYED_END + STATOR_SEAT);     // gear z (its mesh's x) = this - holder z, where the two share a plane
 echo(gear_above_floor = GEAR_BOTTOM + GEAR_C - MOUNT_FLOOR);  // External Gear's bottom face over the floor plate
 echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Holder inside the Mount's bore, radial, at least
 
@@ -167,8 +168,7 @@ module attach()    color("#e0a458") translate([0, 0, ATTACH_Z])
                      flex_spline_attach("revised", ATTACH_HUB_DROP);
 module fs_cap()    color("#e0a458") translate([0, 0, HUB_F + fs_hub()[1] + cap_face()]) rotate([180, 0, 0])
                      flex_spline_cap("revised");
-module gear()      color("#4f86c6") multmatrix([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, GEAR_C]])
-                     import("510-001_ExternalGear.stl");
+module gear()      color("#4f86c6") translate([0, 0, GEAR_C]) external_gear("revised");
 module stator()    color("#c65f4f") translate([0, 0, STATOR_Z]) rotate([180, 0, 0])
                      ex_gear_stator_holder("revised");
 
