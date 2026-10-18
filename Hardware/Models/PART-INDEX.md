@@ -88,7 +88,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.stl` |  |
+| #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.scad` | solid Ø6 stub for C-201 and the shaft bore stopped in the hex in `revised` (DC-600-1), with its fits |
 | #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare removed and C-201 hub seated in `revised`; J3 sets `hub_drop` |
 | #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.scad` | C-201 hub clamped in `revised` |
 

@@ -1,0 +1,32 @@
+{
+  "title": "Wave Gen Coupler",
+  "subtitle": "#630-004 · reference mesh and 630-004_WaveGenCoupler.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Wave Gen Coupler", "pn": "#630-004", "color": "#d4ad6b", "stl": "../Reference/meshes/600-StrainWave/630-004_WaveGenCoupler.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/630-004.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/630-004.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-6.928, -4.0, 6.0], "text": "X1 hex body 16.0 AF, corners on ±Y, z 0…10"},
+    {"at": [-5.0, 0.0, 16.5], "text": "S1 stub Ø10.0, z 10…23"},
+    {"at": [0.0, 6.0, 20.0], "text": "K1 key 3.0 wide, flat top 6.0 from the axis"},
+    {"at": [0.0, -2.5, 23.0], "text": "B1 shaft bore Ø5.0, through"},
+    {"at": [8.0, 0.0, 3.5], "text": "H1 set-screw hole Ø3.2 along X, z 3.5"},
+    {"at": [3.75, 0.0, 0.0], "text": "N1 nut pocket ×2, 5.6 wide × 2.5, 30° gable to z 7.217"},
+    {"at": [2.5, 0.0, 1.0], "text": "W1 pocket opens into B1 across |y| < 1.0"},
+    {"at": [0.0, 8.0, 10.0], "text": "T1 corner notch ×6, Ø4 at z 10, flat end at r 7.0"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 23], "span": 24, "from": [0, 0, 1]},
+    {"label": "Underside, nut pockets", "at": [0, 0, 0], "span": 24, "from": [0.3, -0.4, -1]},
+    {"label": "Set-screw side", "at": [8, 0, 4], "span": 18, "from": [1, -0.3, 0.3]},
+    {"label": "Corner notch", "at": [0, 8, 9.5], "span": 8, "from": [0.3, 1, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one replaces the keyed stub with a solid Ø6 stub for C-201's wave generator, stops the shaft bore in the hex (DC-600-1 in specs/009), and draws the stub's and shaft bore's press fits and the set-screw bolt's and nut's slip fits. The dimensions and fits are in 630-004_WaveGenCoupler.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

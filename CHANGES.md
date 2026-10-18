@@ -1079,6 +1079,9 @@ anything version 3 does not independently specify
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
     shared `arm_body_outline.scad` and `belt_director.scad` (new); `200-002_PivotStatorHolder.scad` and
     `render.json`. Their meshes moved to `Reference/meshes/200-ArmBody/`.
+  - `Hardware/Models/600-StrainWave/`: `630-004_WaveGenCoupler.scad` and the `.view.json` sidecars of
+    `630-004`, `630-005` and `630-006` (new); `render.json`'s `parts` list and `630-004`'s checks. Its
+    mesh moved to `Reference/meshes/600-StrainWave/`.
   - `Hardware/Models/gt2_pulley.scad` gains a second tooth form, `gt2_teeth_rounded_2d`.
   - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
     lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
@@ -1219,6 +1222,13 @@ anything version 3 does not independently specify
   - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
     motor's square front edge, which they stood on. Its bore's Ø5.0 ridge grips the motor's shaft line to
     line by design, and `base_assembly.clash.json` records it as an exception to the clash check.
+  - **600-StrainWave:** the Wave Gen Coupler (`#630-004`) is two extruded 2D layers, the hex body and
+    the keyed stub, each gated by `outline`, with the nut pockets cut as one section extruded across
+    the axis. The reference's stub is a Cone Drive wave generator's Ø10 keyed input, which C-201's Ø6H7
+    bore does not take; earlier readings took the key's 6.0 for a Ø6 band, and 007.1 is corrected. By
+    the reviewer's decision ([DC-600-1](specs/009-Design-Completion.md#wave-gen-coupler-stub)), the
+    revised render draws a solid Ø6 stub as long as that bore is deep and stops the shaft bore in the
+    hex. It draws the stub's and shaft bore's press fits and the set-screw bolt's and nut's slip fits.
   - **200-ArmBody:** the Stator Balancer (`#200-003`, an L section extruded), the Idler Plug
     (`#210-001`/`#210-003`, revolved), both Belt Directors (`#210-004`, `#210-005`, one revolved sleeve in
     `belt_director.scad` at two lengths), the Belt Director Pulley (`#210-002`, two flanges and a tooth

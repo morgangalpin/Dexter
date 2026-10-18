@@ -1,6 +1,53 @@
 {
   "ref_dir": "../Reference/meshes/600-StrainWave",
+  "parts": [
+    {"id": "630-004", "scad": "630-004_WaveGenCoupler.scad"},
+    {"id": "630-005", "scad": "630-005_FlexSplineAttach.scad"},
+    {"id": "630-006", "scad": "630-006_FlexSplineCap.scad"}
+  ],
   "checks": [
+    {"kind": "outline", "id": "outline-630-004-hex", "part": "630-004", "config": "previous",
+     "scad": "630-004_WaveGenCoupler.scad", "out": "out/2d/630-004-hex.svg", "layer": "hex",
+     "reference": "630-004_WaveGenCoupler.stl", "axis": "z", "at": 7.6, "tol": 0.15,
+     "note": "#630-004 is two extruded 2D layers, each checked against the reference's section where no cutter crosses it: the hex between the nut pockets' apex (z 7.217) and the notches' floor (z 8.0), the stub mid-length."},
+    {"kind": "outline", "id": "outline-630-004-stub", "part": "630-004", "config": "previous",
+     "scad": "630-004_WaveGenCoupler.scad", "out": "out/2d/630-004-stub.svg", "layer": "stub",
+     "reference": "630-004_WaveGenCoupler.stl", "axis": "z", "at": 16.5, "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-630-004", "part": "630-004", "config": "previous",
+     "scad": "630-004_WaveGenCoupler.scad", "out": "out/630-004.stl", "reference": "630-004_WaveGenCoupler.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-revised-630-004", "config": "revised",
+     "scad": "630-004_WaveGenCoupler.scad", "out": "out/revised/630-004.stl"},
+    {"kind": "probes", "id": "probes-630-004", "part": "630-004 (revised)", "stl": "out/revised/630-004.stl",
+     "after": ["render-revised-630-004"],
+     "note": "The revised #630-004: the nut pockets grow inward from their outer face at x 5.0, so the bolt's wall keeps its thickness, and their gable rises with their width. The stub is C-201's solid Ø6 (DC-600-1), 15.0 long to z 25.0, with no key, and the shaft bore stops at z 9.0 under it. The corner notches are the reference's.",
+     "items": [
+       {"label": "pocket's outer face at x 5.0 (material beyond)", "at": [5.05, 2.0, 3.5], "solid": true},
+       {"label": "pocket's inner face at x 2.3 (void beside it)", "at": [2.35, 2.0, 3.5], "solid": false},
+       {"label": "pocket's inner face at x 2.3 (material inside it)", "at": [2.25, 2.0, 3.5], "solid": true},
+       {"label": "pocket's gable open to z 7.2", "at": [3.75, 0.0, 7.2], "solid": false},
+       {"label": "pocket's apex below z 7.35", "at": [3.75, 0.0, 7.35], "solid": true},
+       {"label": "stub solid on its axis", "at": [0.0, 0.0, 17.0], "solid": true},
+       {"label": "no Ø10 stub at r 4.0", "at": [0.0, -4.0, 17.0], "solid": false},
+       {"label": "no key at r 5.5", "at": [0.0, 5.5, 17.0], "solid": false},
+       {"label": "stub's end at z 25.0 (material below)", "at": [0.0, 0.0, 24.9], "solid": true},
+       {"label": "stub's end at z 25.0 (void above)", "at": [0.0, 0.0, 25.1], "solid": false},
+       {"label": "shaft bore open to z 9.0", "at": [0.0, 0.0, 8.9], "solid": false},
+       {"label": "floor over the shaft bore from z 9.0", "at": [0.0, 0.0, 9.1], "solid": true},
+       {"label": "corner notch open at r 8", "at": [0.0, 8.0, 9.0], "solid": false},
+       {"label": "notch's flat end at r 7.0", "at": [0.0, 6.9, 9.0], "solid": true}
+     ]},
+    {"kind": "fits", "id": "fits-630-004", "part": "630-004 (revised)", "stl": "out/revised/630-004.stl",
+     "after": ["render-revised-630-004"],
+     "note": "Each probed from its mate's nominal surface: the wave generator's Ø6H7 bore, the motor's Ø5 shaft, the M3 bolt's Ø3 shank on +X between the pocket and the flat, and the M3 nut (5.5 AF, 2.4 thick) centred in its pocket on +X, on a flat and on each face.",
+     "probes": [
+       {"label": "stub in the wave generator's bore", "at": [0.0, 3.0, 17.0], "toward": [0.0, 1.0, 0.0], "fit": "press"},
+       {"label": "bore on the shaft", "at": [0.0, -2.5, 8.5], "toward": [0.0, 1.0, 0.0], "fit": "press"},
+       {"label": "set-screw hole", "at": [6.5, 0.0, 5.0], "toward": [0.0, 0.0, -1.0], "fit": "slip"},
+       {"label": "nut pocket, across the flats", "at": [3.65, 2.75, 3.5], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "nut pocket, outer face", "at": [4.85, 2.0, 3.5], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "nut pocket, inner face", "at": [2.45, 2.0, 3.5], "toward": [1.0, 0.0, 0.0], "fit": "slip"}
+     ]},
+
     {"kind": "dist_gate", "id": "dist-630-005", "part": "630-005", "config": "previous",
      "scad": "630-005_FlexSplineAttach.scad", "out": "out/630-005.stl", "reference": "630-005_FlexSplineAttach.stl", "tol": 0.15},
     {"kind": "dist_gate", "id": "dist-630-006", "part": "630-006", "config": "previous",

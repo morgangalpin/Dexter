@@ -54,7 +54,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`300-Pivot/`](300-Pivot/) | 4 | 12 | Main pivot, code disk, motor end caps; every part is `.scad`, and `312-001_MotorEndCapPivot.scad` is `311-001_MotorEndCapBase.scad`'s source with its own outline and counterbores; `pivot_assembly.scad` places the group with its motors and 6810s |
 | [`400-EndArm/`](400-EndArm/) | 10 | 12 | Axis intersection, hub, internal and external pulleys; the External pulleys are `.scad` |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 9 | External gear, stator holder, mount and nut holders; the Motor End Cap and Stator Holder are `.scad`; `exgear_assembly.scad` places the group with its motor and drive, and closes J3's stack |
-| [`600-StrainWave/`](600-StrainWave/) | 3 | 5 | Wave gen coupler, flex spline attach and cap; the Attach and Cap are `.scad`, and `c201_spline_seat.scad` holds the drive's interface for them and the three Stator Holders |
+| [`600-StrainWave/`](600-StrainWave/) | 3 | 8 | Wave gen coupler, flex spline attach and cap; every part is `.scad`, and `c201_spline_seat.scad` holds the drive's interface for the Attach, the Cap and the three Stator Holders |
 | [`700-Differential/`](700-Differential/) | 10 | 17 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set and has a section view |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |

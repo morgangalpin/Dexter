@@ -43,6 +43,7 @@ committed but does not yet reproduce its reference geometry.
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 | DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
 | DC-16 | [Main Pivot placement](#main-pivot-placement) | P2 | Main Pivot fits, assembly review | The code disk's turn and the Pivot cap's, and what the disk's pegs engage | `[Provisional]` |
+| DC-600-1 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
@@ -579,3 +580,16 @@ by a feature it carries; these placements are inferences to be confirmed or repl
 **Definition of done:** the disk's and the Pivot cap's turns stated in [008.4](008-Assembly.md#0084-main-pivot)
 by the feature each is located from, and the pegs' mate named; the model's inferences replaced by those
 values. `[Provisional]`.
+
+## Wave Gen Coupler stub
+**DC-600-1 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — ✔ **closed by decision**
+
+**Found:** the Wave Gen Coupler's (`#630-004`) reference stub does not enter C-201's wave generator. It is
+Ø10.0 with a key 3.0 wide whose flat top stands 6.0 from the axis: a Cone Drive wave generator's input.
+C-201's takes a Ø6H7 bore with two set screws. Earlier readings took the key's 6.0 for a Ø6 stub; the
+reference has no Ø6 feature. The motor's Ø5 shaft ran through the stub, and a Ø6 stub has no room for it.
+
+**Decided:** `config="revised"` draws a solid Ø6 stub at the press fit, as long as the wave generator's
+bore is deep, and the shaft bore stops in the hex body.
+[`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
+dimensions and where each is taken from. `config="previous"` keeps the reference's stub. `[Specified]`.
