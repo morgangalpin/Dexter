@@ -225,11 +225,14 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
     toward the rod's long side.
 17. Confirm the 6703/MR128 bearings are seated so the shaft end protrudes ~1 mm past the 6703.
 18. Super-glue and snap the Diff Axle Keeper over the shaft end, against the 6703.
-19. Press the MR85 into the flat back of the Diff Gear Axle, ~1 mm proud. It seats by its **OD**, in the
-    same Ø8 bore the rod runs in — the Ø5 bore is the race that leaves this subassembly.
-20. Sand the other rod end and epoxy the Diff Gear Axle onto it. The rod **stops 1.5 mm short of that back
-    face**, on the MR85, which leaves 12.5 mm of Ø8 lap for the joint. That is why step 19 comes first: a
-    rod driven to the face leaves the bearing nowhere to go.
+19. Press the MR85 into the flat back of the Diff Gear Axle until it bottoms on the lip inside the bore,
+    ~1 mm proud. It seats by its **OD**, in the same Ø8 bore the rod runs in — the Ø5 bore is the race that
+    leaves this subassembly.
+20. Sand the other rod end and epoxy the Diff Gear Axle onto it. The rod **stops on the far side of that
+    lip**, short of the MR85, so its end never touches the bearing's inner race, which turns with the wrist
+    above. The lip's depth and the lap it leaves for the joint are set in
+    [`720-002_DiffGearAxle.scad`](../Hardware/Models/700-Differential/720-002_DiffGearAxle.scad) (ROD STOP).
+    Press the MR85 first: a rod driven past the lip's place leaves the bearing nowhere to go.
 21. Insert the CF rod through the Diff Gear Shaft until it stops.
 22. Hand-turn the Split Gear to confirm free rotation.
 23. Slide one AS thrust race over the wires and Diff Body B shaft, then the AXK0819, then the second race.

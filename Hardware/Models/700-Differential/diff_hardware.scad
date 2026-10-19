@@ -116,6 +116,14 @@ module brad(len) {
     yrot(90) cyl(d = BRAD_D, h = len, anchor = BOTTOM, $fn = HW_FN);
 }
 
+// A #710-005 CF strake, bonded into one of the Split Gear Top's slots (008.6
+// step 11). Drawn at the strip's own section, which is narrower than the slot
+// by the bond clearance, standing on its top end along -Z from the origin, so
+// placing one is the slot's end and nothing else. Its width runs along X.
+module strake(spec = STRAKE_25) {
+    translate([-spec[1] / 2, -spec[2] / 2, -spec[0]]) cube([spec[1], spec[2], spec[0]]);
+}
+
 // A GT2 belt run between two pulleys is not modelled: the belts leave the
 // differential through Diff Body A's arm slot and their path is set by the
 // upper arm, which is outside this model set. The slot itself is geometry and

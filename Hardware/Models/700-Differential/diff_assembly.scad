@@ -283,11 +283,13 @@ PULLEY_FROM_TIP = 6.000; // 008.6 step 16
 // Where along the rod the axle sits was open here until the MR85 was placed,
 // and the MR85 settles it: 008.6 step 19 presses it into the axle's flat back
 // ~1 mm proud, so it occupies the top 1.5 mm of the SAME Ø8 bore the rod runs
-// in and the rod cannot reach that face. The rod stops 1.5 mm short of it,
-// which leaves 12.5 mm of Ø8 lap for the epoxy joint of step 20. The End
-// Pulley then lands below Body A's mating face, clear of the arm's belt slot,
-// which is a result to check against 008.6 rather than one to trust.
-ROD_TOP = C.z + BEVEL_APEX_AXLE - (BRG_MR85[2] - MR85_PROUD);
+// in and the rod cannot reach that face. Where the rod does stop is 720-002's
+// rod_stop_z(): on the bearing in "previous", and on a lip RUN short of it in
+// "revised", so the rod's end stays off the MR85's inner ring (720-002's ROD
+// STOP). The End Pulley then lands below Body A's mating face, clear of the
+// arm's belt slot, which is a result to check against 008.6 rather than one to
+// trust.
+ROD_TOP = C.z + BEVEL_APEX_AXLE - rod_stop_z();
 ROD_BOT = ROD_TOP - CF_ROD_LEN;
 
 // ---------------------------------------------------------------------------
@@ -399,7 +401,7 @@ CARBON_C = [0.16, 0.16, 0.18];
 PARTS = ["730-001", "730-002", "720-001", "720-004", "720-002", "720-003",
          "710-001", "710-002", "710-004", "710-003",
          "cf_rod", "mr85", "brg_body_a", "brg_body_b", "brg_shaft", "brg_split",
-         "thrust_stack", "brads"];
+         "thrust_stack", "brads", "strakes"];
 
 // The assembly is a module rather than a run of top-level calls so that a
 // parent composition can place it: ../robot_assembly.scad reaches it with
@@ -444,11 +446,15 @@ module carried(p) {
     // J5 encoder disk, over the Split Gear body and against its stop collar.
     if (p == "710-004") color(ENC_C) in_split() up(CODE_DISK_Z) part(p);
 
-    // The keeper, epoxied on the Ø8 tube. It does NOT butt the Split Gear's
-    // base: the needle thrust stack stands between the two (008.6 step 23),
-    // so the keeper's epoxy face sits a stack height below SPLIT_BASE_Z.
+    // The keepers, both of #710-003's two. The first is epoxied on the Ø8 tube
+    // and does NOT butt the Split Gear's base: the needle thrust stack stands
+    // between the two (008.6 step 23), so its face sits a stack height below
+    // SPLIT_BASE_Z. The second is clamped on top of it (step 24), the same way
+    // up, overhanging the tube's end. One id, so the clash check sees their
+    // shared face as one part's.
     if (p == "710-003") color(BODY_C) in_split()
-        up(SPLIT_BASE_Z - thrust_stack_h()) xrot(180) part(p);
+        for (k = [0, 1])
+            up(SPLIT_BASE_Z - thrust_stack_h() - k * keeper_h()) xrot(180) part(p);
 }
 
 // SPLIT JOINT. The halves mate, and both meshes honour it: at nominal they
@@ -473,6 +479,12 @@ module rod_and_stacks(p) {
     if (p == "brads" && BRAD_Z_TOP == BRAD_Z) color(STEEL_C) in_split() up(BRAD_Z)
         for (a = [0 : 90 : 270])
             zrot(a) right(BRAD_TIP_R) brad(BRAD_HEAD_R - BRAD_TIP_R);
+
+    // The three #710-005 strakes, bonded into the Split Gear Top's slots
+    // against each slot's end (008.6 step 11), and moving with that half.
+    if (p == "strakes") color(CARBON_C) in_split() down(DRAW_JOINT)
+        for (a = strake_ang())
+            zrot(a - 90) translate([0, strake_rc(), strake_top()]) strake();
 }
 
 // Every stand-in bearing: its name, the set draw() takes it in, and its
@@ -521,7 +533,7 @@ module bearing_frame(name) {
     // 1 mm proud of it (008.6 step 19). Its OD is the Ø8 rod bore, so it takes
     // the top 1.5 mm of that bore; what its Ø5 rides on closes the wrist above
     // and is outside this model set, which ends here at the J4 axis. See
-    // ROD_TOP: this is what says the rod cannot be flush with that face.
+    // ROD_TOP: this is what says the rod cannot reach that face.
     if (name == "mr85") in_axle() up(-MR85_PROUD) children();
     // The needle thrust stack, on the 10.423 mm of Ø8 tube that stands proud
     // of the Split Gear's base. It is located by the tube and carried by two

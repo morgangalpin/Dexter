@@ -12,6 +12,7 @@
   ],
   "labels": [
     {"at": [0, -4, 7], "text": "B1 rod bore Ø8, through"},
+    {"at": [3.45, 0, 1.75], "text": "L1 rod-stop lip Ø6.9 (revised only), z 1.5…2"},
     {"at": [4.5, 0, 13], "text": "O1 boss Ø9 (revised Ø10.4), z 12…14"},
     {"at": [4.28, 0, 13.91], "text": "R1 boss top roundover"},
     {"at": [9, 0, 12], "text": "S1 hub shoulder Ø18 at z 12"},
@@ -29,6 +30,6 @@
     {"label": "Teeth", "at": [20, 0, 5], "span": 18, "from": [1, -0.6, 0.5]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the clone-gated recreation (render.json says why it is not dist-gated), and the revised one draws the print fits listed in 720-002_DiffGearAxle.scad's header: the press clearance on the MR85 and rod bore, and the boss grown to Ø10.4 with a chamfered tip that bears on the MR128's inner race alone. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the clone-gated recreation (render.json says why it is not dist-gated), and the revised one draws the print fits listed in 720-002_DiffGearAxle.scad's header: the press clearance on the MR85 and rod bore, and the boss grown to Ø10.4 with a chamfered tip that bears on the MR128's inner race alone, and a lip in the bore that stops the rod short of the MR85. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }

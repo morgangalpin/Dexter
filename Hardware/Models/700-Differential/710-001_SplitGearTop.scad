@@ -173,11 +173,11 @@ BRAD_ANG    = [0, 90, 180, 270];
 
 // #710-005 CF strakes, slotted from the base. The reference's slots are
 // 5.6 x 2.5 on inner and outer faces at r 13.000 and 15.500. The strake is
-// C-502's 5.588 x 2.337 strip, so in "revised" each slot is the strip's
+// C-502's strip (diff_params.scad's STRAKE_25), so in "revised" each slot is the strip's
 // section plus the PRESS clearance per side, about the same centre, which
 // leaves the epoxy its gap. The reference's 2.5 already clears the strip's
 // 2.337 by more than that, so it keeps its 2.5.
-STRIP     = [5.588, 2.337];
+STRIP     = [STRAKE_25[1], STRAKE_25[2]];
 SLOT_REF  = [5.6, 2.5];
 STRAKE    = config == "previous" ? SLOT_REF
           : [for (i = [0, 1]) max(SLOT_REF[i], fit_bore(STRIP[i], PRESS))];
@@ -185,6 +185,12 @@ STRAKE_RC = 14.250;             // the slot's centre radius
 STRAKE_R  = [STRAKE_RC - STRAKE[1] / 2, STRAKE_RC + STRAKE[1] / 2];   // inner and outer faces
 STRAKE_ANG = [90, 210, 330];
 STRAKE_TOP = 8.000;
+
+// Where the slots are, for diff_assembly.scad, which seats a strake in each
+// against the slot's end and reaches this file with `use`.
+function strake_rc()  = STRAKE_RC;
+function strake_ang() = STRAKE_ANG;
+function strake_top() = STRAKE_TOP;
 
 // The bevel: the ring, plus this half's twenty teeth. BEVEL_ENVELOPE_OUTER is
 // the whole-gear envelope with its toe-side face replaced by the parting cone,

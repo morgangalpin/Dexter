@@ -110,11 +110,10 @@ L3_TUBE_ID  = 20.07;        // C-505 L3 tube's inside dimension, over Body A's
 CF_ROD_D    = 8;            // #720-006 CF rod OD
 CF_ROD_ID   = 6;            // #720-006 CF rod bore; the tool conductors' path
 CF_ROD_LEN  = 96;           // reference: cut length, set by 008.6 not by geometry
-STRAKE_25   = [25, 5.6, 2.5];   // #710-005, 3x. The slots are in the Split
-                                //   Gear TOP, and are drawn 5.600 x 2.500 for
-                                //   a 5.588 x 2.337 strip -- 0.012 mm across
-                                //   the width, the robot's tightest bond fit
-                                //   (007.1 C-502). 008.6 step 11 named the
+STRAKE_25   = [25, 5.588, 2.337];   // #710-005, 3x: length, and C-502's
+                                //   .220 x .092 in strip section. The slots
+                                //   are in the Split Gear TOP (710-001 sizes
+                                //   them from this). 008.6 step 11 named the
                                 //   Bottom, which carries no slot - DC-11(e)
 // #720-005 (5x 60 x 4.4 x 1.5) was listed in 007.6. No assembly step places
 // it, no part here carries a slot that would take it, and the build record

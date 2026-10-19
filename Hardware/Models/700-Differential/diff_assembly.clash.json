@@ -12,6 +12,7 @@
     {"id": "710-004",               "kind": "printed",  "side": "out"},
     {"id": "cf_rod",                "kind": "bought",   "side": "in_a"},
     {"id": "brads",                 "kind": "fastener", "side": "out"},
+    {"id": "strakes",               "kind": "bought",   "side": "out"},
     {"id": "brg_a_6703_inner",      "kind": "bought", "side": "in_b",    "bearing": "brg_a_6703", "race": "inner"},
     {"id": "brg_a_6703_outer",      "kind": "bought", "side": "fixed",   "bearing": "brg_a_6703", "race": "outer"},
     {"id": "brg_a_6703_shield",     "kind": "bought", "side": "fixed",   "bearing": "brg_a_6703", "race": "shield"},

@@ -105,6 +105,10 @@ assert(abs((FLARE_TOP_D - RELIEF_D)/2 - FIL_R) < 1e-9,
        "upper fillet is not tangent to both the relief wall and the top face");
 assert(BORE_D < RELIEF_D, "the seat bore must stay inside the relief bore");
 
+// The ring's height, for diff_assembly.scad, which stacks the second keeper on
+// the first (008.6 step 24) and reaches this file with `use`.
+function keeper_h() = H;
+
 module diff_keeper() {
     // Six and nine points reproduce the reference's ring spacing (see header).
     lower_arc = arc(n=6, cp=[LOWER_FIL_CR, SEAT_TOP],

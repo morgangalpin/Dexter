@@ -1410,7 +1410,10 @@ anything version 3 does not independently specify
     shaft's collar 0.25 above Body A's plate. The Split Gear Top's 6703 pocket, which narrowed at its
     mouth, is bored straight. The two halves' bonded joint, the brads, the Split Gear's assembly 6703,
     the thrust race on Body B's tube and the boss's chamfer by the MR128 shield are recorded as
-    exceptions, each with its reason.
+    exceptions, each with its reason. The CF rod, driven onto the MR85, bore on both its races; in
+    `revised` the Diff Gear Axle's bore carries a lip that stops the rod short of the bearing, and
+    [008.6](specs/008-Assembly.md#0086-differential) steps 19 and 20 say so. The assembly now draws
+    the three CF strakes and the second Diff Keeper (step 24), and the clash check covers both.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
