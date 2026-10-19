@@ -7,7 +7,7 @@
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/400-EndArm/), in that mesh's
 //                         frame.
-//   config = "revised"  — the same part with its print fit on the rod holes.
+//   config = "revised"  — the same part with its print fits drawn (FITS).
 //
 // FRAME. The axis is +Z through the origin, the flat face at z = 0 and the hub
 // rising from the other face. The reference mesh is already in this frame.
@@ -51,9 +51,14 @@
 // FITS (../print_fit.scad), revised only:
 //
 //     H1, on the M3 all-thread           slip
+//     U1's face, on the 6807's inner     run: the face ends FIT_RUN inside
+//     race                               the race's land and is rebated
+//                                        FIT_RUN deep outside that, so it
+//                                        turns clear of the shield's edge
 //
 // The faces are clamped between nuts and the hub: face contacts, which take no
-// clearance. B1's mate is not established here; it keeps the reference's size.
+// clearance. B1 turns round the External Inner Pulley's hub (R10.5) 1.0 off,
+// above the running clearance (endarm_assembly.scad), so it keeps its size.
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -80,8 +85,11 @@ SLIT     = [31.515, 37.485];        // C1 at z = LOWER_H: inner and outer end ra
 BAR      = 0.492;                   // C2 at z = LOWER_H: the bars' width
 DRAFT    = 0.061;                   // C1, C2: each side moves this far per mm up
 HUB      = [20.500, 4.000];         // U1: radius, top z
+LAND_D   = 39.000;                  // the 6807's inner race land, d + (D - d) / 3
+                                    // (endarm_assembly.scad draws its races so)
 
-function hole_d() = max(HOLE[1], fit_bore(M3_D, fit_clearances(config)[0]));
+FITS = fit_clearances(config);
+function hole_d() = max(HOLE[1], fit_bore(M3_D, FITS[0]));
 
 // One slit's section at height z, centred on +X: the band between its end
 // arcs, less the bars either side, each bar BAR wide about its own radial
@@ -148,11 +156,22 @@ module upper_layer() {
     }
 }
 
+// U1's rebate (revised): outside FIT_RUN inside the land, the face FIT_RUN
+// back, run out past the hub's side and its face.
+module hub_rebate() {
+    if (FITS[2] > 0)
+        translate([0, 0, HUB[1] - FITS[2]]) linear_extrude(FITS[2] + 1)
+            difference() { circle(r = HUB[0] + 1); circle(r = LAND_D / 2 - FITS[2]); }
+}
+
 module end_arm_code_disk() {
     union() {
         linear_extrude(LOWER_H) lower_2d();
         upper_layer();
-        translate([0, 0, HEIGHT - epsilon]) linear_extrude(HUB[1] - HEIGHT + epsilon) hub_2d();
+        difference() {
+            translate([0, 0, HEIGHT - epsilon]) linear_extrude(HUB[1] - HEIGHT + epsilon) hub_2d();
+            hub_rebate();
+        }
     }
 }
 

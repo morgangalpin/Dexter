@@ -63,6 +63,17 @@
        {"label": "H1 rod hole on +X", "at": [16.75, 0.0, 10.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "P1 peg on 45 deg", "at": [12.0208, 12.0208, 40.0], "toward": [0.7071, 0.7071, 0.0], "fit": "slip"}
      ]},
+    {"kind": "probes", "id": "probes-410-002-run", "part": "410-002 (revised)",
+     "stl": "out/revised/410-002.stl", "after": ["render-410-002"],
+     "note": "The revised #410-002's J2 rebates, on 22.5 deg: each shoulder's face ends the running clearance inside the 6807's inner race land (r 19.5, so at r 19.0) and stands the running clearance back outside that, clear of the shield's edge.",
+     "items": [
+       {"label": "J2 lower face's rebate open", "at": [17.9463, 7.4336, -1.75], "solid": false},
+       {"label": "J2 lower face inside the rebate", "at": [17.3689, 7.1944, -1.75], "solid": true},
+       {"label": "J2 lower shoulder above the rebate", "at": [17.9463, 7.4336, -1.25], "solid": true},
+       {"label": "J2 upper face's rebate open", "at": [17.9463, 7.4336, 27.75], "solid": false},
+       {"label": "J2 upper face inside the rebate", "at": [17.3689, 7.1944, 27.75], "solid": true},
+       {"label": "J2 upper shoulder below the rebate", "at": [17.9463, 7.4336, 27.25], "solid": true}
+     ]},
     {"kind": "counts", "id": "counts-410-002", "after": ["render-410-002"],
      "note": "Both 100T bands of the revised #410-002.",
      "items": [
@@ -132,6 +143,14 @@
      "probes": [
        {"label": "H1 rod hole on +X", "at": [16.75, 0.0, 0.8], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
      ]},
+    {"kind": "probes", "id": "probes-410-003-run", "part": "410-003 (revised)",
+     "stl": "out/revised/410-003.stl", "after": ["render-410-003"],
+     "note": "The revised #410-003's U1 rebate on +X: the hub's face ends the running clearance inside the 6807's inner race land (r 19.5, so at r 19.0) and stands the running clearance back outside that, clear of the shield's edge.",
+     "items": [
+       {"label": "U1 rebate open", "at": [20.0, 0.0, 3.75], "solid": false},
+       {"label": "U1 face inside the rebate", "at": [18.8, 0.0, 3.75], "solid": true},
+       {"label": "U1 hub under the rebate", "at": [20.0, 0.0, 3.25], "solid": true}
+     ]},
     {"kind": "counts", "id": "counts-410-003", "after": ["render-410-003"],
      "note": "The revised #410-003's encoder track, counted on the section mid-upper-layer: the dist gate would pass a disk a few slits short.",
      "items": [
@@ -154,6 +173,14 @@
        {"label": "B2 MR128 pocket", "at": [6.0, 0.0, 6.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
        {"label": "H1 rod hole on +X", "at": [16.75, 0.0, 4.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
      ]},
+    {"kind": "probes", "id": "probes-420-002-run", "part": "420-002 (revised)",
+     "stl": "out/revised/420-002.stl", "after": ["render-420-002"],
+     "note": "The revised #420-002's B2 floor relief on +X: open the running clearance deep under the MR128's inner race and shield, out to just past the outer race's land (r 5.333); the floor under the outer race stays.",
+     "items": [
+       {"label": "B2 relief open", "at": [4.5, 0.0, 3.75], "solid": false},
+       {"label": "B2 relief's floor", "at": [4.5, 0.0, 3.25], "solid": true},
+       {"label": "B2 floor under the outer race", "at": [5.75, 0.0, 3.75], "solid": true}
+     ]},
 
     {"kind": "dist_gate", "id": "dist-421-001", "part": "421-001",
      "config": "previous", "scad": "421-001_InternalOuterPulley.scad", "out": "out/421-001.stl", "reference": "421-001_InternalOuterPulley.stl", "tol": 0.15},
@@ -167,6 +194,14 @@
        {"label": "N1 slot on +Y, nut's flat", "at": [2.75, 6.075, 31.5], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "N1 slot on +Y, nut's outer face", "at": [0.0, 7.275, 31.5], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
        {"label": "S1 hole on +Y", "at": [0.0, 10.0, 31.0], "toward": [0.0, 0.0, -1.0], "fit": "slip"}
+     ]},
+    {"kind": "probes", "id": "probes-421-001-run", "part": "421-001 (revised)",
+     "stl": "out/revised/421-001.stl", "after": ["render-421-001"],
+     "note": "The revised #421-001's H1 end rebate on +X: the hub's end ends inside the Cap MR128's inner race land (r 4.667) and stands the running clearance back outside it, clear of the shield and the outer race.",
+     "items": [
+       {"label": "H1 end rebate open", "at": [4.8, 0.0, 17.75], "solid": false},
+       {"label": "H1 end inside the rebate", "at": [4.3, 0.0, 17.75], "solid": true},
+       {"label": "H1 hub above the rebate", "at": [4.8, 0.0, 18.25], "solid": true}
      ]},
     {"kind": "counts", "id": "counts-421", "after": ["render-421-001", "render-421-002"],
      "note": "The Internal pulleys stay 40T (specs/004 § Wrist and differential).",
@@ -211,6 +246,13 @@
        {"label": "B1 on +X: open at the press clearance", "at": [4.05, 0.0, 1.2], "solid": false},
        {"label": "B1 on +X: wall within 0.3", "at": [4.30, 0.0, 1.2], "solid": true}
      ]},
+    {"kind": "probes", "id": "probes-421-006-stack", "part": "421-006 (revised)",
+     "stl": "out/revised/421-006.stl", "after": ["render-421-006"],
+     "note": "The revised #421-006's hub, STACK_TRIM shorter than the reference's (top z 1.35, not 1.8), which closes the End Arm's axial stack (endarm_assembly.scad § STACK).",
+     "items": [
+       {"label": "H1 below its revised top", "at": [5.0, 0.0, 1.30], "solid": true},
+       {"label": "H1 open above its revised top", "at": [5.0, 0.0, 1.40], "solid": false}
+     ]},
 
     {"kind": "dist_gate", "id": "dist-430-001", "part": "430-001",
      "config": "previous", "scad": "430-001_ExternalOuterPulley.scad", "out": "out/430-001.stl", "reference": "430-001_ExternalOuterPulley.stl", "tol": 0.15,
@@ -225,6 +267,11 @@
        {"label": "8 mm rod bore", "at": [4.0, 0.0, 28.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
        {"label": "set-screw nut slot", "at": [-6.4, 2.75, 24.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
        {"label": "set-screw hole", "at": [-11.0, 0.0, 28.0], "toward": [0.0, 0.0, -1.0], "fit": "slip"}
+     ]},
+    {"kind": "fits", "id": "fits-430-002", "part": "430-002 (revised)", "stl": "out/revised/430-002.stl", "after": ["render-430-002"],
+     "note": "The inner External pulley's counterbore on the Internal Inner Pulley's Ø17 journal end (endarm_assembly.scad), on +X.",
+     "probes": [
+       {"label": "B2 counterbore on #421-002's journal", "at": [8.5, 0.0, 31.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
      ]},
     {"kind": "probes", "id": "probes-430-002-wide", "part": "430-002 (revised)",
      "stl": "out/revised/430-002.stl", "after": ["render-430-002"],

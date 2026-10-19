@@ -56,6 +56,18 @@
 //     N1, on the M3 nut (5.5 across flats, 2.4 thick)    slip; the slot's centre
 //                                                        and floor stay put
 //     S1, on the M3 set screw                            slip
+//     H1's end, on the Cap's MR128's inner race          run: the end ends
+//                                                        FIT_SLIP inside the
+//                                                        race's land and is
+//                                                        rebated FIT_RUN deep
+//                                                        outside it, clear of
+//                                                        the shield and the
+//                                                        outer race. The race
+//                                                        is too narrow to also
+//                                                        keep its edge FIT_RUN
+//                                                        off the shield's; the
+//                                                        clash manifest
+//                                                        accepts that edge
 //
 // 008.7 step 20 presses an MR128 "into the Internal Outer Pulley end", but no
 // face of this mesh is a Ø12 seat; see the End Arm notes' reviewer questions.
@@ -89,6 +101,8 @@ SLOT_AT   = [90, 120];   // N1: first angle, pitch
 SCREW     = [3.100, 29.500];   // S1: diameter, z
 NUT       = [5.500, 2.400];    // M3 nut: across flats, thickness
 M3_D      = 3.000;
+LAND_D    = 9.333;       // the MR128's inner race land, d + (D - d) / 3
+                         // (endarm_assembly.scad draws its races so)
 
 FITS = fit_clearances(config);
 function bore_d()  = max(BORE_D, fit_bore(TUBE_D, FITS[1]));
@@ -146,6 +160,13 @@ module screw_cutter() {
     translate([0, 0, SCREW[1]]) rotate([0, 90, 0]) cylinder(d = screw_d(), h = FLANGE[0] + 2, $fn = 48);
 }
 
+// H1's end rebate (revised): outside FIT_SLIP inside the land, the end FIT_RUN
+// back, run out below the end and past the hub's side.
+module end_rebate() {
+    if (FITS[2] > 0) translate([0, 0, BOTTOM - 1]) linear_extrude(1 + FITS[2])
+        difference() { circle(r = HUB[0] + 1); circle(r = LAND_D / 2 - FITS[0]); }
+}
+
 module internal_outer_pulley() {
     difference() {
         union() {
@@ -156,6 +177,7 @@ module internal_outer_pulley() {
             slot_cutter();
             screw_cutter();
         }
+        end_rebate();
     }
 }
 

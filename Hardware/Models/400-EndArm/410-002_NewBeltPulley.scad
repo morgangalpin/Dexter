@@ -69,6 +69,12 @@
 //     B2, on the 6703's Ø23 OD                  press
 //     H1, on the M3 all-thread                  slip
 //     P1, in the End Arm Hub's back holes       slip (two printed parts)
+//     J2, each face on a 6807's inner race      run: the face ends FIT_RUN
+//                                               inside the race's land and is
+//                                               rebated FIT_RUN deep outside
+//                                               that, so it turns clear of the
+//                                               shield's edge (the reference's
+//                                               Ø39 reaches the land's edge)
 
 include <../gt2_pulley.scad>
 include <../print_fit.scad>
@@ -105,10 +111,13 @@ END_TRIM   = [[0.11, 0.11], [0.11, 0], [0, 0], [0, 0]];
 PEG        = [14.500, 5.000, 41.750];      // P1: centre radius, diameter, top z
 LAP        = 0.005;                        // the web's lap into the hub
 BEARING    = [35.000, 23.000];             // 6807 ID, 6703 OD
+LAND_D     = 39.000;                       // the 6807's inner race land, d + (D - d) / 3
+                                           // (endarm_assembly.scad draws its races so)
 M3_D       = 3.000;
 PEG_HOLE_D = 5.000;                        // the End Arm Hub's back holes, as drawn
 
 FITS = fit_clearances(config);
+function rebate_r() = LAND_D / 2 - FITS[2];   // J2's face ends here
 function journal_d() = min(JOURNAL[0], fit_pin(BEARING[0], FITS[1]));
 function pocket_d()  = max(BORE[1], fit_bore(BEARING[1], FITS[1]));
 function hole_d()    = max(HOLE[1], fit_bore(M3_D, FITS[0]));
@@ -188,11 +197,21 @@ module windows_2d(inner = SHOULDER[0] / 2)
     for (k = [0 : 3]) rotate(45 + 90 * k) window_2d(inner, END_TRIM[k]);
 module axis_places()   for (k = [0 : 3]) rotate(90 * k) children();
 
+// J2's rebates (revised): outside rebate_r(), each shoulder face FIT_RUN back,
+// run out into the air beside the journal.
+module shoulder_rebates() {
+    if (FITS[2] > 0) for (f = [[JOURNAL[2], 1], [JOURNAL[3], -1]])
+        rotate_extrude() polygon([[rebate_r(), f[0] - f[1]], [SHOULDER[0] / 2 + 1, f[0] - f[1]],
+                                  [SHOULDER[0] / 2 + 1, f[0] + f[1] * FITS[2]],
+                                  [rebate_r(), f[0] + f[1] * FITS[2]]]);
+}
+
 module hub() {
     difference() {
         rotate_extrude() polygon(hub_profile());
         axis_places() translate([HOLE[0], 0, JOURNAL[1] - 1])
             cylinder(d = hole_d(), h = JOURNAL[4] - JOURNAL[1] + 2, $fn = 48);
+        shoulder_rebates();
     }
 }
 

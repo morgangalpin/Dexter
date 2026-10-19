@@ -1082,8 +1082,9 @@ anything version 3 does not independently specify
     Their meshes moved to `Reference/meshes/300-Pivot/`.
   - `Hardware/Models/400-EndArm/`: `410-002_NewBeltPulley.scad`, `410-003_EndArmCodeDisk.scad`,
     `420-002_EndArmHubCap.scad`, `421-001_InternalOuterPulley.scad`, `421-002_InternalInnerPulley.scad`,
-    `421-006_PulleySpacer.scad`, `410-001_AxisIntersectionHalf.scad`, `420-001_EndArmHub.scad` and
-    `render.json` (new); `external_pulley.scad`, `430-001_ExternalOuterPulley.scad` and
+    `421-006_PulleySpacer.scad`, `410-001_AxisIntersectionHalf.scad`, `420-001_EndArmHub.scad`,
+    `render.json`, and the assembly `endarm_assembly.scad` with its `.view.json` and `.clash.json` (new);
+    `external_pulley.scad`, `430-001_ExternalOuterPulley.scad` and
     `430-002_ExternalInnerPulley.scad` (rewritten). Their meshes moved to `Reference/meshes/400-EndArm/`,
     including the four of `410-001`, `420-001`, `430-001` and `430-002`.
   - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
@@ -1264,6 +1265,15 @@ anything version 3 does not independently specify
     minutes.
   - **400-EndArm:** `400-EndArm/render.json` is new. It holds every part's checks, and the External
     pulleys' render, fits and 108T count jobs moved from `700-Differential/render.json`.
+  - **400-EndArm:** `endarm_assembly.scad` places the group about J3 as 008.7 builds it, with its 6807,
+    6703 and MR128 bearings split into races, the C-502 and C-503 strakes, the stainless tube, the rods
+    and stubs of the L2 and L3 tubes; `assembly-clash.rs` checks it. What it found is fixed in the
+    revised parts: the faces of `#410-002`, `#410-003` and `#421-001` that bear on an inner race are
+    rebated clear of its shield; the floor of the Cap's (`#420-002`) MR128 pocket, which touched both
+    races, is relieved under the inner one; the External Inner Pulley's (`#430-002`) counterbore takes the slip fit on
+    the Internal Inner Pulley's journal; and the Pulley Spacer's (`#421-006`) hub is 0.45 shorter,
+    because the stack from the Cap's MR128 to the hub's 6703 was that much too long with the 6703 on
+    its seat. The manifest's exceptions give the reason for each place accepted as drawn.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
   - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and

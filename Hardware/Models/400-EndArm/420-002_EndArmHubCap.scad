@@ -52,8 +52,14 @@
 //
 //     B2, on the MR128's Ø12 OD          press
 //     H1, on the M3 all-thread           slip
+//     B2's floor, under the MR128        run: relieved FIT_RUN deep out to
+//                                        FIT_SLIP outside the outer race's
+//                                        land, so only the outer race seats
+//                                        and the inner race, which turns with
+//                                        the stainless tube, and the tube's
+//                                        end stand clear
 //
-// B2's floor is a face contact, which takes no clearance.
+// B2's floor is otherwise a face contact, which takes no clearance.
 
 include <../print_fit.scad>
 
@@ -83,6 +89,8 @@ BORE       = [7.980, 2.500, 7.000, 3.000, 4.000];   // B1: Ø, z, Ø after the c
 POCKET_D   = 12.000;                    // B2
 M3_D       = 3.000;                     // the all-thread
 MR128_OD   = 12.000;
+OUTER_LAND_D = 10.667;                  // the MR128's outer race land, D - (D - d) / 3
+                                        // (endarm_assembly.scad draws its races so)
 
 FITS = fit_clearances(config);
 function hole_d()   = max(HOLE[1], fit_bore(M3_D, FITS[0]));
@@ -138,13 +146,20 @@ module section_2d() {
     }
 }
 
-// B1 and B2 as one revolved cutter, run out past both faces.
+// The cutter's outline from B1's narrowest step to B2's floor: straight up to
+// the floor, or, in revised, through B2's floor relief.
+function relief() =
+    let (r2 = BORE[2] / 2, rr = OUTER_LAND_D / 2 + FITS[0], zr = BORE[4] - FITS[2])
+    FITS[2] > 0 ? [[r2, zr], [rr, zr], [rr, BORE[4]]] : [[r2, BORE[4]]];
+
+// B1, B2 and the relief as one revolved cutter, run out past both faces.
 module bore_cutter() {
     r1 = BORE[0] / 2;
     r2 = BORE[2] / 2;
     rp = pocket_d() / 2;
-    rotate_extrude() polygon([[0, -1], [r1, -1], [r1, BORE[1]], [r2, BORE[3]], [r2, BORE[4]],
-                              [rp, BORE[4]], [rp, HEIGHT + 1], [0, HEIGHT + 1]]);
+    rotate_extrude() polygon(concat([[0, -1], [r1, -1], [r1, BORE[1]], [r2, BORE[3]]],
+                                    relief(),
+                                    [[rp, BORE[4]], [rp, HEIGHT + 1], [0, HEIGHT + 1]]));
 }
 
 module end_arm_hub_cap() {
