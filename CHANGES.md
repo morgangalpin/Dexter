@@ -1081,8 +1081,9 @@ anything version 3 does not independently specify
     `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
     Their meshes moved to `Reference/meshes/300-Pivot/`.
   - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
-    `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their `.view.json` sidecars and
-    `render.json`; `exgear_assembly.scad` now `use`s the gear and the Mount Top. Their meshes moved to `Reference/meshes/500-ExternalGear/`.
+    `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
+    `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
+    Their meshes moved to `Reference/meshes/500-ExternalGear/`.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1241,6 +1242,13 @@ anything version 3 does not independently specify
     `exgear_assembly.scad` draws the gear from its source, `external_gear("revised")`, and reads its seats
     from accessor functions such as `gear_lower_shoulder()`, where it imported the mesh. The
     `gear-fit-511-002` check in `render.json` reads the gear's mesh from `Reference/meshes/`.
+  - **500-ExternalGear:** the Ex Gear Mount (`#520-001`), a region split: the floor, column, bridge and
+    frame, each extruded from plan or side profiles. The front's S profile is turned about the bore's
+    axis. Two blends at the column's corners are made by rolling a ball: an opening under the bridge and
+    a closing at the lower plate. `revised` draws the slip fits on the screws, the all-threads and the Nut
+    Holder slots, and the press fits on the motors' pilots. The dist gate stands at 0.21 mm pending
+    review, for the one blend that fades out down the floor's tongue. `exgear_assembly.scad` draws the
+    part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.

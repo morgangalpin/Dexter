@@ -80,6 +80,7 @@
 // motor from C-101, the bearings from their catalogue size.
 
 use <510-001_ExternalGear.scad>
+use <520-001_ExGearMount.scad>
 use <511-001_ExGearMotorEndCap.scad>
 use <511-002_ExGearStatorHolder.scad>
 use <520-002_ExGearMountTop.scad>
@@ -95,8 +96,8 @@ clash   = [];       // two names from PARTS: render their intersection
 $fn = 96;
 
 // --- Features, each in its own part's frame --------------------------------
-BOSS_TOP         = 6.000;    // #520-001 floor bosses, top face
-MOUNT_FLOOR      = 4.000;    // #520-001 floor plate, top face
+BOSS_TOP         = mount_boss_top();   // #520-001 floor bosses, top face
+MOUNT_FLOOR      = mount_floor_top();  // #520-001 floor plate, top face
 // #520-001 bore: R 38.000 about (-0.655, 0), behind the drive axis, so it is
 // nearest the axis at its two edges, (-24.55, +/-29.54) over z 57..62.
 MOUNT_NEAR_R     = 38.410;
@@ -160,7 +161,7 @@ echo(gear_above_floor = GEAR_BOTTOM + GEAR_C - MOUNT_FLOOR);  // External Gear's
 echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Holder inside the Mount's bore, radial, at least
 
 // --- Parts ------------------------------------------------------------------
-module mount()     color("#9aa7b4") import("520-001_ExGearMount.stl");
+module mount()     color("#9aa7b4") ex_gear_mount("revised");
 module mount_top() color("#b8c4cf") ex_gear_mount_top("revised");
 module end_cap()   color("#e0a458") translate([0, 0, ENDCAP_Z]) rotate([180, 0, 0])
                      ex_gear_motor_end_cap("revised");
