@@ -1274,6 +1274,9 @@ anything version 3 does not independently specify
     the Internal Inner Pulley's journal; and the Pulley Spacer's (`#421-006`) hub is 0.45 shorter,
     because the stack from the Cap's MR128 to the hub's 6703 was that much too long with the 6703 on
     its seat. The manifest's exceptions give the reason for each place accepted as drawn.
+    `robot_assembly.scad` now draws all ten parts in the frames this assembly gives them, so the
+    Axis Intersection Halves and the code disk leave its UNPLACED list, and the Internal and External
+    pulleys are turned end for end into the hub, where the CAD export had left them above it.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
   - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and
