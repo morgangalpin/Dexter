@@ -212,14 +212,30 @@
        {"label": "B1 on +X: wall within 0.3", "at": [4.30, 0.0, 1.2], "solid": true}
      ]},
 
-    {"kind": "render", "id": "render-430-001", "config": "revised", "scad": "430-001_ExternalOuterPulley.scad", "out": "out/revised/430-001.stl",
-     "note": "The External pulleys are the elbow half of the DC-12 train that 700-Differential verifies; their jobs moved here from 700-Differential/render.json with the group's conversion."},
+    {"kind": "dist_gate", "id": "dist-430-001", "part": "430-001",
+     "config": "previous", "scad": "430-001_ExternalOuterPulley.scad", "out": "out/430-001.stl", "reference": "430-001_ExternalOuterPulley.stl", "tol": 0.15,
+     "note": "The External pulleys are the elbow half of the DC-12 train that 700-Differential verifies; their jobs moved here from 700-Differential/render.json with the group's conversion, and their previous configs are now sources gated against the meshes."},
+    {"kind": "dist_gate", "id": "dist-430-002", "part": "430-002",
+     "config": "previous", "scad": "430-002_ExternalInnerPulley.scad", "out": "out/430-002.stl", "reference": "430-002_ExternalInnerPulley.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-430-001", "config": "revised", "scad": "430-001_ExternalOuterPulley.scad", "out": "out/revised/430-001.stl"},
     {"kind": "render", "id": "render-430-002", "config": "revised", "scad": "430-002_ExternalInnerPulley.scad", "out": "out/revised/430-002.stl"},
     {"kind": "fits", "id": "fits-430-001", "part": "430-001 (revised)", "stl": "out/revised/430-001.stl", "after": ["render-430-001"],
-     "note": "The outer External pulley's hub: the 8 mm rod, and the M3 nut (5.5 across flats) in the slot on 180 deg, whose 5.5 runs along Y.",
+     "note": "The outer External pulley's hub: the 8 mm rod; the M3 nut (5.5 across flats) in the slot on 180 deg, whose 5.5 runs along Y; and the M3 set screw in its hole on 180 deg, on its top.",
      "probes": [
        {"label": "8 mm rod bore", "at": [4.0, 0.0, 28.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
-       {"label": "set-screw nut slot", "at": [-6.4, 2.75, 24.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"}
+       {"label": "set-screw nut slot", "at": [-6.4, 2.75, 24.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "set-screw hole", "at": [-11.0, 0.0, 28.0], "toward": [0.0, 0.0, -1.0], "fit": "slip"}
+     ]},
+    {"kind": "probes", "id": "probes-430-002-wide", "part": "430-002 (revised)",
+     "stl": "out/revised/430-002.stl", "after": ["render-430-002"],
+     "note": "The revised #430-002's fits that the reference already draws wider than their class, which 007.2 lets them keep: the C-503 strake (1.45 x 4.50) centred in the slot on 90 deg, open at the press clearance off its outer face and side with material 0.3 off it; and the bore round the Ø8 stainless tube, open 0.45 off it, with material 0.7 off it.",
+     "items": [
+       {"label": "S1 on 90 deg, outer face: open at the press clearance", "at": [0.0, 7.866, 22.0], "solid": false},
+       {"label": "S1 on 90 deg, outer face: wall within 0.3", "at": [0.0, 8.116, 22.0], "solid": true},
+       {"label": "S1 on 90 deg, side: open at the press clearance", "at": [2.30, 7.091, 22.0], "solid": false},
+       {"label": "S1 on 90 deg, side: wall within 0.3", "at": [2.55, 7.091, 22.0], "solid": true},
+       {"label": "B1 on +X: open 0.45 off the tube", "at": [4.45, 0.0, 26.0], "solid": false},
+       {"label": "B1 on +X: wall within 0.7", "at": [4.70, 0.0, 26.0], "solid": true}
      ]},
     {"kind": "counts", "id": "counts-430", "after": ["render-430-001", "render-430-002"],
      "note": "The DC-12 tooth counts on the revised renders: 108T at the elbow, against the 16T motor pulley. 430-001 is sectioned clear of its access holes.",
