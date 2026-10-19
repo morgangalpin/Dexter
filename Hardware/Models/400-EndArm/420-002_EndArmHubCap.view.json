@@ -1,0 +1,35 @@
+{
+  "title": "End Arm Hub Cap",
+  "subtitle": "#420-002 · reference mesh and 420-002_EndArmHubCap.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "End Arm Hub Cap", "pn": "#420-002", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/420-002_EndArmHubCap.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/420-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/420-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 22.5, 4], "text": "O1 outline Ø45.0, flat at x -19.5"},
+    {"at": [20.5, 0, 0], "text": "T1 plain face z 0"},
+    {"at": [20.5, 0, 8], "text": "T1 pocket face z 8.0"},
+    {"at": [13.35, 13.35, 4], "text": "W1 ring's inner edge Ø37.75"},
+    {"at": [6.98, 6.98, 4], "text": "W2 hub Ø19.75"},
+    {"at": [11.1, 4, 4], "text": "W3 spokes 8.0 wide on the axes"},
+    {"at": [15.25, 5, 4], "text": "W4 bosses R5.0 about each rod hole"},
+    {"at": [9.376, 4.366, 4], "text": "W5 rounds R3.0 hub-spoke and spoke-boss, R1.15 boss-ring"},
+    {"at": [15.25, 1.5, 8], "text": "H1 rod holes ×4 Ø3.0 at r 15.25, through"},
+    {"at": [3.745, 0, 2.75], "text": "B1 bore Ø7.98 to z 2.5, 45° chamfer to Ø7.0 at z 3.0"},
+    {"at": [6, 0, 6], "text": "B2 MR128 pocket Ø12.0, z 4.0…8.0"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 55, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 55, "from": [0, 0, -1]},
+    {"label": "Windows and rounds", "at": [10, 10, 4], "span": 20, "from": [0.2, -0.2, 1]},
+    {"label": "Bore and pocket", "at": [0, 0, 4], "span": 20, "from": [0.5, -0.8, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one presses B2 on the MR128's outside diameter and slips the four rod holes (H1) on the all-thread. The 2D section the body is extruded from is gated separately in render.rs --verify, and the dimensions and fits are in 420-002_EndArmHubCap.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

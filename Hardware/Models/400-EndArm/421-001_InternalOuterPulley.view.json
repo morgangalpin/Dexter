@@ -1,0 +1,33 @@
+{
+  "title": "Internal Outer Pulley",
+  "subtitle": "#421-001 · reference mesh and 421-001_InternalOuterPulley.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Internal Outer Pulley", "pn": "#421-001", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/421-001_InternalOuterPulley.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/421-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/421-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [4, 0, 25], "text": "B1 bore Ø8.0, through"},
+    {"at": [5, 0, 18], "text": "H1 hub Ø10.0, z 17.5…18.5, R0.5 at its end"},
+    {"at": [7.9, 0, 18.5], "text": "H2 shoulder out to r 9.134 at z 18.5, R1 up to the flange"},
+    {"at": [12.95, 0, 19.4], "text": "F1 flange Ø26.0, z 19.0…19.75"},
+    {"at": [11.6975, 0, 23.5], "text": "T1 40T GT2 band, tip Ø24.968, root Ø23.395"},
+    {"at": [13, 0, 30], "text": "U1 slotted hub Ø26.0, z 27.25…33.0"},
+    {"at": [2.8, 6.075, 31], "text": "N1 nut slots ×3, 5.6 × 2.5, floor to z 26.35"},
+    {"at": [1.55, 12.906, 29.5], "text": "S1 set-screw holes ×3 Ø3.1 at z 29.5"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 35, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 35, "from": [0, 0, -1]},
+    {"label": "Nut slot", "at": [0, 6.075, 30], "span": 14, "from": [0.3, 0.5, 1]},
+    {"label": "Set screw", "at": [1.55, 12.9, 29.5], "span": 10, "from": [0.2, 1, 0.3]},
+    {"label": "Teeth", "at": [11.7, 0, 23.5], "span": 8, "from": [1, -0.3, 0.4]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one presses B1 on the Ø8 tube and slips the nut slots (N1) and set-screw holes (S1), with the tooth count held at 40T. The dimensions and fits are in 421-001_InternalOuterPulley.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

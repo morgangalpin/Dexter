@@ -440,3 +440,9 @@ Reference/meshes/400-EndArm/420-002_EndArmHubCap.stl,Reference,148884,binary/297
 Reference/meshes/400-EndArm/421-001_InternalOuterPulley.stl,Reference,635684,binary/12712,bc2d425d57d57ee249f85f35d2c6bab2433648357af1e52a5cddea71f74779c0
 Reference/meshes/400-EndArm/421-002_InternalInnerPulley.stl,Reference,531084,binary/10620,533c44840e5eb930d7300920ce2f733e452ec1375d0de0b8f77975b911ec6466
 Reference/meshes/400-EndArm/421-006_PulleySpacer.stl,Reference,87984,binary/1758,852a47ffe5a3aa71b42f43ef4170a96f36519c9a94f6fedc7c50d30a45925230
+400-EndArm/410-002_NewBeltPulley.view.json,400-EndArm,2450,,84137fa2f5bdc48bfb75158687df1f83a7a833a5198a91de54cb62d0c6d3fcb3
+400-EndArm/410-003_EndArmCodeDisk.view.json,400-EndArm,2259,,01135862626d474f7870c9ad4398cfdfcddbb10a231b36e2343b986baf82d219
+400-EndArm/420-002_EndArmHubCap.view.json,400-EndArm,2423,,10df07c2a949e24483d808f16eaf84c50b8359bf7817646131c623fe8b6ce3d3
+400-EndArm/421-001_InternalOuterPulley.view.json,400-EndArm,2307,,05cad0df8a25c58839ad09d56389d5dfe0c02bb2666d3fdd4b9f1f80d325b245
+400-EndArm/421-002_InternalInnerPulley.view.json,400-EndArm,2350,,66025baf2a870616629ed8765fed360d851ce55d6bdaf18e076b51851bf40db9
+400-EndArm/421-006_PulleySpacer.view.json,400-EndArm,1692,,c95523b9856f7a89e12c5cc0fa47adf3ba069f25fcc405271d8f9002637f1903

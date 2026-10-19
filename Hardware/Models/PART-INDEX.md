@@ -58,13 +58,13 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #410-001 | Axis Intersection Half | 2 (+2 tooling) | `410-001_AxisIntersectionHalf.stl` |  |
-| #410-002 | New Belt Pulley | 1 | `410-002_NewBeltPulley.stl` |  |
-| #410-003 | End Arm Code Disk | 1 | `410-003_EndArmCodeDisk.stl` |  |
+| #410-002 | New Belt Pulley | 1 | `410-002_NewBeltPulley.scad` | `revised` presses the journals and the 6703 pockets and slips the rod holes and pegs |
+| #410-003 | End Arm Code Disk | 1 | `410-003_EndArmCodeDisk.scad` | `revised` slips the rod holes on the M3 all-thread |
 | #420-001 | End Arm Hub | 1 (+1 tooling) | `420-001_EndArmHub.stl` | ⚠️ |
-| #420-002 | End Arm Hub Cap | 1 | `420-002_EndArmHubCap.stl` |  |
-| #421-001 | Internal Outer Pulley | 1 | `421-001_InternalOuterPulley.stl` |  |
-| #421-002 | Internal Inner Pulley | 1 | `421-002_InternalInnerPulley.stl` |  |
-| #421-006 | Pulley Spacer | 2 | `421-006_PulleySpacer.stl` |  |
+| #420-002 | End Arm Hub Cap | 1 | `420-002_EndArmHubCap.scad` | `revised` presses the MR128 pocket and slips the rod holes |
+| #421-001 | Internal Outer Pulley | 1 | `421-001_InternalOuterPulley.scad` | 40T in both configs; `revised` presses the bore on the tube and slips the nut slots and set-screw holes |
+| #421-002 | Internal Inner Pulley | 1 | `421-002_InternalInnerPulley.scad` | 40T in both configs; `revised` presses the journal and the MR128 pocket; the strake slots and bore already clear their mates |
+| #421-006 | Pulley Spacer | 2 | `421-006_PulleySpacer.scad` | `revised` is `previous`: the bore already stands the press clearance off the tube |
 | #430-001 | External Outer Pulley | 1 | `430-001_ExternalOuterPulley.scad` | 108T in `revised` |
 | #430-002 | External Inner Pulley | 1 | `430-002_ExternalInnerPulley.scad` | 108T in `revised` |
 

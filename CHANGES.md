@@ -1080,6 +1080,10 @@ anything version 3 does not independently specify
     `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
     `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
     Their meshes moved to `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/400-EndArm/`: `410-002_NewBeltPulley.scad`, `410-003_EndArmCodeDisk.scad`,
+    `420-002_EndArmHubCap.scad`, `421-001_InternalOuterPulley.scad`, `421-002_InternalInnerPulley.scad`,
+    `421-006_PulleySpacer.scad` and `render.json` (new). Their meshes moved to
+    `Reference/meshes/400-EndArm/`.
   - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
     `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
     `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
@@ -1222,6 +1226,26 @@ anything version 3 does not independently specify
     the H6 traps stood 0.05 off the M3 nut where the slip fit needs 0.15. `revised` opens both to their
     fits. The slots and holes that the reference already draws wider keep their size, and probes hold them
     open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
+  - **400-EndArm:** the New Belt Pulley (`#410-002`), a region split into a revolved hub and a revolved web,
+    with two 100T tooth rings of `gt2_pulley.scad`, four windows cut through the web and four pegs. Each
+    window is one outline of arcs, because an opening of the flanks' lens rounded far past the tip.
+  - **400-EndArm:** the End Arm Code Disk (`#410-003`), two constant sections extruded once each, as
+    `#300-002`'s are, with a revolved hub. Each of its 157 slits is cut as the hull of its sections at the
+    upper layer's two faces, since the slits are drafted. They are the gaps between bars of constant
+    width, so each slit widens outward.
+  - **400-EndArm:** the End Arm Hub Cap (`#420-002`), one 2D section extruded once, with one revolved
+    cutter for the stepped bore. The section's two sizes of concave round are two closings: the wheel
+    inside the ring by R3, then the whole by R1.15.
+  - **400-EndArm:** the Internal Outer and Inner Pulleys (`#421-001`, `#421-002`) and the Pulley Spacer
+    (`#421-006`), each a revolved meridional profile. The pulleys add a 40T tooth ring of `gt2_pulley.scad`
+    and cut their nut slots and set-screw holes, or strake slots. Both pulleys and the New Belt Pulley carry
+    `gt2_pulley.scad`'s rounded-tip GT2 form, not the plain one of the differential's pulleys; their
+    sections fit it to a fraction of the plain form's miss. `421-002_InternalInnerPulley.dwg` is not a
+    source: it is another revision, with five strake slots. The count stays 40T
+    ([004 § Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5)),
+    and `robot_assembly.scad` draws the two pulleys from source.
+  - **400-EndArm:** `400-EndArm/render.json` is new. It holds the six parts' checks and, moved from
+    `700-Differential/render.json`, the External pulleys' render, fits and 108T count jobs.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
   - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and
