@@ -1,6 +1,7 @@
 {
   "ref_dir": "../Reference/meshes/400-EndArm",
   "parts": [
+    {"id": "410-001", "scad": "410-001_AxisIntersectionHalf.scad"},
     {"id": "410-002", "scad": "410-002_NewBeltPulley.scad"},
     {"id": "410-003", "scad": "410-003_EndArmCodeDisk.scad"},
     {"id": "420-001", "scad": "420-001_EndArmHub.scad"},
@@ -12,6 +13,39 @@
     {"id": "430-002", "scad": "430-002_ExternalInnerPulley.scad"}
   ],
   "checks": [
+    {"kind": "outline", "id": "outline-410-001-ring", "part": "410-001", "config": "previous",
+     "scad": "410-001_AxisIntersectionHalf.scad", "out": "out/2d/410-001-ring.svg", "layer": "ring",
+     "reference": "410-001_AxisIntersectionHalf.stl", "axis": "z", "at": 1.0, "tol": 0.15,
+     "note": "#410-001's plan sections: the ring and teardrop under the lip, then over the 6807's pocket, and the block above the ring."},
+    {"kind": "outline", "id": "outline-410-001-teardrop", "part": "410-001", "config": "previous",
+     "scad": "410-001_AxisIntersectionHalf.scad", "out": "out/2d/410-001-teardrop.svg", "layer": "teardrop",
+     "reference": "410-001_AxisIntersectionHalf.stl", "axis": "z", "at": 2.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-410-001-block", "part": "410-001", "config": "previous",
+     "scad": "410-001_AxisIntersectionHalf.scad", "out": "out/2d/410-001-block.svg", "layer": "block",
+     "reference": "410-001_AxisIntersectionHalf.stl", "axis": "z", "at": 15.0, "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-410-001", "part": "410-001",
+     "config": "previous", "scad": "410-001_AxisIntersectionHalf.scad", "out": "out/410-001.stl", "reference": "410-001_AxisIntersectionHalf.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-410-001", "config": "revised",
+     "scad": "410-001_AxisIntersectionHalf.scad", "out": "out/revised/410-001.stl"},
+    {"kind": "fits", "id": "fits-410-001", "part": "410-001 (revised)",
+     "stl": "out/revised/410-001.stl", "after": ["render-410-001"],
+     "note": "The revised #410-001's print fits: the 6807's Ø47 OD in the pocket on +X, and the C-502 strip (5.588 along the slot) on the 54 deg slot's end, in the post.",
+     "probes": [
+       {"label": "R2 6807 pocket on +X", "at": [23.5, 0.0, 5.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "S1 54 deg slot, the strip's end", "at": [17.734, 29.161, 12.0], "toward": [0.809, -0.5878, 0.0], "fit": "press"}
+     ]},
+    {"kind": "probes", "id": "probes-410-001-wide", "part": "410-001 (revised)",
+     "stl": "out/revised/410-001.stl", "after": ["render-410-001"],
+     "note": "The revised #410-001's fits that the reference already draws wider than the press class, which 007.2 lets them keep: the C-502 strip's face across the 54 deg slot, and the C-504 tube (28.75 outside) in the half-channel on +X and on its floor; each open at the press clearance off the mate, with material 0.3 off it.",
+     "items": [
+       {"label": "S1 54 deg, the strip's face: open at the press clearance", "at": [20.710, 28.505, 12.0], "solid": false},
+       {"label": "S1 54 deg, the strip's face: wall within 0.3", "at": [20.857, 28.707, 12.0], "solid": true},
+       {"label": "C1 +X side: open at the press clearance", "at": [14.425, -50.0, 15.0], "solid": false},
+       {"label": "C1 +X side: wall within 0.3", "at": [14.675, -50.0, 15.0], "solid": true},
+       {"label": "C1 floor: open at the press clearance", "at": [0.0, -50.0, 9.575], "solid": false},
+       {"label": "C1 floor: wall within 0.3", "at": [0.0, -50.0, 9.325], "solid": true}
+     ]},
+
     {"kind": "outline", "id": "outline-410-002-web", "part": "410-002", "config": "previous",
      "scad": "410-002_NewBeltPulley.scad", "out": "out/2d/410-002-web.svg", "layer": "web",
      "reference": "410-002_NewBeltPulley.stl", "axis": "z", "at": 13.0, "tol": 0.15,
