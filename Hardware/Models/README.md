@@ -106,10 +106,28 @@ scadmesh pinch 400-EndArm/420-001_EndArmHub.stl --out 400-EndArm/420-001_EndArmH
 
 That gives one surface at each contact its own vertex 1 µm off the line, along its own normal, which grows
 the material between the two surfaces by that much: 6 triangles added, no existing vertex moved, the
-bounding box unchanged and the volume 0.028 mm³ — four parts in ten million — larger. The file also holds
-a second closed shell that shares no edge with the body, the 18 × 20 × 20 mm block on the spigot axis at
-x 26.500..44.500, y ±10.000, z −35.000..−15.000, so this is a multi-body export rather than one unioned
-solid. That is not a defect: two shells convert as readily as one.
+bounding box unchanged and the volume 0.028 mm³ — four parts in ten million — larger.
+
+**Two overlapping bodies, unioned beside the original.** The same file is a multi-body export rather
+than one unioned solid. Its second closed shell shares no edge with the hub: it is the spigot, its tube
+from x 28.500 to 44.500 with the I-shaped bore, plus an I-shaped stub from x 26.500 to 28.500 that lies
+wholly inside the hub. The hub's face behind the spigot's wall and the stub's faces are therefore
+internal, a surface no solid can have, and `dist` from this file to any render charges them up to
+3.5 mm. The original stays as exported; `400-EndArm/420-001_EndArmHub.bodies-unioned.stl` beside it is
+the union of the two bodies, derived for `#420-001`'s dist gate only (its section outlines still read
+the original). From `Reference/meshes/`, with `union.scad` holding
+`union() { import("hub0.stl"); import("hub1.stl"); }` (OpenSCAD cannot union one imported mesh's
+overlapping shells; two separate imports do union):
+
+```
+scadmesh segment 400-EndArm/420-001_EndArmHub.stl --keep 0 --out hub0.stl
+scadmesh segment 400-EndArm/420-001_EndArmHub.stl --keep 1 --out hub1.stl
+openscad --backend=manifold --export-format=binstl -o 400-EndArm/420-001_EndArmHub.bodies-unioned.stl union.scad
+```
+
+The result is one closed shell of 4924 triangles. Every point of its surface lies on the original's
+(`dist` 0.000); the original's surface it drops, 3.3 % of it, lies wholly in x 26.500..28.500,
+y ±10.000, z −35.000..−15.000.
 
 **A second tangency, corrected the same way.** `Reference/meshes/500-ExternalGear/510-001_ExternalGear.stl` failed the same
 way. Two of its surfaces shared 91 edges on one ring in the part's frame, at x 21.215 and r ≈ 33.7, so

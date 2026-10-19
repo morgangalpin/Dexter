@@ -42,11 +42,12 @@
 // hub. As a solid, the bore is therefore blind at x 28.5, and it is cut so
 // here. The hub's face behind the spigot's wall and the stub's faces lie
 // inside that solid, where no solid can have a surface, so `dist` from this
-// reference to any render charges them up to 3.5. Against the two bodies
-// joined (each extracted with `scadmesh segment --keep`, then unioned) this
-// part's `previous` render is within 0.036 both ways. How to gate it is a
-// question for the reviewer (End Arm notes); render.rs --verify meanwhile holds
-// its four sections by outline.
+// reference to any render charges them up to 3.5. The dist gate is therefore
+// held against a derived reference beside it,
+// 420-001_EndArmHub.bodies-unioned.stl: each body extracted with
+// `scadmesh segment --keep 0` and `--keep 1`, the two imported separately and
+// unioned on Manifold (Models/README.md § Known defects records the recipe).
+// The four section outlines still read the original.
 //
 // Measured from the reference with scadmesh planes/slice/arcs/solid along each
 // axis. The feature IDs are those of 420-001_EndArmHub.view.json, which labels

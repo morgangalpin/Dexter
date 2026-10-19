@@ -1253,9 +1253,10 @@ anything version 3 does not independently specify
   - **400-EndArm:** the End Arm Hub (`#420-001`), three 2D layers extruded once each, with one revolved
     cutter for the 6703 seat and one YZ section for the tube's counterbore. Its reference is two
     overlapping bodies: the hub, and the spigot with an I-shaped stub inside the hub. The spigot's bore
-    is therefore blind at the counterbore's floor, and the part's dist gate waits on a reviewer decision,
-    since no render can lie on surfaces inside a solid
-    (the header says why). `robot_assembly.scad` draws the hub from source with `use`.
+    is therefore blind at the counterbore's floor. The dist gate holds it against
+    `420-001_EndArmHub.bodies-unioned.stl` (new), the two bodies unioned beside the unchanged original,
+    since no render can lie on surfaces inside a solid (`Hardware/Models/README.md` § Known defects says
+    how it was made). `robot_assembly.scad` draws the hub from source with `use`.
   - **400-EndArm:** the External Outer and Inner Pulleys (`#430-001`, `#430-002`) and
     `external_pulley.scad` are rewritten as parametric parts: each is a revolved profile with the
     shared 90T band, three windows and its nut or strake slots. `previous` was the reference mesh
