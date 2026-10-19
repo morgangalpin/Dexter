@@ -1,0 +1,31 @@
+{
+  "title": "Diff Keeper",
+  "subtitle": "#710-003 · reference mesh and 710-003_DiffKeeper.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Diff Keeper", "pn": "#710-003", "color": "#d4ad6b", "stl": "../Reference/meshes/700-Differential/710-003_DiffKeeper.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/710-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/710-003.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [7.5, 0, 2], "text": "D1 outer wall Ø15.0"},
+    {"at": [0, -6, 0], "text": "F1 flat bottom face, z 0"},
+    {"at": [0, -4, 1.2], "text": "B1 seat bore Ø8.0, z 0…2.46"},
+    {"at": [0, -4.15, 2.7], "text": "R1 lower fillet R0.7 out to the relief"},
+    {"at": [0, -4.25, 3.15], "text": "R2 relief Ø8.5, z 3.0…3.3"},
+    {"at": [0, -4.455, 3.795], "text": "R3 upper fillet R0.7 flaring to Ø9.9"},
+    {"at": [0, -6.5, 4], "text": "T1 top face z 4.0, Ø9.9…Ø15"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 4], "span": 20, "from": [0.4, -0.8, 1]},
+    {"label": "Bottom", "at": [0, 0, 0], "span": 20, "from": [0.4, -0.8, -1]},
+    {"label": "Bore profile", "at": [0, -4.5, 3], "span": 6, "from": [0.2, -1, 0.7]},
+    {"label": "Whole part", "at": [0, 0, 2], "span": 22, "from": [1, -1.2, 0.9]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one opens the seat bore B1 by the slip clearance, which also holds the adhesive. The profile's rings and fillets are listed in 710-003_DiffKeeper.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
