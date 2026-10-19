@@ -111,6 +111,8 @@ M3_D          = 3.000;     // the motor screws' nominal diameter
 
 function end_cap_top() = TOP;
 function end_cap_seat(cfg = config, raise = seat_raise) = cfg == "previous" ? SEAT : SEAT + raise;
+// The nut traps' floor, where a nut drawn toward its screw's head stops.
+function end_cap_trap_floor(cfg = config, raise = seat_raise) = end_cap_seat(cfg, raise) + NUT[1];
 
 // The press clearance moves the land in and the lugs out; `c` below is it.
 function slip(cfg) = fit_clearances(cfg)[0];

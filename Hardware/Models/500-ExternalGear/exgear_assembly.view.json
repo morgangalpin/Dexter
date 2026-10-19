@@ -9,7 +9,17 @@
       {"id": "end_cap", "name": "Motor End Cap", "pn": "#511-001", "color": "#d99a45"},
       {"id": "motor", "name": "NEMA 17 motor", "pn": "C-101", "color": "#50565c"},
       {"id": "attach", "name": "Flex Spline Attach", "pn": "#630-005", "color": "#e3b060"},
-      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"}]},
+      {"id": "fs_cap", "name": "Flex Spline Cap", "pn": "#630-006", "color": "#c98a3a"},
+      {"id": "nut_holder_a", "name": "Nut Holder A", "pn": "#520-003", "color": "#d99a45"},
+      {"id": "nut_holder_b", "name": "Nut Holder B", "pn": "#520-004", "color": "#d99a45"}]},
+    {"name": "Fasteners", "role": "fixed", "parts": [
+      {"id": "rods", "name": "M3 × 46 all-threads", "pn": "#520-005", "color": "#7d7d7d"},
+      {"id": "trap_nuts", "name": "M3 nuts in the Nut Holders", "pn": "C-612", "color": "#7d7d7d"},
+      {"id": "locknuts", "name": "M3 locknuts on the Mount Top", "pn": "C-612", "color": "#7d7d7d"},
+      {"id": "endcap_screws", "name": "M3 × 12 screws, Mount to End Cap", "pn": "C-610", "color": "#7d7d7d"},
+      {"id": "endcap_nuts", "name": "M3 nuts in the End Cap", "pn": "C-612", "color": "#7d7d7d"}]},
+    {"name": "Input", "role": "turns with the motor", "parts": [
+      {"id": "coupler", "name": "Wave Gen Coupler (reference mesh)", "pn": "#630-004", "color": "#e3b060"}]},
     {"name": "Strain-wave set", "role": "C-201, HanZhen XB1-AS-C-32(14)-52", "parts": [
       {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"},
       {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"},
@@ -25,7 +35,9 @@
   "presets": [
     {"label": "Top bearing", "at": [26, 0], "part": "bearing_top", "span": 28},
     {"label": "Upper 6810", "at": [26, 0], "part": "bearing_upper", "span": 28},
-    {"label": "Lower 6810", "at": [26, 0], "part": "bearing_lower", "span": 28}
+    {"label": "Lower 6810", "at": [26, 0], "part": "bearing_lower", "span": 28},
+    {"label": "Coupler", "at": [0, 0], "part": "coupler", "span": 30},
+    {"label": "Nut Holder", "at": [-46.278, 10], "part": "nut_holder_a", "span": 30}
   ],
   "notes": [
     {"heading": "What turns in the Mount Top's bearing", "emphasis": true,
@@ -43,10 +55,18 @@
        {"text": "Stator Holder end above the Attach's hub face", "value": "{stator_above_hub}"},
        {"text": "External Gear's bottom face above the floor plate", "value": "{gear_above_floor}"},
        {"text": "Gear and holder inside the Mount's bore, radial, at least", "value": "{rotor_inside_bore}"}]},
+    {"heading": "The coupler does not fit its seat", "emphasis": true,
+     "text": "Seated full length in the wave generator's hub, as a tool sets it (008.3 step 10), the Wave Gen Coupler's 10.0 mm hex runs into the Flex Spline Cap: the room between the cap's top and the hub is {coupler_hex_room} mm. At that seat the motor's 24 mm shaft would also run {coupler_shaft_overrun} mm past the revised coupler's blind bore. Both are open with the reviewer; the clash check holds the hex as an exception meanwhile.",
+     "focus": {"label": "Show the coupler in section", "preset": "Coupler", "hide": ["mount", "mount_top"]}},
+    {"heading": "The tie-down",
+     "text": "Each all-thread stands on its Nut Holder's slot floor, through the trap nut, up through the Mount and the Mount Top, two nuts locked on top. Four M3 × 12 screws come up through the floor's counterbores into the End Cap's nuts.",
+     "rows": [
+       {"text": "All-thread above its outer locknut", "value": "{rod_above_locknuts}"},
+       {"text": "End Cap screw past its nut", "value": "{endcap_screw_past_nut}"},
+       {"text": "End Cap screw tip under the motor", "value": "{endcap_screw_below_motor}"},
+       {"text": "End Cap screw head below the floor's underside", "value": "{endcap_screw_head_proud}"}]},
     {"heading": "Not drawn",
      "items": [
-       "Nut Holders A/B (#520-003/-004) and the two all-threads",
-       "Wave Gen Coupler (#630-004); a tool sets its depth",
        "Angle and rotate motors in the Mount's front pockets",
        "The six M3 screws and nuts that hold the circular spline in the Stator Holder",
        "The six M2 screws and nuts that clamp the flexspline hub between the Attach and the Cap",

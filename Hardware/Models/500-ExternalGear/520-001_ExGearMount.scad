@@ -98,12 +98,15 @@
 // FITS (../print_fit.scad), revised only:
 //
 //     M1, H2, G2's Ø3 part, on M3 screws and all-threads (Ø3.0)   slip
-//     N1, on the Nut Holder's 8.0 width (printed)                 slip
+//     N1, on the Nut Holder's 8.0 width and its flat end (printed) slip
 //     G1 in P3, on the motor's Ø22 pilot                          press
 //
-// Drawn wider than their class already, so kept: G1 in P2 (Ø23), the
-// counterbores, N1's height (4.0 over the holder's 3.5), K1 (29.0 over the
-// tube's 25.4), and the bore (R38 over the gear's 36.977, more than running).
+// Drawn wider than their class already, so kept: S1 (3.3 x 12.8 over the
+// C-501 strake's 3.175 x 12.7, bonded: press), G1 in P2 (Ø23), the
+// counterbores, N1's height (4.0 over the holder's 3.5), K1 (29.0 over
+// #520-006's 28.753 outside, C-504's 1.032" bore and two .050" walls: 0.124
+// per side, over the press clearance a bonded tube takes), and the bore (R38
+// over the gear's 36.977, more than running).
 
 include <../print_fit.scad>
 
@@ -175,13 +178,17 @@ function rod_d() = prev() ? ROD_D : fit_bore(M3, slip());
 function pilot_d() = prev() ? MOTOR_HOLE[2] : fit_bore(PILOT_D, press());
 function nut_slot_y() = let (c = (NUT_SLOT[1] + NUT_SLOT[2]) / 2, w = prev() ? NUT_SLOT[2] - NUT_SLOT[1] : HOLDER_W + 2 * slip())
     [c - w / 2, c + w / 2];
+// The slot's back wall: the holder's flat end lands on NUT_SLOT[0] exactly.
+function nut_slot_back() = prev() ? NUT_SLOT[0] : NUT_SLOT[0] - slip();
 
 // For the assembly: the floor's top, the bosses' top, the Nut Holders' slot
-// floor and the all-threads' axes.
+// floor, the all-threads' axes, and M1's axes and counterbore floor.
 function mount_floor_top() = FLOOR_Z[2];
 function mount_boss_top() = BOSS[3];
 function mount_nut_slot_z() = NUT_SLOT[3];
 function mount_rod_axes() = [[ROD_C.x, ROD_C.y], [ROD_C.x, -ROD_C.y]];
+function mount_screw_axes() = MOTOR_SCREWS;
+function mount_cbore_floor() = FLOOR_Z[1];
 
 module mirror_y() { children(); mirror([0, 1, 0]) children(); }
 module bore_2d(r = BORE_R) translate(BORE_C) circle(r = r);
@@ -435,7 +442,7 @@ module cuts() {
     slant_cut();
     column_groove();
     // nut holder slots and the all-thread holes above them
-    mirror_y() translate([NUT_SLOT[0], nut_slot_y()[0], NUT_SLOT[3]])
+    mirror_y() translate([nut_slot_back(), nut_slot_y()[0], NUT_SLOT[3]])
         cube([30, nut_slot_y()[1] - nut_slot_y()[0], NUT_SLOT[4] - NUT_SLOT[3]]);
     mirror_y() translate([ROD_C.x, ROD_C.y, PLATE_LOW[1]]) cylinder(d = rod_d(), h = 20, $fn = 96);
 }

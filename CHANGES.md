@@ -1249,6 +1249,23 @@ anything version 3 does not independently specify
     Holder slots, and the press fits on the motors' pilots. The dist gate stands at 0.21 mm pending
     review, for the one blend that fades out down the floor's tongue. `exgear_assembly.scad` draws the
     part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
+  - **500-ExternalGear:** `exgear_assembly.scad` now `use`s every part of the group. It draws the Nut
+    Holders A and B in the Mount's slots, with an M3 nut in each trap. It draws the two M3 x 46
+    all-threads with their locknuts on the Mount Top, and the four M3 x 12 screws up through the Mount's
+    floor into the End Cap's nuts. It also draws the Wave Gen Coupler (`#630-004`), from its reference
+    mesh until 600-StrainWave's source merges. Each 6810 is split into races. `exgear_assembly.clash.json`
+    checks the whole stack with `assembly-clash.rs`, and its exceptions state their reasons: the seat
+    rounds, the shaft grip and the coupler mesh. What the check found is fixed in `revised`:
+    - the Mount's slot back wall stands slip off the holder's flat end;
+    - the Mount Top's block, tab and rebate stand slip off the Mount's back blocks and column step;
+    - the Mount Top's plate no longer reaches 0.27 mm into the back blocks;
+    - the Mount Top's shoulder (B2) and the gear's bore (B3) stand the running clearance off the 6810
+      inner races that turn past them;
+    - the Nut Holders' trap floor is back at 1.2 mm.
+
+    Two findings are echoed for review. First, seated full length, the coupler's 10 mm hex runs 2.9 mm
+    into the Flex Spline Cap (`coupler_hex_room`). Second, the End Cap screws' heads stand 1.0 mm below
+    the floor (`endcap_screw_head_proud`). `c201_spline_seat.scad` gains `wg_hub()` and `wg_hub_z()`.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.

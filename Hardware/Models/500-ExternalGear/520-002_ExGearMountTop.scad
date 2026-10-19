@@ -52,11 +52,18 @@
 //
 // FITS (../print_fit.scad), revised only:
 //
-//     B1, on the 6810's outer race (Ø65)      press
-//     H1, on the M3 all-thread (Ø3.0)          slip
+//     B1, on the 6810's outer race (Ø65)               press
+//     B2, over the 6810's inner race (Ø54.5), which turns  running
+//     H1, on the M3 all-thread (Ø3.0)                   slip
+//     K1's sides and the tab, between the Mount's E2 back
+//       blocks (|y| 20), and the plate clear of the blocks'
+//       front faces (x -43.345)                         slip
+//     K2's face, on the Mount column's step (x -53.901)  slip
 //
 // B3 already stands the running clearance off the circular spline's Ø50 (0.5
-// per side), and B1's depth is a shoulder contact, so neither changes.
+// per side), and B1's depth is a shoulder contact, so neither changes. The
+// reference's plate reaches 0.27 into the Mount's back blocks where its edge
+// leaves the tab's corners; the revised cut removes that.
 
 include <../print_fit.scad>
 
@@ -86,10 +93,14 @@ REBATE    = [-53.901, 81.500];         // K2: x of the face below it, top
 POCKET    = [-56.524, 6.000, 14.000, 85.500, 89.500];  // P1: inner x, y from, y to, z from, z to
 HOLE      = [-46.278, 10.000, 3.000];  // H1: x, +-y, diameter
 OUTER_D   = 65.000;                    // the 6810's outer race
+INNER_D   = 54.500;                    // the 6810's inner race, its outside
 ROD_D     = 3.000;                     // the M3 all-thread
+MOUNT_BLOCK = [-43.345, 20.000];       // #520-001 E2 back blocks: front x, inner |y|
 
 function seat_d(cfg) = cfg == "previous" ? SEAT[0] : fit_bore(OUTER_D, fit_clearances(cfg)[1]);
+function shoulder_d(cfg) = cfg == "previous" ? SHOULDER[0] : fit_bore(INNER_D, fit_clearances(cfg)[2]);
 function hole_d(cfg) = cfg == "previous" ? HOLE[2] : fit_bore(ROD_D, fit_clearances(cfg)[0]);
+function slip(cfg) = fit_clearances(cfg)[0];
 
 // For the assembly: the part's lowest and highest faces, B1's open face and
 // shoulder, and H1's axes.
@@ -123,13 +134,21 @@ module block_2d(x0) {
 module pockets_2d() for (s = [-1, 1]) translate([TAB[0] - 1, s > 0 ? POCKET[1] : -POCKET[2]])
     square([POCKET[0] - TAB[0] + 1, POCKET[2] - POCKET[1]]);
 
-module layer_2d(l, cfg) {
-    if (l == "rebate")        difference() { block_2d(REBATE[0]); holes_2d(cfg); }
+// Revised only: the Mount's two back blocks grown by the slip clearance, so
+// the block, the tab and the plate's edge stand clear of them. Previous draws
+// nothing, and the cut is empty.
+module mount_blocks_2d(cfg) if (cfg != "previous")
+    for (s = [-1, 1]) translate([TAB[0] - 10, s > 0 ? MOUNT_BLOCK[1] - slip(cfg) : -MOUNT_BLOCK[1] - 20 + slip(cfg)])
+        square([MOUNT_BLOCK[0] + slip(cfg) - TAB[0] + 10, 20]);
+
+module layer_2d(l, cfg) difference() {
+    if (l == "rebate")        difference() { block_2d(REBATE[0] + slip(cfg)); holes_2d(cfg); }
     else if (l == "block")    difference() { block_2d(TAB[0]); holes_2d(cfg); }
     else if (l == "pockets")  difference() { block_2d(TAB[0]); holes_2d(cfg); pockets_2d(); }
     else if (l == "seat")     difference() { plate_outline_2d(); circle(d = seat_d(cfg)); holes_2d(cfg); }
-    else if (l == "shoulder") difference() { plate_outline_2d(); circle(d = SHOULDER[0]); holes_2d(cfg); }
+    else if (l == "shoulder") difference() { plate_outline_2d(); circle(d = shoulder_d(cfg)); holes_2d(cfg); }
     else if (l == "top")      difference() { plate_outline_2d(); circle(d = TOP_D); holes_2d(cfg); }
+    mount_blocks_2d(cfg);
 }
 
 // [layer, bottom, top], bottom up.

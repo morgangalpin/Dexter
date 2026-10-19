@@ -105,9 +105,11 @@ module trap_2d(cfg) difference() { outline_2d(); translate(HOLE_C) circle(d = tr
 
 module layer_a_2d(l, cfg) { if (l == "plate") plate_2d(cfg); else trap_2d(cfg); }
 
+// The trap's layer laps down into the plate, where the plate is solid round
+// the trap, so the trap's floor stays at PLATE_H, where the nut sits.
 module nut_holder_a(cfg) {
-    linear_extrude(PLATE_H + epsilon) plate_2d(cfg);
-    translate([0, 0, PLATE_H]) linear_extrude(HEIGHT - PLATE_H) trap_2d(cfg);
+    linear_extrude(PLATE_H) plate_2d(cfg);
+    translate([0, 0, PLATE_H - epsilon]) linear_extrude(HEIGHT - PLATE_H + epsilon) trap_2d(cfg);
 }
 
 // Holder B is Holder A's mirror image about the plane between them.

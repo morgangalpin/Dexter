@@ -79,6 +79,8 @@
 //     B1, on the lower 6810's outer race (Ø65)        press
 //     B4, on the upper 6810's outer race (Ø65), over
 //         the bearing's 7.0 from the shoulder          press
+//     B3, round the upper 6810's inner race (Ø54.5),
+//         which stays with the Attach while this turns running
 //
 // B4 above the bearing is the Stator Holder's socket. That fit is drawn on the
 // holder (#511-002), so the socket keeps its size. The teeth carry GT2 belts,
@@ -113,6 +115,7 @@ BEARING_W   = 7.000;        // the 6810's width
 SLOT        = [8, 4.000, 34.100, 36.250];  // K1: count, width, outer face, z where the ramp leaves the bore
 CRACK       = [[32.478, 19.831], [32.478, 19.970], [33.723, 21.2145]];  // G1: [r, z] floor ends, mouth
 OUTER_D     = 65.000;       // the 6810's outer race
+INNER_D     = 54.500;       // the 6810's inner race, its outside
 
 // For the assembly: the shoulders the two 6810s stand on, the notched end, the
 // lower end, and the largest radius.
@@ -123,13 +126,14 @@ function gear_bottom() = BOTTOM;
 function gear_rotor_r() = 73.954 / 2;
 
 function seat_r(cfg) = (cfg == "previous" ? SEAT_D : fit_bore(OUTER_D, fit_clearances(cfg)[1])) / 2;
+function bore_r(cfg) = cfg == "previous" ? BORE_R : fit_bore(INNER_D, fit_clearances(cfg)[2]) / 2;
 
 // The body's [r, z] profile, the bore up and the outside down, with the seats
-// in configuration cfg. B4 above the bearing keeps SEAT_D.
-function body_profile(cfg) = let (s = seat_r(cfg), u = SEAT_D / 2) [
+// and the bore in configuration cfg. B4 above the bearing keeps SEAT_D.
+function body_profile(cfg) = let (s = seat_r(cfg), u = SEAT_D / 2, b = bore_r(cfg)) [
     [s, BOTTOM], [s, LOWER_SHLDR],                          // B1
     [31.000, LOWER_SHLDR], [31.000, -23.763],               // B2
-    [BORE_R, -13.652], [BORE_R, UPPER_SHLDR],               // B2's cone, B3
+    [b, -13.652], [b, UPPER_SHLDR],                         // B2's cone, B3
     [s, UPPER_SHLDR], [s, UPPER_SHLDR + BEARING_W],         // B4 under the bearing
     [u, UPPER_SHLDR + BEARING_W], [u, KEYED_END],           // B4 above it
     [36.977, KEYED_END], [36.977, 24.468],                  // O5

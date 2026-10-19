@@ -28,8 +28,10 @@
        {"label": "B4 on the upper 6810", "at": [28.743, 32.5, 0.0], "toward": [0.0, -1.0, 0.0], "fit": "press"}
      ]},
     {"kind": "probes", "id": "probes-510-001", "part": "510-001 (revised)", "stl": "out/revised/510-001.stl", "after": ["render-510-001"],
-     "note": "Above the upper 6810, B4 is the Stator Holder's socket, whose fit the holder draws: it keeps the reference's Ø65.",
+     "note": "Above the upper 6810, B4 is the Stator Holder's socket, whose fit the holder draws: it keeps the reference's Ø65. B3 stands the running clearance (0.5) off the upper 6810's Ø54.5 inner race, which stays with the Attach while the gear turns.",
      "items": [
+       {"label": "B3 open at the running clearance off the inner race", "at": [20.0, 27.65, 0.0], "solid": false},
+       {"label": "B3 wall within 0.3 of it", "at": [20.0, 27.95, 0.0], "solid": true},
        {"label": "socket wall just outside Ø65 above the bearing, between two slots (22.5 deg)", "at": [34.0, 30.053, 12.449], "solid": true},
        {"label": "socket open just inside Ø65", "at": [34.0, 29.998, 12.426], "solid": false}
      ]},
@@ -70,16 +72,24 @@
        {"label": "G2 on an M3 screw", "at": [-59.346, 38.0, 63.5], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "N1 on the holder's inner side", "at": [-45.0, 6.0, 67.5], "toward": [0.0, 1.0, 0.0], "fit": "slip"},
        {"label": "N1 on the holder's outer side", "at": [-45.0, 14.0, 67.5], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "N1 on the holder's flat end", "at": [-51.278, 10.0, 67.5], "toward": [1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "G1 on the motor's pilot", "at": [-34.346, 53.5, 97.5], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
      ]},
     {"kind": "probes", "id": "probes-520-001-wide", "part": "520-001 (revised)", "stl": "out/revised/520-001.stl", "after": ["render-520-001"],
-     "note": "The revised #520-001's fits the reference already draws wider than their class, which 007.2 lets them keep: G1 in the lower plate (Ø23 over the motor's Ø22 pilot), N1's height (4.0 over the holder's 3.5), K1 (29.0 over the C-505 tube's 25.4) and the bore (R38 about (-0.655, 0)) beyond the running clearance off the External Gear's R36.977, here on y 10 at z 20.",
+     "note": "The revised #520-001's fits the reference already draws wider than their class, which 007.2 lets them keep: S1 on the C-501 strakes (3.3 x 12.8 over 3.175 x 12.7, press), M1's counterbores (Ø6.99 over an M3 head's Ø5.5, slip), G1 in the lower plate (Ø23 over the motor's Ø22 pilot), N1's height (4.0 over the holder's 3.5), K1 (29.0 over the bonded #520-006 tube's 28.753 outside, C-504 stock: the press clearance is 0.05) and the bore (R38 about (-0.655, 0)) beyond the running clearance off the External Gear's R36.977, here on y 10 at z 20.",
      "items": [
        {"label": "G1 in the lower plate open at the press clearance off Ø22", "at": [-34.296, 53.5, 66.0], "solid": false},
        {"label": "G1 in the lower plate: wall within 0.6", "at": [-33.746, 53.5, 66.0], "solid": true},
        {"label": "N1 open under the holder", "at": [-45.0, 10.0, 65.6], "solid": false},
        {"label": "N1 open over the holder", "at": [-45.0, 10.0, 69.4], "solid": false},
-       {"label": "K1 open beside the tube", "at": [-60.0, 12.75, 41.0], "solid": false},
+       {"label": "S1 open at the press clearance off a C-501 strake's face (3.175)", "at": [21.012, 0.0, 2.5], "solid": false},
+       {"label": "S1 wall within 0.3 of the strake's face", "at": [20.8, 0.0, 2.5], "solid": true},
+       {"label": "S1 open at the press clearance off the strake's edge (12.7)", "at": [22.65, 6.39, 2.5], "solid": false},
+       {"label": "S1 wall within 0.3 of the strake's edge", "at": [22.65, 6.6, 2.5], "solid": true},
+       {"label": "M1 counterbore open at the slip clearance off an M3 head (Ø5.5)", "at": [18.4, 15.5, 1.0], "solid": false},
+       {"label": "M1 counterbore's wall", "at": [19.1, 15.5, 1.0], "solid": true},
+       {"label": "K1 open at the press clearance off the tube", "at": [-60.0, 14.427, 41.0], "solid": false},
+       {"label": "K1 wall within 0.3 of the tube", "at": [-60.0, 14.6, 41.0], "solid": true},
        {"label": "bore open at the running clearance off the gear", "at": [-36.903, 10.0, 20.0], "solid": false},
        {"label": "bore's wall within 0.3 of it", "at": [-37.620, 10.0, 20.0], "solid": true}
      ]},
@@ -107,16 +117,22 @@
     {"kind": "render", "id": "render-520-002", "config": "revised",
      "scad": "520-002_ExGearMountTop.scad", "out": "out/revised/520-002.stl"},
     {"kind": "fits", "id": "fits-520-002", "part": "520-002 (revised)", "stl": "out/revised/520-002.stl", "after": ["render-520-002"],
-     "note": "The revised #520-002's print fits: the 6810's Ø65 outer race in B1 on +X mid-seat, and the M3 all-thread (Ø3.0) in H1 on +y, mid-block.",
+     "note": "The revised #520-002's print fits: the 6810's Ø65 outer race in B1 on +X mid-seat, the M3 all-thread (Ø3.0) in H1 on +y, mid-block, the block's and the tab's +y sides on the Mount's back block (y 20), and K2's face on the Mount column's step (x -53.901).",
      "probes": [
        {"label": "B1 on the 6810", "at": [32.5, 0.0, 96.5], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
-       {"label": "H1 on the all-thread", "at": [-44.778, 10.0, 85.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
+       {"label": "H1 on the all-thread", "at": [-44.778, 10.0, 85.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "K1's side on the Mount's back block", "at": [-50.0, 20.0, 88.0], "toward": [0.0, 1.0, 0.0], "fit": "slip"},
+       {"label": "the tab's side on the Mount's back block", "at": [-50.0, 20.0, 97.0], "toward": [0.0, 1.0, 0.0], "fit": "slip"},
+       {"label": "K2's face on the column's step", "at": [-53.901, 0.0, 79.5], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
      ]},
     {"kind": "probes", "id": "probes-520-002", "part": "520-002 (revised)", "stl": "out/revised/520-002.stl", "after": ["render-520-002"],
-     "note": "B3 is drawn wider than a fit: it stands the running clearance (0.5) off the circular spline's Ø50, which turns in it, and keeps that gap.",
+     "note": "B3 is drawn wider than a fit: it stands the running clearance (0.5) off the circular spline's Ø50, which turns in it, and keeps that gap. B2 stands the running clearance off the 6810's Ø54.5 inner race, which turns with the spline.",
      "items": [
+       {"label": "B2 open at the running clearance off the inner race", "at": [27.65, 0.0, 100.25], "solid": false},
+       {"label": "B2 wall within 0.3 of it", "at": [27.95, 0.0, 100.25], "solid": true},
        {"label": "B3 open at the running clearance off the spline's Ø50", "at": [25.4, 0.0, 100.75], "solid": false},
-       {"label": "B3 wall within 0.3 of it", "at": [25.7, 0.0, 100.75], "solid": true}
+       {"label": "B3 wall within 0.3 of it", "at": [25.7, 0.0, 100.75], "solid": true},
+       {"label": "the plate's edge clear of the Mount's back block's front face, where the reference reaches 0.27 into it", "at": [-43.3, 20.1, 97.0], "solid": false}
      ]},
 
     {"kind": "outline", "id": "outline-520-003-plate", "part": "520-003", "config": "previous",
