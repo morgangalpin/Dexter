@@ -448,3 +448,7 @@ Reference/meshes/400-EndArm/421-006_PulleySpacer.stl,Reference,87984,binary/1758
 Reference/meshes/400-EndArm/420-001_EndArmHub.stl,Reference,246084,binary/4920,6d9767e65223a1d85c5c845d4393f8e4c401edddbd2dda87b34d41b27a264e7b
 400-EndArm/410-001_AxisIntersectionHalf.scad,400-EndArm,10296,,2c06caee47063461c4898781f7d4049757c25036015da699be1237643e52545a
 Reference/meshes/400-EndArm/410-001_AxisIntersectionHalf.stl,Reference,89384,binary/1786,8434ffbd9fef02ae348541485fc1af7f6105e7f2a22356103950d16066cf307f
+400-EndArm/410-001_AxisIntersectionHalf.view.json,400-EndArm,2882,,8c2e51f5c41643dc5d37701f01a7565fa107f7a5c4434036bd1c922712ab923b
+400-EndArm/420-001_EndArmHub.view.json,400-EndArm,3126,,0d610d689d45b54fb59b60a27c7f088fb6ef831861d57f002d4c3074576518e9
+400-EndArm/430-001_ExternalOuterPulley.view.json,400-EndArm,2571,,30a1ec0e21a10702c41e7510176572954e6cf82a3cbeb38e903dc41d435919b7
+400-EndArm/430-002_ExternalInnerPulley.view.json,400-EndArm,2648,,72c82cd6e3f71810cbab6838853f0344eecd0e7cfd93f74a5fc665d42a7223a7

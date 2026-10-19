@@ -1082,8 +1082,10 @@ anything version 3 does not independently specify
     Their meshes moved to `Reference/meshes/300-Pivot/`.
   - `Hardware/Models/400-EndArm/`: `410-002_NewBeltPulley.scad`, `410-003_EndArmCodeDisk.scad`,
     `420-002_EndArmHubCap.scad`, `421-001_InternalOuterPulley.scad`, `421-002_InternalInnerPulley.scad`,
-    `421-006_PulleySpacer.scad` and `render.json` (new). Their meshes moved to
-    `Reference/meshes/400-EndArm/`.
+    `421-006_PulleySpacer.scad`, `410-001_AxisIntersectionHalf.scad`, `420-001_EndArmHub.scad` and
+    `render.json` (new); `external_pulley.scad`, `430-001_ExternalOuterPulley.scad` and
+    `430-002_ExternalInnerPulley.scad` (rewritten). Their meshes moved to `Reference/meshes/400-EndArm/`,
+    including the four of `410-001`, `420-001`, `430-001` and `430-002`.
   - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
     `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
     `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
@@ -1244,8 +1246,24 @@ anything version 3 does not independently specify
     source: it is another revision, with five strake slots. The count stays 40T
     ([004 § Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5)),
     and `robot_assembly.scad` draws the two pulleys from source.
-  - **400-EndArm:** `400-EndArm/render.json` is new. It holds the six parts' checks and, moved from
-    `700-Differential/render.json`, the External pulleys' render, fits and 108T count jobs.
+  - **400-EndArm:** the Axis Intersection Half (`#410-001`), plan sections extruded along Z, with two 45 deg
+    faces cut by half-spaces and the channel's end a chamfered section extruded along Y. The 6807 pocket,
+    the lip, the L2 half-channel and the four strake slots are cut through everything afterwards.
+  - **400-EndArm:** the End Arm Hub (`#420-001`), three 2D layers extruded once each, with one revolved
+    cutter for the 6703 seat and one YZ section for the tube's counterbore. Its reference is two
+    overlapping bodies: the hub, and the spigot with an I-shaped stub inside the hub. The spigot's bore
+    is therefore blind at the counterbore's floor, and the part's dist gate waits on a reviewer decision,
+    since no render can lie on surfaces inside a solid
+    (the header says why). `robot_assembly.scad` draws the hub from source with `use`.
+  - **400-EndArm:** the External Outer and Inner Pulleys (`#430-001`, `#430-002`) and
+    `external_pulley.scad` are rewritten as parametric parts: each is a revolved profile with the
+    shared 90T band, three windows and its nut or strake slots. `previous` was the reference mesh
+    imported unchanged and is now a recreation of it, gated against the mesh; `revised` keeps that body
+    inside `R_CUT` and adds the 108T rim. The mesh imports and the slow minkowski hub fits are gone, the
+    fits are drawn on the features, and the group's verify runs in seconds instead of about fifteen
+    minutes.
+  - **400-EndArm:** `400-EndArm/render.json` is new. It holds every part's checks, and the External
+    pulleys' render, fits and 108T count jobs moved from `700-Differential/render.json`.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
   - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and

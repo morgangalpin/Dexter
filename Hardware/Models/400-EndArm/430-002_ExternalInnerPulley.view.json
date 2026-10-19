@@ -1,0 +1,33 @@
+{
+  "title": "External Inner Pulley",
+  "subtitle": "#430-002 · reference mesh and 430-002_ExternalInnerPulley.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "External Inner Pulley", "pn": "#430-002", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/430-002_ExternalInnerPulley.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/430-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/430-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [10.5, 0, 32], "text": "H1 hub R10.5, z 19.0…35.5"},
+    {"at": [4.5, 0, 26], "text": "B1 bore Ø11.974 to z 22.6, 45° cone to Ø9.0 at z 24.1, Ø9.0 to z 27.5"},
+    {"at": [8.5, 0, 31], "text": "B2 counterbore Ø17.0, z 27.5…35.5"},
+    {"at": [12.99, 7.5, 28.5], "text": "W1 web and rim z 19.0…28.5, rim inner R25.072"},
+    {"at": [29.5, 0, 19.2], "text": "F1 flanges R29.5 at z 19.0…19.4 and z 28.1…28.5, chamfered toward the band"},
+    {"at": [28.397, 0, 23.75], "text": "T1 90T GT2 band, z 20.5…27.0, a tooth on 0°"},
+    {"at": [14.588, 10.732, 24], "text": "O1 windows ×3 on 90° + 120° k, between spokes 4.0 wide on 30° + 120° k, corners R4.0"},
+    {"at": [0, 8.091, 24], "text": "S1 strake slots ×3, 5.0 × 2.0 about r 7.091, from the lower face up into B2, mouths chamfered 0.25"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 65, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 65, "from": [0, 0, -1]},
+    {"label": "Strake slot", "at": [0, 7.1, 24], "span": 14, "from": [0.3, 0.3, -1]},
+    {"label": "Hub", "at": [0, 0, 28], "span": 30, "from": [1, -1, 0.9]},
+    {"label": "Teeth", "at": [28.4, 0, 24], "span": 8, "from": [1, -0.3, 0.4]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated 90T recreation, and the revised one is the 108T pulley of DC-12, as external_pulley.scad's header explains: it keeps the hub, the spokes and the inner 1.4 mm of the rim and adds the 108T rim. No fit is added, because S1 stands at least 0.25 a side off the C-503 strakes and B1's Ø9.0 stands 0.5 a side off the Ø8 stainless tube. The dimensions are in 430-002_ExternalInnerPulley.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
