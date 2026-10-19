@@ -1244,11 +1244,11 @@ anything version 3 does not independently specify
     `gear-fit-511-002` check in `render.json` reads the gear's mesh from `Reference/meshes/`.
   - **500-ExternalGear:** the Ex Gear Mount (`#520-001`), a region split: the floor, column, bridge and
     frame, each extruded from plan or side profiles. The front's S profile is turned about the bore's
-    axis. Two blends at the column's corners are made by rolling a ball: an opening under the bridge and
-    a closing at the lower plate. `revised` draws the slip fits on the screws, the all-threads and the Nut
-    Holder slots, and the press fits on the motors' pilots. The dist gate stands at 0.21 mm pending
-    review, for the one blend that fades out down the floor's tongue. `exgear_assembly.scad` draws the
-    part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
+    axis. Three blends are made by rolling a ball: an opening under the bridge, a closing at the lower
+    plate, and a closing where the floor's tongue runs out into the column's side round on the slope, its
+    side filleted R20 in plan into the round's line. `revised` draws the slip fits on the screws, the
+    all-threads and the Nut Holder slots, and the press fits on the motors' pilots.
+    `exgear_assembly.scad` draws the part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
   - **500-ExternalGear:** `exgear_assembly.scad` now `use`s every part of the group. It draws the Nut
     Holders A and B in the Mount's slots, with an M3 nut in each trap. It draws the two M3 x 46
     all-threads with their locknuts on the Mount Top, and the four M3 x 12 screws up through the Mount's

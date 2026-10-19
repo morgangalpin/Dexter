@@ -37,12 +37,13 @@
 //            bridge, the bore's R38 to z 62, an S of two R3 arcs out to R41, and
 //            an R3 round onto the plate's top. It cuts across the column's
 //            corner too; the column is put back after.
-//   BLENDS   two, mirrored, where the column's R3 corner meets what lies across
-//            it, each in its own box: under the bridge (CORNER_ZONE) the column,
-//            fillets and bridge are rounded R3 by a ball (an opening); at the
-//            lower plate (PLATE_ZONE) the column and the S front are filleted R3
-//            by a ball (a closing), then the plate's top round run on round the
-//            fillet. The Minkowski sums are built from coarse pieces, in a window.
+//   BLENDS   three, mirrored, each in its own box: under the bridge
+//            (CORNER_ZONE) the column, fillets and bridge are rounded R3 by a
+//            ball (an opening); at the lower plate (PLATE_ZONE) the column and
+//            the S front are filleted R3 by a ball (a closing), then the plate's
+//            top round run on round the fillet; on the slope (TONGUE_ZONE) the
+//            floor's tongue runs out into the column's side round (a closing).
+//            The Minkowski sums are built from coarse pieces, in a window.
 //   CUTS     K1 channel, W1, the C3 slant above z 65, the C6 grooves, N1 slots
 //            and H2 holes.
 //
@@ -90,10 +91,6 @@
 //     N1  Nut Holder slots           x -51.278 to the bore, |y| 6 .. 14,
 //                                    z 65.5 .. 69.5
 //     H2  all-thread holes           Ø2.995 at (-46.278, +-10), z 65 .. 77.5
-//
-// The reference's only miss is at the floor's tongue where it runs into the
-// column's rounded corner (about (-47.5, +-18.2, 3.7)): a blend that fades out
-// down the tongue, 0.21 off at most.
 //
 // FITS (../print_fit.scad), revised only:
 //
@@ -530,14 +527,14 @@ module plate_zone_pieces() {
     }
 }
 
-module ball() sphere(r = CORNER_R, $fn = 24);
+module ball(r = CORNER_R) sphere(r = r, $fn = 24);
 
 // Morphology inside the box [lo, hi]: each step works in a box one ball
 // diameter smaller, so the box's own faces never reach the result in the zone.
-module dilated(lo, hi) intersection() { minkowski() { children(); ball(); } translate(lo) cube(hi - lo); }
-module eroded(lo, hi) difference() {
+module dilated(lo, hi, r = CORNER_R) intersection() { minkowski() { children(); ball(r); } translate(lo) cube(hi - lo); }
+module eroded(lo, hi, r = CORNER_R) difference() {
     translate(lo) cube(hi - lo);
-    dilated(lo - [1, 1, 1], hi + [1, 1, 1]) difference() { translate(lo - [1, 1, 1]) cube(hi - lo + [2, 2, 2]); children(); }
+    dilated(lo - [1, 1, 1], hi + [1, 1, 1], r) difference() { translate(lo - [1, 1, 1]) cube(hi - lo + [2, 2, 2]); children(); }
 }
 
 // The closing fills the corner with the fillet.
@@ -587,12 +584,76 @@ function s_radius(z) = let (s1 = FRONT_S[1], s2 = FRONT_S[2], s3 = FRONT_S[3],
   : z <= s3.y ? s2.x + sqrt(max(0, CORNER_R * CORNER_R - (z - s2.y) * (z - s2.y)))
   : s3.x - sqrt(max(0, CORNER_R * CORNER_R - (z - s3.y) * (z - s3.y)));
 
+// Where the floor's tongue runs back under the column, its upright side meets
+// the column's R3 side round along the slope. On the slope the side does not
+// stop where the tongue does: in plan it runs on, filleted R20 into the line
+// the round leaves the slope on (y 17), so the round takes over gradually by
+// x -52. Above the slope the side and the round are filleted by a ball rolled
+// between them. Both come from one closing, by that ball, of two exact prisms:
+// the tongue with its run-on side carried up inside the column, and the
+// slope's rounded edge swept along the slope; in a window round TONGUE_ZONE on
+// +y, added to the body, which it laps.
+TONGUE_ZONE = [[-54.0, 15.0, 2.0], [-44.0, 20.0, 10.0]];
+TONGUE_FILLET = 2.0;            // the ball rolled between the tongue's side and the round
+TONGUE_WALL_TOP = 10.0;         // the tongue's side carried on up to here, inside the column
+TONGUE_RUNOUT = [COL_W - CORNER_R, 20.0];   // the line the round leaves the slope on, and the side's fillet into it in plan
+
+// The column by the slope's +y edge, in the slope's frame: across it the
+// normal distance from the slope and y, swept along the slope.
+module slope_edge_prism() intersection() {
+    multmatrix([[1 / sqrt(2), 0, -1 / sqrt(2), SLOPE_K], [0, 1, 0, 0], [1 / sqrt(2), 0, 1 / sqrt(2), 0], [0, 0, 0, 1]])
+        linear_extrude(40, center = true) offset(r = CORNER_R, $fn = 96) offset(delta = -CORNER_R)
+            translate([0, 8]) square([12, COL_W - 8]);
+    translate([-100, -100, 0]) cube(200);
+}
+
+// The tongue's side in plan, run on behind the tongue into the line y0 the
+// round leaves the slope on, the corner between them filleted R rf.
+module tongue_side_2d(y0, rf) {
+    k = (TONGUE[0].y - TONGUE[1].y) / (TONGUE[0].x - TONGUE[1].x);
+    line = function (x) TONGUE[1].y + k * (x - TONGUE[1].x);
+    c = [TONGUE[1].x + (y0 + rf - rf * sqrt(1 + k * k) - TONGUE[1].y) / k, y0 + rf];   // the fillet's centre
+    a1 = atan2(-1, k);                                                               // its tangent point on the side
+    polygon(concat([[-80, 0], [-80, y0]],
+                   [for (i = [0 : 24]) let (a = -90 + (a1 + 90) * i / 24) c + rf * [cos(a), sin(a)]],
+                   [[-30, line(-30)], [-30, 0]]));
+}
+
+// The floor's tongue, and its side carried on up to `top` inside the column's
+// side, both in front of the slope.
+module tongue_prism(top, y0, rf) {
+    intersection() {
+        union() {
+            linear_extrude(FLOOR_Z[2]) tongue_side_2d(y0, rf);
+            linear_extrude(top) intersection() { tongue_side_2d(y0, rf); translate([-100, 0]) square([200, COL_W]); }
+        }
+        translate([-70, 0, 0]) cube([40, 30, top]);
+        rotate([90, 0, 0]) translate([0, 0, -50]) linear_extrude(100)
+            polygon([[SLOPE_K, 0], [0, 0], [0, 20], [SLOPE_K - 20, 20]]);
+    }
+}
+
+module tongue_blend(r = TONGUE_FILLET, top = TONGUE_WALL_TOP, y0 = TONGUE_RUNOUT[0], rf = TONGUE_RUNOUT[1]) {
+    g = 4;
+    lo = TONGUE_ZONE[0] - [g, g, g];
+    hi = TONGUE_ZONE[1] + [g, g, g];
+    intersection() {
+        eroded(lo + [2, 2, 2], hi - [2, 2, 2], r)
+            dilated(lo, hi, r) intersection() {
+                union() { tongue_prism(top, y0, rf); slope_edge_prism(); }
+                translate(lo) cube(hi - lo);
+            }
+        translate(TONGUE_ZONE[0]) cube(TONGUE_ZONE[1] - TONGUE_ZONE[0]);
+    }
+}
+
 module ex_gear_mount(cfg = config) {
     $mount_cfg = cfg;
     difference() {
         union() {
             difference() { shaped_body(); mirror_y() plate_zone(); }
             mirror_y() plate_blend();
+            mirror_y() tongue_blend();
         }
         cuts();
     }
