@@ -120,6 +120,7 @@ use <700-Differential/diff_assembly.scad>
 // same `-D config=` switch as the differential (DC-12).
 use <400-EndArm/430-001_ExternalOuterPulley.scad>
 use <400-EndArm/430-002_ExternalInnerPulley.scad>
+use <400-EndArm/420-001_EndArmHub.scad>
 use <400-EndArm/421-001_InternalOuterPulley.scad>
 use <400-EndArm/421-002_InternalInnerPulley.scad>
 // Converted base parts are sources too, drawn in the same configuration.
@@ -382,7 +383,7 @@ module in_end_arm() { translate([0, J3_STN.y, 61.000]) zrot(90) children(); }
 
 module place_end_arm() {
     color(PRINT_C) in_end_arm() {
-        import("400-EndArm/420-001_EndArmHub.stl", convexity = 8);
+        end_arm_hub();
         internal_outer_pulley();
         internal_inner_pulley();
         external_outer_pulley();
