@@ -25,6 +25,11 @@
 // tessellation, puts this render's envelope 0.010 mm from the reference at
 // worst, at z 24.46, where the tooth tips meet the parting cone.
 //
+// That was the reference as exported. It is now the two solids united, with
+// its zero-thickness Ø13 sheet filled (Hardware/Models/README.md § Known
+// defects), so `dist` reads it both ways, 0.052 mm, and gates the part. What
+// follows describes the export as measured.
+//
 // The body profile is measured, not inferred from diameters and face heights:
 //   scadmesh segment ... --out body.stl --keep 0
 //   scadmesh profile body.stl --axis z --simplify 0.005

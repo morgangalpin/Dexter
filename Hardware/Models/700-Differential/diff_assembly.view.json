@@ -35,10 +35,14 @@
     {"heading": "The Diff Gear Axle's boss", "emphasis": true,
      "text": "The boss is the Ø{axle_boss_d} collar, 2 mm tall, that hangs below the axle's hub around the CF rod. It is the spacer that stops the axle on the Diff Gear Shaft's front MR128: its tip face lands on the bearing's inner race, and a chamfer takes its edge clear of the shield. That holds the hub off the shaft's end, which turns with the other input. The rod bore is Ø{axle_rod_bore}, so the boss has {axle_boss_wall} mm of wall around it, and {axle_boss_face_wall} mm across its tip face, against {axle_boss_wall_measured} mm on the reference part. The boss runs from z {axle_boss_z_low} to {axle_boss_z_high}. The MR85 is pressed into the axle's flat back, and the CF rod is epoxied in the bore below it.",
      "focus": {"label": "Show the boss in section", "preset": "Axle boss", "hide": ["730-002", "brg_body_b"]}},
+    {"heading": "Checked",
+     "text": "assembly-clash.rs checks every pair of this assembly against diff_assembly.clash.json, from the out/asm/ cache that render.rs --meshes builds. It draws each bearing as its two rings and its shield, one part each, so the check can hold that nothing touches both rings; this page draws each bearing whole."},
     {"heading": "Not drawn",
      "items": [
        "What the MR85's Ø5 rides on: it closes the wrist above, outside this model set",
        "Screws and nuts",
+       "The three CF strakes in the Split Gear Top's slots (008.6 step 11)",
+       "The second Diff Keeper, on the shaft's end (008.6 step 18)",
        "Bearings are envelopes at catalogue size"]}
   ]
 }

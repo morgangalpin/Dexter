@@ -14,6 +14,11 @@
 // reference→candidate direction of `dist` is not meaningful against this
 // file: it flags every surface buried in the overlap.
 //
+// That was the reference as exported. It is now the two solids united
+// (Hardware/Models/README.md § Known defects), so `dist` reads it both ways,
+// 0.045 mm, and gates the part. What follows describes the export as measured,
+// which is what the `compare` check's ignore ranges were set against.
+//
 // Three of the reference's features lie inside that overlap, so the union this
 // file renders cannot carry them and the checks report each as a miss. None of
 // them is a defect to fix, because a solid has no interior faces:

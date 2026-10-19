@@ -180,8 +180,8 @@ are stated in its `.scad` file.
 
 [`render.rs --verify`](009.3-Render-Program.md) verifies the revised set: every
 revised part renders as one clean solid, the tooth counts are counted on the rendered meshes, the extents
-`diff_assembly.scad` places by agree with the renders, and Diff Body A's intersection with `#720-004` is
-empty. [`robot_assembly.scad`](../Hardware/Models/robot_assembly.scad) asserts Diff Body A inside the
+`diff_assembly.scad` places by agree with the renders. `assembly-clash.rs` holds `#720-004` the
+running clearance off Diff Body A. [`robot_assembly.scad`](../Hardware/Models/robot_assembly.scad) asserts Diff Body A inside the
 forearm skin in both configurations.
 
 **Definition of done — met:** the five parts re-cut in `config="revised"`, every part rendering as one

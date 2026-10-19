@@ -55,7 +55,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`400-EndArm/`](400-EndArm/) | 10 | 26 | Axis intersection, hub, internal and external pulleys; every part is `.scad`, and `external_pulley.scad` holds the definition the two External pulleys share; `421-002_InternalInnerPulley.dwg` is another revision of the Internal Inner Pulley, not a source; `endarm_assembly.scad` places the group about J3 with its bearings, strakes and stainless tube |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 14 | External gear, stator holder, mount and nut holders; every part is `.scad`, and `520-003_ExGearNutHold.scad` draws both Nut Holders, A and B, from one source; `exgear_assembly.scad` places the group with its motor, drive and fasteners, and closes J3's stack; `exgear_assembly.clash.json` checks it |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 8 | Wave gen coupler, flex spline attach and cap; every part is `.scad`, and `c201_spline_seat.scad` holds the drive's interface for the Attach, the Cap and the three Stator Holders |
-| [`700-Differential/`](700-Differential/) | 10 | 17 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set and has a section view |
+| [`700-Differential/`](700-Differential/) | 10 | 28 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only, each part with a view sidecar; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set, has a section view, and is checked by `assembly-clash.rs` |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 12 | Solder jigs, glue-rig jig bodies, and the print-fit coupon |
@@ -355,7 +355,8 @@ The contract every part in `700-Differential/` is held to:
   7001 mm³; volume against an unmerged file is a screening signal, not a verdict. And reference→candidate
   `dist` flags every **buried** surface, because a merged model has no counterpart for them — on this
   part 28 % of reference samples at up to 2.25 mm, none of it a defect. Only candidate→reference gates a
-  part whose reference is an assembly export.
+  part whose reference is an assembly export. `710-001` and `710-002` were both; their references are now
+  united in place ([Known defects](#known-defects)), so both directions gate them.
 - *Stray shells.* `730-002`'s export carries six 1.05 × 1.0 × 1.0 inverted shells (−0.815 mm³ apiece)
   beside the body, and `dist` against the whole file scores them at **0.991 mm**. Against the isolated
   body the same comparison reads **0.332 mm**. Every figure quoted for that part is against body 0, and a
