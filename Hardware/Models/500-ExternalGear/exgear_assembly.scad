@@ -23,11 +23,12 @@
 //      the axis, which is the motor body's half-width, so they are what grips
 //      the motor. Motor on the End Cap's seat, MOTOR_LEN long. The Flex Spline
 //      Attach on the motor face, its lugs down over the body the same way. The
-//      drive's flex spline hub on the Attach's hub face, over its spigot and
-//      six nubs, with the Flex Spline Cap (#630-006, revised) bearing on the
-//      hub from inside the cup, and the manufacturer
-//      drawing (XB1-AS-C-32) puts the circular spline's outer face 23.500 mm
-//      beyond that.
+//      drive's flex spline hub on the Attach's hub face, on its six nubs, with
+//      the Flex Spline Cap (#630-006, revised) bearing on the hub from inside
+//      the cup and six M2 x 16 screws clamping the three, and the
+//      manufacturer drawing (XB1-AS-C-32) puts the circular spline's outer
+//      face 23.500 mm beyond that. The Wave Gen Coupler (#630-004, revised)
+//      on the motor's shaft, its stub in the wave generator's bore.
 //
 //   2. The output (turns). The End Cap and the Attach each carry a Ø50.000
 //      land, the journals for the External Gear's two 6810s: the lower one
@@ -35,65 +36,66 @@
 //      lower seat shoulder sits on it; the gear's upper seat shoulder carries
 //      the upper one, on the Attach's land. The Stator Holder's eight keys go
 //      into the gear's notched end until their end chamfers bottom in the
-//      slots'; its recess, facing up, takes the circular spline, whose flange
-//      stands on the recess floor with its Ø38h7 step in the holder's pilot,
-//      screwed down through its six holes on Ø44.
+//      slots'; its floor, facing up, takes the circular spline, whose flange
+//      stands on it with its Ø38h7 step in the holder's pilot, screwed down
+//      through its six holes on Ø44.
 //
 // THE CLOSURE. Three revisions close the chains on each other, and the asserts
 // below hold them:
 //
 //   - The End Cap's seat is raised seat_raise into the cap (#511-001,
 //     revised), which lowers the motor, the Attach and the drive with it.
-//     Without it the upper 6810's inner race passes below the motor face,
-//     where the motor's corners reach past the Attach's R25 land.
-//   - The Attach's flare is removed and its hub face lowered by
-//     ATTACH_HUB_DROP (#630-005, revised), the amount the drive stands higher
+//     1.0 of it keeps the upper 6810's inner race above the motor face,
+//     where the motor's corners reach past the Attach's R25 land. The other
+//     1.0 is J3's motor-side share of the coupler's spacing (DC-600-2), and
+//     it is all J3 has: those corners are turned to Ø50.8, so the motor's
+//     rear cannot pass into the lower 6810's Ø50 bore, and
+//     motor_above_lower_6810 leaves it 0.2 above.
+//   - The Attach's hub face (#630-005, revised) stands the spacing's 5.0
+//     higher, lowered by ATTACH_HUB_DROP, the amount the drive stands higher
 //     on its motor than on its holder, so the drive fits both at once.
 //     ATTACH_HUB_DROP follows MOTOR_LEN: set MOTOR_LEN to the measured body
 //     length (008.3) and print J3's Attach with hub_drop set to the
-//     j3_hub_drop echoed below.
-//   - The Stator Holder (#511-002, revised) seats the spline's flange on a
-//     floor lowered FLOOR_DROP toward the gear, which keeps the drive where
-//     the two revisions above put it, stands the holder's end clear of the
-//     Attach's hub face, and leaves the spline reaching into the Mount Top's
-//     6810.
+//     j3_hub_drop echoed below. The spacing's split leaves it unchanged.
+//   - The Stator Holder (#511-002, revised) keeps its rim FLOOR_DROP toward
+//     the gear, clear of the Mount Top, and seats the spline's flange
+//     DRIVE_RISE beyond that, the spacing's other 4.0, on a boss that rises
+//     into the Mount Top 6810's bore. Its spigot's end is counterbored over
+//     the Attach's land, which now stands above it.
 //
 // Above the drive the Mount Top's 6810 sits in a seat exactly 7.000 mm deep
 // (z 93.000..100.000), and its Ø50 bore takes the circular spline's Ø50h6
-// outside diameter. That is the answer: the circular spline — the
-// "strain-wave top" of 008.8 step 7 — turns in the Mount Top's bearing, and
-// the bearing is the output's third support, between the rotating spline and
-// the fixed Mount. Every clearance the placement produces is echoed, not
-// chosen.
+// outside diameter, all but 0.013 of its 6.0 flange. That is the answer: the
+// circular spline — the "strain-wave top" of 008.8 step 7 — turns in the
+// Mount Top's bearing, and the bearing is the output's third support, between
+// the rotating spline and the fixed Mount. Every clearance the placement
+// produces is echoed, not chosen.
 //
 // THE TIE-DOWN. Nut Holders A and B (#520-003/-004) lie in the Mount's two
 // slots, each on its slot's floor with its curved face on the Mount's bore
 // (008.8 step 9), an M3 nut in each trap. An M3 x 46 all-thread runs from each
 // holder's underside up through the Mount and the Mount Top, two M3 nuts
-// locked on it on the Mount Top's face (steps 12, 13). Four M3 x 12 screws
+// locked on it on the Mount Top's face (steps 12, 13). Four M3 x 10 screws
 // come up through the Mount's floor (M1) and its bosses into the End Cap's
 // nuts, each nut drawn on its trap's floor, where tightening pulls it (steps
-// 4, 11). endcap_screw_head_proud is how far each head stands below the
-// floor's underside: a DIN 912 head is 3.0 tall, the M1 counterbore 2.0 deep.
+// 4, 11). An M3 x 12 would reach the lowered motor's rear face.
+// endcap_screw_head_proud is how far each head stands below the floor's
+// underside: a DIN 912 head is 3.0 tall, the M1 counterbore 2.0 deep.
 //
-// THE COUPLER. The Wave Gen Coupler (#630-004) is drawn from its mesh in
-// ../600-StrainWave, in 600's frame, until 600-StrainWave's source merges:
-// its stub seated full length in the wave generator's hub, which is where a
-// tool sets it (008.3 step 10). The mesh is the reference's: a Ø10 keyed stub
-// the wave generator's Ø6 bore cannot take, on a Ø5 through bore, so the clash
-// manifest holds both contacts as exceptions until the revised part replaces
-// it. coupler_shaft_overrun below is how far the C-101's 24 mm shaft runs past
-// the revised part's blind bore (wgc_bore_top("revised") = 9.0) at that seat:
-// 2.187. But the coupler cannot reach that seat. Its hex, 10.0 long below the
-// stub's shoulder, must lie between the Flex Spline Cap's top face and the
-// wave generator hub's inner end, and coupler_hex_room shows 7.1 there, so
-// the hex runs 2.9 into the cap, which is solid across it but for its Ø5.5
-// shaft hole. The clash manifest holds that as an exception, pending the
-// reviewer; the figures follow the drive, not J3, so J1 and J2 share them.
+// THE COUPLER. The Wave Gen Coupler (#630-004, revised) is pressed on the
+// motor's shaft with its bottom wgc_above_motor() over the motor face, where
+// the 008.3 step 10 tool sets it, and its grub screw on the shaft's flat. It
+// runs up through the Attach, the flexspline's hub and the Cap into the wave
+// generator, whose bore takes its stub. The echoes below hold DC-600-2's
+// clearances for J3: the coupler's body under the wave generator and its
+// grip under the hub face by at least the running clearance, its stub past
+// the wave generator's set screws by 1.5, and its bore's blind end past the
+// shaft's tip.
 //
 // NOT DRAWN. The angle and rotate motors, which bolt to the Mount's two
 // motor boxes. The six M3 screws and nuts that hold the spline in the Stator
-// Holder, and the six M2 screws and nuts that clamp the flex spline hub.
+// Holder, the M2 nuts in the Cap's traps, and the coupler's grub screw and
+// nut (the motor envelope's shaft has no flat for the screw to meet).
 //
 // CLASH. assembly-clash.rs checks the whole assembly against
 // exgear_assembly.clash.json. A bearing there is three parts, <bearing>_inner,
@@ -110,6 +112,8 @@ use <511-001_ExGearMotorEndCap.scad>
 use <511-002_ExGearStatorHolder.scad>
 use <520-002_ExGearMountTop.scad>
 use <520-003_ExGearNutHold.scad>
+use <../print_fit.scad>
+use <../600-StrainWave/630-004_WaveGenCoupler.scad>
 use <../600-StrainWave/630-005_FlexSplineAttach.scad>
 use <../600-StrainWave/630-006_FlexSplineCap.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
@@ -133,7 +137,7 @@ TOP_SEAT         = mount_top_seat();    // #520-002 Ø65 seat, open face and sho
 ENDCAP_TOP       = end_cap_top();                // #511-001 face on the bosses
 ENDCAP_SEAT      = end_cap_seat("revised");      // #511-001 face the motor stands on
 ATTACH_SEAT      = attach_motor_face();          // #630-005 face on the motor
-ATTACH_HUB       = attach_hub_face("previous");  // #630-005 hub face before the drop
+ATTACH_HUB       = attach_hub_face("revised", 0);  // #630-005 hub face before the drop
 GEAR_LOWER_SHLDR = gear_lower_shoulder();  // #510-001 lower seat shoulder, along its axis
 GEAR_UPPER_SHLDR = gear_upper_shoulder();  // #510-001 upper seat shoulder
 GEAR_KEYED_END   = gear_keyed_end();       // #510-001 notched end face
@@ -142,7 +146,7 @@ ROTOR_R          = gear_rotor_r();         // #510-001 and #511-002, largest rad
 STATOR_SEAT      = stator_seat();             // #511-002 face on the gear's end
 STATOR_FLOOR     = stator_floor("revised");   // #511-002 floor the spline's flange stands on
 STATOR_RIM       = stator_rim("revised");     // #511-002 rim, toward the Mount Top
-STATOR_END       = stator_end();              // #511-002 spigot's end, toward the Attach
+STATOR_END       = stator_clear("revised");   // #511-002 face over the Attach: the end's counterbore
 MOTOR_LEN        = c101_len();   // C-101 body length; replace with the measured one
 DRIVE_SPAN       = drive_span();              // C-201 mounting face to mounting face
 B6810            = [50, 65, 7];
@@ -151,12 +155,12 @@ NUT_HOLDER_H     = nut_holder_height();        // #520-003/-004 thickness
 TRAP_FLOOR       = 1.200;                      // #520-003/-004 nut trap's floor, its frame
 ROD              = [3.000, 46.000];            // #520-005 M3 all-thread: Ø, length
 M3_NUT           = [5.500, 2.400];             // C-612 M3 nut: across flats, thickness
-SCREW            = [3.000, 12.000, 5.500, 3.000];  // C-610 M3 x 12 DIN 912: Ø, length under the head, head Ø, head height
+SCREW            = [3.000, 10.000, 5.500, 3.000];  // M3 x 10 DIN 912: Ø, length under the head, head Ø, head height
 SCREW_AXES       = mount_screw_axes();         // #520-001 M1, on the End Cap's 31.0 square
 CBORE_FLOOR      = mount_cbore_floor();        // #520-001 M1 counterbores' floor, the heads' seat
 SHAFT_LEN        = 24.000;                     // C-101 shaft beyond the mounting face (007.1)
-COUPLER_SHOULDER = 10.000;                     // #630-004 stub's shoulder: wgc_shoulder() once 600 merges
-COUPLER_BORE_TOP = 9.000;                      // #630-004 revised bore's blind end: wgc_bore_top("revised")
+M2_SCREW         = [2.000, 3.800, 2.000, 16.000];  // the hub screws: shank Ø, head Ø, head height, length under the head
+RUN              = fit_clearances("revised")[2];   // the running clearance
 
 // --- Placement --------------------------------------------------------------
 ENDCAP_Z = BOSS_TOP + ENDCAP_TOP;              // End Cap flipped: world = ENDCAP_Z - z
@@ -175,7 +179,10 @@ HUB_F    = ATTACH_Z + attach_hub_face("revised", ATTACH_HUB_DROP);  // flex spli
 CS_NOM   = HUB_F + DRIVE_SPAN;                 // the circular spline face, on its motor
 BRG_TOP  = TOP_SEAT[0];
 CAP_Z    = HUB_F + fs_hub()[1] + cap_face();   // Flex Spline Cap flipped: world = CAP_Z - z; its top face
-COUPLER_Z = CS_FACE + -wg_hub_inner() - COUPLER_SHOULDER;   // coupler frame origin: its stub seated full length
+COUPLER_Z = MOTOR_F + wgc_above_motor();       // coupler frame origin: its bottom face
+SHAFT_TIP = MOTOR_F + SHAFT_LEN;
+WG_INNER  = CS_FACE - wg_hub_inner();          // the wave generator hub's inner end
+WG_SCREWS = CS_FACE - wg_set_screws();         // its set screws' axis
 // Each all-thread stands on its slot's floor: under it the Mount's hole runs
 // only 0.5 deeper, so its 46 mm puts its top above the locknuts.
 ROD_FOOT = NUT_Z;
@@ -187,9 +194,14 @@ assert(abs(CS_NOM - CS_FACE) < 1e-9, "the drive does not close between its motor
 assert(BRG_UP > MOTOR_F, "upper 6810 inner race passes below the motor face");
 assert(BRG_UP + B6810[2] < HUB_F, "upper 6810 inner race runs off the Attach's land");
 assert(ATTACH_HUB_DROP >= 0, "the drive stands lower on its motor than on its holder; the Attach cannot rise");
+assert(ATTACH_HUB_DROP <= max_hub_drop(), "the Attach's hub face drops onto the coupler's grip");
+assert(MOTOR_Z0 > BRG_LOW + B6810[2], "the motor's corners reach the lower 6810's inner race");
+assert(COUPLER_Z + wgc_body("revised")[1] + RUN <= WG_INNER + 1e-9, "the coupler's body comes within the running clearance of the wave generator");
+assert(COUPLER_Z + wgc_top("revised") - WG_SCREWS >= 1.5, "the coupler's stub does not pass the wave generator's set screws");
+assert(COUPLER_Z + wgc_bore_top("revised") > SHAFT_TIP, "the shaft reaches the coupler bore's blind end");
 assert(GEAR_BOTTOM + GEAR_C > MOUNT_FLOOR, "the External Gear reaches the floor plate");
 assert(MOUNT_NEAR_R > ROTOR_R, "the External Gear or the Stator Holder reaches the Mount's bore");
-assert(HOLDER_END > HUB_F, "the Stator Holder reaches the Attach's hub face");
+assert(HOLDER_END - HUB_F >= RUN - 1e-9, "the Stator Holder comes within the running clearance of the Attach's hub face");
 assert(HOLDER_RIM < BRG_TOP, "the Stator Holder's rim reaches the Mount Top's 6810");
 assert(CS_FACE > BRG_TOP, "the circular spline does not reach the Mount Top's 6810");
 
@@ -198,16 +210,21 @@ assert(CS_FACE > BRG_TOP, "the circular spline does not reach the Mount Top's 68
 echo(motor_len = MOTOR_LEN);
 echo(seat_raise = ENDCAP_SEAT - end_cap_seat("previous"));
 echo(j3_hub_drop = ATTACH_HUB_DROP);                     // print J3's Attach: -D config="revised" -D hub_drop=
+echo(motor_above_lower_6810 = MOTOR_Z0 - BRG_LOW - B6810[2]);  // the motor's rear over the lower 6810
 echo(upper_6810_above_motor = BRG_UP - MOTOR_F);         // inner race bottom over the motor face
 echo(upper_6810_below_hub = HUB_F - BRG_UP - B6810[2]);  // inner race top under the hub face
 echo(top_6810_on_spline = CS_FACE - BRG_TOP);            // the circular spline's Ø50h6 within the Mount Top's bore
 echo(stator_below_top = BRG_TOP - HOLDER_RIM);           // Stator Holder rim under the Mount Top's 6810
-echo(stator_above_hub = HOLDER_END - HUB_F);             // Stator Holder end over the Attach's hub face
+echo(stator_above_hub = HOLDER_END - HUB_F);             // Stator Holder's counterbore over the Attach's hub face
 echo(stator_on_gear = GEAR_KEYED_END + STATOR_SEAT);     // gear z (its mesh's x) = this - holder z, where the two share a plane
 echo(gear_above_floor = GEAR_BOTTOM + GEAR_C - MOUNT_FLOOR);  // External Gear's bottom face over the floor plate
 echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Holder inside the Mount's bore, radial, at least
-echo(coupler_shaft_overrun = MOTOR_F + SHAFT_LEN - (COUPLER_Z + COUPLER_BORE_TOP));  // > 0: the shaft runs past the revised coupler's blind bore
-echo(coupler_hex_room = CS_FACE + -wg_hub_inner() - CAP_Z);  // Flex Spline Cap's top to the hub's inner end; the hex is COUPLER_SHOULDER long
+echo(wg_inner_above_motor = WG_INNER - MOTOR_F);         // the wave generator hub's inner end, from the motor face
+echo(coupler_under_wg = WG_INNER - COUPLER_Z - wgc_body("revised")[1]);  // coupler body's top to the wave generator
+echo(shaft_under_bore_end = COUPLER_Z + wgc_bore_top("revised") - SHAFT_TIP);  // shaft tip to the coupler bore's end
+echo(stub_past_set_screws = COUPLER_Z + wgc_top("revised") - WG_SCREWS);       // stub end beyond the set screws' axis
+echo(grip_under_hub = HUB_F - COUPLER_Z - wgc_grip("revised")[1]);             // coupler grip's top to the hub face
+echo(hub_screw_past_cap = ATTACH_Z + attach_head_seat("revised") + M2_SCREW[3] - CAP_Z);  // M2 tip beyond the Cap's top face
 echo(rod_above_locknuts = ROD_TOP - LOCKNUT_Z - 2 * M3_NUT[1]);  // all-thread proud of its outer locknut; < 0 leaves it short
 echo(endcap_screw_past_nut = CBORE_FLOOR + SCREW[1] - ENDCAP_NUT_Z - M3_NUT[1]);  // < 0: the screw stops inside its nut
 echo(endcap_screw_below_motor = MOTOR_Z0 - CBORE_FLOOR - SCREW[1]);  // the screw's tip under the motor's rear face
@@ -249,7 +266,14 @@ module endcap_screws() color("#7d7d7d") for (a = SCREW_AXES) translate([a.x, a.y
 module endcap_nuts() color("#7d7d7d") for (a = SCREW_AXES)
   translate([a.x, a.y, ENDCAP_NUT_Z]) rotate(atan2(a.y, a.x) + 30) hex_nut(M3_NUT[1]);
 
-module coupler() color("#e3b060") translate([0, 0, COUPLER_Z]) import("../600-StrainWave/630-004_WaveGenCoupler.stl");
+module coupler() color("#e3b060") translate([0, 0, COUPLER_Z]) wave_gen_coupler("revised");
+// The six M2 hub screws, in the Attach's frame: each head under its seat,
+// the shank up through the Attach, the hub and the Cap into the Cap's nut.
+module hub_screws() color("#7d7d7d") translate([0, 0, ATTACH_Z]) fs_hub_holes()
+  translate([0, 0, attach_head_seat("revised")]) {
+    translate([0, 0, -M2_SCREW[2]]) cylinder(d = M2_SCREW[1], h = M2_SCREW[2], $fn = 48);
+    translate([0, 0, -0.005]) cylinder(d = M2_SCREW[0], h = M2_SCREW[3] + 0.005, $fn = 24);
+  }
 
 module tube(od, id, h) difference() { cylinder(d = od, h = h); translate([0, 0, -1]) cylinder(d = id, h = h + 2); }
 
@@ -275,7 +299,7 @@ module wave_gen() color("#a0a0a0") translate([0, 0, CS_FACE]) wave_generator_env
 PARTS = ["mount", "mount_top", "end_cap", "motor", "attach", "fs_cap", "flexspline",
          "circular_spline", "wave_gen", "coupler", "bearing_lower", "bearing_upper", "bearing_top",
          "gear", "stator", "nut_holder_a", "nut_holder_b", "trap_nuts", "rods", "locknuts",
-         "endcap_screws", "endcap_nuts"];
+         "endcap_screws", "endcap_nuts", "hub_screws"];
 RACE_PARTS = [for (b = BEARINGS, r = RACES) str(b, "_", r)];   // `part` only, not in PARTS
 
 module draw(p) {
@@ -289,6 +313,7 @@ module draw(p) {
   if (p == "circular_spline") circular_spline();
   if (p == "wave_gen")        wave_gen();
   if (p == "coupler")         coupler();
+  if (p == "hub_screws")      hub_screws();
   for (b = BEARINGS) if (p == b) bearing(b);
   for (b = BEARINGS, r = RACES) if (p == str(b, "_", r)) bearing_race(b, r);
   if (p == "gear")            gear();

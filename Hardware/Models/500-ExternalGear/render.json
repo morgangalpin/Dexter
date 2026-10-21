@@ -175,15 +175,53 @@
        {"label": "M3 nut trap", "at": [17.4445, 17.4445, 0.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "slip"}
      ]},
 
-    {"kind": "seat", "id": "seat-511-002", "part": "511-002", "facing": -1,
-     "scad": "511-002_ExGearStatorHolder.scad", "out": "out/revised/511-002.stl",
-     "note": "The revised Stator Holder's recess opens toward -z."},
-    {"kind": "fits", "id": "fits-511-002", "part": "511-002 (revised)", "stl": "out/revised/511-002.stl", "after": ["seat-511-002"],
-     "note": "The revised #511-002's own print fits in the gear's socket: the key on 0 deg at its flat and its side, and the core between keys at 22.5 deg. The seat's fits are the seat kind's.",
+    {"kind": "render", "id": "render-511-002", "config": "revised",
+     "scad": "511-002_ExGearStatorHolder.scad", "out": "out/revised/511-002.stl"},
+    {"kind": "probes", "id": "seat-511-002", "part": "511-002 (revised) seat:", "stl": "out/revised/511-002.stl", "after": ["render-511-002"],
+     "note": "The seat kind's probes, at the revised floor (z -7.0, facing -z), but for its press recess: the floor stands on a boss inside the Mount Top 6810's bore, so the pilot alone centres the spline (DC-600-2 in J3; pending the reviewer, 500 Q5). Then the boss and the end's counterbore over the Attach's land, each the running clearance off its mate, and the rim.",
+     "items": [
+       {"label": "floor, material under it", "at": [23.0, 0.0, -6.9], "solid": true},
+       {"label": "floor, void over it", "at": [23.0, 0.0, -7.1], "solid": false},
+       {"label": "pilot, void in it", "at": [18.5, 0.0, -4.9], "solid": false},
+       {"label": "pilot floor, material under it", "at": [18.5, 0.0, -4.7], "solid": true},
+       {"label": "old peg, gone", "at": [21.5, 0.0, -9.0], "solid": false},
+       {"label": "old peg bore, filled", "at": [21.5, 0.0, -6.0], "solid": true},
+       {"label": "old screw hole, filled", "at": [15.2028, 15.2028, -6.0], "solid": true},
+       {"label": "hole at 30 deg, clearance", "at": [19.0526, 11.0, -6.0], "solid": false},
+       {"label": "hole at 30 deg, nut pocket", "at": [19.0526, 11.0, -4.0], "solid": false},
+       {"label": "hole at 30 deg, pocket wall", "at": [21.6506, 12.5, -4.0], "solid": true},
+       {"label": "hole at 90 deg, clearance", "at": [0.0, 22.0, -6.0], "solid": false},
+       {"label": "hole at 90 deg, nut pocket", "at": [0.0, 22.0, -4.0], "solid": false},
+       {"label": "hole at 90 deg, pocket wall", "at": [0.0, 25.0, -4.0], "solid": true},
+       {"label": "hole at 150 deg, clearance", "at": [-19.0526, 11.0, -6.0], "solid": false},
+       {"label": "hole at 150 deg, nut pocket", "at": [-19.0526, 11.0, -4.0], "solid": false},
+       {"label": "hole at 150 deg, pocket wall", "at": [-21.6506, 12.5, -4.0], "solid": true},
+       {"label": "hole at 210 deg, clearance", "at": [-19.0526, -11.0, -6.0], "solid": false},
+       {"label": "hole at 210 deg, nut pocket", "at": [-19.0526, -11.0, -4.0], "solid": false},
+       {"label": "hole at 210 deg, pocket wall", "at": [-21.6506, -12.5, -4.0], "solid": true},
+       {"label": "hole at 270 deg, clearance", "at": [0.0, -22.0, -6.0], "solid": false},
+       {"label": "hole at 270 deg, nut pocket", "at": [0.0, -22.0, -4.0], "solid": false},
+       {"label": "hole at 270 deg, pocket wall", "at": [0.0, -25.0, -4.0], "solid": true},
+       {"label": "hole at 330 deg, clearance", "at": [19.0526, -11.0, -6.0], "solid": false},
+       {"label": "hole at 330 deg, nut pocket", "at": [19.0526, -11.0, -4.0], "solid": false},
+       {"label": "hole at 330 deg, pocket wall", "at": [21.6506, -12.5, -4.0], "solid": true},
+       {"label": "boss open at the running clearance inside the flange's Ø50", "at": [24.75, 0.0, -6.5], "solid": false},
+       {"label": "boss wall within 0.25 of it", "at": [24.25, 0.0, -6.5], "solid": true},
+       {"label": "rim, material under it", "at": [30.0, 0.0, -5.9], "solid": true},
+       {"label": "rim, void over it", "at": [30.0, 0.0, -6.1], "solid": false},
+       {"label": "end counterbore open at the running clearance off the Attach's Ø50 land", "at": [25.25, 0.0, 11.0], "solid": false},
+       {"label": "end counterbore wall within 0.25 of it", "at": [25.75, 0.0, 11.0], "solid": true},
+       {"label": "end counterbore floor, material under it", "at": [21.0, 0.0, 9.9], "solid": true},
+       {"label": "end counterbore floor, void over it", "at": [21.0, 0.0, 10.1], "solid": false}
+     ]},
+    {"kind": "fits", "id": "fits-511-002", "part": "511-002 (revised)", "stl": "out/revised/511-002.stl", "after": ["render-511-002"],
+     "note": "The revised #511-002's own print fits in the gear's socket: the key on 0 deg at its flat and its side, and the core between keys at 22.5 deg. Then the seat kind's fits but for the recess: the pilot on the spline's Ø38h7 step and the M3 nut's outer flat in the pocket on the hole at 30 deg.",
      "probes": [
        {"label": "key's flat in its slot", "at": [34.1, 0.0, 8.0], "toward": [1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "key's side in its slot", "at": [33.0, 2.0, 8.0], "toward": [0.0, 1.0, 0.0], "fit": "slip"},
-       {"label": "core in the socket", "at": [30.0263, 12.4374, 8.0], "toward": [0.92388, 0.38268, 0.0], "fit": "slip"}
+       {"label": "core in the socket", "at": [30.0263, 12.4374, 8.0], "toward": [0.92388, 0.38268, 0.0], "fit": "slip"},
+       {"label": "pilot on the step", "at": [19.0, 0.0, -5.9], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "M3 nut pocket", "at": [21.4341, 12.375, -3.5], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"}
      ]},
 
     {"kind": "render", "id": "assembly-echo", "scad": "exgear_assembly.scad", "out": "out/assembly.echo",
@@ -195,7 +233,7 @@
      "note": "Holder heights (its own frame) at which its spigot must fill the gear's socket exactly: two in the keys, one in their end chamfers. The outline is the R32.5 core and the eight keys' sides. The tolerance is 0.01 mm of mean offset over it: faceting alone accounts for about 1 mm2 (the holder's R32.5 in 144 segments against the gear mesh's fewer), whereas a holder off its seat by the chamfer's 1.6 mm differs by over 100 mm2."},
 
     {"kind": "clash", "id": "clash-stator-attach", "after": ["assembly-echo"], "scad": "exgear_assembly.scad", "a": "stator", "b": "attach", "out": "out/clash-stator-attach.stl",
-     "note": "The parts the Stator Holder sits among, each rendered against it, then the flexspline hub's joint: the Attach's spigot and nubs inside the hub's bore and holes, and the Cap bearing on its inner face."},
+     "note": "The parts the Stator Holder sits among, each rendered against it, then the flexspline hub's joint: the Attach's nubs inside the hub's holes, and the Cap bearing on its inner face."},
     {"kind": "clash", "id": "clash-stator-circular_spline", "after": ["assembly-echo"], "scad": "exgear_assembly.scad", "a": "stator", "b": "circular_spline", "out": "out/clash-stator-circular_spline.stl"},
     {"kind": "clash", "id": "clash-stator-bearing_top", "after": ["assembly-echo"], "scad": "exgear_assembly.scad", "a": "stator", "b": "bearing_top", "out": "out/clash-stator-bearing_top.stl"},
     {"kind": "clash", "id": "clash-stator-bearing_upper", "after": ["assembly-echo"], "scad": "exgear_assembly.scad", "a": "stator", "b": "bearing_upper", "out": "out/clash-stator-bearing_upper.stl"},
@@ -210,8 +248,8 @@
      "face_echo": "attach_hub_face",
      "faces": [
        {"name": "hub face", "at": [12.0, 0.0, 0.0], "up": true},
-       {"name": "counterbore floor", "at": [17.0, 17.0, 0.0], "up": true, "z": 7.0}
+       {"name": "counterbore floor", "at": [17.0, 17.0, 0.0], "up": true, "z": 9.5}
      ],
-     "note": "J3's Attach at the drop the assembly asks for: the hub face where the part says it is, and the counterbore floors left at z 7.000. J3's stack depends on the Flex Spline Attach, so this waits for every 600-StrainWave job."}
+     "note": "J3's Attach at the drop the assembly asks for: the hub face where the part says it is, and the counterbore floors left at z 9.500, where the drop does not move them. J3's stack depends on the Flex Spline Attach, so this waits for every 600-StrainWave job."}
   ]
 }

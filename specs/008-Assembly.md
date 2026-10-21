@@ -291,12 +291,13 @@ and 13, while the drive is open.
    race runs free on the Flex Spline Attach's land.
 6. Replace the temporary bolts one at a time with M3 × 12 mm socket-head bolts and #6 washers, cross-pattern.
 7. Mount the strain-wave top in the Ex Gear Stator Holder ([008.3](#0083-harmonic-drive-motors) step 12).
+   This holder has no recess: the spline's flange stands on its boss, centred by the step in the pilot.
 8. Slide the Ex Gear Stator Holder onto the External Gear, its eight keys in the gear's slots, pressing while
    rotating the shaft until the keys bottom in the slots.
 9. Place M3 nuts into Nut Holder A/B, slide into the Ex Gear Mount (curvature sets orientation), seated to
    accept the all-thread.
 10. Feed the motor wires through the Ex Gear Mount hole, slide onto the strake holes, press hand-tight.
-11. Install 4× M3 × 12 mm socket-head bolts to secure the External Gear.
+11. Install 4× M3 × 10 mm socket-head bolts to secure the External Gear.
 12. Thread 2 M3 nuts onto one end of an M3 × 46 mm all-thread, tightened together.
 13. Press a 6810 into the Ex Gear Mount Top's bearing seat from the underside until it stops on the seat's
     shoulder. Fit the Mount Top over the External Gear, insert the all-thread, and tighten.

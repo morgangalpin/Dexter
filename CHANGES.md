@@ -1251,11 +1251,11 @@ anything version 3 does not independently specify
     `exgear_assembly.scad` draws the part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
   - **500-ExternalGear:** `exgear_assembly.scad` now `use`s every part of the group. It draws the Nut
     Holders A and B in the Mount's slots, with an M3 nut in each trap. It draws the two M3 x 46
-    all-threads with their locknuts on the Mount Top, and the four M3 x 12 screws up through the Mount's
-    floor into the End Cap's nuts. It also draws the Wave Gen Coupler (`#630-004`), from its reference
-    mesh until 600-StrainWave's source merges. Each 6810 is split into races. `exgear_assembly.clash.json`
-    checks the whole stack with `assembly-clash.rs`, and its exceptions state their reasons: the seat
-    rounds, the shaft grip and the coupler mesh. What the check found is fixed in `revised`:
+    all-threads with their locknuts on the Mount Top, and the four M3 x 10 screws up through the Mount's
+    floor into the End Cap's nuts. It draws the revised Wave Gen Coupler (`#630-004`) and the six M2 x 16
+    hub screws. Each 6810 is split into races. `exgear_assembly.clash.json` checks the whole stack with
+    `assembly-clash.rs`, and its exceptions state their reasons: the seat rounds and the coupler's bore on
+    the shaft. What the check found is fixed in `revised`:
     - the Mount's slot back wall stands slip off the holder's flat end;
     - the Mount Top's block, tab and rebate stand slip off the Mount's back blocks and column step;
     - the Mount Top's plate no longer reaches 0.27 mm into the back blocks;
@@ -1263,9 +1263,14 @@ anything version 3 does not independently specify
       inner races that turn past them;
     - the Nut Holders' trap floor is back at 1.2 mm.
 
-    Two findings are echoed for review. First, seated full length, the coupler's 10 mm hex runs 2.9 mm
-    into the Flex Spline Cap (`coupler_hex_room`). Second, the End Cap screws' heads stand 1.0 mm below
-    the floor (`endcap_screw_head_proud`). `c201_spline_seat.scad` gains `wg_hub()` and `wg_hub_z()`.
+    J3 takes its share of the coupler's spacing
+    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)) as 1.0 mm motor-down and
+    4.0 mm drive-up, pending review, because the motor's Ø50.8 corners must stop above the lower 6810's
+    Ø50 bore. The End Cap's seat rises 2.0 mm in all, and its nut traps deepen to 4.0 mm for M3 x 10
+    screws, since an M3 x 12 would reach the motor. The Stator Holder seats the spline's flange on a boss
+    that rises into the Mount Top 6810's bore, with no recess, and counterbores its spigot's end over the
+    Attach's land. The End Cap screws' heads stand 1.0 mm below the floor (`endcap_screw_head_proud`),
+    echoed for review.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.

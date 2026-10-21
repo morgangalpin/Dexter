@@ -9,8 +9,11 @@
 //                         (../Reference/meshes/500-ExternalGear/).
 //   config = "revised"  — the seat raised by seat_raise, pocketing the motor
 //                         square that much deeper, and every feature measured
-//                         from the seat raised with it. What sets seat_raise
-//                         is recorded in exgear_assembly.scad.
+//                         from the seat raised with it, and the nut traps
+//                         deepened to TRAP_REV, so the M3 x 10 screws from
+//                         the Mount pass their nuts and stop short of the
+//                         motor. What sets seat_raise is recorded in
+//                         exgear_assembly.scad.
 //
 // FRAME. The reference's own: the axis on +Z, the seat at z = -2.200 (the face
 // the motor's rear bears on), the land from z = 0 to the top face at 7.000,
@@ -77,7 +80,7 @@ use <../end_cap_channel.scad>
 // Parameter set: previous (reference) or revised
 config = "previous"; // [previous, revised]
 // Revised only: how far the seat rises into the cap, mm
-seat_raise = 1.000;
+seat_raise = 2.000;
 
 /* [Hidden] */
 $fn = 144;
@@ -105,6 +108,7 @@ SLOT          = [1.500, 18.146];   // wire slot half-width, floor radius
 MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.200;
 NUT           = [5.500, 3.000];    // across flats, depth above the seat
+TRAP_REV      = 4.000;             // revised traps' depth above the seat
 LEAD_IN       = [6.000, 8.000, 6.000];   // Ø at its floor, Ø at the top, floor z
 
 M3_D          = 3.000;     // the motor screws' nominal diameter
@@ -112,7 +116,8 @@ M3_D          = 3.000;     // the motor screws' nominal diameter
 function end_cap_top() = TOP;
 function end_cap_seat(cfg = config, raise = seat_raise) = cfg == "previous" ? SEAT : SEAT + raise;
 // The nut traps' floor, where a nut drawn toward its screw's head stops.
-function end_cap_trap_floor(cfg = config, raise = seat_raise) = end_cap_seat(cfg, raise) + NUT[1];
+function trap_depth(cfg) = cfg == "previous" ? NUT[1] : TRAP_REV;
+function end_cap_trap_floor(cfg = config, raise = seat_raise) = end_cap_seat(cfg, raise) + trap_depth(cfg);
 
 // The press clearance moves the land in and the lugs out; `c` below is it.
 function slip(cfg) = fit_clearances(cfg)[0];
@@ -281,7 +286,7 @@ module cuts(s, cfg) {
                               [land_r + 1, TOP - LAND_CHAMFER - 1 - 2 * epsilon]]);
     motor_holes() {
         translate([0, 0, SEAT - 1]) cylinder(d = hole_d, h = TOP - SEAT + 2, $fn = 48);
-        translate([0, 0, s - epsilon]) rotate(-30) cylinder(r = fit_bore(NUT[0], slip(cfg)) / sqrt(3), h = NUT[1] + epsilon, $fn = 6);
+        translate([0, 0, s - epsilon]) rotate(-30) cylinder(r = fit_bore(NUT[0], slip(cfg)) / sqrt(3), h = trap_depth(cfg) + epsilon, $fn = 6);
         translate([0, 0, LEAD_IN[2]]) cylinder(d1 = LEAD_IN[0], d2 = LEAD_IN[1] + 2 * epsilon, h = TOP - LEAD_IN[2] + epsilon, $fn = 96);
     }
     if (s > SEAT)   // the deeper pocket: the motor's, up to the raised seat
@@ -293,7 +298,7 @@ module cuts(s, cfg) {
 // pocket, and the channel where they run up onto its seat rounds.
 module ex_gear_motor_end_cap(cfg = config, raise = seat_raise) {
     s = end_cap_seat(cfg, raise);
-    assert(s + NUT[1] < LEAD_IN[2], "nut traps would reach the lead-ins");
+    assert(s + trap_depth(cfg) < LEAD_IN[2], "nut traps would reach the lead-ins");
     union() {
         difference() { body(s, press(cfg)); cuts(s, cfg); }
         root_fillets(s, cfg);
