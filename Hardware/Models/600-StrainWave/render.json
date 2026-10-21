@@ -63,10 +63,10 @@
      "scad": "630-005_FlexSplineAttach.scad", "out": "out/revised/630-005.stl"},
     {"kind": "probes", "id": "probes-630-005", "part": "630-005 (revised)", "stl": "out/revised/630-005.stl",
      "after": ["render-revised-630-005"],
-     "note": "The revised #630-005 at the default hub_drop. The hub face stands at z 14.0, 5.0 over the reference's, for the Wave Gen Coupler (DC-600-2), and the four counterbore floors at z 9.5, so J1/J2's #6 washers still sit just under the far 6810. The land replaces the flare down to the motor face, so r 25.1 is clear below the land where the flare was. C-201's hub stands on the flat hub face, a nub in each of its 4.5 mm holes on 17 mm, 2.2 high; there is no spigot and no shaft bore: a 14 mm bore takes the coupler's grip with the running clearance, and an access hole on +Y at z 9.4 reaches its grub screw. The M2 head seats stand at z 4.75. The reference's 19 mm recess and its hole circle on 12 mm are gone.",
+     "note": "The revised #630-005 at the default hub_drop. The hub face stands at z 14.0, 5.0 over the reference's, for the Wave Gen Coupler (DC-600-2), and the four counterbore floors at z 8.0, 1.0 over the reference's with the motor's move, so J1/J2's #6 washers still sit just under the far 6810. The land replaces the flare down to the motor face, so r 25.1 is clear below the land where the flare was. C-201's hub stands on the flat hub face, a nub in each of its 4.5 mm holes on 17 mm, 2.2 high; there is no spigot and no shaft bore: a 14 mm bore takes the coupler's grip with the running clearance, and an access hole on +Y at z 9.4 reaches its grub screw. The M2 head seats stand at z 4.75. The reference's 19 mm recess and its hole circle on 12 mm are gone.",
      "items": [
-       {"label": "counterbore floor at z 9.5 (material below)", "at": [17.0, 17.0, 9.4], "solid": true},
-       {"label": "counterbore floor at z 9.5 (void above)", "at": [17.0, 17.0, 9.6], "solid": false},
+       {"label": "counterbore floor at z 8.0 (material below)", "at": [17.0, 17.0, 7.9], "solid": true},
+       {"label": "counterbore floor at z 8.0 (void above)", "at": [17.0, 17.0, 8.1], "solid": false},
        {"label": "hub face at z 14.0 (material below)", "at": [12.0, 0.0, 13.9], "solid": true},
        {"label": "hub face at z 14.0 (void above)", "at": [12.0, 0.0, 14.1], "solid": false},
        {"label": "land runs to the motor face at R25", "at": [17.6, 17.6, -0.9], "solid": true},

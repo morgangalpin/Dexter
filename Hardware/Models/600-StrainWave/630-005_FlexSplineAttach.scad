@@ -73,7 +73,7 @@
 //     access hole, on +Y           Ø3.0 (M3), out through
 //                                  the +Y notch; axis on
 //                                  the coupler's grub
-//                                  screw, z 9.5
+//                                  screw, z 9.4
 //
 // The bore opens the head pockets on their inner side; the heads bear on the
 // rest of their seat. The coupler's foot stands the running clearance inside
@@ -110,13 +110,13 @@
 // hub_drop shortens their path through this part by the same amount; the
 // Cap's file asserts the screw's reach at the longest path, a drop of zero.
 //
-// The counterbore floors stand at z = 7.000 (previous) and 9.500 (revised,
+// The counterbore floors stand at z = 7.000 (previous) and 8.000 (revised,
 // CBORE_RISE): in J1 and J2 the #6 washers under the motor screws sit there
-// and overhang the land over the far 6810's inner race. The reference keeps
-// them 0.2 off its face; the race stays where it was while the motor moves
-// 1.0 of SPACING away from the drive (DC-600-2), so the revised washers stand
-// 1.7 off it. The rise was set for an earlier 2.5 motor move and is kept so
-// the part does not change again; see 008.3 for the motor screws' length.
+// and overhang the land over the far 6810's inner race, 0.2 off its face.
+// The race stays where it was while the motor moves 1.0 of SPACING away from
+// the drive (DC-600-2), and the floors rise with the motor. An M3 x 12
+// (C-610) then runs 3.0 past the motor face, less its #6 washer, as the
+// reference's M3 x 10 ran 2.0 (008.3 step 11).
 
 include <../print_fit.scad>
 use <c201_spline_seat.scad>
@@ -159,7 +159,7 @@ MOTOR_HOLE_D  = 3.500;
 CBORE         = [10.300, 7.000];   // diameter, floor
 // Revised hub interface, for c201_spline_seat.scad's flexspline hub.
 SPACING       = 5.000;             // the hub face raised for the coupler; 1.0 of it is the motor's move (DC-600-2)
-CBORE_RISE    = 2.500;             // revised: the counterbore floors raised (see the header)
+CBORE_RISE    = 1.000;             // revised: the counterbore floors raised with the motor (see the header)
 HEAD_RAISE    = 1.000;             // the head seat raised, for an M2 x 16
 HUB_CLEAR     = 0.200;             // nub tops under the hub's inner face
 M2            = [2.000, 3.800];    // screw and head diameters

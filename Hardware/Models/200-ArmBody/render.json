@@ -60,15 +60,22 @@
      "scad": "200-002_PivotStatorHolder.scad", "out": "out/revised/200-002.stl",
      "note": "The Pivot Stator Holder's recess opens toward -z."},
     {"kind": "fits", "id": "fits-200-002", "part": "200-002 (revised)", "stl": "out/revised/200-002.stl", "after": ["seat-200-002"],
-     "note": "The revised #200-002's own print fits: its 65 mm body in the Arm Body's 65 mm bore, probed at 45 deg, clear of the flange's ears, and the +X ear slot on a Stator Balancer's 3.9 x 9.9 shank, centred at r 35.516. The seat's fits are the seat kind's.",
+     "note": "The revised #200-002's own print fits: its body in the Arm Body's bore above L2, which is the upper 6810's press bore (65.1 mm), probed at 45 deg, clear of the flange's ears, and the +X ear slot on a Stator Balancer's 3.9 x 9.9 shank, centred at r 35.516. The seat's fits are the seat kind's.",
      "probes": [
-       {"label": "body in the Arm Body", "at": [22.9810, 22.9810, 8.0], "toward": [0.7071, 0.7071, 0.0], "fit": "slip"},
+       {"label": "body in the Arm Body", "at": [23.0164, 23.0164, 8.0], "toward": [0.7071, 0.7071, 0.0], "fit": "slip"},
        {"label": "ear slot's outer face", "at": [37.466, 0.0, 1.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "ear slot's side", "at": [35.516, 4.95, 1.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"}
      ]},
     {"kind": "render", "id": "render-200-001", "config": "revised",
      "scad": "200-001_ArmBody.scad", "out": "out/revised/200-001.stl",
-     "note": "Revised gives C the fill and the fillets onto the +Y box that D has, the -Y ear the +Y ear's fillet, and X1 its top round. A's lower pocket opens on -Z through the face C's plate leaves over it, and D's lower plate takes the upper plate's Ø5 hole through. It is drawn at its print fits: the 6810 seat, the MR128 pockets, K1, Q1 and D's holes, the tie holes and nut traps (the flap's holes wait)."},
+     "note": "Revised gives C the fill and the fillets onto the +Y box that D has, the -Y ear the +Y ear's fillet, and X1 its top round. A's lower pocket opens on -Z through the face C's plate leaves over it, and D's lower plate takes the upper plate's Ø5 hole through. It is drawn at its print fits: the two 6810 seats, the MR128 pockets, K1, Q1 and D's holes, the tie holes and nut traps (the flap's holes wait)."},
+    {"kind": "fits", "id": "fits-200-001", "part": "200-001 (revised)", "stl": "out/revised/200-001.stl", "after": ["render-200-001"],
+     "note": "The revised #200-001's 6810 seats, probed at 45 deg: the lower one below L1, and the upper one on L2, whose bore runs on up through the collar so the bearing is pressed in from the top (008.5 step 1).",
+     "probes": [
+       {"label": "lower 6810 seat", "at": [22.9810, 22.9810, -3.5], "toward": [-0.7071, -0.7071, 0.0], "fit": "press"},
+       {"label": "upper 6810 seat", "at": [22.9810, 22.9810, 57.5], "toward": [-0.7071, -0.7071, 0.0], "fit": "press"},
+       {"label": "bore under the collar", "at": [22.9810, 22.9810, 85.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "press"}
+     ]},
     {"kind": "render", "id": "render-200-003", "config": "revised",
      "scad": "200-003_StatorBalancer.scad", "out": "out/revised/200-003.stl",
      "note": "The Stator Balancer and Calibration Arrows draw no fits of their own: the balancer's mates are the Arm Body's K1 and the holder's ear slot, which carry them."},

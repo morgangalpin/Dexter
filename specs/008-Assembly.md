@@ -108,9 +108,9 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
     [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) gives
     as `wgc_above_motor()` above the motor face, the same in every joint. Tighten the grub screw onto the
     flat until snug — do not over-tighten the printed coupler.
-11. Secure the Flex Spline Attach to the motor over the coupler with 4× M3 × 14 mm bolts (confirm size/qty
-    against the build). Slide the wave generator onto the coupler's stub, into the flex spline, with its
-    hub's outer face the overall axial length
+11. Secure the Flex Spline Attach to the motor over the coupler with 4× M3 × 12 mm socket-head screws
+    ([C-610](007.1-Parts-Catalog.md#6-fasteners)). Slide the wave generator onto the coupler's stub,
+    into the flex spline, with its hub's outer face the overall axial length
     [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the flex spline's
     mounting face, and tighten its two set screws on the stub. The coupler's grub screw stays reachable
     through the Attach's access hole.

@@ -11,15 +11,23 @@
 //                         (../600-StrainWave/c201_spline_seat.scad), and the
 //                         bore behind the seat closes from Ø38 to Ø36 so the
 //                         nut pockets keep a wall to it; and the floor and
-//                         the back face move DRIVE_SHIFT toward the opening:
-//                         the Wave Gen Coupler's spacing moved J2's drive
-//                         that far from its motor (DC-600-2 in
-//                         specs/009-Design-Completion.md), so the recess is
-//                         that much shallower and the body that much shorter.
+//                         the back face stand where J2's drive closes on
+//                         them, DRIVE_SHIFT toward the opening (negative:
+//                         0.3 deeper). The holder's flange is held on the
+//                         Stator Balancers' lips, so the floor must meet the
+//                         spline's flange where C-101, the Flex Spline
+//                         Attach and C-201 put it, from the Pivot Motor End
+//                         Cap in the L1 6810. With C-201 the reference's
+//                         floor stood 4.3 short of that; the Wave Gen
+//                         Coupler's spacing (DC-600-2 in
+//                         specs/009-Design-Completion.md) then moved the
+//                         drive 4.0 of it further from the motor, which
+//                         leaves 0.3. armbody_assembly.scad asserts the
+//                         closure.
 //
 // FRAME. The reference's own: the axis on +Z, the recess opening at z = 0,
-// its floor at z = 11.000 (revised 7.000), the back face at 16.000 (revised
-// 12.000).
+// its floor at z = 11.000 (revised 11.300), the back face at 16.000 (revised
+// 16.300).
 //
 // Measured from the reference (scadmesh slice/arcs/profile). Everything is
 // fourfold about the axis except the screw holes, which are twofold:
@@ -43,7 +51,9 @@
 //
 // FITS (../print_fit.scad), revised only:
 //
-//     body, in the Arm Body's Ø65 bore      slip: both are printed
+//     body, in the Arm Body's bore, which   slip: both are printed
+//       is the upper 6810's press bore
+//       (Ø65.1)
 //     ear slots, on the Stator Balancers'   slip: both are printed
 //       3.9 x 9.9 shanks
 //     recess, on the spline's flange        press, the seat's pilot press
@@ -76,7 +86,7 @@ BORE_D        = [38.000, 36.000];  // previous, revised
 PEG_CIRCLE_R  = 21.500;
 PEG           = [3.500, 2.000];    // OD, bore
 SCREW_D       = 3.000;
-DRIVE_SHIFT   = 4.000;             // revised: the floor and the back face this far toward the opening
+DRIVE_SHIFT   = -0.300;            // revised: the floor and the back face this far toward the opening (here away from it)
 
 function shift(cfg) = cfg == "previous" ? 0 : DRIVE_SHIFT;
 function pivot_floor(cfg = config) = FLOOR - shift(cfg);
@@ -100,7 +110,7 @@ module flange_2d(cfg)
 // --- Part ------------------------------------------------------------------
 module body(cfg) {
     linear_extrude(FLANGE_TOP) flange_2d(cfg);
-    cylinder(d = fit_pin(BODY_D, slip(cfg)), h = pivot_back(cfg));
+    cylinder(d = fit_pin(fit_bore(BODY_D, press(cfg)), slip(cfg)), h = pivot_back(cfg));
 }
 
 module turned_cuts(cfg) {

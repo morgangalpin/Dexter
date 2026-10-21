@@ -118,8 +118,10 @@
 // `layer = "<name>"` draws the part's section at one height, for the outline gates in render.json.
 //
 // FITS (../print_fit.scad), revised only, each at its mate's class:
-//   press  B1's 6810 seat below the ledge (Ø65.1; the bore above stays Ø65 for the Pivot Stator Holder,
-//          which is drawn at the slip clearance to it), the lug pockets on the MR128s (Ø12.1), Q1 on the
+//   press  B1's 6810 seats (Ø65.1): below L1, and from L2's top up through the collar, the way the upper
+//          6810 is pressed in to L2 (008.5 step 1). The bore between the ledges stays Ø65. The Pivot
+//          Stator Holder slides in above the upper 6810 and is drawn at the slip clearance to the
+//          Ø65.1. The lug pockets on the MR128s (Ø12.1), Q1 on the
 //          L2 tube (C-504, +0.05 per side)
 //          the K1 slots on the Stator Balancers (4.0 x 10.0 round the 3.9 x 9.9 shank, as the reference has them:
 //          a tapped-in press, though both are printed)
@@ -662,8 +664,8 @@ module collar_flare()
 module collar_top() translate([0, 0, COLLAR[1]]) linear_extrude(COLLAR[2] - COLLAR[1]) offset(r = COLLAR[3]) collar_base_2d();
 
 // --- Cuts --------------------------------------------------------------------------------------
-// The fits, in `revised`: the 6810's seat below the ledge (B1, the bore keeps its Ø65 for the Pivot Stator
-// Holder, whose body is drawn at the slip clearance to it), the K1 slots on the Stator Balancers' 3.9 x 9.9
+// The fits, in `revised`: the 6810s' seats below L1 and from L2's top up (B1; the Pivot Stator Holder's
+// body is drawn at the slip clearance to the upper one), the K1 slots on the Stator Balancers' 3.9 x 9.9
 // shanks at the press clearance (a tapped-in press: the reference's 4.0 x 10.0 already is that), Q1 on the 1" CF tube (C-504) at the press clearance, and the tie
 // holes and nut traps at the slip clearance to an M2 rod and nut (4.0 AF).
 BEARING_6810_D = 65.000;
@@ -677,8 +679,8 @@ function slot_grow(cfg) = let(g = max(0, (fit_bore(BALANCER[0], press(cfg)) - AR
 module bore_cut(cfg)
     rotate_extrude() polygon([
         [0, Z[0] - 1], [seat_r(cfg), Z[0] - 1], [seat_r(cfg), L1[0]], [LEDGE_R, L1[0]], [LEDGE_R, L1[1]],
-        [BORE_R, L1[1]], [BORE_R, L2[0]], [LEDGE_R, L2[1]], [LEDGE_R, L2[2]], [BORE_R, L2[2]],
-        [BORE_R, Z[1] + 1], [0, Z[1] + 1]]);
+        [BORE_R, L1[1]], [BORE_R, L2[0]], [LEDGE_R, L2[1]], [LEDGE_R, L2[2]], [seat_r(cfg), L2[2]],
+        [seat_r(cfg), Z[1] + 1], [0, Z[1] + 1]]);
 
 module slot_cut(cfg) {
     translate([0, 0, Z[0] - 1]) linear_extrude(Z[1] - Z[0] + 2) intersection() { offset(delta = slot_grow(cfg)) arm_body_slots_2d(); square([2 * BOX[1], BOX[1]], center = true); }

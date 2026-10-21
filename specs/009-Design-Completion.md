@@ -607,7 +607,7 @@ coupler stood off it. The wave generator's Ø6 bore runs through its whole hub.
 **Decided (reviewer):** keep the standard shaft, uncut. The drive stands further from its motor, partly by
 moving the motor away from the drive, its Motor End Cap's seat deeper (`#311-001`, `#312-001`, `#511-001`),
 and partly by moving the drive away, the Flex Spline Attach (`#630-005`) thicker and the Stator Holder's
-floor further along it (`#110-002`, `#200-002`, `#511-002`), until the coupler's blind bore, 1.0 past the shaft's tip, and its floor
+floor further along it (`#110-002`, `#511-002`; for J2's `#200-002`, see below), until the coupler's blind bore, 1.0 past the shaft's tip, and its floor
 end the running clearance under the wave generator. The Wave Gen Coupler (`#630-004`) is one round piece
 from over the motor's boss, through the Attach, the flexspline's hub and the Flex Spline Cap, to just under
 the wave generator, with a Ø6 stub up the wave generator's bore past its two set screws. An M3 screw
@@ -628,11 +628,15 @@ owns J3's figures), and the reviewer chose the same split for J1 and J2. Three c
   screws on Ø17 as the shaft turns.
 - **The coupler goes on the shaft before the Attach goes on the motor** ([008.3](008-Assembly.md#0083-harmonic-drive-motors)):
   its grip cannot pass the hub's bore. It passes inside the M2 screws' heads as the Attach goes on.
-- **The Stator Holders' recesses are shallower.** In J2 the wave generator's hub stands 4.0 out of
-  `#200-002`'s recess, where it was flush; no assembly yet closes J2's drive.
+- **J2's holder floor does not move toward the opening.** With C-201 in place of the reference's drive,
+  the reference's `#200-002` floor stood 4.3 short of where the spline's flange lands, before any
+  spacing. The 4.0 takes up most of that, so the revised floor is 0.3 deeper than the reference's and
+  the wave generator's hub stays 0.3 inside the recess.
 
 [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
 coupler's dimensions. [`630-005_FlexSplineAttach.scad`](../Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad)
 owns the Attach's, and asserts the coupler's running clearances and the deepest `hub_drop` they allow.
 [`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) asserts J1's closure and the
-coupler's clearances to the wave generator. `[Specified]`.
+coupler's clearances to the wave generator, and
+[`armbody_assembly.scad`](../Hardware/Models/200-ArmBody/armbody_assembly.scad) asserts J2's.
+`[Specified]`.

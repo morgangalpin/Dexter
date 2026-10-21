@@ -30,8 +30,8 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.scad` | `revised` fillets C onto the +Y box as D is, and the -Y ear onto its box as the +Y ear is, opens A and takes D through, and draws its print fits (the flap holes wait) |
-| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline 4.0 nearer the opening (DC-600-2) in `revised` |
+| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.scad` | `revised` fillets C onto the +Y box as D is, and the -Y ear onto its box as the +Y ear is, opens A and takes D through, and draws its print fits, the upper 6810's press bore from L2 up among them (the flap holes wait) |
+| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised`, its floor 0.3 deeper, where J2's drive closes on it (DC-600-2), and its body at the slip fit to the Arm Body's Ø65.1 bore |
 | #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.scad` | draws no fits of its own; the Arm Body's K1 and the holder's ear slot carry them |
 | #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.scad` | fits wait for the arm body's assembly |
 | #210-001 | Belt Director Caps | 3 | `210-001_BeltDirectorCap.scad` | `revised` only: no reference mesh exists; Ø9.5 x 2.0 disc, 5.0 mm plug |

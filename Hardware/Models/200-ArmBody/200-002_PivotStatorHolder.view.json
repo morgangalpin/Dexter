@@ -27,6 +27,6 @@
   ],
   "notes": [
     {"heading": "Frame", "text": "The reference's own: the J2 axis on +Z, the recess opening at z 0, its floor at z 11, the back face at z 16. The body slides into the Arm Body's Ø65 bore; the ear slots ride the Stator Balancers' shanks."},
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render replaces the pegs and the two screw holes with the shared C-201 spline seat, closes the bore to Ø36, moves the floor and the back face 4.0 toward the opening for the strain-wave drive's spacing (DC-600-2 in specs/009; the labels give the reference's figures), and draws its fits. The dimensions are in 200-002_PivotStatorHolder.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render replaces the pegs and the two screw holes with the shared C-201 spline seat, closes the bore to Ø36, sets the floor and the back face 0.3 deeper, where J2's drive closes on them (the labels give the reference's figures), and draws its fits. The dimensions are in 200-002_PivotStatorHolder.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }
