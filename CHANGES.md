@@ -1060,6 +1060,12 @@ anything version 3 does not independently specify
   [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
   [009.1](specs/009.1-Performance-Characterization-Protocol.md) and
   [009.2](specs/009.2-Test-Build-Manifest.md),
+  [009 §Strain-wave drive spacing](specs/009-Design-Completion.md#strain-wave-drive-spacing),
+  [008.3](specs/008-Assembly.md#0083-harmonic-drive-motors),
+  007.1 [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) and
+  [§6 Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [007 §7.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors) and
+  [§7.8](specs/007-Bill-of-Materials.md#0078-external-gear),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`,
   `Hardware/Models/500-ExternalGear/exgear_assembly.scad`, `Hardware/Models/c101_motor.scad`,
   `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
@@ -1237,7 +1243,10 @@ anything version 3 does not independently specify
     to the grub screw, and drops its spigot; the Flex Spline Cap's bore opens; the Base and Pivot Stator
     Holders (`#110-002`, `#200-002`) are shorter. `base_assembly.scad` draws the coupler and the six M2
     hub screws, which become M2 × 16, and the clash manifest puts the coupler and the wave generator on the
-    shaft's side. 008.3 puts the coupler on the shaft before the Attach. J3's parts follow in 500.
+    shaft's side. 008.3 puts the coupler on the shaft before the Attach. J3's parts follow in 500. The bill
+    follows in 007 §7.3 and §7.8 and 007.1 §6: the hub screws move from C-601 to C-602; the coupler's two
+    M3 × 8 hex cap bolts (C-608, retired) become one M3 × 4 grub screw (C-618, new) and one M3 nut; and
+    J3's four Attach screws, which §7.8 did not count, join C-610.
   - **200-ArmBody:** the Stator Balancer (`#200-003`, an L section extruded), the Idler Plug
     (`#210-001`/`#210-003`, revolved), both Belt Directors (`#210-004`, `#210-005`, one revolved sleeve in
     `belt_director.scad` at two lengths), the Belt Director Pulley (`#210-002`, two flanges and a tooth

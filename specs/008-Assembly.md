@@ -96,10 +96,10 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
    a. Refit the hub over the nubs.
    b. Press an M2 nut into each of the Flex Spline Cap's six traps. Set the Cap inside the cup, its land
       down on the hub and its holes over the nubs.
-   c. Drive 6× M2 × 16 mm screws up through the Attach's head pockets, the nubs and the hub into the nuts,
+   c. Drive 6× M2 × 16 mm screws ([C-602](007.1-Parts-Catalog.md#6-fasteners)) up through the Attach's head pockets, the nubs and the hub into the nuts,
       cross-pattern, until snug.
 7. Press an M3 nut up the Wave Gen Coupler's nut pocket from its open end, and start an M3 × 4 mm grub
-   screw through the coupler's side hole into the nut, short of the bore.
+   screw ([C-618](007.1-Parts-Catalog.md#6-fasteners)) through the coupler's side hole into the nut, short of the bore.
 8. Ream the Wave Gen Coupler's shaft bore and lubricate it.
 9. Slide the coupler onto the motor shaft, stub outward, its grub screw over the shaft's flat. It goes on
    before the Flex Spline Attach: its grip is wider than the flex spline hub's bore
