@@ -11,9 +11,9 @@
 //                         give way to the shared spline seat
 //                         (../600-StrainWave/c201_spline_seat.scad); and the
 //                         flange stands FLANGE_RISE further along the body
-//                         from the recess floor (negative: 1.2 nearer it,
+//                         from the recess floor (negative: 2.7 nearer it,
 //                         since the Wave Gen Coupler's spacing moved the
-//                         drive 2.5 toward the flange, DC-600-2 in
+//                         drive 4.0 toward the flange, DC-600-2 in
 //                         specs/009-Design-Completion.md, from the 1.3 a
 //                         48 mm motor set before). The flange is clamped in the
 //                         base stack (specs/004 § Base mounting plate), so
@@ -84,7 +84,7 @@ epsilon = 0.01;
 REF_AXIS      = [-3.125, 5.413];   // the reference mesh's axis
 FLOOR         = 5.000;
 FLANGE        = [12.000, 16.000];  // previous: back, face
-FLANGE_RISE   = -1.200;            // revised: the flange this much further from the floor (here nearer it)
+FLANGE_RISE   = -2.700;            // revised: the flange this much further from the floor (here nearer it)
 BODY_D        = 65.000;
 SLOT          = [33.850, 37.452, 6.500];   // inner and outer radius, half-width
 THREAD_R      = 35.540;

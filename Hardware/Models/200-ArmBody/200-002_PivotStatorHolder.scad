@@ -18,8 +18,8 @@
 //                         that much shallower and the body that much shorter.
 //
 // FRAME. The reference's own: the axis on +Z, the recess opening at z = 0,
-// its floor at z = 11.000 (revised 8.500), the back face at 16.000 (revised
-// 13.500).
+// its floor at z = 11.000 (revised 7.000), the back face at 16.000 (revised
+// 12.000).
 //
 // Measured from the reference (scadmesh slice/arcs/profile). Everything is
 // fourfold about the axis except the screw holes, which are twofold:
@@ -76,7 +76,7 @@ BORE_D        = [38.000, 36.000];  // previous, revised
 PEG_CIRCLE_R  = 21.500;
 PEG           = [3.500, 2.000];    // OD, bore
 SCREW_D       = 3.000;
-DRIVE_SHIFT   = 2.500;             // revised: the floor and the back face this far toward the opening
+DRIVE_SHIFT   = 4.000;             // revised: the floor and the back face this far toward the opening
 
 function shift(cfg) = cfg == "previous" ? 0 : DRIVE_SHIFT;
 function pivot_floor(cfg = config) = FLOOR - shift(cfg);

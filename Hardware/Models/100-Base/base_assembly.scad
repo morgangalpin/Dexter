@@ -56,7 +56,7 @@
 // reference's for that, at the C-101 body length MOTOR_LEN, and the file
 // asserts it: a different motor length leaves a gap or an interference at
 // the floor, echoed as drive_gap. The coupler's spacing (DC-600-2) moved the
-// motor half of it up and the drive the other half down.
+// motor 1.0 of it up and the drive the other 4.0 down.
 //
 // STRAKES. Six 133 mm CF strakes (C-501) in alternate slots, three
 // epoxied in each part (008.2 step 2): the Mount's three bottomed in its

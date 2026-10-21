@@ -29,7 +29,7 @@
   ],
   "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"]],
   "exceptions": [
-    {"pair": ["motor", "coupler"], "at": [0, 0, 127.0], "radius": 12.0,
+    {"pair": ["motor", "coupler"], "at": [0, 0, 125.5], "radius": 12.0,
      "reason": "the coupler's bore, down to its blind end, is pressed on the motor's shaft, which turns with it; the motor envelope draws shaft and body as one solid, so the shaft reads as the other side"}
   ]
 }

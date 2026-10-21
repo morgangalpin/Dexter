@@ -604,10 +604,10 @@ coupler's blind bore ended about 1.5 short of the tip of C-101's 24 mm shaft
 ([007.1 C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)), so either the shaft was cut or the
 coupler stood off it. The wave generator's Ø6 bore runs through its whole hub.
 
-**Decided (reviewer):** keep the standard shaft, uncut. The drive stands further from its motor, half by
-moving the motor away from the drive, its Motor End Cap's seat deeper (`#311-001`, `#312-001`), and half by
-moving the drive away, the Flex Spline Attach (`#630-005`) thicker and the Stator Holder's floor further
-along it (`#110-002`, `#200-002`), until the coupler's blind bore, 1.0 past the shaft's tip, and its floor
+**Decided (reviewer):** keep the standard shaft, uncut. The drive stands further from its motor, partly by
+moving the motor away from the drive, its Motor End Cap's seat deeper (`#311-001`, `#312-001`, `#511-001`),
+and partly by moving the drive away, the Flex Spline Attach (`#630-005`) thicker and the Stator Holder's
+floor further along it (`#110-002`, `#200-002`, `#511-002`), until the coupler's blind bore, 1.0 past the shaft's tip, and its floor
 end the running clearance under the wave generator. The Wave Gen Coupler (`#630-004`) is one round piece
 from over the motor's boss, through the Attach, the flexspline's hub and the Flex Spline Cap, to just under
 the wave generator, with a Ø6 stub up the wave generator's bore past its two set screws. An M3 screw
@@ -615,15 +615,21 @@ through a nut captured in the coupler grips the shaft's flat, reached through an
 Attach, so the coupler can be taken off for maintenance. The Attach loses its spigot, since the nubs
 centre the hub, and its shaft ridge; the Cap's bore opens to pass the coupler.
 
-**Sized:** the spacing is **5.0 mm, 2.5 each way**. The bore rule alone needs 3.0 in J1 and J2 and 3.7 in
-J3, whose hub face stands 0.687 nearer its motor. The grip sets the rest: its nut must sit on the shaft's
-flat, which starts 9.0 above the motor face, and the coupler's grip, which holds the nut and is wider than
-the hub's Ø11 bore, must stand the running clearance under the hub face in J3. Two consequences follow:
+**Sized:** the spacing is **5.0 mm: 1.0 by moving the motor and 4.0 by moving the drive, in every joint**.
+The bore rule alone needs 3.0 in J1 and J2 and 3.7 in J3, whose hub face stands 0.687 nearer its motor.
+The grip sets the rest: its nut must sit on the shaft's flat, which starts 9.0 above the motor face, and
+the coupler's grip, which holds the nut and is wider than the hub's Ø11 bore, must stand the running
+clearance under the hub face in J3. J3 sets the split: its motor can move at most about 1.2 before the
+motor's Ø50.8 corners reach the lower 6810's Ø50 bore, so its Stator Holder seats the spline's flange on
+a boss inside the Mount Top's 6810 ([`exgear_assembly.scad`](../Hardware/Models/500-ExternalGear/exgear_assembly.scad)
+owns J3's figures), and the reviewer chose the same split for J1 and J2. Three consequences follow:
 
 - **The screw is an M3 × 4 grub screw.** A bolt's head on the grip would sweep through the six M2 hub
   screws on Ø17 as the shaft turns.
 - **The coupler goes on the shaft before the Attach goes on the motor** ([008.3](008-Assembly.md#0083-harmonic-drive-motors)):
   its grip cannot pass the hub's bore. It passes inside the M2 screws' heads as the Attach goes on.
+- **The Stator Holders' recesses are shallower.** In J2 the wave generator's hub stands 4.0 out of
+  `#200-002`'s recess, where it was flush; no assembly yet closes J2's drive.
 
 [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
 coupler's dimensions. [`630-005_FlexSplineAttach.scad`](../Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad)

@@ -12,7 +12,7 @@
 // FRAME. The reference's own: the axis on +Z, the seat at z = -1.700 (the face
 // the motor's rear bears on), the land from z = 3.500 to the top face at
 // 10.500. The lugs hang below the seat to z = -6.700. In the revised config
-// the seat stands at 0.800 and the lugs' foot at -4.200 (see below).
+// the seat stands at -0.700 and the lugs' foot at -5.700 (see below).
 //
 // Measured from the reference (scadmesh planes/slice/arcs/solid). Every
 // feature is fourfold about the axis and mirror-symmetric about the axes and
@@ -62,12 +62,13 @@
 //     seat, on the motor's rear face       press
 //     motor holes, on M3                   slip, over Ø3.0
 //
-// The revised seat stands SEAT_SHIFT (2.5) further up into the cap, with the
+// The revised seat stands SEAT_SHIFT (1.0) further up into the cap, with the
 // lugs and every feature drawn from the seat (the lugs' roots and bottom
 // edges, the root fillets, the bore's round, the channel): the motor stands
-// that much further from its drive, half of the spacing the Wave Gen Coupler
-// (#630-004) takes (DC-600-2 in specs/009-Design-Completion.md). The motor's
-// rear is then at z 0.800, cap_seat("revised"). The seat itself is trimmed
+// that much further from its drive, the motor's share of the spacing the
+// Wave Gen Coupler (#630-004) takes (DC-600-2 in
+// specs/009-Design-Completion.md). The motor's rear is then at z -0.700,
+// cap_seat("revised"). The seat itself is trimmed
 // back up by the press clearance over that.
 //
 // The revised channel's sides are rounded into the bore, as its ceiling is,
@@ -117,7 +118,7 @@ COUNTERBORE   = undef;     // [Ø, z of the floor]: the motor holes' counterbore
 
 COUNTERBORE_WEB = 0.200;   // revised: a counterbore's floor kept this far under the land's foot
 M3_D          = 3.000;     // the motor screws' nominal diameter
-SEAT_SHIFT    = 2.500;     // revised: the seat and the lugs this far up into the cap
+SEAT_SHIFT    = 1.000;     // revised: the seat and the lugs this far up into the cap
 
 function shift(cfg) = cfg == "previous" ? 0 : SEAT_SHIFT;
 function cap_seat(cfg = config) = SEAT + shift(cfg);   // the motor's rear face

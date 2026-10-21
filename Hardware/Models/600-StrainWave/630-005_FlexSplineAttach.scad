@@ -110,10 +110,13 @@
 // hub_drop shortens their path through this part by the same amount; the
 // Cap's file asserts the screw's reach at the longest path, a drop of zero.
 //
-// The counterbore floors stand at z = 7.000 (previous) and 9.500 (revised):
-// in J1 and J2 the #6 washers under the motor screws sit there and overhang
-// the land onto the far 6810's inner race, which stays where it was while the
-// motor moves half of SPACING away from the drive.
+// The counterbore floors stand at z = 7.000 (previous) and 9.500 (revised,
+// CBORE_RISE): in J1 and J2 the #6 washers under the motor screws sit there
+// and overhang the land over the far 6810's inner race. The reference keeps
+// them 0.2 off its face; the race stays where it was while the motor moves
+// 1.0 of SPACING away from the drive (DC-600-2), so the revised washers stand
+// 1.7 off it. The rise was set for an earlier 2.5 motor move and is kept so
+// the part does not change again; see 008.3 for the motor screws' length.
 
 include <../print_fit.scad>
 use <c201_spline_seat.scad>
@@ -155,7 +158,8 @@ MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.500;
 CBORE         = [10.300, 7.000];   // diameter, floor
 // Revised hub interface, for c201_spline_seat.scad's flexspline hub.
-SPACING       = 5.000;             // the hub face raised for the coupler; half of it is the motor's move (DC-600-2)
+SPACING       = 5.000;             // the hub face raised for the coupler; 1.0 of it is the motor's move (DC-600-2)
+CBORE_RISE    = 2.500;             // revised: the counterbore floors raised (see the header)
 HEAD_RAISE    = 1.000;             // the head seat raised, for an M2 x 16
 HUB_CLEAR     = 0.200;             // nub tops under the hub's inner face
 M2            = [2.000, 3.800];    // screw and head diameters
@@ -164,7 +168,7 @@ M3            = 3.000;             // the coupler's grub screw
 function attach_motor_face() = MOTOR_FACE;
 function attach_hub_face(cfg = config, drop = hub_drop) = cfg == "previous" ? HUB_FACE : HUB_FACE + SPACING - drop;
 function attach_head_seat(cfg = "revised") = HEAD_POCKET[1] + (cfg == "previous" ? 0 : HEAD_RAISE);
-function cbore_floor(cfg) = CBORE[1] + (cfg == "previous" ? 0 : SPACING / 2);
+function cbore_floor(cfg) = CBORE[1] + (cfg == "previous" ? 0 : CBORE_RISE);
 
 function slip(cfg) = fit_clearances(cfg)[0];
 function press(cfg) = fit_clearances(cfg)[1];

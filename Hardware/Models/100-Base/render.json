@@ -91,10 +91,10 @@
      "note": "The Base Stator Holder's recess opens toward +z."},
     {"kind": "fits", "id": "fits-110-002", "part": "110-002 (revised)",
      "stl": "out/revised/110-002.stl", "after": ["seat-110-002"],
-     "note": "The revised #110-002's own print fits, on the all-thread hole at 30 deg (r 35.54): the M3 rod's surface on the hole's outer side, and the M3 nut's outer flat in its trap, in the revised flange (z 10.800 .. 14.800). The seat's fits are the seat kind's.",
+     "note": "The revised #110-002's own print fits, on the all-thread hole at 30 deg (r 35.54): the M3 rod's surface on the hole's outer side, and the M3 nut's outer flat in its trap, in the revised flange (z 9.300 .. 13.300). The seat's fits are the seat kind's.",
      "probes": [
-       {"label": "all-thread hole", "at": [32.0776, 18.52, 11.5], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"},
-       {"label": "all-thread nut trap", "at": [33.1601, 19.145, 13.8], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"}
+       {"label": "all-thread hole", "at": [32.0776, 18.52, 10.0], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"},
+       {"label": "all-thread nut trap", "at": [33.1601, 19.145, 12.3], "toward": [-0.866025, -0.5, 0.0], "fit": "slip"}
      ]},
     {"kind": "render", "id": "render-120-001", "config": "revised",
      "scad": "120-001_BaseLong.scad", "out": "out/revised/120-001.stl"},
