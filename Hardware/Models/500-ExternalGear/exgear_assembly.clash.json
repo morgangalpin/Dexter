@@ -17,6 +17,8 @@
     {"id": "hub_screws",      "kind": "fastener", "side": "fixed"},
     {"id": "wave_gen",        "kind": "bought",   "side": "input"},
     {"id": "coupler",         "kind": "printed",  "side": "input"},
+    {"id": "grub_screw",      "kind": "fastener", "side": "input"},
+    {"id": "coupler_nut",     "kind": "fastener", "side": "input"},
     {"id": "gear",            "kind": "printed",  "side": "output"},
     {"id": "stator",          "kind": "printed",  "side": "output"},
     {"id": "circular_spline", "kind": "bought",   "side": "output"},
@@ -31,7 +33,8 @@
     {"id": "bearing_top_shield",   "kind": "bought", "side": "fixed",  "bearing": "bearing_top", "race": "shield"}
   ],
   "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"],
-              ["trap_nuts", "rods"], ["rods", "locknuts"], ["endcap_screws", "endcap_nuts"]],
+              ["trap_nuts", "rods"], ["rods", "locknuts"], ["endcap_screws", "endcap_nuts"],
+              ["grub_screw", "coupler_nut"]],
   "exceptions": [
     {"pair": ["end_cap", "motor"], "at": [0, 0, 13.2], "radius": 13,
      "reason": "the motor's rear seats on the End Cap's seat, line to line; the centre bore's R1 round into the seat falls away from it, so the gap opens from nothing through the press clearance across the round"},
@@ -49,6 +52,8 @@
      "reason": "the inner race's top seats on the End Cap's ring, its axial stop, line to line; the ring's R0.5 outer edge round falls away from it, so the gap opens from nothing through the press clearance across the round"},
     {"pair": ["motor", "coupler"], "at": [0, 0, 74.45], "radius": 12.0,
      "reason": "the coupler's bore, down to its blind end, is pressed on the motor's shaft, which turns with it; the motor envelope draws shaft and body as one solid, so the shaft reads as the other side"},
+    {"pair": ["motor", "grub_screw"], "at": [0, 0, 74.45], "radius": 12.0,
+     "reason": "the grub screw's cup point bears on the shaft's flat, which the motor envelope does not draw; the shaft turns with the screw, but the envelope draws shaft and body as one solid, so the shaft reads as the other side"},
     {"pair": ["gear", "stator"], "at": [28.418, 11.771, 82.0], "radius": 4, "reason": "the Stator Holder's keys bottom their chamfers in the gear's slots with its seat face flush on the gear's notched end, as the reference has it; pending the reviewer (500 Q4)"},
     {"pair": ["gear", "stator"], "at": [11.771, 28.418, 82.0], "radius": 4, "reason": "the Stator Holder's keys bottom their chamfers in the gear's slots with its seat face flush on the gear's notched end, as the reference has it; pending the reviewer (500 Q4)"},
     {"pair": ["gear", "stator"], "at": [-11.771, 28.418, 82.0], "radius": 4, "reason": "the Stator Holder's keys bottom their chamfers in the gear's slots with its seat face flush on the gear's notched end, as the reference has it; pending the reviewer (500 Q4)"},

@@ -20,7 +20,9 @@
       {"id": "endcap_nuts", "name": "M3 nuts in the End Cap", "pn": "C-612", "color": "#7d7d7d"},
       {"id": "hub_screws", "name": "Hub screws, 6 × M2 × 16", "color": "#6f7782"}]},
     {"name": "Input", "role": "turns with the motor", "parts": [
-      {"id": "coupler", "name": "Wave Gen Coupler", "pn": "#630-004", "color": "#e3b060"}]},
+      {"id": "coupler", "name": "Wave Gen Coupler", "pn": "#630-004", "color": "#e3b060"},
+      {"id": "grub_screw", "name": "Coupler's grub screw, M3 × 4", "pn": "C-618", "color": "#6f7782"},
+      {"id": "coupler_nut", "name": "Coupler's M3 nut", "pn": "C-612", "color": "#8a929b"}]},
     {"name": "Strain-wave set", "role": "C-201, HanZhen XB1-AS-C-32(14)-52", "parts": [
       {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"},
       {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"},
@@ -62,7 +64,7 @@
      "text": "The Wave Gen Coupler (#630-004) turns with the motor's shaft, inside every part that stands still about it: the Attach, the M2 hub screws, the flexspline's hub and the Flex Spline Cap, each the running clearance off it. It runs from over the motor's boss to just under the wave generator, whose bore takes its Ø6 stub past the set screws; an M3 grub screw in a captured nut grips the shaft's flat, reached through the Attach's access hole on +Y (DC-600-2).",
      "rows": [
        {"text": "Wave generator's inner end above the motor face", "value": "{wg_inner_above_motor}"},
-       {"text": "Coupler's body under the wave generator", "value": "{coupler_under_wg}"},
+       {"text": "Coupler's shoulder under the wave generator", "value": "{coupler_under_wg}"},
        {"text": "Shaft's tip short of the coupler bore's end", "value": "{shaft_under_bore_end}"},
        {"text": "Stub beyond the set screws' axis", "value": "{stub_past_set_screws}"},
        {"text": "Coupler's grip under the hub face", "value": "{grip_under_hub}"},

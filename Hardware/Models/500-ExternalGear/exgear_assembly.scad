@@ -87,15 +87,14 @@
 // the 008.3 step 10 tool sets it, and its grub screw on the shaft's flat. It
 // runs up through the Attach, the flexspline's hub and the Cap into the wave
 // generator, whose bore takes its stub. The echoes below hold DC-600-2's
-// clearances for J3: the coupler's body under the wave generator and its
+// clearances for J3: the coupler's shoulder under the wave generator and its
 // grip under the hub face by at least the running clearance, its stub past
 // the wave generator's set screws by 1.5, and its bore's blind end past the
 // shaft's tip.
 //
 // NOT DRAWN. The angle and rotate motors, which bolt to the Mount's two
 // motor boxes. The six M3 screws and nuts that hold the spline in the Stator
-// Holder, the M2 nuts in the Cap's traps, and the coupler's grub screw and
-// nut (the motor envelope's shaft has no flat for the screw to meet). The
+// Holder, and the M2 nuts in the Cap's traps. The
 // Attach's four M3 x 12 motor screws (C-610) and their #6 washers, on the
 // counterbore floors (008.3 step 11, 008.8 step 6): attach_washer_over_6810
 // is how far a washer's underside, overhanging the land, stands off the
@@ -201,7 +200,7 @@ assert(ATTACH_Z + cbore_floor("revised") > BRG_UP + B6810[2], "the Attach's moto
 assert(ATTACH_HUB_DROP >= 0, "the drive stands lower on its motor than on its holder; the Attach cannot rise");
 assert(ATTACH_HUB_DROP <= max_hub_drop(), "the Attach's hub face drops onto the coupler's grip");
 assert(MOTOR_Z0 > BRG_LOW + B6810[2], "the motor's corners reach the lower 6810's inner race");
-assert(COUPLER_Z + wgc_body("revised")[1] + RUN <= WG_INNER + 1e-9, "the coupler's body comes within the running clearance of the wave generator");
+assert(COUPLER_Z + wgc_cone_top("revised") + RUN <= WG_INNER + 1e-9, "the coupler's shoulder comes within the running clearance of the wave generator");
 assert(COUPLER_Z + wgc_top("revised") - WG_SCREWS >= 1.5, "the coupler's stub does not pass the wave generator's set screws");
 assert(COUPLER_Z + wgc_bore_top("revised") > SHAFT_TIP, "the shaft reaches the coupler bore's blind end");
 assert(GEAR_BOTTOM + GEAR_C > MOUNT_FLOOR, "the External Gear reaches the floor plate");
@@ -226,7 +225,7 @@ echo(stator_on_gear = GEAR_KEYED_END + STATOR_SEAT);     // gear z (its mesh's x
 echo(gear_above_floor = GEAR_BOTTOM + GEAR_C - MOUNT_FLOOR);  // External Gear's bottom face over the floor plate
 echo(rotor_inside_bore = MOUNT_NEAR_R - ROTOR_R);        // gear and Stator Holder inside the Mount's bore, radial, at least
 echo(wg_inner_above_motor = WG_INNER - MOTOR_F);         // the wave generator hub's inner end, from the motor face
-echo(coupler_under_wg = WG_INNER - COUPLER_Z - wgc_body("revised")[1]);  // coupler body's top to the wave generator
+echo(coupler_under_wg = WG_INNER - COUPLER_Z - wgc_cone_top("revised"));  // coupler shoulder's top to the wave generator
 echo(shaft_under_bore_end = COUPLER_Z + wgc_bore_top("revised") - SHAFT_TIP);  // shaft tip to the coupler bore's end
 echo(stub_past_set_screws = COUPLER_Z + wgc_top("revised") - WG_SCREWS);       // stub end beyond the set screws' axis
 echo(grip_under_hub = HUB_F - COUPLER_Z - wgc_grip("revised")[1]);             // coupler grip's top to the hub face
@@ -273,6 +272,9 @@ module endcap_nuts() color("#7d7d7d") for (a = SCREW_AXES)
   translate([a.x, a.y, ENDCAP_NUT_Z]) rotate(atan2(a.y, a.x) + 30) hex_nut(M3_NUT[1]);
 
 module coupler() color("#e3b060") translate([0, 0, COUPLER_Z]) wave_gen_coupler("revised");
+// The coupler's M3 x 4 grub screw and its nut, in the coupler's frame.
+module grub_screw()  color("#6f7782") translate([0, 0, COUPLER_Z]) wgc_grub_screw();
+module coupler_nut() color("#8a929b") translate([0, 0, COUPLER_Z]) wgc_nut();
 // The six M2 hub screws, in the Attach's frame: each head under its seat,
 // the shank up through the Attach, the hub and the Cap into the Cap's nut.
 module hub_screws() color("#7d7d7d") translate([0, 0, ATTACH_Z]) fs_hub_holes()
@@ -303,7 +305,7 @@ module circular_spline() color("#6f6f6f") translate([0, 0, CS_FACE]) circular_sp
 module wave_gen() color("#a0a0a0") translate([0, 0, CS_FACE]) wave_generator_envelope();
 
 PARTS = ["mount", "mount_top", "end_cap", "motor", "attach", "fs_cap", "flexspline",
-         "circular_spline", "wave_gen", "coupler", "bearing_lower", "bearing_upper", "bearing_top",
+         "circular_spline", "wave_gen", "coupler", "grub_screw", "coupler_nut", "bearing_lower", "bearing_upper", "bearing_top",
          "gear", "stator", "nut_holder_a", "nut_holder_b", "trap_nuts", "rods", "locknuts",
          "endcap_screws", "endcap_nuts", "hub_screws"];
 RACE_PARTS = [for (b = BEARINGS, r = RACES) str(b, "_", r)];   // `part` only, not in PARTS
@@ -319,6 +321,8 @@ module draw(p) {
   if (p == "circular_spline") circular_spline();
   if (p == "wave_gen")        wave_gen();
   if (p == "coupler")         coupler();
+  if (p == "grub_screw")      grub_screw();
+  if (p == "coupler_nut")     coupler_nut();
   if (p == "hub_screws")      hub_screws();
   for (b = BEARINGS) if (p == b) bearing(b);
   for (b = BEARINGS, r = RACES) if (p == str(b, "_", r)) bearing_race(b, r);
