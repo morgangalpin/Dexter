@@ -1246,7 +1246,9 @@ anything version 3 does not independently specify
     shaft's side. 008.3 puts the coupler on the shaft before the Attach. J3's parts follow in 500. The bill
     follows in 007 §7.3 and §7.8 and 007.1 §6: the hub screws move from C-601 to C-602; the coupler's two
     M3 × 8 hex cap bolts (C-608, retired) become one M3 × 4 grub screw (C-618, new) and one M3 nut; and
-    J3's four Attach screws, which §7.8 did not count, join C-610.
+    J3's four Attach screws, which §7.8 did not count, join C-610. At the stub's root the coupler's
+    body rises to the stub as a cone and its shaft bore's end corner is rounded, for strength over the
+    shaft's tip, and the assemblies draw its grub screw and nut.
   - **200-ArmBody:** the Stator Balancer (`#200-003`, an L section extruded), the Idler Plug
     (`#210-001`/`#210-003`, revolved), both Belt Directors (`#210-004`, `#210-005`, one revolved sleeve in
     `belt_director.scad` at two lengths), the Belt Director Pulley (`#210-002`, two flanges and a tooth

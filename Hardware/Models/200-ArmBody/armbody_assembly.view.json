@@ -17,6 +17,8 @@
       {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"}]},
     {"name": "Turns with the motor's shaft", "role": "the drive's input", "parts": [
       {"id": "coupler", "name": "Wave Gen Coupler", "pn": "#630-004", "color": "#e8c547"},
+      {"id": "grub_screw", "name": "Coupler's grub screw, M3 × 4", "pn": "C-618", "color": "#6f7782"},
+      {"id": "coupler_nut", "name": "Coupler's M3 nut", "pn": "C-612", "color": "#8a929b"},
       {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"}]},
     {"name": "Bearings", "role": "6810, 50 × 65 × 7, in the Arm Body", "parts": [
       {"id": "bearing_lower", "name": "Lower, under L1, on the End Cap's land", "pn": "6810", "color": "#dcdcdc"},
@@ -35,6 +37,7 @@
     {"at": [35.5, 0, 91], "text": "Arm Body top face, z 91; the flange stands {holder_flange_gap} mm over it"},
     {"at": [29, 0, -3.5], "text": "Lower 6810, under the L1 ledge"},
     {"at": [29, 0, 57.5], "text": "Upper 6810, on the L2 ledge, {j2_upper_6810_above_motor} mm over the motor's face"},
+    {"at": [0, 6.0, 62.6], "text": "Coupler's M3 × 4 grub screw through its nut onto the shaft's flat, facing the Attach's access hole on +Y"},
     {"at": [21, 0, 87.7], "text": "Circular spline, face at z {j2_spline_face_z}; its flange {j2_drive_gap} mm off the holder's floor"},
     {"at": [0, 0, 95.7], "text": "Wave generator's hub, outer face at z {j2_wg_outer_z}, {j2_wg_above_holder} mm off the holder's opening (negative: inside it)"}
   ],
@@ -45,6 +48,7 @@
     {"label": "Idler column", "at": [35, 51.5, 64], "span": 40},
     {"label": "J2 drive", "at": [0, 0, 45], "span": 120},
     {"label": "Spline in the holder", "at": [0, 0, 88], "span": 40},
+    {"label": "Grub screw and nut", "at": [0, 4, 62.6], "span": 18, "from": [0.3, 1, 0.2]},
     {"label": "Lower 6810", "at": [0, 0, -3], "span": 40}
   ],
   "notes": [
@@ -52,7 +56,7 @@
      "text": "No spec places these parts, so each is placed by the feature it carries and should be checked by eye. The holder stands {holder_flange_gap} mm above the Arm Body's top face because the Balancers' lips are at z 96 and bear on its back. The Belt Director Caps sit on the upper bearings' inner races, and each shank ends flush with its bearing.",
      "focus": {"label": "Show the idler column", "preset": "Idler column"}},
     {"heading": "J2's drive",
-     "text": "Placed from the pivot up: the Pivot Motor End Cap in the lower 6810, the motor on the cap, the Attach on the motor's face with its land in the upper 6810, the flexspline on the Attach, and C-201's circular spline the drive's span above. The holder's revised floor is set where that spline's flange lands, so the flange sits on it at {j2_drive_gap} mm (asserted). The Wave Gen Coupler stands {j2_coupler_under_wg} mm under the wave generator, its stub {j2_stub_past_set_screws} mm past the set screws.",
+     "text": "Placed from the pivot up: the Pivot Motor End Cap in the lower 6810, the motor on the cap, the Attach on the motor's face with its land in the upper 6810, the flexspline on the Attach, and C-201's circular spline the drive's span above. The holder's revised floor is set where that spline's flange lands, so the flange sits on it at {j2_drive_gap} mm (asserted). The top of the Wave Gen Coupler's shoulder stands {j2_coupler_under_wg} mm under the wave generator, its stub {j2_stub_past_set_screws} mm past the set screws, and its grub screw and nut turn with it; the motor envelope draws no shaft flat, so the manifest sets the shaft aside against the coupler and the screw.",
      "focus": {"label": "Show the drive", "preset": "J2 drive"}},
     {"heading": "Not drawn",
      "items": [

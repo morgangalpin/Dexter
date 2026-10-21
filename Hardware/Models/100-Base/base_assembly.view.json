@@ -25,6 +25,8 @@
       {"id": "flexspline", "name": "Flexspline", "pn": "C-201", "color": "#8f969c"}]},
     {"name": "Turns with the motor's shaft", "role": "the drive's input", "parts": [
       {"id": "coupler", "name": "Wave Gen Coupler", "pn": "#630-004", "color": "#e8c547"},
+      {"id": "grub_screw", "name": "Coupler's grub screw, M3 × 4", "pn": "C-618", "color": "#6f7782"},
+      {"id": "coupler_nut", "name": "Coupler's M3 nut", "pn": "C-612", "color": "#8a929b"},
       {"id": "wave_gen", "name": "Wave generator", "pn": "C-201", "color": "#b58ac9"}]},
     {"name": "Bearings", "role": "6810, 50 × 65 × 7, in the Long", "parts": [
       {"id": "bearing_upper", "name": "Upper, on the End Cap's land", "pn": "6810", "color": "#dcdcdc"},
@@ -40,8 +42,9 @@
     {"at": [49, 0, 185], "text": "Pivot Skirt round the disc"},
     {"at": [-15, 0, 138.734], "text": "Motor face, z {motor_face_z}"},
     {"at": [2.5, 0, 125.5], "text": "Exception: the coupler's bore on the motor's shaft, which turns with it"},
-    {"at": [0, -6.5, 128.4], "text": "Coupler's grub-screw hole and the Attach's access hole, on -Y with both parts turned over"},
-    {"at": [5, 0, 110.8], "text": "Coupler's body, {coupler_under_wg} mm under the wave generator"},
+    {"at": [0, -6.0, 128.4], "text": "Coupler's M3 × 4 grub screw, on the shaft's flat, facing the Attach's access hole; on -Y with both parts turned over"},
+    {"at": [2.75, -3.8, 130.0], "text": "Coupler's M3 nut in its pocket, held on the pocket's outer face by the screw"},
+    {"at": [3, 0, 111.5], "text": "Coupler's shoulder, a cone from the body to the stub, its top {coupler_under_wg} mm under the wave generator"},
     {"at": [21.2, 10, 138.9], "text": "Attach lug, its root fillet trimmed off the motor's front edge (cut at y {cut_lugs})"},
     {"at": [21.2, 10, 185.4], "text": "End Cap lug, its root fillet trimmed off the motor's rear edge (cut at y {cut_lugs})"},
     {"at": [17.64, 17.64, 194.5], "text": "End Cap land, the press clearance inside the upper 6810 (slide the cut to y 16.8)"},
@@ -53,6 +56,7 @@
     {"label": "Holder in the stack", "at": [-1, 0, 100], "span": 48},
     {"label": "Drive hub", "at": [10, 0, 120], "span": 30},
     {"label": "Coupler", "at": [0, 0, 118.5], "span": 50},
+    {"label": "Grub screw and nut", "at": [0, -4, 128.4], "span": 18, "from": [0.3, -1, 0.2]},
     {"label": "Attach lugs", "at": [21.15, 0, 139.0], "span": 3},
     {"label": "End Cap lugs", "at": [21.15, 0, 185.6], "span": 3},
     {"label": "End Cap land", "at": [16.8, 0, 194.5], "span": 16},
@@ -66,7 +70,8 @@
     {"heading": "Clash check",
      "text": "assembly-clash.rs checks every pair against its class (base_assembly.clash.json); the depths and gaps it measured are in out/clash.log. Every pair clears its class, and one contact is accepted as drawn:",
      "items": [
-       "Exception, motor and coupler: the coupler's bore is pressed on the motor's shaft, which turns with it, but the motor envelope draws shaft and body as one solid; the manifest's exceptions set the shaft aside."],
+       "Exception, motor and coupler: the coupler's bore is pressed on the motor's shaft, which turns with it, but the motor envelope draws shaft and body as one solid; the manifest's exceptions set the shaft aside.",
+       "Exception, motor and the coupler's grub screw: the screw turns with the shaft, and the envelope draws no flat, so the screw's cup point reads as running into the shaft."],
      "focus": {"label": "Show the coupler", "preset": "Coupler", "hide": ["strakes_mount", "strakes_long", "threads"]}},
     {"heading": "Drive hub",
      "text": "The Attach's nubs stand in the flexspline's hub holes, and the Flex Spline Cap's holes are on them; the six M2 hub screws run from the Attach's head seats up through both into the Cap's nuts. The wave generator holds the flexspline's open end oval, so both are drawn oval at one phase (c201_spline_seat.scad), and the cup stands clear of the holder's bore by more than the running clearance.",
@@ -75,10 +80,10 @@
      "text": "Slide the cut to y {cut_lugs}. The Attach grips the motor's front with eight lugs and the End Cap grips its rear the same way. In the reference parts each lug's root fillet fills the corner the motor's square edge sits in. The revised Attach and End Cap trim the fillets off the motor's square, and stand each lug the press clearance off the motor's side. The revised End Cap's land stands the press clearance inside the upper 6810's inner race, and its seat the press clearance above the motor's rear face. On the axis, the coupler is on the motor's shaft (see The coupler).",
      "focus": {"label": "Show the Attach's lugs", "preset": "Attach lugs", "hide": ["strakes_mount", "strakes_long", "threads", "clamp"]}},
     {"heading": "The coupler",
-     "text": "The Wave Gen Coupler (#630-004) turns with the motor's shaft, inside every part that stands still about it: the Attach, the M2 hub screws, the flexspline's hub and the Flex Spline Cap, each the running clearance off it. It runs from over the motor's boss to just under the wave generator, whose bore takes its Ø6 stub past the set screws; an M3 grub screw in a captured nut grips the shaft's flat, reached through the Attach's access hole on +Y (DC-600-2).",
+     "text": "The Wave Gen Coupler (#630-004) turns with the motor's shaft, inside every part that stands still about it: the Attach, the M2 hub screws, the flexspline's hub and the Flex Spline Cap, each the running clearance off it. It runs from over the motor's boss to just under the wave generator, whose bore takes its Ø6 stub past the set screws; an M3 × 4 grub screw through a captured nut grips the shaft's flat, reached through the Attach's access hole on +Y (DC-600-2). A cone rises from the body's top edge to the stub, the highest point under the wave generator.",
      "rows": [
        {"text": "Wave generator's inner end below the motor face", "value": "{wg_inner_above_motor}"},
-       {"text": "Coupler's body under the wave generator", "value": "{coupler_under_wg}"},
+       {"text": "Coupler's shoulder under the wave generator", "value": "{coupler_under_wg}"},
        {"text": "Shaft's tip short of the coupler bore's end", "value": "{shaft_under_bore_end}"},
        {"text": "Stub beyond the set screws' axis", "value": "{stub_past_set_screws}"},
        {"text": "Coupler's grip under the hub face", "value": "{grip_under_hub}"}],
@@ -101,7 +106,8 @@
     {"heading": "Not drawn",
      "items": [
        "The J1 opto block that reads the disc",
-       "Nuts, washers and screws, but for the M2 hub screws; the coupler's grub screw and nut among them (the motor envelope's shaft has no flat for the screw to meet)",
+       "Nuts, washers and screws, but for the M2 hub screws and the coupler's grub screw and nut",
+       "The shaft's flat: the motor envelope's shaft is round, so the grub screw's tip stands 0.5 into it",
        "Strake depths are 008.2's: the Mount's bottomed in their slots, the Long's about 6 mm proud",
        "Vendor parts are envelopes: motor from C-101, C-201 from the XB1-AS-C-32 drawing and the flexspline cup as measured, bearings at catalogue size"]}
   ]

@@ -16,7 +16,8 @@
 //     turned over, its land in the L1 6810, its top face flush with the bearing's
 //     lower face, as pivot_assembly.scad puts it on the Main Pivot's J2 end face.
 //     The motor's rear on the cap's seat, its face MOTOR_LEN above; the Wave Gen
-//     Coupler wgc_above_motor() over the face; the Flex Spline Attach (no hub drop)
+//     Coupler wgc_above_motor() over the face, with its grub screw and nut where
+//     its source draws them; the Flex Spline Attach (no hub drop)
 //     on the face, its land in the L2 6810; the flexspline's hub on its hub face,
 //     the Flex Spline Cap inside the cup and the six M2 hub screws up through both;
 //     C-201's circular spline drive_span() above the hub face, the wave generator
@@ -111,8 +112,8 @@ WG_SCREWS  = CS_FACE - wg_set_screws();
 assert(abs(CAP_LAND[1] - CAP_LAND[0] - B6810[2]) < 1e-9, "the End Cap's land is not the 6810's width");
 assert(abs(J2_GAP) < 1e-6, "J2's drive does not close on the Pivot Stator Holder's floor; see j2_drive_gap");
 assert(BRG_UPPER > MOTOR_F && BRG_UPPER + B6810[2] < HUB_F, "the L2 6810 is not on the Attach's land");
-assert(WG_INNER - (COUPLER_Z + wgc_body("revised")[1]) >= fit_clearances("revised")[2] - 1e-9,
-       "the coupler's body comes within the running clearance of the wave generator");
+assert(WG_INNER - (COUPLER_Z + wgc_cone_top("revised")) >= fit_clearances("revised")[2] - 1e-9,
+       "the coupler's shoulder comes within the running clearance of the wave generator");
 assert(COUPLER_Z + wgc_top("revised") - WG_SCREWS >= 1.5, "the coupler's stub does not pass the wave generator's set screws");
 
 echo(j2_motor_face_z = MOTOR_F);
@@ -121,7 +122,7 @@ echo(j2_spline_face_z = CS_FACE);
 echo(j2_drive_gap = round(J2_GAP * 1000) / 1000 + 0);
 echo(j2_wg_outer_z = WG_OUTER);
 echo(j2_wg_above_holder = WG_OUTER - HOLDER_Z);
-echo(j2_coupler_under_wg = WG_INNER - (COUPLER_Z + wgc_body("revised")[1]));
+echo(j2_coupler_under_wg = WG_INNER - (COUPLER_Z + wgc_cone_top("revised")));   // coupler shoulder's top to the wave generator
 echo(j2_stub_past_set_screws = COUPLER_Z + wgc_top("revised") - WG_SCREWS);
 echo(holder_flange_gap = HOLDER_Z - HOLDER_FLANGE[1] - ARM_TOP);   // flange's face over the arm's top
 echo(holder_body_below_top = ARM_TOP - (HOLDER_Z - HOLDER_END));   // body's depth in the bore
@@ -145,6 +146,8 @@ module j2_cap()     color("#c98a3a") translate([0, 0, CAP_Z]) rotate([180, 0, 0]
 module motor()      color("#50565c") translate([0, 0, MOTOR_REAR]) c101_motor_envelope(MOTOR_LEN);
 module attach()     color("#e3b060") translate([0, 0, ATTACH_Z]) flex_spline_attach("revised", 0);
 module coupler()    color("#e8c547") translate([0, 0, COUPLER_Z]) wave_gen_coupler("revised");
+module grub_screw() color("#6f7782") translate([0, 0, COUPLER_Z]) wgc_grub_screw();   // the coupler's M3 x 4 grub screw
+module coupler_nut() color("#8a929b") translate([0, 0, COUPLER_Z]) wgc_nut();        // and its nut
 module fs_cap()     color("#c98a3a") translate([0, 0, HUB_F + fs_hub()[1] + cap_face()]) rotate([180, 0, 0])
                       flex_spline_cap("revised");
 // The six M2 hub screws, in the Attach's frame: each head under its seat,
@@ -193,7 +196,7 @@ module idler_bearing() color("#dcdcdc") translate([COL_D[0], COL_D[1], 0]) beari
 module pulley() color("#4f86c6") translate([COL_D[0], COL_D[1], PULLEY_Z]) printed("210-002");
 
 PARTS = ["arm_body", "holder", "balancers", "bearing_lower", "bearing_upper", "directors", "caps",
-         "bearings_mr128", "idler_plug", "idler_bearing", "pulley", "j2_cap", "motor", "coupler", "attach",
+         "bearings_mr128", "idler_plug", "idler_bearing", "pulley", "j2_cap", "motor", "coupler", "grub_screw", "coupler_nut", "attach",
          "hub_screws", "fs_cap", "flexspline", "wave_gen", "circular_spline"];
 
 module draw(p) {
@@ -205,6 +208,8 @@ module draw(p) {
   if (p == "j2_cap")         j2_cap();
   if (p == "motor")          motor();
   if (p == "coupler")        coupler();
+  if (p == "grub_screw")     grub_screw();
+  if (p == "coupler_nut")    coupler_nut();
   if (p == "attach")         attach();
   if (p == "hub_screws")     hub_screws();
   if (p == "fs_cap")         fs_cap();

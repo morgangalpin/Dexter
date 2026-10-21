@@ -67,22 +67,41 @@
 //                                   it                         3.75 .. 11.3
 //     R3 body                       Ø10.0: the running clearance
 //                                   in the hub's Ø11 bore      11.3 .. 23.5
+//     R5 shoulder                   a cone from R3's top edge
+//                                   up to R4's side, 32.6 deg
+//                                   from the horizontal; its
+//                                   top is the highest point
+//                                   under the wave generator   23.5 .. 24.813
 //     R4 stub                       Ø6.0, into the wave
 //                                   generator's bore, past its
-//                                   set screws in J1, J2 and J3  23.5 .. 40
+//                                   set screws in J1, J2 and J3  24.813 .. 40
 //     B2 shaft bore                 Ø5.0, blind, 1.0 past the
-//                                   shaft's tip; 1.0 floor     0 .. 22.5
+//                                   shaft's tip, its end's
+//                                   corner rounded R0.8        0 .. 22.5
 //     N2 nut pocket, 1              the M3 nut, its axis along
 //                                   +Y and its flats facing ±X:
 //                                   y 2.5 .. 5.0, x ±2.75; open
 //                                   below, a 30 deg gable over
 //                                   the nut's upper corner     0 .. 11.075
 //     H2 grub-screw hole            Ø3.0 along +Y, axis z 7.9,
-//                                   from N2 out through R2     6.4 .. 9.4
+//                                   from B2 out through N2
+//                                   and R2                     6.4 .. 9.4
 //
-// The screw is an M3 x 4 grub screw, driven through N2's nut onto the shaft's
-// flat, which starts 9.0 above the motor face: its cup point (Ø1.4) lands
-// 0.7 past that. It is a grub screw because a bolt's head on R2 would sweep r 6.5 to
+// R5 and B2's round keep material where the stub meets the body, over the
+// shaft's tip: in place of a square step over a flat 1.0 floor, the wall from
+// B2's rounded end out to R5 is 2.47, about R3's own wall round B2 (2.45). R5
+// starts at R3's top edge, so nothing is cut from R3, and its top is as high as
+// J3 allows: J3's wave generator stands nearest the coupler, and there R5's top
+// is the running clearance under it (DC-600-2). R3 and R5 are the same in every
+// joint. B2's round starts 0.2 past the shaft's tip,
+// so a square-ended shaft still goes fully home; C-101 gives no tip chamfer.
+//
+// The screw is an M3 x 4 grub screw (C-618), driven through N2's nut onto the
+// shaft's flat, which starts 9.0 above the motor face: its cup point (Ø1.4)
+// lands 0.7 past that. The flat stands SHAFT_FLAT from the axis, a 0.5 D-cut,
+// NEMA 17's usual (007.1 C-101 gives no depth), so the screw runs y 2.0 .. 6.0,
+// 0.5 inside R2. The screw's thrust holds the nut on N2's outer face.
+// wgc_grub_screw() and wgc_nut() draw the two in this frame for the assemblies. It is a grub screw because a bolt's head on R2 would sweep r 6.5 to
 // 9.5 as the shaft turns, through the M2 screws' shanks at r 7.5 to 9.5. It is
 // driven through the Attach's access hole, and the screw goes in the same
 // way. R2 stands 0.5 under the hub's face in J3, whose hub face is the lowest
@@ -105,9 +124,10 @@
 // drawn by those parts and asserted by the Flex Spline Attach.
 //
 // ASSEMBLY. Placement reads wgc_above_motor(), wgc_top(cfg), wgc_body(cfg),
-// wgc_grip(cfg), wgc_foot(cfg), wgc_stub(cfg), wgc_screw_z(cfg),
-// wgc_bore_d(cfg) and wgc_bore_top(cfg); this file draws no BOSL2, so an
-// assembly can `use` it.
+// wgc_cone_top(cfg), wgc_grip(cfg), wgc_foot(cfg), wgc_stub(cfg),
+// wgc_screw_z(cfg), wgc_bore_d(cfg) and wgc_bore_top(cfg); the wave
+// generator's running clearance is taken from wgc_cone_top(). This file draws
+// no BOSL2, so an assembly can `use` it.
 
 include <../print_fit.scad>
 
@@ -141,11 +161,15 @@ ABOVE_MOTOR = 2.500;             // bottom face over the motor face: the boss's 
 FOOT        = [12.200, 3.750];   // R1: Ø, top
 GRIP        = [13.000, 11.300];  // R2: Ø, top
 BODY        = [10.000, 23.500];  // R3: Ø, top
+CONE_TOP    = 24.813;            // R5's top, at R4's radius: J3's wave generator's hub less the running clearance
 STUB_END    = 40.000;            // R4's end
 BORE_PAST   = 1.000;             // B2's end beyond the shaft's tip
-BORE_FLOOR  = 1.000;             // R3 left over B2's end
+BORE_ROUND  = 0.800;             // B2's end corner, within BORE_PAST
+BORE_WALL   = 2.400;             // the least wall from B2's end to R5: about R3's round B2
 GRUB_Z      = 7.900;
 NUT_OUT     = 5.000;             // N2's outer face, y
+SHAFT_FLAT  = 2.000;             // the shaft's flat from the axis: a 0.5 D-cut
+GRUB_LEN    = 4.000;             // C-618, M3 x 4
 // The mates' nominals.
 SHAFT       = [5.000, 24.000];   // C-101's shaft: Ø, length beyond the motor face
 WG_BORE_D   = 6.000;             // C-201's wave-generator input bore
@@ -158,6 +182,7 @@ function bore_d(cfg) = cfg == "previous" ? BORE_D : fit_bore(SHAFT[0], press(cfg
 function bore_top(cfg) = cfg == "previous" ? STUB_TOP : SHAFT[1] + BORE_PAST - ABOVE_MOTOR;
 function stub_d(cfg) = cfg == "previous" ? STUB_D : fit_pin(WG_BORE_D, press(cfg));
 function stub_top(cfg) = cfg == "previous" ? STUB_TOP : STUB_END;
+function cone_top(cfg) = cfg == "previous" ? HEX_TOP : CONE_TOP;
 function body_top(cfg) = cfg == "previous" ? HEX_TOP : BODY[1];
 function screw_hole_d(cfg) = cfg == "previous" ? SCREW_HOLE : fit_bore(M3, slip(cfg));
 function pocket(cfg) = cfg == "previous" ? POCKET : [fit_bore(NUT[0], slip(cfg)), fit_bore(NUT[1], slip(cfg))];
@@ -167,9 +192,10 @@ function pocket(cfg) = cfg == "previous" ? POCKET : [fit_bore(NUT[0], slip(cfg))
 function wgc_above_motor() = ABOVE_MOTOR;
 function wgc_top(cfg = config) = stub_top(cfg);
 function wgc_body(cfg = config) = cfg == "previous" ? undef : [BODY[0], body_top(cfg)];
+function wgc_cone_top(cfg = config) = cone_top(cfg);   // the highest point under the stub
 function wgc_grip(cfg = config) = cfg == "previous" ? undef : GRIP;
 function wgc_foot(cfg = config) = cfg == "previous" ? undef : FOOT;
-function wgc_stub(cfg = config) = [stub_d(cfg), stub_top(cfg) - body_top(cfg)];
+function wgc_stub(cfg = config) = [stub_d(cfg), stub_top(cfg) - cone_top(cfg)];
 function wgc_screw_z(cfg = config) = cfg == "previous" ? SCREW_Z : GRUB_Z;
 function wgc_bore_d(cfg = config) = bore_d(cfg);
 function wgc_bore_top(cfg = config) = bore_top(cfg);
@@ -219,11 +245,27 @@ module previous_coupler()
     }
 
 // --- Revised -----------------------------------------------------------------
-// R1 to R4 as one revolved profile.
+// R1 to R5 as one revolved profile.
 module revised_profile(cfg)
     polygon([[0, 0], [FOOT[0] / 2, 0], [FOOT[0] / 2, FOOT[1]], [GRIP[0] / 2, FOOT[1]],
-             [GRIP[0] / 2, GRIP[1]], [BODY[0] / 2, GRIP[1]], [BODY[0] / 2, BODY[1]],
-             [stub_d(cfg) / 2, BODY[1]], [stub_d(cfg) / 2, STUB_END], [0, STUB_END]]);
+             [GRIP[0] / 2, GRIP[1]], [BODY[0] / 2, GRIP[1]], [BODY[0] / 2, body_top(cfg)],
+             [stub_d(cfg) / 2, cone_top(cfg)], [stub_d(cfg) / 2, STUB_END], [0, STUB_END]]);
+
+// B2 as a revolved profile, open below, its end's corner a quarter round.
+module bore_profile(cfg) {
+    r = bore_d(cfg) / 2;
+    t = bore_top(cfg);
+    polygon(concat([[0, -1], [r, -1]],
+                   [for (a = [0 : 5 : 90]) [r - BORE_ROUND + BORE_ROUND * cos(a), t - BORE_ROUND + BORE_ROUND * sin(a)]],
+                   [[0, t]]));
+}
+
+// The least wall from B2's round to R5's cone, along the cone's normal: the
+// round's centre's distance to the cone's line, less the round.
+function cone_normal(cfg) = let(n = [cone_top(cfg) - body_top(cfg), BODY[0] / 2 - stub_d(cfg) / 2]) n / norm(n);
+function bore_end_wall(cfg) = let(n = cone_normal(cfg), c = [bore_d(cfg) / 2 - BORE_ROUND, bore_top(cfg) - BORE_ROUND])
+    n * [BODY[0] / 2, body_top(cfg)] - n * c - BORE_ROUND;
+function cone_angle(cfg) = atan((cone_top(cfg) - body_top(cfg)) / (BODY[0] / 2 - stub_d(cfg) / 2));
 
 // N2, a prism along Y from its outer face inward to the bore, open below. Its
 // flats face ±X, so the nut slides up it, and its roof is the nut's upper
@@ -241,10 +283,18 @@ module nut_pocket(cfg) {
 module revised_coupler(cfg)
     difference() {
         rotate_extrude() revised_profile(cfg);
-        translate([0, 0, -1]) cylinder(d = bore_d(cfg), h = bore_top(cfg) + 1);
+        rotate_extrude() bore_profile(cfg);
         nut_pocket(cfg);
-        translate([0, NUT_OUT - epsilon, GRUB_Z]) rotate([-90, 0, 0]) cylinder(d = screw_hole_d(cfg), h = GRIP[0], $fn = 48);
+        translate([0, 0, GRUB_Z]) rotate([-90, 0, 0]) cylinder(d = screw_hole_d(cfg), h = GRIP[0], $fn = 48);
     }
+
+// The grub screw and its nut, at their nominal sizes in this frame, for an
+// assembly to draw as fasteners: the screw from the shaft's flat outward, the
+// nut on N2's outer face with the screw through it.
+module wgc_grub_screw() translate([0, SHAFT_FLAT, GRUB_Z]) rotate([-90, 0, 0]) cylinder(d = M3, h = GRUB_LEN, $fn = 48);
+module wgc_nut()
+    translate([0, NUT_OUT, GRUB_Z]) rotate([90, 0, 0]) linear_extrude(NUT[1])
+        difference() { rotate(30) circle(d = NUT[0] / cos(30), $fn = 6); circle(d = M3, $fn = 48); }
 
 module wave_gen_coupler(cfg = config)
     if (cfg == "previous") previous_coupler();
@@ -252,7 +302,11 @@ module wave_gen_coupler(cfg = config)
 
 assert(POCKET_OUT < HEX_AF / 2 - 2, "the bolt's wall outside the nut pocket is too thin");
 assert(POCKET_FLAT + POCKET[0] / 2 * tan(30) < HEX_TOP - NOTCH[0] / 2, "the pocket's apex reaches the notches");
-assert(bore_top("revised") + BORE_FLOOR <= BODY[1], "the stub stands on the shaft bore's floor");
+assert(body_top("revised") > bore_top("revised"), "the shoulder's cone starts below the shaft bore's end");
+assert(cone_top("revised") > body_top("revised"), "the shoulder does not rise to the stub");
+assert(bore_end_wall("revised") >= BORE_WALL, "the wall round the shaft bore's end is too thin");
+assert(BORE_ROUND < BORE_PAST, "the shaft bore's round reaches the shaft's tip");
+assert(SHAFT_FLAT + GRUB_LEN < GRIP[0] / 2, "the grub screw stands proud of the grip");
 assert(nut_pocket_apex("revised") < GRIP[1], "the nut pocket's apex reaches past the grip, beside the body");
 assert(nut_pocket_shoulder("revised") < GRIP[1] - 0.4, "the nut pocket's roof outside the body is under two layers");
 assert(norm([pocket("revised")[0] / 2, NUT_OUT]) < GRIP[0] / 2 - 0.6, "the grip's wall outside the nut pocket's corners is too thin");

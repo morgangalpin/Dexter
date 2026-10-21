@@ -42,7 +42,8 @@
 //   - The motor's rear on the cap's seat, CAP_SEAT, its face MOTOR_LEN below.
 //   - The Wave Gen Coupler (#630-004, revised) on the shaft, its bottom
 //     face wgc_above_motor() below the motor face, where the 008.3 step 10
-//     tool sets it.
+//     tool sets it; its M3 x 4 grub screw and nut where the coupler's source
+//     draws them (wgc_grub_screw(), wgc_nut()).
 //   - The Flex Spline Attach (#630-005, revised, no hub drop) on the motor
 //     face, its land in the lower 6810 on the Long's shoulder; the
 //     flexspline's hub on its hub face, its holes on the Attach's nubs, the
@@ -160,8 +161,8 @@ assert(abs(CAP_LAND[1] - CAP_LAND[0] - B6810[2]) < 1e-9, "the End Cap's land is 
 assert(MOTOR_F > BRG_LOW + B6810[2], "the motor face passes into the lower 6810");
 assert(HUB_F < BRG_LOW, "the lower 6810 runs off the Attach's land, which spans the hub face to the motor face");
 assert(abs(DRIVE_GAP) < 1e-6, "J1's drive does not close on the Stator Holder's floor; see drive_gap");
-assert(COUPLER_Z - wgc_body("revised")[1] - WG_INNER >= fit_clearances("revised")[2] - 1e-9,
-       "the coupler's body comes within the running clearance of the wave generator");
+assert(COUPLER_Z - wgc_cone_top("revised") - WG_INNER >= fit_clearances("revised")[2] - 1e-9,
+       "the coupler's shoulder comes within the running clearance of the wave generator");
 assert(WG_SCREWS - (COUPLER_Z - wgc_top("revised")) >= 1.5, "the coupler's stub does not pass the wave generator's set screws");
 
 // Named, so scripts and the section viewer (base_assembly.view.json) read
@@ -176,7 +177,7 @@ echo(land_below_6810 = BRG_LOW - HUB_F);                 // the Attach's land, h
 echo(spline_face_z = CS_FACE);
 echo(drive_gap = round(DRIVE_GAP * 1000) / 1000 + 0);   // holder floor above the spline's flange; 0 closes (+ 0 clears -0)
 echo(wg_inner_above_motor = MOTOR_F - WG_INNER);          // the wave generator hub's inner end, from the motor face
-echo(coupler_under_wg = COUPLER_Z - wgc_body("revised")[1] - WG_INNER);  // coupler body's top to the wave generator
+echo(coupler_under_wg = COUPLER_Z - wgc_cone_top("revised") - WG_INNER);  // coupler shoulder's top to the wave generator
 echo(shaft_under_bore_end = SHAFT_TIP - (COUPLER_Z - wgc_bore_top("revised")));  // shaft tip to the coupler bore's end
 echo(stub_past_set_screws = WG_SCREWS - (COUPLER_Z - wgc_top("revised")));        // stub end beyond the set screws' axis
 echo(grip_under_hub = COUPLER_Z - wgc_grip("revised")[1] - HUB_F);              // coupler grip's top to the hub face
@@ -207,6 +208,9 @@ module motor()   color("#50565c") translate([0, 0, MOTOR_REAR]) rotate([180, 0, 
 module attach()  color("#e3b060") translate([0, 0, ATTACH_Z]) rotate([180, 0, 0]) flex_spline_attach("revised", 0);
 module fs_cap()  color("#c98a3a") translate([0, 0, HUB_F - fs_hub()[1] - cap_face()]) flex_spline_cap("revised");
 module coupler() color("#e8c547") translate([0, 0, COUPLER_Z]) rotate([180, 0, 0]) wave_gen_coupler("revised");
+// The coupler's M3 x 4 grub screw and its nut, in the coupler's frame.
+module grub_screw()  color("#6f7782") translate([0, 0, COUPLER_Z]) rotate([180, 0, 0]) wgc_grub_screw();
+module coupler_nut() color("#8a929b") translate([0, 0, COUPLER_Z]) rotate([180, 0, 0]) wgc_nut();
 // The six M2 hub screws, in the Attach's frame: each head under its seat,
 // the shank up through the hub into the Cap's nut.
 module hub_screws() color("#6f7782") translate([0, 0, ATTACH_Z]) rotate([180, 0, 0]) fs_hub_holes()
@@ -245,7 +249,7 @@ module threads() color("#6f7782") for (a = [0 : 120 : 240])
   rotate(a) translate([THREAD_R, 0, HOLDER_FACE]) cylinder(d = THREAD[0], h = THREAD[1], $fn = 24);
 
 PARTS = ["plate", "mount", "clamp", "long", "strakes_mount", "strakes_long", "threads", "disc",
-         "pivot", "skirt", "end_cap", "motor", "coupler", "attach", "hub_screws", "fs_cap", "flexspline", "wave_gen",
+         "pivot", "skirt", "end_cap", "motor", "coupler", "grub_screw", "coupler_nut", "attach", "hub_screws", "fs_cap", "flexspline", "wave_gen",
          "circular_spline", "holder", "bearing_lower", "bearing_upper"];
 
 module draw(p) {
@@ -264,6 +268,8 @@ module draw(p) {
   if (p == "attach")          attach();
   if (p == "fs_cap")          fs_cap();
   if (p == "coupler")         coupler();
+  if (p == "grub_screw")      grub_screw();
+  if (p == "coupler_nut")     coupler_nut();
   if (p == "hub_screws")      hub_screws();
   if (p == "flexspline")      flexspline();
   if (p == "wave_gen")        wave_gen();
