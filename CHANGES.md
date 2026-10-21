@@ -1239,6 +1239,12 @@ anything version 3 does not independently specify
     § Known defects). `dist` is held at 0.65 and not 0.15: three joins between the fillets stay 0.4
     to 0.47 off the mesh, where the CAD blends and a ball's path does not. `robot_assembly.scad`
     draws the part from the source.
+  - **200-ArmBody, the solid revolves:** the dist gates of the Idler Plug and both Belt Directors failed
+    once [CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine) moved them off 2021.01. Each
+    profile has an edge on the axis, which the snapshot revolves into zero-area facets that `dist`
+    measures inside the part (README, "A revolve with an edge on the axis"). `belt_director.scad`'s
+    `solid_revolve()` now draws those three parts and the Belt Director Cap, and the gates read 0.003,
+    0.004 and 0.005 mm.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
@@ -1267,7 +1273,8 @@ anything version 3 does not independently specify
     closes it on Manifold.
   - `200-ArmBody`'s parts render on Manifold, and its outlines, fits and assembly clash check pass.
     The dist gates of `210-003` (2.997 mm), `210-004` and `210-005` (0.250 mm each) fail with the same
-    figures on CGAL, so the engine does not cause them; they are open with the arm body's conversion.
+    figures on CGAL, so the engine does not cause them;
+    [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad)'s solid-revolves entry closes them.
 - **Driver:** Fillets. BOSL2's `fillet()`, `join_prism()`, `offset_sweep()` and `minkowski`-based
   rounding are slow on CGAL, and CGAL asserts on the tangent cutters a fillet makes.
 - **Status:** `[Specified]`.

@@ -6,7 +6,7 @@ path,group,bytes,stl_format_triangles,sha256
 200-ArmBody/200-003_StatorBalancer.view.json,200-ArmBody,1590,,2e4aaedc26d6a25380066eee03d0fc8acfdb173656192079dafa1c39c59184d6
 200-ArmBody/200-006_CalibrationArrows.scad,200-ArmBody,5489,,6747c446e904936d92569af1cd726574b5c3be18b68f862fc63af4f604d2cd94
 200-ArmBody/200-006_CalibrationArrows.view.json,200-ArmBody,2167,,602aef1ca388f665e3da01a7395e5d58965684747255dc1f4857d9dc5bb72a50
-200-ArmBody/210-003_IdlerPlug.scad,200-ArmBody,3229,,efb69b42c2868eec532d5afa7d09b18df612a3b9c7f0a95b90d7491cfd99b50d
+200-ArmBody/210-003_IdlerPlug.scad,200-ArmBody,3253,,939765382c2a22f9490f0e3df8e292a9ada773ed0bf0a5608db76706ee7eadb1
 200-ArmBody/210-001_BeltDirectorCap.scad,200-ArmBody,590,,560db3948514396aeb8dfddcb68d7ead6fb31e4706b8f72a6033420527cf0787
 200-ArmBody/210-003_IdlerPlug.view.json,200-ArmBody,1509,,95045622fe20fadb39873236657620ea49b845ff8c836d741661d8f3c2924972
 200-ArmBody/210-001_BeltDirectorCap.view.json,200-ArmBody,920,,a4c4b2fa6bc67b38538007a109790a5b7ab68109b5c0f3befe3fe7848832c110
@@ -18,7 +18,7 @@ path,group,bytes,stl_format_triangles,sha256
 200-ArmBody/210-005_LargeBeltDirector.view.json,200-ArmBody,1546,,ec7bc96b1756ab0826688cfe5cd872ef2ab039801c3c28dea4efe6b46081ef4f
 200-ArmBody/arm_body_outline.scad,200-ArmBody,1898,,60d9d564ddb3156513f7a3b0854fa24f1c045208ce701a1e2b5de425d7ee18b9
 200-ArmBody/200-001_ArmBody.scad,200-ArmBody,48882,,9604b9c40a7d6be4aa89f178291d3a49ec010b6a2a86e0de64c2d84160b7374f
-200-ArmBody/belt_director.scad,200-ArmBody,4458,,f3b85c4e2dfc4e871dd8c710ef736f70157f75960f128800c533aa5fc7700321
+200-ArmBody/belt_director.scad,200-ArmBody,5018,,17ce1b199d9a3bbe5f52f5fa929219327022e0570859f20469ba0c96dcb420e4
 400-EndArm/410-001_AxisIntersectionHalf.stl,400-EndArm,89384,binary/1786,8434ffbd9fef02ae348541485fc1af7f6105e7f2a22356103950d16066cf307f
 400-EndArm/410-002_NewBeltPulley.stl,400-EndArm,2901484,binary/58028,c08550f22f71935af71fea52484963b7d56db0d82367e16ca86719238ebdae03
 400-EndArm/410-003_EndArmCodeDisk.stl,400-EndArm,433584,binary/8670,2d4d1c676102cb9d41e82cd1900f8779f4020b11aff126d7bac3ca5877cecc46

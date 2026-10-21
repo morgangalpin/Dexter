@@ -37,7 +37,8 @@
 // in B1 at the press clearance too: both are printed, which is the slip class, but the plug is a press fit by
 // design, and a slip gap would let it fall out. S1 in the Arm Body's Ø9 holes is settled there.
 //
-// Used, not included: each part file calls belt_director(length) or belt_director_cap().
+// Used, not included: each part file calls belt_director(length) or belt_director_cap(), and the Idler
+// Plug solid_revolve().
 
 include <../print_fit.scad>
 
@@ -52,19 +53,29 @@ CAP_PLUG            = 5.000;            // the plug's length: past the bearing's
 // The quarter circle of radius r about c, from angle a0 to a1.
 function quarter(c, r, a0, a1, n = 12) = [for (i = [0 : n]) c + r * [cos(a0 + (a1 - a0) * i / n), sin(a0 + (a1 - a0) * i / n)]];
 
+// The solid of revolution of an [r, z] profile with an edge on the axis, clipped to a box 1 mm clear of
+// it so that the export carries no zero-area facets along the axis (README.md, "A revolve with an edge
+// on the axis"). The Idler Plug uses it too.
+module solid_revolve(profile)
+    let(r = max([for (p = profile) p.x]) + 1, z0 = min([for (p = profile) p.y]) - 1, z1 = max([for (p = profile) p.y]) + 1)
+    intersection() {
+        rotate_extrude() polygon(profile);
+        translate([-r, -r, z0]) cube([2 * r, 2 * r, z1 - z0]);
+    }
+
 module belt_director(length, cfg = "previous")
     let(t = cfg == "previous" ? BELT_DIRECTOR_HEAD[1] : DISC_T,
         r = cfg == "previous" ? BELT_DIRECTOR_HEAD[0] : DISC_D / 2,
         s = cfg == "previous" ? BELT_DIRECTOR_SHANK : fit_pin(2 * BELT_DIRECTOR_SHANK, fit_clearances(cfg)[1]) / 2,
         f = cfg == "previous" ? 0 : DISC_FILLET)
-    rotate_extrude() polygon(concat(
+    solid_revolve(concat(
         [[0, -t]],
         f > 0 ? quarter([r - f, -t + f], f, -90, 0) : [[r, -t]],
         [[r, 0], [s, 0], [s, length], [BELT_DIRECTOR_CORE, length], [BELT_DIRECTOR_CORE, 0], [0, 0]]));
 
 module belt_director_cap(cfg = "revised")
     let(p = fit_pin(2 * BELT_DIRECTOR_CORE, fit_clearances(cfg)[1]) / 2, r = DISC_D / 2, f = DISC_FILLET)
-    rotate_extrude() polygon(concat(
+    solid_revolve(concat(
         [[0, -CAP_PLUG], [p, -CAP_PLUG], [p, 0], [r, 0]],
         quarter([r - f, DISC_T - f], f, 0, 90),
         [[0, DISC_T]]));
