@@ -10,10 +10,24 @@
 //                         give way to the shared spline seat
 //                         (../600-StrainWave/c201_spline_seat.scad), and the
 //                         bore behind the seat closes from Ø38 to Ø36 so the
-//                         nut pockets keep a wall to it.
+//                         nut pockets keep a wall to it; and the floor and
+//                         the back face stand where J2's drive closes on
+//                         them, DRIVE_SHIFT toward the opening (negative:
+//                         0.3 deeper). The holder's flange is held on the
+//                         Stator Balancers' lips, so the floor must meet the
+//                         spline's flange where C-101, the Flex Spline
+//                         Attach and C-201 put it, from the Pivot Motor End
+//                         Cap in the L1 6810. With C-201 the reference's
+//                         floor stood 4.3 short of that; the Wave Gen
+//                         Coupler's spacing (DC-600-2 in
+//                         specs/009-Design-Completion.md) then moved the
+//                         drive 4.0 of it further from the motor, which
+//                         leaves 0.3. armbody_assembly.scad asserts the
+//                         closure.
 //
 // FRAME. The reference's own: the axis on +Z, the recess opening at z = 0,
-// its floor at z = 11.000, the back face at 16.000.
+// its floor at z = 11.000 (revised 11.300), the back face at 16.000 (revised
+// 16.300).
 //
 // Measured from the reference (scadmesh slice/arcs/profile). Everything is
 // fourfold about the axis except the screw holes, which are twofold:
@@ -37,7 +51,9 @@
 //
 // FITS (../print_fit.scad), revised only:
 //
-//     body, in the Arm Body's Ø65 bore      slip: both are printed
+//     body, in the Arm Body's bore, which   slip: both are printed
+//       is the upper 6810's press bore
+//       (Ø65.1)
 //     ear slots, on the Stator Balancers'   slip: both are printed
 //       3.9 x 9.9 shanks
 //     recess, on the spline's flange        press, the seat's pilot press
@@ -70,8 +86,11 @@ BORE_D        = [38.000, 36.000];  // previous, revised
 PEG_CIRCLE_R  = 21.500;
 PEG           = [3.500, 2.000];    // OD, bore
 SCREW_D       = 3.000;
+DRIVE_SHIFT   = -0.300;            // revised: the floor and the back face this far toward the opening (here away from it)
 
-function pivot_floor() = FLOOR;
+function shift(cfg) = cfg == "previous" ? 0 : DRIVE_SHIFT;
+function pivot_floor(cfg = config) = FLOOR - shift(cfg);
+function pivot_back(cfg = config) = BACK - shift(cfg);
 
 // --- 2D outlines -----------------------------------------------------------
 function slip(cfg) = fit_clearances(cfg)[0];
@@ -91,12 +110,13 @@ module flange_2d(cfg)
 // --- Part ------------------------------------------------------------------
 module body(cfg) {
     linear_extrude(FLANGE_TOP) flange_2d(cfg);
-    cylinder(d = fit_pin(BODY_D, slip(cfg)), h = BACK);
+    cylinder(d = fit_pin(fit_bore(BODY_D, press(cfg)), slip(cfg)), h = pivot_back(cfg));
 }
 
 module turned_cuts(cfg) {
-    translate([0, 0, -epsilon]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = FLOOR + epsilon);
-    translate([0, 0, FLOOR - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = BACK - FLOOR + 2 * epsilon);
+    f = pivot_floor(cfg);
+    translate([0, 0, -epsilon]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = f + epsilon);
+    translate([0, 0, f - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = pivot_back(cfg) - f + 2 * epsilon);
 }
 
 module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE_TOP])
@@ -117,9 +137,10 @@ module pivot_stator_holder(cfg = config) {
         difference() {
             body(cfg);
             turned_cuts(cfg);
-            translate([0, 0, FLOOR]) mirror([0, 0, 1]) spline_seat_cuts(BACK - FLOOR, press(cfg), slip(cfg));
+            translate([0, 0, pivot_floor(cfg)]) mirror([0, 0, 1])
+                spline_seat_cuts(pivot_back(cfg) - pivot_floor(cfg), press(cfg), slip(cfg));
         }
 }
 
 pivot_stator_holder();
-echo(seat_floor = FLOOR);
+echo(seat_floor = pivot_floor());

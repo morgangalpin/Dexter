@@ -1,0 +1,46 @@
+{
+  "title": "Wave Gen Coupler",
+  "subtitle": "#630-004 · reference mesh and 630-004_WaveGenCoupler.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, 1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Wave Gen Coupler", "pn": "#630-004", "color": "#d4ad6b", "stl": "../Reference/meshes/600-StrainWave/630-004_WaveGenCoupler.stl", "shown": false}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/630-004.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/630-004.stl"}]}
+  ],
+  "labels": [
+    {"at": [-6.1, 0.0, 2.0], "text": "Revised R1 foot Ø12.2, z 0…3.75"},
+    {"at": [-6.5, 0.0, 7.5], "text": "Revised R2 grip Ø13.0, z 3.75…11.3"},
+    {"at": [-5.0, 0.0, 17.0], "text": "Revised R3 body Ø10.0, z 11.3…23.5"},
+    {"at": [-4.0, 0.0, 24.14], "text": "Revised R5 shoulder: a cone from R3's top edge to the stub, 32.6° from the horizontal, top z 24.813"},
+    {"at": [-2.95, 0.0, 32.0], "text": "Revised R4 stub Ø6 (Ø5.9, press in the wave generator's bore), z 24.813…40"},
+    {"at": [0.0, -2.55, 21.0], "text": "Revised B2 shaft bore Ø5.1 (press), blind to z 22.5, 1.0 past the shaft's tip; its end's corner rounded R0.8"},
+    {"at": [2.9, 3.65, 5.0], "text": "Revised N2 nut pocket on +Y for the M3 nut, 5.8 across its flats × 2.7, open below, its gable's apex z 11.25"},
+    {"at": [0.0, 6.5, 7.9], "text": "Revised H2 grub-screw hole Ø3.3 along +Y at z 7.9, from the bore out through N2 and R2, for the M3 × 4 grub screw (C-618)"},
+    {"at": [-6.928, -4.0, 6.0], "text": "Previous X1 hex body 16.0 AF, corners on ±Y, z 0…10"},
+    {"at": [-5.0, 0.0, 16.5], "text": "Previous S1 stub Ø10.0, z 10…23"},
+    {"at": [0.0, 6.0, 20.0], "text": "Previous K1 key 3.0 wide, flat top 6.0 from the axis"},
+    {"at": [0.0, -2.5, 23.0], "text": "Previous B1 shaft bore Ø5.0, through"},
+    {"at": [8.0, 0.0, 3.5], "text": "Previous H1 set-screw hole Ø3.2 along X, z 3.5"},
+    {"at": [3.75, 0.0, 0.0], "text": "Previous N1 nut pocket ×2, 5.6 wide × 2.5, 30° gable to z 7.217"},
+    {"at": [2.5, 0.0, 1.0], "text": "Previous W1 pocket opens into B1 across |y| < 1.0"},
+    {"at": [0.0, 8.0, 10.0], "text": "Previous T1 corner notch ×6, Ø4 at z 10, flat end at r 7.0"}
+  ],
+  "presets": [
+    {"label": "Revised: grub screw side", "at": [0, 6.5, 7.9], "span": 20, "from": [0.3, 1, 0.3]},
+    {"label": "Revised: underside, nut pocket", "at": [0, 3.5, 0], "span": 20, "from": [0.3, 0.6, -1]},
+    {"label": "Revised: shoulder and stub", "at": [0, 0, 25], "span": 16, "from": [1, -0.6, 0.2]},
+    {"label": "Previous: top", "at": [0, 0, 23], "span": 24, "from": [0, 0, 1]},
+    {"label": "Previous: underside, nut pockets", "at": [0, 0, 0], "span": 24, "from": [0.3, -0.4, -1]},
+    {"label": "Previous: set-screw side", "at": [8, 0, 4], "span": 18, "from": [1, -0.3, 0.3]},
+    {"label": "Previous: corner notch", "at": [0, 8, 9.5], "span": 8, "from": [0.3, 1, 0.6]}
+  ],
+  "notes": [
+    {"heading": "How it holds the shaft", "emphasis": true,
+     "text": "The revised coupler is pressed on C-101's shaft and held by one M3 × 4 cup-point grub screw (C-618), driven along +Y through an M3 nut captured in N2 onto the shaft's flat. The screw's thrust holds the nut on the pocket's outer face. The screw and nut are not part of this render: base_assembly and armbody_assembly draw them in place.",
+     "focus": {"label": "Show the grub-screw side", "preset": "Revised: grub screw side"}},
+    {"heading": "Comparing", "text": "The revised render is shown; toggle the reference and the previous render to compare. The previous render is the dist-gated recreation, so it hides the mesh entirely, and the labels marked Previous name its features. The revised part is a different, round part (DC-600-2 in specs/009): a grip on the shaft, a body that ends under C-201's wave generator hub, a cone up to a Ø6 stub that runs up the generator's through-bore past its set screws, with the stub's and shaft bore's press fits and the grub screw's and nut's slip fits. The labels marked Revised name its features. The dimensions and fits are in 630-004_WaveGenCoupler.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

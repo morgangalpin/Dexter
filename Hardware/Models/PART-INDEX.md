@@ -20,7 +20,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 | #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.scad` | print fit on the bore in `revised` |
 | #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.scad` | ⚠️; print fits on the screw holes in `revised` |
 | #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.scad` | ⚠️; print fits on the mounting holes in `revised` |
-| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline in `revised` |
+| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline, with the flange 2.7 nearer the floor (DC-600-2), in `revised` |
 | #110-004 | Base Mounting Plate | 1 | `110-004_BaseMountingPlate.scad` | machined, not printed |
 | #120-001 | Base Long | 1 | `120-001_BaseLong.scad` | print fits on the bearing bores in `revised` |
 
@@ -30,8 +30,8 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.scad` | `revised` fillets C onto the +Y box as D is, and the -Y ear onto its box as the +Y ear is, opens A and takes D through, and draws its print fits (the flap holes wait) |
-| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised` |
+| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.scad` | `revised` fillets C onto the +Y box as D is, and the -Y ear onto its box as the +Y ear is, opens A and takes D through, and draws its print fits, the upper 6810's press bore from L2 up among them (the flap holes wait) |
+| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised`, its floor 0.3 deeper, where J2's drive closes on it (DC-600-2), and its body at the slip fit to the Arm Body's Ø65.1 bore |
 | #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.scad` | draws no fits of its own; the Arm Body's K1 and the holder's ear slot carry them |
 | #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.scad` | fits wait for the arm body's assembly |
 | #210-001 | Belt Director Caps | 3 | `210-001_BeltDirectorCap.scad` | `revised` only: no reference mesh exists; Ø9.5 x 2.0 disc, 5.0 mm plug |
@@ -48,7 +48,7 @@ matches rest on naming convention alone. Check the geometry before committing fi
 |---|---|---|---|---|
 | #300-001 | Main Pivot | 1 | `300-001_MainPivot.scad` | clears the code disc and the skirt's collar in `revised` |
 | #300-002 | Pivot Code Disk | 1 | `300-002_PivotCodeDisk.scad` | `revised` opens the bore by the slip clearance on the J2 drum |
-| #311-001 | Motor End Cap (Base) | 1 | `311-001_MotorEndCapBase.scad` | press fits on the 6810 and the motor in `revised` |
+| #311-001 | Motor End Cap (Base) | 1 | `311-001_MotorEndCapBase.scad` | press fits on the 6810 and the motor, and the seat raised 1.0 (DC-600-2), in `revised` |
 | #312-001 | Motor End Cap (Pivot) | 1 | `312-001_MotorEndCapPivot.scad` | `include`s #311-001's source with its own outline and counterbores; press fits on the 6810 and the motor in `revised` |
 
 ## 400-EndArm — End arm hub and pulleys
@@ -88,9 +88,9 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.stl` |  |
-| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare removed and C-201 hub seated in `revised`; J3 sets `hub_drop` |
-| #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.scad` | C-201 hub clamped in `revised` |
+| #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.scad` | one round piece in `revised`: a grub-screw grip on the shaft's flat and a Ø6 stub up C-201's wave generator bore (DC-600-2), with its fits |
+| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare and ridge removed, hub face raised for the Wave Gen Coupler (DC-600-2) and C-201 hub seated in `revised`; J3 sets `hub_drop` |
+| #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.scad` | C-201 hub clamped and the bore opened over the Wave Gen Coupler in `revised` |
 
 ## 700-Differential — Differential
 

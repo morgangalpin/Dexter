@@ -66,6 +66,12 @@ FS_CUP_MOUTH     = [32.840, 31.340];   // bore Ø in the teeth band
 FS_CUP_TEETH_LEN = 6.000;              // estimate
 FS_CUP_WALL      = 0.250;              // estimate, at the closed end
 FS_CUP_BOTTOM    = 0.600;              // estimate
+// The wave generator's hub: Ø, length, how far it stands beyond the circular
+// spline's outer face; its Ø6H7 bore runs through it, and its two M3 set
+// screws stand WG_SCREW_IN in from its outer face.
+WG_HUB        = [14.000, 15.000, 5.000];
+WG_BORE_D     = 6.000;
+WG_SCREW_IN   = 2.500;
 
 PILOT_DEPTH   = 2.200;              // below the floor; the step is 2.000 long
 BOLT_HOLE_D   = 3.400;              // M3 clearance
@@ -83,6 +89,12 @@ function seat_recess_d(c) = fit_bore(CS_FLANGE[0], c);
 function fs_hub() = FS_HUB;
 function fs_bore_d() = FS_BORE_D;
 function fs_holes() = FS_HOLES;
+// The wave generator's hub, along the drive from the circular spline's outer
+// face toward the flexspline's hub: its outer face (negative: beyond the
+// spline's face), its set screws' axis, and its inner end.
+function wg_hub_outer() = -WG_HUB[2];
+function wg_set_screws() = WG_SCREW_IN - WG_HUB[2];
+function wg_hub_inner() = WG_HUB[1] - WG_HUB[2];
 // Nut top and bottom, below the floor; the screw's tip, below the floor.
 function seat_nut_top() = PILOT_DEPTH + SEAT_WEB;
 function seat_nut_bottom() = seat_nut_top() + NUT[1];
@@ -145,7 +157,7 @@ module wave_generator_envelope()
             linear_extrude(FS_CUP_TEETH_LEN) oval(FS_CUP_MOUTH);
             translate([0, 0, -1]) cylinder(d = 14.000, h = FS_CUP_TEETH_LEN + 2);
         }
-        translate([0, 0, -4]) wg_tube(14.000, 6.000, 15);
+        translate([0, 0, FS_CUP_TEETH_LEN - wg_hub_inner()]) wg_tube(WG_HUB[0], WG_BORE_D, WG_HUB[1]);
     }
 
 module wg_tube(od, id, h)

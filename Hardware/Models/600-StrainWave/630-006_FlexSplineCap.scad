@@ -29,23 +29,27 @@
 // Ø22.0 land, inside the hub's Ø22.5 so it never loads the cup's thin bottom
 // beyond it, and stands its Ø25 body 0.5 off that bottom. It has no nubs:
 // the Attach's fill the hub's holes. Its traps are 2.0 deep, so the nut sits
-// below the face and an M2 x 12 passes through it at the longest path, J1's
-// and J2's.
+// below the face and an M2 x 16 passes through it at the longest path, J1's
+// and J2's. Its bore passes the Wave Gen Coupler's (#630-004) body, which
+// turns inside it (DC-600-2 in specs/009-Design-Completion.md).
 //
 //     body                         Ø25.0                  0 .. 3.5
 //     land                         Ø22.0                  3.5 .. 4
-//     centre bore                  Ø5.5                   0 .. 4
+//     centre bore                  the coupler's body,
+//                                  Ø10.0                  0 .. 4
 //     screw holes, 6 on Ø17        Ø2.0 (M2), from 0 deg  0 .. 4
 //     nut traps                    hex 4.0 AF (the M2
 //                                  nut), flats facing
 //                                  the axis               0 .. 2
 //
 // FITS (../print_fit.scad), revised only: the screw holes and nut traps
-// draw the slip clearance per side over the M2 sizes above. The land bears
-// on a face and takes none.
+// draw the slip clearance per side over the M2 sizes above, and the centre
+// bore the running clearance over the coupler's body. The land bears on a
+// face and takes none.
 
 include <../print_fit.scad>
 use <c201_spline_seat.scad>
+use <630-004_WaveGenCoupler.scad>
 use <630-005_FlexSplineAttach.scad>
 
 /* [Configuration] */
@@ -60,7 +64,7 @@ FACE        = 4.000;             // bears on the hub
 BORE_D      = 5.500;
 HOLE_D      = 2.000;
 NUT         = [4.000, 1.600];    // M2 hex: across flats, thickness
-SCREW_LEN   = 12.000;            // M2 x 12 (#641-002), under the head
+SCREW_LEN   = 16.000;            // M2 x 16, under the head (revised; the reference's was an M2 x 12)
 // previous
 BODY        = [23.000, 2.000];   // diameter, top of the straight
 CHAMFER_TO  = 19.000;            // diameter at the face
@@ -86,8 +90,8 @@ module profile(cfg)
         polygon([[BORE_D / 2, 0], [BODY[0] / 2, 0], [BODY[0] / 2, BODY[1]],
                  [CHAMFER_TO / 2, FACE], [BORE_D / 2, FACE]]);
     else
-        polygon([[BORE_D / 2, 0], [BODY_REV[0] / 2, 0], [BODY_REV[0] / 2, BODY_REV[1]],
-                 [LAND_D / 2, BODY_REV[1]], [LAND_D / 2, FACE], [BORE_D / 2, FACE]]);
+        polygon([[bore_d(cfg) / 2, 0], [BODY_REV[0] / 2, 0], [BODY_REV[0] / 2, BODY_REV[1]],
+                 [LAND_D / 2, BODY_REV[1]], [LAND_D / 2, FACE], [bore_d(cfg) / 2, FACE]]);
 
 module holes(cfg) {
     if (cfg == "previous") for (a = [0 : 60 : 300]) rotate(a) translate([HOLE_PCD / 2, 0]) children();
@@ -95,6 +99,7 @@ module holes(cfg) {
 }
 
 function slip(cfg) = fit_clearances(cfg)[0];
+function bore_d(cfg) = cfg == "previous" ? BORE_D : fit_bore(wgc_body("revised")[0], fit_clearances(cfg)[2]);
 
 // A hexagon with one pair of flats facing the axis, when placed on +X.
 module nut_trap_2d(c) rotate(30) circle(d = fit_bore(NUT[0], c) / cos(30), $fn = 6);
@@ -113,7 +118,7 @@ module flex_spline_cap(cfg = config) {
     }
 }
 
-assert(screw_path("revised") <= SCREW_LEN, "an M2 x 12 does not pass through its nut");
+assert(screw_path("revised") <= SCREW_LEN, "an M2 x 16 does not pass through its nut");
 
 flex_spline_cap();
 echo(cap_screw_spare = SCREW_LEN - screw_path(config));

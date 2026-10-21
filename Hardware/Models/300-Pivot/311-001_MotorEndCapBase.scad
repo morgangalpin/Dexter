@@ -11,7 +11,8 @@
 //
 // FRAME. The reference's own: the axis on +Z, the seat at z = -1.700 (the face
 // the motor's rear bears on), the land from z = 3.500 to the top face at
-// 10.500. The lugs hang below the seat to z = -6.700.
+// 10.500. The lugs hang below the seat to z = -6.700. In the revised config
+// the seat stands at -0.700 and the lugs' foot at -5.700 (see below).
 //
 // Measured from the reference (scadmesh planes/slice/arcs/solid). Every
 // feature is fourfold about the axis and mirror-symmetric about the axes and
@@ -61,10 +62,14 @@
 //     seat, on the motor's rear face       press
 //     motor holes, on M3                   slip, over Ø3.0
 //
-// The revised seat is trimmed back up into the cap, and the features drawn
-// from the seat (the lugs' roots, the root fillets, the bore's round, the
-// channel) move with it. The motor's rear stays at z -1.700 (cap_seat()), so
-// the stack the assembly closes is unchanged.
+// The revised seat stands SEAT_SHIFT (1.0) further up into the cap, with the
+// lugs and every feature drawn from the seat (the lugs' roots and bottom
+// edges, the root fillets, the bore's round, the channel): the motor stands
+// that much further from its drive, the motor's share of the spacing the
+// Wave Gen Coupler (#630-004) takes (DC-600-2 in
+// specs/009-Design-Completion.md). The motor's rear is then at z -0.700,
+// cap_seat("revised"). The seat itself is trimmed
+// back up by the press clearance over that.
 //
 // The revised channel's sides are rounded into the bore, as its ceiling is,
 // from the ceiling down to the seat (end_cap_channel.scad, round_sides). The
@@ -111,15 +116,23 @@ MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.200;
 COUNTERBORE   = undef;     // [Ø, z of the floor]: the motor holes' counterbores from the seat; #312-001's
 
+COUNTERBORE_WEB = 0.200;   // revised: a counterbore's floor kept this far under the land's foot
 M3_D          = 3.000;     // the motor screws' nominal diameter
+SEAT_SHIFT    = 1.000;     // revised: the seat and the lugs this far up into the cap
 
-function cap_seat() = SEAT;   // the motor's rear face, in either configuration
+function shift(cfg) = cfg == "previous" ? 0 : SEAT_SHIFT;
+function cap_seat(cfg = config) = SEAT + shift(cfg);   // the motor's rear face
 function cap_land() = [FOOT, TOP];
 
 function slip(cfg) = fit_clearances(cfg)[0];
 function press(cfg) = fit_clearances(cfg)[1];
 function lug_flat(cfg) = LUG_FLAT + press(cfg);
-function seat(cfg) = SEAT + press(cfg);
+function seat(cfg) = cap_seat(cfg) + press(cfg);
+function lug_z(cfg) = LUG_Z + shift(cfg);
+// A counterbore's floor moves up with the seat, but stays under the land's
+// foot: above it the Ø6 counterbore would stand 0.03 inside the land's face.
+function counterbore_floor(cfg) = cfg == "previous" ? COUNTERBORE[1]
+                                  : min(COUNTERBORE[1] + shift(cfg), FOOT - COUNTERBORE_WEB);
 
 // --- 2D outlines -----------------------------------------------------------
 module convex_round(r) offset(r = r) offset(delta = -r) children();
@@ -177,7 +190,7 @@ module trimmed_root_fillets(cfg)
         translate([0, 0, seat(cfg) - 1]) linear_extrude(2) square(2 * lug_flat(cfg), center = true);
     }
 
-module body(cfg) translate([0, 0, LUG_Z]) linear_extrude(TOP - LUG_Z) section_2d(cfg);
+module body(cfg) translate([0, 0, lug_z(cfg)]) linear_extrude(TOP - lug_z(cfg)) section_2d(cfg);
 
 // --- Cuts ------------------------------------------------------------------
 // The lugs' bottom edges on their inner faces, corners and notch sides,
@@ -186,13 +199,13 @@ module body(cfg) translate([0, 0, LUG_Z]) linear_extrude(TOP - LUG_Z) section_2d
 module lug_edge_rounds(cfg, r = EDGE_ROUND, n = 6)
     for (k = [0 : n - 1])
         let (h = (k + 0.5) * r / n, d = r - sqrt(r * r - pow(r - h, 2)))
-        translate([0, 0, k == 0 ? LUG_Z - 1 : LUG_Z + k * r / n])
+        translate([0, 0, k == 0 ? lug_z(cfg) - 1 : lug_z(cfg) + k * r / n])
             linear_extrude((k == 0 ? 1 : 0) + r / n + epsilon) offset(r = d) lug_cut_2d(cfg);
 
 // The lugs' bottom inner edges, rounded R0.5 along each face.
 module lug_bottom_rounds(cfg)
     for (a = [0 : 90 : 270]) rotate(a)
-        translate([lug_flat(cfg), OUTLINE_R, LUG_Z]) rotate([90, 0, 0])
+        translate([lug_flat(cfg), OUTLINE_R, lug_z(cfg)]) rotate([90, 0, 0])
             linear_extrude(2 * OUTLINE_R) difference() {
                 translate([-epsilon, -epsilon]) square(LUG_CORNER + epsilon);
                 translate([LUG_CORNER, LUG_CORNER]) circle(r = LUG_CORNER, $fn = 48);
@@ -239,11 +252,12 @@ module channel(cfg)
     wire_channel(seat(cfg), [BORE_R, BORE_ROUND], CHANNEL, OUTLINE_R, round_sides = cfg != "previous")
         lug_cut_2d(cfg);
 
-// The motor holes' counterbores, from the lugs' foot up to their floor, which
-// stays where the screws' heads bear in either configuration.
-module counterbores()
+// The motor holes' counterbores, from the lugs' foot up to their floor,
+// counterbore_floor(cfg).
+module counterbores(cfg)
     if (!is_undef(COUNTERBORE))
-        motor_holes() translate([0, 0, LUG_Z]) cylinder(d = COUNTERBORE[0], h = COUNTERBORE[1] - LUG_Z, $fn = 72);
+        motor_holes() translate([0, 0, lug_z(cfg) - 1])
+            cylinder(d = COUNTERBORE[0], h = counterbore_floor(cfg) - lug_z(cfg) + 1, $fn = 72);
 
 module cuts(cfg) {
     land_r = LAND_R - press(cfg);
@@ -251,7 +265,7 @@ module cuts(cfg) {
         cylinder(r = OUTLINE_R + 1, h = TOP - FOOT + 1);
         translate([0, 0, -1]) cylinder(r = land_r, h = TOP - FOOT + 3);
     }
-    translate([0, 0, LUG_Z - 1]) linear_extrude(seat(cfg) - LUG_Z + 1) lug_cut_2d(cfg);
+    translate([0, 0, lug_z(cfg) - 1]) linear_extrude(seat(cfg) - lug_z(cfg) + 1) lug_cut_2d(cfg);
     lug_bottom_rounds(cfg);
     lug_edge_rounds(cfg);
     for (a = [90 : 90 : 270]) rotate(a) seat_round(cfg);
@@ -259,7 +273,7 @@ module cuts(cfg) {
     rotate_extrude() polygon([[land_r - TOP_CHAMFER - epsilon, TOP + epsilon], [land_r + 1, TOP + epsilon],
                               [land_r + 1, TOP - TOP_CHAMFER - 1 - 2 * epsilon]]);
     each_notch() top_chamfer(TOP_CHAMFER) notch_2d();
-    counterbores();
+    counterbores(cfg);
 }
 
 // The root fillets go on last: the cuts would take them with the motor's

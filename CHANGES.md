@@ -1060,6 +1060,12 @@ anything version 3 does not independently specify
   [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
   [009.1](specs/009.1-Performance-Characterization-Protocol.md) and
   [009.2](specs/009.2-Test-Build-Manifest.md),
+  [009 §Strain-wave drive spacing](specs/009-Design-Completion.md#strain-wave-drive-spacing),
+  [008.3](specs/008-Assembly.md#0083-harmonic-drive-motors),
+  007.1 [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) and
+  [§6 Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [007 §7.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors) and
+  [§7.8](specs/007-Bill-of-Materials.md#0078-external-gear),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`,
   `Hardware/Models/500-ExternalGear/exgear_assembly.scad`, `Hardware/Models/c101_motor.scad`,
   `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
@@ -1079,6 +1085,9 @@ anything version 3 does not independently specify
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
     shared `arm_body_outline.scad` and `belt_director.scad` (new); `200-002_PivotStatorHolder.scad` and
     `render.json`. Their meshes moved to `Reference/meshes/200-ArmBody/`.
+  - `Hardware/Models/600-StrainWave/`: `630-004_WaveGenCoupler.scad` and the `.view.json` sidecars of
+    `630-004`, `630-005` and `630-006` (new); `render.json`'s `parts` list and `630-004`'s checks. Its
+    mesh moved to `Reference/meshes/600-StrainWave/`.
   - `Hardware/Models/gt2_pulley.scad` gains a second tooth form, `gt2_teeth_rounded_2d`.
   - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
     lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
@@ -1217,8 +1226,29 @@ anything version 3 does not independently specify
     The Base Stator Holder's bore clears the cup by more than the running clearance, which the guessed
     Ø34.4 cup did not.
   - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
-    motor's square front edge, which they stood on. Its bore's Ø5.0 ridge grips the motor's shaft line to
-    line by design, and `base_assembly.clash.json` records it as an exception to the clash check.
+    motor's square front edge, which they stood on. The reference bore's Ø5.0 ridge, which gripped the
+    motor's shaft line to line, goes with the shaft from the revised Attach
+    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)).
+  - **600-StrainWave:** the Wave Gen Coupler (`#630-004`) is two extruded 2D layers, the hex body and
+    the keyed stub, each gated by `outline`, with the nut pockets cut as one section extruded across
+    the axis. The reference's stub is a Cone Drive wave generator's Ø10 keyed input, which C-201's Ø6H7
+    bore does not take; earlier readings took the key's 6.0 for a Ø6 band, and 007.1 is corrected. The
+    revised render's solid Ø6 stub on the hex
+    ([DC-600-1](specs/009-Design-Completion.md#wave-gen-coupler-stub)) left the coupler short of C-101's
+    standard shaft, and is superseded by the reviewer's decision
+    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)): the revised coupler is one
+    round piece, gripping the shaft's flat with an M3 grub screw in a captured nut, and each J1/J2 drive
+    stands further from its motor to take it. The revised Motor End Caps (`#311-001`, `#312-001`) seat the
+    motor deeper; the Flex Spline Attach is thicker, opens its centre round the coupler with an access hole
+    to the grub screw, and drops its spigot; the Flex Spline Cap's bore opens; the Base and Pivot Stator
+    Holders (`#110-002`, `#200-002`) are shorter. `base_assembly.scad` draws the coupler and the six M2
+    hub screws, which become M2 × 16, and the clash manifest puts the coupler and the wave generator on the
+    shaft's side. 008.3 puts the coupler on the shaft before the Attach. J3's parts follow in 500. The bill
+    follows in 007 §7.3 and §7.8 and 007.1 §6: the hub screws move from C-601 to C-602; the coupler's two
+    M3 × 8 hex cap bolts (C-608, retired) become one M3 × 4 grub screw (C-618, new) and one M3 nut; and
+    J3's four Attach screws, which §7.8 did not count, join C-610. At the stub's root the coupler's
+    body rises to the stub as a cone and its shaft bore's end corner is rounded, for strength over the
+    shaft's tip, and the assemblies draw its grub screw and nut.
   - **200-ArmBody:** the Stator Balancer (`#200-003`, an L section extruded), the Idler Plug
     (`#210-001`/`#210-003`, revolved), both Belt Directors (`#210-004`, `#210-005`, one revolved sleeve in
     `belt_director.scad` at two lengths), the Belt Director Pulley (`#210-002`, two flanges and a tooth

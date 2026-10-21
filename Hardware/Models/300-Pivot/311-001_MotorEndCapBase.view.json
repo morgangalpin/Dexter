@@ -30,6 +30,6 @@
     {"label": "Lugs", "at": [22, 10, -4], "span": 22, "from": [1, -0.5, -0.3]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one draws the press fits on the land, lugs and seat, and the slip fit on the screw holes, and rounds the channel's sides into the bore. The dimensions and fits are in 311-001_MotorEndCapBase.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one stands the seat and the lugs 1.0 further up into the cap, at z −0.7 and from z −5.7, for the strain-wave drive's spacing (DC-600-2 in specs/009); the labels give the reference's figures. It draws the press fits on the land, lugs and seat, and the slip fit on the screw holes, and rounds the channel's sides into the bore. The dimensions and fits are in 311-001_MotorEndCapBase.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }

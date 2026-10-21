@@ -8,15 +8,19 @@
 //   config = "previous" — faithful recreation of the reference mesh
 //                         (../Reference/meshes/600-StrainWave/).
 //   config = "revised"  — the flare below the land removed, so the land runs
-//                         to the motor face; the hub interface cut for
-//                         C-201's flexspline; and the hub face lowered by
-//                         hub_drop. What sets hub_drop, and why the flare
-//                         goes, is recorded in
+//                         to the motor face; the hub face raised by SPACING
+//                         for the Wave Gen Coupler (#630-004), whose body
+//                         runs up through this part (DC-600-2 in
+//                         specs/009-Design-Completion.md); the hub interface
+//                         cut for C-201's flexspline; and the hub face
+//                         lowered by hub_drop. What sets hub_drop, and why
+//                         the flare goes, is recorded in
 //                         ../500-ExternalGear/exgear_assembly.scad.
 //
 // FRAME. The reference's own: the axis on +Z, the motor face at z = -1.000
-// (the underside the motor bears on), the hub face at z = 9.000. The lugs hang
-// below the motor face to z = -6.000.
+// (the underside the motor bears on), the hub face at z = 9.000 (previous) or
+// 14.000 less hub_drop (revised). The lugs hang below the motor face to
+// z = -6.000.
 //
 // Measured from the reference (scadmesh slice/arcs/profile/solid). Every
 // feature is fourfold about the axis, and mirror-symmetric about the axes and
@@ -52,14 +56,30 @@
 // not C-201's. The revised hub interface is cut for the flexspline hub of
 // c201_spline_seat.scad, which stands on a flat hub face:
 //
-//     spigot, into the Ø11H7 bore  Ø11, 0.3 lead          top .. top + 2.2
 //     nubs, one per Ø4.5 hole      Ø4.5, on Ø17           top .. top + 2.2
-//     hub screw holes, in the nubs Ø2.0 (M2), from 0 deg  3.75 .. top + 2.2
-//     their head pockets           Ø3.8 (the M2 head)     2 .. 3.75
+//     hub screw holes, in the nubs Ø2.0 (M2), from 0 deg  4.75 .. top + 2.2
+//     their head pockets           Ø3.8 (the M2 head)     2 .. 4.75
 //
-// The spigot centres the hub, and the nubs carry the drive's torque in
-// shear. Both stop 0.2 short of the hub's inner face, where the Flex Spline
-// Cap bears.
+// The nubs centre the hub and carry the drive's torque in shear. They stop
+// 0.2 short of the hub's inner face, where the Flex Spline Cap bears. The
+// revised part has no spigot and no shaft bore: the coupler runs through it,
+// and the hub's own Ø11 bore.
+//
+// The revised centre is cut for the coupler (630-004, placed by
+// wgc_above_motor()), with the running clearance to every part of it:
+//
+//     centre bore                  the coupler's grip,
+//                                  Ø13.0                  2 .. top + 2.2
+//     access hole, on +Y           Ø3.0 (M3), out through
+//                                  the +Y notch; axis on
+//                                  the coupler's grub
+//                                  screw, z 9.4
+//
+// The bore opens the head pockets on their inner side; the heads bear on the
+// rest of their seat. The coupler's foot stands the running clearance inside
+// the heads and above them, and its grip passes inside them as the part goes
+// on the motor, which is after the coupler (008.3). The hub face may drop
+// until it stands the running clearance over the grip: max_hub_drop().
 //
 // FITS (../print_fit.scad), revised only. The sizes above are the mates'
 // nominals; each fit draws its class clearance per side:
@@ -68,8 +88,10 @@
 //     lugs, on the motor's 42.3 body       press: they centre the motor,
 //                                          and with it the wave generator,
 //                                          on the flexspline's axis
-//     spigot and nubs, in the hub          press
+//     nubs, in the hub                     press
 //     hub screw holes and head pockets     slip
+//     access hole, on the M3 grub screw    slip
+//     centre bore, round the coupler       run
 //
 // The motor holes (Ø3.5 for M3), their Ø10.3 counterbores and the Ø23 pilot
 // over the motor's Ø22 boss already clear by more and keep their size.
@@ -78,22 +100,27 @@
 // the press clearance: the motor's front edge is square, and the fillets
 // would stand on it and hold the motor off its face.
 //
-// The centre bore's Ø5.0 ridge keeps its size in both configs. It grips the
-// motor's Ø5 shaft line to line, which the clash check of an assembly takes
-// as an exception (../100-Base/base_assembly.clash.json).
+// The previous centre bore's Ø5.0 ridge grips the motor's Ø5 shaft line to
+// line; the revised part has none.
 //
 // The six M2 screws of 008.3 enter from below through the head pockets,
 // pass the hub and end in nuts in the Flex Spline Cap, so they are driven
-// before the Attach goes on the motor. hub_drop shortens their path through
-// this part by the same amount; the Cap's file asserts the screw's reach at
-// the longest path, a drop of zero.
+// before the Attach goes on the motor. The revised head seat stands 1.0
+// higher, so that an M2 x 16 passes its nut as an M2 x 12 did before SPACING.
+// hub_drop shortens their path through this part by the same amount; the
+// Cap's file asserts the screw's reach at the longest path, a drop of zero.
 //
-// The counterbore floors stay at z = 7.000 in both configs: in J1 and J2 the
-// #6 washers under the motor screws sit there and overhang the land onto the
-// far 6810's inner race.
+// The counterbore floors stand at z = 7.000 (previous) and 8.000 (revised,
+// CBORE_RISE): in J1 and J2 the #6 washers under the motor screws sit there
+// and overhang the land over the far 6810's inner race, 0.2 off its face.
+// The race stays where it was while the motor moves 1.0 of SPACING away from
+// the drive (DC-600-2), and the floors rise with the motor. An M3 x 12
+// (C-610) then runs 3.0 past the motor face, less its #6 washer, as the
+// reference's M3 x 10 ran 2.0 (008.3 step 11).
 
 include <../print_fit.scad>
 use <c201_spline_seat.scad>
+use <630-004_WaveGenCoupler.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -131,16 +158,30 @@ MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.500;
 CBORE         = [10.300, 7.000];   // diameter, floor
 // Revised hub interface, for c201_spline_seat.scad's flexspline hub.
-SPIGOT_LEAD   = 0.300;             // the spigot's lead chamfer
-HUB_CLEAR     = 0.200;             // spigot and nub tops under the hub's inner face
+SPACING       = 5.000;             // the hub face raised for the coupler; 1.0 of it is the motor's move (DC-600-2)
+CBORE_RISE    = 1.000;             // revised: the counterbore floors raised with the motor (see the header)
+HEAD_RAISE    = 1.000;             // the head seat raised, for an M2 x 16
+HUB_CLEAR     = 0.200;             // nub tops under the hub's inner face
 M2            = [2.000, 3.800];    // screw and head diameters
+M3            = 3.000;             // the coupler's grub screw
 
 function attach_motor_face() = MOTOR_FACE;
-function attach_hub_face(cfg = config, drop = hub_drop) = cfg == "previous" ? HUB_FACE : HUB_FACE - drop;
-function attach_head_seat() = HEAD_POCKET[1];
+function attach_hub_face(cfg = config, drop = hub_drop) = cfg == "previous" ? HUB_FACE : HUB_FACE + SPACING - drop;
+function attach_head_seat(cfg = "revised") = HEAD_POCKET[1] + (cfg == "previous" ? 0 : HEAD_RAISE);
+function cbore_floor(cfg) = CBORE[1] + (cfg == "previous" ? 0 : CBORE_RISE);
 
 function slip(cfg) = fit_clearances(cfg)[0];
 function press(cfg) = fit_clearances(cfg)[1];
+function run(cfg) = fit_clearances(cfg)[2];
+
+// The coupler (#630-004) in this part's frame: its bottom face, and the z of
+// a height in its own.
+function coupler_z(z) = MOTOR_FACE + wgc_above_motor() + z;
+// The deepest drop the hub face can take and still stand the running
+// clearance over the coupler's grip.
+function max_hub_drop() = attach_hub_face("revised", 0) - coupler_z(wgc_grip("revised")[1]) - run("revised");
+// The hub screws' heads' inner reach.
+function head_inner_r() = fs_holes()[1] / 2 - M2[1] / 2;
 function land_r(cfg) = LAND_R - press(cfg);
 function lug_flat(cfg) = LUG_FLAT + press(cfg);
 
@@ -263,18 +304,13 @@ module trimmed_root_fillets(cfg)
             square(2 * lug_flat(cfg), center = true);
     }
 
-// The revised hub seat's height above the hub face: the spigot's and the nubs'.
+// The revised hub seat's height above the hub face: the nubs'.
 function seat_rise() = fs_hub()[1] - HUB_CLEAR;
 
-// The revised spigot and nubs, standing on the hub face at z = 0.
-module hub_seat(cfg) {
-    spigot_r = fit_pin(fs_bore_d(), press(cfg)) / 2;
-    rotate_extrude() polygon([
-        [0, -epsilon], [spigot_r, -epsilon], [spigot_r, seat_rise() - SPIGOT_LEAD],
-        [spigot_r - SPIGOT_LEAD, seat_rise()], [0, seat_rise()]]);
+// The revised nubs, standing on the hub face at z = 0.
+module hub_seat(cfg)
     fs_hub_holes() translate([0, 0, -epsilon])
         cylinder(d = fit_pin(fs_holes()[0], press(cfg)), h = seat_rise() + epsilon, $fn = 48);
-}
 
 module body(cfg, top) {
     translate([0, 0, MOTOR_FACE]) linear_extrude(top - MOTOR_FACE) land_2d(cfg);
@@ -290,7 +326,7 @@ module hub_holes(cfg) {
     else fs_hub_holes() children();
 }
 
-// The centre bore with its ridge, as a revolved void, open to `top`.
+// The previous centre bore with its ridge, as a revolved void, open to `top`.
 module centre_bore(top)
     rotate_extrude() polygon([
         [0, PILOT[1] - epsilon], [BORE_D / 2, PILOT[1] - epsilon],
@@ -298,34 +334,56 @@ module centre_bore(top)
         [RIDGE[0] / 2, RIDGE[2]], [BORE_D / 2, RIDGE[2] + RIDGE[3]],
         [BORE_D / 2, top + epsilon], [0, top + epsilon]]);
 
+// The revised centre: the bore round the coupler's grip, and the access hole
+// on +Y, on the coupler's grub screw, out through the +Y notch.
+function coupler_bore_d(cfg) = fit_bore(wgc_grip("revised")[0], run(cfg));
+module coupler_cuts(cfg, top) {
+    translate([0, 0, PILOT[1] - epsilon]) cylinder(d = coupler_bore_d(cfg), h = top - PILOT[1] + 2 * epsilon);
+    translate([0, 0, coupler_z(wgc_screw_z("revised"))]) rotate([-90, 0, 0])
+        cylinder(d = fit_bore(M3, slip(cfg)), h = LUG_R + 1, $fn = 48);
+}
+
 module cuts(cfg, top) {
     seat_top = cfg == "previous" ? top : top + seat_rise();
     translate([0, 0, MOTOR_FACE - epsilon]) cylinder(d = PILOT[0], h = PILOT[1] - MOTOR_FACE + epsilon);
-    centre_bore(cfg == "previous" ? BORE_TOP : seat_top);
+    if (cfg == "previous") centre_bore(BORE_TOP);
+    else coupler_cuts(cfg, seat_top);
     head_d = cfg == "previous" ? HEAD_POCKET[0] : fit_bore(M2[1], slip(cfg));
     hole_d = cfg == "previous" ? HUB_HOLE_D : fit_bore(M2[0], slip(cfg));
     hub_holes(cfg) {
-        translate([0, 0, PILOT[1] - epsilon]) cylinder(d = head_d, h = HEAD_POCKET[1] - PILOT[1] + epsilon, $fn = 48);
-        translate([0, 0, HEAD_POCKET[1] - epsilon]) cylinder(d = hole_d, h = seat_top, $fn = 48);
+        translate([0, 0, PILOT[1] - epsilon]) cylinder(d = head_d, h = attach_head_seat(cfg) - PILOT[1] + epsilon, $fn = 48);
+        translate([0, 0, attach_head_seat(cfg) - epsilon]) cylinder(d = hole_d, h = seat_top, $fn = 48);
     }
     if (cfg == "previous") translate([0, 0, top - RECESS[1]]) linear_extrude(RECESS[1] + 1) difference() {
         circle(d = RECESS[0]);
         hub_holes(cfg) circle(d = NUB_D, $fn = 48);
     }
     for (x = [-1, 1], y = [-1, 1]) translate([x, y, 0] * MOTOR_PITCH / 2) {
-        translate([0, 0, MOTOR_FACE - 1]) cylinder(d = MOTOR_HOLE_D, h = CBORE[1] - MOTOR_FACE + 1 + epsilon, $fn = 48);
-        translate([0, 0, CBORE[1]]) cylinder(d = CBORE[0], h = top, $fn = 96);
+        translate([0, 0, MOTOR_FACE - 1]) cylinder(d = MOTOR_HOLE_D, h = cbore_floor(cfg) - MOTOR_FACE + 1 + epsilon, $fn = 48);
+        translate([0, 0, cbore_floor(cfg)]) cylinder(d = CBORE[0], h = top, $fn = 96);
     }
+}
+
+// The revised coupler's running clearances to this part and to the hub
+// screws' heads, which stand still about it.
+module assert_coupler(cfg, drop) {
+    c = run("revised");
+    assert(wgc_foot("revised")[0] / 2 + c <= head_inner_r() + 1e-9, "the coupler's foot runs within the running clearance of the M2 heads");
+    assert(coupler_z(wgc_foot("revised")[1]) >= attach_head_seat() + c - 1e-9, "the coupler's grip comes down beside the M2 heads");
+    assert(wgc_grip("revised")[0] / 2 < head_inner_r(), "the coupler's grip does not pass inside the M2 heads");
+    assert(drop <= max_hub_drop() + 1e-9, str("hub_drop is deeper than max_hub_drop() = ", max_hub_drop()));
 }
 
 module flex_spline_attach(cfg = config, drop = hub_drop) {
     top = attach_hub_face(cfg, drop);
     // The reference's recess left 2.5 over the head pockets; the revised
     // seat keeps that much material under its flat hub face.
-    assert(top - RECESS[1] > HEAD_POCKET[1], "the hub face comes too near the head pockets");
-    assert(top > CBORE[1], "hub face must stay above the counterbore floors");
+    assert(top - RECESS[1] > attach_head_seat(cfg), "the hub face comes too near the head pockets");
+    assert(top > cbore_floor(cfg), "hub face must stay above the counterbore floors");
+    if (cfg != "previous") assert_coupler(cfg, drop);
     difference() { body(cfg, top); cuts(cfg, top); }
 }
 
 flex_spline_attach();
 echo(attach_hub_face = attach_hub_face());
+echo(max_hub_drop = max_hub_drop());

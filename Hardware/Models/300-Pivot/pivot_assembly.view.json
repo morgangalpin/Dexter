@@ -17,12 +17,12 @@
   ],
   "labels": [
     {"at": [0, -25, -3.5], "text": "J1 6810 on the Base cap's land, under the pivot's base face z 0"},
-    {"at": [-24, 0, -12.2], "text": "Base cap seat, z −12.2: J1 motor's rear"},
+    {"at": [-24, 0, -11.2], "text": "Base cap seat, z −11.2: J1 motor's rear"},
     {"at": [41.7, 0, 84], "text": "Pivot Code Disk, flat face at x 41.7, away from the body"},
     {"at": [38.5, 0, 9.5],"text": "Disk hub, its top on the body face x 35.5"},
     {"at": [55, 0, 64], "text": "J2 end face x 55: the Pivot cap's top face"},
     {"at": [58.5, 0, 70], "text": "J2 6810 on the Pivot cap's land, x 55…62"},
-    {"at": [67.2, 0, 62], "text": "Pivot cap seat, x 67.2: J2 motor's rear"},
+    {"at": [66.2, 0, 62], "text": "Pivot cap seat, x 66.2: J2 motor's rear"},
     {"at": [66, -9.35, 45], "text": "Wire channel turned {cable_turn}° toward H2, the cable hole in the end face"}
   ],
   "presets": [

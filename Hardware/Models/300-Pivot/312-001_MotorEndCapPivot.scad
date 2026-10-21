@@ -28,8 +28,10 @@
 //
 // The motor holes' Ø3.2 continue above the counterbore's floor. The
 // counterbore is already 0.25 per side wider than the M3 screw's Ø5.5 head,
-// more than the slip clearance, so `revised` keeps its size; its floor stays
-// where the heads bear in either configuration.
+// more than the slip clearance, so `revised` keeps its size. The revised
+// seat stands 1.0 higher (#311-001), and the floor rises with it to z 3.3,
+// 0.2 under the land's foot (counterbore_floor()): 3.95 over the seat's
+// face, as in the reference, so a socket head (3.0) stays 0.95 inside.
 //
 // Every other feature is #311-001's to the gate's 0.15 mm: the notches, the
 // land and its chamfers, the lugs and their rounds, the root fillets, the seat,

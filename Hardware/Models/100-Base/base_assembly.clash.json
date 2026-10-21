@@ -15,9 +15,13 @@
     {"id": "end_cap",         "kind": "printed",  "side": "turning"},
     {"id": "motor",           "kind": "bought",   "side": "turning"},
     {"id": "attach",          "kind": "printed",  "side": "turning"},
+    {"id": "hub_screws",      "kind": "fastener", "side": "turning"},
     {"id": "fs_cap",          "kind": "printed",  "side": "turning"},
     {"id": "flexspline",      "kind": "bought",   "side": "turning"},
-    {"id": "wave_gen",        "kind": "bought",   "side": "turning"},
+    {"id": "coupler",         "kind": "printed",  "side": "rotor"},
+    {"id": "grub_screw",      "kind": "fastener", "side": "rotor"},
+    {"id": "coupler_nut",     "kind": "fastener", "side": "rotor"},
+    {"id": "wave_gen",        "kind": "bought",   "side": "rotor"},
     {"id": "bearing_lower_inner",  "kind": "bought", "side": "turning", "bearing": "bearing_lower", "race": "inner"},
     {"id": "bearing_lower_outer",  "kind": "bought", "side": "fixed",   "bearing": "bearing_lower", "race": "outer"},
     {"id": "bearing_lower_shield", "kind": "bought", "side": "fixed",   "bearing": "bearing_lower", "race": "shield"},
@@ -25,9 +29,11 @@
     {"id": "bearing_upper_outer",  "kind": "bought", "side": "fixed",   "bearing": "bearing_upper", "race": "outer"},
     {"id": "bearing_upper_shield", "kind": "bought", "side": "fixed",   "bearing": "bearing_upper", "race": "shield"}
   ],
-  "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"]],
+  "engaged": [["circular_spline", "flexspline"], ["flexspline", "wave_gen"], ["grub_screw", "coupler_nut"]],
   "exceptions": [
-    {"pair": ["motor", "attach"], "at": [0, 0, 132.5], "radius": 3,
-     "reason": "the Attach's Ø5.0 bore ridge grips the motor's Ø5 shaft line to line, by design"}
+    {"pair": ["motor", "coupler"], "at": [0, 0, 125.5], "radius": 12.0,
+     "reason": "the coupler's bore, down to its blind end, is pressed on the motor's shaft, which turns with it; the motor envelope draws shaft and body as one solid, so the shaft reads as the other side"},
+    {"pair": ["motor", "grub_screw"], "at": [0, 0, 125.5], "radius": 12.0,
+     "reason": "the grub screw's cup point bears on the shaft's flat, which the motor envelope does not draw; the shaft turns with the screw, but the envelope draws shaft and body as one solid, so the shaft reads as the other side"}
   ]
 }
