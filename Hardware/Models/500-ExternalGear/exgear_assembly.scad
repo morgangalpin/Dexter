@@ -95,7 +95,11 @@
 // NOT DRAWN. The angle and rotate motors, which bolt to the Mount's two
 // motor boxes. The six M3 screws and nuts that hold the spline in the Stator
 // Holder, the M2 nuts in the Cap's traps, and the coupler's grub screw and
-// nut (the motor envelope's shaft has no flat for the screw to meet).
+// nut (the motor envelope's shaft has no flat for the screw to meet). The
+// Attach's four M3 x 12 motor screws (C-610) and their #6 washers, on the
+// counterbore floors (008.3 step 11, 008.8 step 6): attach_washer_over_6810
+// is how far a washer's underside, overhanging the land, stands off the
+// upper 6810's inner race.
 //
 // CLASH. assembly-clash.rs checks the whole assembly against
 // exgear_assembly.clash.json. A bearing there is three parts, <bearing>_inner,
@@ -193,6 +197,7 @@ ENDCAP_NUT_Z = ENDCAP_Z - end_cap_trap_floor("revised");  // the End Cap's nuts'
 assert(abs(CS_NOM - CS_FACE) < 1e-9, "the drive does not close between its motor and its holder");
 assert(BRG_UP > MOTOR_F, "upper 6810 inner race passes below the motor face");
 assert(BRG_UP + B6810[2] < HUB_F, "upper 6810 inner race runs off the Attach's land");
+assert(ATTACH_Z + cbore_floor("revised") > BRG_UP + B6810[2], "the Attach's motor-screw washers bear on the upper 6810's inner race");
 assert(ATTACH_HUB_DROP >= 0, "the drive stands lower on its motor than on its holder; the Attach cannot rise");
 assert(ATTACH_HUB_DROP <= max_hub_drop(), "the Attach's hub face drops onto the coupler's grip");
 assert(MOTOR_Z0 > BRG_LOW + B6810[2], "the motor's corners reach the lower 6810's inner race");
@@ -213,6 +218,7 @@ echo(j3_hub_drop = ATTACH_HUB_DROP);                     // print J3's Attach: -
 echo(motor_above_lower_6810 = MOTOR_Z0 - BRG_LOW - B6810[2]);  // the motor's rear over the lower 6810
 echo(upper_6810_above_motor = BRG_UP - MOTOR_F);         // inner race bottom over the motor face
 echo(upper_6810_below_hub = HUB_F - BRG_UP - B6810[2]);  // inner race top under the hub face
+echo(attach_washer_over_6810 = ATTACH_Z + cbore_floor("revised") - BRG_UP - B6810[2]);  // motor screws' washers over the upper 6810's inner race
 echo(top_6810_on_spline = CS_FACE - BRG_TOP);            // the circular spline's Ø50h6 within the Mount Top's bore
 echo(stator_below_top = BRG_TOP - HOLDER_RIM);           // Stator Holder rim under the Mount Top's 6810
 echo(stator_above_hub = HOLDER_END - HUB_F);             // Stator Holder's counterbore over the Attach's hub face

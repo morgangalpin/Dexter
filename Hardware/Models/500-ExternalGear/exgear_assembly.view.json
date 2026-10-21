@@ -52,6 +52,7 @@
        {"text": "Attach hub face lowered (#630-005, J3)", "value": "{j3_hub_drop}"},
        {"text": "Upper 6810 inner race above the motor face", "value": "{upper_6810_above_motor}"},
        {"text": "Upper 6810 inner race below the hub face", "value": "{upper_6810_below_hub}"},
+       {"text": "Attach motor screws' #6 washers above the upper 6810's inner race", "value": "{attach_washer_over_6810}"},
        {"text": "Top 6810 bore on the spline's Ø50h6", "value": "{top_6810_on_spline}"},
        {"text": "Stator Holder rim below the Mount Top's 6810", "value": "{stator_below_top}"},
        {"text": "Stator Holder's end counterbore above the Attach's hub face", "value": "{stator_above_hub}"},
@@ -79,6 +80,7 @@
        "Angle and rotate motors in the Mount's front pockets",
        "The six M3 screws and nuts that hold the circular spline in the Stator Holder",
        "The M2 nuts in the Cap's traps, on the hub screws",
+       "The Attach's four M3 × 12 motor screws (C-610) and their #6 washers, on its counterbore floors",
        "The coupler's grub screw and nut (the motor envelope's shaft has no flat for the screw to meet)",
        "Vendor parts are envelopes: motor from C-101, drive from the XB1-AS-C-32 drawing, bearings at catalogue size"]}
   ],

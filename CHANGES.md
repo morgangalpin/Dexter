@@ -1265,8 +1265,8 @@ anything version 3 does not independently specify
 
     J3 takes its share of the coupler's spacing
     ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)) as 1.0 mm motor-down and
-    4.0 mm drive-up, pending review, because the motor's Ø50.8 corners must stop above the lower 6810's
-    Ø50 bore. The End Cap's seat rises 2.0 mm in all, and its nut traps deepen to 4.0 mm for M3 x 10
+    4.0 mm drive-up, the split every joint now takes, because the motor's Ø50.8 corners must stop above
+    the lower 6810's Ø50 bore. The End Cap's seat rises 2.0 mm in all, and its nut traps deepen to 4.0 mm for M3 x 10
     screws, since an M3 x 12 would reach the motor. The Stator Holder seats the spline's flange on a boss
     that rises into the Mount Top 6810's bore, with no recess, and counterbores its spigot's end over the
     Attach's land. The End Cap screws' heads stand 1.0 mm below the floor (`endcap_screw_head_proud`),
