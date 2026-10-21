@@ -293,6 +293,14 @@ The contract every part in `700-Differential/` is held to:
   buried; where the offset would show, 0.005 mm is enough (`FLANGE_LAP` in `110-001`, `SEAM_LAP` in
   `100-003`). The `Volumes:` line of the render log is the cheap check: a part modelled as one solid
   must report 2.
+- **A revolve with an edge on the axis is not exported clean when it stands alone.** OpenSCAD 2026.10.05
+  revolves a profile's edge on x = 0 into 2 × `$fn` zero-area facets along the axis, and exports a lone
+  `rotate_extrude()` as it is, on either backend; `render()` and a single-child `union()` or
+  `difference()` do not change that. `dist` samples those facets inside the part and reads the
+  distance from the axis to the surface (2.997 mm on `210-003`). Any boolean with a second solid
+  passes the result through Manifold, which drops them: `solid_revolve()` in
+  [`200-ArmBody/belt_director.scad`](200-ArmBody/belt_director.scad) clips the revolve to a box clear
+  of it. A part with a bore, or one already cut or unioned, is unaffected.
 
 **The references are CAD assembly exports (`STLB ASM` headers) and they mislead in three ways.** Run
 `scadmesh segment` on a reference before measuring it.

@@ -32,6 +32,7 @@
 // (200-001_ArmBody.scad, plug_hole_r), the slip clearance to it. The head is as thick as the Belt Director discs, with its outer edge rounded.
 
 include <../print_fit.scad>
+use <belt_director.scad>   // solid_revolve()
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -50,8 +51,8 @@ HEAD_T    = 2.000;         // revised: as the Belt Director discs
 HEAD_R    = 1.000;         // revised: the round on the head's outer edge
 
 module idler_plug_previous()
-    rotate_extrude() polygon([[0, 0], [SHANK[0], 0], [SHANK[0], SHANK[1]],
-                              [HEAD[0], SHANK[1]], [HEAD[0], HEAD[1]], [0, HEAD[1]]]);
+    solid_revolve([[0, 0], [SHANK[0], 0], [SHANK[0], SHANK[1]],
+                   [HEAD[0], SHANK[1]], [HEAD[0], HEAD[1]], [0, HEAD[1]]]);
 
 module idler_plug_revised()
     let(c = fit_clearances("revised"), r = fit_pin(MR85_BORE, c[1]) / 2, bore = fit_bore(BOLT_D, c[0]) / 2)
