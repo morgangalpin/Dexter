@@ -1270,7 +1270,7 @@ anything version 3 does not independently specify
     screws, since an M3 x 12 would reach the motor. The Stator Holder seats the spline's flange on a boss
     that rises into the Mount Top 6810's bore, with no recess, and counterbores its spigot's end over the
     Attach's land. The End Cap screws' heads stand 1.0 mm below the floor (`endcap_screw_head_proud`),
-    echoed for review.
+    echoed for review. 007 §7.8 and 007.1 §6 move those four screws from C-610 to C-609.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.
