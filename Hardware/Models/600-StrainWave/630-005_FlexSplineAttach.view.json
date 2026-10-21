@@ -29,6 +29,6 @@
     {"label": "Counterbore", "at": [15.5, 15.5, 8], "span": 14, "from": [0.4, -0.6, 1]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one removes the flare below the land and seats C-201's flexspline hub (spigot and nubs), with press fits on the 6810, the motor and the hub and slip fits on the M2 screws. The dimensions and fits are in 630-005_FlexSplineAttach.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one removes the flare below the land, its centre bore's ridge and the hub recess, stands the hub face higher for the Wave Gen Coupler (DC-600-2 in specs/009), opens a centre bore round the coupler's grip with an access hole to its grub screw, and seats C-201's flexspline hub on nubs, with press fits on the 6810, the motor and the hub and slip fits on the M2 screws. The dimensions and fits are in 630-005_FlexSplineAttach.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }

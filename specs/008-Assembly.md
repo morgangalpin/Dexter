@@ -89,26 +89,31 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
 2. Keep each strain-wave drive's top and bottom halves paired — they are matched at manufacture and are not
    interchangeable between drives.
 3. Remove first-layer print residue from the Flex Spline Attach.
-4. Lubricate, then press the flex spline's hub onto the Flex Spline Attach with a press: its Ø11 bore over
-   the spigot and its six holes over the nubs.
+4. Lubricate, then press the flex spline's hub onto the Flex Spline Attach with a press, its six holes over
+   the nubs.
 5. Separate them and inspect for print residue pushed into the attachment nubs during pressing; remove any.
 6. Clamp the hub, before the Attach goes on the motor, because the screw heads sit in its underside:
-   a. Refit the hub over the spigot and nubs.
+   a. Refit the hub over the nubs.
    b. Press an M2 nut into each of the Flex Spline Cap's six traps. Set the Cap inside the cup, its land
       down on the hub and its holes over the nubs.
-   c. Drive 6× M2 × 12 mm screws up through the Attach's head pockets, the nubs and the hub into the nuts,
+   c. Drive 6× M2 × 16 mm screws up through the Attach's head pockets, the nubs and the hub into the nuts,
       cross-pattern, until snug.
-7. Secure the Flex Spline Attach to the motor with 4× M3 × 10 mm bolts (confirm size/qty against the build).
-8. Press M3 nuts into the Wave Gen Coupler, insert M3 × 8 mm hex bolts to retain them, then epoxy over the
-   nut heads to lock them; cure.
-9. Ream the Wave Gen Coupler and lubricate before sliding it onto the motor shaft.
-10. Use the wave-generator depth-setting tool to set the coupler depth on the shaft. The depth puts the wave
-    generator where the drive's drawing puts it against the flex spline: its hub's outer face the overall
-    axial length [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the
-    flex spline's mounting face. J3's Attach carries that face lower on its motor by its `hub_drop`, so a
-    tool that gauges from the motor face is reset for J3.
-11. Tighten the M3 × 8 mm hex bolts evenly (alternate a few turns each) until snug — do not over-tighten the
-    printed mount.
+7. Press an M3 nut up the Wave Gen Coupler's nut pocket from its open end, and start an M3 × 4 mm grub
+   screw through the coupler's side hole into the nut, short of the bore.
+8. Ream the Wave Gen Coupler's shaft bore and lubricate it.
+9. Slide the coupler onto the motor shaft, stub outward, its grub screw over the shaft's flat. It goes on
+   before the Flex Spline Attach: its grip is wider than the flex spline hub's bore
+   ([DC-600-2](009-Design-Completion.md#strain-wave-drive-spacing)).
+10. Use the depth-setting tool to set the coupler's depth on the shaft: its bottom face the height
+    [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) gives
+    as `wgc_above_motor()` above the motor face, the same in every joint. Tighten the grub screw onto the
+    flat until snug — do not over-tighten the printed coupler.
+11. Secure the Flex Spline Attach to the motor over the coupler with 4× M3 × 14 mm bolts (confirm size/qty
+    against the build). Slide the wave generator onto the coupler's stub, into the flex spline, with its
+    hub's outer face the overall axial length
+    [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the flex spline's
+    mounting face, and tighten its two set screws on the stub. The coupler's grub screw stays reachable
+    through the Attach's access hole.
 12. Mount the drive's top half, its circular spline, in the joint's Stator Holder (`#110-002`, `#200-002` or
     `#511-002`, printed `config="revised"`):
     a. Press an M3 nut into each of the six hex pockets in the holder's back face and push it to the

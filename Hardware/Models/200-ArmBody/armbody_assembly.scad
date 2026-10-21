@@ -39,6 +39,7 @@ ARM_TOP        = 91.000;           // #200-001 top face
 ARM_BOTTOM     = -7.000;           // #200-001 bottom face
 BRG_SEAT       = [-7.000, 0.000];  // #200-001 L1: the 6810's seat below the ledge
 HOLDER_FLANGE  = [0.000, 2.000];   // #200-002 flange, z in its own frame
+HOLDER_END     = 13.500;           // #200-002 revised back face (pivot_back("revised")), z in its own frame
 HOLDER_BACK    = 96.000;           // #200-003 SHANK top, LIP underside
 BAL_RADIAL     = 33.516 + 0.050;   // #200-001 K1 inner radius, the press clearance to the shank
 BAL_WIDTH      = 9.900;            // #200-003 WIDTH
@@ -66,7 +67,7 @@ PULLEY_LOW    = PULLEY[0] + PULLEY_Z;
 PLUG_TIP_Z    = D_LOWER;                         // the tube's end flush with the lower plate's face
 
 echo(holder_flange_gap = HOLDER_Z - HOLDER_FLANGE[1] - ARM_TOP);   // flange's face over the arm's top
-echo(holder_body_below_top = ARM_TOP - (HOLDER_Z - 16));           // body's depth in the bore
+echo(holder_body_below_top = ARM_TOP - (HOLDER_Z - HOLDER_END));   // body's depth in the bore
 echo(pulley_span = str(PULLEY_LOW, " .. ", PULLEY[1] + PULLEY_Z));
 assert(abs(PLUG_TIP_Z + PLUG[0] - D_UPPER) < 1e-6, "the plug's tube does not span D");
 

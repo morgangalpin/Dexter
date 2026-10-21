@@ -43,7 +43,8 @@ committed but does not yet reproduce its reference geometry.
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 | DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
 | DC-16 | [Main Pivot placement](#main-pivot-placement) | P2 | Main Pivot fits, assembly review | The code disk's turn and the Pivot cap's, and what the disk's pegs engage | `[Provisional]` |
-| DC-600-1 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
+| DC-600-1 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | superseded by [DC-600-2](#strain-wave-drive-spacing) |
+| DC-600-2 | [Strain-wave drive spacing](#strain-wave-drive-spacing) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
@@ -582,7 +583,8 @@ by the feature each is located from, and the pegs' mate named; the model's infer
 values. `[Provisional]`.
 
 ## Wave Gen Coupler stub
-**DC-600-1 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — ✔ **closed by decision**
+**DC-600-1 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — **superseded by [DC-600-2](#strain-wave-drive-spacing)**,
+which replaces the hex body and solid stub decided below. The finding stands.
 
 **Found:** the Wave Gen Coupler's (`#630-004`) reference stub does not enter C-201's wave generator. It is
 Ø10.0 with a key 3.0 wide whose flat top stands 6.0 from the axis: a Cone Drive wave generator's input.
@@ -592,4 +594,39 @@ reference has no Ø6 feature. The motor's Ø5 shaft ran through the stub, and a 
 **Decided:** `config="revised"` draws a solid Ø6 stub at the press fit, as long as the wave generator's
 bore is deep, and the shaft bore stops in the hex body.
 [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
-dimensions and where each is taken from. `config="previous"` keeps the reference's stub. `[Specified]`.
+dimensions and where each is taken from. `config="previous"` keeps the reference's stub. Superseded.
+
+## Strain-wave drive spacing
+**DC-600-2 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — ✔ **closed by decision**
+
+**Found:** with [DC-600-1](#wave-gen-coupler-stub)'s solid stub seated in the wave generator's hub, the
+coupler's blind bore ended about 1.5 short of the tip of C-101's 24 mm shaft
+([007.1 C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)), so either the shaft was cut or the
+coupler stood off it. The wave generator's Ø6 bore runs through its whole hub.
+
+**Decided (reviewer):** keep the standard shaft, uncut. The drive stands further from its motor, half by
+moving the motor away from the drive, its Motor End Cap's seat deeper (`#311-001`, `#312-001`), and half by
+moving the drive away, the Flex Spline Attach (`#630-005`) thicker and the Stator Holder's floor further
+along it (`#110-002`, `#200-002`), until the coupler's blind bore, 1.0 past the shaft's tip, and its floor
+end the running clearance under the wave generator. The Wave Gen Coupler (`#630-004`) is one round piece
+from over the motor's boss, through the Attach, the flexspline's hub and the Flex Spline Cap, to just under
+the wave generator, with a Ø6 stub up the wave generator's bore past its two set screws. An M3 screw
+through a nut captured in the coupler grips the shaft's flat, reached through an access hole in the
+Attach, so the coupler can be taken off for maintenance. The Attach loses its spigot, since the nubs
+centre the hub, and its shaft ridge; the Cap's bore opens to pass the coupler.
+
+**Sized:** the spacing is **5.0 mm, 2.5 each way**. The bore rule alone needs 3.0 in J1 and J2 and 3.7 in
+J3, whose hub face stands 0.687 nearer its motor. The grip sets the rest: its nut must sit on the shaft's
+flat, which starts 9.0 above the motor face, and the coupler's grip, which holds the nut and is wider than
+the hub's Ø11 bore, must stand the running clearance under the hub face in J3. Two consequences follow:
+
+- **The screw is an M3 × 4 grub screw.** A bolt's head on the grip would sweep through the six M2 hub
+  screws on Ø17 as the shaft turns.
+- **The coupler goes on the shaft before the Attach goes on the motor** ([008.3](008-Assembly.md#0083-harmonic-drive-motors)):
+  its grip cannot pass the hub's bore. It passes inside the M2 screws' heads as the Attach goes on.
+
+[`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
+coupler's dimensions. [`630-005_FlexSplineAttach.scad`](../Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad)
+owns the Attach's, and asserts the coupler's running clearances and the deepest `hub_drop` they allow.
+[`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) asserts J1's closure and the
+coupler's clearances to the wave generator. `[Specified]`.

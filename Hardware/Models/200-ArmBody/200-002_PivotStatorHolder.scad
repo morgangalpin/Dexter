@@ -10,10 +10,16 @@
 //                         give way to the shared spline seat
 //                         (../600-StrainWave/c201_spline_seat.scad), and the
 //                         bore behind the seat closes from Ø38 to Ø36 so the
-//                         nut pockets keep a wall to it.
+//                         nut pockets keep a wall to it; and the floor and
+//                         the back face move DRIVE_SHIFT toward the opening:
+//                         the Wave Gen Coupler's spacing moved J2's drive
+//                         that far from its motor (DC-600-2 in
+//                         specs/009-Design-Completion.md), so the recess is
+//                         that much shallower and the body that much shorter.
 //
 // FRAME. The reference's own: the axis on +Z, the recess opening at z = 0,
-// its floor at z = 11.000, the back face at 16.000.
+// its floor at z = 11.000 (revised 8.500), the back face at 16.000 (revised
+// 13.500).
 //
 // Measured from the reference (scadmesh slice/arcs/profile). Everything is
 // fourfold about the axis except the screw holes, which are twofold:
@@ -70,8 +76,11 @@ BORE_D        = [38.000, 36.000];  // previous, revised
 PEG_CIRCLE_R  = 21.500;
 PEG           = [3.500, 2.000];    // OD, bore
 SCREW_D       = 3.000;
+DRIVE_SHIFT   = 2.500;             // revised: the floor and the back face this far toward the opening
 
-function pivot_floor() = FLOOR;
+function shift(cfg) = cfg == "previous" ? 0 : DRIVE_SHIFT;
+function pivot_floor(cfg = config) = FLOOR - shift(cfg);
+function pivot_back(cfg = config) = BACK - shift(cfg);
 
 // --- 2D outlines -----------------------------------------------------------
 function slip(cfg) = fit_clearances(cfg)[0];
@@ -91,12 +100,13 @@ module flange_2d(cfg)
 // --- Part ------------------------------------------------------------------
 module body(cfg) {
     linear_extrude(FLANGE_TOP) flange_2d(cfg);
-    cylinder(d = fit_pin(BODY_D, slip(cfg)), h = BACK);
+    cylinder(d = fit_pin(BODY_D, slip(cfg)), h = pivot_back(cfg));
 }
 
 module turned_cuts(cfg) {
-    translate([0, 0, -epsilon]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = FLOOR + epsilon);
-    translate([0, 0, FLOOR - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = BACK - FLOOR + 2 * epsilon);
+    f = pivot_floor(cfg);
+    translate([0, 0, -epsilon]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = f + epsilon);
+    translate([0, 0, f - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = pivot_back(cfg) - f + 2 * epsilon);
 }
 
 module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE_TOP])
@@ -117,9 +127,10 @@ module pivot_stator_holder(cfg = config) {
         difference() {
             body(cfg);
             turned_cuts(cfg);
-            translate([0, 0, FLOOR]) mirror([0, 0, 1]) spline_seat_cuts(BACK - FLOOR, press(cfg), slip(cfg));
+            translate([0, 0, pivot_floor(cfg)]) mirror([0, 0, 1])
+                spline_seat_cuts(pivot_back(cfg) - pivot_floor(cfg), press(cfg), slip(cfg));
         }
 }
 
 pivot_stator_holder();
-echo(seat_floor = FLOOR);
+echo(seat_floor = pivot_floor());
