@@ -8,10 +8,14 @@
 //   config = "revised"  — seats the C-201 circular spline: the pegs and the
 //                         two screw holes, laid out for a different drive,
 //                         give way to the shared spline seat
-//                         (../600-StrainWave/c201_spline_seat.scad), and the
-//                         floor and rim are lowered by FLOOR_DROP toward the
-//                         spigot. What sets FLOOR_DROP is recorded in
-//                         exgear_assembly.scad.
+//                         (../600-StrainWave/c201_spline_seat.scad). The rim
+//                         is lowered by FLOOR_DROP toward the spigot. The
+//                         floor stands DRIVE_RISE beyond where that would put
+//                         it, on a boss inside the Mount Top's 6810, so it
+//                         carries no recess: the pilot alone centres the
+//                         spline. The spigot's end is counterbored over the
+//                         Flex Spline Attach's land. What sets all three is
+//                         recorded in exgear_assembly.scad.
 //
 // FRAME. The reference's own: the axis on +Z, the recess opening toward -Z.
 // The seat is z = 4.000: there the 45 deg cone between the keys meets the
@@ -53,9 +57,12 @@
 //                                           The keys carry J3's output
 //                                           torque, so their play is the
 //                                           joint's backlash
-//     recess, on the spline's flange        press, the seat's pilot press
-//                                           and its nut pockets slip:
+//     pilot, on the spline's step           press, and the seat's nut
+//                                           pockets slip:
 //                                           c201_spline_seat.scad
+//     boss, inside the 6810's bore          running, though both turn
+//     end counterbore, over the Attach's    running: the Attach is fixed
+//       land                                and the holder turns
 //
 // The keys' end chamfers keep their plane, r + z = 44.5, because their
 // bottoming in the slots' chamfers is the seat. The key's flat simply ends
@@ -77,7 +84,10 @@ SEAT          = 4.000;     // on the gear's end face
 FLOOR         = -4.000;    // previous recess floor
 RIM           = -7.000;    // previous rim
 END           = 12.000;    // spigot's end
-FLOOR_DROP    = 1.000;     // revised: floor and rim this much toward the seat
+FLOOR_DROP    = 1.000;     // revised: the rim this much toward the seat
+DRIVE_RISE    = 4.000;     // revised: the floor this much further from the seat than the rim's drop puts it (DC-600-2)
+ATTACH_LAND_D = 50.000;    // #630-005's land, under the spigot's end
+END_CUT       = 2.000;     // revised: the counterbore over it, deep
 BODY_R        = 36.977;
 CONE_TOP      = -0.477;    // where the cone leaves R36.977
 CORE_R        = 32.500;
@@ -91,25 +101,31 @@ PEG_CBORE     = [4.000, 1.000];    // Ø, floor
 SCREW         = [3.000, 5.600, 5.000];     // hole Ø, counterbore Ø, counterbore floor
 
 function stator_seat() = SEAT;
-function stator_floor(cfg = config) = cfg == "previous" ? FLOOR : FLOOR + FLOOR_DROP;
+function stator_floor(cfg = config) = cfg == "previous" ? FLOOR : FLOOR + FLOOR_DROP - DRIVE_RISE;
 function stator_rim(cfg = config) = cfg == "previous" ? RIM : RIM + FLOOR_DROP;
 function stator_end() = END;
+// The face over the Attach: the spigot's end, or the revised counterbore's floor.
+function stator_clear(cfg = config) = cfg == "previous" ? END : END - END_CUT;
 
 // The keys' end chamfer, as the r + z its plane keeps.
 CHAMFER_PLANE = KEY[1] + END - KEY_CHAMFER;
 
 function slip(cfg) = fit_clearances(cfg)[0];
 function press(cfg) = fit_clearances(cfg)[1];
+function run(cfg) = fit_clearances(cfg)[2];
 
 // --- Body -------------------------------------------------------------------
-// The turned body: bore, recess, cylinder, cone, core.
+// The turned body: bore, recess (or the revised boss), cylinder, cone, core.
+// The floor's edge: the recess wall, or the boss's side a running clearance
+// inside the spline's flange, which is the 6810's bore.
+function floor_r(cfg) = cfg == "previous" ? RECESS_D / 2 : spline_flange()[0] / 2 - run(cfg);
 module body(cfg) {
     fl = stator_floor(cfg);
     rim = stator_rim(cfg);
-    recess_r = (cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg))) / 2;
+    wall_r = floor_r(cfg);
     core = CORE_R - slip(cfg);
     rotate_extrude() polygon([
-        [BORE_D / 2, END], [BORE_D / 2, fl], [recess_r, fl], [recess_r, rim],
+        [BORE_D / 2, END], [BORE_D / 2, fl], [wall_r, fl], [wall_r, rim],
         [BODY_R, rim], [BODY_R, CONE_TOP], [core, CONE_TOP + BODY_R - core], [core, END]]);
 }
 
@@ -149,11 +165,14 @@ module ex_gear_stator_holder(cfg = config) {
     if (cfg == "previous")
         difference() { union() { body(cfg); keys(cfg); pegs(); } peg_cuts(); screw_cuts(); }
     else
-        // The seat's frame has its recess on +Z; this part's opens toward -Z.
+        // The seat's frame has its floor facing +Z; this part's faces -Z.
+        // The nut pockets open into the counterbore.
         difference() {
             union() { body(cfg); keys(cfg); }
             translate([0, 0, stator_floor(cfg)]) mirror([0, 0, 1])
-                spline_seat_cuts(END - stator_floor(cfg), press(cfg), slip(cfg));
+                spline_seat_cuts(stator_clear(cfg) - stator_floor(cfg), press(cfg), slip(cfg));
+            translate([0, 0, stator_clear(cfg)])
+                cylinder(d = fit_bore(ATTACH_LAND_D, run(cfg)), h = END_CUT + 1);
         }
 }
 

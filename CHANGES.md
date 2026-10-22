@@ -1080,6 +1080,10 @@ anything version 3 does not independently specify
     `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
     `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
     Their meshes moved to `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
+    `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
+    `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
+    Their meshes moved to `Reference/meshes/500-ExternalGear/`.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1220,6 +1224,53 @@ anything version 3 does not independently specify
     open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
+  - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and
+    extruded: the plate with the all-thread hole, and the nut trap above it. The reference held both
+    holders, mirror images of each other, in one mesh. `520-003_ExGearNutHold.scad` is now the one source
+    for both, and `holder` chooses A, B or both. Their curved face is the Ex Gear Mount's R38 bore.
+    `revised` draws the slip fits on the M3 all-thread hole and the nut trap.
+  - **500-ExternalGear:** the Ex Gear Mount Top (`#520-002`), a stack of 2D profiles, each extruded: the
+    block under the plate with its rebate and pockets, and the plate with the seat's three steps. The
+    block's face is the Ex Gear Mount's R38 bore. `revised` draws the press fit on the 6810's outer race in
+    the Ø65 seat and the slip fit on the M3 all-threads. `exgear_assembly.scad` draws the part from its
+    source, `ex_gear_mount_top("revised")`, and reads the seat from `mount_top_seat()`, where it imported
+    the mesh.
+  - **500-ExternalGear:** the External Gear (`#510-001`), a region split: one revolved profile for the
+    body, the 100-tooth GT2 ring (`gt2_teeth_rounded_2d`) extruded on each band, a closed groove (G1)
+    cut where the mesh was pinched, and the eight key slots. `revised` draws the press fits of the two
+    6810s. The socket above the upper bearing keeps its size, because the Stator Holder draws that fit.
+    `exgear_assembly.scad` draws the gear from its source, `external_gear("revised")`, and reads its seats
+    from accessor functions such as `gear_lower_shoulder()`, where it imported the mesh. The
+    `gear-fit-511-002` check in `render.json` reads the gear's mesh from `Reference/meshes/`.
+  - **500-ExternalGear:** the Ex Gear Mount (`#520-001`), a region split: the floor, column, bridge and
+    frame, each extruded from plan or side profiles. The front's S profile is turned about the bore's
+    axis. Three blends are made by rolling a ball: an opening under the bridge, a closing at the lower
+    plate, and a closing where the floor's tongue runs out into the column's side round on the slope, its
+    side filleted R20 in plan into the round's line. `revised` draws the slip fits on the screws, the
+    all-threads and the Nut Holder slots, and the press fits on the motors' pilots.
+    `exgear_assembly.scad` draws the part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
+  - **500-ExternalGear:** `exgear_assembly.scad` now `use`s every part of the group. It draws the Nut
+    Holders A and B in the Mount's slots, with an M3 nut in each trap. It draws the two M3 x 46
+    all-threads with their locknuts on the Mount Top, and the four M3 x 10 screws up through the Mount's
+    floor into the End Cap's nuts. It draws the revised Wave Gen Coupler (`#630-004`) and the six M2 x 16
+    hub screws. Each 6810 is split into races. `exgear_assembly.clash.json` checks the whole stack with
+    `assembly-clash.rs`, and its exceptions state their reasons: the seat rounds and the coupler's bore on
+    the shaft. What the check found is fixed in `revised`:
+    - the Mount's slot back wall stands slip off the holder's flat end;
+    - the Mount Top's block, tab and rebate stand slip off the Mount's back blocks and column step;
+    - the Mount Top's plate no longer reaches 0.27 mm into the back blocks;
+    - the Mount Top's shoulder (B2) and the gear's bore (B3) stand the running clearance off the 6810
+      inner races that turn past them;
+    - the Nut Holders' trap floor is back at 1.2 mm.
+
+    J3 takes its share of the coupler's spacing
+    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)) as 1.0 mm motor-down and
+    4.0 mm drive-up, the split every joint now takes, because the motor's Ø50.8 corners must stop above
+    the lower 6810's Ø50 bore. The End Cap's seat rises 2.0 mm in all, and its nut traps deepen to 4.0 mm for M3 x 10
+    screws, since an M3 x 12 would reach the motor. The Stator Holder seats the spline's flange on a boss
+    that rises into the Mount Top 6810's bore, with no recess, and counterbores its spigot's end over the
+    Attach's land. The End Cap screws' heads stand 1.0 mm below the floor (`endcap_screw_head_proud`),
+    echoed for review. 007 §7.8 and 007.1 §6 move those four screws from C-610 to C-609.
   - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
     tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
     oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.

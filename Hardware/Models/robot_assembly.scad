@@ -488,7 +488,7 @@ UNPLACED = [
   ["600-StrainWave, the J2 and J3 stator holders, motor end caps",
    "the drives at J1, J2 and J3, but for the Base Stator Holder, which is in the base stack; no mating feature measured yet"],
   ["500-ExternalGear, 6 parts",
-   "the CAD body places the mount low on the base, well off the arm axis; the model's frame has not been matched to it"],
+   "the CAD body places the mount low on the base, well off the arm axis; the model's frame has not been matched to it. Two features will fix it: the Mount's four S1 strake slots (centre r 22.65 on 0 + 90k deg) take strakes on the Main Pivot's r 22.797 pattern (008.8 step 10), which puts the drive axis on that joint's, and its K1 channel bonds over #520-006 from the Arm Body (GlueRig_ArmBodyToExGear). Neither the height along the strakes nor the turn about the axis is measured"],
   ["800-Harness 18 parts, 900-ToolInterface, 950-Tooling",
    "harness, gripper and build fixtures"],
 ];
