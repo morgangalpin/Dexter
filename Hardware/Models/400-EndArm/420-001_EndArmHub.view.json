@@ -1,0 +1,36 @@
+{
+  "title": "End Arm Hub",
+  "subtitle": "#420-001 · reference mesh and 420-001_EndArmHub.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "End Arm Hub", "pn": "#420-001", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/420-001_EndArmHub.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/420-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/420-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 25, -15], "text": "O1 outline R25.0 about the axis, tangent lines to the front face x 32.5, z -38…4"},
+    {"at": [11.5, 0, 2], "text": "S1 6703 seat Ø23.0, z -0.15…4, 45° chamfer to Ø20.0, lip to z -2.0"},
+    {"at": [12.753, 10.253, 2], "text": "P1 peg holes ×4 on the diagonals Ø5.0 at r 14.5, z 0…4"},
+    {"at": [15.25, 1.5, -10], "text": "H1 rod holes ×4 on the axes Ø3.0 at r 15.25, z -30…4, tangent to C1"},
+    {"at": [-9.723, 9.723, -15], "text": "C1 bore Ø27.5, z -30…-2"},
+    {"at": [20, 13.5, -15], "text": "C2 belt channels ×2, |y| 11.0…13.5, out through the front face"},
+    {"at": [25, 11, -15], "text": "C3 front block |y| ≤ 11.0, back corners R2.0"},
+    {"at": [-22.5, 0, -34], "text": "B1 cap opening Ø45.0, cut by a flat at x 19.5, z -38…-30"},
+    {"at": [31, 0, -14], "text": "T1 tube counterbore 22.0 × 22.0 about the tube axis, z -36…-14, from x 28.5 out"},
+    {"at": [40, 10, -25], "text": "T2 spigot 20.0 × 20.0, R4.0 corners, x 28.5…44.5 on z -25"},
+    {"at": [40, 3, -25], "text": "T3 spigot's I-shaped bore, waist 6.0 wide over z -22…-28"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [4, 0], "part": "ref", "span": 65, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [4, 0], "part": "ref", "span": 65, "from": [0, 0, -1]},
+    {"label": "Spigot tip", "at": [44.5, 0, -25], "span": 30, "from": [1, -0.3, 0.2]},
+    {"label": "Seat", "at": [0, 0, 1], "span": 30, "from": [0.3, -0.6, 1]},
+    {"label": "Channels", "at": [24, 0, -15], "span": 30, "from": [0.8, -0.8, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The reference mesh is two overlapping bodies, the hub and the spigot (an I-shaped stub of the bore's section from x 26.5 to 28.5 lies wholly inside the hub), so a parity reading near the spigot's root counts the overlap as void. dist would charge the faces inside the hub, so render.rs --verify gates the previous render against the derived reference 420-001_EndArmHub.bodies-unioned.stl, the two bodies unioned (the 420-001_EndArmHub.scad header), and holds four sections by outline against the original. The revised render presses S1 on the 6703, T2 in the C-505 tube and T1 round it, and slips B1 round the End Arm Hub Cap. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

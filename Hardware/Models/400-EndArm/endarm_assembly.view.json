@@ -1,0 +1,66 @@
+{
+  "scad": "endarm_assembly.scad",
+  "title": "End Arm stack",
+  "subtitle": "endarm_assembly.scad · the elbow about J3: the Axis Intersection on L2, the hub and New Belt Pulley on L3, and the two belt channels on their shafts · orthographic, cut on XZ",
+  "groups": [
+    {"name": "L2 side", "role": "fixed to the arm body", "parts": [
+      {"id": "ai_a", "name": "Axis Intersection Half, lower", "pn": "#410-001", "color": "#9aa7b4"},
+      {"id": "ai_b", "name": "Axis Intersection Half, upper", "pn": "#410-001", "color": "#8795a3"},
+      {"id": "strakes_ai", "name": "48 mm strakes", "pn": "C-502", "color": "#303030"},
+      {"id": "l2_tube", "name": "L2 tube, its end", "pn": "C-504", "color": "#202020"}]},
+    {"name": "L3 side", "role": "turns about J3", "parts": [
+      {"id": "hub", "name": "End Arm Hub, revised", "pn": "#420-001", "color": "#d4ad6b"},
+      {"id": "cap", "name": "End Arm Hub Cap", "pn": "#420-002", "color": "#c98a3a"},
+      {"id": "belt_pulley", "name": "New Belt Pulley", "pn": "#410-002", "color": "#2f6db5"},
+      {"id": "code_disk", "name": "End Arm Code Disk", "pn": "#410-003", "color": "#5c8fd6"},
+      {"id": "rods", "name": "M3 all-thread x4", "pn": "#410-006", "color": "#707070"},
+      {"id": "l3_tube", "name": "L3 tube, its end", "pn": "C-505", "color": "#202020"},
+      {"id": "b6807_a", "name": "6807, lower", "pn": "6807", "color": "#dcdcdc"},
+      {"id": "b6807_b", "name": "6807, upper", "pn": "6807", "color": "#dcdcdc"}]},
+    {"name": "Inner channel", "role": "turns on the 6703s", "parts": [
+      {"id": "int_inner", "name": "Internal Inner Pulley", "pn": "#421-002", "color": "#7fb069"},
+      {"id": "ext_inner", "name": "External Inner Pulley, 108T", "pn": "#430-002", "color": "#6a9d58"},
+      {"id": "strakes_inner", "name": "81 mm strakes", "pn": "C-503", "color": "#303030"},
+      {"id": "b6703_hub", "name": "6703 in the hub", "pn": "6703", "color": "#dcdcdc"},
+      {"id": "b6703_lower_a", "name": "6703 in the pulley's lower pocket, outer", "pn": "6703", "color": "#dcdcdc"},
+      {"id": "b6703_lower_b", "name": "6703 in the pulley's lower pocket, inner", "pn": "6703", "color": "#dcdcdc"},
+      {"id": "b6703_upper", "name": "6703 in the pulley's upper pocket", "pn": "6703", "color": "#dcdcdc"}]},
+    {"name": "Outer channel", "role": "turns on the MR128s", "parts": [
+      {"id": "shaft", "name": "Stainless tube, 113 mm", "pn": "C-507", "color": "#b8bcc0"},
+      {"id": "int_outer", "name": "Internal Outer Pulley", "pn": "#421-001", "color": "#e0a458"},
+      {"id": "ext_outer", "name": "External Outer Pulley, 108T", "pn": "#430-001", "color": "#d08c3a"},
+      {"id": "spacer_a", "name": "Pulley Spacer, internal", "pn": "#421-006", "color": "#e8c87a"},
+      {"id": "spacer_b", "name": "Pulley Spacer, external", "pn": "#421-006", "color": "#e8c87a"},
+      {"id": "mr128_cap", "name": "MR128 in the Cap", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "mr128_inner", "name": "MR128 in the Internal Inner Pulley", "pn": "MR128", "color": "#dcdcdc"}]}
+  ],
+  "labels": [
+    {"at": [0, 0, 29], "text": "Axis Intersection halves bonded at z 29; the 48 mm strakes span z 5..53"},
+    {"at": [20, 0, 10.5], "text": "Lower 6807 on the New Belt Pulley's journal, z 7..14"},
+    {"at": [14.5, 14.5, 2], "text": "New Belt Pulley's pegs in the hub's back holes, z 0.25..4"},
+    {"at": [30, 0, 53.5], "text": "Code disk on the pulley's end, flat face out at z 55"},
+    {"at": [0, 12.7, -8], "text": "Internal Inner Pulley's band in the hub's cavity; its belt leaves by the channels"},
+    {"at": [0, 12.7, -23], "text": "Internal Outer Pulley's band"},
+    {"at": [0, 6, -32], "text": "Cap's MR128 under the stainless tube's end"},
+    {"at": [6.141, 3.545, 63], "text": "C-503 strakes end flush with the External Inner Pulley's far face, z 67.35"},
+    {"at": [40, 0, -25], "text": "L3 tube on the spigot, butting the counterbore at x 28.5"},
+    {"at": [-50, 0, 29], "text": "L2 tube in the halves' channel, butting its end at x -37.5"}
+  ],
+  "presets": [
+    {"label": "Whole stack", "at": [0, 0, 20], "span": 160},
+    {"label": "J3 bearings", "at": [15, 0, 28], "span": 70},
+    {"label": "Hub cavity", "at": [0, 0, -16], "span": 50},
+    {"label": "External pulleys", "at": [15, 0, 68], "span": 60},
+    {"label": "Spigot", "at": [36, 0, -25], "span": 40}
+  ],
+  "notes": [
+    {"heading": "Provisional placements", "emphasis": true,
+     "text": "Each part stands on a feature it carries (the assembly's header gives each), but no drawing fixes the pulleys' or the code disk's turn about J3, nor which face of each spacer meets which pulley; those follow 008.7. The arm is drawn straight. The End Arm notes hold the derivation and the questions for the reviewer."},
+    {"heading": "Not drawn",
+     "items": [
+       "The belts (C-301, C-302) and the motor pulleys that drive the External pulleys",
+       "The photointerrupter that reads the code disk (#823)",
+       "The M3 nuts, washers and set screws",
+       "The Arm Body the L2 tube runs to, and the differential at the L3 tube's far end"]}
+  ]
+}

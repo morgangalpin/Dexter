@@ -120,6 +120,16 @@ use <700-Differential/diff_assembly.scad>
 // same `-D config=` switch as the differential (DC-12).
 use <400-EndArm/430-001_ExternalOuterPulley.scad>
 use <400-EndArm/430-002_ExternalInnerPulley.scad>
+use <400-EndArm/420-001_EndArmHub.scad>
+use <400-EndArm/421-001_InternalOuterPulley.scad>
+use <400-EndArm/421-002_InternalInnerPulley.scad>
+use <400-EndArm/410-001_AxisIntersectionHalf.scad>
+use <400-EndArm/410-002_NewBeltPulley.scad>
+use <400-EndArm/410-003_EndArmCodeDisk.scad>
+use <400-EndArm/420-002_EndArmHubCap.scad>
+use <400-EndArm/421-006_PulleySpacer.scad>
+// The End Arm's part frames about J3, from its own assembly (endarm_assembly.scad § STACK).
+use <400-EndArm/endarm_assembly.scad>
 // Converted base parts are sources too, drawn in the same configuration.
 use <100-Base/100-001_BaseClamp.scad>
 use <100-Base/110-001_BaseMountBottom.scad>
@@ -361,30 +371,36 @@ module place_arm_body() {
     color(PRINT_C) translate([0, J2_STN.y, 62.000]) arm_body("revised");
 }
 
-// End Arm group. The models in 400-EndArm/ that sit on the J3 axis share one
-// frame, which is what lets one transform place them all: each is centred on
-// its own (x, y) = (0, 0) to within 0.01 mm, and the hub — which is not,
-// because its spigot runs out along the arm — puts that same origin on the J3
-// axis.
+// End Arm group. The End Arm Hub's own frame carries the group: its origin is
+// on the J3 axis, and 400-EndArm/endarm_assembly.scad places every other part
+// of the group in it by a feature each part carries (the halves on their
+// 6807s, the New Belt Pulley's pegs in the hub, the two belt channels by the
+// axial stack). Its frame modules are used here as they are, so the group is
+// drawn as it assembles, and not where the CAD export left each mesh.
 //
 // The transform is fixed by the hub and checked by two of its features. The
 // model's x is this frame's y and its z is this frame's z, so the mapping is a
 // quarter turn about z; the offsets follow from the CAD body's extents. Placed
 // that way the hub's own x = 0 lands on the J3 station and its spigot axis, at
 // its own z = -25.000, lands on z = 36.000 — which is where specs/004
-// § Differential interface independently puts the L3 tube.
-//
-// 410-001_AxisIntersectionHalf is NOT in this frame and is not drawn here; see
-// UNPLACED.
+// § Differential interface independently puts the L3 tube. The halves' L2
+// channel lands on z 90.000, 0.250 above the Arm Body socket's L2_TUBE_Z.
 module in_end_arm() { translate([0, J3_STN.y, 61.000]) zrot(90) children(); }
 
 module place_end_arm() {
     color(PRINT_C) in_end_arm() {
-        import("400-EndArm/420-001_EndArmHub.stl", convexity = 8);
-        import("400-EndArm/421-001_InternalOuterPulley.stl", convexity = 8);
-        import("400-EndArm/421-002_InternalInnerPulley.stl", convexity = 8);
-        external_outer_pulley();
-        external_inner_pulley();
+        end_arm_hub();
+        ai_frame(0) axis_intersection_half();
+        ai_frame(1) axis_intersection_half();
+        pulley_frame() new_belt_pulley();
+        disk_frame() end_arm_code_disk();
+        cap_frame() end_arm_hub_cap();
+        int_outer_frame() internal_outer_pulley();
+        int_inner_frame() internal_inner_pulley();
+        spacer_frame(0) pulley_spacer();
+        spacer_frame(1) pulley_spacer();
+        ext_inner_frame() external_inner_pulley();
+        ext_outer_frame() external_outer_pulley();
     }
 }
 
@@ -481,9 +497,7 @@ arm();
 // position is chosen that looks right.
 // ---------------------------------------------------------------------------
 UNPLACED = [
-  ["#410-001 Axis Intersection Half x2",
-   "holds the L2 tube's far end 37.500 mm from the J3 axis, but its model is not in the End Arm group's frame and its own channel has not been located"],
-  ["#100-002, #300-002, #410-003 code disks",
+  ["#100-002, #300-002 code disks",
    "each on its joint's axis, but the seat that sets its height is unmeasured"],
   ["600-StrainWave, the J2 and J3 stator holders, motor end caps",
    "the drives at J1, J2 and J3, but for the Base Stator Holder, which is in the base stack; no mating feature measured yet"],

@@ -109,16 +109,7 @@
     {"kind": "render", "id": "render-revised-720-004", "config": "revised", "scad": "720-004_DiffShaftPulley.scad", "out": "out/revised/720-004.stl"},
     {"kind": "render", "id": "render-revised-730-001", "config": "revised", "scad": "730-001_DiffBodyA.scad", "out": "out/revised/730-001.stl"},
     {"kind": "render", "id": "render-revised-730-002", "config": "revised", "scad": "730-002_DiffBodyB.scad", "out": "out/revised/730-002.stl"},
-    {"kind": "render", "id": "render-revised-430-001", "config": "revised", "scad": "../400-EndArm/430-001_ExternalOuterPulley.scad", "out": "out/revised/430-001.stl",
-     "note": "The External pulleys are 400-EndArm's parts, but they are the elbow half of the same DC-12 train, so they are verified here too."},
-    {"kind": "render", "id": "render-revised-430-002", "config": "revised", "scad": "../400-EndArm/430-002_ExternalInnerPulley.scad", "out": "out/revised/430-002.stl"},
 
-    {"kind": "fits", "id": "fits-430-001", "part": "430-001 (revised)", "stl": "out/revised/430-001.stl", "after": ["render-revised-430-001"],
-     "note": "The outer External pulley's hub: the 8 mm rod, and the M3 nut (5.5 across flats) in the slot on 180 deg, whose 5.5 runs along Y.",
-     "probes": [
-       {"label": "8 mm rod bore", "at": [4.0, 0.0, 28.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
-       {"label": "set-screw nut slot", "at": [-6.4, 2.75, 24.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"}
-     ]},
     {"kind": "fits", "id": "fits-710-001", "part": "710-001 (revised)", "stl": "out/revised/710-001.stl", "after": ["render-revised-710-001"],
      "probes": [
        {"label": "MR128 seat", "at": [4.2426, 4.2426, 1.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "press"},
@@ -167,13 +158,9 @@
      ]},
 
     {"kind": "counts", "id": "counts-revised",
-     "after": ["render-revised-430-001", "render-revised-430-002", "render-revised-720-003", "render-revised-720-004", "render-revised-720-001"],
-     "note": "The DC-12 tooth counts on the revised renders: 16T to 108T at the elbow and 40T to 80T at the wrist. The shaft's band stays 40T as the spline #720-004 is keyed on. 430-001 is sectioned clear of its access holes.",
+     "after": ["render-revised-720-003", "render-revised-720-004", "render-revised-720-001"],
+     "note": "The DC-12 tooth counts on the revised renders: 40T to 80T at the wrist. The shaft's band stays 40T as the spline #720-004 is keyed on. The elbow's 108T External pulleys are counted in 400-EndArm/render.json.",
      "items": [
-       {"label": "430-001 108T GT2 (revised)", "stl": "out/revised/430-001.stl",
-        "args": ["--band", "33.0,34.3", "--slice-at", "28.5", "--center", "0,0"], "key": "radius_peaks", "expect": 108},
-       {"label": "430-002 108T GT2 (revised)", "stl": "out/revised/430-002.stl",
-        "args": ["--band", "33.0,34.3", "--slice-at", "24.0", "--center", "0,0"], "key": "radius_peaks", "expect": 108},
        {"label": "720-003 80T GT2 (revised)", "stl": "out/revised/720-003.stl",
         "args": ["--band", "24.3,25.3", "--slice-at", "23.5", "--center", "0,0"], "key": "radius_peaks", "expect": 80},
        {"label": "720-004 80T GT2 (revised)", "stl": "out/revised/720-004.stl",

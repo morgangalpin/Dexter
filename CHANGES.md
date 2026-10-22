@@ -1080,6 +1080,13 @@ anything version 3 does not independently specify
     `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
     `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
     Their meshes moved to `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/400-EndArm/`: `410-002_NewBeltPulley.scad`, `410-003_EndArmCodeDisk.scad`,
+    `420-002_EndArmHubCap.scad`, `421-001_InternalOuterPulley.scad`, `421-002_InternalInnerPulley.scad`,
+    `421-006_PulleySpacer.scad`, `410-001_AxisIntersectionHalf.scad`, `420-001_EndArmHub.scad`,
+    `render.json`, and the assembly `endarm_assembly.scad` with its `.view.json` and `.clash.json` (new);
+    `external_pulley.scad`, `430-001_ExternalOuterPulley.scad` and
+    `430-002_ExternalInnerPulley.scad` (rewritten). Their meshes moved to `Reference/meshes/400-EndArm/`,
+    including the four of `410-001`, `420-001`, `430-001` and `430-002`.
   - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
     `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
     `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
@@ -1222,6 +1229,58 @@ anything version 3 does not independently specify
     the H6 traps stood 0.05 off the M3 nut where the slip fit needs 0.15. `revised` opens both to their
     fits. The slots and holes that the reference already draws wider keep their size, and probes hold them
     open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
+  - **400-EndArm:** the New Belt Pulley (`#410-002`), a region split into a revolved hub and a revolved web,
+    with two 100T tooth rings of `gt2_pulley.scad`, four windows cut through the web and four pegs. Each
+    window is one outline of arcs, because an opening of the flanks' lens rounded far past the tip.
+  - **400-EndArm:** the End Arm Code Disk (`#410-003`), two constant sections extruded once each, as
+    `#300-002`'s are, with a revolved hub. Each of its 157 slits is cut as the hull of its sections at the
+    upper layer's two faces, since the slits are drafted. They are the gaps between bars of constant
+    width, so each slit widens outward.
+  - **400-EndArm:** the End Arm Hub Cap (`#420-002`), one 2D section extruded once, with one revolved
+    cutter for the stepped bore. The section's two sizes of concave round are two closings: the wheel
+    inside the ring by R3, then the whole by R1.15.
+  - **400-EndArm:** the Internal Outer and Inner Pulleys (`#421-001`, `#421-002`) and the Pulley Spacer
+    (`#421-006`), each a revolved meridional profile. The pulleys add a 40T tooth ring of `gt2_pulley.scad`
+    and cut their nut slots and set-screw holes, or strake slots. Both pulleys and the New Belt Pulley carry
+    `gt2_pulley.scad`'s rounded-tip GT2 form, not the plain one of the differential's pulleys; their
+    sections fit it to a fraction of the plain form's miss. `421-002_InternalInnerPulley.dwg` is not a
+    source: it is another revision, with five strake slots. The count stays 40T
+    ([004 § Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5)),
+    and `robot_assembly.scad` draws the two pulleys from source.
+  - **400-EndArm:** the Axis Intersection Half (`#410-001`), plan sections extruded along Z, with two 45 deg
+    faces cut by half-spaces and the channel's end a chamfered section extruded along Y. The 6807 pocket,
+    the lip, the L2 half-channel and the four strake slots are cut through everything afterwards.
+  - **400-EndArm:** the End Arm Hub (`#420-001`), three 2D layers extruded once each, with one revolved
+    cutter for the 6703 seat and one YZ section for the tube's counterbore. Its reference is two
+    overlapping bodies: the hub, and the spigot with an I-shaped stub inside the hub. The spigot's bore
+    is therefore blind at the counterbore's floor. The dist gate holds it against
+    `420-001_EndArmHub.bodies-unioned.stl` (new), the two bodies unioned beside the unchanged original,
+    since no render can lie on surfaces inside a solid (`Hardware/Models/README.md` § Known defects says
+    how it was made). `robot_assembly.scad` draws the hub from source with `use`.
+  - **400-EndArm:** the External Outer and Inner Pulleys (`#430-001`, `#430-002`) and
+    `external_pulley.scad` are rewritten as parametric parts: each is a revolved profile with the
+    shared 90T band, three windows and its nut or strake slots. `previous` was the reference mesh
+    imported unchanged and is now a recreation of it, gated against the mesh; `revised` keeps that body
+    inside `R_CUT` and adds the 108T rim. The mesh imports and the slow minkowski hub fits are gone, the
+    fits are drawn on the features, and the group's verify runs in seconds instead of about fifteen
+    minutes.
+  - **400-EndArm:** `400-EndArm/render.json` is new. It holds every part's checks, and the External
+    pulleys' render, fits and 108T count jobs moved from `700-Differential/render.json`.
+  - **400-EndArm:** `endarm_assembly.scad` places the group about J3 as 008.7 builds it, with its 6807,
+    6703 and MR128 bearings split into races, the C-502 and C-503 strakes, the stainless tube, the rods
+    and stubs of the L2 and L3 tubes; `assembly-clash.rs` checks it. What it found is fixed in the
+    revised parts: the faces of `#410-002`, `#410-003` and `#421-001` that bear on an inner race are
+    rebated clear of its shield; the floor of the Cap's (`#420-002`) MR128 pocket, which touched both
+    races, is relieved under the inner one; the External Inner Pulley's (`#430-002`) counterbore takes the slip fit on
+    the Internal Inner Pulley's journal; and the Pulley Spacer's (`#421-006`) hub is 0.45 shorter,
+    because the stack from the Cap's MR128 to the hub's 6703 was that much too long with the 6703 on
+    its seat. The manifest's exceptions give the reason for each place accepted as drawn. The assembly
+    also showed that 008.7 fitted two MR128s too late to reach their seats; they now go in at step 10,
+    the Internal Inner Pulley's rather than the Outer's, and steps 10–19 become 11–20
+    ([DC-400-1](specs/009-Design-Completion.md#end-arm-bearing-order)).
+    `robot_assembly.scad` now draws all ten parts in the frames this assembly gives them, so the
+    Axis Intersection Halves and the code disk leave its UNPLACED list, and the Internal and External
+    pulleys are turned end for end into the hub, where the CAD export had left them above it.
   - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
     pivot assemblies read.
   - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and

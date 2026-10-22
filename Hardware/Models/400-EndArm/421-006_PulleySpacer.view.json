@@ -1,0 +1,27 @@
+{
+  "title": "Pulley Spacer",
+  "subtitle": "#421-006 · reference mesh and 421-006_PulleySpacer.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Pulley Spacer", "pn": "#421-006", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/421-006_PulleySpacer.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/421-006.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/421-006.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [13, 0, 0.4], "text": "F1 flange Ø26.0, z 0…0.8"},
+    {"at": [5.5, 0, 1.3], "text": "H1 hub Ø11.0, z 0.8…1.8"},
+    {"at": [5.383, 0, 1.683], "text": "R1 hub's top outer edge R0.4"},
+    {"at": [4.15, 0, 0.4], "text": "B1 bore Ø8.3, through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 32, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 32, "from": [0, 0, -1]},
+    {"label": "Hub edge", "at": [5.4, 0, 1.5], "span": 8, "from": [0.5, -0.8, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one changes nothing, because B1's Ø8.3 already stands the press clearance off the Ø8 tube. The dimensions and fits are in 421-006_PulleySpacer.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
