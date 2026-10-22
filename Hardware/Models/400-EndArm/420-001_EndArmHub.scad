@@ -92,7 +92,7 @@
 //
 // P1 takes the New Belt Pulley's pegs: their slip fit is drawn on the pegs
 // (410-002), so the holes keep their size. H1 is tapped by the all-thread
-// (008.7 step 14): it keeps the reference's size.
+// (008.7 step 15): it keeps the reference's size.
 
 include <../print_fit.scad>
 

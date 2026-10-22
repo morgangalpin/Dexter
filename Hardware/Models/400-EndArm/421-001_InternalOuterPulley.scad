@@ -1,7 +1,7 @@
 // #421-001 Internal Outer Pulley — parametric source.
 // The outer channel's stage-2 driver: a 40T GT2 pulley locked on the 113 mm
 // stainless tube (C-507, Ø8) by three M3 set screws, each running in an M3 nut
-// epoxied into a slot (008.7 steps 9, 16, 17). Its belt runs along L3 to the
+// epoxied into a slot (008.7 steps 9, 17, 18). Its belt runs along L3 to the
 // differential's 80T input (specs/004 § Wrist and differential).
 //
 //   config = "previous" — a faithful recreation of the reference mesh
@@ -69,8 +69,8 @@
 //                                                        clash manifest
 //                                                        accepts that edge
 //
-// 008.7 step 20 presses an MR128 "into the Internal Outer Pulley end", but no
-// face of this mesh is a Ø12 seat; see the End Arm notes' reviewer questions.
+// This part has no Ø12 seat: the MR128 across the first Pulley Spacer is the
+// Internal Inner Pulley's (008.7 step 10; specs/009 DC-400-1).
 
 include <../gt2_pulley.scad>
 include <../print_fit.scad>

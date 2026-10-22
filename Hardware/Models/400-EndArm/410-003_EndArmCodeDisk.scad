@@ -1,7 +1,7 @@
 // #410-003 End Arm Code Disk — parametric source.
 // J3's encoder wheel. It sits on the outside of the Axis Intersection hub,
-// raised side in (008.7 step 13), held by the four M3 all-thread rods that
-// pass through its holes (step 14), and the end-arm photointerrupter (#823)
+// raised side in (008.7 step 14), held by the four M3 all-thread rods that
+// pass through its holes (step 15), and the end-arm photointerrupter (#823)
 // reads its slits.
 //
 //   config = "previous" — a faithful recreation of the reference mesh

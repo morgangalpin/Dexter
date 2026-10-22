@@ -1275,7 +1275,8 @@ anything version 3 does not independently specify
     the Internal Inner Pulley's journal; and the Pulley Spacer's (`#421-006`) hub is 0.45 shorter,
     because the stack from the Cap's MR128 to the hub's 6703 was that much too long with the 6703 on
     its seat. The manifest's exceptions give the reason for each place accepted as drawn. The assembly
-    also shows that 008.7 fits two MR128s too late to reach their seats
+    also showed that 008.7 fitted two MR128s too late to reach their seats; they now go in at step 10,
+    the Internal Inner Pulley's rather than the Outer's, and steps 10–19 become 11–20
     ([DC-400-1](specs/009-Design-Completion.md#end-arm-bearing-order)).
     `robot_assembly.scad` now draws all ten parts in the frames this assembly gives them, so the
     Axis Intersection Halves and the code disk leave its UNPLACED list, and the Internal and External

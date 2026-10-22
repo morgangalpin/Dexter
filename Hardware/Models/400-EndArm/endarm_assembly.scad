@@ -20,8 +20,8 @@
 //     29 .. 53, bonded face to face at z 29 (008.7 steps 1-5). The 48 mm C-502 strakes span the
 //     two exactly.
 //   - The code disk's raised hub on the pulley's end face (z 51), its flat face out, so it turns
-//     with the hub past the halves (008.7 step 13).
-//   - The Cap in the hub's open end (z -38 .. -30), its flat to the opening's (008.7 step 19).
+//     with the hub past the halves (008.7 step 14).
+//   - The Cap in the hub's open end (z -38 .. -30), its flat to the opening's (008.7 step 20).
 //   - The Internal Inner Pulley's band in the hub's cavity, its journal up through the hub's 6703
 //     and the pulley's three 6703s; its boss's face on the hub 6703's inner race.
 //   - The External Inner Pulley's counterbore floor on that journal's end: the 81 mm C-503
@@ -29,7 +29,7 @@
 //     as 008.7 step 6 has them.
 //   - The stainless tube's lower end in the Cap's MR128; the Internal Outer Pulley's hub end on
 //     that bearing's inner race; a spacer between it and the Internal Inner Pulley; a second
-//     spacer, then the External Outer Pulley, beyond the External Inner (008.7 steps 9-10, 20-22).
+//     spacer, then the External Outer Pulley, beyond the External Inner (008.7 steps 9-11, 21-22).
 //     The tube's 113 mm then ends in the External Outer Pulley's bore. STACK below derives each z.
 //   - Each bearing on the seat or shoulder named where its z is set.
 //

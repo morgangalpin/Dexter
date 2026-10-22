@@ -254,22 +254,22 @@ Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 8. Align the End Arm Hub's 4 back holes with the 4 nubs on the assembled New Belt Pulley and push together.
 9. Slide the Internal Outer Pulley onto the 113 mm stainless rod, set screws toward the rod's long end, and
    lock 3.1 mm from the end; tighten set screws incrementally and evenly.
-10. Slide a Pulley Spacer between the Internal Inner and Outer Pulleys and join them.
-11. Feed the rod/pulley through the End Arm Hub connection as far as it goes.
-12. Prepare 4× M3 × 107 mm all-thread: thread on 2 M3 nuts and 1 washer at one end, flush.
-13. Place the End Arm Code Disk on the outside of the Axis Intersection hub, raised side in.
-14. Thread one rod into the End Arm Hub until it protrudes slightly through the code disk; add an M3 washer
-    and jam nut.
-15. Add a second washer and jam nut with threadlocker, flush with the rod end. The External Inner Pulley must
-    clear all 4 jam nuts and rods — a standard M3 nut is too thick and will foul the pulley.
-16. Epoxy 3 M3 nuts into the Internal Outer Pulley slots and 3 into the External Outer Pulley slots; cure.
-17. Thread 6 M3 × 6 mm set screws into the epoxied nuts, flush with the nut ends.
-18. Break the connection between the paired end nuts on each rod, add an M3 washer, and snug the inner nut
-    without over-tightening.
-19. Snap the End Arm Hub Cap into place.
-20. Press one MR128 into the Internal Outer Pulley end and another into the End Arm Hub Cap. Neither seat
-    can be reached this late; the order is open
+10. Press one MR128 into the Internal Inner Pulley's pocket and another into the End Arm Hub Cap. Both
+    pockets are closed off later: the pulley's by step 11, the Cap's by step 20
     ([DC-400-1](009-Design-Completion.md#end-arm-bearing-order)).
+11. Slide a Pulley Spacer between the Internal Inner and Outer Pulleys and join them.
+12. Feed the rod/pulley through the End Arm Hub connection as far as it goes.
+13. Prepare 4× M3 × 107 mm all-thread: thread on 2 M3 nuts and 1 washer at one end, flush.
+14. Place the End Arm Code Disk on the outside of the Axis Intersection hub, raised side in.
+15. Thread one rod into the End Arm Hub until it protrudes slightly through the code disk; add an M3 washer
+    and jam nut.
+16. Add a second washer and jam nut with threadlocker, flush with the rod end. The External Inner Pulley must
+    clear all 4 jam nuts and rods — a standard M3 nut is too thick and will foul the pulley.
+17. Epoxy 3 M3 nuts into the Internal Outer Pulley slots and 3 into the External Outer Pulley slots; cure.
+18. Thread 6 M3 × 6 mm set screws into the epoxied nuts, flush with the nut ends.
+19. Break the connection between the paired end nuts on each rod, add an M3 washer, and snug the inner nut
+    without over-tightening.
+20. Snap the End Arm Hub Cap into place.
 21. Slide the External Inner Pulley onto the stainless rod until it stops.
 22. Add the second Pulley Spacer, then the External Outer Pulley.
 23. Tighten the 3 External Outer Pulley set screws, applying pressure from both sides while tightening evenly.

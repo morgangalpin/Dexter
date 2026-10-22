@@ -1,7 +1,7 @@
 // #420-002 End Arm Hub Cap — parametric source.
-// The cap that snaps over the End Arm Hub's open end (008.7 step 19). The four
+// The cap that snaps over the End Arm Hub's open end (008.7 step 20). The four
 // M3 all-thread rods pass through it, and it carries the MR128 that holds the
-// stainless tube's outer end (step 20).
+// stainless tube's outer end, pressed in before the Cap goes on (step 10).
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/400-EndArm/), in that mesh's

@@ -1,7 +1,7 @@
 // #430-001 External Outer Pulley — parametric source.
 // The outer channel's stage-1 driven pulley at the elbow: 90T in "previous",
 // 108T in "revised" (DC-12). It is locked on the stainless tube by three M3 set
-// screws, each running in an M3 nut epoxied into a slot (008.7 steps 16, 17,
+// screws, each running in an M3 nut epoxied into a slot (008.7 steps 17, 18,
 // 23). The shared definition, and what each configuration builds, is in
 // external_pulley.scad.
 //

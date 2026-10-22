@@ -1,6 +1,6 @@
 // #421-006 Pulley Spacer — parametric source.
 // A thin flanged washer on the 113 mm stainless tube (C-507, Ø8). One stands
-// between the Internal Inner and Outer Pulleys (008.7 step 10), and a second
+// between the Internal Inner and Outer Pulleys (008.7 step 11), and a second
 // between the External Inner and Outer Pulleys (step 22). Two are printed.
 //
 //   config = "previous" — a faithful recreation of the reference mesh
