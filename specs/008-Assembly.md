@@ -267,7 +267,9 @@ Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 18. Break the connection between the paired end nuts on each rod, add an M3 washer, and snug the inner nut
     without over-tightening.
 19. Snap the End Arm Hub Cap into place.
-20. Press one MR128 into the Internal Outer Pulley end and another into the End Arm Hub Cap.
+20. Press one MR128 into the Internal Outer Pulley end and another into the End Arm Hub Cap. Neither seat
+    can be reached this late; the order is open
+    ([DC-400-1](009-Design-Completion.md#end-arm-bearing-order)).
 21. Slide the External Inner Pulley onto the stainless rod until it stops.
 22. Add the second Pulley Spacer, then the External Outer Pulley.
 23. Tighten the 3 External Outer Pulley set screws, applying pressure from both sides while tightening evenly.

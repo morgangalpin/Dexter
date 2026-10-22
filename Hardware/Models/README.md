@@ -82,7 +82,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 38 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s two External pulleys, `500-ExternalGear/`'s External Gear, Motor End Cap, Mount, Mount Top and Nut Holders (one mesh for A and B), `600-StrainWave/`'s Wave Gen Coupler, Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot, Pivot Code Disk and both Motor End Caps, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)), and each External pulley `.scad` builds on its own |
+| [`Reference/meshes/`](Reference/meshes/) | 47 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s Axis Intersection Half, New Belt Pulley, End Arm Code Disk, End Arm Hub and its Cap, Internal Outer and Inner Pulleys, Pulley Spacer and two External pulleys, `500-ExternalGear/`'s External Gear, Motor End Cap, Mount, Mount Top and Nut Holders (one mesh for A and B), `600-StrainWave/`'s Wave Gen Coupler, Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot, Pivot Code Disk and both Motor End Caps, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)) |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -553,8 +553,18 @@ scadmesh view pivot_assembly.view.json --out out/view/pivot_assembly
 miniserve out/view
 ```
 
-Then open `http://localhost:8080/index.html`, or `http://localhost:8080/armbody_assembly/` for the arm body and
-`http://localhost:8080/pivot_assembly/` for the pivot.
+and `400-EndArm/` for the End Arm, whose assembly imports only the `400-EndArm` cache:
+
+```
+./render.rs 400-EndArm --meshes
+cd 400-EndArm
+scadmesh view endarm_assembly.view.json --out out/view/endarm_assembly
+miniserve out/view
+```
+
+Then open `http://localhost:8080/index.html`, or `http://localhost:8080/armbody_assembly/` for the arm body,
+`http://localhost:8080/pivot_assembly/` for the pivot and `http://localhost:8080/endarm_assembly/` for the
+End Arm.
 
 - `scadmesh view` writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD
   exports each part in its own run, one after another, so the build takes the sum of the parts'

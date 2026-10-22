@@ -43,13 +43,14 @@ committed but does not yet reproduce its reference geometry.
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 | DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
 | DC-16 | [Main Pivot placement](#main-pivot-placement) | P2 | Main Pivot fits, assembly review | The code disk's turn and the Pivot cap's, and what the disk's pegs engage | `[Provisional]` |
+| DC-400-1 | [End Arm bearing order](#end-arm-bearing-order) | P2 | End Arm Hub assembly | 008.7's step for two MR128s | `[Provisional]` |
 | DC-600-1 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | superseded by [DC-600-2](#strain-wave-drive-spacing) |
 | DC-600-2 | [Strain-wave drive spacing](#strain-wave-drive-spacing) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
 
 **Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, DC-13 and DC-600-2 are closed, and
 DC-600-1 is superseded by DC-600-2. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
-of work: **design authored here** (DC-14, DC-15, DC-16), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
+of work: **design authored here** (DC-14, DC-15, DC-16, DC-400-1), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -510,7 +511,7 @@ and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
 set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base`,
-`200-ArmBody`, `300-Pivot`, `500-ExternalGear` and `600-StrainWave` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+`200-ArmBody`, `300-Pivot`, `400-EndArm`, `500-ExternalGear` and `600-StrainWave` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
 measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in
@@ -582,6 +583,22 @@ by a feature it carries; these placements are inferences to be confirmed or repl
 **Definition of done:** the disk's and the Pivot cap's turns stated in [008.4](008-Assembly.md#0084-main-pivot)
 by the feature each is located from, and the pegs' mate named; the model's inferences replaced by those
 values. `[Provisional]`.
+
+## End Arm bearing order
+**DC-400-1 · P2 · Requirement: buildability · Specified in [008.7](008-Assembly.md#0087-end-arm-hub)**
+
+**Open:** 008.7 fits two MR128s at a step that can no longer reach their seats.
+[`endarm_assembly.scad`](../Hardware/Models/400-EndArm/endarm_assembly.scad) places each part by a
+feature it carries, and shows:
+
+- step 20 presses an MR128 into the End Arm Hub Cap (`#420-002`) after step 19 has snapped the Cap on,
+  but the Cap's MR128 pocket opens into the hub, so that bearing goes into the Cap before step 19;
+- step 20 presses the other MR128 into "the Internal Outer Pulley end", but the Internal Outer Pulley
+  (`#421-001`) has no Ø12 seat. The Internal Inner Pulley (`#421-002`) has one, and it faces `#421-001`
+  across the first Pulley Spacer, so that bearing goes in before step 10 joins the two pulleys.
+
+**Definition of done:** step 20 moved before step 10, naming the Internal Inner Pulley, or 008.7 otherwise
+reordered so that each MR128 reaches its seat. `[Provisional]`.
 
 ## Wave Gen Coupler stub
 **DC-600-1 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — **superseded by [DC-600-2](#strain-wave-drive-spacing)**,
