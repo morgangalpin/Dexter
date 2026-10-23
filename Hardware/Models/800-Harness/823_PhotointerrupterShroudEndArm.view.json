@@ -1,0 +1,36 @@
+{
+  "title": "Photointerrupter Shroud (End Arm)",
+  "subtitle": "#823 · reference mesh and 823_PhotointerrupterShroudEndArm.scad renders · what differs between them",
+  "cut": false,
+  "from": [1, 0.6, 0.6],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Photointerrupter Shroud (End Arm)", "pn": "#823", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/823_PhotointerrupterShroudEndArm.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/823.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/823.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [11.3, 31.2, 0], "text": "S1 shell, r 32.8…33.5, the R20 flare and the rim above"},
+    {"at": [40.0, 0, -10], "text": "F1 skin r 40 over ±41°, S-curve R5 ends"},
+    {"at": [27.5, 28.0, 14], "text": "F2 pillar, the R5 rolled up the flare"},
+    {"at": [43.0, 0.7, 5], "text": "B1 block, 10° cone r 40 to r 44, R2 corners"},
+    {"at": [41.0, 0.7, 11.68], "text": "K1 keyhole Ø4.5, slot 3.0 up through the top"},
+    {"at": [39.5, 0.7, 17.3], "text": "Pocket wall r 39.5: the reference's skin cut away here (README § Known defects)"},
+    {"at": [33.267, 10.846, 30.5], "text": "B2 beam Ø4.3 at the top, Ø3.2 below, 0.6 aperture at the groove"},
+    {"at": [25.633, 25.633, 30.5], "text": "H1 boss R3.75, Ø2.5 countersunk to Ø3.5, R2.5 fillet"},
+    {"at": [31.5, 16.8, 30.0], "text": "B5 notch on the block's +y side"},
+    {"at": [13.2, 36.2, 21], "text": "Disk groove, z 18…22.5"},
+    {"at": [1.5, 34.3, -10], "text": "E1 bead R1.5 along the split edge"}
+  ],
+  "presets": [
+    {"label": "Front", "at": [40, 0, 5], "span": 60, "from": [1, 0, 0.2]},
+    {"label": "Inside", "at": [30, 0, 5], "span": 60, "from": [-1, 0, 0.3]},
+    {"label": "Keyhole", "at": [40, 0.7, 15], "span": 14, "from": [1, 0.2, 0.3]},
+    {"label": "Boss", "at": [25.6, 25.6, 28], "span": 14, "from": [0.6, 0.6, 1]},
+    {"label": "Top", "at": [30, 0, 30], "span": 70, "from": [0, 0, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, held at 0.6 rather than 0.15 because its blends are drawn approximately; the revised one is the same part, since the beam bores already clear the T-1 package. The reference is the mesh as repaired in place: a 0.13 mm skin of the shell that the CAD left inside the pocket is cut away. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

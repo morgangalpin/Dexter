@@ -1,0 +1,31 @@
+{
+  "title": "Main Pivot Plug A",
+  "subtitle": "#800-003 · reference mesh and 800-003_MainPivotPlugA.scad renders · what differs between them",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Main Pivot Plug A", "pn": "#800-003", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/800-003_MainPivotPlugA.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/800-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/800-003.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -5, 10], "text": "B1 bundle bore D10.0, z -10…15"},
+    {"at": [0, -7, -5], "text": "S1 spigot D14.0 (the J1 bore), z -10…0"},
+    {"at": [0, -13.5, 3.5], "text": "F1 flange R13.5, z 0…7"},
+    {"at": [0, -9.5, 11], "text": "K1 cone 45°, R13.5 at z 7 to R5.5 at 15"},
+    {"at": [0, -5.25, 15], "text": "T1 top face R5.0…5.5, z 15"},
+    {"at": [-10, 0, 4], "text": "P1 pocket x < -4, roof z 4.0, 45° sides to |y| 5.0"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 10], "span": 40, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, 0, 3], "span": 40, "from": [0.3, -0.4, -1]},
+    {"label": "Section face", "at": [0, 0, 4], "span": 40, "from": [0, 1, 0.3]},
+    {"label": "Pocket", "at": [-8, 0, 3], "span": 25, "from": [-0.5, -0.7, -0.6]},
+    {"label": "Spigot", "at": [0, 0, -5], "span": 30, "from": [1, -1, 0.3]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one sizes the spigot for the slip fit in the printed D14 bore; every other feature keeps its size. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
