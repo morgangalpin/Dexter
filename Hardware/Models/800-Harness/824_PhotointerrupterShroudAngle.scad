@@ -3,11 +3,13 @@
 // facing each other across it. The 115 slots of J4 are cut into #730-002
 // (Diff Body B)'s rim (specs/004 § Differential interface), so there is no
 // disk part: the rim runs in the channel under this shroud's body. Two
-// pegs stand below the shroud and locate it; their holes take #19 nails.
+// pegs stand below the shroud and locate it in #730-001 (Diff Body A)'s two
+// pin holes, PIN_POS; their holes take #19 nails.
 //
 //   config = "previous" — faithful recreation of the reference mesh
 //                         (../Reference/meshes/800-Harness/).
-//   config = "revised"  — the T-1 package seats opened by FIT_PRESS; see FITS.
+//   config = "revised"  — the T-1 package seats opened by FIT_PRESS and the
+//                         pegs narrowed by FIT_SLIP; see FITS.
 //
 // FRAME. The reference's own. The rim's axis is parallel to z, through
 // (x 12.05, y 0); r below is the radius about it. The shroud is a band that
@@ -55,8 +57,9 @@
 //     (photo_shroud.scad) and keeps its size. The aperture (slit, cone start
 //     Ø2.7) is optics, not a fit.
 //   - N1 Ø1.0 takes a #19 nail (Ø1.07): an intended drive fit, kept.
-//   - P1 locates in holes of a mating part that is not modelled to this
-//     size: kept at the reference (Ø4.0).
+//   - P1 locates in #730-001's Ø3.99 pin holes (PIN in
+//     ../700-Differential/730-001_DiffBodyA.scad), printed against printed:
+//     FIT_SLIP in "revised", Ø3.69, its 45 deg lead-in kept 0.5 deep.
 
 include <../print_fit.scad>
 include <photo_shroud.scad>
@@ -84,6 +87,8 @@ R2_AT   = [-11.483, 11.983];          // L4 .. L6 inner corner round (R2)
 Z       = [0, 0.75, 1.75, 2.5, 4.25, 6.0, 7.5];   // layer breaks
 PEG_AT  = [-20.581, 4.0];
 PEG_Z   = [-2.5, -2.0, 0];
+PIN_HOLE_D = 3.990;                   // #730-001's PIN[0], the pegs' mate
+PEG_D   = config == "previous" ? 4.0 : fit_pin(PIN_HOLE_D, fit_clearances(config)[0]);
 NAIL_D  = 1.0;
 BORE_AT = [-12.986, 8.711];
 BEAM_SEATS = fit_clearances(config)[1];
@@ -143,8 +148,9 @@ module layers() {
 }
 
 module pegs() for (s = [-1, 1]) translate([PEG_AT[0], s * PEG_AT.y, 0]) {
-    translate([0, 0, PEG_Z[0]]) cylinder(h = PEG_Z[1] - PEG_Z[0] + LAP, d1 = 3.0, d2 = 4.0);
-    translate([0, 0, PEG_Z[1]]) cylinder(h = PEG_Z[2] - PEG_Z[1] + LAP, d = 4.0);
+    translate([0, 0, PEG_Z[0]])
+        cylinder(h = PEG_Z[1] - PEG_Z[0] + LAP, d1 = PEG_D - 2 * (PEG_Z[1] - PEG_Z[0]), d2 = PEG_D);
+    translate([0, 0, PEG_Z[1]]) cylinder(h = PEG_Z[2] - PEG_Z[1] + LAP, d = PEG_D);
 }
 
 // B1: each bore on its beam axis, turned so the frame's x points in at the

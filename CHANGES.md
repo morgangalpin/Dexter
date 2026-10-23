@@ -1101,6 +1101,8 @@ anything version 3 does not independently specify
     `strain_relief_comb.scad`, `photo_shroud.scad`, `shroud_base.scad`, `shroud_pivot.scad`,
     `photo_shroud_rotate.scad` and `render.json` (new). Their meshes moved to
     `Reference/meshes/800-Harness/`, the End Arm shroud's repaired in place (README § Known defects).
+  - `Hardware/Models/print_fit.scad` (the tap class), `950-Tooling/fit_coupon.scad` (its M3 pilot),
+    and `700-Differential/730-001_DiffBodyA.scad` (what its pin holes take).
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1437,8 +1439,10 @@ anything version 3 does not independently specify
   - **800-Harness:** the Fan Bracket (`#800-005`) and the PCB Bracket (`#800-006`) are each a plan
     profile extruded, checked by `outline` gates; the Fan Bracket's aperture steps through a 45° taper
     to its lip, and `revised` opens the fan's 40 × 40 seat by the press fit. The PCB Spacer
-    (`#800-007`) is a tube. Their M3 holes drawn Ø3.0 are threaded by the screw and keep their size,
-    and the holes the reference already draws wider than their class are probed open.
+    (`#800-007`) is a tube. The brackets' M3 holes, which the screws thread themselves into, take a
+    new fourth class in `print_fit.scad`, **tap**: a pilot drawn 0.20 per side under the screw, Ø2.6
+    for M3 ([007.2 § Print fits](specs/007.2-Printed-Parts.md#print-fits)). The fit coupon gains an M3
+    pilot to qualify it. The holes the reference already draws wider than their class are probed open.
   - **800-Harness:** the 6-pin strain reliefs (`#810-001`, `#810-002`) are a plate and a comb, whose
     section `strain_relief_comb.scad` owns for both; the Bottom adds its rails. They seat on each
     other and grip the wires, so no print fit applies and `revised` draws the reference.
@@ -1451,7 +1455,9 @@ anything version 3 does not independently specify
     axis, with the emitter's and detector's bores cut through them as runs of sections (round, flanged,
     slit, keyed, coned) that `photo_shroud.scad` owns for every shroud. `revised` opens a bore drawn
     line to line on a T-1 package's body by the press fit; bores the reference draws wider, and the
-    counterbores round the flanges, keep their size, and the #19 nails keep their drive fit. The halves
+    counterbores round the flanges, keep their size, and the #19 nails keep their drive fit. The Angle
+    shroud's (`#824`) two pegs locate it in Diff Body A's Ø3.99 pin holes, and `revised` narrows them
+    by the slip fit. The halves
     of each pair take what they share from one include (`shroud_base.scad`, `shroud_pivot.scad`,
     `photo_shroud_rotate.scad`).
   - **800-Harness:** the Rotate shroud's clip (`#825` A) clamps Diff Body B's Ø31 shell, and its flats

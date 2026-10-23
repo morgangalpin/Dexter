@@ -107,7 +107,7 @@
      "scad": "800-005_FanBracket.scad", "out": "out/revised/800-005.stl"},
     {"kind": "fits", "id": "fits-800-005", "part": "800-005 (revised)",
      "stl": "out/revised/800-005.stl", "after": ["render-800-005"],
-     "note": "The revised #800-005's print fit: A1's 40 x 40 seat for the C-716 fan, on the +X wall at mid-height of the 40 run, measured from the fan's face. The H1 holes are threaded by their M3 screws and keep their size.",
+     "note": "The revised #800-005's print fit: A1's 40 x 40 seat for the C-716 fan, on the +X wall at mid-height of the 40 run, measured from the fan's face. The H1 pilots are probed separately.",
      "probes": [
        {"label": "A1 seat, +X wall", "at": [48.925, 15.991, 4.6], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
      ]},
@@ -117,6 +117,15 @@
      "items": [
        {"label": "lip +X face: open inside it", "at": [47.87, 15.991, 6.75], "solid": false},
        {"label": "lip +X face: wall within 0.1", "at": [47.98, 15.991, 6.75], "solid": true}
+     ]},
+    {"kind": "probes", "id": "probes-800-005-tap", "part": "800-005 (revised)",
+     "stl": "out/revised/800-005.stl", "after": ["render-800-005"],
+     "note": "The revised #800-005's H1 holes are the M3 screws' pilots, drawn Ø2.6 by the tap class (FIT_TAP under the screw's Ø3.0): open at r 1.2 off each hole's axis, material at r 1.4, inside the screw's r 1.5, where it cuts its thread.",
+     "items": [
+       {"label": "B1's H1 open at r 1.2", "at": [5.181, 7.85, 12.0], "solid": false},
+       {"label": "B1's H1 wall at r 1.4", "at": [5.381, 7.85, 12.0], "solid": true},
+       {"label": "B2's H1 open at r 1.2", "at": [52.519, 7.85, 12.0], "solid": false},
+       {"label": "B2's H1 wall at r 1.4", "at": [52.319, 7.85, 12.0], "solid": true}
      ]},
     {"kind": "outline", "id": "outline-800-006-plate", "part": "800-006", "config": "previous",
      "scad": "800-006_PCBBracket.scad", "out": "out/2d/800-006-plate.svg", "layer": "plate",
@@ -128,7 +137,7 @@
      "scad": "800-006_PCBBracket.scad", "out": "out/revised/800-006.stl"},
     {"kind": "probes", "id": "probes-800-006-wide", "part": "800-006 (revised)",
      "stl": "out/revised/800-006.stl", "after": ["render-800-006"],
-     "note": "The revised #800-006 draws no print fit. Its 28 x 28 opening clears the bonded 25.4 tube (faces at 12.7) by 1.3 per side, wider than the press fit, which 007.2 lets it keep: open at 12.75 off the tube, open and then wall at the drawn 14.0 face, on +Y and -X. The H1 holes are threaded by their M3 bolts and keep their size.",
+     "note": "The revised #800-006's 28 x 28 opening clears the bonded 25.4 tube (faces at 12.7) by 1.3 per side, wider than the press fit, which 007.2 lets it keep: open at 12.75 off the tube, open and then wall at the drawn 14.0 face, on +Y and -X. The H1 pilots are probed separately.",
      "items": [
        {"label": "opening +Y: open off the tube face", "at": [0.0, 12.75, 4.0], "solid": false},
        {"label": "opening +Y: open at the drawn face", "at": [0.0, 13.9, 4.0], "solid": false},
@@ -136,6 +145,15 @@
        {"label": "opening -X: open off the tube face", "at": [-12.75, 0.0, 4.0], "solid": false},
        {"label": "opening -X: open at the drawn face", "at": [-13.9, 0.0, 4.0], "solid": false},
        {"label": "opening -X: wall within 0.1", "at": [-14.1, 0.0, 4.0], "solid": true}
+     ]},
+    {"kind": "probes", "id": "probes-800-006-tap", "part": "800-006 (revised)",
+     "stl": "out/revised/800-006.stl", "after": ["render-800-006"],
+     "note": "The revised #800-006's H1 holes, along x at z 4, are the M3 bolts' pilots, drawn Ø2.6 by the tap class (FIT_TAP under the bolt's Ø3.0): open at r 1.2 off each hole's axis, material at r 1.4, inside the bolt's r 1.5, where it cuts its thread. Probed above each hole, mid-block at x 15.5.",
+     "items": [
+       {"label": "-Y H1 open at r 1.2", "at": [15.5, -24.75, 5.2], "solid": false},
+       {"label": "-Y H1 wall at r 1.4", "at": [15.5, -24.75, 5.4], "solid": true},
+       {"label": "+Y H1 open at r 1.2", "at": [15.5, 24.75, 5.2], "solid": false},
+       {"label": "+Y H1 wall at r 1.4", "at": [15.5, 24.75, 5.4], "solid": true}
      ]},
     {"kind": "dist_gate", "id": "dist-800-007", "part": "800-007",
      "config": "previous", "scad": "800-007_PCBSpacer.scad", "out": "out/800-007.stl", "reference": "800-007_PCBSpacer.stl", "tol": 0.15},
@@ -306,7 +324,7 @@
      "scad": "824_PhotointerrupterShroudAngle.scad", "out": "out/revised/824.stl"},
     {"kind": "probes", "id": "probes-824", "part": "824 (revised)",
      "stl": "out/revised/824.stl", "after": ["render-824"],
-     "note": "The revised #824 opens B1's T-1 seats by the press clearance per side: Ø3.0 body to Ø3.1, and the flat that keys the flange from 1.5 to 1.55 in; the Ø4.0 round of the counterbore is clearance round the flange and keeps its size. Each fit is open at the press clearance off the mate and material within 0.3 of the drawn wall, measured from the +y bore's axis (-12.986, 8.711). The slit (0.5 wide, the aperture), the pegs and N1 (Ø1.0 for a Ø1.07 #19 nail, an intended drive fit) keep the reference size. The rim channel is open at r 27 and the wall solid at r 30.8.",
+     "note": "The revised #824 opens B1's T-1 seats by the press clearance per side: Ø3.0 body to Ø3.1, and the flat that keys the flange from 1.5 to 1.55 in; the Ø4.0 round of the counterbore is clearance round the flange and keeps its size. Each fit is open at the press clearance off the mate and material within 0.3 of the drawn wall, measured from the +y bore's axis (-12.986, 8.711). The slit (0.5 wide, the aperture) and N1 (Ø1.0 for a Ø1.07 #19 nail, an intended drive fit) keep the reference size. The P1 pegs locate in #730-001's Ø3.99 pin holes, printed against printed, so they are narrowed by the slip clearance to Ø3.69: open at r 1.9 off the +y peg's axis (-20.581, 4), where the reference's Ø4.0 stood, and material at r 1.8. The rim channel is open at r 27 and the wall solid at r 30.8.",
      "items": [
        {"label": "B1 body open at the press clearance off the T-1", "at": [-14.52, 8.711, 5.0], "solid": false},
        {"label": "B1 body wall within 0.3", "at": [-14.836, 8.711, 5.0], "solid": true},
@@ -318,6 +336,8 @@
        {"label": "B1 slit wall", "at": [-12.871, 9.041, 2.8], "solid": true},
        {"label": "N1 open, Ø1.0 for the #19 nail", "at": [-20.131, 4.0, -1.0], "solid": false},
        {"label": "P1 peg wall beside N1", "at": [-19.931, 4.0, -1.0], "solid": true},
+       {"label": "P1 peg narrowed by the slip clearance: open at r 1.9", "at": [-22.481, 4.0, -1.0], "solid": false},
+       {"label": "P1 peg material at r 1.8", "at": [-22.381, 4.0, -1.0], "solid": true},
        {"label": "Rim channel open at r 27", "at": [-14.95, 0.0, 1.5], "solid": false},
        {"label": "L3 wall solid at r 30.8", "at": [-18.75, 0.0, 2.0], "solid": true},
        {"label": "L4 body solid at r 27", "at": [-14.95, 0.0, 3.0], "solid": true}

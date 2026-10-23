@@ -17,7 +17,7 @@
     {"at": [47.925, 15.991, 6.75], "text": "A1 lip face 38, unchanged"},
     {"at": [3.981, 10.331, 12], "text": "B1 boss R3.98, flat at y 10.331, z 7…16"},
     {"at": [53.719, 10.531, 12], "text": "B2 boss R3.68, flat at y 10.531, z 7…16"},
-    {"at": [3.981, 7.85, 16], "text": "H1 hole Ø3.0, threaded by the M3 screw"}
+    {"at": [3.981, 7.85, 16], "text": "H1 M3 pilot Ø3.0 (Ø2.6 in revised, tap)"}
   ],
   "presets": [
     {"label": "Top", "at": [28.9, 16, 7], "span": 70, "from": [0, 0, 1]},
@@ -26,6 +26,6 @@
     {"label": "Bosses", "at": [28.5, 8, 12], "span": 65, "from": [0.2, -1, 0.5]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the 40 x 40 seat by the press clearance per side; the taper, the lip and the M3 holes keep their size. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the 40 x 40 seat by the press clearance per side and narrows the M3 holes to Ø2.6 pilots (the tap class); the taper and the lip keep their size. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }

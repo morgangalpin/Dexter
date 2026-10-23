@@ -19,7 +19,7 @@
     {"at": [20, 0, 11], "text": "R1 half-annular rib on +X, R16…R20, z 6…16 (revised: two posts)"},
     {"at": [-50, -10, 11], "text": "A1 arm spigot 20 × 20, R4, to the tip at x -51"},
     {"at": [-51, 3, 11], "text": "S1 belt slot 6 × 6, mouth 12.7 × 15.3 at 45°"},
-    {"at": [-32.62, 4, 22], "text": "P1 pin hole ×2 Ø3.99 at (-32.62, ±4), floor z 18.65"},
+    {"at": [-32.62, 4, 22], "text": "P1 pin hole ×2 Ø3.99 at (-32.62, ±4), floor z 18.65: #824's locating pegs"},
     {"at": [-25.03, 8.69, 22], "text": "X1 screw hole ×2 at (-25, ±8.7), Ø4.6 D-shaped clearance, Ø3.19 tap"}
   ],
   "presets": [

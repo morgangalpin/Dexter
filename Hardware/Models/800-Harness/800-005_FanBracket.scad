@@ -4,7 +4,8 @@
 //
 //   config = "previous" — faithful recreation of the reference mesh
 //                         (../Reference/meshes/800-Harness/).
-//   config = "revised"  — the print fit below drawn on the fan's seat.
+//   config = "revised"  — the print fits below drawn on the fan's seat and
+//                         the M3 pilots.
 //
 // FRAME. The reference's own: the plate's underside at z = 3.75, its top face
 // at z = 7.0, the bosses rising to z = 16.0; the plate's corner at x 0, y -8.
@@ -35,9 +36,9 @@
 // FITS (../print_fit.scad), revised only, per side:
 //
 //     A1 40 section, the fan's seat       press (40.1 square)
+//     H1 holes, the M3 screws' pilots     tap (Ø2.6)
 //
 // The fan's frame bears on the taper and the 38 lip, which keep their size.
-// H1 is threaded by its M3 screw, not a clearance, and keeps its size.
 
 include <../print_fit.scad>
 
@@ -66,7 +67,7 @@ BOSSES    = [                // [centre x, radius, flat y]
 ];
 BOSS_Y    = 7.850;
 BOSS_TOP  = 16.0;
-HOLE_D    = 3.0;             // H1; threaded by the M3 screw
+HOLE_D    = fit_pin(3.0, fit_clearances(config)[3]);  // H1, the M3 screw's pilot
 
 function press(cfg) = fit_clearances(cfg)[1];
 

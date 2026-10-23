@@ -5,7 +5,7 @@
 //
 //   config = "previous" — faithful recreation of the reference mesh
 //                         (../Reference/meshes/800-Harness/).
-//   config = "revised"  — the same geometry: it draws no print fit.
+//   config = "revised"  — the print fit below drawn on the M3 pilots.
 //
 // FRAME. The reference's own: the opening's centre on the origin, the arms
 // reaching out along +x, z 0 .. 8.
@@ -35,10 +35,12 @@
 // blocks. `layer = "plate"` draws the profile in 2D, for verification against
 // the mesh's section (scadmesh outline).
 //
-// FITS (../print_fit.scad): none drawn. The 28 x 28 opening clears the 25.4
-// tube by 1.3 per side because the tube is bonded, wider than the press fit,
-// so it keeps its size. H1 is threaded by its M3 bolt, not a clearance, and
-// keeps its size.
+// FITS (../print_fit.scad), revised only, per side:
+//
+//     H1 holes, the M3 bolts' pilots      tap (Ø2.6)
+//
+// The 28 x 28 opening clears the 25.4 tube by 1.3 per side because the tube
+// is bonded, wider than the press fit, so it keeps its size.
 
 include <../print_fit.scad>
 
@@ -52,7 +54,7 @@ layer = "part"; // [part, plate]
 $fn = 48;
 
 HEIGHT   = 8.0;
-HOLE_D   = 3.0;                  // H1; threaded by the M3 bolt
+HOLE_D   = fit_pin(3.0, fit_clearances(config)[3]);  // H1, the M3 bolt's pilot
 HOLE_Y   = 24.75;
 HOLE_Z   = 4.0;
 HOLE_X   = [9, 20];              // the cutter's span, past both faces of the blocks

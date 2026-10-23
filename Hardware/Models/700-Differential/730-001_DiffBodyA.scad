@@ -124,8 +124,8 @@ SCREW_TAP    = 3.194;             // Ø above SCREW_CLEAR[1], round and coaxial
 PIN_POS      = [[-32.621, 4.0], [-32.621, -4.0]];
 PIN          = [3.99, 18.652];    // Ø, floor z — 3.348 deep, not the 2.6 once
                                   // authored, and not the round 3.0 it looks like.
-                                  // No assembly step names what they take, so
-                                  // they carry no print-fit clearance
+                                  // They take #824's locating pegs, which draw the
+                                  // slip clearance, so the holes keep their size
 
 // Code-disk end-stop pockets. Not round holes: each is an annular sector
 // closed by two flat end faces, described in pocket_2d().
