@@ -1099,6 +1099,10 @@ anything version 3 does not independently specify
   - `Hardware/Models/600-StrainWave/`: `630-004_WaveGenCoupler.scad` and the `.view.json` sidecars of
     `630-004`, `630-005` and `630-006` (new); `render.json`'s `parts` list and `630-004`'s checks. Its
     mesh moved to `Reference/meshes/600-StrainWave/`.
+  - `Hardware/Models/700-Differential/`: every part file, their `.view.json` sidecars (new),
+    `diff_params.scad`, `diff_hardware.scad`, `diff_assembly.scad`, `diff_assembly.clash.json` (new) and
+    `render.json`; `Reference/meshes/700-Differential/710-001_SplitGearTop.stl` and
+    `710-002_SplitGearBottom.stl`, corrected in place.
   - `Hardware/Models/gt2_pulley.scad` gains a second tooth form, `gt2_teeth_rounded_2d`.
   - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
     lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
@@ -1385,6 +1389,36 @@ anything version 3 does not independently specify
     measures inside the part (README, "A revolve with an edge on the axis"). `belt_director.scad`'s
     `solid_revolve()` now draws those three parts and the Belt Director Cap, and the gates read 0.003,
     0.004 and 0.005 mm.
+  - **700-Differential** was already `.scad`; it is brought to the same checks. Each part has a view
+    sidecar. The Split Gear halves' references were two solids each, never united, and 710-002's also
+    held a zero-thickness sheet; both are corrected in place (`Hardware/Models/README.md` § Known
+    defects). Five parts are now gated on `dist` at ±0.15 mm: 710-001 to 710-004 and 720-003, with
+    710-002's `previous` keeping its reference's off-axis wire bore. 710-001's `compare` check, which
+    the united mesh's new seams defeat, is replaced by its `dist` gate. 720-001, 720-002
+    and 730-002 stay on `compare`, and `render.json` says why. Diff Body A's four constant sections
+    and the End Pulley's tooth band are gated by `outline`. The fits 007.2 requires and nothing
+    probed are probed: the shaft's rear journal and MR128 seat, Body B's +X 6703 seat, the Shaft
+    Pulley's spline bore, and the Code Disk's and Body A's wider holes.
+  - **700-Differential:** the virtual assembly (`diff_assembly.scad`) is checked by
+    `assembly-clash.rs`, each bearing drawn as its two rings and shield, which end where
+    `diff_params.scad`'s race model puts them. Its pairwise `interference` checks, which the clash
+    manifest covers, are gone; `keepout-730-002` stays, because it covers every turn of the gears. The
+    check found running faces too close to parts that turn past them, and `revised` clears each: the
+    shaft's three inner-race shoulders and the Diff Gear Axle's boss reached onto a shield, and are
+    turned to `inner_shoulder_d()`; the MR128 shoulders stood 0.4 off the inner ring, so
+    `shoulder_bore()` now also clears it; Body B's shaft lands stood 0.3 off the shaft, and the
+    shaft's collar 0.25 above Body A's plate. The Split Gear Top's 6703 pocket, which narrowed at its
+    mouth, is bored straight. The two halves' bonded joint, the brads, the Split Gear's assembly 6703,
+    the thrust race on Body B's tube and the boss's chamfer by the MR128 shield are recorded as
+    exceptions, each with its reason. The assembly now draws the three CF strakes, and the clash
+    check covers them. Matched against the differential's assembly video, two of
+    [008.6](specs/008-Assembly.md#0086-differential)'s steps are withdrawn
+    ([DC-11(e)](specs/009-Design-Completion.md#procurement-data)). **The MR85 in the Diff Gear Axle's
+    back** goes, with its [007.6](specs/007-Bill-of-Materials.md#0076-differential) row: the rod is
+    epoxied flush with that face, and the End Pulley moves with it. **The second Diff Keeper** goes
+    too, along with the keeper the steps snapped over the shaft end. The differential takes one
+    keeper, and the other moves to [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub) for the
+    Front Panel. The steps after them are renumbered.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`

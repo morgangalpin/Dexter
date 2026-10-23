@@ -152,7 +152,7 @@ parts list realizes the previous version's differential, built as a working subs
 |---|---|---|---|---|
 | #710-001 | Split Gear Top | 3D print | 1 | The dimensional datum for checking `#710-002` |
 | #710-002 | Split Gear Bottom | 3D print | 1 | Former scale defect resolved — corrected STL and parametric source committed ([DC-11(f)](009-Design-Completion.md#procurement-data)) |
-| #710-003 | Diff Keeper | 3D print | 2 | |
+| #710-003 | Diff Keeper | 3D print | 1 | **Was 2.** The second joins the Front Panel, so [007.7](#0077-end-arm-hub) counts it ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #710-004 | Rotate Code Disk | 3D print | 1 | |
 | #710-005 | 25 × 5.6 × 2.5 mm CF strake | Fabricate | 3 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
 | #710-006 | AXK0819 thrust bearing (1/4") | Off the shelf | 1 | |
@@ -164,7 +164,6 @@ parts list realizes the previous version's differential, built as a working subs
 | #720-006 | 96 × 8 × 6 mm CF rod | Fabricate | 1 | |
 | #730-001 | Diff Body A | 3D print | 1 | |
 | #730-002 | Diff Body B | 3D print | 1 | |
-| #620-001 | MR85 bearing | Off the shelf | 1 | Its **outer** race is the one that seats ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #620-002 | MR128 bearing | Off the shelf | 4 | **Was 2.** Four Ø12 seats: both ends of `#720-001`, and one in each Split Gear half ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #620-003 | 6703 bearing | Off the shelf | 6 | **Was 5.** Five Ø23 seats in this subassembly's own parts, and a sixth that [008.6](008-Assembly.md#0086-differential) step 2 presses into `#420-001` ([DC-11(e)](009-Design-Completion.md#procurement-data)) |
 | #620-004 | 6705 bearing | Off the shelf | 1 | |
@@ -204,6 +203,7 @@ specific to this version.
 | #620-003 | 6703 bearing | Off the shelf | 3 | |
 | #620-005 | 6807 bearing | Off the shelf | 2 | |
 | #620-001 | MR85 bearing | Off the shelf | 1 | |
+| #710-003 | Diff Keeper | 3D print | 1 | Joined to the Front Panel at [008.7](008-Assembly.md#0087-end-arm-hub) step 26 |
 | #642-005 | M3 × 6 mm set screws | Off the shelf | 6 | |
 | #660-002 | M3 nuts | Off the shelf | 18 | |
 | #670-002 | M3 washers | Off the shelf | 8 | |
@@ -355,7 +355,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | 6705 bearing (25 × 32 × 4) | 1 | [C-403](007.1-Parts-Catalog.md#4-bearings) |
 | 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
 | 6810 bearing (50 × 65 × 7) | 7 | [C-401](007.1-Parts-Catalog.md#4-bearings) |
-| MR85 bearing (5 × 8 × 2.5) | 3 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
+| MR85 bearing (5 × 8 × 2.5) | 2 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
 | MR128 bearing (8 × 12 × 3.5) | 14 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
 | AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
 | NEMA-17 stepper (0.9°/step) | 5 | [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) |

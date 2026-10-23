@@ -1,0 +1,35 @@
+{
+  "title": "Diff Gear Shaft",
+  "subtitle": "#720-001 · reference mesh and 720-001_DiffGearShaft.scad renders · feature names for the conversion (shaft along +Y)",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Diff Gear Shaft", "pn": "#720-001", "color": "#d4ad6b", "stl": "../Reference/meshes/700-Differential/720-001_DiffGearShaft.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/720-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/720-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [8.5, -5, 0], "text": "J1 front journal Ø17, 6703 inner race, y -10.96…11.54"},
+    {"at": [9.5, 12.3, 0], "text": "D1 Ø19 shoulder, y 11.54…13.04"},
+    {"at": [11.5, 13.3, 0], "text": "L1 Ø23 land ahead of the teeth, toe plane y 13.46"},
+    {"at": [21.43, 19.2, -3.38], "text": "T1 bevel teeth 20T, tip land Ø43.5 at y 18.9…19.5"},
+    {"at": [13.5, 27.5, 0], "text": "C1 Ø27 collar (R2 fillet from the back cone), to y 28.04"},
+    {"at": [12.5, 31, 0], "text": "S1 6705 seat Ø25, y 28.04…34.04"},
+    {"at": [12.49, 38, 0], "text": "P1 40T GT2 band, tip Ø24.97, y 34.04…42.04"},
+    {"at": [8.5, 47, 0], "text": "J2 rear journal Ø17, to y 49.64 (Ø19 collar y 42.79…44.04)"},
+    {"at": [0, -9.5, -6], "text": "M1 MR128 seat Ø12 at the front end (and the rear)"},
+    {"at": [7.75, 25, 0], "text": "H1 wall holes ×12 Ø0.2 on Ø15.5 (reference only); Ø10 rod bore inside"}
+  ],
+  "presets": [
+    {"label": "Whole shaft", "at": [0, 19, 0], "span": 70, "from": [1, -0.5, 0.7]},
+    {"label": "Bevel teeth", "at": [0, 17, 0], "span": 30, "from": [1, -0.6, 0.6]},
+    {"label": "Band and collars", "at": [0, 38, 0], "span": 28, "from": [1, -0.5, 0.6]},
+    {"label": "Front end", "at": [0, -7, 0], "span": 22, "from": [0.5, -1, 0.8]},
+    {"label": "Rear end", "at": [0, 47, 0], "span": 22, "from": [0.5, 1, 0.8]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The shaft runs along +Y here, because the file is exported with xrot(-90) from the part's own +Z frame. The previous render is the clone-gated recreation (render.json says why it is not dist-gated), with the shared bevel crown standing in for the reference's own tooth form and the Ø0.2 wall holes left out. The revised one draws the print fits listed in 720-001_DiffGearShaft.scad's header: the press clearance on the journals and seats, the shoulders turned to the bearings' inner races, the shorter front end and the collar behind the band turned down to the band's root. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

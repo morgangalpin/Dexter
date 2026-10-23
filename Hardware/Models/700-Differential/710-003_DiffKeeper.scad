@@ -1,6 +1,6 @@
 // #710-003 Diff Keeper — parametric source (DC-2).
 // Retaining ring epoxied over the Diff Body B shaft against the 6703 bearing
-// (008.6 steps 23-24); a second one joins the Front Panel (008.7).
+// (008.6 step 21); the second joins the Front Panel (008.7 step 26).
 //
 // The bore profile is stepped and filleted: a sliding Ø8.0 seat, an R0.7
 // concave fillet out to a short Ø8.5 relief, then an R0.7 quarter round

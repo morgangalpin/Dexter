@@ -53,19 +53,29 @@ D6705_D     = fit_pin(BRG_6705[0], PRESS);   // the 6705's inner race, z 28.04..
 // from its axis crossing, which this shaft's apex lands on.
 STEP_D19_Z  = config == "previous" ? 11.54
             : BEVEL_APEX_SHAFT + BODY_B_REAR_SEAT + BRG_6703[2] - BODY_B_COL_XY[0];
-FRONT_STEPS = [[STEP_D19_Z, 19.0], [13.040, 23.0]];
-D27_D       = 27.0;     // collar behind the gear
+// The three shoulders that bear on an inner race -- the two Ø19s on the
+// 6703s, the Ø27 on the 6705 -- reach past the inner ring onto the shield as
+// measured. "revised" turns each to diff_params.scad's inner_shoulder_d().
+D19_D       = config == "previous" ? 19.0 : inner_shoulder_d(BRG_6703);
+FRONT_STEPS = [[STEP_D19_Z, D19_D], [13.040, 23.0]];
+D27_D       = config == "previous" ? 27.0 : inner_shoulder_d(BRG_6705);   // collar behind the gear
 D27_TOP     = 28.04;    // Ø27 section top
 D25_TOP     = BAND_Z[0];   // Ø25 section top / band start
 PULLEY_TOP  = BAND_Z[1];   // band top
-D25B_TOP    = 42.79;    // second Ø25 collar top
+// Second Ø25 collar top. Its face turns over Diff Body A's lower plate, whose
+// top (Body A z 6.000) lies at this frame's 43.04 where diff_assembly.scad
+// seats the shaft (SHAFT_Z0 49.040): 0.25 off as measured. "revised" stands it
+// the running clearance off instead.
+D25B_TOP    = config == "previous" ? 42.79 : 43.04 - RUN;
 D19B_TOP    = 44.04;    // Ø19 collar top / rear journal start, rear 6703 face
 // The collar behind the band. Ø25 as measured; "revised" turns it down to the
 // band's root, less 0.2 so its edge does not lie on the groove bottoms, so
 // #720-004's internal teeth pass over it when the shaft is driven through
 // the ring (008.6).
 COLLAR_D    = config == "previous" ? 25.0 : gt2_root_d(BAND_TIP_D) - 0.2;
-BORE_D      = 10.0;     // rod clearance bore
+// The rod clearance bore, whose ends are the floors the MR128s' outer races
+// bear on: "revised" bores it to shoulder_bore(), clear of the inner rings.
+BORE_D      = config == "previous" ? 10.0 : shoulder_bore(BRG_MR128);
 SEAT_D      = fit_bore(12.0, PRESS);  // MR128 press seats
 SEAT_FRONT  = 3.0;      // front seat depth
 SEAT_REAR   = 2.7;      // rear seat depth
@@ -352,7 +362,7 @@ module diff_gear_shaft() {
                     band_teeth_2d();
             up(PULLEY_TOP) cyl(d=COLLAR_D, h=D25B_TOP - PULLEY_TOP, anchor=BOTTOM);
             up(D25B_TOP - epsilon)
-                cyl(d=19.0, h=D19B_TOP - D25B_TOP + epsilon, anchor=BOTTOM);
+                cyl(d=D19_D, h=D19B_TOP - D25B_TOP + epsilon, anchor=BOTTOM);
             up(D19B_TOP - epsilon)
                 cyl(d=JOURNAL_D, h=Z1 - D19B_TOP + epsilon, anchor=BOTTOM);
         }

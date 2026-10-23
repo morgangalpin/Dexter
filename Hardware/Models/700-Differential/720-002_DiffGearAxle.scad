@@ -106,42 +106,38 @@ PROFILE_MEASURED = [
     cone_pt(BEVEL_HEEL, 0.000),     // heel cone down to the bottom face
 ];
 
-// The Ø8 bore holds two things (008.6 steps 19-20): the MR85, pressed into its
-// first MR85_DEPTH from the bottom face, and the CF rod, epoxied above it. In
-// "revised" both are bought, so both take the PRESS clearance
-// (diff_params.scad), and the bore is one diameter from end to end.
-MR85_DEPTH = BRG_MR85[2] - 1.000;   // the 1.5 the step-19 bearing presses in
-MR85_R     = fit_bore(BRG_MR85[1], PRESS) / 2;
-ROD_R      = fit_bore(CF_ROD_D, PRESS) / 2;
+// The Ø8 bore holds the CF rod alone, epoxied in with its end flush with the
+// bottom face (008.6 step 18). In "revised" the rod is bought, so the bore
+// takes the PRESS clearance (diff_params.scad).
+ROD_R = fit_bore(CF_ROD_D, PRESS) / 2;
 
 // The boss is the spacer that stops the axle on the front MR128's inner race
-// (008.6 step 21: the rod goes in "until it stops"), holding the hub off the
+// (008.6 step 19: the rod goes in "until it stops"), holding the hub off the
 // Diff Gear Shaft's end, which turns with the other input. In "revised" its
-// body grows to BOSS_BODY_R for strength, and its tip keeps the measured Ø9
-// as a flat face, inside the MR128 inner ring's Ø9.05 land, with a 45-degree
-// chamfer out to the body, so the boss bears on the inner race alone and
-// stands clear of a shield or seal.
+// body grows to BOSS_BODY_R for strength, and its tip is a flat face of
+// diff_params.scad's inner_shoulder_d(), with a 45-degree chamfer out to the
+// body, so the boss bears on the inner race alone and its edge stands clear of
+// the shield, which turns with the outer race. The measured Ø9 tip reached
+// past the inner ring onto the shield (diff_assembly.clash.json).
 BOSS_BODY_R = config == "previous" ? BOSS_R : 5.200;   // Ø10.4
-BOSS_CHAMFER = BOSS_BODY_R - BOSS_R;
+BOSS_TIP_R  = config == "previous" ? BOSS_R : inner_shoulder_d(BRG_MR128) / 2;
+BOSS_CHAMFER = BOSS_BODY_R - BOSS_TIP_R;
 
 // The boss's walls around the rod bore, its diameter, and its z range in this
 // part's frame. Functions, because diff_assembly.scad and 720-001 reach this
 // file with `use`, which imports no variables.
 function boss_wall()          = BOSS_BODY_R - ROD_R;
-function boss_face_wall()     = BOSS_R - ROD_R;
+function boss_face_wall()     = BOSS_TIP_R - ROD_R;
 function boss_wall_measured() = BOSS_R - PROFILE_MEASURED[0].x;
 function boss_d()             = 2 * BOSS_BODY_R;
 function boss_z()             = [BOSS_Z0, Z_TOP];
 function rod_bore_d()         = 2 * ROD_R;
 
-// Revised: the bore (its MR85 step only where the two radii differ, since a
-// collinear vertex is not allowed), the boss, then the measured hub from its
-// shoulder on.
+// Revised: the rod bore, the boss, then the measured hub from its shoulder on.
 BODY_PROFILE = config == "previous" ? PROFILE_MEASURED : concat(
-    [[MR85_R, 0]],
-    MR85_R == ROD_R ? [] : [[MR85_R, MR85_DEPTH], [ROD_R, MR85_DEPTH]],
-    [[ROD_R, Z_TOP],
-     [BOSS_R, Z_TOP],
+    [[ROD_R, 0],
+     [ROD_R, Z_TOP],
+     [BOSS_TIP_R, Z_TOP],
      [BOSS_BODY_R, Z_TOP - BOSS_CHAMFER],
      [BOSS_BODY_R, BOSS_Z0]],
     [for (p = PROFILE_MEASURED) if (p.x > BOSS_BODY_R) p]);

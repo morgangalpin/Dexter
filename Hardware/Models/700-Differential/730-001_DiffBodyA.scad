@@ -53,6 +53,10 @@
 
 include <diff_params.scad>
 
+/* [Layer] */
+// What to draw: the part, or one layer's 2D section for the outline gates in render.json
+layer = "part"; // [part, base, middle, upper, top]
+
 /* [Hidden] */
 H            = 22.0;    // overall height (J4 axis along Z)
 
@@ -335,5 +339,18 @@ module diff_body_a() {
     }
 }
 
+// The four spans over which the whole section is constant, each named by the
+// height its outline gate cuts it at, mid-span:
+//   base    z 0..1    the lower plate and hub, under the arm's rounded section
+//   middle  z 8..14   the open middle: arm, rib or posts, the belt slot's waist
+//   upper   z 16..17  the upper plate, under the arm section's top rounding
+//   top     z 21..22  the Ø60 plate above the arm, with the pins and pockets
+// Each section is cut from the built part rather than composed again from the
+// 2D outlines above, so there is one construction and the gates check it.
+LAYER_Z = [["base", 0.5], ["middle", 11.0], ["upper", 16.5], ["top", 21.5]];
+function layer_z(name) = [for (l = LAYER_Z) if (l[0] == name) l[1]][0];
+module layer_2d(name) projection(cut = true) down(layer_z(name)) diff_body_a();
+
 echo(body_a_box = body_a_box());   // render.rs --verify checks it against the render
-diff_body_a();
+if (layer == "part") diff_body_a();
+else layer_2d(layer);

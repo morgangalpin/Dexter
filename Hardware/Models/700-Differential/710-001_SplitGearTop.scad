@@ -14,6 +14,11 @@
 // reference→candidate direction of `dist` is not meaningful against this
 // file: it flags every surface buried in the overlap.
 //
+// That was the reference as exported. It is now the two solids united
+// (Hardware/Models/README.md § Known defects), so `dist` reads it both ways,
+// 0.045 mm, and gates the part. What follows describes the export as measured,
+// which is what the `compare` check's ignore ranges were set against.
+//
 // Three of the reference's features lie inside that overlap, so the union this
 // file renders cannot carry them and the checks report each as a miss. None of
 // them is a defect to fix, because a solid has no interior faces:
@@ -94,7 +99,9 @@ BODY_PROFILE = [
     [ WEB_R,  3.000],   // step in to the through-bore, Ø8.5 / Ø10
     [ WEB_R,  4.000],
     [11.500 + PRESS,  4.000],   // step out to the Ø23 6703 seat
-    [11.490 + PRESS,  8.750],
+    // The reference's pocket narrows to Ø22.98 at its mouth; "revised" bores it
+    // straight, so the whole 6703 sits at the press clearance.
+    [(config == "previous" ? 11.490 : 11.500) + PRESS,  8.750],
     [11.942,  8.750],   // chamfer up into the Ø28 core cavity
     [11.977,  8.782],
     [12.100,  8.866],
@@ -166,11 +173,11 @@ BRAD_ANG    = [0, 90, 180, 270];
 
 // #710-005 CF strakes, slotted from the base. The reference's slots are
 // 5.6 x 2.5 on inner and outer faces at r 13.000 and 15.500. The strake is
-// C-502's 5.588 x 2.337 strip, so in "revised" each slot is the strip's
+// C-502's strip (diff_params.scad's STRAKE_25), so in "revised" each slot is the strip's
 // section plus the PRESS clearance per side, about the same centre, which
 // leaves the epoxy its gap. The reference's 2.5 already clears the strip's
 // 2.337 by more than that, so it keeps its 2.5.
-STRIP     = [5.588, 2.337];
+STRIP     = [STRAKE_25[1], STRAKE_25[2]];
 SLOT_REF  = [5.6, 2.5];
 STRAKE    = config == "previous" ? SLOT_REF
           : [for (i = [0, 1]) max(SLOT_REF[i], fit_bore(STRIP[i], PRESS))];
@@ -178,6 +185,12 @@ STRAKE_RC = 14.250;             // the slot's centre radius
 STRAKE_R  = [STRAKE_RC - STRAKE[1] / 2, STRAKE_RC + STRAKE[1] / 2];   // inner and outer faces
 STRAKE_ANG = [90, 210, 330];
 STRAKE_TOP = 8.000;
+
+// Where the slots are, for diff_assembly.scad, which seats a strake in each
+// against the slot's end and reaches this file with `use`.
+function strake_rc()  = STRAKE_RC;
+function strake_ang() = STRAKE_ANG;
+function strake_top() = STRAKE_TOP;
 
 // The bevel: the ring, plus this half's twenty teeth. BEVEL_ENVELOPE_OUTER is
 // the whole-gear envelope with its toe-side face replaced by the parting cone,

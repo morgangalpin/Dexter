@@ -53,6 +53,10 @@
 
 include <diff_params.scad>
 
+/* [Layer] */
+// What to draw: the part, or the band's 2D section for the outline gate in render.json
+layer = "part"; // [part, band]
+
 /* [Hidden] */
 Z0 = 17.500;    // reference-frame z of the part's bottom face
 Z1 = 27.750;    // reference-frame z of the top face
@@ -680,5 +684,13 @@ module diff_end_pulley() {
     down(Z0) diff_end_pulley_ref();
 }
 
+// The section at BAND_LAYER_Z, mid-way between the flanges, where the tooth
+// band, the bore, the glue lobes and the web slots all cross one plane. It is
+// cut from the built part rather than composed again from the 2D pieces, so
+// the outline gate in render.json checks what is extruded, not a second copy.
+BAND_LAYER_Z = 23.5;
+module band_layer_2d() projection(cut = true) down(BAND_LAYER_Z) diff_end_pulley_ref();
+
 echo(end_pulley_box_ref = end_pulley_box_ref());   // render.rs --verify checks it
-diff_end_pulley_ref();
+if (layer == "band") band_layer_2d();
+else diff_end_pulley_ref();

@@ -1,0 +1,35 @@
+{
+  "title": "Diff Body B",
+  "subtitle": "#730-002 · reference mesh and 730-002_DiffBodyB.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Diff Body B", "pn": "#730-002", "color": "#d4ad6b", "stl": "../Reference/meshes/700-Differential/730-002_DiffBodyB.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/730-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/730-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [25, -21, 60], "text": "T1 thrust tube Ø8.0, z 42.5…72"},
+    {"at": [21, -21, 72], "text": "W1 conductor bore, 12-gon 3.5 × 6.0 inside the tube"},
+    {"at": [26.5, -21, 42], "text": "C1 flat shoulder at z 42, R1.5 round off the journal"},
+    {"at": [29.5, -21, 38.5], "text": "J1 column journal Ø17, z 36…40.5, R2 into the chimney"},
+    {"at": [29, -29, 34], "text": "Z1 chimney top face z 34, flats ±12.46 in y, ±10.99 in x"},
+    {"at": [21, -21, 5.5], "text": "W2 Ø8 wire bore exits the barrel bottom at z 5.5"},
+    {"at": [11, -32.5, 21], "text": "B1 6703 seat Ø23 in the -X end of the J4 tunnel"},
+    {"at": [21, -32, 21], "text": "G1 bevel relief Ø22, x 19…23"},
+    {"at": [47, -21, 50.49], "text": "R1 mating rim Ø59.0, x 45.7…47"},
+    {"at": [46.5, 5.48, 22.05], "text": "E1 encoder slot ×115 at 3.13°, 0.8 wide, r 24.5…28.8 about J4"}
+  ],
+  "presets": [
+    {"label": "Whole part", "at": [27, -21, 32], "span": 100, "from": [1, -1.2, 0.9]},
+    {"label": "Column and tube", "at": [21, -21, 55], "span": 40, "from": [1, -1.2, 0.5]},
+    {"label": "Chimney", "at": [21, -21, 34], "span": 40, "from": [0.5, -1, 0.8]},
+    {"label": "Encoder rim", "at": [47, -10, 21], "span": 45, "from": [1, 0.3, 0.3]},
+    {"label": "Tunnel, -X end", "at": [10, -21, 21], "span": 45, "from": [-1, -0.5, 0.3]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the recreation, which does not yet pass the dist gate (see 730-002_DiffBodyB.scad's header), and the revised one draws the print fits listed there: the press clearance on the 6703 seats, journal and tube, the running clearance off the shaft and the bevel toes, and the front 6703 seat deeper by the shorter shaft journal. The J4 tunnel runs along X at (y, z) = (-21, 21) and the column along Z at (x, y) = (21, -21). Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

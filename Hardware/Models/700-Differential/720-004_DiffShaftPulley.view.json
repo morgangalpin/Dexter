@@ -1,0 +1,28 @@
+{
+  "title": "Diff Shaft Pulley",
+  "subtitle": "#720-004 · revised render of 720-004_DiffShaftPulley.scad (no reference mesh) · feature names",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/720-004.stl"}]}
+  ],
+  "labels": [
+    {"at": [25.71, 0, 0.4], "text": "F1 bottom flange Ø51.4 (0.5 over the tooth tip), z 0…0.75"},
+    {"at": [25.71, 0, 7.6], "text": "F2 top flange Ø51.4, z 7.25…8.0"},
+    {"at": [0, -25.2, 4], "text": "R1 belt band 6.5 wide, z 0.75…7.25"},
+    {"at": [25.2, 0, 4], "text": "P1 80T GT2 teeth, tip Ø50.4"},
+    {"at": [12.3, 0, 4], "text": "B1 spline bore: the 40T band's female, Ø24.97 tip plus the slip gap per side"},
+    {"at": [20, 0, 8], "text": "T1 top face z 8.0"},
+    {"at": [20, 0, 0], "text": "G1 bottom face z 0, the print base"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 8], "span": 58, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0, 0], "span": 58, "from": [0, 0, -1]},
+    {"label": "Whole part", "at": [0, 0, 4], "span": 60, "from": [1, -1.2, 0.9]},
+    {"label": "Flange and teeth", "at": [25, 0, 4], "span": 14, "from": [1, -0.8, 0.5]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "This part has no reference mesh and no previous render, because it exists only in the revised configuration: in the previous one the Diff Gear Shaft's own 40T band is the pulley. Only the revised render is shown, drawn as an 80T GT2 ring bonded over the shaft's band, with the slip gap taken up by epoxy. The dimensions are in 720-004_DiffShaftPulley.scad's header. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

@@ -55,7 +55,7 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`400-EndArm/`](400-EndArm/) | 10 | 26 | Axis intersection, hub, internal and external pulleys; every part is `.scad`, and `external_pulley.scad` holds the definition the two External pulleys share; `421-002_InternalInnerPulley.dwg` is another revision of the Internal Inner Pulley, not a source; `endarm_assembly.scad` places the group about J3 with its bearings, strakes and stainless tube |
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 14 | External gear, stator holder, mount and nut holders; every part is `.scad`, and `520-003_ExGearNutHold.scad` draws both Nut Holders, A and B, from one source; `exgear_assembly.scad` places the group with its motor, drive and fasteners, and closes J3's stack; `exgear_assembly.clash.json` checks it |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 8 | Wave gen coupler, flex spline attach and cap; every part is `.scad`, and `c201_spline_seat.scad` holds the drive's interface for the Attach, the Cap and the three Stator Holders |
-| [`700-Differential/`](700-Differential/) | 10 | 17 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set and has a section view |
+| [`700-Differential/`](700-Differential/) | 10 | 28 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only, each part with a view sidecar; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set, has a section view, and is checked by `assembly-clash.rs` |
 | [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 12 | Solder jigs, glue-rig jig bodies, and the print-fit coupon |
@@ -160,6 +160,30 @@ union() { import("200-001_ArmBody.stl"); patch(55.75, 60.25); patch(77.25, 79.5)
 
 exported as binary STL: 12,008 triangles for 11,946, the bounding box unchanged, and the volume
 0.077 mm³ — five parts in ten million — larger.
+
+**Two Split Gear halves, united in place.** `Reference/meshes/700-Differential/710-001_SplitGearTop.stl`
+and `710-002_SplitGearBottom.stl` were each exported as two overlapping solids, the cage and the bevel
+crown, never united. Each crown's back face, and in 710-002 its bottom edge on the parting cone, stood
+buried inside the other solid's material, so a surface distance read them as surface: 2.173 mm and
+2.251 mm from a faithful recreation, where the clone checks had masked them with ignore ranges. 710-002's
+cage was also not closed: the Ø13 mouth's wall ran on as a zero-thickness sheet inside the material, at
+r 6.500 from the mouth's floor at z 4.500 to z 13.000. Each pair is split into its two solids and united
+on Manifold; 710-002's union also takes a ring of material r 6.4–6.6 over z 4.5–13.1, which lies wholly
+inside the part and fills the sheet:
+
+```
+scadmesh segment <half>.stl --keep 0 --out s0.stl     # and --keep 1 --out s1.stl
+union() { import("s0.stl"); import("s1.stl"); }       // OpenSCAD, Manifold; 710-001
+union() { import("s0.stl"); import("s1.stl");          // 710-002
+          translate([0, 0, 4.5]) difference() {
+              cylinder(r = 6.6, h = 8.6, $fn = 360);
+              translate([0, 0, -1]) cylinder(r = 6.4, h = 20, $fn = 360); } }
+```
+
+exported as binary STL. Each is now one closed solid with its bounding box unchanged: 710-001 48,438
+triangles for 35,394 and 13,020.638 mm³ for the two solids' 13,739.342; 710-002 36,898 for 28,084 and
+7,001.519 mm³ for 7,352.584. The volumes fall by the overlap the two solids counted twice. Both halves
+are now gated on `dist` at ±0.15 mm.
 
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
@@ -331,7 +355,8 @@ The contract every part in `700-Differential/` is held to:
   7001 mm³; volume against an unmerged file is a screening signal, not a verdict. And reference→candidate
   `dist` flags every **buried** surface, because a merged model has no counterpart for them — on this
   part 28 % of reference samples at up to 2.25 mm, none of it a defect. Only candidate→reference gates a
-  part whose reference is an assembly export.
+  part whose reference is an assembly export. `710-001` and `710-002` were both; their references are now
+  united in place ([Known defects](#known-defects)), so both directions gate them.
 - *Stray shells.* `730-002`'s export carries six 1.05 × 1.0 × 1.0 inverted shells (−0.815 mm³ apiece)
   beside the body, and `dist` against the whole file scores them at **0.991 mm**. Against the isolated
   body the same comparison reads **0.332 mm**. Every figure quoted for that part is against body 0, and a
@@ -498,6 +523,11 @@ A sidecar `<assembly>.view.json` beside it names the parts, colours and groups, 
 presets, and the notes. It restates no dimension: part heights come from the exported meshes, and text
 quotes echoes through `{name}` placeholders. The format is in `openscad-tools`'
 `specs/003-CLI.md` § The view sidecar. Every `*.view.json` in this tree names a viewable assembly.
+
+An assembly sidecar groups its parts by **sub-component**: the parts that are built and move as one,
+such as a housing, an input or an output. Each bearing, fastener and stack goes in the group of the
+sub-component it is seated in, not in a group of its own. Hiding a group then hides the whole
+sub-component, with its hardware.
 
 ### Prerequisites
 
