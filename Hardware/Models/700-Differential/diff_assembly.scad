@@ -72,18 +72,13 @@
 // WHAT IS NOT MODELLED, AND WHY NOT. The belts. They leave through Body A's
 // arm slot and their path is set by the upper arm, which is outside this model
 // set; the slot is geometry and is in 730-001. Everything else in 007.6 now
-// has a placement. The two that were open under DC-11 were both open because
-// this file went looking for a BORE:
-//   - The needle thrust stack is Ø19 over the Ø8 tube, and no bore in the
-//     Split Gear takes it -- but a needle thrust bearing is not radially
-//     located. It is a washer stack between two FACES, and the faces are
-//     710-001's base annulus and the keeper, on the 10.423 mm of Ø8 tube that
-//     stands proud of that base. What hid it was this file butting the keeper
-//     straight onto the base, which left the 4.000 mm it occupies reading as
-//     no gap at all.
-//   - The MR85 has no Ø5 feature to ride on because its Ø5 is the race that
-//     leaves this model set. Its OD 8 is what seats, in the top 1.5 mm of
-//     720-002's Ø8 rod bore, and placing it is what fixed ROD_TOP.
+// has a placement. The needle thrust stack was open under DC-11 because this
+// file went looking for a BORE: it is Ø19 over the Ø8 tube, and no bore in the
+// Split Gear takes it -- but a needle thrust bearing is not radially located.
+// It is a washer stack between two FACES, and the faces are 710-001's base
+// annulus and the keeper, on the 10.423 mm of Ø8 tube that stands proud of that
+// base. What hid it was this file butting the keeper straight onto the base,
+// which left the 4.000 mm it occupies reading as no gap at all.
 // The #680-001 brads ARE drawn, but only where a straight one fits: under the
 // revised config, where both halves drill to one axis. Under the previous
 // config the two holes are 0.5 mm apart, no position for a brad is supported by
@@ -264,7 +259,6 @@ SEAT_SG_BOT  = 13.500;   // 710-002 Ø12 MR128 seat, z 13.5..17.0 — a 3.5 fit
 // 710-001 Ø23 pocket, centred between its floor at z 4, where 710-002 bottoms,
 // and 710-002's stub top — see SPLIT 6703 below.
 SEAT_SG_6703 = (4.000 + stub_top() - BRG_6703[2]) / 2;
-MR85_PROUD   =  1.000;   // 720-002's back, "~1 mm proud" -- 008.6 step 19
 
 // The brads' two ends, both radii on the Split Gear's own axis: a brad is
 // driven until it bottoms in 710-002's blind hole and trimmed flush with
@@ -279,17 +273,11 @@ SPLIT_BASE_Z = -1.000;   // 710-001's base face; the Diff Keeper butts on it
 PULLEY_REF_Z0 = 17.500;  // 720-003's Z0, undone when its mesh is imported
 PULLEY_FROM_TIP = 6.000; // 008.6 step 16
 
-// The rod runs from the Diff Gear Axle's outer face down through the shaft.
-// Where along the rod the axle sits was open here until the MR85 was placed,
-// and the MR85 settles it: 008.6 step 19 presses it into the axle's flat back
-// ~1 mm proud, so it occupies the top 1.5 mm of the SAME Ø8 bore the rod runs
-// in and the rod cannot reach that face. Where the rod does stop is 720-002's
-// rod_stop_z(): on the bearing in "previous", and on a lip RUN short of it in
-// "revised", so the rod's end stays off the MR85's inner ring (720-002's ROD
-// STOP). The End Pulley then lands below Body A's mating face, clear of the
-// arm's belt slot, which is a result to check against 008.6 rather than one to
-// trust.
-ROD_TOP = C.z + BEVEL_APEX_AXLE - rod_stop_z();
+// The rod runs from the Diff Gear Axle's outer face down through the shaft:
+// 008.6 step 18 epoxies it in flush with the axle's flat back. The End Pulley
+// then lands below Body A's mating face, clear of the arm's belt slot, which is
+// a result to check against 008.6 rather than one to trust.
+ROD_TOP = C.z + BEVEL_APEX_AXLE;
 ROD_BOT = ROD_TOP - CF_ROD_LEN;
 
 // ---------------------------------------------------------------------------
@@ -400,7 +388,7 @@ CARBON_C = [0.16, 0.16, 0.18];
 // unit — a seat's bearings, the thrust stack, the brads — is one id.
 PARTS = ["730-001", "730-002", "720-001", "720-004", "720-002", "720-003",
          "710-001", "710-002", "710-004", "710-003",
-         "cf_rod", "mr85", "brg_body_a", "brg_body_b", "brg_shaft", "brg_split",
+         "cf_rod", "brg_body_a", "brg_body_b", "brg_shaft", "brg_split",
          "thrust_stack", "brads", "strakes"];
 
 // The assembly is a module rather than a run of top-level calls so that a
@@ -446,15 +434,11 @@ module carried(p) {
     // J5 encoder disk, over the Split Gear body and against its stop collar.
     if (p == "710-004") color(ENC_C) in_split() up(CODE_DISK_Z) part(p);
 
-    // The keepers, both of #710-003's two. The first is epoxied on the Ø8 tube
-    // and does NOT butt the Split Gear's base: the needle thrust stack stands
-    // between the two (008.6 step 23), so its face sits a stack height below
-    // SPLIT_BASE_Z. The second is clamped on top of it (step 24), the same way
-    // up, overhanging the tube's end. One id, so the clash check sees their
-    // shared face as one part's.
+    // The keeper, epoxied on the Ø8 tube. It does NOT butt the Split Gear's
+    // base: the needle thrust stack stands between the two (008.6 step 21), so
+    // its face sits a stack height below SPLIT_BASE_Z.
     if (p == "710-003") color(BODY_C) in_split()
-        for (k = [0, 1])
-            up(SPLIT_BASE_Z - thrust_stack_h() - k * keeper_h()) xrot(180) part(p);
+        up(SPLIT_BASE_Z - thrust_stack_h()) xrot(180) part(p);
 }
 
 // SPLIT JOINT. The halves mate, and both meshes honour it: at nominal they
@@ -502,7 +486,6 @@ BEARINGS = [
     ["brg_split_top",  "brg_split",    BRG_MR128],
     ["brg_split_bot",  "brg_split",    BRG_MR128],
     ["brg_split_6703", "brg_split",    BRG_6703],
-    ["mr85",           "mr85",         BRG_MR85],
     ["thrust",         "thrust_stack", THRUST_AXK0819],
 ];
 RACES = ["inner", "outer", "shield"];
@@ -529,12 +512,6 @@ module bearing_frame(name) {
     if (name == "brg_split_top")  in_split() up(SEAT_SG_TOP) children();
     if (name == "brg_split_bot")  in_split() up(SEAT_SG_BOT) children();
     if (name == "brg_split_6703") in_split() up(SEAT_SG_6703) children();
-    // The MR85, pressed into the flat back of the Diff Gear Axle and standing
-    // 1 mm proud of it (008.6 step 19). Its OD is the Ø8 rod bore, so it takes
-    // the top 1.5 mm of that bore; what its Ø5 rides on closes the wrist above
-    // and is outside this model set, which ends here at the J4 axis. See
-    // ROD_TOP: this is what says the rod cannot reach that face.
-    if (name == "mr85") in_axle() up(-MR85_PROUD) children();
     // The needle thrust stack, on the 10.423 mm of Ø8 tube that stands proud
     // of the Split Gear's base. It is located by the tube and carried by two
     // FACES — 710-001's base annulus, r 5.994..18.500, against the keeper — so

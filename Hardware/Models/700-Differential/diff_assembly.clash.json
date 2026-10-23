@@ -43,9 +43,6 @@
     {"id": "brg_split_6703_inner",  "kind": "bought", "side": "out",     "bearing": "brg_split_6703", "race": "inner"},
     {"id": "brg_split_6703_outer",  "kind": "bought", "side": "out",     "bearing": "brg_split_6703", "race": "outer"},
     {"id": "brg_split_6703_shield", "kind": "bought", "side": "out",     "bearing": "brg_split_6703", "race": "shield"},
-    {"id": "mr85_inner",            "kind": "bought", "side": "wrist",   "bearing": "mr85", "race": "inner"},
-    {"id": "mr85_outer",            "kind": "bought", "side": "in_a",    "bearing": "mr85", "race": "outer"},
-    {"id": "mr85_shield",           "kind": "bought", "side": "in_a",    "bearing": "mr85", "race": "shield"},
     {"id": "thrust_inner",          "kind": "bought", "side": "carrier", "bearing": "thrust", "race": "inner"},
     {"id": "thrust_outer",          "kind": "bought", "side": "out",     "bearing": "thrust", "race": "outer"},
     {"id": "thrust_shield",         "kind": "bought", "side": "carrier", "bearing": "thrust", "race": "shield"}
@@ -66,6 +63,6 @@
     {"pair": ["720-002", "brg_shaft_f_shield"], "at": [0, 0, 58.5], "radius": 5.5,
      "reason": "the Diff Gear Axle's boss bears on the front MR128's inner ring alone, its tip face out to inner_shoulder_d() and chamfered away beyond it; the shield is sunk below the bearing's face, so the tip's edge passes 0.46 from the shield and never meets it. The inner ring is 0.6 wide, too narrow for a tip face round the Ø8 rod bore to stand the full running clearance off the shield"},
     {"pair": ["730-002", "thrust_outer"], "at": [41.0, 0, 48.5], "radius": 4.5,
-     "reason": "both AS0819 races of the thrust stack have the catalogue's Ø8 bore and are centred on Body B's Ø8 tube (008.6 step 23); the race that turns with the Split Gear runs on the tube at the press clearance, as an AS race on a shaft does, and bears on the gear's base face"}
+     "reason": "both AS0819 races of the thrust stack have the catalogue's Ø8 bore and are centred on Body B's Ø8 tube (008.6 step 21); the race that turns with the Split Gear runs on the tube at the press clearance, as an AS race on a shaft does, and bears on the gear's base face"}
   ]
 }

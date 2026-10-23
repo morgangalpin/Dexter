@@ -1,6 +1,6 @@
 // #710-003 Diff Keeper — parametric source (DC-2).
 // Retaining ring epoxied over the Diff Body B shaft against the 6703 bearing
-// (008.6 steps 23-24); a second one joins the Front Panel (008.7).
+// (008.6 step 21); the second joins the Front Panel (008.7 step 26).
 //
 // The bore profile is stepped and filleted: a sliding Ø8.0 seat, an R0.7
 // concave fillet out to a short Ø8.5 relief, then an R0.7 quarter round
@@ -104,10 +104,6 @@ SEAT_TOP     = RELIEF_BOT - FIL_R * sin(LOWER_FIL_A);       // 2.4638097
 assert(abs((FLARE_TOP_D - RELIEF_D)/2 - FIL_R) < 1e-9,
        "upper fillet is not tangent to both the relief wall and the top face");
 assert(BORE_D < RELIEF_D, "the seat bore must stay inside the relief bore");
-
-// The ring's height, for diff_assembly.scad, which stacks the second keeper on
-// the first (008.6 step 24) and reaches this file with `use`.
-function keeper_h() = H;
 
 module diff_keeper() {
     // Six and nine points reproduce the reference's ring spacing (see header).

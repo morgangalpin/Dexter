@@ -224,23 +224,16 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
 16. Lightly sand one end of the 96 mm CF rod; epoxy the Diff End Pulley 6 mm from the tip, protruding side
     toward the rod's long side.
 17. Confirm the 6703/MR128 bearings are seated so the shaft end protrudes ~1 mm past the 6703.
-18. Super-glue and snap the Diff Axle Keeper over the shaft end, against the 6703.
-19. Press the MR85 into the flat back of the Diff Gear Axle until it bottoms on the lip inside the bore,
-    ~1 mm proud. It seats by its **OD**, in the same Ø8 bore the rod runs in — the Ø5 bore is the race that
-    leaves this subassembly.
-20. Sand the other rod end and epoxy the Diff Gear Axle onto it. The rod **stops on the far side of that
-    lip**, short of the MR85, so its end never touches the bearing's inner race, which turns with the wrist
-    above. The lip's depth and the lap it leaves for the joint are set in
-    [`720-002_DiffGearAxle.scad`](../Hardware/Models/700-Differential/720-002_DiffGearAxle.scad) (ROD STOP).
-    Press the MR85 first: a rod driven past the lip's place leaves the bearing nowhere to go.
-21. Insert the CF rod through the Diff Gear Shaft until it stops.
-22. Hand-turn the Split Gear to confirm free rotation.
-23. Slide one AS thrust race over the wires and Diff Body B shaft, then the AXK0819, then the second race.
-    Epoxy only the chamfered edge of a Diff Keeper (apply sparingly with a nail), feed the wires through, and
-    join to Diff Body B. **The keeper does not butt the Split Gear** — the stack stands between them, on
+18. Sand the other rod end and epoxy the Diff Gear Axle onto it, the rod's end **flush with the axle's flat
+    back**. Nothing else goes in that bore ([DC-11(e)](009-Design-Completion.md#procurement-data)).
+19. Insert the CF rod through the Diff Gear Shaft until it stops.
+20. Hand-turn the Split Gear to confirm free rotation.
+21. Slide one AS thrust race over the wires and Diff Body B shaft, then the AXK0819, then the second race.
+    Epoxy only the chamfered edge of the Diff Keeper (apply sparingly with a nail), feed the wires through,
+    and join to Diff Body B. **The keeper does not butt the Split Gear** — the stack stands between them, on
     the shaft, bearing on the Split Gear Top's base face. Expect ~2.4 mm of shaft still proud of the
-    keeper once both are on ([DC-11(e)](009-Design-Completion.md#procurement-data)).
-24. Clamp a second Diff Keeper on top of the epoxied one until cured.
+    keeper once it is on. This is the differential's only Diff Keeper; the other joins the Front Panel at
+    [008.7](#0087-end-arm-hub) step 26 ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 
 ## 008.7 End Arm Hub
 Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).

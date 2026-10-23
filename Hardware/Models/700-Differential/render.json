@@ -161,7 +161,6 @@
      ]},
     {"kind": "fits", "id": "fits-720-002", "part": "720-002 (revised)", "stl": "out/revised/720-002.stl", "after": ["render-revised-720-002"],
      "probes": [
-       {"label": "MR85 seat", "at": [4.0, 0.0, 0.75], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
        {"label": "CF rod bore", "at": [4.0, 0.0, 7.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
      ]},
     {"kind": "fits", "id": "fits-720-003", "part": "720-003 (revised)", "stl": "out/revised/720-003.stl", "after": ["render-revised-720-003"],

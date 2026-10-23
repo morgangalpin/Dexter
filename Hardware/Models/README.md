@@ -524,6 +524,11 @@ presets, and the notes. It restates no dimension: part heights come from the exp
 quotes echoes through `{name}` placeholders. The format is in `openscad-tools`'
 `specs/003-CLI.md` § The view sidecar. Every `*.view.json` in this tree names a viewable assembly.
 
+An assembly sidecar groups its parts by **sub-component**: the parts that are built and move as one,
+such as a housing, an input or an output. Each bearing, fastener and stack goes in the group of the
+sub-component it is seated in, not in a group of its own. Hiding a group then hides the whole
+sub-component, with its hardware.
+
 ### Prerequisites
 
 - **OpenSCAD**, found as `openscad-tools`' `specs/003-CLI.md` states for `view`.

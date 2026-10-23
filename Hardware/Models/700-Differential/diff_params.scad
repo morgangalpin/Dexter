@@ -75,7 +75,6 @@ BRG_6703  = [17, 23, 4];    // #620-003, 5 seats in the differential's own parts
                             //   and a 6th that 008.6 step 2 puts in #420-001
 BRG_MR128 = [8, 12, 3.5];   // #620-002, 4 seats: shaft ends, and one per Split
                             //   Gear half. Both counts corrected under DC-11(e)
-BRG_MR85  = [5, 8, 2.5];    // #620-001, into the Diff Gear Axle's back bore
 THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 
 // The bore of a shoulder that bears on a bearing's OUTER race: halfway across
