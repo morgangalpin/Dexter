@@ -202,7 +202,6 @@ specific to this version.
 | #620-002 | MR128 bearing | Off the shelf | 2 | |
 | #620-003 | 6703 bearing | Off the shelf | 3 | |
 | #620-005 | 6807 bearing | Off the shelf | 2 | |
-| #620-001 | MR85 bearing | Off the shelf | 1 | |
 | #710-003 | Diff Keeper | 3D print | 1 | Joined to the Front Panel at [008.7](008-Assembly.md#0087-end-arm-hub) step 26 |
 | #642-005 | M3 × 6 mm set screws | Off the shelf | 6 | |
 | #660-002 | M3 nuts | Off the shelf | 18 | |
@@ -271,6 +270,7 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #651-002 | **FPGA Board (MicroZed)** | Off the shelf | 1 | Confirm module P/N via wiki `MicroZed` |
 | #651-003 | Optical Board | Fabricate | 5 | One per joint encoder; gerbers/BOM in `Hardware/Opto/` |
 | #652-001 | Fan | Off the shelf | 1 | |
+| #643-001 | Fan screws, Ø5 × 10 mm self-tapping | Off the shelf | 4 | Through the Fan Bracket's corner pads into the fan's holes |
 | #652-002 | LED | Off the shelf | 10 | Digikey LTE-4206 |
 | #652-003 | Phototransistor | Off the shelf | 10 | Digikey LTR-4206E |
 | #652-004 | 2-pin connector | Off the shelf | 1 | |
@@ -342,6 +342,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M2 × 16 mm bolts | 23 | [C-602](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 × 20 mm bolts | 17 | [C-603](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 4 mm set screws | 3 | [C-618](007.1-Parts-Catalog.md#6-fasteners) |
+| Fan screws, Ø5 × 10 mm self-tapping | 4 | [C-619](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 6 mm set screws | 9 | [C-606](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 8 mm bolts | 8 | [C-607](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 10 mm bolts | 7 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
@@ -355,7 +356,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | 6705 bearing (25 × 32 × 4) | 1 | [C-403](007.1-Parts-Catalog.md#4-bearings) |
 | 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
 | 6810 bearing (50 × 65 × 7) | 7 | [C-401](007.1-Parts-Catalog.md#4-bearings) |
-| MR85 bearing (5 × 8 × 2.5) | 2 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
+| MR85 bearing (5 × 8 × 2.5) | 1 | [C-406](007.1-Parts-Catalog.md#4-bearings) |
 | MR128 bearing (8 × 12 × 3.5) | 14 | [C-405](007.1-Parts-Catalog.md#4-bearings) |
 | AXK0819 thrust bearing + AS0819 races | 1 + 2 | [C-407/408](007.1-Parts-Catalog.md#4-bearings) |
 | NEMA-17 stepper (0.9°/step) | 5 | [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) |

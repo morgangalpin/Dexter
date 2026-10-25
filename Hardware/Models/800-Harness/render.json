@@ -107,9 +107,22 @@
      "scad": "800-005_FanBracket.scad", "out": "out/revised/800-005.stl"},
     {"kind": "fits", "id": "fits-800-005", "part": "800-005 (revised)",
      "stl": "out/revised/800-005.stl", "after": ["render-800-005"],
-     "note": "The revised #800-005's print fit: A1's 40 x 40 seat for the C-716 fan, on the +X wall at mid-height of the 40 run, measured from the fan's face. The H1 pilots are probed separately.",
+     "note": "The revised #800-005's print fits: A1's 40 x 40 seat for the C-716 fan, on the +X wall at mid-height of the 40 run, measured from the fan's face; and F1's fan screw holes through the corner pads, mid-pad, on the Ø5 screw's surface on its +y side. The H1 pilots are probed separately.",
      "probes": [
-       {"label": "A1 seat, +X wall", "at": [48.925, 15.991, 4.6], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
+       {"label": "A1 seat, +X wall", "at": [48.925, 15.991, 4.6], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "F1 fan screw hole, -x -y", "at": [12.925, 2.491, 7.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "F1 fan screw hole, +x -y", "at": [44.925, 2.491, 7.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "F1 fan screw hole, -x +y", "at": [12.925, 34.491, 7.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"},
+       {"label": "F1 fan screw hole, +x +y", "at": [44.925, 34.491, 7.0], "toward": [0.0, -1.0, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "probes", "id": "probes-800-005-pads", "part": "800-005 (revised)",
+     "stl": "out/revised/800-005.stl", "after": ["render-800-005"],
+     "note": "The revised #800-005's +x +y corner pad, which the fan screw passes through: material beside its F1 hole, open just inside its edge (tangent to the Ø38 circle, 19.0 off the centre along the diagonal), and its top at z 8.5.",
+     "items": [
+       {"label": "pad: material beside F1", "at": [47.925, 28.991, 7.0], "solid": true},
+       {"label": "pad edge: open at 18.8 along the diagonal", "at": [42.219, 29.285, 7.0], "solid": false},
+       {"label": "pad top: material at z 8.4", "at": [47.925, 28.991, 8.4], "solid": true},
+       {"label": "pad top: open at z 8.6", "at": [47.925, 28.991, 8.6], "solid": false}
      ]},
     {"kind": "probes", "id": "probes-800-005-lip", "part": "800-005 (revised)",
      "stl": "out/revised/800-005.stl", "after": ["render-800-005"],
