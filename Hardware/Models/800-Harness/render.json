@@ -297,8 +297,7 @@
        {"label": "B1 counterbore wall at r 2.2", "at": [-37.531, -21.125, 8.0], "solid": true}
      ]},
     {"kind": "dist_gate", "id": "dist-823", "part": "823",
-     "config": "previous", "scad": "823_PhotointerrupterShroudEndArm.scad", "out": "out/823.stl", "reference": "823_PhotointerrupterShroudEndArm.stl", "tol": 0.6,
-     "note": "Held at 0.6, not 0.15: the blends (the +y block fillet beside its post, the bosses' fillet feet, the pillars' tops, the notch on the block's +y side) are rolling balls and lofts drawn approximately, and stand off the mesh by up to 0.58 where the CAD's blend is not a ball's path. The reference is the mesh repaired in place (README § Known defects); the file's header gives each residual and its size."},
+     "config": "previous", "scad": "823_PhotointerrupterShroudEndArm.scad", "out": "out/823.stl", "reference": "823_PhotointerrupterShroudEndArm.stl", "tol": 0.15},
     {"kind": "render", "id": "render-823", "config": "revised",
      "scad": "823_PhotointerrupterShroudEndArm.scad", "out": "out/revised/823.stl"},
     {"kind": "probes", "id": "probes-823-wide", "part": "823 (revised)",
