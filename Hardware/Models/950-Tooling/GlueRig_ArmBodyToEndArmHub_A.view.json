@@ -1,0 +1,32 @@
+{
+  "title": "L2 Glue Rig A",
+  "subtitle": "Glue rig · reference mesh and GlueRig_ArmBodyToEndArmHub_A.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "L2 Glue Rig A", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/GlueRig_ArmBodyToEndArmHub_A.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/rig-l2-a.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/rig-l2-a.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [11.864, 340.032, 5], "text": "B1 bore Ø24.0, through"},
+    {"at": [20.864, 340.032, -15], "text": "O1 boss Ø42.0, z -19.75 to -10.75"},
+    {"at": [-0.136, 372.532, -5], "text": "D1 head block R32.5, z -10.75 to 0"},
+    {"at": [29, 250, 10], "text": "P1 plate |x| ≤ 32.5, z 0 to 10"},
+    {"at": [24.932, 250, 5], "text": "W1 window 50 wide, y 205.0 to 296.5"},
+    {"at": [-20.7, 368.3, 10], "text": "E1 ear R3 stadium (left)"},
+    {"at": [20.4, 368.3, 10], "text": "E2 ear slot 2.54 × 5.59 (right ear)"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 255], "part": "ref", "span": 220, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 255], "part": "ref", "span": 220, "from": [0, 0, -1]},
+    {"label": "Head and ears", "at": [0, 350, 0], "span": 90, "from": [0.3, -0.8, 0.6]},
+    {"label": "Boss, from below", "at": [0, 340, -15], "span": 60, "from": [0.3, -0.5, -1]},
+    {"label": "Joint end", "at": [0, 170, 5], "span": 70, "from": [0.5, -1, 0.7]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one draws the print fits listed in GlueRig_ArmBodyToEndArmHub_A.scad's header, which also owns the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

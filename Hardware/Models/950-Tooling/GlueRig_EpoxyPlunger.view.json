@@ -1,0 +1,29 @@
+{
+  "title": "Epoxy Plunger",
+  "subtitle": "Glue rig · reference mesh and GlueRig_EpoxyPlunger.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Epoxy Plunger", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/GlueRig_EpoxyPlunger.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/rig-epoxy-plunger.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/rig-epoxy-plunger.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [4.999, 50, -9.495], "text": "R1 small rod R7.848, cut flat on z = 0"},
+    {"at": [25.027, 50, -11.794], "text": "R2 large rod R10.847, cut flat on z = 0"},
+    {"at": [2.062, 109, 0], "text": "H1 head y 105 to 119, z -18.22 to 0, R10 lobes"},
+    {"at": [16.887, 110.807, -9], "text": "N1 thumb notch R7.5 between the lobes"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [18, 56], "part": "ref", "span": 140, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [18, 56], "part": "ref", "span": 140, "from": [0, 0, -1]},
+    {"label": "Head", "at": [18, 110, -9], "span": 55, "from": [0.3, -1, 0.7]},
+    {"label": "Head, from below", "at": [18, 110, -9], "span": 55, "from": [0.3, -0.6, -1]},
+    {"label": "Rods, end on", "at": [15, 0, -5], "span": 40, "from": [0, -1, 0.1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The revised render equals the previous one, and GlueRig_EpoxyPlunger.scad's header owns the reason in its FITS section along with the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

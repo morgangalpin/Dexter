@@ -157,8 +157,8 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #830-001 | Solder jig — 6-pin holder | 2 | `830-001_SolderJig6PinHolder.stl` |  |
-| #830-002 | Solder jig — LED rig | 1 | `830-002_SolderJigLEDRig.stl` |  |
+| #830-001 | Solder jig — 6-pin holder | 2 | `830-001_SolderJig6PinHolder.scad` | `revised` is `previous`: the lead grooves rest a bought header, with no fit; shares `lead_groove.scad` with #830-002 |
+| #830-002 | Solder jig — LED rig | 1 | `830-002_SolderJigLEDRig.scad` | `revised` is `previous`; shares `lead_groove.scad` with #830-001 |
 
 ## One geometry, two part numbers
 
@@ -200,7 +200,7 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
 
 ## Glue-rig jigs
 
-`950-Tooling/` holds eight jig bodies shipped in the HD sets:
+`950-Tooling/` holds eight jig bodies shipped in the HD sets, every one a `.scad`:
 
 `GlueRig_ArmBodyToEndArmHub_A/B/C`, `GlueRig_ArmBodyToExGear`, `GlueRig_EndArmHubToDiff_A/B`,
 `GlueRig_EpoxyHolder`, `GlueRig_EpoxyPlunger`
@@ -209,10 +209,12 @@ Each is a trough that holds both ends of one bonded CF span at its finished spac
 the span each one jigs in
 [007.2's tooling section](../../specs/007.2-Printed-Parts.md#tooling--glue-rigs).
 
-`GlueRig_EndArmHubToDiff_B` is the one that is not the shipped mesh. Its `.scad` is the source of record
-and the `.stl` is rendered from it: the file shortens the shipped body by 2.000 mm so the pair holds the
-specified L3 span ([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)), and the mesh it edits is kept as
-`Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.
+Their meshes are in `Reference/meshes/950-Tooling/`. `GlueRig_EndArmHubToDiff_B` is the one that is not the
+shipped mesh. Its `.scad` is the source of record: it draws the part directly, with the specified L3 span
+([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)) stated once as `L3_SPAN` in
+`l3_rig_joint.scad`. Its reference in `Reference/meshes/950-Tooling/` is the corrected part, 2.000 mm
+shorter than the shipped body, and the shipped mesh is kept as
+`Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`, the record of the part as shipped.
 
 ## Print-fit coupon
 

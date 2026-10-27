@@ -1,0 +1,35 @@
+{
+  "title": "Ex Gear Mount Glue Rig",
+  "subtitle": "Glue rig · reference mesh and GlueRig_ArmBodyToExGear.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Ex Gear Mount Glue Rig", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/GlueRig_ArmBodyToExGear.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/rig-exgear.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/rig-exgear.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [187.763, 0, -10], "text": "G1 ring Ø65.0, z -13.5 to -6.5"},
+    {"at": [182.763, 0, -3], "text": "B1 bore Ø55.0, through"},
+    {"at": [155.263, 41.547, -3], "text": "A1 pad: Arm Body outline R36.5, ears on ±Y"},
+    {"at": [160.263, 35.5, 1.5], "text": "K1 slot 10 × 4 on ±Y, r 33.5 to 37.5"},
+    {"at": [0, -38, 1.5], "text": "D1 disc R38.0 about O"},
+    {"at": [80, 20.663, 1.5], "text": "T1 bar |y| ≤ 20.66, x 42.0 to 125.2"},
+    {"at": [80, 10.167, 1.5], "text": "W1 window x 45.0 to 112.8, |y| ≤ 10.17"},
+    {"at": [10.346, 0, 1.5], "text": "C1 centre hole Ø22.0 about P"},
+    {"at": [16.446, 15.5, 1.5], "text": "H1 screw hole Ø3.2 ×4"},
+    {"at": [26.7, 1.65, -2.5], "text": "Y1 key 3.3 × 12.8, ×4 on 90°"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [78, 0], "part": "ref", "span": 220, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [78, 0], "part": "ref", "span": 220, "from": [0, 0, -1]},
+    {"label": "Disc and keys, from below", "at": [0, 0, -2], "span": 90, "from": [0.3, -0.5, -1]},
+    {"label": "Disc", "at": [0, 0, 2], "span": 90, "from": [0.3, -0.8, 0.6]},
+    {"label": "Ring", "at": [155, 0, -5], "span": 100, "from": [0.5, -1, 0.5]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one draws the print fits listed in GlueRig_ArmBodyToExGear.scad's header, which also owns the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Solder Jig — 6-Pin Holder",
+  "subtitle": "#830-001 · reference mesh and 830-001_SolderJig6PinHolder.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Solder Jig — 6-Pin Holder", "pn": "#830-001", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/830-001_SolderJig6PinHolder.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/830-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/830-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [8.4, -11.46, 4], "text": "F1 front block |x| ≤ 9.15, z -1 to 4"},
+    {"at": [-6.48, -11.46, 2.27], "text": "G1 lead grooves ×6 on x -6.48 + 2.54k, round end z 2.27"},
+    {"at": [8.45, -6, 4], "text": "W1 side walls |x| 7.75 to 9.15"},
+    {"at": [0, 0, 1], "text": "B1 back bar |x| ≤ 9.15, z -1 to 1"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, -5.46], "part": "ref", "span": 26, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, -5.46], "part": "ref", "span": 26, "from": [0, 0, -1]},
+    {"label": "Grooves", "at": [0, -11.46, 3], "span": 20, "from": [0.2, -0.6, 1]},
+    {"label": "Walls and back bar", "at": [0, -3, 1.5], "span": 22, "from": [0.3, -1, 0.8]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The revised render equals the previous one, and 830-001_SolderJig6PinHolder.scad's header owns the reason in its FITS section along with the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

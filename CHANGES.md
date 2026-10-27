@@ -1115,6 +1115,12 @@ anything version 3 does not independently specify
     `diff_params.scad`, `diff_hardware.scad`, `diff_assembly.scad`, `diff_assembly.clash.json` (new) and
     `render.json`; `Reference/meshes/700-Differential/710-001_SplitGearTop.stl` and
     `710-002_SplitGearBottom.stl`, corrected in place.
+  - `Hardware/Models/950-Tooling/`: `GlueRig_ArmBodyToEndArmHub_A.scad`, `_B.scad` and `_C.scad`,
+    `GlueRig_ArmBodyToExGear.scad`, `GlueRig_EndArmHubToDiff_A.scad`, `GlueRig_EpoxyHolder.scad`,
+    `GlueRig_EpoxyPlunger.scad`, `830-001_SolderJig6PinHolder.scad` and `830-002_SolderJigLEDRig.scad`,
+    their `.view.json` sidecars where they have one, the shared `l2_rig_joint.scad`, `l3_rig_joint.scad` and
+    `lead_groove.scad`, and `render.json` (new); `GlueRig_EndArmHubToDiff_B.scad`, rewritten. Their meshes
+    moved to `Reference/meshes/950-Tooling/`.
   - `Hardware/Models/gt2_pulley.scad` gains a second tooth form, `gt2_teeth_rounded_2d`.
   - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
     lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
@@ -1476,6 +1482,18 @@ anything version 3 does not independently specify
     block's pocket, cut away in place (README § Known defects). `dist` is held at 0.6 and not 0.15:
     the blends stand up to 0.58 off the mesh where the CAD's blend is not a ball's path. The beam
     bores already clear the T-1 packages, so `revised` draws no fit.
+  - **950-Tooling:** the ten jigs are drawn as 2D layers, each extruded once and lapping `SEAM_LAP` into
+    the next. The L2 rig's three parts share their joint outline (`l2_rig_joint.scad`), the L3 rig's two
+    share their joint and span (`l3_rig_joint.scad`), and the solder jigs share their lead groove
+    (`lead_groove.scad`). `GlueRig_EndArmHubToDiff_B` no longer imports the superseded mesh: it draws the
+    corrected part directly and states the span once, as `L3_SPAN` (307.500). The superseded mesh stays in
+    `Reference/superseded/` as the record of the part as shipped.
+  - **950-Tooling, fits:** `config="revised"` draws the slip fit on the L2 rig's boss, collar and key, the
+    Ex Gear rig's ring, keys and M3 holes, and the L3 rig's tab and rim. The L3 registers (A's boss
+    carrying the 6703, and B's four tubes in the hub's holes) keep their size as precision fits by
+    design ([007.2](specs/007.2-Printed-Parts.md#tooling--glue-rigs)). The Epoxy Holder, the Epoxy
+    Plunger and both solder jigs have no mate dimensions on record, so `revised` is `previous`. The
+    survey corrects the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
