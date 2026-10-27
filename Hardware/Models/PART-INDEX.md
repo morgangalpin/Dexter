@@ -121,20 +121,20 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #800-001 | Wire Entry Left | 1 | `800-001_WireEntryLeft.stl` |  |
-| #800-002 | Wire Entry Right | 1 | `800-002_WireEntryRight.stl` |  |
-| #800-003 | Main Pivot Plug A | 1 | `800-003_MainPivotPlugA.stl` |  |
-| #800-004 | Main Pivot Plug B | 1 | `800-004_MainPivotPlugB.stl` |  |
-| #800-005 | Fan Bracket | 1 | `800-005_FanBracket.stl` |  |
-| #800-006 | PCB Bracket | 2 | `800-006_PCBBracket.stl` |  |
-| #800-007 | PCB Spacer | 4 | `800-007_PCBSpacer.stl` |  |
-| #810-001 | 6-pin strain relief, top | 10 | `810-001_6PinStrainReliefTop.stl` |  |
-| #810-002 | 6-pin strain relief, bottom | 10 | `810-002_6PinStrainReliefBottom.stl` |  |
-| #821 | Photointerrupter shroud — base | 1 | `821_PhotointerrupterShroudBase_A.stl` | ⚠️ |
-| #822 | Photointerrupter shroud — pivot | 1 | `822_PhotointerrupterShroudPivot_A.stl` | ⚠️ |
-| #823 | Photointerrupter shroud — end arm | 1 | `823_PhotointerrupterShroudEndArm.stl` |  |
-| #824 | Photointerrupter shroud — angle | 1 | `824_PhotointerrupterShroudAngle.stl` |  |
-| #825 | Photointerrupter shroud — rotate | 1 | `825_PhotointerrupterShroudRotate_A.stl` | ⚠️ |
+| #800-001 | Wire Entry Left | 1 | `800-001_WireEntryLeft.scad` |  |
+| #800-002 | Wire Entry Right | 1 | `800-002_WireEntryRight.scad` | `include`s #800-001's source and draws its mirror image |
+| #800-003 | Main Pivot Plug A | 1 | `800-003_MainPivotPlugA.scad` | slip fit in the Main Pivot's H1 bore in `revised` |
+| #800-004 | Main Pivot Plug B | 1 | `800-004_MainPivotPlugB.scad` | `include`s #800-003's source and selects B, with the wire channel; slip fit as A's |
+| #800-005 | Fan Bracket | 1 | `800-005_FanBracket.scad` | press fit on the fan, and flush corner pads, countersunk for its four screws, in `revised`; `fan_hardware.scad` draws the fan and screws as stand-ins |
+| #800-006 | PCB Bracket | 2 | `800-006_PCBBracket.scad` |  |
+| #800-007 | PCB Spacer | 4 | `800-007_PCBSpacer.scad` |  |
+| #810-001 | 6-pin strain relief, top | 10 | `810-001_6PinStrainReliefTop.scad` | comb shared with #810-002 (`strain_relief_comb.scad`) |
+| #810-002 | 6-pin strain relief, bottom | 10 | `810-002_6PinStrainReliefBottom.scad` | comb shared with #810-001 |
+| #821 | Photointerrupter shroud — base | 1 | `821_PhotointerrupterShroudBase_A.scad` | ⚠️ |
+| #822 | Photointerrupter shroud — pivot | 1 | `822_PhotointerrupterShroudPivot_A.scad` | ⚠️; press fits on the T-1 packages in `revised` |
+| #823 | Photointerrupter shroud — end arm | 1 | `823_PhotointerrupterShroudEndArm.scad` | measured against its mesh as repaired in place ([README § Known defects](README.md#known-defects)) |
+| #824 | Photointerrupter shroud — angle | 1 | `824_PhotointerrupterShroudAngle.scad` | press fits on the T-1 packages in `revised` |
+| #825 | Photointerrupter shroud — rotate | 1 | `825_PhotointerrupterShroudRotate_A.scad` | ⚠️; slip fit of the clip on Diff Body B and press fits on the T-1 packages in `revised` |
 
 ## 900-ToolInterface — Tool interface and gripper
 
@@ -173,9 +173,9 @@ One file satisfies two BOM lines. It is stored once, under the lower number:
 [007.2](../../specs/007.2-Printed-Parts.md) counts one photointerrupter shroud per joint, but three of them
 ship as two halves. **Both halves must be printed.** They are stored as `_A` and `_B`:
 
-- `800-Harness/821_PhotointerrupterShroudBase_A.stl` + `_B.stl`
-- `800-Harness/822_PhotointerrupterShroudPivot_A.stl` + `_B.stl`
-- `800-Harness/825_PhotointerrupterShroudRotate_A.stl` + `_B.stl`
+- `800-Harness/821_PhotointerrupterShroudBase_A.scad` + `_B.scad` (body and the plate it stands on)
+- `800-Harness/822_PhotointerrupterShroudPivot_A.scad` + `_B.scad` (the halves either side of the code disk)
+- `800-Harness/825_PhotointerrupterShroudRotate_A.scad` + `_B.scad` (the clip with its tab, and the cap over the tab)
 
 ## Flagged rows
 

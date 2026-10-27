@@ -1,0 +1,31 @@
+{
+  "title": "Photointerrupter Shroud (Pivot), cap B",
+  "subtitle": "#822 B · reference mesh and 822_PhotointerrupterShroudPivot_B.scad renders · what differs between them",
+  "cut": false,
+  "from": [-1, -1, -0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Shroud cap B", "pn": "#822 B", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/822_PhotointerrupterShroudPivot_B.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/822-B.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/822-B.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-43.3, -25.0, 8.5], "text": "P1 body r 41.0…53.5, 190…230°, z 2.5…8.5"},
+    {"at": [-38.4, -9.0, 8.5], "text": "K1 R4 corner cut"},
+    {"at": [-39.731, -21.125, 2.5], "text": "B1 slit 0.8 wide, radial, with an R0.524 lead-in to the Ø3.0 bore"},
+    {"at": [-36.168, -26.763, 2.5], "text": "B2 beam bore, 216.5° on r 45"},
+    {"at": [-39.731, -21.125, 8.5], "text": "Ø4.0 flange seat, z 7.5…8.5 (Ø4.1 revised)"},
+    {"at": [-48.362, -16.19, 8.5], "text": "N1 nail hole Ø1.0"},
+    {"at": [-37.534, -34.529, 8.5], "text": "N1 nail hole Ø1.0"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [-40, -25, 8.5], "span": 45, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [-40, -25, 2.5], "span": 45, "from": [0.2, -0.2, -1]},
+    {"label": "Slits", "at": [-38, -24, 2.5], "span": 12, "from": [0.4, -0.2, -1]},
+    {"label": "Corner", "at": [-39, -9, 5], "span": 16, "from": [0.3, 0.8, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the T-1 bores by the press clearance per side (Ø3.1 body, Ø4.1 flange seat); the slit width and the nail holes (Ø1.0, an interference the reference intends) keep their size. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

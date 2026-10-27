@@ -1,6 +1,7 @@
 //! `render`: render one source to a file and hold the render to silence.
 //!
-//! Fields: `scad`, `out`, and optionally `config` (passed as `-D config=...`).
+//! Fields: `scad`, `out`, and optionally `config` (passed as `-D config=...`)
+//! and `defines` (further `-D` definitions, such as `layer="fan"`).
 //! An `out` ending in `.csg` evaluates every parameter and assertion of the
 //! source without meshing it, which is how an assembly is checked in seconds.
 
@@ -8,7 +9,9 @@ use super::{config_defines, render_judged, Env, Fields, Report};
 use anyhow::Result;
 
 pub fn run(env: &Env, f: &Fields, rep: &mut Report) -> Result<()> {
-    render_judged(env, f.str("scad")?, f.str("out")?, &config_defines(f), rep).map(drop)
+    let mut defines = config_defines(f);
+    defines.extend(f.strings("defines")?.into_iter().map(String::from));
+    render_judged(env, f.str("scad")?, f.str("out")?, &defines, rep).map(drop)
 }
 
 #[cfg(test)]
@@ -22,6 +25,15 @@ mod tests {
         let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "config": "previous"}), &fake);
         assert!(o.ok, "{}", o.output);
         assert_eq!(fake.calls(), vec!["openscad --backend=manifold -o out/a.stl -D config=\"previous\" a.scad"]);
+    }
+
+    #[test]
+    fn further_defines_follow_the_configuration() {
+        let fake = Fake::new();
+        let o = check("render", json!({"scad": "a.scad", "out": "out/a.stl", "config": "revised",
+                                       "defines": ["layer=\"fan\""]}), &fake);
+        assert!(o.ok, "{}", o.output);
+        assert_eq!(fake.calls(), vec!["openscad --backend=manifold -o out/a.stl -D config=\"revised\" -D layer=\"fan\" a.scad"]);
     }
 
     #[test]

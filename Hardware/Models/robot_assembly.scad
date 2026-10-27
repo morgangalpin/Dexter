@@ -503,8 +503,10 @@ UNPLACED = [
    "the drives at J1, J2 and J3, but for the Base Stator Holder, which is in the base stack; no mating feature measured yet"],
   ["500-ExternalGear, 6 parts",
    "the CAD body places the mount low on the base, well off the arm axis; the model's frame has not been matched to it. Two features will fix it: the Mount's four S1 strake slots (centre r 22.65 on 0 + 90k deg) take strakes on the Main Pivot's r 22.797 pattern (008.8 step 10), which puts the drive axis on that joint's, and its K1 channel bonds over #520-006 from the Arm Body (GlueRig_ArmBodyToExGear). Neither the height along the strakes nor the turn about the axis is measured"],
-  ["800-Harness 18 parts, 900-ToolInterface, 950-Tooling",
-   "harness, gripper and build fixtures"],
+  ["800-Harness, 14 part numbers (17 files)",
+   "harness parts placed by 008.10 against parts not yet in this file: plugs in the Main Pivot's H1; PCB brackets on the L2 1\" tube 37.5 mm above the Arm Body joint; fan bracket on the Motor Control PCB; shrouds on each joint's code disk (#825's clip on Diff Body B's Ø31 shell); wire entry's mate open (DC-14)"],
+  ["900-ToolInterface, 950-Tooling",
+   "gripper and build fixtures"],
 ];
 
 echo(str("base stack: L1 = ", L1_BUILT, " mm; the J2 station is at ", J2_STN.y,

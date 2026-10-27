@@ -56,10 +56,10 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`500-ExternalGear/`](500-ExternalGear/) | 7 | 14 | External gear, stator holder, mount and nut holders; every part is `.scad`, and `520-003_ExGearNutHold.scad` draws both Nut Holders, A and B, from one source; `exgear_assembly.scad` places the group with its motor, drive and fasteners, and closes J3's stack; `exgear_assembly.clash.json` checks it |
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 8 | Wave gen coupler, flex spline attach and cap; every part is `.scad`, and `c201_spline_seat.scad` holds the drive's interface for the Attach, the Cap and the three Stator Holders |
 | [`700-Differential/`](700-Differential/) | 10 | 28 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only, each part with a view sidecar; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set, has a section view, and is checked by `assembly-clash.rs` |
-| [`800-Harness/`](800-Harness/) | 14 | 17 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds |
+| [`800-Harness/`](800-Harness/) | 14 | 40 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds; every part is `.scad`. `800-002_WireEntryRight.scad` and `800-004_MainPivotPlugB.scad` are their pair's source selecting the other half; `strain_relief_comb.scad` holds the comb both strain reliefs share, `photo_shroud.scad` the beam bores every shroud shares, and `shroud_base.scad`, `shroud_pivot.scad` and `photo_shroud_rotate.scad` what each shroud's two halves share |
 | [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
 | [`950-Tooling/`](950-Tooling/) | 2 | 12 | Solder jigs, glue-rig jig bodies, and the print-fit coupon |
-| [`Reference/`](#reference) | — | 226 | Not printed for a build. See below |
+| [`Reference/`](#reference) | — | 273 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -82,7 +82,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 47 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s Axis Intersection Half, New Belt Pulley, End Arm Code Disk, End Arm Hub and its Cap, Internal Outer and Inner Pulleys, Pulley Spacer and two External pulleys, `500-ExternalGear/`'s External Gear, Motor End Cap, Mount, Mount Top and Nut Holders (one mesh for A and B), `600-StrainWave/`'s Wave Gen Coupler, Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot, Pivot Code Disk and both Motor End Caps, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)) |
+| [`Reference/meshes/`](Reference/meshes/) | 64 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s Axis Intersection Half, New Belt Pulley, End Arm Code Disk, End Arm Hub and its Cap, Internal Outer and Inner Pulleys, Pulley Spacer and two External pulleys, `500-ExternalGear/`'s External Gear, Motor End Cap, Mount, Mount Top and Nut Holders (one mesh for A and B), `600-StrainWave/`'s Wave Gen Coupler, Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot, Pivot Code Disk and both Motor End Caps, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, `800-Harness`'s Wire Entries, Main Pivot Plugs, Fan and PCB Brackets, PCB Spacer, both strain reliefs and all five photointerrupter shrouds, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)) |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -185,6 +185,33 @@ triangles for 35,394 and 13,020.638 mm³ for the two solids' 13,739.342; 710-002
 7,001.519 mm³ for 7,352.584. The volumes fall by the overlap the two solids counted twice. Both halves
 are now gated on `dist` at ±0.15 mm.
 
+**A skin, cut away in place.** `Reference/meshes/800-Harness/823_PhotointerrupterShroudEndArm.stl` had two
+faults at its keyhole:
+
+- **A tangency, as above.** The keyhole slot's R1.5 inner end (axis x 40.495, y 0.708) is tangent to
+  the disk groove's r 39.000. The two surfaces shared the line at (38.993, 0.682) over z 19.0–20.5, so
+  the mesh was not closed (`scadmesh repair` found no boundary loop) and `scadmesh pinch` separates it.
+- **A skin of the shell inside the pocket.** Where the shell's outer surface, the 45° line from
+  (r 38.912, z 16.930) to (r 40.801, z 18.354), runs through the block's pocket (θ −9.9° to 11.9°), the
+  CAD left a sheet of the shell about 0.13 thick standing along it. It hangs from the pocket's r 39.500
+  wall at z ≈ 17.4 down to a knife edge at r 38.91, z 16.93, and crosses the keyhole slot. The pocket on
+  either side of it is open. Every surface sample on it stood up to 1.24 mm from a faithful recreation.
+
+Both are corrected in place, the sheet by cutting away the ring it occupies inside the pocket:
+
+```
+scadmesh pinch 823_PhotointerrupterShroudEndArm.stl --out 823_PhotointerrupterShroudEndArm.stl
+difference() {                                                // OpenSCAD, Manifold
+    import("823_PhotointerrupterShroudEndArm.stl");
+    rotate(-9.91) rotate_extrude(angle = 21.82, $fn = 720)
+        polygon([[38.7, 16.85], [39.51, 16.85], [39.51, 17.65], [38.7, 17.65]]);
+}
+```
+
+It is exported as binary STL: 35,514 triangles for 35,308, closed, with the bounding box unchanged and
+the volume 1.24 mm³ smaller (six parts in 10⁵). The cut reaches 0.01 into the pocket's wall and side
+walls, so that no face of the ring lies on theirs.
+
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
 
@@ -232,7 +259,7 @@ with no triangle count.
 
 | Format | Where | Editable? |
 |---|---|---|
-| `.scad` | `700-Differential/` | **Yes** — parametric OpenSCAD source, the intended format going forward (see below) |
+| `.scad` | `100-Base/` to `800-Harness/` | **Yes** — parametric OpenSCAD source, the intended format going forward (see below) |
 | `.stl` | component directories, `Reference/meshes/` | **No.** Mesh only — printable, not meaningfully modifiable |
 | `.f3d` | `900-ToolInterface/` | **Yes** — Fusion 360 native, with feature history |
 | `.step` | `900-ToolInterface/`, `Reference/onshape-v1/` | **Partly** — B-rep solids. Dimensions can be measured and features cut, but there is no feature tree to drive |
@@ -240,8 +267,9 @@ with no triangle count.
 | `.dwg` | `400-EndArm/`, `900-ToolInterface/`, `Reference/superseded/` | **Partly** — B-rep solids, not 2D profiles as previously recorded here. Each of the three holds one ACIS `3DSOLID` (`421-002` adds six lines and an arc beside it). Reading one needs the [ODA File Converter](https://www.opendesign.com/guestfiles/oda_file_converter); FreeCAD drives it once its path is set, and `ODAFileConverter in/ out/ ACAD2000 DXF 0 1 "*.dwg"` writes the solid as ASCII-encoded SAT in the DXF's group 1 and 3 records |
 | `.skp`/`.skb` | `Reference/covers/` | **Yes** — SketchUp source |
 
-**Most of the robot is still mesh-only.** Editable source exists for the differential (`.scad`), the tool
-interface (`.f3d`), and the Inventor reference parts. Everything else is a mesh or a dead solid, so
+**What is still mesh-only.** Editable source exists for the groups converted to `.scad` (listed in
+[009 § Most of the robot is mesh-only](../../specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only)),
+the tool interface (`.f3d`), and the Inventor reference parts. Everything else is a mesh or a dead solid, so
 changing one of those parts today means re-deriving it from an STL — the workflow the differential
 conversion established (see below). That remaining gap is tracked as
 [DC-11](../../specs/009-Design-Completion.md#procurement-data).

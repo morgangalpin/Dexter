@@ -1091,6 +1091,18 @@ anything version 3 does not independently specify
     `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
     `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
     Their meshes moved to `Reference/meshes/500-ExternalGear/`.
+  - `Hardware/Models/800-Harness/`: `800-001_WireEntryLeft.scad`, `800-002_WireEntryRight.scad`,
+    `800-003_MainPivotPlugA.scad`, `800-004_MainPivotPlugB.scad`,
+    `800-005_FanBracket.scad`, `800-006_PCBBracket.scad`, `800-007_PCBSpacer.scad`,
+    `810-001_6PinStrainReliefTop.scad`, `810-002_6PinStrainReliefBottom.scad`,
+    `821_PhotointerrupterShroudBase_A.scad` and `_B.scad`, `822_PhotointerrupterShroudPivot_A.scad` and
+    `_B.scad`, `823_PhotointerrupterShroudEndArm.scad`, `824_PhotointerrupterShroudAngle.scad`,
+    `825_PhotointerrupterShroudRotate_A.scad` and `_B.scad`, their `.view.json` sidecars, the shared
+    `strain_relief_comb.scad`, `photo_shroud.scad`, `shroud_base.scad`, `shroud_pivot.scad`,
+    `photo_shroud_rotate.scad` and `render.json` (new). Their meshes moved to
+    `Reference/meshes/800-Harness/`, the End Arm shroud's repaired in place (README § Known defects).
+  - `Hardware/Models/print_fit.scad` (the tap class), `950-Tooling/fit_coupon.scad` (its M3 pilot),
+    and `700-Differential/730-001_DiffBodyA.scad` (what its pin holes take).
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1419,6 +1431,51 @@ anything version 3 does not independently specify
     too, along with the keeper the steps snapped over the shaft end. The differential takes one
     keeper, and the other moves to [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub) for the
     Front Panel. The steps after them are renumbered.
+  - **800-Harness:** the Main Pivot Plug (`#800-003`, `#800-004`) is one turned profile cut to its
+    half, with the wire pocket under the flange: a 45° gable at full width outside the spigot, only
+    6.0 wide inside it. `800-003_MainPivotPlugA.scad` owns both halves; `800-004_MainPivotPlugB.scad`
+    includes it, selects B and gains the radial wire channel. `revised` draws the spigot's slip fit in
+    the Main Pivot's Ø14 H1 bore.
+  - **800-Harness:** the Fan Bracket (`#800-005`) and the PCB Bracket (`#800-006`) are each a plan
+    profile extruded, checked by `outline` gates; the Fan Bracket's aperture steps through a 45° taper
+    to its lip, and `revised` opens the fan's 40 × 40 seat by the press fit. The reference glues the
+    fan; `revised` instead drops the taper and lip and fills the seat's corners with flush triangular
+    pads, through which four standard Ø5 × 10 flat-head fan screws
+    ([C-619](specs/007.1-Parts-Catalog.md#6-fasteners), new), sunk in countersinks, cut their thread
+    in the fan's holes ([C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring)).
+    `fan_hardware.scad` draws the fan and its screws as stand-ins, which the bracket's view shows in
+    place, and the `render` check gains `defines` to export them. The
+    unused MR85 in [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub), which no step of
+    [008.7](specs/008-Assembly.md#0087-end-arm-hub) fits, is dropped. The PCB Spacer
+    (`#800-007`) is a tube. The brackets' M3 holes, which the screws thread themselves into, take a
+    new fourth class in `print_fit.scad`, **tap**: a pilot drawn 0.20 per side under the screw, Ø2.6
+    for M3 ([007.2 § Print fits](specs/007.2-Printed-Parts.md#print-fits)). The fit coupon gains an M3
+    pilot to qualify it. The holes the reference already draws wider than their class are probed open.
+  - **800-Harness:** the 6-pin strain reliefs (`#810-001`, `#810-002`) are a plate and a comb, whose
+    section `strain_relief_comb.scad` owns for both; the Bottom adds its rails. They seat on each
+    other and grip the wires, so no print fit applies and `revised` draws the reference.
+  - **800-Harness:** the Wire Entry (`#800-001`, `#800-002`) is a saddle drawn in its own frame,
+    turned 45° to the pipe, with the pipe's bore carried on into the saddle's bore by its own section
+    in the saddle's back face. Its chamfer and the rounds at the channel's crease are lofted along their
+    edges. `800-002_WireEntryRight.scad` includes the Left's source and mirrors it. The saddle's mate
+    is open ([DC-14](specs/009-Design-Completion.md#power-inlet-mounting)), so no fit is drawn.
+  - **800-Harness:** the photointerrupter shrouds are stacks of sections about their code disk's
+    axis, with the emitter's and detector's bores cut through them as runs of sections (round, flanged,
+    slit, keyed, coned) that `photo_shroud.scad` owns for every shroud. `revised` opens a bore drawn
+    line to line on a T-1 package's body by the press fit; bores the reference draws wider, and the
+    counterbores round the flanges, keep their size, and the #19 nails keep their drive fit. The Angle
+    shroud's (`#824`) two pegs locate it in Diff Body A's Ø3.99 pin holes, and `revised` narrows them
+    by the slip fit. The halves
+    of each pair take what they share from one include (`shroud_base.scad`, `shroud_pivot.scad`,
+    `photo_shroud_rotate.scad`).
+  - **800-Harness:** the Rotate shroud's clip (`#825` A) clamps Diff Body B's Ø31 shell, and its flats
+    meet that part's flats at y ±12.46; `revised` opens the clip's bore by the slip fit.
+  - **800-Harness:** the End Arm shroud (`#823`) is a region split of a revolved half shell, its front
+    skin, and the opto block lofted between its plans. The voids, the keyhole and the beam bores are
+    cut from it. Its fillets are balls rolled along each edge. The mesh held a skin of the shell inside the
+    block's pocket, cut away in place (README § Known defects). `dist` is held at 0.6 and not 0.15:
+    the blends stand up to 0.58 off the mesh where the CAD's blend is not a ball's path. The beam
+    bores already clear the T-1 packages, so `revised` draws no fit.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`

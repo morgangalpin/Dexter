@@ -1,0 +1,35 @@
+{
+  "title": "Photointerrupter Shroud (Angle)",
+  "subtitle": "#824 · reference mesh and 824_PhotointerrupterShroudAngle.scad renders · what differs between them",
+  "cut": false,
+  "from": [-1, -0.8, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Photointerrupter Shroud (Angle)", "pn": "#824", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/824_PhotointerrupterShroudAngle.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/824.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/824.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-20.5, 0, 0.4], "text": "L1 foot, inner r 29.95, flat x -23.96, z 0…0.75"},
+    {"at": [-20.2, 0, 1.25], "text": "L2 45° cone, r 32.64 to 31.65"},
+    {"at": [-18.9, 0, 2.1], "text": "L3 rim wall r 29.95…31.65, z 1.75…2.5"},
+    {"at": [-14.9, 0, 3.5], "text": "L4 body, inner r 24.44, z 2.5…4.25"},
+    {"at": [-18.3, 0, 5.1], "text": "L5 outer chamfer 31.65 to 29.9"},
+    {"at": [-13.0, 0, 7.5], "text": "L6 body top, outer r 29.9, z 6…7.5"},
+    {"at": [-20.581, 4, -2.5], "text": "P1 peg into Diff Body A's Ø3.99 pin hole: 45° lead-in, Ø4.0 (Ø3.69 in revised, slip)"},
+    {"at": [-20.581, -4, -0.5], "text": "N1 nail hole Ø1.0, drive fit for the #19 nail"},
+    {"at": [-12.986, 8.711, 2.8], "text": "B1 slit 0.5 wide, radial, z 2.5…3.053"},
+    {"at": [-12.986, 8.711, 4.7], "text": "B1 Ø3.0 (Ø3.1 in revised), cone below"},
+    {"at": [-12.986, -8.711, 7.5], "text": "B1 Ø4.0 flat at 1.5 in (flat 1.55 in revised)"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [-16, 0, 7], "span": 40, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [-18, 0, 0], "span": 40, "from": [0.3, -0.4, -1]},
+    {"label": "Bores", "at": [-13, 8.7, 4.5], "span": 14, "from": [0.3, -1, 0.6]},
+    {"label": "Pegs", "at": [-20.6, 0, -1], "span": 20, "from": [-0.5, -1, -0.4]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the T-1 package seats by the press clearance per side (Ø3.0 to Ø3.1, flat 1.5 to 1.55) and narrows the pegs by the slip clearance to Ø3.69 for Diff Body A's Ø3.99 pin holes; the counterbore's Ø4.0, the slit and the Ø1.0 nail holes keep their size. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

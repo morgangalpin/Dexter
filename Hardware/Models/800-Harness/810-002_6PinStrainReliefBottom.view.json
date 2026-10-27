@@ -1,0 +1,28 @@
+{
+  "title": "6-Pin Strain Relief Bottom",
+  "subtitle": "#810-002 · reference mesh and 810-002_6PinStrainReliefBottom.scad renders · what differs between them",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "6-Pin Strain Relief Bottom", "pn": "#810-002", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/810-002_6PinStrainReliefBottom.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/810-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/810-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -8, 1.5], "text": "P1 plate x ±8.55, y -11.46…-4.46, z 1.1…1.5"},
+    {"at": [0, -10.46, 4.0], "text": "K1 comb y -11.46…-9.46, teeth tips z 4.0"},
+    {"at": [0, -11.46, 2.27], "text": "K1 groove floor z 2.27, six grooves"},
+    {"at": [8.15, -6, 4.0], "text": "R1 rails x 7.75…8.55, y -9.46…-2.46, z 1.1…4.0"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, -7, 3], "span": 28, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, -7, 1.1], "span": 28, "from": [0.3, -0.4, -1]},
+    {"label": "Comb face", "at": [0, -11.46, 3], "span": 22, "from": [0, 1, 0.2]},
+    {"label": "Rails", "at": [0, -6, 2.5], "span": 22, "from": [1, 0.8, 0.8]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. Both renders are identical, because the parts seat on each other and the grooves grip the wires. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

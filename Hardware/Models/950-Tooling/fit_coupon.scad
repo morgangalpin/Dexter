@@ -1,4 +1,4 @@
-// Print-fit coupon: qualifies a machine against ../print_fit.scad's two
+// Print-fit coupon: qualifies a machine against ../print_fit.scad's
 // clearances before any part of the robot is printed (specs/007.2 § Print
 // fits, DC-11(d)). It carries the fits the parts draw, each against the mate
 // the parts draw it for:
@@ -13,11 +13,14 @@
 //     slip bore            Ø10 + 2 x FIT_SLIP, through
 //     peg                  Ø10 x 10, a second body printed beside the plate,
 //                          for the slip bore: printed against printed
+//     M3 pilot             Ø3 - 2 x FIT_TAP, through: the hole an M3 screw
+//                          cuts its own thread into
 //
 // The machine passes when the MR128 presses in without a reamer, the strake
-// enters the slot and the tube the rod bore by hand without rocking, and the
-// peg slides through the slip bore. A fit that fails is corrected by editing
-// FIT_SLIP or FIT_PRESS in ../print_fit.scad, which every part reads, and
+// enters the slot and the tube the rod bore by hand without rocking, the
+// peg slides through the slip bore, and an M3 screw drives into the pilot by
+// hand and holds without splitting it. A fit that fails is corrected by
+// editing its clearance in ../print_fit.scad, which every part reads, and
 // printing the coupon again, never by sanding parts.
 //
 // FRAME. The plate on z = 0, its features along +X; the peg stands beside it
@@ -29,13 +32,14 @@ include <../print_fit.scad>
 $fn = 144;
 epsilon = 0.01;
 
-PLATE      = [62.000, 20.000, 5.000];
+PLATE      = [70.000, 20.000, 5.000];
 MR128      = [12.000, 3.500];    // OD, width
 PUSH_OUT_D = 9.000;
 STRIP      = [5.588, 2.337];     // C-502, the #710-005 strake
 ROD_D      = 8.000;              // C-506 tube OD
 PEG        = [10.000, 10.000];   // diameter, height
-STATIONS   = [8.000, 23.000, 37.000, 52.000];   // seat, slot, rod bore, slip bore
+M3_D       = 3.000;              // the screw's nominal, for the pilot
+STATIONS   = [8.000, 23.000, 37.000, 52.000, 63.500];   // seat, slot, rod bore, slip bore, pilot
 
 module fit_coupon() {
     difference() {
@@ -50,9 +54,11 @@ module fit_coupon() {
             cylinder(d = fit_bore(ROD_D, FIT_PRESS), h = PLATE[2] + 2 * epsilon);
         translate([STATIONS[3], PLATE[1] / 2, -epsilon])
             cylinder(d = fit_bore(PEG[0], FIT_SLIP), h = PLATE[2] + 2 * epsilon);
+        translate([STATIONS[4], PLATE[1] / 2, -epsilon])
+            cylinder(d = fit_pin(M3_D, FIT_TAP), h = PLATE[2] + 2 * epsilon);
     }
     translate([PLATE[0] / 2, PLATE[1] + PEG[0], 0]) cylinder(d = PEG[0], h = PEG[1]);
 }
 
 fit_coupon();
-echo(fit_slip = FIT_SLIP, fit_press = FIT_PRESS);
+echo(fit_slip = FIT_SLIP, fit_press = FIT_PRESS, fit_tap = FIT_TAP);
