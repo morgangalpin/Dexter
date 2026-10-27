@@ -373,7 +373,7 @@ render-check/src/kinds/gear_fit.rs,(all),6017,,e89ad0970d6f0ba845f1f3f3ff4ebe95d
 render-check/src/kinds/outline.rs,(all),3170,,1513a8b1b509e421b6ef3c3d5082d7e31a26a37eb013974f1bb13bde8dde3327
 render-check/src/kinds/plate.rs,(all),7461,,707720ee022441d2c317dd6e4ac76974524a3e79d5a66a0b529f350372f62dd4
 render-check/src/kinds/probes.rs,(all),1769,,14eaf0712442b4fe400a8e4c4bf5b54ee01b8c6e9d0df3de8d9b547ce6bea414
-render-check/src/kinds/render.rs,(all),1663,,62273c44268569406328c7a4d4e65d3648dbe28d7c921bb8c439b8a63f258bca
+render-check/src/kinds/render.rs,(all),2284,,b61f37cb532b35bce27570630ec103b1c2863cf0f623107d466fa53ae4d3589d
 render-check/src/kinds/seat.rs,(all),3272,,f783e121ae02b46ace314692f99d4e663268e252b711be47be0e6024dec7409e
 render-check/src/meshes.rs,(all),15249,,557d7ca5f0d255a8c0bf64d33a8c63ec773e5a9b7788cfba1435ef8bbe3418cc
 render-check/src/plan.rs,(all),6014,,6b16d9773ca9f71930490471da4da22e06c5778c0af0812b479247fb8a504d16
@@ -458,8 +458,8 @@ Reference/meshes/400-EndArm/420-001_EndArmHub.bodies-unioned.stl,Reference,24628
 800-Harness/800-003_MainPivotPlugA.view.json,800-Harness,1957,,47db0d2a694b672c0e7647d79903f270e087ac0ba6086d72234ceda8d5edefea
 800-Harness/800-004_MainPivotPlugB.scad,800-Harness,423,,21c0d76b5cc6bd7b6e12d6a4751a2dc70973ed2655fa485c9762c76c045f5723
 800-Harness/800-004_MainPivotPlugB.view.json,800-Harness,2116,,07cf73265efe6ee01844a45a72baabe89d008f31a403ceb34cf1497ec4005cff
-800-Harness/800-005_FanBracket.scad,800-Harness,7025,,d692fb908edb5d50c78a3f7e7598a3612138604add6fdc8bc9cdadb827c46f39
-800-Harness/800-005_FanBracket.view.json,800-Harness,2373,,e5a30ae867fe30023c03b3e01c8fab95846e0420049fdb0649f1808755b7da59
+800-Harness/800-005_FanBracket.scad,800-Harness,8748,,e896dab4c588ad3985bc4a6af77b27516e39f2174710165d2a36131e00b3d39c
+800-Harness/800-005_FanBracket.view.json,800-Harness,2992,,c5459fe56475c9d7f5f93f1d045df650b153db17b1f0d25ea4eff60bd34d2cc1
 800-Harness/800-006_PCBBracket.scad,800-Harness,4699,,5aef02ebfed8b7e9e562c0d5e6e55d8f9f664d8cbb3d632a2ca86dc809adfda5
 800-Harness/800-006_PCBBracket.view.json,800-Harness,2018,,09a502ba10e91fe3a46780b85868e9d85af8dff98f40691fedb42485a64dd7b8
 800-Harness/800-007_PCBSpacer.scad,800-Harness,1480,,2c28c7dc487499887b12b7655ced23a5989c4fa9d020c12856f0b4b54b7917ae
@@ -506,3 +506,4 @@ Reference/meshes/800-Harness/823_PhotointerrupterShroudEndArm.stl,Reference,1775
 Reference/meshes/800-Harness/824_PhotointerrupterShroudAngle.stl,Reference,154084,binary/3080,6a3276d669545de03faa5e4f0857a1cf0e4e0a693395436c7c032f5e653d098e
 Reference/meshes/800-Harness/825_PhotointerrupterShroudRotate_A.stl,Reference,149584,binary/2990,fd5089691ab675a233e5805285d5c43b267d29cba31d4e114d7b1fd6ff5c301e
 Reference/meshes/800-Harness/825_PhotointerrupterShroudRotate_B.stl,Reference,82684,binary/1652,06d89106234838e60aada514a6e99c15912edd46f61f490952c3a6bd762ec049
+800-Harness/fan_hardware.scad,800-Harness,2759,,8506c269b7306c2ebf046605197304eaa19058271cac92ac3c1ad9e26f4d725d

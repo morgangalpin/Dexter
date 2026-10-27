@@ -33,33 +33,40 @@
 // cut in three runs (the 40 section, the taper as the hull of two thin slabs,
 // the lip); the bosses (circle cut by the flat's half-plane, less the hole)
 // extruded from a lap below the top face. `layer` draws one 2D profile, for
-// verification against the mesh's section (scadmesh outline).
+// verification against the mesh's section (scadmesh outline), or the bought
+// parts the bracket holds, in place (fan_hardware.scad).
 //
 // FITS (../print_fit.scad), revised only, per side:
 //
 //     A1 40 section, the fan's seat       press (40.1 square)
 //     H1 holes, the M3 screws' pilots     tap (Ø2.6)
-//     F1 holes, the fan screws'           slip (Ø5.3)
+//     F1 holes, the fan screws' threads   slip (Ø5.3)
+//     F1 countersinks, the screws' heads  slip (Ø6.6 at the top face)
 //
-// The fan's frame bears on the taper and the 38 lip, which keep their size,
-// and in revised on the pads.
+// In previous the fan's frame bears on the taper and the 38 lip. Revised has
+// neither: it bears on the pads alone.
 //
 // FAN SCREWS, revised only. The fan's four Ø4.3 holes lie on a 32 mm square
-// (Sunon's specification, p. 6), inside the 38 lip, so the reference has no
-// material over them. Revised fills each corner of the aperture with a
-// triangular pad, from the fan's face (the seat's top) up to PAD_TOP, its
-// inner edge square to the diagonal and tangent to the Ø38 circle, which
-// clears the fan's impeller bore. A standard fan screw (Ø5 x 10 self-tapping,
-// the one Sunon names) goes down through each pad's F1 hole and cuts its
-// thread in the fan's hole: 3 mm of pad leaves it 7 of the fan's 10.
+// (C-716), inside the 38 lip, so the reference has no material over them and
+// glues the fan. Revised runs the seat's square up through the top face and
+// fills its four corners with triangular pads, from the fan's face (the
+// seat's top) to the top face, each with its inner edge square to the
+// diagonal and tangent to a Ø37 circle. That overhangs the fan's Ø37.7
+// impeller bore by 0.35 at the diagonal only, and leaves 0.8 mm of wall
+// between the edge and the countersink. A C-619 fan screw goes down through each pad's F1 hole, its flat head
+// sunk flush in the countersink, and cuts its thread in the fan's hole: the
+// hole passes the Ø5 thread and the countersink stops the Ø6.3 head. The
+// pad is the 1.5 mm the ledge was, and the 10 mm screw reaches 8.65 mm into
+// the fan's 10.
 
 include <../print_fit.scad>
+include <fan_hardware.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
 config = "previous"; // [previous, revised]
-// What to draw: the part, or one 2D profile
-layer = "part"; // [part, plate, lip, boss, pad]
+// What to draw: the part, one 2D profile, or the bought parts in place
+layer = "part"; // [part, plate, lip, boss, pad, fan, screws]
 
 /* [Hidden] */
 $fn = 96;
@@ -81,12 +88,13 @@ BOSSES    = [                // [centre x, radius, flat y]
 BOSS_Y    = 7.850;
 BOSS_TOP  = 16.0;
 HOLE_D    = fit_pin(3.0, fit_clearances(config)[3]);  // H1, the M3 screw's pilot
-FAN_PITCH = 32.0;            // the fan's holes, on a square about CENTRE
-FAN_SCREW = 5.0;             // F1, the fan screw's diameter
-PAD_EDGE  = 19.0;            // pads' inner edge, off CENTRE along each diagonal
-PAD_TOP   = 8.5;
+PAD_EDGE  = 18.5;           // pads' inner edge, off CENTRE along each diagonal
 
 function press(cfg) = fit_clearances(cfg)[1];
+function slip(cfg) = fit_clearances(cfg)[0];
+
+// F1: the fan's holes, on its pitch square about CENTRE.
+function fan_holes_at() = [for (i = [-1, 1], j = [-1, 1]) CENTRE + [i, j] * FAN_PITCH / 2];
 
 // --- 2D profiles -----------------------------------------------------------
 module rounded(size, r) offset(r = r) offset(delta = -r) square(size, center = true);
@@ -120,9 +128,7 @@ module boss_2d(b) difference() {
 module bosses_2d() for (b = BOSSES) boss_2d(b);
 
 module fan_holes(cfg)
-    for (i = [-1, 1], j = [-1, 1])
-        translate(CENTRE + [i, j] * FAN_PITCH / 2)
-            circle(d = fit_bore(FAN_SCREW, fit_clearances(cfg)[0]), $fn = 48);
+    for (p = fan_holes_at()) translate(p) circle(d = fit_bore(FAN_SCREW[0], slip(cfg)), $fn = 48);
 
 // The four corner pads: the seat's square less the diamond inside PAD_EDGE.
 module pads_2d(cfg) difference() {
@@ -135,22 +141,49 @@ module pads_2d(cfg) difference() {
 module slab(z, h) translate([0, 0, z]) linear_extrude(h) children();
 
 // The aperture's cutters: the seat run, the taper, and the lip, each pushed
-// past the faces it opens.
+// past the faces it opens. Revised runs the seat through the top face instead.
 module aperture_cut(cfg) {
     seat = SEAT[0] + 2 * press(cfg);
-    slab(PLATE_Z[0] - 1, SEAT_TOP - PLATE_Z[0] + 1) aperture(seat, SEAT[1]);
-    hull() {
-        slab(SEAT_TOP - LAP, LAP) aperture(SEAT[0], SEAT[1]);
-        slab(LIP_FOOT, LAP) aperture(LIP[0], LIP[1]);
+    seat_top = cfg == "revised" ? PLATE_Z[1] + 1 : SEAT_TOP;
+    slab(PLATE_Z[0] - 1, seat_top - PLATE_Z[0] + 1) aperture(seat, SEAT[1]);
+    if (cfg != "revised") {
+        hull() {
+            slab(SEAT_TOP - LAP, LAP) aperture(SEAT[0], SEAT[1]);
+            slab(LIP_FOOT, LAP) aperture(LIP[0], LIP[1]);
+        }
+        slab(LIP_FOOT - LAP, PLATE_Z[1] - LIP_FOOT + 1) aperture(LIP[0], LIP[1]);
     }
-    slab(LIP_FOOT - LAP, PLATE_Z[1] - LIP_FOOT + 1) aperture(LIP[0], LIP[1]);
 }
 
 module plate_body() slab(PLATE_Z[0], PLATE_Z[1] - PLATE_Z[0]) difference() { plate_outline(); holes(); }
 
 module bosses() slab(PLATE_Z[1] - LAP, BOSS_TOP - PLATE_Z[1] + LAP) bosses_2d();
 
-module pads(cfg) slab(SEAT_TOP, PAD_TOP - SEAT_TOP) pads_2d(cfg);
+// The countersinks' top diameter, the screw's head opened by the slip.
+function sink_d(cfg) = fit_bore(FAN_SCREW[2], slip(cfg));
+
+// Each F1 countersink: the head's 90 degree cone, opened by the slip, from the
+// top face down to the hole, and continued above the face to cut it cleanly.
+module countersinks(cfg) {
+    hole = fit_bore(FAN_SCREW[0], slip(cfg));
+    depth = (sink_d(cfg) - hole) / 2;
+    for (p = fan_holes_at())
+        translate([p.x, p.y, PLATE_Z[1] - depth])
+            cylinder(d1 = hole, d2 = sink_d(cfg) + 2, h = depth + 1, $fn = 48);
+}
+
+module pads(cfg) difference() {
+    slab(SEAT_TOP, PLATE_Z[1] - SEAT_TOP) pads_2d(cfg);
+    countersinks(cfg);
+}
+
+// The bought parts, in place: the fan's face on the seat's top, and each
+// screw's head sunk until its cone meets the countersink's.
+module fan_in_place() translate([CENTRE.x, CENTRE.y, SEAT_TOP - FAN_DEPTH]) c716_fan();
+
+module screws_in_place(cfg)
+    for (p = fan_holes_at())
+        translate([p.x, p.y, PLATE_Z[1] - (sink_d(cfg) - FAN_SCREW[2]) / 2]) c619_screw();
 
 module fan_bracket(cfg = config)
     union() {
@@ -163,4 +196,6 @@ if (layer == "plate") plate_2d(config, SEAT[0] + 2 * press(config), SEAT[1]);
 else if (layer == "lip") plate_2d(config, LIP[0], LIP[1]);
 else if (layer == "boss") bosses_2d();
 else if (layer == "pad") pads_2d(config);
+else if (layer == "fan") fan_in_place();
+else if (layer == "screws") screws_in_place(config);
 else fan_bracket();

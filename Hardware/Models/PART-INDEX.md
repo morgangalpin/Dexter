@@ -125,7 +125,7 @@ shared stem.
 | #800-002 | Wire Entry Right | 1 | `800-002_WireEntryRight.scad` | `include`s #800-001's source and draws its mirror image |
 | #800-003 | Main Pivot Plug A | 1 | `800-003_MainPivotPlugA.scad` | slip fit in the Main Pivot's H1 bore in `revised` |
 | #800-004 | Main Pivot Plug B | 1 | `800-004_MainPivotPlugB.scad` | `include`s #800-003's source and selects B, with the wire channel; slip fit as A's |
-| #800-005 | Fan Bracket | 1 | `800-005_FanBracket.scad` | press fit on the fan, and corner pads for its four screws, in `revised` |
+| #800-005 | Fan Bracket | 1 | `800-005_FanBracket.scad` | press fit on the fan, and flush corner pads, countersunk for its four screws, in `revised`; `fan_hardware.scad` draws the fan and screws as stand-ins |
 | #800-006 | PCB Bracket | 2 | `800-006_PCBBracket.scad` |  |
 | #800-007 | PCB Spacer | 4 | `800-007_PCBSpacer.scad` |  |
 | #810-001 | 6-pin strain relief, top | 10 | `810-001_6PinStrainReliefTop.scad` | comb shared with #810-002 (`strain_relief_comb.scad`) |

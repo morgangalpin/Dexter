@@ -1439,9 +1439,12 @@ anything version 3 does not independently specify
   - **800-Harness:** the Fan Bracket (`#800-005`) and the PCB Bracket (`#800-006`) are each a plan
     profile extruded, checked by `outline` gates; the Fan Bracket's aperture steps through a 45° taper
     to its lip, and `revised` opens the fan's 40 × 40 seat by the press fit. The reference glues the
-    fan; `revised` instead fills the aperture's corners with triangular pads, through which four
-    standard Ø5 × 10 fan screws ([C-619](specs/007.1-Parts-Catalog.md#6-fasteners), new) cut their
-    thread in the fan's holes ([C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring)). The
+    fan; `revised` instead drops the taper and lip and fills the seat's corners with flush triangular
+    pads, through which four standard Ø5 × 10 flat-head fan screws
+    ([C-619](specs/007.1-Parts-Catalog.md#6-fasteners), new), sunk in countersinks, cut their thread
+    in the fan's holes ([C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring)).
+    `fan_hardware.scad` draws the fan and its screws as stand-ins, which the bracket's view shows in
+    place, and the `render` check gains `defines` to export them. The
     unused MR85 in [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub), which no step of
     [008.7](specs/008-Assembly.md#0087-end-arm-hub) fits, is dropped. The PCB Spacer
     (`#800-007`) is a tube. The brackets' M3 holes, which the screws thread themselves into, take a

@@ -8,17 +8,20 @@
       {"id": "ref", "name": "Fan Bracket", "pn": "#800-005", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/800-005_FanBracket.stl"}]},
     {"name": "Renders", "role": "render.rs --verify", "parts": [
       {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/800-005.stl", "shown": false},
-      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/800-005.stl", "shown": false}]}
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/800-005.stl", "shown": false}]},
+    {"name": "Fan", "role": "bought, stand-ins in place (fan_hardware.scad)", "parts": [
+      {"id": "fan", "name": "Cooling fan", "pn": "C-716", "color": "#444a52", "stl": "out/hardware/800-005-fan.stl", "shown": false},
+      {"id": "screws", "name": "Fan screws (4)", "pn": "C-619", "color": "#c8ccd0", "stl": "out/hardware/800-005-screws.stl", "shown": false}]}
   ],
   "labels": [
     {"at": [0, -8, 7], "text": "P1 plate 57.4 x 47.922, R2 corners, z 3.75…7.0"},
     {"at": [28.925, 15.991, 7], "text": "A1 fan aperture: 40 R2 seat, 45° taper, 38 R1 lip"},
     {"at": [48.925, 15.991, 4.6], "text": "A1 seat wall, 40.1 in the revised render (press fit)"},
-    {"at": [47.925, 15.991, 6.75], "text": "A1 lip face 38, unchanged"},
+    {"at": [47.925, 15.991, 6.75], "text": "A1 lip face 38; revised drops the taper and lip, running the seat through"},
     {"at": [3.981, 10.331, 12], "text": "B1 boss R3.98, flat at y 10.331, z 7…16"},
     {"at": [53.719, 10.531, 12], "text": "B2 boss R3.68, flat at y 10.531, z 7…16"},
     {"at": [3.981, 7.85, 16], "text": "H1 M3 pilot Ø3.0 (Ø2.6 in revised, tap)"},
-    {"at": [44.925, 31.991, 8.5], "text": "revised only: corner pad, z 5.5…8.5, edge tangent to Ø38; F1 fan screw hole Ø5.3 (slip)"}
+    {"at": [44.925, 31.991, 7.0], "text": "revised only: corner pad, z 5.5…7.0, edge tangent to Ø37; F1 hole Ø5.3, countersunk to Ø6.6 (slip on the C-619's thread and flat head)"}
   ],
   "presets": [
     {"label": "Top", "at": [28.9, 16, 7], "span": 70, "from": [0, 0, 1]},
@@ -27,6 +30,6 @@
     {"label": "Bosses", "at": [28.5, 8, 12], "span": 65, "from": [0.2, -1, 0.5]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the 40 x 40 seat by the press clearance per side and narrows the M3 holes to Ø2.6 pilots (the tap class); the taper and the lip keep their size. It also fills the aperture's four corners with pads, through which Ø5 x 10 fan screws cut their thread in the fan's holes on its 32 mm square. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the 40 x 40 seat by the press clearance per side and narrows the M3 holes to Ø2.6 pilots (the tap class). It drops the taper and the lip, runs the seat up through the top face, and fills its four corners with flush pads, through which the four C-619 fan screws, sunk in countersinks, cut their thread in the fan's holes on its 32 mm square. Show the fan and screws, stand-ins drawn where the revised bracket holds them, to see the screws pass. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }
