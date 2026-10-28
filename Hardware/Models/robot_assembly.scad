@@ -192,11 +192,12 @@ TOOL_STN = [54.815, 939.8440,  -2.000];   // Link6, the tool roll frame
 //     where the other station leaves it 24.500 mm short of the spigot's tip;
 //   - Body A falls inside ENV_L3_SKIN, where the other station overruns that
 //     box by 30.500 mm and carries the differential into ENV_GRIPPER;
-//   - 950-Tooling's End Arm Hub -> differential glue rig, which registers a
-//     Ø22.971 boss in the hub's own Ø22.990 J3 bore and a Ø16.971 boss -- a
-//     6703's bore, its Ø23 race seating in Body A -- at the far end. That
-//     measures J3 to J4 directly, and as exported it read 309.500 mm: it
-//     misses 347.000 by 37.500 mm and stood 2.000 mm beyond 307.500. CR-3A17
+//   - 950-Tooling's End Arm Hub -> differential glue rig, which registers
+//     four Ø5.000 tubes in the hub's four Ø5.000 peg holes round its J3
+//     seat, and a Ø17.000 boss -- a 6703's bore, its Ø23 race seating in
+//     Body A -- at the far end. That measures J3 to J4 directly, and as
+//     exported it read 309.500 mm: it misses 347.000 by 37.500 mm and stood
+//     2.000 mm beyond 307.500. CR-3A17
 //     shortens the rig's B half by that residue, so it holds 307.500 now.
 //
 // WRIST_BASIS says where the differential frame's own x, y and z go in this

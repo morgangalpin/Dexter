@@ -1,0 +1,28 @@
+{
+  "title": "Epoxy Holder",
+  "subtitle": "Glue rig · reference mesh and GlueRig_EpoxyHolder.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Epoxy Holder", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/GlueRig_EpoxyHolder.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/rig-epoxy-holder.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/rig-epoxy-holder.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [32, 5, 0], "text": "T1 top slab |x| ≤ 43.875, z -9.5 to 0"},
+    {"at": [0, 5, -14.5], "text": "C1 centre |x| ≤ 21.361, down to z -14.5"},
+    {"at": [30.375, 5, -27], "text": "L1 leg x 21.361 to 30.375, z to -44.5"},
+    {"at": [23.5, 15.25, -30], "text": "N1 leg notch, inner face at |x| 23.5, y 10.125 to 20.375"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 15.25], "part": "ref", "span": 100, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 15.25], "part": "ref", "span": 100, "from": [0, 0, -1]},
+    {"label": "End", "at": [0, 15.25, -22], "span": 100, "from": [0, -1, 0]},
+    {"label": "Leg notch", "at": [23.5, 15.25, -30], "span": 40, "from": [0.5, -1, 0.3]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The revised render equals the previous one, and GlueRig_EpoxyHolder.scad's header owns the reason in its FITS section along with the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
