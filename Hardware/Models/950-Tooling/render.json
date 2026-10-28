@@ -29,9 +29,17 @@
      "scad": "GlueRig_ArmBodyToEndArmHub_A.scad", "out": "out/revised/rig-l2-a.stl"},
     {"kind": "fits", "id": "fits-rig-l2-a", "part": "rig-l2-a (revised)",
      "stl": "out/revised/rig-l2-a.stl", "after": ["render-rig-l2-a"],
-     "note": "The revised L2 rig A half's print fit: the boss in the Axis Intersection Half's 42 mm bore (#410-001's mesh), on +X mid-boss.",
+     "note": "The revised L2 rig A half's print fits: the boss in the Axis Intersection Half's 42 mm bore (#410-001's mesh), on +X mid-boss; and the C-502 strip (5.588 along the slot) on the 54 deg ear slot's end, mid-block, the slot on #410-001's S1 centre.",
      "probes": [
-       {"label": "boss in #410-001's bore", "at": [20.864, 340.032, -15.25], "toward": [1.0, 0.0, 0.0], "fit": "slip"}
+       {"label": "boss in #410-001's bore", "at": [20.864, 340.032, -15.25], "toward": [1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "E2 54 deg ear slot, the strip's end", "at": [17.598, 369.194, -5.0], "toward": [0.809, -0.5878, 0.0], "fit": "press"}
+     ]},
+    {"kind": "probes", "id": "probes-rig-l2-a-wide", "part": "rig-l2-a (revised)",
+     "stl": "out/revised/rig-l2-a.stl", "after": ["render-rig-l2-a"],
+     "note": "The ear slot's width across the strip, which #410-001's S1 already draws wider than the press class and 007.2 lets it keep: on 54 deg, mid-block, open at the press clearance off the C-502 strip's face, with material 0.3 off it.",
+     "items": [
+       {"label": "E2 54 deg, the strip's face: open at the press clearance", "at": [20.574, 368.537, -5.0], "solid": false},
+       {"label": "E2 54 deg, the strip's face: wall within 0.3", "at": [20.721, 368.739, -5.0], "solid": true}
      ]},
     {"kind": "outline", "id": "outline-rig-l2-b-spigot", "part": "rig-l2-b", "config": "previous",
      "scad": "GlueRig_ArmBodyToEndArmHub_B.scad", "out": "out/2d/rig-l2-b-spigot.svg", "layer": "spigot",
@@ -118,16 +126,10 @@
      "scad": "GlueRig_EndArmHubToDiff_A.scad", "out": "out/revised/rig-l3-a.stl"},
     {"kind": "fits", "id": "fits-rig-l3-a", "part": "rig-l3-a (revised)",
      "stl": "out/revised/rig-l3-a.stl", "after": ["render-rig-l3-a"],
-     "note": "The revised L3 rig A half's print fit: the tab's +Y side in B's notch (l3_rig_joint.scad), mid-tab.",
+     "note": "The revised L3 rig A half's print fits: the boss in the 6703's 17 mm bore, on +X mid-boss; and the tab's +Y side in B's notch (l3_rig_joint.scad), mid-tab.",
      "probes": [
+       {"label": "boss in the 6703's bore", "at": [-8.365, 0.0, -1.5], "toward": [1.0, 0.0, 0.0], "fit": "press"},
        {"label": "tab in B's notch", "at": [133.287, 3.0, 20.5], "toward": [0.0, 1.0, 0.0], "fit": "slip"}
-     ]},
-    {"kind": "probes", "id": "probes-rig-l3-a-register", "part": "rig-l3-a (revised)",
-     "stl": "out/revised/rig-l3-a.stl", "after": ["render-rig-l3-a"],
-     "note": "The register boss keeps its 17 mm in revised, a precision fit by design (specs/007.2 § Print fits): material just inside it and air just outside, on +X.",
-     "items": [
-       {"label": "boss: material inside 17 mm", "at": [-8.415, 0.0, -1.5], "solid": true},
-       {"label": "boss: air outside 17 mm", "at": [-8.315, 0.0, -1.5], "solid": false}
      ]},
     {"kind": "outline", "id": "outline-rig-l3-b-rim", "part": "rig-l3-b", "config": "previous",
      "scad": "GlueRig_EndArmHubToDiff_B.scad", "out": "out/2d/rig-l3-b-rim.svg", "layer": "rim",
@@ -145,16 +147,10 @@
      "scad": "GlueRig_EndArmHubToDiff_B.scad", "out": "out/revised/rig-l3-b.stl"},
     {"kind": "fits", "id": "fits-rig-l3-b", "part": "rig-l3-b (revised)",
      "stl": "out/revised/rig-l3-b.stl", "after": ["render-rig-l3-b"],
-     "note": "The revised L3 rig B half's print fit: the rim's inner face round the End Arm Hub's 50 mm body (#420-001's mesh), on +X mid-rim.",
+     "note": "The revised L3 rig B half's print fits: the tube on 45 deg in the End Arm Hub's 5 mm peg hole (#420-001's P1), on +X mid-tube; and the rim's inner face round the End Arm Hub's 50 mm body (#420-001's mesh), on +X mid-rim.",
      "probes": [
+       {"label": "tube in #420-001's peg hole", "at": [303.388, 10.253, 16.5], "toward": [1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "rim round #420-001's body", "at": [315.635, 0.0, 15.5], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
-     ]},
-    {"kind": "probes", "id": "probes-rig-l3-b-register", "part": "rig-l3-b (revised)",
-     "stl": "out/revised/rig-l3-b.stl", "after": ["render-rig-l3-b"],
-     "note": "The register tubes keep their 5 mm in revised, a precision fit by design (specs/007.2 § Print fits), and the span stays 307.5: the tube on 45 deg has material just inside 5 mm and air just outside, on its far side from the axis.",
-     "items": [
-       {"label": "tube: material inside 5 mm", "at": [303.338, 10.253, 16.5], "solid": true},
-       {"label": "tube: air outside 5 mm", "at": [303.438, 10.253, 16.5], "solid": false}
      ]},
     {"kind": "outline", "id": "outline-rig-epoxy-holder-outer", "part": "rig-epoxy-holder", "config": "previous",
      "scad": "GlueRig_EpoxyHolder.scad", "out": "out/2d/rig-epoxy-holder-outer.svg", "layer": "outer",

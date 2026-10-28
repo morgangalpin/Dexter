@@ -2,11 +2,12 @@
 // The L2 rig holds the Arm Body (#200-001) and the Axis Intersection Half (#410-001) at their
 // finished spacing while the L2 tube's epoxy cures (specs/007.2 § Tooling — glue rigs). This half
 // carries the Axis Intersection Half: its boss enters the half's Ø42 bore, and its head block, with
-// the two ears, follows the half's own outline. Its near end butts B's, and the key C locks the two.
+// the two ears, follows the half's own outline. The C-502 strakes standing in the half's slots on 54 and
+// 126 deg pass up through the ears' slots. Its near end butts B's, and the key C locks the two.
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/950-Tooling/), in that mesh's frame.
-//   config = "revised"  — the same part with the slip fit drawn on the boss.
+//   config = "revised"  — the same part with its print fits drawn on the boss and the ear slots.
 //
 // FRAME. The rig's common frame, the reference's own (B's J2 axis is the origin): the plate on
 // z 0 .. 10, running along +Y from the joint at y 170.016 to the head about H = (-0.136, 340.032).
@@ -37,7 +38,8 @@
 //     E1  ears          R3 stadiums on (-22.954, 366.688)-(-18.436, 369.971) and
 //                       (22.682, 366.689)-(18.164, 369.971), each carried radially in to the head
 //                       circle with straight sides; z -10.75 .. 10
-//     E2  ear slots     2.540 x 5.588, one through each ear (corners below)
+//     E2  ear slots     2.540 radial x 5.588 tangential, centred at r 34.27 on 54 and 126 deg about
+//                       H, one through each ear (corners below)
 //
 // The head's centre lies 0.136 off the plate's centre line, and the plate's edges meet it as above;
 // both are the reference's, and both are kept.
@@ -45,10 +47,13 @@
 // FITS (../print_fit.scad), revised only:
 //
 //     O1, in the Axis Intersection Half's Ø42 lip    slip
+//     E2, on the C-502 strake (2.337 x 5.588)        press
 //
-// The Axis Intersection Half's dimensions are those of ../400-EndArm/410-001_AxisIntersectionHalf.scad
-// (R3, which `revised` keeps at size). The joint's slip is the key's
-// (GlueRig_ArmBodyToEndArmHub_C.scad).
+// E2 is drawn as the Axis Intersection Half's strake slots are (#410-001's S1), at their size and on
+// their centres: the reference's stand 0.25 further out, which the strakes in the half's slots could
+// not pass. The Axis Intersection Half's dimensions are those of
+// ../400-EndArm/410-001_AxisIntersectionHalf.scad (R3, which `revised` keeps at size, and S1). The
+// joint's slip is the key's (GlueRig_ArmBodyToEndArmHub_C.scad).
 
 include <../print_fit.scad>
 include <l2_rig_joint.scad>
@@ -81,10 +86,15 @@ EAR_SLOTS = [                           // E2: each slot's corners
     [[23.014, 367.143], [21.522, 365.088], [17.001, 368.372], [18.494, 370.427]]];
 
 BORE_410 = 42.000;                      // the Axis Intersection Half's bore
+SLOT_410 = [34.016, 5.637, 2.580];      // its strake slots: centre r, tangential, radial
+SLOT_410_A = [54, 126];                 // the two of them under the ears
+STRAKE   = [2.337, 5.588];              // C-502
 
-SLIP = fit_clearances(config)[0];
+FITS = fit_clearances(config);
+SLIP = FITS[0];
 
 function boss_d() = config == "previous" ? BOSS[0] : fit_pin(BORE_410, SLIP);
+function slot()   = [max(SLOT_410[1], fit_bore(STRAKE[1], FITS[1])), max(SLOT_410[2], fit_bore(STRAKE[0], FITS[1]))];
 
 module bore_2d() translate(H) circle(d = BORE_D);
 
@@ -93,7 +103,9 @@ module ears_2d()
     for (e = EARS) let(mid = (e[0] + e[1]) / 2, inward = (H - mid) / norm(H - mid))
         hull() for (c = e, s = [0, EAR_IN]) translate(c + s * inward) circle(r = EAR_R);
 
-module ear_slots_2d() for (s = EAR_SLOTS) polygon(s);
+module ear_slots_2d()
+    if (config == "previous") for (s = EAR_SLOTS) polygon(s);
+    else for (a = SLOT_410_A) translate(H) rotate(a) translate([SLOT_410[0], 0]) square([slot()[1], slot()[0]], center = true);
 
 module boss_2d() difference() { translate(H) circle(d = boss_d()); bore_2d(); }
 

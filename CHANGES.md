@@ -1488,12 +1488,14 @@ anything version 3 does not independently specify
     (`lead_groove.scad`). `GlueRig_EndArmHubToDiff_B` no longer imports the superseded mesh: it draws the
     corrected part directly and states the span once, as `L3_SPAN` (307.500). The superseded mesh stays in
     `Reference/superseded/` as the record of the part as shipped.
-  - **950-Tooling, fits:** `config="revised"` draws the slip fit on the L2 rig's boss, collar and key, the
-    Ex Gear rig's ring, keys and M3 holes, and the L3 rig's tab and rim. The L3 registers (A's boss
-    carrying the 6703, and B's four tubes in the hub's holes) keep their size as precision fits by
-    design ([007.2](specs/007.2-Printed-Parts.md#tooling--glue-rigs)). The Epoxy Holder, the Epoxy
-    Plunger and both solder jigs have no mate dimensions on record, so `revised` is `previous`. The
-    survey corrects the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
+  - **950-Tooling, fits:** a rig meets the parts it holds as the robot's own mating parts do
+    ([007.2](specs/007.2-Printed-Parts.md#tooling--glue-rigs)). `config="revised"` draws the slip fit on
+    the L2 rig's boss, collar and key, the Ex Gear rig's ring, keys and M3 holes, and the L3 rig's tab,
+    rim and four tubes, which enter the End Arm Hub's peg holes as the New Belt Pulley's pegs do. It
+    draws the press fit on the L3 rig's boss in its 6703 and on the L2 rig's ear slots, which are
+    #410-001's strake slots, at their size and on their centres. The Epoxy Holder, the Epoxy Plunger and
+    both solder jigs have no mate dimensions on record, so `revised` is `previous`. The survey corrects
+    the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`

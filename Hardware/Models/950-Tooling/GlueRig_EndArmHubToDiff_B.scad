@@ -7,7 +7,8 @@
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/950-Tooling/GlueRig_EndArmHubToDiff_B.stl), in that
 //                         mesh's frame.
-//   config = "revised"  — the same part with the slip fit drawn on the rim round the hub.
+//   config = "revised"  — the same part with the slip fit drawn on the tubes and on the rim round the
+//                         hub.
 //
 // THE SPAN. The rig as first exported held its registers 309.500 apart; L3 is 307.500, and the jig is
 // what moved (specs/009 DC-11(h)). The reference mesh is that corrected part: the shipped mesh
@@ -46,10 +47,11 @@
 //
 // FITS (../print_fit.scad), revised only:
 //
+//     T1, in the End Arm Hub's Ø5.000 peg holes (#420-001's P1)             slip
 //     R1's inner face, round the End Arm Hub's Ø50 body (#420-001's O1)    slip
 //
-// T1 is the register, a precision fit by design, and keeps its size (specs/007.2 § Print fits): it
-// meets the hub's P1 peg holes line to line. The joint's slip is A's tab's. The End Arm Hub's
+// T1 is drawn as the New Belt Pulley's pegs are in the same holes (#410-002's P1), and its centres
+// stay where they are, so the span is unchanged. The joint's slip is A's tab's. The End Arm Hub's
 // dimensions are those of ../400-EndArm/420-001_EndArmHub.scad (O1, P1).
 
 include <../print_fit.scad>
@@ -75,10 +77,12 @@ TUBE     = [5.000, 2.000, 14.500, 15.000];   // T1, T2: diameters, radius of the
 PLATE_Z  = [18.000, 23.000];
 
 HUB_R    = 25.000;                     // the End Arm Hub's body
+PEG_HOLE_D = 5.000;                    // the End Arm Hub's peg holes
 
 SLIP = fit_clearances(config)[0];
 
-function rim_r() = config == "previous" ? RIM[0] : HUB_R + SLIP;
+function rim_r()  = config == "previous" ? RIM[0] : HUB_R + SLIP;
+function tube_d() = config == "previous" ? TUBE[0] : fit_pin(PEG_HOLE_D, SLIP);
 
 // Where H1 meets P1's edges.
 RIM_END_X = E.x - sqrt(HEAD_R * HEAD_R - BAR_W * BAR_W);
@@ -99,7 +103,7 @@ module rim_2d()
         }
     }
 
-module tubes_2d() tube_places() difference() { circle(d = TUBE[0]); circle(d = TUBE[1]); }
+module tubes_2d() tube_places() difference() { circle(d = tube_d()); circle(d = TUBE[1]); }
 
 module plate_2d()
     difference() {

@@ -6,7 +6,7 @@
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/950-Tooling/), in that mesh's frame.
-//   config = "revised"  — the same part with the slip fit drawn on the tab's sides.
+//   config = "revised"  — the same part with its print fits drawn on the boss and the tab's sides.
 //
 // FRAME. The rig's common frame, the reference's own: the J4 register's axis on +Z through
 // D = (-16.865, 0), the plate on z 18 .. 23 running out along +X to the joint at x 128.287.
@@ -39,9 +39,11 @@
 //
 // FITS (../print_fit.scad), revised only:
 //
+//     O1, in the 6703's 17 mm bore        press
 //     the tab's sides, in B's notch       slip
 //
-// O1 is a register, a precision fit by design, and keeps its size (specs/007.2 § Print fits).
+// O1 is drawn as the Internal Inner Pulley's journal is in the same bearing (#421-002's J1), on the
+// register's axis, so the span is unchanged.
 
 include <../print_fit.scad>
 include <l3_rig_joint.scad>
@@ -69,7 +71,12 @@ SLOT     = [13.000, 17.000, 60.240, 2.363];   // S1: inner and outer radius, end
 BAR_W    = 20.706;                     // P1's half-width
 WINDOW   = [[13.397, -12.500], [120.897, 12.500]];   // W1: corners
 
-SLIP = fit_clearances(config)[0];
+BEARING_ID = 17.000;                   // 6703
+
+FITS = fit_clearances(config);
+SLIP = FITS[0];
+
+function boss_d() = config == "previous" ? BOSS[0] : fit_pin(BEARING_ID, FITS[1]);
 
 module bore_2d() translate(D) circle(d = BORE_D);
 
@@ -90,7 +97,7 @@ module slots_2d()
 module boss_2d()
     difference() {
         union() {
-            translate(D) circle(d = BOSS[0]);
+            translate(D) circle(d = boss_d());
             intersection() {
                 translate(D) difference() {
                     circle(r = RIM_R[1]);
