@@ -1103,6 +1103,13 @@ anything version 3 does not independently specify
     `Reference/meshes/800-Harness/`, the End Arm shroud's repaired in place (README § Known defects).
   - `Hardware/Models/print_fit.scad` (the tap class), `950-Tooling/fit_coupon.scad` (its M3 pilot),
     and `700-Differential/730-001_DiffBodyA.scad` (what its pin holes take).
+  - `Hardware/Models/900-ToolInterface/`: `900-001_ToolInterfaceBody.scad`, `911-001_RollBody.scad`,
+    `911-002_RollDriver.scad`, `912-001_SpanMount.scad`, `912-002_SpanDriver.scad`,
+    `920-001_StaticFinger.scad`, `920-002_DynamicFinger.scad`, `920-003_FingerCap.scad`, their
+    `.view.json` sidecars, `render.json`, and the assembly `tool_assembly.scad` with its `.view.json` and
+    `.clash.json` (new). Their meshes, STEPs and f3ds moved to `Reference/meshes/900-ToolInterface/`,
+    where `920-001_StaticFinger.stl` (new) is the reference mesh exported from the glTF and
+    `900-001_ToolInterfaceBody.stl` (new) the one tessellated from the STEP.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1496,6 +1503,33 @@ anything version 3 does not independently specify
     #410-001's strake slots, at their size and on their centres. The Epoxy Holder, the Epoxy Plunger and
     both solder jigs have no mate dimensions on record, so `revised` is `previous`. The survey corrects
     the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
+  - **900-ToolInterface:** the Roll Driver (`#911-002`) is a stack of constant sections taken from its
+    STEP, which is the same revision as the STL. `revised` presses its Ø17 shaft into the two 6703s and
+    opens the bolt heads' counterbores to slip. The
+    Span Driver (`#912-002`) is a stack of sections with the spline end's round revolved; `revised`
+    presses its spline bore onto the XL-320 output spline and opens the M2.6 bolt hole and counterbore
+    to slip. Its STEP is a different revision (its head, key slot and counterbore differ), so the STL is
+    the source. The Finger Cap (`#920-003`) is a disc with one hole, which `revised` opens to the M2
+    bolt's slip clearance. The Span Mount (`#912-001`) is a region split. Its STEP is a different
+    revision (the underside ring is 1.5 deep where the STL's is 2.5), so the STL is the source. `revised`
+    opens the strake slot to the C-502 strip's press fit, the reference's slot being 0.09 narrower than
+    the strip, and the bolt holes, washer pockets and servo bolts' counterbores to slip. The Roll Body (`#911-001`) has only an STL,
+    which is the source. It is a region split whose windows' and slot's rounds are lofted by
+    `100-Base/window_round.scad`; `revised` presses the 6703s' seats and opens the bolt holes and
+    counterbores to slip. The Dynamic Finger (`#920-002`) is a stack of sections. Its mesh is a curved
+    claw and its STEP another part, so the mesh is the source and
+    [DC-900-1](specs/009-Design-Completion.md#gripper-design) stays open; `revised` presses the shaft into
+    the MR128s and opens the socket to slip on the Span Driver's head. The Static Finger (`#920-001`) is a
+    region split of its STEP. It had no mesh, so it is gated against the glTF body, with the 0.008 mm
+    slit that body and the STEP both carry at the lug boss's root closed in place
+    ([Known defects](Hardware/Models/README.md#known-defects)); `revised` presses the MR128 seats and the strake slot and opens the column socket and the
+    plate slot to slip. The Tool Interface Body (`#900-001`) is a region split of its STEP, whose lobe
+    pockets' rims are rolled onto the top cone by a ball. It had no mesh either, so it is gated against
+    its STEP tessellated by `scadmesh tessellate`; `revised` opens the M3 and M2 bolt holes and nut traps
+    to slip and the servo pocket to press. `tool_assembly.scad` places the roll stack and the Static
+    Finger, but not the body (its header gives why), each part by a
+    feature it carries, with the roll bolts, washers, nuts and satin pins, and `assembly-clash.rs` passes
+    it. A `counts` check holds the Roll Body's seven windows and the Span Driver's 20 spline teeth.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`

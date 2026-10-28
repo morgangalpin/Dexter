@@ -57,9 +57,9 @@ and `TI1-` CAD IDs name bodies in the CAD model and cover only 13 of 70 parts; t
 | [`600-StrainWave/`](600-StrainWave/) | 3 | 8 | Wave gen coupler, flex spline attach and cap; every part is `.scad`, and `c201_spline_seat.scad` holds the drive's interface for the Attach, the Cap and the three Stator Holders |
 | [`700-Differential/`](700-Differential/) | 10 | 28 | Split gears, diff gear shaft and axle, diff pulleys, diff bodies — **the OpenSCAD set**, `.scad` only, each part with a view sidecar; the meshes it is measured against are under `Reference/meshes/`; `diff_assembly.scad` places the set, has a section view, and is checked by `assembly-clash.rs` |
 | [`800-Harness/`](800-Harness/) | 14 | 41 | Wire entries, pivot plugs, PCB brackets, strain reliefs, photointerrupter shrouds; every part is `.scad`. `800-002_WireEntryRight.scad` and `800-004_MainPivotPlugB.scad` are their pair's source selecting the other half; `strain_relief_comb.scad` holds the comb both strain reliefs share, `photo_shroud.scad` the beam bores every shroud shares, and `shroud_base.scad`, `shroud_pivot.scad` and `photo_shroud_rotate.scad` what each shroud's two halves share |
-| [`900-ToolInterface/`](900-ToolInterface/) | 8 | 27 | Tool interface body, roll, span, gripper — **the parametric set** |
+| [`900-ToolInterface/`](900-ToolInterface/) | 8 | 29 | Tool interface body, roll, span, gripper — **the parametric set**; every part is `.scad`; `tool_assembly.scad` places the roll stack and the Static Finger with their 6703s and MR128s |
 | [`950-Tooling/`](950-Tooling/) | 2 | 25 | Solder jigs, glue-rig jig bodies, and the print-fit coupon; every part is `.scad`; `l2_rig_joint.scad` and `l3_rig_joint.scad` hold the joints the glue rigs' halves share (the L3 span with them), and `lead_groove.scad` the groove both solder jigs share |
-| [`Reference/`](#reference) | — | 283 | Not printed for a build. See below |
+| [`Reference/`](#reference) | — | 303 | Not printed for a build. See below |
 
 ### Shared parts
 
@@ -82,7 +82,7 @@ Not part of a build. Kept because the geometry exists nowhere else.
 | `Reference/onshape-v1/` | 193 | **v1** B-rep solids as STEP, plus assembly definitions. Dimension recovery only — see [its README](Reference/onshape-v1/README.md) |
 | `Reference/inventor/` | 8 | Inventor `.ipt` with feature history: arm, CF tube and tube mould, valve and ratchet, arm-body spacer. No part in the build list maps to these |
 | `Reference/covers/` | 6 | Cosmetic ducts, **not in the [007](../../specs/007-Bill-of-Materials.md) build list**. Includes SketchUp source |
-| [`Reference/meshes/`](Reference/meshes/) | 74 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s Axis Intersection Half, New Belt Pulley, End Arm Code Disk, End Arm Hub and its Cap, Internal Outer and Inner Pulleys, Pulley Spacer and two External pulleys, `500-ExternalGear/`'s External Gear, Motor End Cap, Mount, Mount Top and Nut Holders (one mesh for A and B), `600-StrainWave/`'s Wave Gen Coupler, Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot, Pivot Code Disk and both Motor End Caps, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, `800-Harness`'s Wire Entries, Main Pivot Plugs, Fan and PCB Brackets, PCB Spacer, both strain reliefs and all five photointerrupter shrouds, `950-Tooling`'s eight glue rigs (the L3 rig's B half as corrected to the 307.500 span) and both solder jigs, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)) |
+| [`Reference/meshes/`](Reference/meshes/) | 94 | The original meshes of parts that now have parametric source: `700-Differential/`, `400-EndArm/`'s Axis Intersection Half, New Belt Pulley, End Arm Code Disk, End Arm Hub and its Cap, Internal Outer and Inner Pulleys, Pulley Spacer and two External pulleys, `500-ExternalGear/`'s External Gear, Motor End Cap, Mount, Mount Top and Nut Holders (one mesh for A and B), `600-StrainWave/`'s Wave Gen Coupler, Flex Spline Attach and Cap, `100-Base`'s Base Clamp, Base Code Disc, Pivot Skirt, Base Mount Bottom and Base Long, `300-Pivot`'s Main Pivot, Pivot Code Disk and both Motor End Caps, `200-ArmBody`'s Arm Body, Stator Balancer, Calibration Arrows, Idler Plug, Belt Director Pulley and both Belt Directors, `800-Harness`'s Wire Entries, Main Pivot Plugs, Fan and PCB Brackets, PCB Spacer, both strain reliefs and all five photointerrupter shrouds, `900-ToolInterface`'s Tool Interface Body, Roll Body, Roll Driver, Span Mount, Span Driver, Static Finger, Dynamic Finger and Finger Cap (with their `.f3d` and `.step` where they have them; the Static Finger's mesh is the glTF body, exported, and the Tool Interface Body's its STEP, tessellated), `950-Tooling`'s eight glue rigs (the L3 rig's B half as corrected to the 307.500 span) and both solder jigs, and the three Stator Holders in `100-Base/`, `200-ArmBody/` and `500-ExternalGear/`. A part's mesh moves here when its `.scad` lands; `render.rs --verify` measures its renders against these meshes (see [Checking a group](#checking-a-group)) |
 | [`Reference/superseded/`](Reference/superseded/) | 2 | Earlier revisions of parts the build no longer uses. `GlueRig_EndArmHubToDiff_B_span309500.stl` is the L3 rig as first exported ([PART-INDEX](PART-INDEX.md#glue-rig-jigs)). `DiffA2CodeDiskEndStop.dwg` is the v1 J4 code disk and end stop, whose 115-slot track is now cut into `#730-002`'s rim |
 
 ## Known defects
@@ -212,6 +212,23 @@ It is exported as binary STL: 35,514 triangles for 35,308, closed, with the boun
 the volume 1.24 mm³ smaller (six parts in 10⁵). The cut reaches 0.01 into the pocket's wall and side
 walls, so that no face of the ring lies on theirs.
 
+**A design slit, closed as the Arm Body's was.** `Reference/meshes/900-ToolInterface/920-001_StaticFinger.stl` (the
+glTF body) carried a slit at the root of the lug's boss, and so does the STEP it was drawn from. Each of
+the two R10.561 cylinders that trim the boss lies tangent to a plane face through the lug's axis, at ±130°
+(the STEP's `#2460` and `#2456`), along y = 1.939, and the two surfaces part by h²/2R: at most 0.008 mm
+over the 0.4 mm the faces stand, from the bore (r 10.5) to the outer face (r 15.5). That gap can be
+neither printed nor modelled, and its walls stood up to 0.27 mm from a faithful recreation. It is closed by
+uniting the mesh with a prism over each plane face, 0.004 into the material and 0.009 across the gap,
+from r 10.495 to 15.505, its top on the mesh's own mouth (y 2.340 at r 10.495, 2.040 at r 13.164, 1.940
+at r 15.505):
+
+```
+union() { import("920-001_StaticFinger.stl"); filler(); mirror_about_lug_axis_plane() filler(); }   // OpenSCAD, Manifold
+```
+
+exported as binary STL: 3,260 triangles for 3,104, the bounding box unchanged, no surface moved outward by
+more than 0.005 mm, and the volume 0.002 mm³ larger.
+
 Three files have held the wrong geometry rather than the wrong topology, and all three are corrected in
 place:
 
@@ -237,7 +254,9 @@ place:
   dimension-checked against its mates and now also has parametric source
   ([DC-11(f)](../../specs/009-Design-Completion.md#procurement-data)).
 
-The Base Mount Bottom is the only file here taken from the GLTF, and it takes two steps rather than one:
+The Base Mount Bottom is taken from the GLTF, and it takes two steps rather than one. The Static Finger's
+reference mesh is also taken from it, with its own node and the same two steps (its
+[header](900-ToolInterface/920-001_StaticFinger.scad) gives the commands). The Base Mount Bottom's are:
 
 ```
 scadmesh gltf dde/HDIMeterModel.gltf --node HDI-110-001_BaseMountBottom \
@@ -259,10 +278,10 @@ with no triangle count.
 
 | Format | Where | Editable? |
 |---|---|---|
-| `.scad` | `100-Base/` to `800-Harness/`, `950-Tooling/` | **Yes** — parametric OpenSCAD source, the intended format going forward (see below) |
+| `.scad` | `100-Base/` to `950-Tooling/` | **Yes** — parametric OpenSCAD source, the intended format going forward (see below) |
 | `.stl` | component directories, `Reference/meshes/` | **No.** Mesh only — printable, not meaningfully modifiable |
-| `.f3d` | `900-ToolInterface/` | **Yes** — Fusion 360 native, with feature history |
-| `.step` | `900-ToolInterface/`, `Reference/onshape-v1/` | **Partly** — B-rep solids. Dimensions can be measured and features cut, but there is no feature tree to drive |
+| `.f3d` | `900-ToolInterface/`, and `Reference/meshes/900-ToolInterface/` for converted parts, where the `.scad` is the source of record and the `.f3d` is reference only | **Yes** — Fusion 360 native, with feature history |
+| `.step` | `900-ToolInterface/`, and `Reference/meshes/900-ToolInterface/` for converted parts, where the `.scad` is the source of record and the `.step` is reference only; `Reference/onshape-v1/` | **Partly** — B-rep solids. Dimensions can be measured and features cut, but there is no feature tree to drive |
 | `.ipt` | `Reference/inventor/` | **Yes** — Inventor native, with feature history |
 | `.dwg` | `400-EndArm/`, `900-ToolInterface/`, `Reference/superseded/` | **Partly** — B-rep solids, not 2D profiles as previously recorded here. Each of the three holds one ACIS `3DSOLID` (`421-002` adds six lines and an arc beside it). Reading one needs the [ODA File Converter](https://www.opendesign.com/guestfiles/oda_file_converter); FreeCAD drives it once its path is set, and `ODAFileConverter in/ out/ ACAD2000 DXF 0 1 "*.dwg"` writes the solid as ASCII-encoded SAT in the DXF's group 1 and 3 records |
 | `.skp`/`.skb` | `Reference/covers/` | **Yes** — SketchUp source |
@@ -620,9 +639,19 @@ scadmesh view endarm_assembly.view.json --out out/view/endarm_assembly
 miniserve out/view
 ```
 
+and `900-ToolInterface/` for the tool interface, whose assembly imports only the `900-ToolInterface`
+cache:
+
+```
+./render.rs 900-ToolInterface --meshes
+cd 900-ToolInterface
+scadmesh view tool_assembly.view.json --out out/view/tool_assembly
+miniserve out/view
+```
+
 Then open `http://localhost:8080/index.html`, or `http://localhost:8080/armbody_assembly/` for the arm body,
-`http://localhost:8080/pivot_assembly/` for the pivot and `http://localhost:8080/endarm_assembly/` for the
-End Arm.
+`http://localhost:8080/pivot_assembly/` for the pivot, `http://localhost:8080/endarm_assembly/` for the
+End Arm and `http://localhost:8080/tool_assembly/` for the tool interface.
 
 - `scadmesh view` writes `out/view/index.html` and one `out/view/parts/<id>.json` per part. OpenSCAD
   exports each part in its own run, one after another, so the build takes the sum of the parts'

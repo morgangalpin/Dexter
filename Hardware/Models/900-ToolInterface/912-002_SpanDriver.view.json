@@ -1,0 +1,31 @@
+{
+  "title": "Span Driver",
+  "subtitle": "#912-002 · reference mesh and 912-002_SpanDriver.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Span Driver", "pn": "#912-002", "color": "#d4ad6b", "stl": "../Reference/meshes/900-ToolInterface/912-002_SpanDriver.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/912-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/912-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [3.875, 3.5, 0], "text": "S1 spline sleeve Ø7.750, y 2.175–5.175, end round R0.5"},
+    {"at": [4, 6.5, 0], "text": "S2 collar Ø8.000, y 5.175–7.5"},
+    {"at": [5.5, 7.75, 0], "text": "F1 flange Ø11.000, y 7.5–8"},
+    {"at": [0, 10.5, -4.319], "text": "D1 drive head flat, z −4.319, y 8–13"},
+    {"at": [2.508, 3.7, 0.141], "text": "B1 spline bore, 20 points r 2.683 / roots r 2.356, y 2.175–5.325"},
+    {"at": [1.3, 7, 0], "text": "K1 bolt hole Ø2.600, y 5.325–10"},
+    {"at": [-2.048, 8, -1.434], "text": "K2 key slot 1.0 wide, R0.5 end at 215°, y 5.325–10"},
+    {"at": [2.75, 11.5, 0], "text": "C1 counterbore Ø5.500, y 10–13"}
+  ],
+  "presets": [
+    {"label": "Head end", "at": [0, 13, 0], "span": 16, "from": [0.3, 1, 0.4]},
+    {"label": "Spline end", "at": [0, 2.175, 0], "span": 12, "from": [0.3, -1, 0.4]},
+    {"label": "Section", "at": [0, 7.5, 0], "span": 18, "from": [0, 0, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one grows B1 by the press fit and opens K1 and C1 to slip clearance, as the FITS paragraph of 912-002_SpanDriver.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

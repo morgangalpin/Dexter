@@ -1,0 +1,30 @@
+{
+  "title": "Dynamic Finger",
+  "subtitle": "#920-002 · reference mesh and 920-002_DynamicFinger.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [0.6, -1, 0.5],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Dynamic Finger", "pn": "#920-002", "color": "#d4ad6b", "stl": "../Reference/meshes/900-ToolInterface/920-002_DynamicFinger.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/920-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/920-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [14.139, 0.5, 12.95], "text": "K1 socket, floor z −4.569 about the axis, flats x ±3.5, y −3.243–1.507"},
+    {"at": [6.85, 0, 22.85], "text": "A1 blade 4 wide, arm at −38.49°, arcs R20.277 / R24.277, R2 tip"},
+    {"at": [14.139, -2.9, 11.6], "text": "D1 hub disc Ø12, y −3.243–2.5"},
+    {"at": [5.38, 3, 24.003], "text": "S1 stub 2.5 wide, R1.25 end, y 2.5–3.507"},
+    {"at": [19.6, 3.75, 17.5], "text": "F1 flange Ø11, y 3.507–4.007"},
+    {"at": [18, 9, 17.5], "text": "S2 shaft Ø8, y 4.007–14.007"},
+    {"at": [14.064, 12, 17.557], "text": "B1 bolt hole Ø2, 0.094 off the axis, from the flange's face"}
+  ],
+  "presets": [
+    {"label": "Hub end", "at": [14.139, -3.243, 17.5], "span": 16, "from": [0.2, -1, 0.3]},
+    {"label": "Shaft end", "at": [14.139, 14.007, 17.5], "span": 14, "from": [0.3, 1, 0.4]},
+    {"label": "Side", "at": [-4, 0, 22], "span": 52, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one presses the shaft into the MR128s and opens the socket to slip on the Span Driver's head, as the FITS paragraph of 920-002_DynamicFinger.scad's header gives. The claw is the mesh's part, and DC-900-1 in specs/009 owns which gripper the build takes. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

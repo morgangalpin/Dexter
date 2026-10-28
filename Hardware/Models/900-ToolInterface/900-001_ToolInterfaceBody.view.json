@@ -1,0 +1,40 @@
+{
+  "title": "Tool Interface Body",
+  "subtitle": "#900-001 · reference mesh and 900-001_ToolInterfaceBody.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Tool Interface Body", "pn": "#900-001", "color": "#d4ad6b", "stl": "../Reference/meshes/900-ToolInterface/900-001_ToolInterfaceBody.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/900-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/900-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 18.5, 5], "text": "H1 hub, R18.5 wall, z −11.5–20"},
+    {"at": [23.65, 0, 3], "text": "L1 lobes ×3, end face 23.65 out, 5.8 wide"},
+    {"at": [14.2, 0, 15], "text": "P1 lobe pocket, u 12.75–15.65, 5.8 wide"},
+    {"at": [18.3, 0, 3], "text": "N1 nut slot, u 17.05–19.55, to z 7"},
+    {"at": [21.6, 0.171, -1.25], "text": "B1 bolt hole Ø3, z −1.25"},
+    {"at": [-25, 14, 10], "text": "C1 channel, x −38.04 to −11.04, 28 wide"},
+    {"at": [-25, 0, -5], "text": "S1 servo pocket, floor z −5"},
+    {"at": [-25.74, 14, 4], "text": "W1 wall holes ×6, Ø4 at z 4"},
+    {"at": [-8, 5.5, 3], "text": "T1 bore slot, ±5.5 to z 7"},
+    {"at": [-10.2, 0, 19.5], "text": "G1 tongue over T1, ±5.5 at the top"},
+    {"at": [5, 0, 17], "text": "D1 bore, Ø20 to z 14, Ø10 through"},
+    {"at": [-39.89, 15.5, 4], "text": "F1 flange plate, x −41.74 to −38.04, flats y ±15.5"},
+    {"at": [-43.74, 16.5, 4], "text": "F2 flange ring, bayonet bore R16.5"},
+    {"at": [-38.5, 15.25, 4], "text": "M1 M2 holes ×4, 4 AF nut traps"},
+    {"at": [-5.47, -15.4, 6], "text": "V1 sealed voids ×2, x −5.75 to −5.37"}
+  ],
+  "presets": [
+    {"label": "Underside", "at": [-10, 0, -8], "span": 90, "from": [0, 0, -1]},
+    {"label": "Lobe", "at": [18, 0, 3], "span": 40, "from": [1, -0.6, 0.6]},
+    {"label": "Channel and servo pocket", "at": [-25, 0, 5], "span": 60, "from": [0, 0.1, 1]},
+    {"label": "Flange and bayonet", "at": [-44, 0, 4], "span": 50, "from": [-1, 0, 0]},
+    {"label": "M2 traps", "at": [-38, 0, 0], "span": 45, "from": [1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The reference is the part's STEP tessellated by scadmesh tessellate, as the SOURCE paragraph of 900-001_ToolInterfaceBody.scad's header gives. The previous render is the dist-gated recreation. The revised one opens the bolt holes, nut slots and M2 nut traps to slip and the servo pocket to press, as the FITS paragraph of the header gives, and leaves out the voids V1. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
