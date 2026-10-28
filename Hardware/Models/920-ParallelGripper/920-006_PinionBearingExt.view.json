@@ -1,0 +1,29 @@
+{
+  "title": "Pinion Bearing EXT",
+  "subtitle": "#920-006 · reference mesh and 920-006_PinionBearingExt.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Pinion Bearing EXT", "pn": "#920-006", "color": "#d4ad6b", "stl": "../Reference/meshes/920-ParallelGripper/920-006_PinionBearingExt.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/920-006.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/920-006.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [3, -1, 0], "text": "N1 keyed nose, flats x ±3, point at z −4, y −2–0, end chamfer 0.5"},
+    {"at": [4, 3.75, 0], "text": "J1 journal Ø8.000, y 0–7.5"},
+    {"at": [4.4, 8, 0], "text": "C1 collar Ø8.800, y 7.5–8.5"},
+    {"at": [0, 8.75, 4.9], "text": "H1 hash mark, 1 wide on +Z, R3–R4.9, y 7.5–9"},
+    {"at": [1.5, -2, 0], "text": "B1 bolt bore Ø3.000, y −2–8.5"},
+    {"at": [0, -0.25, -4.4], "text": "S1 spacer Ø8.800, y −0.5–0 (revised only)"}
+  ],
+  "presets": [
+    {"label": "Nose end", "at": [0, -2, 0], "span": 12, "from": [0.3, -1, 0.4]},
+    {"label": "Collar end", "at": [0, 9, 0], "span": 12, "from": [0.3, 1, 0.4]},
+    {"label": "Section", "at": [0, 3.5, 0], "span": 14, "from": [1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one narrows J1 to the press fit, moves N1's faces in, opens B1 to slip clearance and adds the S1 spacer the Pinion Gear's revision gives up, as the FITS paragraph of 920-006_PinionBearingExt.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

@@ -1,15 +1,15 @@
-// #920-002 Dynamic Finger — parametric source.
-// The gripper's moving finger: a curved blade on a hub, whose Ø8 shaft turns in the two MR128s of the
-// Static Finger, held by an M2 x 16 bolt and washer through the Finger Cap (#920-003) into its end.
+// #930-001 Claw Finger — parametric source.
+// The claw gripper's moving finger: a curved blade on a hub, whose Ø8 shaft turns in two MR128s, held
+// by an M2 x 16 bolt and washer through the Finger Cap (#930-002) into its end. The claw's fixed finger,
+// which carries those MR128s, is not in the model set (specs/009 § Gripper design).
 //
 //   config = "previous" — a faithful recreation of the reference mesh
-//                         (../Reference/meshes/900-ToolInterface/920-002_DynamicFinger.stl), in that
-//                         mesh's frame.
+//                         (../Reference/meshes/930-ClawGripper/930-001_ClawFinger.stl), in that mesh's
+//                         frame.
 //   config = "revised"  — the same part with the shaft at the MR128's press fit.
 //
-// SOURCE. The STL, a curved claw. 920-002_DynamicFinger.step and .f3d (Reference/, 2020-03-12) hold a
-// different part, the parallel gripper's rack finger (`ParallelDynamicFinger`), and are not a source;
-// which of the two the build takes is an open question for the reviewer.
+// SOURCE. The STL, a curved claw, published as the legacy `920-002_DynamicFinger.stl`. The STEP and f3d
+// filed under that number hold the parallel gripper's rack finger, now #920-002 in 920-ParallelGripper.
 //
 // FRAME. The reference's own: the hub's axis along +Y through (x 14.139, z 17.5), the shaft's end at
 // y = 14.007. The part is drawn as sections in the reference's (x, z) plane stacked along y, by AXIS_Y
@@ -17,7 +17,7 @@
 //
 // A stack of constant sections (mesh-to-scad rung 1, profile per layer). `layer = "L1"` .. `"L6"`
 // draws one layer's 2D section for the outline gates. Measured with scadmesh slice/arcs/planes; the
-// feature IDs are those of 920-002_DynamicFinger.view.json, and (x, z) are about the hub's axis
+// feature IDs are those of 930-001_ClawFinger.view.json, and (x, z) are about the hub's axis
 // unless given absolute:
 //
 //     ID  feature   value

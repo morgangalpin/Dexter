@@ -1,0 +1,58 @@
+{
+  "scad": "gripper_assembly.scad",
+  "title": "Parallel gripper",
+  "subtitle": "gripper_assembly.scad · the parallel gripper on the tool interface stack: the Static Finger on the Span Mount, the pinion on two MR128s in its hub, the Dynamic Finger's rack in its T-slot · the Roll Body's frame, roll axis on +Z, the span axis along X",
+  "groups": [
+    {"name": "Fingers", "role": "the gripper's jaws: the Dynamic Finger slides in the Static Finger's T-slot", "parts": [
+      {"id": "static_finger", "name": "Static Finger, revised", "pn": "#920-001", "color": "#c98a3a"},
+      {"id": "dynamic_finger", "name": "Dynamic Finger, revised, its rack on the pinion", "pn": "#920-002", "color": "#6b8f3a"}]},
+    {"name": "Pinion", "role": "turned by the span servo through the Span Driver; drives the rack", "parts": [
+      {"id": "pinion_gear", "name": "Pinion Gear, revised", "pn": "#920-005", "color": "#3a6b8f"},
+      {"id": "pinion_ext", "name": "Pinion Bearing EXT, revised, its nose in the pinion's recess", "pn": "#920-006", "color": "#8f3a6b"},
+      {"id": "span_driver", "name": "Span Driver, revised, its head in the pinion's drive slot", "pn": "#912-002", "color": "#7a7a3a"},
+      {"id": "span_inner", "name": "Inner MR128, on the EXT's journal", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "span_outer", "name": "Outer MR128, on the EXT's journal", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "m3_bolt_head", "name": "M3 × 16 bolt's head, on the EXT's end", "pn": "M3 × 16", "color": "#8a8f94"},
+      {"id": "m3_bolt_shank", "name": "M3 × 16 bolt's shank, through the EXT into the nut", "pn": "M3 × 16", "color": "#8a8f94"},
+      {"id": "m3_nut", "name": "M3 nut, in the pinion's trap", "pn": "M3 nut", "color": "#8a8f94"}]},
+    {"name": "Roll", "role": "the wrist's roll: the Roll Driver turns in the Roll Body", "parts": [
+      {"id": "roll_body", "name": "Roll Body, revised", "pn": "#911-001", "color": "#d4ad6b"},
+      {"id": "roll_driver", "name": "Roll Driver, revised", "pn": "#911-002", "color": "#2f6db5"},
+      {"id": "roll_lower", "name": "Lower 6703, in the lower seat", "pn": "6703", "color": "#dcdcdc"},
+      {"id": "roll_upper", "name": "Upper 6703, in the upper seat", "pn": "6703", "color": "#dcdcdc"}]},
+    {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end", "parts": [
+      {"id": "span_mount", "name": "Span Mount, revised", "pn": "#912-001", "color": "#e0a458"},
+      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"}]},
+    {"name": "Roll fasteners", "role": "join the Roll Driver to the Span Mount and to the servo's horn", "parts": [
+      {"id": "roll_bolt_heads", "name": "M2 × 20 bolts' heads, in the Roll Driver's counterbores", "pn": "M2 × 20", "color": "#8a8f94"},
+      {"id": "roll_bolt_shanks", "name": "M2 × 20 bolts' shanks, threaded in the Roll Driver", "pn": "M2 × 20", "color": "#8a8f94"},
+      {"id": "roll_washers", "name": "M2 washers, in the Span Mount's pockets", "pn": "M2 washer", "color": "#b0b4b8"},
+      {"id": "roll_nuts", "name": "M2 nuts, on the washers", "pn": "M2 nut", "color": "#8a8f94"},
+      {"id": "roll_pins", "name": "Satin pins, ~6 mm proud below the drive bosses", "pn": "#19 satin pin", "color": "#c0c0c0"}]}
+  ],
+  "labels": [
+    {"at": [0.9, 0, 41.7], "text": "Static Finger's socket ceiling on the Span Mount's column top"},
+    {"at": [-6.5, 14.139, 47.25], "text": "Pinion Gear, 12 teeth, m1.75: its teeth along x -3.5 … -9.5"},
+    {"at": [-1.5, 14.139, 35.6], "text": "Span Driver's head on the drive slot's ceiling"},
+    {"at": [-4.8, 14.139, 35], "text": "M3 nut against its trap's ceiling"},
+    {"at": [-9.8, 14.139, 39.4], "text": "EXT's spacer between the pinion and the inner MR128"},
+    {"at": [-11.75, 14.139, 41], "text": "Inner MR128, x -10.0 … -13.5"},
+    {"at": [-15.75, 14.139, 41], "text": "Outer MR128, x -14.0 … -17.5"},
+    {"at": [-18.5, 14.139, 35], "text": "M3 × 16 head on the EXT's end"},
+    {"at": [-6.5, 14.139, 45.5], "text": "Rack's pitch line on the pinion's pitch circle, z 45.5; closed, a pinion tooth points up into a rack gap"}
+  ],
+  "presets": [
+    {"label": "Whole gripper", "at": [-5, 10, 35], "span": 90},
+    {"label": "Pinion and bearings", "at": [-10, 14.139, 35], "span": 35},
+    {"label": "Rack on the pinion", "at": [-6.5, 14.139, 45.5], "span": 30}
+  ],
+  "notes": [
+    {"heading": "Placements",
+     "text": "Each part stands by a feature it carries, as gripper_assembly.scad's header records; the tool interface stack under it is ../900-ToolInterface/tool_assembly.scad's."},
+    {"heading": "Not drawn",
+     "items": [
+       "The span XL-320, which the Span Driver stands on, and the grip pads",
+       "The pinion's two satin pins: the Pinion Gear's STEP has no holes for them, as gripper_assembly.scad's header gives",
+       "The two XL-320s and the Tool Interface Body, as ../900-ToolInterface/tool_assembly.view.json gives"]}
+  ]
+}

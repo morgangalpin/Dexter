@@ -4,7 +4,7 @@
 // in its T-slot.
 //
 //   config = "previous" — a faithful recreation of 920-001_StaticFinger.step, gated against
-//                         ../Reference/meshes/900-ToolInterface/920-001_StaticFinger.stl, in that frame.
+//                         ../Reference/meshes/920-ParallelGripper/920-001_StaticFinger.stl, in that frame.
 //   config = "revised"  — the same part with print fits on the MR128 seats, the strake slot and the
 //                         Span Mount's column socket.
 //
@@ -21,7 +21,7 @@
 //
 // FRAME. The STEP's own: the hub's axis along +Y through (x 14.139, z 17.5), the underside at z 10. The
 // Span Mount stands in it turned -90 deg about Z and 1.5 lower (x = y_sm, y = -x_sm, z = z_sm + 1.5);
-// the Dynamic Finger's frame is this one.
+// the Dynamic Finger's is not this one, and its header gives the move between them.
 //
 // A region split (mesh-to-scad rung 8). The feature IDs are those of 920-001_StaticFinger.view.json:
 //

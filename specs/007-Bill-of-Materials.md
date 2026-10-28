@@ -300,6 +300,7 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #660-002 | M3 nuts | Off the shelf | 3 | |
 | #911-001 | Roll Body | 3D print | 1 | |
 | #911-002 | Roll Driver | 3D print | 1 | |
+| #680-001 | 1″ #19 finishing nails | Off the shelf | 5 | Satin pins: 4 in the Roll Driver, 1 clipped as the reamer (008.11 steps 5–6) |
 | #620-003 | 6703 bearing | Off the shelf | 2 | |
 | #641-001 | M2 × 12 mm bolts | Off the shelf | 2 | |
 | #641-003 | M2 × 20 mm bolts | Off the shelf | 4 | |
@@ -308,15 +309,19 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #912-001 | Span Mount | 3D print | 1 | |
 | #912-002 | Span Driver | 3D print | 1 | |
 | #912-003 | 28 × 5.6 × 2.5 mm CF strake | Fabricate | 1 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
-| #920-001 | Static Finger | 3D print | 1 | |
-| #920-002 | Dynamic Finger | 3D print | 1 | |
-| #920-003 | Finger Cap | 3D print | 1 | |
-| #920-004 | MR128 bearing | Off the shelf | 2 | |
-| #641-002 | M2 × 16 mm bolts | Off the shelf | 1 | |
-| #670-001 | M2 washers | Off the shelf | 1 | |
+| #920-001 | Static Finger | 3D print | 1 | Parallel gripper ([DC-900-1](009-Design-Completion.md#gripper-design)) |
+| #920-002 | Dynamic Finger | 3D print | 1 | Rack finger, in the Static Finger's T-slot |
+| #920-005 | Pinion Gear | 3D print | 1 | |
+| #920-006 | Pinion Bearing EXT | 3D print | 1 | |
+| #920-004 | MR128 bearing | Off the shelf | 2 | On the Pinion Bearing EXT, in the Static Finger |
+| — | M3 × 16 mm bolts | Off the shelf | 1 | Pinion Bearing EXT to Pinion Gear |
+| #660-002 | M3 nuts | Off the shelf | 1 | In the Pinion Gear |
+| #680-001 | 1″ #19 finishing nails | Off the shelf | 2 | Satin pins in the Pinion Gear (008.11 steps 38–39); the reamer is reused |
 
-Optional alternates (baseline build qty 0): Parallel/3-Prong fingers, A6 Torque Link, skin/board brackets,
-gripper wire cover. Two pieces of yoga mat provide the finger grip pads.
+Optional alternates (baseline build qty 0): the claw gripper — #930-001 Claw Finger and #930-002 Finger
+Cap, with an M2 × 16 mm bolt and an M2 washer, on two MR128s in a fixed finger that is not in the model
+set ([DC-900-1](009-Design-Completion.md#gripper-design)) — 3-Prong fingers, A6 Torque Link, skin/board
+brackets, gripper wire cover. Two pieces of yoga mat provide the finger grip pads.
 
 ---
 
@@ -335,11 +340,11 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | Part | Total | Catalog |
 |---|---|---|
 | M2 nuts | 41 | [C-604](007.1-Parts-Catalog.md#6-fasteners) |
-| M3 nuts | 65 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
-| M2 washers | 20 | [C-605](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 nuts | 66 | [C-612](007.1-Parts-Catalog.md#6-fasteners) |
+| M2 washers | 19 | [C-605](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 washers | 16 | [C-613](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 × 12 mm bolts | 2 | [C-601](007.1-Parts-Catalog.md#6-fasteners) |
-| M2 × 16 mm bolts | 23 | [C-602](007.1-Parts-Catalog.md#6-fasteners) |
+| M2 × 16 mm bolts | 22 | [C-602](007.1-Parts-Catalog.md#6-fasteners) |
 | M2 × 20 mm bolts | 17 | [C-603](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 4 mm set screws | 3 | [C-618](007.1-Parts-Catalog.md#6-fasteners) |
 | Fan screws, Ø5 × 10 mm self-tapping | 4 | [C-619](007.1-Parts-Catalog.md#6-fasteners) |
@@ -347,11 +352,12 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | M3 × 8 mm bolts | 8 | [C-607](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 10 mm bolts | 7 | [C-609](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 12 mm socket head screws | 34 | [C-610](007.1-Parts-Catalog.md#6-fasteners) |
+| M3 × 16 mm bolts | 1 | [C-620](007.1-Parts-Catalog.md#6-fasteners) |
 | M3 × 20 mm bolts | 5 | [C-611](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 × 18 mm bolts | 8 | [C-616](007.1-Parts-Catalog.md#6-fasteners) |
 | M6 bolt + 2 washers + nut sets | 4 | [C-615](007.1-Parts-Catalog.md#6-fasteners) |
 | #6 washers | 17 | [C-614](007.1-Parts-Catalog.md#6-fasteners) |
-| 1" #19 finishing nail | 11 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |
+| 1" #19 finishing nail | 18 | [C-617](007.1-Parts-Catalog.md#6-fasteners) |
 | 6703 bearing (17 × 23 × 4) | 11 (+2 glue rig) | [C-404](007.1-Parts-Catalog.md#4-bearings) |
 | 6705 bearing (25 × 32 × 4) | 1 | [C-403](007.1-Parts-Catalog.md#4-bearings) |
 | 6807 bearing (35 × 47 × 7) | 2 | [C-402](007.1-Parts-Catalog.md#4-bearings) |
@@ -366,7 +372,7 @@ where one PBS number covers two different fastener sizes. Aggregate by **size**,
 | Dynamixel XL-320 servo | 2 | [C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) |
 | Optical Board | 5 | [C-703](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
 | 6-pin connector | 10 | [C-708](007.1-Parts-Catalog.md#7-electronics-and-wiring) |
-| 3D printed parts | 108 pieces / 70 distinct | [007.2](007.2-Printed-Parts.md#totals) |
+| 3D printed parts | 109 pieces / 71 distinct | [007.2](007.2-Printed-Parts.md#totals) |
 
 ## Sourcing notes
 

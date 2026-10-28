@@ -1,19 +1,16 @@
 {
   "scad": "tool_assembly.scad",
   "title": "Tool interface stack",
-  "subtitle": "tool_assembly.scad · the roll stack on its two 6703s and the Static Finger on the Span Mount with its two MR128s · the Roll Body's frame, roll axis on +Z",
+  "subtitle": "tool_assembly.scad · the roll stack on its two 6703s and the Span Mount with its strake, which every gripper mounts on · the Roll Body's frame, roll axis on +Z",
   "groups": [
     {"name": "Roll", "role": "the wrist's roll: the Roll Driver turns in the Roll Body", "parts": [
       {"id": "roll_body", "name": "Roll Body, revised", "pn": "#911-001", "color": "#d4ad6b"},
       {"id": "roll_driver", "name": "Roll Driver, revised", "pn": "#911-002", "color": "#2f6db5"},
       {"id": "roll_lower", "name": "Lower 6703, in the lower seat", "pn": "6703", "color": "#dcdcdc"},
       {"id": "roll_upper", "name": "Upper 6703, in the upper seat", "pn": "6703", "color": "#dcdcdc"}]},
-    {"name": "Span", "role": "the gripper's frame, bolted to the Roll Driver's end", "parts": [
+    {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end", "parts": [
       {"id": "span_mount", "name": "Span Mount, revised", "pn": "#912-001", "color": "#e0a458"},
-      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"},
-      {"id": "static_finger", "name": "Static Finger, revised", "pn": "#920-001", "color": "#c98a3a"},
-      {"id": "span_inner", "name": "Inner MR128, in the Static Finger's hub", "pn": "MR128", "color": "#dcdcdc"},
-      {"id": "span_outer", "name": "Outer MR128, in the Static Finger's hub", "pn": "MR128", "color": "#dcdcdc"}]},
+      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"}]},
     {"name": "Roll fasteners", "role": "join the Roll Driver to the Span Mount and to the servo's horn", "parts": [
       {"id": "roll_bolt_heads", "name": "M2 × 20 bolts' heads, in the Roll Driver's counterbores", "pn": "M2 × 20", "color": "#8a8f94"},
       {"id": "roll_bolt_shanks", "name": "M2 × 20 bolts' shanks, threaded in the Roll Driver", "pn": "M2 × 20", "color": "#8a8f94"},
@@ -26,29 +23,25 @@
     {"at": [0, 10, 5.5], "text": "Lower 6703, z 3.5 … 7.5, against the shoulder"},
     {"at": [0, 10, 14.5], "text": "Upper 6703, z 12.5 … 16.5"},
     {"at": [0, 0, 16.5], "text": "Roll Driver's end, flush with the upper 6703; the Span Mount's ring foot on it"},
-    {"at": [0, 0, 41.7], "text": "Span Mount column top, z 41.7: the Static Finger's socket ceiling"},
+    {"at": [0, 0, 41.7], "text": "Span Mount column top, z 41.7: a gripper's socket ceiling"},
     {"at": [0, 0, 45.2], "text": "Strake top at the notch's top"},
-    {"at": [0, 14.139, 35], "text": "Span axis: the Span Mount's eye and the Static Finger's hub, along X"},
-    {"at": [-11.757, 14.139, 35], "text": "Inner MR128"},
-    {"at": [-15.757, 14.139, 35], "text": "Outer MR128"},
-    {"at": [4.243, 4.243, 3.8], "text": "M2 × 20 head in the Roll Driver's counterbore"},
+    {"at": [5.5, 14.139, 35], "text": "Span axis: the Span Mount's eye, along X"},
+    {"at": [4.243, 4.243, 2.5], "text": "M2 × 20 head in the Roll Driver's flange"},
     {"at": [4.243, 4.243, 22.1], "text": "M2 washer and nut in the Span Mount's pocket"}
   ],
   "presets": [
-    {"label": "Whole stack", "at": [0, 5, 50], "span": 130},
+    {"label": "Whole stack", "at": [0, 5, 25], "span": 70},
     {"label": "Roll bearings", "at": [0, 0, 10], "span": 45},
-    {"label": "Span Mount and socket", "at": [0, 5, 32], "span": 45},
-    {"label": "Span hub", "at": [-12, 14.139, 35], "span": 30},
+    {"label": "Span Mount", "at": [0, 5, 32], "span": 45},
     {"label": "Roll bolts", "at": [4.243, 4.243, 13], "span": 35}
   ],
   "notes": [
     {"heading": "Placements",
-     "text": "Each part stands by a feature it carries, as tool_assembly.scad's header records: the Roll Driver's shaft in the 6703s, the Span Mount's ring foot on the Roll Driver's end with their bolt circles in line, and the Static Finger's socket over the Span Mount's column."},
+     "text": "Each part stands by a feature it carries, as tool_assembly.scad's header records: the Roll Driver's shaft in the 6703s, and the Span Mount's ring foot on the Roll Driver's end with their bolt circles in line."},
     {"heading": "Not drawn",
      "items": [
        "The two XL-320s and the Tool Interface Body, #900-001, which no printed feature places: tool_assembly.scad's header gives why",
-       "The Dynamic Finger and the Finger Cap, which do not stand in this Static Finger: specs/009 § Gripper design (DC-900-1)",
-       "The Span Driver, whose place along the span axis the servo's horn sets",
-       "The fasteners into the parts not drawn: the Roll Body's M2 × 12 and M2 × 16 bolts, the span servo's M2 × 12 bolts and the Span Driver's M2.6 × 10"]}
+       "A gripper and the Span Driver: 920-ParallelGripper/gripper_assembly.scad places the parallel gripper on this stack",
+       "The fasteners into the parts not drawn: the Roll Body's M2 × 12 and M2 × 16 bolts and the span servo's M2 × 12 bolts"]}
   ]
 }

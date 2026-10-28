@@ -1,0 +1,31 @@
+{
+  "title": "Dynamic Finger",
+  "subtitle": "#920-002 · reference mesh and 920-002_DynamicFinger.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.6],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Dynamic Finger", "pn": "#920-002", "color": "#d4ad6b", "stl": "../Reference/meshes/920-ParallelGripper/920-002_DynamicFinger.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/920-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/920-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-8, -12, 9], "text": "P1 plan, y −15.757–9.243, R10.561 corners"},
+    {"at": [-18.272, -3.257, 50], "text": "F1 finger, face x −18.272, z 7–65.5, tapered on +X"},
+    {"at": [-5.772, -3.257, 34], "text": "L1 lug, bore Ø21, outer R15.5, y −5.196 to −1.318"},
+    {"at": [13.05, 9.243, 18.5], "text": "L2 lug boss, flare to y 9.243, tips rounded R3"},
+    {"at": [-10, -1, 6.5], "text": "W1 web, z 6–7, 45° chamfers and flare"},
+    {"at": [-50, 7.5, 4], "text": "R1 rail, core y 0–6, tongues z 3.25–4.75"},
+    {"at": [-30, 3, -2], "text": "G1 rack teeth ×12, m 1.75, 20°, pitch line z 0"}
+  ],
+  "presets": [
+    {"label": "Rack", "at": [-31.6, 3, 2], "span": 75, "from": [0, -1, -0.4]},
+    {"label": "Web", "at": [-8, 3, 7], "span": 30, "from": [0.4, 1, -0.6]},
+    {"label": "Lug", "at": [-5.772, 3, 18.5], "span": 45, "from": [1, 1, 0.3]},
+    {"label": "Finger", "at": [-17, -3, 40], "span": 80, "from": [-1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The reference is the STEP tessellated by scadmesh tessellate, as the SOURCE paragraph of 920-002_DynamicFinger.scad's header gives, with the slit it carried at L2's root closed, as the GATE paragraph gives. The previous render is the dist-gated recreation. The revised one gives the rail's bearing faces and W1's chamfers their slip fit in the Static Finger's T-slot, and G1's flanks their backlash against the Pinion Gear, as the FITS paragraph of the header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

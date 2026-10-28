@@ -46,9 +46,9 @@ committed but does not yet reproduce its reference geometry.
 | DC-400-1 | [End Arm bearing order](#end-arm-bearing-order) | P2 | End Arm Hub assembly | — | `[Specified]` ✔ closed |
 | DC-600-1 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | superseded by [DC-600-2](#strain-wave-drive-spacing) |
 | DC-600-2 | [Strain-wave drive spacing](#strain-wave-drive-spacing) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
-| DC-900-1 | [Gripper design](#gripper-design) | P2 | Gripper printing, tool interface assembly | Which of the two gripper designs the build takes | `[Provisional]` |
+| DC-900-1 | [Gripper design](#gripper-design) | P2 | Gripper printing, tool interface assembly | — | `[Specified]` ✔ closed |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, DC-13, DC-400-1 and DC-600-2 are closed, and
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, DC-13, DC-400-1, DC-600-2 and DC-900-1 are closed, and
 DC-600-1 is superseded by DC-600-2. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
 of work: **design authored here** (DC-14, DC-15, DC-16), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
@@ -512,7 +512,7 @@ and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
 set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base`,
-`200-ArmBody`, `300-Pivot`, `400-EndArm`, `500-ExternalGear`, `600-StrainWave`, `800-Harness`, `900-ToolInterface` and `950-Tooling` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+`200-ArmBody`, `300-Pivot`, `400-EndArm`, `500-ExternalGear`, `600-StrainWave`, `800-Harness`, `900-ToolInterface`, `920-ParallelGripper`, `930-ClawGripper` and `950-Tooling` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
 measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in
@@ -661,9 +661,18 @@ coupler's clearances to the wave generator, and
 `[Specified]`.
 
 ## Gripper design
-**DC-900-1 · P2 · Requirement: REQ-DOF-2 · Specified in [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) and [008.11](008-Assembly.md#00811-tool-interface--gripper)**
+**DC-900-1 · P2 · Requirement: REQ-DOF-2 · Specified in [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) and [008.11](008-Assembly.md#00811-tool-interface--gripper)** — ✔ **closed**
 
-**Open:** which gripper the build takes. The model set holds two, and the records split between them:
+**Closed.** The tool interface carries several gripper options, each its own model group on the shared
+interface in `900-ToolInterface` (the Roll Body, Roll Driver, Span Mount, strake and Span Driver). The
+baseline build takes the **parallel gripper**, `920-ParallelGripper`, the only one whose fingers are both in
+the model set; its Dynamic Finger, Pinion Gear and Pinion Bearing EXT are converted from their STEPs, and
+`gripper_assembly.scad` places it. The **claw** is an alternate, `930-ClawGripper`, at quantity 0 in
+[007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper): its Claw Finger (`#930-001`) and Finger
+Cap (`#930-002`), published under the legacy numbers `#920-002` and `#920-003`, are renumbered so that each
+PBS number names one part.
+
+The record that led here: the model set held two grippers, and the records split between them:
 
 - **The claw.** `#920-002`'s mesh is a curved claw finger on a Ø8 shaft, driven through a socket by the
   Span Driver's flat-sided head; `#920-003` Finger Cap and the Span Driver's mesh belong with it. The
@@ -673,7 +682,7 @@ coupler's clearances to the wave generator, and
 - **The parallel gripper.** The `.step`/`.f3d` filed as `#920-002` hold its rack finger
   (`ParallelDynamicFinger`, 2020-03-12), as do the CAD IDs in 007.2 and the glTF's `TI1-420-00x` bodies.
   [008.11](008-Assembly.md#00811-tool-interface--gripper) steps 38–47 build it, with a Pinion Gear, Pinion
-  Bearing EXT and an M3 × 16 bolt that 007.11 does not list.
+  Bearing EXT and an M3 × 16 bolt that 007.11 did not list.
 
 `#920-001` Static Finger exists only as the parallel gripper's (`ParallelStaticFinger`). Its MR128 seats
 stand on the claw mesh's hub axis, (x 14.139, z 17.5) along y in both files' frames, but the claw placed
@@ -681,7 +690,10 @@ there runs its blade 517 mm³ into the Static Finger's body, so the claw is not 
 Finger; the part the claw works against is not in the model set. Where the Finger Cap sits is open too:
 on the claw's shaft end it would stand in the outer MR128's seat.
 
-`#920-002` is converted from its mesh, the claw, because a STEP of a different part is not a source for it.
+The claw finger, `#930-001`, is converted from its mesh, because a STEP of a different part is not a source
+for it. The Pinion Bearing EXT's Ø8 journal is 7.5 long, two MR128s and the 0.5 shoulder between the Static
+Finger's seats, so both MR128s carry the parallel gripper's pinion; the Span Mount's Ø12 eye clears the Span
+Driver's Ø11 flange and holds no bearing.
 
-**Definition of done:** 007.11, 007.2 and 008.11 name one gripper; if it is the parallel one, its Dynamic
-Finger is converted from its STEP and the claw parts are listed as alternates. `[Provisional]`.
+**Definition of done:** **done** — 007.11, 007.2 and 008.11 name the parallel gripper; its Dynamic Finger is
+converted from its STEP, and the claw parts are listed as alternates. `[Specified]`.

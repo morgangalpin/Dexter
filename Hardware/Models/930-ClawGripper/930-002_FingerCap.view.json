@@ -1,0 +1,25 @@
+{
+  "title": "Finger Cap",
+  "subtitle": "#930-002 · reference mesh and 930-002_FingerCap.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Finger Cap", "pn": "#930-002", "color": "#d4ad6b", "stl": "../Reference/meshes/930-ClawGripper/930-002_FingerCap.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/930-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/930-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [5.5, 0, 2], "text": "D1 disc Ø11.000, z 0–4"},
+    {"at": [1, 0, 2], "text": "H1 hole Ø2.000, through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 4], "span": 16, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, 0, 0], "span": 16, "from": [0.3, -0.4, -1]},
+    {"label": "Section", "at": [0, 0, 2], "span": 14, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens H1 to the M2 bolt's slip clearance, as the FITS paragraph of 930-002_FingerCap.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

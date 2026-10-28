@@ -136,7 +136,7 @@ shared stem.
 | #824 | Photointerrupter shroud — angle | 1 | `824_PhotointerrupterShroudAngle.scad` | press fits on the T-1 packages in `revised` |
 | #825 | Photointerrupter shroud — rotate | 1 | `825_PhotointerrupterShroudRotate_A.scad` | ⚠️; slip fit of the clip on Diff Body B and press fits on the T-1 packages in `revised` |
 
-## 900-ToolInterface — Tool interface and gripper
+## 900-ToolInterface — Tool interface
 
 [007.2 §](../../specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711)
 
@@ -144,12 +144,29 @@ shared stem.
 |---|---|---|---|---|
 | #900-001 | Tool Interface Body | 1 | `900-001_ToolInterfaceBody.scad` | ⚠️ `revised` opens the M3 and M2 bolt holes and nut traps to slip and presses the servo pocket |
 | #911-001 | Roll Body | 1 | `911-001_RollBody.scad` | `revised` presses the 6703s' seats and opens the bolt holes and counterbores to slip |
-| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | `revised` presses the shaft into the two 6703s |
+| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | ⚠️ `revised` presses the shaft into the two 6703s and thickens the flange to hold the bolt heads' counterbores |
 | #912-001 | Span Mount | 1 | `912-001_SpanMount.scad` | `revised` opens the strake slot to the strip's press fit and the bolt holes and washer pockets to slip |
 | #912-002 | Span Driver | 1 | `912-002_SpanDriver.scad` | `revised` presses the spline bore onto the XL-320 output spline and opens the M2.6 bolt hole and counterbore to slip |
+
+## 920-ParallelGripper — Parallel gripper (baseline)
+
+[007.2 §](../../specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711)
+
+| PBS # | Part | Qty | File | |
+|---|---|---|---|---|
 | #920-001 | Static Finger | 1 | `920-001_StaticFinger.scad` | ⚠️ `revised` presses the MR128 seats and the strake slot and opens the column socket to slip |
-| #920-002 | Dynamic Finger | 1 | `920-002_DynamicFinger.scad` | ⚠️ `revised` presses the shaft into the MR128s and opens the socket to slip on the Span Driver's head |
-| #920-003 | Finger Cap | 1 | `920-003_FingerCap.scad` | `revised` opens the M2 hole to slip |
+| #920-002 | Dynamic Finger | 1 | `920-002_DynamicFinger.scad` | ⚠️ `revised` opens the rail's bearing faces in the T-slot to slip and gives the rack teeth slip backlash |
+| #920-005 | Pinion Gear | 1 | `920-005_PinionGear.scad` | ⚠️ `revised` opens the drive slot, nut trap, bolt hole and key recess to slip, moves the spacer collar onto the EXT, and chamfers the teeth's top corner |
+| #920-006 | Pinion Bearing EXT | 1 | `920-006_PinionBearingExt.scad` | ⚠️ `revised` presses the journal into the two MR128s and opens the bolt bore and keyed nose to slip, and carries the spacer collar from the Pinion Gear |
+
+## 930-ClawGripper — Claw gripper (alternate, quantity 0)
+
+[007.2 §](../../specs/007.2-Printed-Parts.md#not-in-the-build-list)
+
+| PBS # | Part | Qty | File | |
+|---|---|---|---|---|
+| #930-001 | Claw Finger | 0 | `930-001_ClawFinger.scad` | ⚠️ `revised` presses the shaft into the MR128s and opens the socket to slip on the Span Driver's head |
+| #930-002 | Finger Cap | 0 | `930-002_FingerCap.scad` | `revised` opens the M2 hole to slip |
 
 ## 950-Tooling — Tooling
 
@@ -198,9 +215,12 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
   reference mesh is its STEP, tessellated; the [header](900-ToolInterface/900-001_ToolInterfaceBody.scad)
   gives how.
 - **#920-001 Static Finger** — No mesh was ever published, but the `.scad` renders it. Its reference
-  mesh is exported from the glTF body; the [header](900-ToolInterface/920-001_StaticFinger.scad) gives how.
-- **#920-002 Dynamic Finger** — The model is a curved claw, but its CAD ID and STEP name the parallel
-  gripper's finger; see [009 § Gripper design](../../specs/009-Design-Completion.md#gripper-design).
+  mesh is exported from the glTF body; the [header](920-ParallelGripper/920-001_StaticFinger.scad) gives how.
+- **#920-002 Dynamic Finger, #920-005 Pinion Gear and #920-006 Pinion Bearing EXT** — No mesh was ever
+  published; each reference mesh is its STEP, tessellated.
+- **#930-001 Claw Finger and #930-002 Finger Cap** — Published as `920-002_DynamicFinger.stl` and
+  `920-003_FingerCap.stl`, whose numbers the parallel gripper's parts also carried; see
+  [009 § Gripper design](../../specs/009-Design-Completion.md#gripper-design).
 
 ## Glue-rig jigs
 

@@ -1,0 +1,53 @@
+{
+  "ref_dir": "../Reference/meshes/930-ClawGripper",
+  "parts": [
+    {"id": "930-001", "scad": "930-001_ClawFinger.scad"},
+    {"id": "930-002", "scad": "930-002_FingerCap.scad"}
+  ],
+  "checks": [
+    {"kind": "outline", "id": "outline-930-001-L1", "part": "930-001", "config": "previous",
+     "scad": "930-001_ClawFinger.scad", "out": "out/2d/930-001-L1.svg", "layer": "L1",
+     "reference": "930-001_ClawFinger.stl", "axis": "y", "at": -2.87, "tol": 0.15,
+     "note": "#930-001 is drawn as six 2D sections in the reference's (x, z), each checked against the reference's section across y mid-layer before the part is extruded."},
+    {"kind": "outline", "id": "outline-930-001-L2", "part": "930-001", "config": "previous",
+     "scad": "930-001_ClawFinger.scad", "out": "out/2d/930-001-L2.svg", "layer": "L2",
+     "reference": "930-001_ClawFinger.stl", "axis": "y", "at": -0.5, "tol": 0.15},
+    {"kind": "outline", "id": "outline-930-001-L3", "part": "930-001", "config": "previous",
+     "scad": "930-001_ClawFinger.scad", "out": "out/2d/930-001-L3.svg", "layer": "L3",
+     "reference": "930-001_ClawFinger.stl", "axis": "y", "at": 2.0, "tol": 0.15},
+    {"kind": "outline", "id": "outline-930-001-L4", "part": "930-001", "config": "previous",
+     "scad": "930-001_ClawFinger.scad", "out": "out/2d/930-001-L4.svg", "layer": "L4",
+     "reference": "930-001_ClawFinger.stl", "axis": "y", "at": 3.0, "tol": 0.15},
+    {"kind": "outline", "id": "outline-930-001-L5", "part": "930-001", "config": "previous",
+     "scad": "930-001_ClawFinger.scad", "out": "out/2d/930-001-L5.svg", "layer": "L5",
+     "reference": "930-001_ClawFinger.stl", "axis": "y", "at": 3.757, "tol": 0.15},
+    {"kind": "outline", "id": "outline-930-001-L6", "part": "930-001", "config": "previous",
+     "scad": "930-001_ClawFinger.scad", "out": "out/2d/930-001-L6.svg", "layer": "L6",
+     "reference": "930-001_ClawFinger.stl", "axis": "y", "at": 9.0, "tol": 0.15},
+    {"kind": "dist_gate", "id": "dist-930-001", "part": "930-001",
+     "config": "previous", "scad": "930-001_ClawFinger.scad", "out": "out/930-001.stl", "reference": "930-001_ClawFinger.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-930-001", "config": "revised",
+     "scad": "930-001_ClawFinger.scad", "out": "out/revised/930-001.stl"},
+    {"kind": "fits", "id": "fits-930-001", "part": "930-001 (revised)",
+     "stl": "out/revised/930-001.stl", "after": ["render-930-001"],
+     "note": "The revised #930-001's print fits: the shaft in the MR128s' Ø8 bores, on +X mid-shaft; the Span Driver's head on the socket's -X flat (x 10.639), mid-socket.",
+     "probes": [
+       {"label": "S2 in the MR128", "at": [18.139, 9.0, 17.5], "toward": [1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "K1 flat on the Span Driver's head", "at": [10.639, -1.0, 18.0], "toward": [1.0, 0.0, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "outline", "id": "outline-930-002", "part": "930-002", "config": "previous",
+     "scad": "930-002_FingerCap.scad", "out": "out/2d/930-002-D1.svg", "layer": "D1",
+     "reference": "930-002_FingerCap.stl", "axis": "z", "at": 1.0, "tol": 0.15,
+     "note": "#930-002 is one 2D section extruded 4 mm."},
+    {"kind": "dist_gate", "id": "dist-930-002", "part": "930-002",
+     "config": "previous", "scad": "930-002_FingerCap.scad", "out": "out/930-002.stl", "reference": "930-002_FingerCap.stl", "tol": 0.15},
+    {"kind": "render", "id": "render-930-002", "config": "revised",
+     "scad": "930-002_FingerCap.scad", "out": "out/revised/930-002.stl"},
+    {"kind": "fits", "id": "fits-930-002", "part": "930-002 (revised)",
+     "stl": "out/revised/930-002.stl", "after": ["render-930-002"],
+     "note": "The revised #930-002's print fit: the M2 bolt in H1, on +X mid-height.",
+     "probes": [
+       {"label": "H1 bolt hole", "at": [1.0, 0.0, 2.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
+     ]}
+  ]
+}
