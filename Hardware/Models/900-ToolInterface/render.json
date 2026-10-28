@@ -66,7 +66,18 @@
      "note": "The revised #911-002's print fits: S1 in the two 6703s' Ø17 bores, on +X mid-shaft, clear of the pin and bolt holes on r 6; an M2 head in C1 on 45 deg, on its outer side.",
      "probes": [
        {"label": "S1 in the 6703", "at": [8.5, 0.0, 15.0], "toward": [1.0, 0.0, 0.0], "fit": "press"},
-       {"label": "C1 bolt head counterbore", "at": [5.5861, 5.5861, 8.5], "toward": [-0.7071, -0.7071, 0.0], "fit": "slip"}
+       {"label": "C1 bolt head counterbore", "at": [5.5861, 5.5861, 7.0], "toward": [-0.7071, -0.7071, 0.0], "fit": "slip"}
+     ]},
+    {"kind": "probes", "id": "probes-911-002-walls", "part": "911-002 (revised)",
+     "stl": "out/revised/911-002.stl", "after": ["render-911-002"],
+     "note": "The revised flange F1 (z 6.0 .. 8.0, Ø18.3) holds C1 whole, with at least 1 mm of wall each side of it, along the 45 deg ray through C1 at z 7.0: solid from C1 (r 8.05) out to F1's face (r 9.15), and from W1 (r 2.8) out to C1 (r 3.95).",
+     "items": [
+       {"label": "outer wall at C1", "at": [5.7276, 5.7276, 7.0], "solid": true},
+       {"label": "outer wall at F1's face", "at": [6.4347, 6.4347, 7.0], "solid": true},
+       {"label": "past F1's face", "at": [6.5054, 6.5054, 7.0], "solid": false},
+       {"label": "inner wall at C1", "at": [2.7577, 2.7577, 7.0], "solid": true},
+       {"label": "inner wall at W1", "at": [2.0153, 2.0153, 7.0], "solid": true},
+       {"label": "no C1 in L3", "at": [4.2426, 6.0, 8.65], "solid": true}
      ]},
     {"kind": "outline", "id": "outline-912-001-F1", "part": "912-001", "config": "previous",
      "scad": "912-001_SpanMount.scad", "out": "out/2d/912-001-F1.svg", "layer": "F1",

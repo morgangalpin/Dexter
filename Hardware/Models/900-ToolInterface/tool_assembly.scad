@@ -52,8 +52,8 @@ B6703       = [17, 23, 4, [3.5, 12.5]];  // bore, OD, width, z of each in #911-0
 B6703_RACES = [18.8, 21.2];              // inner race OD, outer race ID
 MR128       = [8, 12, 3.5, [10.007, 14.007]];  // bore, OD, width, y of each in #920-001
 MR128_RACES = [9.2, 10.8];
-ROLL_BOLT   = [2, 20, 3.8, 2, 9.295];    // M2 x 20 socket head (ISO 4762): d, length, head d, head h; under its head z in
-                                         // #911-002: C1's floor, z 9.3 less the 0.005 its L4 laps down
+ROLL_BOLT   = [2, 20, 3.8, 2, 7.995];    // M2 x 20 socket head (ISO 4762): d, length, head d, head h; under its head z in
+                                         // #911-002 (revised): C1's floor, z 8.0 less the 0.005 its L3 laps down
 ROLL_WASHER = [2.2, 5, 0.3, 2];          // M2 washer (DIN 125): bore, OD, thickness; on #912-001's K1 floor z 2
 ROLL_NUT    = [4, 1.6];                  // M2 nut (DIN 934): across flats, height; on the washer
 PIN         = [1, -1.5, 21];             // satin pin #19: d, z span in #911-002 (~6 mm proud below N1, flush at the top)

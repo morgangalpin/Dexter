@@ -6,7 +6,8 @@
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/900-ToolInterface/911-002_RollDriver.stl), in that mesh's
 //                         frame.
-//   config = "revised"  — the same part with S1 at the 6703's press fit.
+//   config = "revised"  — the same part with S1 at the 6703's press fit, and F1 thickened down to hold
+//                         C1 whole.
 //
 // SOURCE. 911-002_RollDriver.step (Reference/, 2020-03-12) and the STL are the same revision: every
 // STEP surface (scadmesh surfaces) lands on the STL's sections in the same frame, and the dimensions
@@ -35,11 +36,17 @@
 //     L4     9.3 .. 21   S1 less W1, P1, B1
 //
 // FITS (revised). S1 is pressed into the two 6703s (C-404, 17 x 23 x 4): fit_pin(17, FIT_PRESS)
-// = Ø16.900 over the whole shaft, F1 staying Ø18 as the shoulder. C1 takes the M2 x 20 bolts' heads
-// (Ø3.8, step 7): fit_bore(3.8, FIT_SLIP) = Ø4.100, which leaves 0.40 of wall in L3 between C1 and
-// the 6703's bore (the reference's leaves 0.50). The rest keep the reference's sizes: P1 is reamed for
-// satin pins that are glued in (step 5-6), B1 is tapped by the M2 x 20 bolts (step 7), N1 engages the
-// servo's horn (unknown mate), and W1 carries wires.
+// = Ø16.900 over the whole shaft. C1 takes the M2 x 20 bolts' heads (Ø3.8, step 7): fit_bore(3.8,
+// FIT_SLIP) = Ø4.100. The rest keep the reference's sizes: P1 is reamed for satin pins that are glued in
+// (step 5-6), B1 is tapped by the M2 x 20 bolts (step 7), N1 engages the servo's horn (unknown mate),
+// and W1 carries wires.
+//
+// FLANGE (revised). In the reference, C1 runs 1.3 into L3, inside the lower 6703's bore, which leaves
+// 0.50 of wall to S1 (0.40 once C1 is at slip). No bolt circle leaves 1 mm both sides there: W1 and S1
+// are 5.65 apart radially, and C1 takes 4.1 of it. So the revised flange F1 runs from z 6.0 to the
+// 6703's face at z 8.0, Ø18.300, and holds C1 whole: 1.10 of wall outside it and 1.15 to W1. L3 is then
+// S1 less B1, as L4 is, and N1 is 1.5 tall (z 4.5 .. 6.0) where the reference's is 2.8. The bolt heads
+// sit 1.3 lower, so each M2 x 20 ends 0.6 above its nut (tool_assembly.scad echoes it).
 
 include <../print_fit.scad>
 
@@ -53,7 +60,9 @@ layer = "part"; // [part, L1, L2, L3, L4]
 $fn = 144;
 LAP = 0.005;               // layers overlap so Manifold joins them (no shared faces)
 
-Z = [4.5, 7.3, 8.0, 9.3, 21.0];   // the layers' faces, L1 .. L4
+Z     = [4.5, 7.3, 8.0, 9.3, 21.0];   // the layers' faces, L1 .. L4
+Z_REV = [4.5, 6.0, 8.0, 9.3, 21.0];   // revised: F1 thickened down to z 6.0
+FLANGE_D_REV = 18.300;     // revised F1: C1 at r 6, Ø4.1, leaves 1.10 of wall
 
 PCD_R     = 6.000;         // N1, P1, C1 and B1 all stand on r 6
 BOSS_D    = 3.800;         // N1
@@ -82,18 +91,21 @@ module disc_2d(d, h) difference() {
 function shaft_d(cfg) = fit_pin(SHAFT_D, fit_clearances(cfg)[1]);
 function cbore_d(cfg) = cfg == "revised" ? fit_bore(HEAD_D, fit_clearances(cfg)[0]) : CBORE_D;
 
-module l2_2d(cfg = config) disc_2d(FLANGE_D, cbore_d(cfg));
-module l3_2d(cfg = config) disc_2d(shaft_d(cfg), cbore_d(cfg));
+function z_faces(cfg) = cfg == "revised" ? Z_REV : Z;
+
+module l2_2d(cfg = config) disc_2d(cfg == "revised" ? FLANGE_D_REV : FLANGE_D, cbore_d(cfg));
+module l3_2d(cfg = config) disc_2d(shaft_d(cfg), cfg == "revised" ? BOLT_D : cbore_d(cfg));
 module l4_2d(cfg = config) disc_2d(shaft_d(cfg), BOLT_D);
 
 // Layer i's slab, lapped LAP into the layer below.
-module slab(i) translate([0, 0, Z[i] - (i > 0 ? LAP : 0)]) linear_extrude(Z[i + 1] - Z[i] + (i > 0 ? LAP : 0)) children();
+module slab(i, cfg) let(z = z_faces(cfg))
+    translate([0, 0, z[i] - (i > 0 ? LAP : 0)]) linear_extrude(z[i + 1] - z[i] + (i > 0 ? LAP : 0)) children();
 
 module roll_driver(cfg = config) {
-    slab(0) l1_2d();
-    slab(1) l2_2d(cfg);
-    slab(2) l3_2d(cfg);
-    slab(3) l4_2d(cfg);
+    slab(0, cfg) l1_2d();
+    slab(1, cfg) l2_2d(cfg);
+    slab(2, cfg) l3_2d(cfg);
+    slab(3, cfg) l4_2d(cfg);
 }
 
 if (layer == "L1") l1_2d();
