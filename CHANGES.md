@@ -1108,7 +1108,8 @@ anything version 3 does not independently specify
   - `Hardware/Models/900-ToolInterface/`: `900-001_ToolInterfaceBody.scad`, `911-001_RollBody.scad`,
     `911-002_RollDriver.scad`, `912-001_SpanMount.scad`, `912-002_SpanDriver.scad`, their `.view.json`
     sidecars, `render.json`, and the assembly `tool_assembly.scad` with its `.view.json` and
-    `.clash.json` (new). Their meshes, STEPs and f3ds moved to `Reference/meshes/900-ToolInterface/`,
+    `.clash.json`, and the XL-320 placement model `Hardware/Models/c102_servo.scad` it shares with the
+    gripper's assembly (new). Their meshes, STEPs and f3ds moved to `Reference/meshes/900-ToolInterface/`,
     where `900-001_ToolInterfaceBody.stl` (new) is the reference mesh tessellated from the STEP.
   - `Hardware/Models/920-ParallelGripper/` (new group): `920-001_StaticFinger.scad`,
     `920-002_DynamicFinger.scad`, `920-005_PinionGear.scad`, `920-006_PinionBearingExt.scad`, their
@@ -1516,9 +1517,9 @@ anything version 3 does not independently specify
     the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
   - **900-ToolInterface:** the Roll Driver (`#911-002`) is a stack of constant sections taken from its
     STEP, which is the same revision as the STL. `revised` presses its Ø17 shaft into the two 6703s,
-    opens the bolt heads' counterbores to slip, and thickens its flange down to z 6.0 at Ø18.3 so that
-    each counterbore sits whole below the lower 6703 with at least 1 mm of wall; in the reference it runs
-    into the 6703's bore with 0.50 left, and no bolt circle leaves 1 mm both sides there. The
+    and sizes the bolt heads' counterbores at press, not slip, so that each keeps the reference's 0.50 of
+    wall to the lower 6703's bore (slip would leave 0.40, narrower than one extrusion line). The flange keeps the reference's thickness, because the roll
+    XL-320's horn stands 0.3 under it. The
     Span Driver (`#912-002`) is a stack of sections with the spline end's round revolved; `revised`
     presses its spline bore onto the XL-320 output spline and opens the M2.6 bolt hole and counterbore
     to slip. Its STEP is a different revision (its head, key slot and counterbore differ), so the STL is
@@ -1550,11 +1551,12 @@ anything version 3 does not independently specify
     plate slot to slip. The Tool Interface Body (`#900-001`) is a region split of its STEP, whose lobe
     pockets' rims are rolled onto the top cone by a ball. It had no mesh either, so it is gated against
     its STEP tessellated by `scadmesh tessellate`; `revised` opens the M3 and M2 bolt holes and nut traps
-    to slip and the servo pocket to press. `tool_assembly.scad` places the roll stack and the Span
-    Mount, but not the body (its header gives why), each part by a feature it carries, with the roll
-    bolts, washers, nuts and satin pins; `920-ParallelGripper/gripper_assembly.scad` places the parallel
-    gripper on it the same way, with its MR128s and its M3 bolt and nut, and `assembly-clash.rs` passes
-    both. A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
+    to slip and the servo pocket to press. `tool_assembly.scad` places the roll stack, the Span Mount
+    and both XL-320s (`c102_servo.scad`), but not the body (its header gives why), each part by a
+    feature it carries, with the roll bolts, washers, nuts and satin pins and the span servo's bolts;
+    `920-ParallelGripper/gripper_assembly.scad` places the parallel gripper on it the same way, with its
+    MR128s and its M3 bolt and nut. `assembly-clash.rs` checks both and fails only where the XL-320s and
+    the printed parts disagree, which each assembly's header and view list. A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
     Pinion Gear's and the rack's 12 teeth each.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.

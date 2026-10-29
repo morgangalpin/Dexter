@@ -15,14 +15,22 @@
       {"id": "m3_bolt_head", "name": "M3 × 16 bolt's head, on the EXT's end", "pn": "M3 × 16", "color": "#8a8f94"},
       {"id": "m3_bolt_shank", "name": "M3 × 16 bolt's shank, through the EXT into the nut", "pn": "M3 × 16", "color": "#8a8f94"},
       {"id": "m3_nut", "name": "M3 nut, in the pinion's trap", "pn": "M3 nut", "color": "#8a8f94"}]},
-    {"name": "Roll", "role": "the wrist's roll: the Roll Driver turns in the Roll Body", "parts": [
+    {"name": "Roll", "role": "the wrist's roll: the roll XL-320 turns the Roll Driver in the Roll Body", "parts": [
       {"id": "roll_body", "name": "Roll Body, revised", "pn": "#911-001", "color": "#d4ad6b"},
       {"id": "roll_driver", "name": "Roll Driver, revised", "pn": "#911-002", "color": "#2f6db5"},
       {"id": "roll_lower", "name": "Lower 6703, in the lower seat", "pn": "6703", "color": "#dcdcdc"},
-      {"id": "roll_upper", "name": "Upper 6703, in the upper seat", "pn": "6703", "color": "#dcdcdc"}]},
-    {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end", "parts": [
+      {"id": "roll_upper", "name": "Upper 6703, in the upper seat", "pn": "6703", "color": "#dcdcdc"},
+      {"id": "roll_servo", "name": "Roll XL-320's case, its front face on the Roll Body's bosses", "pn": "C-102", "color": "#3c4250"},
+      {"id": "roll_horn", "name": "Roll XL-320's horn, on the Roll Driver's drive bosses", "pn": "C-102", "color": "#9aa3ad"}]},
+    {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end, and the span XL-320 on it", "parts": [
       {"id": "span_mount", "name": "Span Mount, revised", "pn": "#912-001", "color": "#e0a458"},
-      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"}]},
+      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"},
+      {"id": "span_servo", "name": "Span XL-320's case, on the upright plate and the drive nubs", "pn": "C-102", "color": "#3c4250"},
+      {"id": "span_spline", "name": "Span XL-320's output spline and key, its horn off", "pn": "C-102", "color": "#9aa3ad"},
+      {"id": "span_bolt_heads", "name": "M2 × 12 bolts' heads, in the upright plate's counterbores", "pn": "M2 × 12", "color": "#8a8f94"},
+      {"id": "span_bolt_shanks", "name": "M2 × 12 bolts' shanks, through the plate and the servo's tab", "pn": "M2 × 12", "color": "#8a8f94"},
+      {"id": "span_washers", "name": "M2 washers, in the servo tab's back counterbores", "pn": "M2 washer", "color": "#b0b4b8"},
+      {"id": "span_nuts", "name": "M2 nuts, on the washers", "pn": "M2 nut", "color": "#8a8f94"}]},
     {"name": "Roll fasteners", "role": "join the Roll Driver to the Span Mount and to the servo's horn", "parts": [
       {"id": "roll_bolt_heads", "name": "M2 × 20 bolts' heads, in the Roll Driver's counterbores", "pn": "M2 × 20", "color": "#8a8f94"},
       {"id": "roll_bolt_shanks", "name": "M2 × 20 bolts' shanks, threaded in the Roll Driver", "pn": "M2 × 20", "color": "#8a8f94"},
@@ -34,6 +42,7 @@
     {"at": [0.9, 0, 41.7], "text": "Static Finger's socket ceiling on the Span Mount's column top"},
     {"at": [-6.5, 14.139, 47.25], "text": "Pinion Gear, 12 teeth, m1.75: its teeth along x -3.5 … -9.5"},
     {"at": [-1.5, 14.139, 35.6], "text": "Span Driver's head on the drive slot's ceiling"},
+    {"at": [7.243, 14.139, 39.5], "text": "Span XL-320's front face: the Span Driver's bore mouth stands inside the case"},
     {"at": [-4.8, 14.139, 35], "text": "M3 nut against its trap's ceiling"},
     {"at": [-9.8, 14.139, 39.4], "text": "EXT's spacer between the pinion and the inner MR128"},
     {"at": [-11.75, 14.139, 41], "text": "Inner MR128, x -10.0 … -13.5"},
@@ -44,15 +53,25 @@
   "presets": [
     {"label": "Whole gripper", "at": [-5, 10, 35], "span": 90},
     {"label": "Pinion and bearings", "at": [-10, 14.139, 35], "span": 35},
-    {"label": "Rack on the pinion", "at": [-6.5, 14.139, 45.5], "span": 30}
+    {"label": "Rack on the pinion", "at": [-6.5, 14.139, 45.5], "span": 30},
+    {"label": "Span servo and driver", "at": [6, 14.139, 35], "span": 35}
   ],
   "notes": [
     {"heading": "Placements",
-     "text": "Each part stands by a feature it carries, as gripper_assembly.scad's header records; the tool interface stack under it is ../900-ToolInterface/tool_assembly.scad's."},
+     "text": "Each part stands by a feature it carries, as gripper_assembly.scad's header records; the tool interface stack under it, with both XL-320s, is ../900-ToolInterface/tool_assembly.scad's."},
+    {"heading": "Where the servos and the printed parts disagree",
+     "text": "The Span Driver stands where the pinion's drive slot puts it, which is not where the span XL-320's spline would seat it; gripper_assembly.scad's header gives why it cannot simply be moved. In mm:",
+     "rows": [
+       {"text": "Span Driver's bore mouth, past the case's front face into the case", "value": "{b1_mouth_in_servo}", "warn": true},
+       {"text": "Spline in the bore, from its root", "value": "{spline_in_b1}"},
+       {"text": "Spline beyond the bore, in the driver's collar", "value": "{spline_past_b1}", "warn": true}],
+     "items": [
+       "The Static Finger meets the span XL-320's case line to line beside its front face, and the span bolts' heads reach into the finger's slot: gripper_assembly.scad's header gives where",
+       "The roll XL-320's horn against the revised Roll Driver, and the span bolts, as ../900-ToolInterface/tool_assembly.view.json gives"]},
     {"heading": "Not drawn",
      "items": [
-       "The span XL-320, which the Span Driver stands on, and the grip pads",
+       "The grip pads, and the M2.6 × 10 bolt that holds the Span Driver on the spline",
        "The pinion's two satin pins: the Pinion Gear's STEP has no holes for them, as gripper_assembly.scad's header gives",
-       "The two XL-320s and the Tool Interface Body, as ../900-ToolInterface/tool_assembly.view.json gives"]}
+       "The Tool Interface Body and the Roll Body's bolts, as ../900-ToolInterface/tool_assembly.view.json gives"]}
   ]
 }

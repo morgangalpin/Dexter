@@ -2,8 +2,9 @@
 // Places the parallel gripper on the tool interface: the Static Finger on the Span Mount, the Pinion Gear
 // and the Pinion Bearing EXT on their two MR128s in the Static Finger's hub, the Span Driver in the
 // Pinion Gear's drive slot, the M3 bolt and nut that join the pinion and the EXT, and the Dynamic Finger
-// in the Static Finger's T-slot, meshed with the pinion. The tool interface itself is
-// ../900-ToolInterface/tool_assembly.scad's, drawn through its modules.
+// in the Static Finger's T-slot, meshed with the pinion. The tool interface itself, with the span
+// XL-320 the Span Driver stands on, is ../900-ToolInterface/tool_assembly.scad's, drawn through its
+// modules.
 //
 // FRAME. The tool interface's: the Roll Body's, the roll axis on +Z. Every part of this group stands in
 // the Static Finger's frame, sf_frame() below; the hub's axis runs along its +Y through HUB.
@@ -13,7 +14,9 @@
 //   - The Static Finger's socket over the Span Mount's column, its ceiling on the column's top and its
 //     slot on the upright plate (step 46): the socket is the column's section turned -90 deg about Z,
 //     so its frame is the Span Mount's turned +90 deg and 1.5 lower. Its hub then stands on the Span
-//     Mount's eye axis.
+//     Mount's eye axis. Placed so, it meets the span XL-320's case line to line beside the case's
+//     front face, and the span bolts' heads, which stand proud of V1 (tool_assembly.scad echoes by how
+//     much), reach into its slot.
 //   - The MR128s on the EXT's journal and in the Static Finger's seats (step 41): the journal (#920-006
 //     J1) is 7.5 long, the two bearings' widths and the 0.5 shoulder between the seats, so each bearing
 //     stands against the shoulder.
@@ -23,7 +26,13 @@
 //   - The EXT's keyed nose in the pinion's key recess, point to point (step 43): its y runs along +Y,
 //     10.007 on, its hash mark on +Z.
 //   - The Span Driver's head in the pinion's drive slot, its end on the slot's ceiling (z -2 of the
-//     pinion): its y runs along +Y, 11.493 back (step 36-37 set it on the servo's spline).
+//     pinion): its y runs along +Y, 11.493 back (step 36-37 set it on the servo's spline). The span
+//     XL-320, which tool_assembly.scad draws, does not agree. Its spline's axis is the driver's, and
+//     its teeth and key stand in B1's and K2's, but B1's mouth stands inside the servo's case, so only
+//     the spline's root is in B1 and the rest of it stands in the driver's collar beyond B1, as the
+//     file echoes. Seated with B1's mouth on the case's face, the driver would stand that depth further
+//     along +Y and its head would end as far past the slot's ceiling, so the driver, the pinion's slot
+//     and the servo cannot all stand as drawn. The servo's output turns with the driver (OPEN).
 //   - The M3 nut against its trap's ceiling (step 40), and the M3 x 16 bolt's head on the EXT's end
 //     face, its shank through the EXT and the pinion into the nut (step 43).
 //   - The Dynamic Finger in the T-slot, its rack's pitch line on the pinion's pitch circle: its own frame
@@ -32,7 +41,8 @@
 //     the pinion's teeth points along +Z into a gap of the rack, 0.010 off the gap's centre.
 //
 // NOT DRAWN. The satin pins of steps 38-39: the 2020-03-12 STEP of the Pinion Gear has no holes for
-// them. The span XL-320, which the Span Driver stands on; the grip pads (step 48).
+// them. The M2.6 x 10 bolt that holds the Span Driver on the servo's spline (step 37); the grip pads
+// (step 48).
 //
 // GEOMETRY. The printed parts are the binary mesh caches `render.rs 900-ToolInterface --meshes` and
 // `render.rs 920-ParallelGripper --meshes` build in each group's out/asm/ (revised), so run both first.
@@ -40,6 +50,7 @@
 // one race alone, and PARTS lists only the whole bearing.
 
 use <../900-ToolInterface/tool_assembly.scad>
+use <../c102_servo.scad>
 
 part = "all";   // "all", or one name from PARTS or RACE_PARTS for per-part export
 OPEN = 0;       // the Dynamic Finger's travel from its drawn position, mm along the T-slot
@@ -55,6 +66,7 @@ MR128_RACES = [9.2, 10.8];
 PINION_Y    = 3.507;                     // #920-005 z 0 along +Y: its top (z 6.0) on the EXT's spacer at y 9.507
 EXT_Y       = 10.007;                    // #920-006 y 0 (its shoulder, the inner MR128's face)
 DRIVER_Y    = -11.493;                   // #912-002 y 0: its head's end (y 13) on #920-005 D1's ceiling (z -2)
+DRIVER_B1   = [2.175, 5.325];            // #912-002 B1's y span, its mouth first
 M3_BOLT     = [3, 16, 5.5, 3, 8.5];      // M3 x 16 socket head (ISO 4762): d, length, head d, head h; under its head y in #920-006
 M3_NUT      = [5.5, 2.4, 1.3];           // M3 nut (DIN 934): across flats, height; its top z in #920-005 (N1's ceiling)
 RACK        = [18.272, 3.257, 28];       // #920-002's frame in #920-001's, closed: its pitch line z 0 on z 28
@@ -106,7 +118,7 @@ PARTS = concat(tool_parts(), OWN_PARTS);
 RACE_PARTS = concat(tool_race_parts(), GRIP_RACE_PARTS);
 
 module draw(p) {
-  tool_draw(p);
+  tool_draw(p, OPEN / PITCH_R * 180 / PI);   // the span servo's output turns with the Span Driver
   if (p == "static_finger")  static_finger();
   if (p == "dynamic_finger") dynamic_finger();
   if (p == "pinion_gear")    pinion_gear();
@@ -119,8 +131,14 @@ module draw(p) {
   for (b = GRIP_BEARINGS, r = GRIP_RACES) if (p == str(b, "_", r)) color("#dcdcdc") grip_bearing_in(b, r);
 }
 
-echo(str("M3 bolt end below the nut's top: ",
-          (PINION_Y + M3_NUT[2]) - (EXT_Y + M3_BOLT[4] - M3_BOLT[1]), " mm, of the nut's ", M3_NUT[1]));
+// The Span Driver against the span XL-320, along the Span Mount's X: the hub's +Y is its -X (SF_TURN).
+B1_X = [-(DRIVER_Y + DRIVER_B1[0]), -(DRIVER_Y + DRIVER_B1[1])];   // B1's mouth and end, x in #912-001
+SPLINE_IN_B1 = span_servo_face() - max(span_servo_face() - c102_output_h(), B1_X[1]);
+echo(b1_mouth_in_servo = B1_X[0] - span_servo_face());   // past the case's front face, into the case
+echo(spline_in_b1 = SPLINE_IN_B1);
+echo(spline_past_b1 = c102_output_h() - SPLINE_IN_B1);    // beyond B1's end, in the driver's collar
+
+echo(m3_end_below_nut_top = (PINION_Y + M3_NUT[2]) - (EXT_Y + M3_BOLT[4] - M3_BOLT[1]));   // of the nut's M3_NUT[1]
 
 for (p = PARTS) if (part == "all" || part == p) draw(p);
 for (p = RACE_PARTS) if (part == p) draw(p);

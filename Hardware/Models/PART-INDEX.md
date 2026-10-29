@@ -144,7 +144,7 @@ shared stem.
 |---|---|---|---|---|
 | #900-001 | Tool Interface Body | 1 | `900-001_ToolInterfaceBody.scad` | ⚠️ `revised` opens the M3 and M2 bolt holes and nut traps to slip and presses the servo pocket |
 | #911-001 | Roll Body | 1 | `911-001_RollBody.scad` | `revised` presses the 6703s' seats and opens the bolt holes and counterbores to slip |
-| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | ⚠️ `revised` presses the shaft into the two 6703s and thickens the flange to hold the bolt heads' counterbores |
+| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | `revised` presses the shaft into the two 6703s and sizes the bolt heads' counterbores at press |
 | #912-001 | Span Mount | 1 | `912-001_SpanMount.scad` | `revised` opens the strake slot to the strip's press fit and the bolt holes and washer pockets to slip |
 | #912-002 | Span Driver | 1 | `912-002_SpanDriver.scad` | `revised` presses the spline bore onto the XL-320 output spline and opens the M2.6 bolt hole and counterbore to slip |
 
