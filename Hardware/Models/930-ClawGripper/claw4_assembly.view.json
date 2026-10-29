@@ -1,0 +1,86 @@
+{
+  "scad": "claw4_assembly.scad",
+  "title": "Claw gripper, 4 fingers",
+  "subtitle": "claw4_assembly.scad · the 4-finger claw on the tool interface stack: the Claw Body on the Span Mount, a Claw Gear on each pivot in two MR128s, two Claw Fingers on each pivot, either side of the body · closed · the Roll Body's frame, roll axis on +Z, the pivots along X",
+  "groups": [
+    {"name": "Fingers", "role": "the claw's jaws: one model, the follower's turned 180° about Z", "parts": [
+      {"id": "drive_finger", "name": "Drive Claw Finger, over the Span Driver's head and the drive gear's nose", "pn": "#930-001", "color": "#3a6b8f"},
+      {"id": "follow_finger", "name": "Follower Claw Finger, over the follower gear's nose", "pn": "#930-001", "color": "#3a6b8f"},
+      {"id": "drive_screw", "name": "M3 × 6 set screw, in the drive finger's hub", "pn": "C-606", "color": "#8a8f94"},
+      {"id": "follow_screw", "name": "M3 × 6 set screw, in the follower finger's hub", "pn": "C-606", "color": "#8a8f94"},
+      {"id": "drive_outer_finger", "name": "Outer drive Claw Finger, over the drive Axle's nose", "pn": "#930-001", "color": "#3a6b8f"},
+      {"id": "follow_outer_finger", "name": "Outer follower Claw Finger, over the follower Axle's nose", "pn": "#930-001", "color": "#3a6b8f"},
+      {"id": "drive_outer_screw", "name": "M3 × 6 set screw, in the outer drive finger's hub", "pn": "C-606", "color": "#8a8f94"},
+      {"id": "follow_outer_screw", "name": "M3 × 6 set screw, in the outer follower finger's hub", "pn": "C-606", "color": "#8a8f94"}]},
+    {"name": "Gears", "role": "the two gears mesh 1:1, so the fingers turn equal and opposite", "parts": [
+      {"id": "claw_body", "name": "Claw Body, on the Span Mount's column and strake", "pn": "#930-003", "color": "#c98a3a"},
+      {"id": "drive_gear", "name": "Drive Claw Gear, on the span axis", "pn": "#930-002", "color": "#6b8f3a"},
+      {"id": "follow_gear", "name": "Follower Claw Gear, on the span axis's mirror", "pn": "#930-002", "color": "#6b8f3a"},
+      {"id": "span_driver", "name": "Span Driver, on the span XL-320's spline", "pn": "#912-002", "color": "#7a7a3a"},
+      {"id": "drive_axle", "name": "Claw Axle, its keyed nose in the drive gear's recess", "pn": "#930-004", "color": "#8f3a6b"},
+      {"id": "follow_axle", "name": "Claw Axle, its keyed nose in the follower gear's recess", "pn": "#930-004", "color": "#8f3a6b"},
+      {"id": "drive_inner", "name": "Inner MR128, drive pivot", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "drive_outer", "name": "Outer MR128, drive pivot", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "follow_inner", "name": "Inner MR128, follower pivot", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "follow_outer", "name": "Outer MR128, follower pivot", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "drive_bolt_head", "name": "M3 × 25 head, on the drive Axle's end", "pn": "M3 × 25", "color": "#8a8f94"},
+      {"id": "drive_bolt_shank", "name": "M3 × 25 shank, through the drive Axle", "pn": "M3 × 25", "color": "#8a8f94"},
+      {"id": "drive_bolt_thread", "name": "M3 × 25 thread, in the drive gear's tapped hole", "pn": "M3 × 25", "color": "#8a8f94"},
+      {"id": "follow_bolt_head", "name": "M3 × 25 head, on the follower Axle's end", "pn": "M3 × 25", "color": "#8a8f94"},
+      {"id": "follow_bolt_shank", "name": "M3 × 25 shank, through the follower Axle", "pn": "M3 × 25", "color": "#8a8f94"},
+      {"id": "follow_bolt_thread", "name": "M3 × 25 thread, in the follower gear's tapped hole", "pn": "M3 × 25", "color": "#8a8f94"}]},
+    {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end, and the span XL-320 on it", "parts": [
+      {"id": "span_mount", "name": "Span Mount, revised", "pn": "#912-001", "color": "#e0a458"},
+      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"},
+      {"id": "span_servo", "name": "Span XL-320's case", "pn": "C-102", "color": "#3c4250"},
+      {"id": "span_spline", "name": "Span XL-320's output spline and key", "pn": "C-102", "color": "#9aa3ad"},
+      {"id": "span_bolt_heads", "name": "M2 × 12 bolts' heads", "pn": "M2 × 12", "color": "#8a8f94", "shown": false},
+      {"id": "span_bolt_shanks", "name": "M2 × 12 bolts' shanks", "pn": "M2 × 12", "color": "#8a8f94", "shown": false},
+      {"id": "span_washers", "name": "M2 washers", "pn": "M2 washer", "color": "#b0b4b8", "shown": false},
+      {"id": "span_nuts", "name": "M2 nuts", "pn": "M2 nut", "color": "#8a8f94", "shown": false}]},
+    {"name": "Roll", "role": "the wrist's roll, as ../900-ToolInterface/tool_assembly.view.json shows it", "parts": [
+      {"id": "roll_body", "name": "Roll Body, revised", "pn": "#911-001", "color": "#d4ad6b", "shown": false},
+      {"id": "roll_driver", "name": "Roll Driver, revised", "pn": "#911-002", "color": "#2f6db5", "shown": false},
+      {"id": "roll_lower", "name": "Lower 6703", "pn": "6703", "color": "#dcdcdc", "shown": false},
+      {"id": "roll_upper", "name": "Upper 6703", "pn": "6703", "color": "#dcdcdc", "shown": false},
+      {"id": "roll_servo", "name": "Roll XL-320's case", "pn": "C-102", "color": "#3c4250", "shown": false},
+      {"id": "roll_horn", "name": "Roll XL-320's horn", "pn": "C-102", "color": "#9aa3ad", "shown": false},
+      {"id": "roll_bolt_heads", "name": "M2 × 20 bolts' heads", "pn": "M2 × 20", "color": "#8a8f94", "shown": false},
+      {"id": "roll_bolt_shanks", "name": "M2 × 20 bolts' shanks", "pn": "M2 × 20", "color": "#8a8f94", "shown": false},
+      {"id": "roll_washers", "name": "M2 washers", "pn": "M2 washer", "color": "#b0b4b8", "shown": false},
+      {"id": "roll_nuts", "name": "M2 nuts", "pn": "M2 nut", "color": "#8a8f94", "shown": false},
+      {"id": "roll_pins", "name": "Satin pins", "pn": "#19 satin pin", "color": "#c0c0c0", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 0, 41.7], "text": "Claw Body's socket ceiling on the Span Mount's column top"},
+    {"at": [-1.757, 14.139, 35], "text": "Drive finger: its socket over the Span Driver's head and the drive gear's nose"},
+    {"at": [-1.757, -14.139, 35], "text": "Follower finger: its socket over the follower gear's nose"},
+    {"at": [-14.5, 0, 35], "text": "The gears' mesh, 1:1, on the roll axis's plane"},
+    {"at": [-21.75, 14.139, 41.5], "text": "Two MR128s on each pivot, in the bearing plate"},
+    {"at": [-38, 14.139, 35], "text": "M3 × 25 head on the Axle's end"},
+    {"at": [-1.757, 0, 106.5], "text": "Closed: the tips' faces meet on the roll axis"},
+    {"at": [-31.5, 0, 106.5], "text": "The outer fingers' tips, 29.7 beyond the inner ones"}
+  ],
+  "presets": [
+    {"label": "Whole claw", "at": [-16, 0, 65], "span": 115, "from": [-1, -0.35, 0.25]},
+    {"label": "Pivots and gears", "at": [-12, 0, 35], "span": 70, "from": [-1, 0.4, 0.3]},
+    {"label": "Drive pivot", "at": [-2, 14.139, 35], "span": 30, "from": [-1, 0, 0]},
+    {"label": "Tips", "at": [-1.757, 0, 106], "span": 30, "from": [-1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Placements",
+     "text": "Each part stands by a feature it carries, as claw2_assembly.scad's header records (claw4_assembly.scad adds the Axles and the outer fingers), and the claw's layout along the pivots is claw_params.scad's. The tool interface stack under it, with both XL-320s, is ../900-ToolInterface/tool_assembly.scad's. OPEN, in degrees, opens the claw: the drive train turns +OPEN and the follower's −OPEN. In mm:",
+     "rows": [
+       {"text": "Tips' gap at this OPEN", "value": "{tip_gap}"},
+       {"text": "Tips' gap fully open", "value": "{tip_gap_open}"},
+       {"text": "Gears' rims over the Span Mount's base plate", "value": "{gear_over_base_plate}"},
+       {"text": "Claw Body's wall beside the column", "value": "{column_wall}"},
+       {"text": "M3 bolt's thread in the gear's tapped hole", "value": "{bolt_in_tap}"}]},
+    {"heading": "Where the servo and the printed parts disagree",
+     "text": "The Span Driver stands as steps 36-37 set it, which ../920-ParallelGripper/gripper_assembly.view.json gives: its bore's mouth stands inside the span XL-320's case. The spline's length is assumed (../c102_servo.scad), so this waits on a measurement of a servo."},
+    {"heading": "Not drawn",
+     "items": [
+       "The M2.6 × 10 bolt that holds the Span Driver on the spline",
+       "The Tool Interface Body and the Roll Body's bolts, as ../900-ToolInterface/tool_assembly.view.json gives"]}
+  ]
+}

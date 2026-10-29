@@ -40,6 +40,8 @@ function span_plate_face() = PLATE_SLOT[0];
 function span_driver_y() = -11.493;
 // The Span Mount's base plate F1 under a base: its circle's radius about the roll axis, and its top z.
 function span_base_disc() = [11.500, 5.500];
+// The strake's top (C-502 bonded in the column, tool_assembly.scad's STRAKE), level with V1's notch's top.
+function span_strake_top() = TONGUE[3];
 // How far the column socket S1 reaches from the roll axis along ±X, its corners' round included.
 function span_column_reach(cfg) = COLUMN[0] - COLUMN[1] * (sqrt(2) - 1) + fit_clearances(cfg)[0];
 

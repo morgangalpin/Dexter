@@ -1,0 +1,26 @@
+{
+  "title": "Claw Gear",
+  "subtitle": "#930-002 · revised render of 930-002_ClawGear.scad (designed, no reference mesh) · feature names",
+  "cut": false,
+  "from": [0.6, -1, 0.5],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#6b8f3a", "stl": "out/revised/930-002.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, 4.25, 5.5], "text": "N1 nose: the Span Driver's head's outline, y 1.757 … 6.757"},
+    {"at": [3.5, 4.257, 0], "text": "X1 cross-hole Ø3.3, for the finger's set screw"},
+    {"at": [6, 9, 0], "text": "B1 boss Ø12, through the Claw Body's front wall"},
+    {"at": [1.177, 14.5, 14.954], "text": "G1 20 teeth, m1.4139: a tooth 4.5° off +Z"},
+    {"at": [0, 17.5, 4], "text": "K1 key recess for the EXT's or Claw Axle's nose, 1.5 deep"},
+    {"at": [0, 17.5, 0], "text": "T1 Ø2.6 tapped M3, 7.5 deep"}
+  ],
+  "presets": [
+    {"label": "Nose end", "at": [0, 4, 0], "span": 22, "from": [0.3, -1, 0.3]},
+    {"label": "Key end", "at": [0, 17.5, 0], "span": 36, "from": [0.3, 1, 0.3]},
+    {"label": "Teeth", "at": [0, 14.5, 0], "span": 36, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its dimensions are claw_params.scad's, whose THE FLIP paragraph gives why one gear, drawn the same way up, serves both pivots. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

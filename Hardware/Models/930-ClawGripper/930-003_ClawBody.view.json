@@ -1,0 +1,26 @@
+{
+  "title": "Claw Body",
+  "subtitle": "#930-003 · revised render of 930-003_ClawBody.scad (designed, no reference mesh) · feature names",
+  "cut": false,
+  "from": [0.6, -1, 0.6],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#c98a3a", "stl": "out/revised/930-003.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, 2, 30], "text": "K1 keel in the inner fingers' plane, round the column socket S1 and strake slot S2"},
+    {"at": [0, -12.5, 33], "text": "R1 saddle over the upright plate and the span XL-320, cut by S3"},
+    {"at": [-21, 9.1, 17.5], "text": "W1 front wall: the gears' bosses through slots open downward"},
+    {"at": [0, 14.5, 35.5], "text": "P1 pocket roof, over the gears' mesh; the pocket is open below"},
+    {"at": [20.139, 25.5, 17.5], "text": "B1 bearing plate: two MR128 seats M1 on each pivot"},
+    {"at": [6.1, 0, 17.5], "text": "K1's wall between S1 and the fingers' hubs, 1.07"}
+  ],
+  "presets": [
+    {"label": "Front, the fingers' side", "at": [0, 0, 22], "span": 70, "from": [0.2, -1, 0.3]},
+    {"label": "Back, the bearing plate", "at": [0, 25.5, 17.5], "span": 70, "from": [0.2, 1, 0.3]},
+    {"label": "Underside", "at": [0, 8, 10], "span": 70, "from": [0.2, -0.3, -1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. One body serves both claws. Its socket on the Span Mount is ../900-ToolInterface/span_socket.scad's, shared with the Static Finger, and its layout along y is claw_params.scad's. It prints standing on the bearing plate's face. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}
