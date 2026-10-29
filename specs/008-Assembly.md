@@ -360,8 +360,8 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
 4. Press 2 6703 bearings into each side of the Roll Body.
 5. Clip the head off a 1" #19 satin pin, chuck it, and ream the 4 smallest holes on the bottom of the Roll
    Driver.
-6. Push 4 satin pins through the reamed holes ~6 mm proud, cut the heads, super-glue flush, trim and sand
-   smooth.
+6. Push 4 satin pins through the reamed holes ~6 mm proud, cut the heads, super-glue flush, trim the proud
+   ends flush with the drive bosses and sand smooth.
 7. Thread the 4 M2 × 20 mm bolts into the Roll Driver, leaving 2 diagonally-opposite bolts ~2 mm proud to
    engage the Span Mount holes.
 8. Press the Roll Driver's flat side into the non-flat side of the Roll Body, flush with the far 6703 (tap

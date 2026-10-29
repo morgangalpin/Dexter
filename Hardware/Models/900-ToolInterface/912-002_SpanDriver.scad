@@ -5,8 +5,8 @@
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/900-ToolInterface/912-002_SpanDriver.stl), in that mesh's
 //                         frame.
-//   config = "revised"  — the same part with print fits on the spline bore and the bolt's hole and
-//                         counterbore.
+//   config = "revised"  — the same part with print fits on the spline bore, the key slot and the
+//                         bolt's hole and counterbore.
 //
 // SOURCE. The STL. 912-002_SpanDriver.step (Reference/, 2020-03-12) is a different revision and is not a
 // source: its head is 9.5 deep across the flat where the STL's is 9.82, its key slot stands 30 deg off
@@ -44,12 +44,14 @@
 //     L5     8.000 .. 10.000  D1 less K1, K2
 //     L6     10.000 .. 13.000 D1 less C1
 //
-// FITS (revised). B1 on the XL-320's output spline, a bought part: the star grown by FIT_PRESS. K1 takes
+// FITS (revised). B1 on the XL-320's output spline and K2 on its key, bought parts: ../c102_servo.scad's
+// spline star grown by FIT_PRESS, and its key's width grown by it about the same end centre. K1 takes
 // the M2.6 bolt and C1 its head: fit_bore(2.6, FIT_SLIP) = Ø2.900 and fit_bore(5.5, FIT_SLIP) =
 // Ø5.800. D1 (in the Dynamic Finger's hub) and S2/F1 (against the Span Mount) are left as drawn until
 // the assembly stage shows their mates.
 
 include <../print_fit.scad>
+use <../c102_servo.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -77,17 +79,23 @@ CBORE_D  = 5.500;          // C1
 // Sections are drawn in the reference's (x, z); this sends 2D y to z and extrusion z to y.
 AXIS_Y = [[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]];
 
-star_pts = [for (i = [0 : 2 * STAR[0] - 1])
-    let(a = STAR[3] + i * 180 / STAR[0], r = i % 2 == 0 ? STAR[1] : STAR[2]) r * [cos(a), sin(a)]];
+// B1's star: the reference's, or revised the servo's spline (../c102_servo.scad), at B1's phase.
+function star(cfg) = cfg == "revised" ? let(s = c102_spline()) [s[0], s[1], s[2], STAR[3]] : STAR;
+function star_pts(cfg) = let(s = star(cfg)) [for (i = [0 : 2 * s[0] - 1])
+    let(a = s[3] + i * 180 / s[0], r = i % 2 == 0 ? s[1] : s[2]) r * [cos(a), sin(a)]];
 
 // B1, every flank moved out by the press clearance in revised.
-module spline_2d(cfg) let(c = fit_clearances(cfg)) offset(delta = c[1]) polygon(star_pts);
+module spline_2d(cfg) let(c = fit_clearances(cfg)) offset(delta = c[1]) polygon(star_pts(cfg));
 
-module key_2d(cfg) let(c = fit_clearances(cfg)) union() {
+// K2: width and end centre's distance, the reference's, or revised the servo's key at the press fit.
+function key(cfg) = cfg == "revised" ? let(k = c102_key()) [fit_bore(k[0], fit_clearances(cfg)[1]), k[2]]
+                                     : [KEY[0], KEY[1]];
+
+module key_2d(cfg) let(c = fit_clearances(cfg), k = key(cfg)) union() {
     circle(d = fit_bore(BOLT_D, c[0]), $fn = 72);
     rotate(KEY[2]) {
-        translate([0, -KEY[0] / 2]) square([KEY[1], KEY[0]]);
-        translate([KEY[1], 0]) circle(d = KEY[0], $fn = 48);
+        translate([0, -k[0] / 2]) square([k[1], k[0]]);
+        translate([k[1], 0]) circle(d = k[0], $fn = 48);
     }
 }
 

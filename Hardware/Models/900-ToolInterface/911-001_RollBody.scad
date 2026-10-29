@@ -6,7 +6,8 @@
 //                         (../Reference/meshes/900-ToolInterface/911-001_RollBody.stl), in that mesh's
 //                         frame. There is no STEP or f3d of this part; the glTF's `TI1-200-001_RollBody
 //                         v4` is another revision (36 x 46.5 where the STL is 33 x 45.5).
-//   config = "revised"  — the same part with print fits on the bearing seats and the bolts' holes.
+//   config = "revised"  — the same part with print fits on the bearing seats, the bolts' holes and the
+//                         servo's rim.
 //
 // FRAME. The reference's own: the roll axis on +Z through the origin, the ring from z 3.5 to 16.5, the
 // block toward -Y.
@@ -37,9 +38,12 @@
 //
 // FITS (revised). S1 takes the 6703s (C-404, 17 x 23 x 4), pressed: fit_bore(23, FIT_PRESS) = Ø23.1.
 // H1 takes the M2 x 12 bolts and its counterbores their heads (Ø3.8): fit_bore(2, FIT_SLIP) = Ø2.3 and
-// fit_bore(3.8, FIT_SLIP) = Ø4.1. W1, E1, F1 and P1 keep the reference's sizes.
+// fit_bore(3.8, FIT_SLIP) = Ø4.1. F1 takes the roll XL-320's tab end, a bought part: its inside is
+// ../c102_servo.scad's outline grown by FIT_PRESS, and H1 and P1 stand under its tab holes. W1, E1 and
+// P1's diameter keep the reference's sizes.
 
 include <../print_fit.scad>
+use <../c102_servo.scad>
 use <../100-Base/window_round.scad>
 
 /* [Configuration] */
@@ -90,25 +94,31 @@ module block_low_2d() let(near = [[-SLOT.x - 3, BLOCK.z - 3], [2 * SLOT.x + 6, 4
     intersection() { offset(r = EDGE_R) offset(r = -EDGE_R) block_low_raw_2d(); translate(near[0]) square(near[1]); }
 }
 
-module rim_2d() difference() {
+// F1: the reference's is B1's outline less its inward offset; revised's inside is the servo's outline
+// at the press fit.
+module rim_2d(cfg) difference() {
     block_plan_2d(BLOCK.z);
-    offset(delta = -RIM.x) block_plan_2d(BLOCK.z + RIM.x + 1);
+    if (cfg == "revised") c102_outline_2d(fit_clearances(cfg)[1]);
+    else offset(delta = -RIM.x) block_plan_2d(BLOCK.z + RIM.x + 1);
 }
+
+// H1 and P1 stand under the servo's tab holes.
+function holes(cfg) = cfg == "revised" ? c102_tab_holes() : HOLES;
 
 // --- solids -----------------------------------------------------------------------------------------
 
 module ring_body() rotate_extrude() polygon([
     [SHOULDER / 2 - 1, RING.y], [RING.x, RING.y], [RING.x, RING.z], [SHOULDER / 2 - 1, RING.z]]);
 
-module block_body() {
+module block_body(cfg) {
     translate([0, 0, -LAP]) linear_extrude(RING.y + 2 * LAP) block_low_2d();
     translate([0, 0, RING.y]) linear_extrude(RING.z - RING.y)
         difference() { block_plan_2d(0); circle(r = SHOULDER / 2); }
-    translate([0, 0, RIM.y]) linear_extrude(-RIM.y + LAP) rim_2d();
+    translate([0, 0, RIM.y]) linear_extrude(-RIM.y + LAP) rim_2d(cfg);
 }
 
 // P1, added after E1's underside round, which stops on them.
-module bosses(cfg) let(c = fit_clearances(cfg)) for (h = HOLES) translate([h.x, h.y, BOSS.y])
+module bosses(cfg) let(c = fit_clearances(cfg)) for (h = holes(cfg)) translate([h.x, h.y, BOSS.y])
     difference() {
         cylinder(d = BOSS.x, h = -BOSS.y + LAP);
         translate([0, 0, -1]) cylinder(d = fit_bore(BOLT_D, c[0]), h = 3, $fn = 48);
@@ -182,14 +192,14 @@ module corner_domes() let(psi = corner_psi(), c = slot_ball(psi), p = slot_pt(ps
         translate([c.x, c.y, r]) sphere(r = r, $fn = 72);
     }
 
-module bolt_holes(cfg) let(c = fit_clearances(cfg)) for (h = HOLES) translate([h.x, h.y, 0]) {
+module bolt_holes(cfg) let(c = fit_clearances(cfg)) for (h = holes(cfg)) translate([h.x, h.y, 0]) {
     translate([0, 0, RIM.y - 1]) cylinder(d = fit_bore(BOLT_D, c[0]), h = RING.z - RIM.y + 2, $fn = 48);
     translate([0, 0, CBORE.y]) cylinder(d = cfg == "previous" ? CBORE.x : fit_bore(HEAD_D, c[0]), h = RING.z - CBORE.y + 1, $fn = 72);
 }
 
 module roll_body(cfg = config) union() {
     difference() {
-        union() { ring_body(); block_body(); }
+        union() { ring_body(); block_body(cfg); }
         bore(cfg);
         windows();
         slot();

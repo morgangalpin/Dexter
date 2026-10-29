@@ -36,7 +36,7 @@
       {"id": "roll_bolt_shanks", "name": "M2 × 20 bolts' shanks, threaded in the Roll Driver", "pn": "M2 × 20", "color": "#8a8f94"},
       {"id": "roll_washers", "name": "M2 washers, in the Span Mount's pockets", "pn": "M2 washer", "color": "#b0b4b8"},
       {"id": "roll_nuts", "name": "M2 nuts, on the washers", "pn": "M2 nut", "color": "#8a8f94"},
-      {"id": "roll_pins", "name": "Satin pins, ~6 mm proud below the drive bosses", "pn": "#19 satin pin", "color": "#c0c0c0"}]}
+      {"id": "roll_pins", "name": "Satin pins, trimmed flush with the drive bosses", "pn": "#19 satin pin", "color": "#c0c0c0"}]}
   ],
   "labels": [
     {"at": [0.9, 0, 41.7], "text": "Static Finger's socket ceiling on the Span Mount's column top"},
@@ -60,13 +60,12 @@
     {"heading": "Placements",
      "text": "Each part stands by a feature it carries, as gripper_assembly.scad's header records; the tool interface stack under it, with both XL-320s, is ../900-ToolInterface/tool_assembly.scad's."},
     {"heading": "Where the servos and the printed parts disagree",
-     "text": "The Span Driver stands where the pinion's drive slot puts it, which is not where the span XL-320's spline would seat it; gripper_assembly.scad's header gives why it cannot simply be moved. In mm:",
+     "text": "The Span Driver stands where the pinion's drive slot puts it, which is not where the span XL-320's spline would seat it; gripper_assembly.scad's header gives why it cannot simply be moved. The spline's length is assumed (../c102_servo.scad), so this waits on a measurement of a servo. In mm:",
      "rows": [
        {"text": "Span Driver's bore mouth, past the case's front face into the case", "value": "{b1_mouth_in_servo}", "warn": true},
        {"text": "Spline in the bore, from its root", "value": "{spline_in_b1}"},
        {"text": "Spline beyond the bore, in the driver's collar", "value": "{spline_past_b1}", "warn": true}],
      "items": [
-       "The Static Finger meets the span XL-320's case line to line beside its front face, and the span bolts' heads reach into the finger's slot: gripper_assembly.scad's header gives where",
        "The roll XL-320's horn against the revised Roll Driver, and the span bolts, as ../900-ToolInterface/tool_assembly.view.json gives"]},
     {"heading": "Not drawn",
      "items": [

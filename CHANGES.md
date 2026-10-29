@@ -1518,18 +1518,18 @@ anything version 3 does not independently specify
   - **900-ToolInterface:** the Roll Driver (`#911-002`) is a stack of constant sections taken from its
     STEP, which is the same revision as the STL. `revised` presses its Ø17 shaft into the two 6703s,
     and sizes the bolt heads' counterbores at press, not slip, so that each keeps the reference's 0.50 of
-    wall to the lower 6703's bore (slip would leave 0.40, narrower than one extrusion line). The flange keeps the reference's thickness, because the roll
+    wall to the lower 6703's bore (slip would leave 0.40, narrower than one extrusion line), and its drive bosses at press in the roll XL-320's horn holes. The flange keeps the reference's thickness, because the roll
     XL-320's horn stands 0.3 under it. The
     Span Driver (`#912-002`) is a stack of sections with the spline end's round revolved; `revised`
-    presses its spline bore onto the XL-320 output spline and opens the M2.6 bolt hole and counterbore
+    presses its spline bore and key slot onto the XL-320's output and opens the M2.6 bolt hole and counterbore
     to slip. Its STEP is a different revision (its head, key slot and counterbore differ), so the STL is
     the source. The claw's Finger Cap (`#930-002`, published as `#920-003`) is a disc with one hole, which `revised` opens to the M2
     bolt's slip clearance. The Span Mount (`#912-001`) is a region split. Its STEP is a different
     revision (the underside ring is 1.5 deep where the STL's is 2.5), so the STL is the source. `revised`
     opens the strake slot to the C-502 strip's press fit, the reference's slot being 0.09 narrower than
-    the strip, and the bolt holes, washer pockets and servo bolts' counterbores to slip. The Roll Body (`#911-001`) has only an STL,
+    the strip, the bolt holes, washer pockets and servo bolts' counterbores to slip, with the counterbores deep enough that the heads clear the Static Finger, and the span XL-320's nubs to press in its rivet holes, short of their floors. The Roll Body (`#911-001`) has only an STL,
     which is the source. It is a region split whose windows' and slot's rounds are lofted by
-    `100-Base/window_round.scad`; `revised` presses the 6703s' seats and opens the bolt holes and
+    `100-Base/window_round.scad`; `revised` presses the 6703s' seats and the roll XL-320's rim, and opens the bolt holes and
     counterbores to slip. The claw finger, published as the Dynamic Finger `#920-002`, is the Claw Finger
     `#930-001` in its own group, since the parallel gripper is the baseline
     ([DC-900-1](specs/009-Design-Completion.md#gripper-design)). It is a stack of sections from its mesh;
@@ -1547,16 +1547,19 @@ anything version 3 does not independently specify
     STEPs draw the mesh with no backlash. The Static Finger (`#920-001`) is a
     region split of its STEP. It had no mesh, so it is gated against the glTF body, with the 0.008 mm
     slit that body and the STEP both carry at the lug boss's root closed in place
-    ([Known defects](Hardware/Models/README.md#known-defects)); `revised` presses the MR128 seats and the strake slot and opens the column socket and the
-    plate slot to slip. The Tool Interface Body (`#900-001`) is a region split of its STEP, whose lobe
+    ([Known defects](Hardware/Models/README.md#known-defects)); `revised` presses the MR128 seats and the strake slot, opens the column socket and the
+    plate slot to slip, and stands the plate slot off the span XL-320 at press. The Tool Interface Body (`#900-001`) is a region split of its STEP, whose lobe
     pockets' rims are rolled onto the top cone by a ball. It had no mesh either, so it is gated against
     its STEP tessellated by `scadmesh tessellate`; `revised` opens the M3 and M2 bolt holes and nut traps
     to slip and the servo pocket to press. `tool_assembly.scad` places the roll stack, the Span Mount
     and both XL-320s (`c102_servo.scad`), but not the body (its header gives why), each part by a
     feature it carries, with the roll bolts, washers, nuts and satin pins and the span servo's bolts;
     `920-ParallelGripper/gripper_assembly.scad` places the parallel gripper on it the same way, with its
-    MR128s and its M3 bolt and nut. `assembly-clash.rs` checks both and fails only where the XL-320s and
-    the printed parts disagree, which each assembly's header and view list. A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
+    MR128s and its M3 bolt and nut. The revised parts that meet an XL-320 take its dimensions from `c102_servo.scad`, which no servo has
+    yet been measured against, and the satin pins are trimmed flush with the Roll Driver's drive bosses
+    (008.11 step 6). `assembly-clash.rs` passes the tool interface. The gripper fails only where the
+    Span Driver's bore stands inside the span XL-320's case, which waits on measuring the servo's spline
+    (`gripper_assembly.scad`'s header gives why). A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
     Pinion Gear's and the rack's 12 teeth each.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.

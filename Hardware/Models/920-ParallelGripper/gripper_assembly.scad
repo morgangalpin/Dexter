@@ -14,9 +14,7 @@
 //   - The Static Finger's socket over the Span Mount's column, its ceiling on the column's top and its
 //     slot on the upright plate (step 46): the socket is the column's section turned -90 deg about Z,
 //     so its frame is the Span Mount's turned +90 deg and 1.5 lower. Its hub then stands on the Span
-//     Mount's eye axis. Placed so, it meets the span XL-320's case line to line beside the case's
-//     front face, and the span bolts' heads, which stand proud of V1 (tool_assembly.scad echoes by how
-//     much), reach into its slot.
+//     Mount's eye axis, and its plate slot stands over the span XL-320's case and pads.
 //   - The MR128s on the EXT's journal and in the Static Finger's seats (step 41): the journal (#920-006
 //     J1) is 7.5 long, the two bearings' widths and the 0.5 shoulder between the seats, so each bearing
 //     stands against the shoulder.
@@ -133,10 +131,10 @@ module draw(p) {
 
 // The Span Driver against the span XL-320, along the Span Mount's X: the hub's +Y is its -X (SF_TURN).
 B1_X = [-(DRIVER_Y + DRIVER_B1[0]), -(DRIVER_Y + DRIVER_B1[1])];   // B1's mouth and end, x in #912-001
-SPLINE_IN_B1 = span_servo_face() - max(span_servo_face() - c102_output_h(), B1_X[1]);
+SPLINE_IN_B1 = span_servo_face() - max(span_servo_face() - c102_spline()[3], B1_X[1]);
 echo(b1_mouth_in_servo = B1_X[0] - span_servo_face());   // past the case's front face, into the case
 echo(spline_in_b1 = SPLINE_IN_B1);
-echo(spline_past_b1 = c102_output_h() - SPLINE_IN_B1);    // beyond B1's end, in the driver's collar
+echo(spline_past_b1 = c102_spline()[3] - SPLINE_IN_B1);    // beyond B1's end, in the driver's collar
 
 echo(m3_end_below_nut_top = (PINION_Y + M3_NUT[2]) - (EXT_Y + M3_BOLT[4] - M3_BOLT[1]));   // of the nut's M3_NUT[1]
 

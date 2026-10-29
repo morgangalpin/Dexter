@@ -34,12 +34,14 @@
      "scad": "911-001_RollBody.scad", "out": "out/revised/911-001.stl"},
     {"kind": "fits", "id": "fits-911-001", "part": "911-001 (revised)",
      "stl": "out/revised/911-001.stl", "after": ["render-911-001"],
-     "note": "The revised #911-001's print fits: each 6703's Ø23 outer race in its seat, on +X clear of the windows; the M2 bolt in the centre H1 below the counterbore, and its Ø3.8 head in the counterbore.",
+     "note": "The revised #911-001's print fits: each 6703's Ø23 outer race in its seat, on +X clear of the windows; the M2 bolt in the centre H1 below the counterbore, and its Ø3.8 head in the counterbore; the roll XL-320's case (../c102_servo.scad) in F1's rim, on its tab end and its +X side.",
      "probes": [
        {"label": "S1 lower seat", "at": [11.5, 0.0, 5.5], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
        {"label": "S1 upper seat", "at": [11.5, 0.0, 14.5], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
        {"label": "H1 bolt hole", "at": [1.0, -24.0, 6.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
-       {"label": "H1 counterbore", "at": [1.9, -24.0, 15.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
+       {"label": "H1 counterbore", "at": [1.9, -24.0, 15.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
+       {"label": "F1 rim on the servo's tab end", "at": [0.0, -27.0, -1.0], "toward": [0.0, 1.0, 0.0], "fit": "press"},
+       {"label": "F1 rim on the servo's side", "at": [10.5, -20.0, -1.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"}
      ]},
     {"kind": "outline", "id": "outline-911-002-L1", "part": "911-002", "config": "previous",
      "scad": "911-002_RollDriver.scad", "out": "out/2d/911-002-L1.svg", "layer": "L1",
@@ -60,10 +62,11 @@
      "scad": "911-002_RollDriver.scad", "out": "out/revised/911-002.stl"},
     {"kind": "fits", "id": "fits-911-002", "part": "911-002 (revised)",
      "stl": "out/revised/911-002.stl", "after": ["render-911-002"],
-     "note": "The revised #911-002's print fits: S1 in the two 6703s' Ø17 bores, on +X mid-shaft, clear of the pin and bolt holes on r 6; an M2 head in C1 on 45 deg, on its outer side.",
+     "note": "The revised #911-002's print fits: S1 in the two 6703s' Ø17 bores, on +X mid-shaft, clear of the pin and bolt holes on r 6; an M2 head in C1 on 45 deg, on its outer side; the roll XL-320's horn hole (../c102_servo.scad) round the N1 boss on +X, on its outer side.",
      "probes": [
        {"label": "S1 in the 6703", "at": [8.5, 0.0, 15.0], "toward": [1.0, 0.0, 0.0], "fit": "press"},
-       {"label": "C1 bolt head counterbore", "at": [5.5861, 5.5861, 8.5], "toward": [-0.7071, -0.7071, 0.0], "fit": "press"}
+       {"label": "C1 bolt head counterbore", "at": [5.5861, 5.5861, 8.5], "toward": [-0.7071, -0.7071, 0.0], "fit": "press"},
+       {"label": "N1 boss in the horn's hole", "at": [8.0, 0.0, 5.9], "toward": [1.0, 0.0, 0.0], "fit": "press"}
      ]},
     {"kind": "outline", "id": "outline-912-001-F1", "part": "912-001", "config": "previous",
      "scad": "912-001_SpanMount.scad", "out": "out/2d/912-001-F1.svg", "layer": "F1",
@@ -75,14 +78,16 @@
      "scad": "912-001_SpanMount.scad", "out": "out/revised/912-001.stl"},
     {"kind": "fits", "id": "fits-912-001", "part": "912-001 (revised)",
      "stl": "out/revised/912-001.stl", "after": ["render-912-001"],
-     "note": "The revised #912-001's print fits: the C-502 strip (2.337 x 5.588) bonded in S1, on its +X face and +Y edge mid-column; an M2 bolt in H1 on 45 deg below its pocket; an M2 washer (Ø5) in the K1 pocket on 135 deg; the servo's M2 bolt in the upper H2 beyond its counterbore, and its head in the counterbore.",
+     "note": "The revised #912-001's print fits: the C-502 strip (2.337 x 5.588) bonded in S1, on its +X face and +Y edge mid-column; an M2 bolt in H1 on 45 deg below its pocket; an M2 washer (Ø5) in the K1 pocket on 135 deg; the servo's M2 bolt in the upper H2 beyond its counterbore, and its head in the counterbore; the span XL-320's rivet hole (../c102_servo.scad) round the N1 nub at y 14.139, on its +X side and at its floor.",
      "probes": [
        {"label": "S1 strip face", "at": [1.1684, 0.0, 12.0], "toward": [-1.0, 0.0, 0.0], "fit": "press"},
        {"label": "S1 strip edge", "at": [0.0, 2.794, 12.0], "toward": [0.0, -1.0, 0.0], "fit": "press"},
        {"label": "H1 bolt hole on 45 deg", "at": [5.2426, 4.2426, 1.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "K1 washer pocket on 135 deg", "at": [-1.7426, 4.2426, 3.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "H2 upper servo bolt hole", "at": [6.5, -9.861, 23.0], "toward": [0.0, 0.0, -1.0], "fit": "slip"},
-       {"label": "H2 upper counterbore", "at": [4.6, -9.861, 23.9], "toward": [0.0, 0.0, -1.0], "fit": "slip"}
+       {"label": "H2 upper counterbore", "at": [4.6, -9.861, 23.9], "toward": [0.0, 0.0, -1.0], "fit": "slip"},
+       {"label": "N1 nub in the rivet hole", "at": [15.243, 14.139, 5.0], "toward": [1.0, 0.0, 0.0], "fit": "press"},
+       {"label": "N1 nub's top under the hole's floor", "at": [13.243, 14.139, 6.2], "toward": [0.0, 0.0, 1.0], "fit": "press"}
      ]},
     {"kind": "probes", "id": "probes-912-001-wide", "part": "912-001 (revised)",
      "stl": "out/revised/912-001.stl", "after": ["render-912-001"],
@@ -116,9 +121,10 @@
      "scad": "912-002_SpanDriver.scad", "out": "out/revised/912-002.stl"},
     {"kind": "fits", "id": "fits-912-002", "part": "912-002 (revised)",
      "stl": "out/revised/912-002.stl", "after": ["render-912-002"],
-     "note": "The revised #912-002's print fits: the XL-320's output spline in B1, on the flank from the point at -1 deg to the root at 8 deg (in x, z), mid-spline; the M2.6 bolt in K1 and its head in C1, on +X.",
+     "note": "The revised #912-002's print fits: the XL-320's output spline in B1, on the flank from the point at -1 deg to the root at 8 deg (in x, z), mid-spline; the M2.6 bolt in K1 and its head in C1, on +X; the spline's key (../c102_servo.scad) in K2, on its side toward 125 deg.",
      "probes": [
        {"label": "B1 spline flank", "at": [2.50785, 3.7, 0.14055], "toward": [-0.7313, 0.0, -0.6821], "fit": "press"},
+       {"label": "K2 key slot side", "at": [-1.14673, 6.5, -1.41335], "toward": [-0.57358, 0.0, 0.81915], "fit": "press"},
        {"label": "K1 bolt hole", "at": [1.3, 7.0, 0.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"},
        {"label": "C1 bolt head counterbore", "at": [2.75, 11.5, 0.0], "toward": [-1.0, 0.0, 0.0], "fit": "slip"}
      ]},

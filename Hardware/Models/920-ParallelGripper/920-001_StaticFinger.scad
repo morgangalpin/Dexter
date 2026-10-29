@@ -5,8 +5,8 @@
 //
 //   config = "previous" — a faithful recreation of 920-001_StaticFinger.step, gated against
 //                         ../Reference/meshes/920-ParallelGripper/920-001_StaticFinger.stl, in that frame.
-//   config = "revised"  — the same part with print fits on the MR128 seats, the strake slot and the
-//                         Span Mount's column socket.
+//   config = "revised"  — the same part with print fits on the MR128 seats, the strake slot, the
+//                         Span Mount's column socket and the plate slot.
 //
 // SOURCE. 920-001_StaticFinger.step (Reference/, `ParallelStaticFinger`, 2020-03-12); the dimensions
 // below are its surfaces' (scadmesh surfaces, and a dump of every face's loops). No mesh of the part was
@@ -40,7 +40,8 @@
 //     S1  column socket        the Span Mount's column and web, line to line, z 10 .. 24.2, 0.3 chamfer
 //     S2  strake slot          5.5 x 2.4, z 24.2 up, a 45 deg roof over x < 0
 //     S3  plate slot           y < -3.743 below z 28 (the Span Mount's upright plate), a tongue x ±5..5.617
-//                              left in its notch, and y < -10.243 below z 29.5
+//                              left in its notch, and y < -10.243 below z 29.5, the two ceilings
+//                              joined at 45 deg back from the +X end x 23.139
 //     U1  hub slot             x 7.639 .. 20.639 below the hub, round R6.5 over it, y -3.743 .. 2.757
 //     K1  pinion pocket        x 1.389 .. 26.889 below the hub, R12.75 about it above, y 2.757 .. 10.757
 //     T1  rack T-slot          along X: y 2.757 .. 9.757 z 24.7 .. 34.5, y 1.257 .. 11.257 z 30.75 .. 32.75
@@ -50,8 +51,11 @@
 // the strake's top (C-502, 2.337 x 5.588), bonded: fit_bore at FIT_PRESS. S1 slides over the Span
 // Mount's column, a printed part: grown by FIT_SLIP. S3 slides over the Span Mount's upright plate:
 // its +Y face and +X end open by FIT_SLIP, so the plate's faces and its eye lobe clear the finger.
+// Beyond the plate, S3's ceiling and its outer step stand over the span XL-320, a bought part: they
+// follow ../c102_servo.scad's case and pads, at FIT_PRESS.
 
 include <../print_fit.scad>
+use <../c102_servo.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -308,19 +312,31 @@ module strake_slot(cfg) let(c = fit_clearances(cfg)[1],
 
 // S3: the Span Mount's upright plate passes under B1 at y < -3.743, its notch about a tongue.
 PLATE_SLOT = [-3.743, 28.000, 23.139];           // +Y face, ceiling, +X end
-PLATE_STEP = [-10.243, 29.500, 21.639];          // the outer step: +Y face, ceiling, +X end (45 deg down)
+PLATE_STEP = [-10.243, 29.500];                  // the outer step: +Y face, ceiling
 TONGUE     = [-7.243, 24.200, 5.000, 27.700, 5.617];   // -Y face, bottom, half-width there, top of its taper, half-width
 EDGE_CHAMFER = 0.500;                            // the floor's edges about S3 and U1
 
-// The slot for a config: revised opens its +Y face and +X end by the slip clearance.
-function plate_slot_at(cfg) = let(c = fit_clearances(cfg)[0])
-    [PLATE_SLOT[0] + c, PLATE_SLOT[1], PLATE_SLOT[2] + c];
+// Beyond V1 the slot's ceiling and its outer step stand over the span XL-320, whose axis is the hub's
+// and whose front face is V1's +X face (TONGUE's -Y face): the ceiling over its +X side, the step over
+// its pads from their front edge. Its servo-frame (x, y, z) is this frame's (z - HUB's z, x - HUB's x,
+// y - TONGUE's -Y face).
+// The slot for a config: revised opens its +Y face and +X end by the slip clearance, and stands its
+// ceiling off the servo's side by the press fit.
+function plate_slot_at(cfg) = let(c = fit_clearances(cfg))
+    [PLATE_SLOT[0] + c[0], cfg == "revised" ? HUB.y + c102_case_dims()[0] + c[1] : PLATE_SLOT[1],
+     PLATE_SLOT[2] + c[0]];
 
-module plate_slot(cfg) let(p = plate_slot_at(cfg)) difference() {
+// The outer step for a config: +Y face, ceiling, +X end, which meets the slot's ceiling at 45 deg;
+// revised stands it off the pads by the press fit.
+function plate_step_at(cfg) = let(p = plate_slot_at(cfg), c = fit_clearances(cfg)[1], s = c102_pads(),
+                                  z = cfg == "revised" ? HUB.y + c102_case_dims()[0] + s[0] + c : PLATE_STEP[1])
+    [cfg == "revised" ? TONGUE[0] + s[2][0][1] + c : PLATE_STEP[0], z, p[2] - (z - p[1])];
+
+module plate_slot(cfg) let(p = plate_slot_at(cfg), q = plate_step_at(cfg)) difference() {
     union() {
         along_y(-BIG, p[0]) polygon([[-BIG, FLOOR - 1], [p[2], FLOOR - 1], [p[2], p[1]], [-BIG, p[1]]]);
-        along_y(-BIG, PLATE_STEP[0]) polygon([[-BIG, FLOOR - 1], [p[2], FLOOR - 1],
-            [p[2], p[1]], [PLATE_STEP[2], PLATE_STEP[1]], [-BIG, PLATE_STEP[1]]]);
+        along_y(-BIG, q[0]) polygon([[-BIG, FLOOR - 1], [p[2], FLOOR - 1],
+            [p[2], p[1]], [q[2], q[1]], [-BIG, q[1]]]);
     }
     along_y(TONGUE[0], p[0] + 1) polygon([[-TONGUE[2], TONGUE[1]], [TONGUE[2], TONGUE[1]],
         [TONGUE[4], TONGUE[3]], [TONGUE[4], BIG], [-TONGUE[4], BIG], [-TONGUE[4], TONGUE[3]]]);

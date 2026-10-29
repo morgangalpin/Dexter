@@ -143,10 +143,10 @@ shared stem.
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
 | #900-001 | Tool Interface Body | 1 | `900-001_ToolInterfaceBody.scad` | ⚠️ `revised` opens the M3 and M2 bolt holes and nut traps to slip and presses the servo pocket |
-| #911-001 | Roll Body | 1 | `911-001_RollBody.scad` | `revised` presses the 6703s' seats and opens the bolt holes and counterbores to slip |
-| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | `revised` presses the shaft into the two 6703s and sizes the bolt heads' counterbores at press |
-| #912-001 | Span Mount | 1 | `912-001_SpanMount.scad` | `revised` opens the strake slot to the strip's press fit and the bolt holes and washer pockets to slip |
-| #912-002 | Span Driver | 1 | `912-002_SpanDriver.scad` | `revised` presses the spline bore onto the XL-320 output spline and opens the M2.6 bolt hole and counterbore to slip |
+| #911-001 | Roll Body | 1 | `911-001_RollBody.scad` | `revised` presses the 6703s' seats and the roll XL-320's rim, and opens the bolt holes and counterbores to slip |
+| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | `revised` presses the shaft into the two 6703s and sizes the bolt heads' counterbores and the horn's drive bosses at press |
+| #912-001 | Span Mount | 1 | `912-001_SpanMount.scad` | `revised` opens the strake slot to the strip's press fit and the bolt holes, washer pockets and servo bolts' counterbores to slip, and sizes the span XL-320's nubs at press |
+| #912-002 | Span Driver | 1 | `912-002_SpanDriver.scad` | `revised` presses the spline bore and key slot onto the XL-320's output and opens the M2.6 bolt hole and counterbore to slip |
 
 ## 920-ParallelGripper — Parallel gripper (baseline)
 
@@ -154,7 +154,7 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #920-001 | Static Finger | 1 | `920-001_StaticFinger.scad` | ⚠️ `revised` presses the MR128 seats and the strake slot and opens the column socket to slip |
+| #920-001 | Static Finger | 1 | `920-001_StaticFinger.scad` | ⚠️ `revised` presses the MR128 seats and the strake slot, opens the column socket and plate slot to slip, and stands the plate slot off the span XL-320 at press |
 | #920-002 | Dynamic Finger | 1 | `920-002_DynamicFinger.scad` | ⚠️ `revised` opens the rail's bearing faces in the T-slot to slip and gives the rack teeth slip backlash |
 | #920-005 | Pinion Gear | 1 | `920-005_PinionGear.scad` | ⚠️ `revised` opens the drive slot, nut trap, bolt hole and key recess to slip, moves the spacer collar onto the EXT, and chamfers the teeth's top corner |
 | #920-006 | Pinion Bearing EXT | 1 | `920-006_PinionBearingExt.scad` | ⚠️ `revised` presses the journal into the two MR128s and opens the bolt bore and keyed nose to slip, and carries the spacer collar from the Pinion Gear |

@@ -18,24 +18,21 @@
 //   - The four M2 x 20 roll bolts threaded up through the Roll Driver (step 7), each head in C1 against
 //     its floor, through the Span Mount's H1, with an M2 washer and nut in its K1 pocket on the pocket's
 //     floor (steps 17-18). The file echoes how far each bolt ends above its nut.
-//   - The four satin pins in the Roll Driver's P1, flush with its end and ~6 mm proud below N1 (steps
-//     5-6).
+//   - The four satin pins in the Roll Driver's P1, flush with its end and trimmed flush with N1's ends
+//     (steps 5-6).
 //   - The roll XL-320 by its engagement with the Roll Driver (steps 20-21): its horn's four Ø4 holes on
 //     N1's bosses put its axis on the roll axis and set the horn's turn, which rolls with the Roll
 //     Driver; the case does not roll. Along the axis the Roll Body holds the case (step 22): its front
-//     face on the three P1 bosses (z -0.5), its tab end inside F1's rim (line to line: the revised
-//     Roll Body gives F1 no fit), its tab holes under H1. The file echoes how far the horn's face
-//     stands under the Roll Driver's flange and the roll bolts' heads, and how far the satin pins
-//     reach into the servo.
+//     face on the three P1 bosses (z -0.5), its tab end inside F1's rim, its tab holes under H1. The
+//     file echoes how far the horn's face stands under the Roll Driver's flange and the roll bolts'
+//     heads, and how far the satin pins' ends stand above the servo.
 //   - The span XL-320's case on the Span Mount: its front face on V1's +X face, its side pads on F1
 //     with N1's nubs in their rivet holes, its tab holes on H2, so that its axis is E1's (steps 25-26).
-//     The nubs stand line to line in the holes and deeper than they are (../c102_servo.scad gives by
-//     how much).
 //     Its horn is off (step 24), and its spline is turned so that its teeth and key meet the Span
 //     Driver's B1 and K2 as a gripper's assembly places the driver (step 36).
 //   - The two M2 x 12 span bolts in H2 from V1's -X face, each head on its counterbore's floor, through
 //     the servo's tab, with an M2 washer in the tab's back counterbore and a nut on it (step 26). The
-//     file echoes how far each bolt ends beyond its nut, and how far each head stands proud of V1.
+//     file echoes how far each bolt ends beyond its nut, and how far each head stands under V1's face.
 //
 // NOT DRAWN. The Tool Interface Body (#900-001), which holds the roll XL-320's case (step 10). The case
 // would now place it: S1, x -38.04 .. -14.04 in the body's frame, is the case's 24 depth, its floor
@@ -72,7 +69,7 @@ ROLL_BOLT   = [2, 20, 3.8, 2, 9.295];    // M2 x 20 socket head (ISO 4762): d, l
 M2_WASHER   = [2.2, 5, 0.3];             // M2 washer (DIN 125): bore, OD, thickness
 M2_NUT      = [4, 1.6];                  // M2 nut (DIN 934): across flats, height
 K1_FLOOR    = 2;                         // #912-001 K1's floor z, under each roll bolt's washer
-PIN         = [1, -1.5, 21];             // satin pin #19: d, z span in #911-002 (~6 mm proud below N1, flush at the top)
+PIN         = [1, 4.5, 21];              // satin pin #19: d, z span in #911-002 (flush with N1's ends and the top)
 PCD_R       = 6;                         // #911-002 B1 and P1, #912-001 H1 and K1
 ROLL_SERVO  = -0.500;                    // C-102's front face on #911-001's P1 bosses (z -0.5 .. 0)
 RB_CBORE    = 13.500;                    // #911-001 H1's counterbore floor, under an M2 x 12's head (step 22)
@@ -81,7 +78,7 @@ SPAN_TURN   = 235;                       // C-102's output turn: #912-002's K2 s
                                          // is 90 - 215 = 235 deg in the servo's (x, y), and on one of B1's teeth
 M2X12       = [2, 12, 3.8, 2];           // M2 x 12 socket head (ISO 4762): d, length, head d, head h
 V1_T        = 3.500;                     // #912-001 V1's thickness, x 3.743 .. 7.243
-H2_CBORE    = 1.750;                     // #912-001 H2's counterbore depth from V1's -X face
+H2_CBORE    = 2.150;                     // #912-001 H2's counterbore depth from V1's -X face (revised)
 SPAN_HEAD_Z = V1_T - H2_CBORE;           // under a span bolt's head, z in the servo's frame
 
 // --- Frames -----------------------------------------------------------------
@@ -199,15 +196,15 @@ module tool_draw(p, span = 0) {
   for (b = BEARINGS, r = RACES) if (p == str(b, "_", r)) color("#dcdcdc") bearing_in(b, r);
 }
 
-HORN_TOP = ROLL_SERVO + c102_output_h();   // the roll servo's horn face, in this frame
+HORN_TOP = ROLL_SERVO + c102_horn()[1];    // the roll servo's horn face, in this frame
 
 echo(roll_bolt_past_nut = (ROLL_BOLT[4] + ROLL_BOLT[1] - RD_DROP) - (SM_RISE + K1_FLOOR + M2_WASHER[2] + M2_NUT[1]));
 echo(horn_under_flange = RD_FLANGE - RD_DROP - HORN_TOP);                // the horn's face, under F1's underside
 echo(horn_under_roll_heads = (ROLL_BOLT[4] - ROLL_BOLT[3] - RD_DROP) - HORN_TOP);
-echo(pins_in_roll_servo = ROLL_SERVO - (PIN[1] - RD_DROP));              // past the case's front face
+echo(pins_above_roll_servo = (PIN[1] - RD_DROP) - ROLL_SERVO);           // the case's front face
 echo(rb_bolt_short_of_tab = (RB_CBORE - M2X12[1]) - (ROLL_SERVO - c102_plate()[0]));   // an M2 x 12 in H1
 echo(span_bolt_past_nut = (SPAN_WASHER_Z - M2_WASHER[2] - M2_NUT[1]) - (SPAN_HEAD_Z - M2X12[1]));
-echo(span_heads_proud = M2X12[3] - H2_CBORE);   // past V1's -X face, out of H2's counterbore
+echo(span_heads_under_v1 = H2_CBORE - M2X12[3]);   // under V1's -X face, in H2's counterbore
 
 for (p = PARTS) if (part == "all" || part == p) tool_draw(p);
 for (p = RACE_PARTS) if (part == p) tool_draw(p);

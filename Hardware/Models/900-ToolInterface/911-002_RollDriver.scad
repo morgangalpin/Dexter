@@ -6,7 +6,7 @@
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/900-ToolInterface/911-002_RollDriver.stl), in that mesh's
 //                         frame.
-//   config = "revised"  — the same part with S1 at the 6703's press fit.
+//   config = "revised"  — the same part with print fits on S1, C1 and N1.
 //
 // SOURCE. 911-002_RollDriver.step (Reference/, 2020-03-12) and the STL are the same revision: every
 // STEP surface (scadmesh surfaces) lands on the STL's sections in the same frame, and the dimensions
@@ -38,11 +38,13 @@
 // = Ø16.900 over the whole shaft, F1 staying Ø18 as the shoulder. C1 takes the M2 x 20 bolts' heads
 // (Ø3.8, step 7) at press, not slip: fit_bore(3.8, FIT_PRESS) = Ø3.900, which leaves 0.50 of wall in
 // L3 between C1 and the 6703's bore, as the reference does. Slip's Ø4.1 would leave 0.40, narrower than
-// one extrusion line. The rest keep the reference's sizes: P1 is reamed for
-// satin pins that are glued in (step 5-6), B1 is tapped by the M2 x 20 bolts (step 7), N1 engages the
-// servo's horn (unknown mate), and W1 carries wires.
+// one extrusion line. N1 stands in the roll XL-320's horn holes, a bought part: fit_pin of
+// ../c102_servo.scad's c102_hole_d() at FIT_PRESS. The rest keep the reference's sizes: P1 is reamed
+// for satin pins that are glued in (step 5-6), B1 is tapped by the M2 x 20 bolts (step 7), and W1
+// carries wires.
 
 include <../print_fit.scad>
+use <../c102_servo.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -70,7 +72,9 @@ module at_pcd(start) for (a = [start : 90 : start + 270]) rotate(a) translate([P
 
 module pins_2d() at_pcd(0) circle(d = PIN_D, $fn = 48);
 
-module l1_2d() difference() { at_pcd(0) circle(d = BOSS_D, $fn = 72); pins_2d(); }
+function boss_d(cfg) = cfg == "revised" ? fit_pin(c102_hole_d(), fit_clearances(cfg)[1]) : BOSS_D;
+
+module l1_2d(cfg = config) difference() { at_pcd(0) circle(d = boss_d(cfg), $fn = 72); pins_2d(); }
 
 // One section of the flange or shaft: outline d, less W1, P1 and the 45-degree holes of diameter h.
 module disc_2d(d, h) difference() {
@@ -91,7 +95,7 @@ module l4_2d(cfg = config) disc_2d(shaft_d(cfg), BOLT_D);
 module slab(i) translate([0, 0, Z[i] - (i > 0 ? LAP : 0)]) linear_extrude(Z[i + 1] - Z[i] + (i > 0 ? LAP : 0)) children();
 
 module roll_driver(cfg = config) {
-    slab(0) l1_2d();
+    slab(0) l1_2d(cfg);
     slab(1) l2_2d(cfg);
     slab(2) l3_2d(cfg);
     slab(3) l4_2d(cfg);

@@ -49,10 +49,11 @@
 //
 // FITS (revised). B1 and M1 are fastener clearances, N1 and M1's traps nut pockets: all at FIT_SLIP
 // (B1 fit_bore(3) for the M3 bolts, N1 the M3 nut's 5.5 AF x 2.4, M1 fit_bore(2) and the M2 nut's 4 AF).
-// S1 takes an XL-320 (C-102), a motor: its profile grows by FIT_PRESS. D1 and P1 take nothing the
-// catalog sizes, so they stay as drawn.
+// S1 takes an XL-320 (C-102), a bought part: its section is ../c102_servo.scad's outline and pads,
+// grown by FIT_PRESS. D1 and P1 take nothing the catalog sizes, so they stay as drawn.
 
 include <../print_fit.scad>
+use <../c102_servo.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -196,7 +197,19 @@ module servo_pocket_2d(c) offset(delta = c) polygon(concat(
     [[-POCKET[0].x, BIG]]));
 function reverse(v) = [for (i = [len(v) - 1 : -1 : 0]) v[i]];
 
-module servo_pocket(cfg) along_x(CHANNEL[0][0], BACK) servo_pocket_2d(fit_clearances(cfg)[1]);
+// Revised, from the servo itself (../c102_servo.scad): its axis on the flange's and its near end down,
+// so its (x, y) is this section's (y, FLANGE's z - z). Its outline, and above the ledge where its
+// pads' near edges stand, the pads' width with the reference's lead-in chamfer onto them.
+LEAD_IN = [0.428, 0.659];   // the chamfer from the ledge's outer corner up to the pads' width: in, up
+module servo_section_2d() let(w = c102_case_dims()[0] + c102_pads()[0], ledge = FLANGE[0].y - c102_pads()[1][0][1]) union() {
+    translate([0, FLANGE[0].y]) mirror([0, 1]) c102_outline_2d();
+    polygon([[w - LEAD_IN[0], ledge], [w, ledge + LEAD_IN[1]], [w, BIG], [-w, BIG], [-w, ledge + LEAD_IN[1]],
+             [LEAD_IN[0] - w, ledge]]);
+}
+
+module servo_pocket(cfg) let(c = fit_clearances(cfg)[1]) along_x(CHANNEL[0][0], BACK)
+    if (cfg == "revised") offset(delta = c) servo_section_2d();
+    else servo_pocket_2d(c);
 
 // T1: the bore slot, and its gable truncated under the rim.
 SLOT = [5.500, 7.000, 12.500, 11.898];
