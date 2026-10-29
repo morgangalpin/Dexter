@@ -318,9 +318,24 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #660-002 | M3 nuts | Off the shelf | 1 | In the Pinion Gear |
 | #680-001 | 1″ #19 finishing nails | Off the shelf | 2 | Satin pins in the Pinion Gear (008.11 steps 38–39); the reamer is reused |
 
-Optional alternates (baseline build qty 0): the claw gripper — #930-001 Claw Finger and #930-002 Finger
-Cap, with an M2 × 16 mm bolt and an M2 washer, on two MR128s in a fixed finger that is not in the model
-set ([DC-900-1](009-Design-Completion.md#gripper-design)) — 3-Prong fingers, A6 Torque Link, skin/board
+Optional alternate (baseline build qty 0): the **claw gripper**, in place of the parallel gripper's
+parts from #920-001 down, on the same tool interface and Span Driver, built with two fingers or with four
+([DC-900-1](009-Design-Completion.md#gripper-design); built per
+[008.11 § Claw gripper](008-Assembly.md#claw-gripper-alternate)):
+
+| PBS # | Part | Type | 2-finger | 4-finger | Notes |
+|---|---|---|---|---|---|
+| #930-001 | Claw Finger | 3D print | 2 | 4 | One model for every finger |
+| #930-002 | Claw Gear | 3D print | 2 | 2 | One model for both pivots |
+| #930-003 | Claw Body | 3D print | 1 | 1 | One model for both claws |
+| #930-004 | Claw Axle | 3D print | — | 2 | Carries the outer finger |
+| #920-006 | Pinion Bearing EXT | 3D print | 2 | — | The parallel gripper's |
+| #920-004 | MR128 bearing | Off the shelf | 4 | 4 | In the Claw Body |
+| — | M3 × 16 mm bolts | Off the shelf | 2 | — | Pinion Bearing EXT to Claw Gear ([C-620](007.1-Parts-Catalog.md#6-fasteners)) |
+| — | M3 × 25 mm socket head cap screws | Off the shelf | — | 2 | Claw Axle to Claw Gear |
+| #642-005 | M3 × 6 mm set screws | Off the shelf | 2 | 4 | One per finger ([C-606](007.1-Parts-Catalog.md#6-fasteners)) |
+
+Other optional alternates (baseline build qty 0): 3-Prong fingers, A6 Torque Link, skin/board
 brackets, gripper wire cover. Two pieces of yoga mat provide the finger grip pads.
 
 ---

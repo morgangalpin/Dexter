@@ -1630,3 +1630,32 @@ anything version 3 does not independently specify
 - **Status:** `[Specified]`.
 - **Re-derive:** `cargo test` in `render-check/`, then `rust-script --force render.rs <group> --verify`
   for 100-Base, 300-Pivot and 700-Differential.
+
+### CR-3A23: Claw gripper designed in a 2-finger and a 4-finger build
+
+- **Affects:** [007.11](specs/007-Bill-of-Materials.md#00711-tool-interface--gripper),
+  [007.2 §Not in the build list](specs/007.2-Printed-Parts.md#not-in-the-build-list),
+  [008.11 §Claw gripper](specs/008-Assembly.md#claw-gripper-alternate),
+  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
+  `Hardware/Models/930-ClawGripper/` (every file), `900-ToolInterface/span_socket.scad` (new),
+  `900-ToolInterface/tool_assembly.scad`, `900-ToolInterface/912-002_SpanDriver.scad`,
+  `920-ParallelGripper/920-001_StaticFinger.scad`, `920-ParallelGripper/gripper_assembly.scad`,
+  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`.
+- **Amends:** [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad) (the claw's two converted
+  parts).
+- **Was:** The claw was the legacy Claw Finger (`#930-001`) and Finger Cap (`#930-002`), converted from
+  their meshes, whose fixed finger was not in the model set.
+- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite on the span XL-320,
+  in a 2-finger and a 4-finger build that share one finger, one gear and one body
+  ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A, `#930-001`
+  is reassigned to the new Claw Finger and `#930-002` to the Claw Gear; `#930-003` Claw Body and `#930-004`
+  Claw Axle are new. The legacy meshes move to `Reference/superseded/` under their published numbers. The
+  Static Finger's socket on the Span Mount moves into `span_socket.scad`, which the Claw Body shares; the
+  Static Finger renders identically. `assembly-clash.rs` takes `--set NAME=VALUE`, so that one clash file
+  checks an assembly at several poses.
+- **Driver:** A gripper whose two fingers are both in the model set, for parts the parallel gripper's jaws
+  do not suit, with as much shared between its builds and with the parallel gripper as the mount allows.
+- **Status:** `[Specified]`.
+- **Re-derive:** `rust-script render.rs 930-ClawGripper --verify`, then
+  `rust-script assembly-clash.rs 930-ClawGripper/claw2_assembly.clash.json --set OPEN=<deg>` and the same for
+  `claw4_assembly.clash.json`, at 0, 12 and 25.

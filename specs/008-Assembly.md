@@ -421,6 +421,27 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
 47. Slide the Dynamic Finger into the Static Finger and close fully.
 48. Cut two yoga-mat pieces to the finger inside faces and hot-glue them as grip pads.
 
+### Claw gripper (alternate)
+Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper), the claw table. These steps replace
+steps 38–48; steps 1–37 are unchanged. The 4-finger claw's differences are in *italics*.
+
+1. Press two MR128 bearings into each pair of seats in the Claw Body's bearing plate.
+2. Turn both Claw Gears so their noses' arcs point up, mesh them, and slide them up into the Claw Body's
+   pocket from below, each nose out through the front wall's slot on its pivot.
+3. Push a Pinion Bearing EXT *(Claw Axle)* through each pair of MR128s from behind until its keyed nose
+   seats in the gear's recess (it fits one way), and thread an M3 × 16 mm *(M3 × 25 mm)* bolt through it
+   into the gear, snug, so the gears still turn freely.
+4. Turn the Span Driver until its head's arc points up — the claw's closed position.
+5. Push the Claw Body onto the Span Mount, as step 46 pushes the Static Finger, so that the drive gear's
+   nose stands in line with the Span Driver's head.
+6. Drop a Claw Finger's socket onto the Span Driver's head and the drive gear's nose, and another, turned
+   to face it, onto the follower gear's nose; the tips meet on the roll axis. *Drop the two outer fingers
+   onto the Claw Axles' noses the same way.*
+7. Each finger's hub has two tapped holes on the side away from its tip; thread an M3 × 6 mm set screw into
+   the one in line with its nose's cross-hole until it seats in the cross-hole. *An outer finger's screw
+   goes on until it stops on the M3 × 25's shank.*
+8. Hot-glue a yoga-mat pad to each finger's grip face, as step 48.
+
 ## 008.12 Firmware Configuration and Calibration
 Config: [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md). Required before first use on a
 from-scratch build.
