@@ -7,7 +7,8 @@
 // modules.
 //
 // FRAME. The tool interface's: the Roll Body's, the roll axis on +Z. Every part of this group stands in
-// the Static Finger's frame, sf_frame() below; the hub's axis runs along its +Y through HUB.
+// the Static Finger's frame, which is the grip frame (tool_assembly.scad's grip_frame()); the hub's axis
+// runs along its +Y through HUB, the span axis.
 //
 // PLACEMENT, each part by a feature it carries (specs/008.11 steps 36-47):
 //
@@ -48,6 +49,7 @@
 // one race alone, and PARTS lists only the whole bearing.
 
 use <../900-ToolInterface/tool_assembly.scad>
+use <../900-ToolInterface/span_socket.scad>
 use <../c102_servo.scad>
 
 part = "all";   // "all", or one name from PARTS or RACE_PARTS for per-part export
@@ -56,14 +58,12 @@ OPEN = 0;       // the Dynamic Finger's travel from its drawn position, mm along
 $fn = 96;
 
 // --- Features, each in its own part's frame ---------------------------------
-SF_DROP     = 1.500;                     // #920-001 socket ceiling z 24.2 on #912-001's column top z 22.7
-SF_TURN     = 90;                        // #920-001 socket = #912-001 column turned -90 deg
-HUB         = [14.139, 17.500];          // #920-001 hub axis (x, z), along +Y
+HUB         = span_axis();               // #920-001 hub axis (x, z), along +Y
 MR128       = [8, 12, 3.5, [10.007, 14.007]];  // bore, OD, width, y of each in #920-001
 MR128_RACES = [9.2, 10.8];
 PINION_Y    = 3.507;                     // #920-005 z 0 along +Y: its top (z 6.0) on the EXT's spacer at y 9.507
 EXT_Y       = 10.007;                    // #920-006 y 0 (its shoulder, the inner MR128's face)
-DRIVER_Y    = -11.493;                   // #912-002 y 0: its head's end (y 13) on #920-005 D1's ceiling (z -2)
+DRIVER_Y    = span_driver_y();           // #912-002 y 0: its head's end (y 13) on #920-005 D1's ceiling (z -2)
 DRIVER_B1   = [2.175, 5.325];            // #912-002 B1's y span, its mouth first
 M3_BOLT     = [3, 16, 5.5, 3, 8.5];      // M3 x 16 socket head (ISO 4762): d, length, head d, head h; under its head y in #920-006
 M3_NUT      = [5.5, 2.4, 1.3];           // M3 nut (DIN 934): across flats, height; its top z in #920-005 (N1's ceiling)
@@ -71,7 +71,7 @@ RACK        = [18.272, 3.257, 28];       // #920-002's frame in #920-001's, clos
 PITCH_R     = 10.500;                    // #920-005's pitch circle, the rack's pitch line above HUB
 
 // --- Frames -----------------------------------------------------------------
-module sf_frame()     sm_frame() translate([0, 0, -SF_DROP]) rotate(SF_TURN) children();
+module sf_frame()     grip_frame() children();
 module hub_frame(y)   sf_frame() translate([HUB.x, y, HUB.y]) children();   // a part's axis on the hub's, +Y
 // A turning part on the hub's axis: turned with OPEN, so that its pitch circle rolls along the rack's
 // pitch line (+X at the top for +OPEN). The MR128s, which are round, are drawn unturned.

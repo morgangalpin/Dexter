@@ -93,6 +93,10 @@ module span_servo_frame() sm_frame() translate(SPAN_SERVO) rotate([0, -90, 0]) c
 // The span servo's case front face in #912-001's frame, for a gripper's assembly.
 function span_servo_face() = SPAN_SERVO.x;
 
+// The grip frame (span_socket.scad's), in which every gripper base is drawn: #912-001's turned +90 deg
+// about Z and 1.5 lower, so that the base's socket ceiling (z 24.2) is on the column's top (z 22.7).
+module grip_frame() sm_frame() translate([0, 0, -1.5]) rotate(90) children();
+
 // --- Parts ------------------------------------------------------------------
 module printed(id) import(str("out/asm/", id, ".stl"), convexity = 10);
 

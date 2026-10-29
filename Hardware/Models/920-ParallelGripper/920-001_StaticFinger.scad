@@ -47,15 +47,12 @@
 //     T1  rack T-slot          along X: y 2.757 .. 9.757 z 24.7 .. 34.5, y 1.257 .. 11.257 z 30.75 .. 32.75
 //     M1  MR128 seats          Ø12 at y 10.757 .. 13.507 and 14.007 .. 18.757, Ø11.2 between
 //
-// FITS (revised). M1 takes the MR128s (C-405, 12 OD), pressed: fit_bore(12, FIT_PRESS) = Ø12.1. S2 takes
-// the strake's top (C-502, 2.337 x 5.588), bonded: fit_bore at FIT_PRESS. S1 slides over the Span
-// Mount's column, a printed part: grown by FIT_SLIP. S3 slides over the Span Mount's upright plate:
-// its +Y face and +X end open by FIT_SLIP, so the plate's faces and its eye lobe clear the finger.
-// Beyond the plate, S3's ceiling and its outer step stand over the span XL-320, a bought part: they
-// follow ../c102_servo.scad's case and pads, at FIT_PRESS.
+// FITS (revised). M1 takes the MR128s (C-405, 12 OD), pressed: fit_bore(12, FIT_PRESS) = Ø12.1. S1, S2 and
+// S3 are the shared socket on the Span Mount, ../900-ToolInterface/span_socket.scad's, which owns their
+// sizes and fits; S2's 45 deg roof is this part's own.
 
 include <../print_fit.scad>
-use <../c102_servo.scad>
+use <../900-ToolInterface/span_socket.scad>
 
 /* [Configuration] */
 // Parameter set: previous (reference) or revised
@@ -66,7 +63,7 @@ $fn = 144;
 LAP = 0.005;
 BIG = 100;
 
-HUB      = [14.139, 17.500];            // the hub's axis (x, z), along Y
+HUB      = span_axis();                 // the hub's axis (x, z), along Y
 FLOOR    = 10.000;
 TOP      = 34.500;
 CORNER   = [10.561, -2.000, 1.939];     // P1's corners: radius, centre x, centre ±y
@@ -273,77 +270,20 @@ module body() union() {
 
 module along_x(x0, x1) translate([x0, 0, 0]) rotate([90, 0, 90]) linear_extrude(x1 - x0) children();   // 2D (y, z)
 
-// S1: the Span Mount's column and web (912-001_SpanMount.scad's C1 and W1), turned -90 deg about Z, its
-// web run on out into S3; the entry chamfered 0.3 at 45 deg.
-COLUMN    = [5.833, 1.000];        // |x| + |y| bound, corner radius
-WEB       = [0.470, 0.500];        // faces y = ±(x + 0.47) in the Span Mount's frame, fillet radius
-SOCKET    = [24.200, 0.300];       // ceiling z, entry chamfer
+// S1 and S3 are span_socket.scad's, from this part's floor.
 
-module column_sm_2d() let(a = (COLUMN[0] - WEB[0]) / 2) union() {
-    hull() for (k = [0 : 3]) rotate(90 * k) translate([COLUMN[0] - COLUMN[1] * sqrt(2), 0]) circle(r = COLUMN[1], $fn = 72);
-    polygon([[a, a + WEB[0]], [6, 6 + WEB[0]], [6, -6 - WEB[0]], [a, -a - WEB[0]]]);
-}
-
-module socket_2d(grow) rotate(-90) offset(delta = grow) union() {
-    column_sm_2d();
-    let(a = (COLUMN[0] - WEB[0]) / 2) intersection() {
-        offset(r = -WEB[1]) offset(r = WEB[1]) column_sm_2d();
-        for (s = [-1, 1]) translate([a - 0.8, s * (a + WEB[0]) - 0.8]) square(1.6);
-    }
-}
-
-module socket(cfg) let(g = fit_clearances(cfg)[0], n = 6) {
-    translate([0, 0, FLOOR - 1]) linear_extrude(SOCKET[0] - FLOOR + 1) socket_2d(g);
-    for (i = [0 : n - 1]) let(h = SOCKET[1] / n)
-        translate([0, 0, FLOOR - (i == 0 ? 1 : 0) + i * h]) linear_extrude(h + (i == 0 ? 1 : 0) + LAP)
-            offset(r = SOCKET[1] - (i + 0.5) * h) socket_2d(g);
-}
-
-// S2: the strake's slot, open through B1's top over x > 0, roofed at 45 deg over x < 0.
-STRAKE_SLOT = [5.500, 2.400];      // x, y: the reference's
-STRAKE      = [5.588, 2.337];      // C-502, .220" x .092", along x and y here
+// S2: the strake's slot, span_socket.scad's section, open through B1's top over x > 0, roofed at 45 deg
+// over x < 0.
 ROOF        = [34.000, 36.750];    // the roof's z at x = -2.75 and at x = 0
+EDGE_CHAMFER = 0.500;              // the floor's edges about S3 and U1
 
-module strake_slot(cfg) let(c = fit_clearances(cfg)[1],
-                            w = cfg == "previous" ? STRAKE_SLOT : [fit_bore(STRAKE.x, c), fit_bore(STRAKE.y, c)])
-    along_y(-w.y / 2, w.y / 2) polygon([[-w.x / 2, SOCKET[0] - LAP], [w.x / 2, SOCKET[0] - LAP],
-        [w.x / 2, TOP + 1], [0, TOP + 1], [0, ROOF[1] + (w.x - STRAKE_SLOT.x) / 2],
+module strake_slot(cfg) let(w = span_strake_w(cfg), top = span_column_top())
+    along_y(-w.y / 2, w.y / 2) polygon([[-w.x / 2, top - LAP], [w.x / 2, top - LAP],
+        [w.x / 2, TOP + 1], [0, TOP + 1], [0, ROOF[1] + (w.x - span_strake_ref_w().x) / 2],
         [-w.x / 2, ROOF[0]]]);
 
-// S3: the Span Mount's upright plate passes under B1 at y < -3.743, its notch about a tongue.
-PLATE_SLOT = [-3.743, 28.000, 23.139];           // +Y face, ceiling, +X end
-PLATE_STEP = [-10.243, 29.500];                  // the outer step: +Y face, ceiling
-TONGUE     = [-7.243, 24.200, 5.000, 27.700, 5.617];   // -Y face, bottom, half-width there, top of its taper, half-width
-EDGE_CHAMFER = 0.500;                            // the floor's edges about S3 and U1
-
-// Beyond V1 the slot's ceiling and its outer step stand over the span XL-320, whose axis is the hub's
-// and whose front face is V1's +X face (TONGUE's -Y face): the ceiling over its +X side, the step over
-// its pads from their front edge. Its servo-frame (x, y, z) is this frame's (z - HUB's z, x - HUB's x,
-// y - TONGUE's -Y face).
-// The slot for a config: revised opens its +Y face and +X end by the slip clearance, and stands its
-// ceiling off the servo's side by the press fit.
-function plate_slot_at(cfg) = let(c = fit_clearances(cfg))
-    [PLATE_SLOT[0] + c[0], cfg == "revised" ? HUB.y + c102_case_dims()[0] + c[1] : PLATE_SLOT[1],
-     PLATE_SLOT[2] + c[0]];
-
-// The outer step for a config: +Y face, ceiling, +X end, which meets the slot's ceiling at 45 deg;
-// revised stands it off the pads by the press fit.
-function plate_step_at(cfg) = let(p = plate_slot_at(cfg), c = fit_clearances(cfg)[1], s = c102_pads(),
-                                  z = cfg == "revised" ? HUB.y + c102_case_dims()[0] + s[0] + c : PLATE_STEP[1])
-    [cfg == "revised" ? TONGUE[0] + s[2][0][1] + c : PLATE_STEP[0], z, p[2] - (z - p[1])];
-
-module plate_slot(cfg) let(p = plate_slot_at(cfg), q = plate_step_at(cfg)) difference() {
-    union() {
-        along_y(-BIG, p[0]) polygon([[-BIG, FLOOR - 1], [p[2], FLOOR - 1], [p[2], p[1]], [-BIG, p[1]]]);
-        along_y(-BIG, q[0]) polygon([[-BIG, FLOOR - 1], [p[2], FLOOR - 1],
-            [p[2], p[1]], [q[2], q[1]], [-BIG, q[1]]]);
-    }
-    along_y(TONGUE[0], p[0] + 1) polygon([[-TONGUE[2], TONGUE[1]], [TONGUE[2], TONGUE[1]],
-        [TONGUE[4], TONGUE[3]], [TONGUE[4], BIG], [-TONGUE[4], BIG], [-TONGUE[4], TONGUE[3]]]);
-}
-
-// U1: the hub's slot, from the floor up round the hub.
-U_SLOT = [6.500, -3.743, 2.757];   // half-width (= its round's radius), y span
+// U1: the hub's slot, from the floor up round the hub, from V1's +X face.
+U_SLOT = [6.500, span_plate_face(), 2.757];   // half-width (= its round's radius), y span
 
 module hub_slot() along_y(U_SLOT[1] - 1, U_SLOT[2]) union() {
     translate([HUB.x - U_SLOT[0], FLOOR - 1]) square([2 * U_SLOT[0], HUB.y - FLOOR + 1]);
@@ -357,7 +297,7 @@ module mitre(p, side) let(k = p[2] - p[0])
     linear_extrude(3 * BIG, center = true) polygon(side > 0 ? [[k - BIG, -BIG], [k + BIG, BIG], [-BIG, BIG]]
                                                               : [[k - BIG, -BIG], [k + BIG, BIG], [BIG, -BIG]]);
 
-module floor_chamfers(cfg) let(e = EDGE_CHAMFER, p = plate_slot_at(cfg)) {
+module floor_chamfers(cfg) let(e = EDGE_CHAMFER, p = span_plate_slot_at(cfg)) {
     for (x = [[4.0, HUB.x - U_SLOT[0]], [HUB.x + U_SLOT[0], p[2] + e]]) intersection() {
         along_x(x[0], x[1]) polygon([[p[0] - 1, FLOOR - 1], [p[0] + e + 1, FLOOR - 1], [p[0], FLOOR + e]]);
         mitre(p, 1);
@@ -417,9 +357,9 @@ module top_chamfer() along_x(0, 20) polygon([[BASE_Y - 0.5, TOP + 1], [BASE_Y - 
 module static_finger(cfg = config) difference() {
     body();
     lug_bore();
-    socket(cfg);
+    span_column_socket(cfg, FLOOR);
     strake_slot(cfg);
-    plate_slot(cfg);
+    span_plate_slot(cfg, FLOOR);
     hub_slot();
     floor_chamfers(cfg);
     pocket();

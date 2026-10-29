@@ -1,6 +1,8 @@
 // #912-002 Span Driver — parametric source.
 // The span (grip) axis's output: a sleeve pushed onto the span XL-320's output spline and held by an
-// M2.6 x 10 bolt (specs/008.11 steps 36-37). Its flat-sided head drives the Dynamic Finger's hub.
+// M2.6 x 10 bolt (specs/008.11 steps 36-37). Its flat-sided head drives the gripper: the parallel
+// gripper's Pinion Gear (#920-005), or the claw's drive Claw Finger (#930-001), whose socket and the Claw
+// Gear's nose take D1's outline, head_2d().
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/900-ToolInterface/912-002_SpanDriver.stl), in that mesh's
@@ -47,7 +49,7 @@
 // FITS (revised). B1 on the XL-320's output spline and K2 on its key, bought parts: ../c102_servo.scad's
 // spline star grown by FIT_PRESS, and its key's width grown by it about the same end centre. K1 takes
 // the M2.6 bolt and C1 its head: fit_bore(2.6, FIT_SLIP) = Ø2.900 and fit_bore(5.5, FIT_SLIP) =
-// Ø5.800. D1 (in the Dynamic Finger's hub) and S2/F1 (against the Span Mount) are left as drawn until
+// Ø5.800. D1 (in the gripper's drive slot) and S2/F1 (against the Span Mount) are left as drawn until
 // the assembly stage shows their mates.
 
 include <../print_fit.scad>
@@ -64,6 +66,9 @@ $fn = 144;
 LAP = 0.005;               // layers overlap so Manifold joins them (no shared faces)
 
 Y = [2.175, 5.175, 5.325, 7.500, 8.000, 10.000, 13.000];   // the layers' faces, L1 .. L6
+
+// D1's y span, for the parts it drives.
+function head_y_span() = [Y[4], Y[6]];
 
 SLEEVE_D = 7.750;          // S1
 END_R    = 0.500;          // S1's end edge round
