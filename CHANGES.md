@@ -1645,11 +1645,13 @@ anything version 3 does not independently specify
   parts).
 - **Was:** The claw was the legacy Claw Finger (`#930-001`) and Finger Cap (`#930-002`), converted from
   their meshes, whose fixed finger was not in the model set.
-- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite on the span XL-320,
-  in a 2-finger and a 4-finger build that share one finger, one gear and one body
+- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite, geared down 3:1 from
+  the span XL-320, in a 2-finger and a 4-finger build that share every part
   ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A, `#930-001`
-  is reassigned to the new Claw Finger and `#930-002` to the Claw Gear; `#930-003` Claw Body and `#930-004`
-  Claw Axle are new. The legacy meshes move to `Reference/superseded/` under their published numbers. The
+  is reassigned to the new Claw Finger and `#930-002` to the Claw Gear; `#930-003` Claw Body, `#930-004`
+  Claw Pinion and `#930-005` Claw Cap are new. The Claw Pinion takes the Span Driver's place on the servo's
+  spline, drawing its spline end from `912-002_SpanDriver.scad`, which is otherwise unchanged. The legacy
+  meshes move to `Reference/superseded/` under their published numbers. The
   Static Finger's socket on the Span Mount moves into `span_socket.scad`, which the Claw Body shares; the
   Static Finger renders identically. `assembly-clash.rs` takes `--set NAME=VALUE`, so that one clash file
   checks an assembly at several poses.

@@ -165,14 +165,15 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #930-001 | Claw Finger | 0 | `930-001_ClawFinger.scad` | Designed, `revised` only: opens the socket to slip on the Span Driver's head and the noses, and taps the set-screw holes |
-| #930-002 | Claw Gear | 0 | `930-002_ClawGear.scad` | Designed, `revised` only: thins the teeth by slip backlash, opens the key recess and cross-hole to slip, and taps the bolt hole |
-| #930-003 | Claw Body | 0 | `930-003_ClawBody.scad` | Designed, `revised` only: presses the MR128 seats, takes the Static Finger's fits on the Span Mount, and runs the gears and fingers clear |
-| #930-004 | Claw Axle | 0 | `930-004_ClawAxle.scad` | Designed, `revised` only: the Pinion Bearing EXT's fits, with its nose's cross-hole and bolt bore at slip |
+| #930-001 | Claw Finger | 0 | `930-001_ClawFinger.scad` | Designed, `revised` only: opens the hex box end to slip on a Claw Gear's seat, and taps the set-screw hole |
+| #930-002 | Claw Gear | 0 | `930-002_ClawGear.scad` | Designed, `revised` only: thins the sector's teeth by slip backlash, and presses the journals into the MR128s |
+| #930-003 | Claw Body | 0 | `930-003_ClawBody.scad` | Designed, `revised` only: presses the MR128 seats, takes the Static Finger's fits on the Span Mount, taps the cap's holes, and runs the gears, the fingers and the pinion clear |
+| #930-004 | Claw Pinion | 0 | `930-004_ClawPinion.scad` | Designed, `revised` only: the Span Driver's spline end and its fits, the teeth thinned by slip backlash, and the journal pressed into the cap's MR128 |
+| #930-005 | Claw Cap | 0 | `930-005_ClawCap.scad` | Designed, `revised` only: presses the three MR128 seats and opens the bolt holes to slip |
 
 Quantities for the 2-finger and the 4-finger claw are
 [007.11](../../specs/007-Bill-of-Materials.md#00711-tool-interface--gripper)'s; `claw_params.scad` holds the
-dimensions the four parts share.
+dimensions the five parts share, and `claw_gears.scad` draws their teeth.
 
 ## 950-Tooling — Tooling
 
@@ -224,7 +225,7 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
   mesh is exported from the glTF body; the [header](920-ParallelGripper/920-001_StaticFinger.scad) gives how.
 - **#920-002 Dynamic Finger, #920-005 Pinion Gear and #920-006 Pinion Bearing EXT** — No mesh was ever
   published; each reference mesh is its STEP, tessellated.
-- **#930-001 to #930-004, the claw** — Designed, with no reference mesh. The legacy claw finger and Finger
+- **#930-001 to #930-005, the claw** — Designed, with no reference mesh. The legacy claw finger and Finger
   Cap they replace, published as `920-002_DynamicFinger.stl` and `920-003_FingerCap.stl`, are retired to
   `Reference/superseded/` under their published numbers; see
   [009 § The claw](../../specs/009-Design-Completion.md#the-claw).

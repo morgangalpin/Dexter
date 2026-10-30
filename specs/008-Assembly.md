@@ -423,24 +423,28 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
 
 ### Claw gripper (alternate)
 Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper), the claw table. These steps replace
-steps 38–48; steps 1–37 are unchanged. The 4-finger claw's differences are in *italics*.
+steps 36–48; steps 1–35 are unchanged. The 4-finger claw's differences are in *italics*.
 
-1. Press two MR128 bearings into each pair of seats in the Claw Body's bearing plate.
-2. Turn both Claw Gears so their noses' arcs point up, mesh them, and slide them up into the Claw Body's
-   pocket from below, each nose out through the front wall's slot on its pivot.
-3. Push a Pinion Bearing EXT *(Claw Axle)* through each pair of MR128s from behind until its keyed nose
-   seats in the gear's recess (it fits one way), and thread an M3 × 16 mm *(M3 × 25 mm)* bolt through it
-   into the gear, snug, so the gears still turn freely.
-4. Turn the Span Driver until its head's arc points up — the claw's closed position.
-5. Push the Claw Body onto the Span Mount, as step 46 pushes the Static Finger, so that the drive gear's
-   nose stands in line with the Span Driver's head.
-6. Drop a Claw Finger's socket onto the Span Driver's head and the drive gear's nose, and another, turned
-   to face it, onto the follower gear's nose; the tips meet on the roll axis. *Drop the two outer fingers
-   onto the Claw Axles' noses the same way.*
-7. Each finger's hub has two tapped holes on the side away from its tip; thread an M3 × 6 mm set screw into
-   the one in line with its nose's cross-hole until it seats in the cross-hole. *An outer finger's screw
-   goes on until it stops on the M3 × 25's shank.*
-8. Hot-glue a yoga-mat pad to each finger's grip face, as step 48.
+1. Turn the span motor's output until the key on its spline points 35° below the line from the span axis
+   toward the roll axis: the claw's closed position.
+2. Align the notch inside the Claw Pinion's bore with the key and push the pinion onto the spline. Secure it
+   with an M2.6 × 10 mm bolt dropped through the pinion's bore from its front end, snug, as step 37.
+3. Press an MR128 bearing into each of the two seats in the Claw Body's rear cheek, and one into each of the
+   Claw Cap's three seats.
+4. Push the Claw Body onto the Span Mount, as step 46 pushes the Static Finger, so that the Claw Pinion
+   passes up into the slot under the body.
+5. Stand a Claw Finger on each pivot, its hex box end in front of the rear MR128 and its tip up, the two
+   turned to face each other.
+6. Push each Claw Gear from the front through its finger's box end into the rear MR128, its sector's teeth
+   facing the other pivot: the drive gear, on the pivot above the pinion, meshing with the pinion, and the
+   follower meshing with the drive gear so that the two fingers' tips meet on the roll axis.
+7. *Slide a second Claw Finger onto each gear's front hex seat, in front of the sectors, facing the same way
+   as the finger behind it.*
+8. Thread an M3 × 4 mm set screw into the tapped hole on each finger's hub, on the side away from the roll
+   axis, until it seats on the hex's flat.
+9. Fit the Claw Cap onto the Claw Body's front face, its MR128s over the two gears' and the pinion's front
+   journals, and bolt it with three M3 × 10 mm bolts.
+10. Hot-glue a yoga-mat pad to each finger's grip face, as step 48.
 
 ## 008.12 Firmware Configuration and Calibration
 Config: [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md). Required before first use on a

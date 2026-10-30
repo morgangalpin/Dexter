@@ -696,35 +696,44 @@ Driver's Ø11 flange and holds no bearing.
 ### The claw
 The legacy claw finger and Finger Cap are retired, their meshes kept in `Reference/superseded/`
 ([Models README](../Hardware/Models/README.md#reference)), and the claw is designed new: a pincer whose two
-curved fingers swing equal and opposite on one span XL-320 until their tips meet on the roll axis, built
-with two fingers or with four, two to a side. Both builds share every part but the journal that carries the
-4-finger claw's outer fingers ([007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) gives the
-parts and quantities):
+curved fingers swing equal and opposite, geared down 3:1 from one span XL-320, until their tips meet on the
+roll axis, built with two fingers or with four, two to a side. Both builds share every part
+([007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) gives the parts and quantities):
 
-- **One finger, one gear, one body.** Each finger's socket drops onto the Span Driver's head on the span axis
-  and onto a Claw Gear's nose of the same outline on both pivots, so one Claw Finger serves every place, the
-  follower's turned 180° about the roll axis. The two Claw Gears mesh 1:1 and are one model, a tooth phased
-  a quarter of a pitch off the nose, so that two gears drawn the same way up carry mirror-image fingers.
+- **A reduction off the span axis.** A Claw Pinion on the servo's spline, in the Span Driver's place,
+  drives a toothed sector on the drive Claw Gear, which meshes 1:1 with the follower's. The pivots stand
+  above the servo, so each finger keeps the legacy finger's reach from its pivot to its tip, and the tips
+  stand higher than fingers on the span axis would. The sectors carry teeth only over the arc the travel uses.
+- **Supported at both ends.** Each gear runs in an MR128 in the Claw Body's rear cheek and one in the Claw
+  Cap, and the pinion's front journal in a third MR128 in the cap. The Span Mount and the Span Driver are
+  unchanged: the claw stands its own bearings, and the Claw Pinion takes the Span Driver's spline end from
+  `900-ToolInterface/912-002_SpanDriver.scad`.
+- **One finger, one gear.** A Claw Finger's hub is a closed hex box end on a gear's hex seat, held by one
+  set screw, and it is symmetric about its mid-plane, so one finger serves every place, the follower's
+  turned 180° about the roll axis. Its curve is the legacy finger's. The two Claw Gears are one model, the
+  follower's turned a third of a turn about its axis, a whole number of both pitches and hex flats. Each
+  gear carries a hex seat on either side of its sector, so the 4-finger claw's second pair needs no other
+  part.
 - **The same mount as the parallel gripper.** The Claw Body takes the Static Finger's socket on the Span
-  Mount, both drawn from `900-ToolInterface/span_socket.scad`, and the 2-finger claw's journals are the
-  parallel gripper's Pinion Bearing EXT. The 4-finger claw's Claw Axle is that EXT with a nose beyond its
-  collar for the outer finger.
+  Mount, both drawn from `900-ToolInterface/span_socket.scad`.
 
-`930-ClawGripper/claw_params.scad` owns the claw's dimensions and gives its mechanism; `claw2_assembly.scad`
-and `claw4_assembly.scad` place the two builds on the tool interface, and their `.clash.json` files check
-them closed, half open and fully open with `assembly-clash.rs --set OPEN=<deg>`. Where the Span Driver
-disagrees with the servo's assumed spline is the parallel gripper's open item, unchanged.
+`930-ClawGripper/claw_params.scad` owns the claw's dimensions and gives its mechanism, and
+`claw_gears.scad` draws its teeth; `claw2_assembly.scad` and `claw4_assembly.scad` place the two builds on
+the tool interface, and their `.clash.json` files check them closed, half open and fully open with
+`assembly-clash.rs --set OPEN=<deg>`. Where the Claw Pinion's spline end disagrees with the servo's assumed
+spline is the Span Driver's, the parallel gripper's open item, unchanged.
 
 Known limits of the claw, to bench-test before building on it:
 
 - **Grip force.** The span XL-320's 0.39 N·m stall
-  ([C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo)) drives 77.3 mm fingers directly, so
-  each tip pinches about 2.5 N with two fingers and 1.3 N with four, against about 37 N at the parallel
-  gripper's 10.5 mm pinion. The claw is for light parts.
-- **Backlash.** The gears' slip backlash gives about 1.7 mm of play between the tips, taken up once the
+  ([C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo)), geared up three times on 77.3 mm
+  fingers, pinches about 7.6 N at each tip with two fingers and 3.8 N with four, against about 37 N at the
+  parallel gripper's 10.5 mm pinion. The claw is for light parts.
+- **The servo's travel.** The span servo turns three times the fingers' angle: 75° from closed to fully
+  open. The firmware commands the servo's angle, not the fingers'.
+- **Backlash.** The two meshes' slip backlash gives about 2.0 mm of play between the tips, taken up once the
   fingers close on a part.
-- **The outer fingers' key.** In the 4-finger claw the outer fingers' torque passes through the 1.5 mm deep
-  key between each Claw Gear and its Claw Axle.
+- **The pinion's journal.** Its wall about the bolt's access bore is 1.05 mm, at the minimum printed wall.
 
 **Definition of done:** **done** — 007.11, 007.2 and 008.11 name the parallel gripper; its Dynamic Finger is
 converted from its STEP; the claw is designed in both builds, listed as an alternate in 007.11 and built
