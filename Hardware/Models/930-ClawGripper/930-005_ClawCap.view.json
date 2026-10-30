@@ -1,0 +1,23 @@
+{
+  "title": "Claw Cap",
+  "subtitle": "#930-005 · revised render of 930-005_ClawCap.scad (designed, no reference mesh) · feature names",
+  "cut": ["z"],
+  "from": [0.3, 1, 0.5],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#b07a32", "stl": "out/revised/930-005.stl"}]}
+  ],
+  "labels": [
+    {"at": [18.75, 26.75, 48.6], "text": "M1 MR128 seat, drive pivot"},
+    {"at": [-18.75, 26.75, 48.6], "text": "M1 MR128 seat, follower pivot"},
+    {"at": [14.139, 26.75, 11.5], "text": "M1 MR128 seat, the pinion's"},
+    {"at": [0, 30, 16], "text": "H1 bolt holes ×3, on the body's T1"}
+  ],
+  "presets": [
+    {"label": "Front face", "at": [0, 27.5, 30], "span": 70, "from": [0, 1, 0]},
+    {"label": "Seats, rear face", "at": [0, 27.5, 30], "span": 70, "from": [0.2, -1, 0.3]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. One cap serves both claws; its outline and holes are claw_params.scad's, shared with the body's front face. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

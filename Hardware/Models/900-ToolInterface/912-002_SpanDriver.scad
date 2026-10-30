@@ -1,8 +1,8 @@
 // #912-002 Span Driver — parametric source.
 // The span (grip) axis's output: a sleeve pushed onto the span XL-320's output spline and held by an
-// M2.6 x 10 bolt (specs/008.11 steps 36-37). Its flat-sided head drives the gripper: the parallel
-// gripper's Pinion Gear (#920-005), or the claw's drive Claw Finger (#930-001), whose socket and the Claw
-// Gear's nose take D1's outline, head_2d().
+// M2.6 x 10 bolt (specs/008.11 steps 36-37). Its flat-sided head drives the parallel gripper's Pinion
+// Gear (#920-005). The claw takes the Claw Pinion (#930-004) in its place, which carries L1 .. L4 as its
+// own spline end.
 //
 //   config = "previous" — a faithful recreation of the reference mesh
 //                         (../Reference/meshes/900-ToolInterface/912-002_SpanDriver.stl), in that mesh's
@@ -67,8 +67,8 @@ LAP = 0.005;               // layers overlap so Manifold joins them (no shared f
 
 Y = [2.175, 5.175, 5.325, 7.500, 8.000, 10.000, 13.000];   // the layers' faces, L1 .. L6
 
-// D1's y span, for the parts it drives.
-function head_y_span() = [Y[4], Y[6]];
+// The layers' faces, for the Claw Pinion (#930-004), which carries L1 .. L4 as its own spline end.
+function layer_y() = Y;
 
 SLEEVE_D = 7.750;          // S1
 END_R    = 0.500;          // S1's end edge round

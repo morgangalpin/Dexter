@@ -1,25 +1,25 @@
 {
   "title": "Claw Finger",
   "subtitle": "#930-001 · revised render of 930-001_ClawFinger.scad (designed, no reference mesh) · feature names",
-  "cut": false,
-  "from": [0.4, -1, 0.3],
+  "cut": ["y"],
+  "from": [0.3, -1, 0.2],
   "groups": [
     {"name": "Renders", "role": "render.rs --verify", "parts": [
       {"id": "revised", "name": "config=\"revised\"", "color": "#3a6b8f", "stl": "out/revised/930-001.stl"}]}
   ],
   "labels": [
-    {"at": [0, -5, -5], "text": "H1 hub R7, 10 thick (y ±5)"},
-    {"at": [0, -5, 0], "text": "S1 socket: the Span Driver's head's outline grown by slip, open downward"},
-    {"at": [7, 2.5, 0], "text": "M1 set-screw holes, Ø2.6 tapped M3, at y ±2.5"},
-    {"at": [6.4, -3, 51], "text": "B1 blade 6 thick, 9 wide outside the grip circle R16"},
-    {"at": [-14.139, -3, 72.5], "text": "T1 tip face: on the roll axis when the claw is closed"}
+    {"at": [0, 0, -9], "text": "H1 hub R9, 10 thick (y ±5)"},
+    {"at": [0, 0, 5.8], "text": "X1 hex bore, 10 across flats grown by slip: the box end over the gear's seat"},
+    {"at": [7, 0, 0], "text": "M1 set-screw hole, Ø2.6 tapped M3, onto X1's flat"},
+    {"at": [-0.4, 0, 30], "text": "B1 shank, 7 thick, 7 wide, leaned 0.75° toward the roll axis"},
+    {"at": [-8, 0, 72], "text": "B1 arc: the legacy finger's curve, grip face R20.277 over 66.4°"},
+    {"at": [-18.75, 0, 75.78], "text": "T1 tip round R3.5: on the roll axis when the claw is closed"}
   ],
   "presets": [
-    {"label": "Whole part", "at": [-3, 0, 38], "span": 95, "from": [0.3, -1, 0.2]},
-    {"label": "Hub and socket", "at": [0, 0, 0], "span": 22, "from": [0.3, -1, -0.4]},
-    {"label": "Tip", "at": [-12, 0, 72], "span": 22, "from": [-1, -0.6, 0.3]}
+    {"label": "Hub and box end", "at": [0, 0, 0], "span": 24, "from": [0.3, -1, 0.3]},
+    {"label": "Tip", "at": [-14, 0, 74], "span": 26, "from": [0, -1, 0]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its dimensions are claw_params.scad's and its features 930-001_ClawFinger.scad's header's. The same part serves every finger of both claws; the follower's is this one turned 180° about Z. Run render.rs --verify before building this page, because the render is its output."}
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its dimensions are claw_params.scad's and its features 930-001_ClawFinger.scad's header's. The same part serves every finger of both claws; the follower's is this one turned 180° about Z. The page opens cut on its mid-plane. Run render.rs --verify before building this page, because the render is its output."}
   ]
 }

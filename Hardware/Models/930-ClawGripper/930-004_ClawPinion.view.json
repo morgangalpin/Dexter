@@ -1,0 +1,24 @@
+{
+  "title": "Claw Pinion",
+  "subtitle": "#930-004 · revised render of 930-004_ClawPinion.scad (designed, no reference mesh) · feature names",
+  "cut": ["x"],
+  "from": [1, -0.4, 0.3],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#7a7a3a", "stl": "out/revised/930-004.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, -7.8, 3.9], "text": "E1 spline end: #912-002's L1 .. L4, on the span XL-320's spline"},
+    {"at": [0, -1.493, 2.9], "text": "The M2.6 bolt head's seat, at the end of A1"},
+    {"at": [0, 9.5, 7.99], "text": "G1 pinion: 10 teeth, module 1.25, profile-shifted 0.415"},
+    {"at": [0, 19, 5.5], "text": "S1 shank Ø11"},
+    {"at": [0, 26.75, 3.95], "text": "J1 journal Ø8 in the cap's MR128, its wall 1.05 about A1"}
+  ],
+  "presets": [
+    {"label": "Along the axis", "at": [0, 9.5, 0], "span": 45, "from": [1, 0, 0]},
+    {"label": "Spline end", "at": [0, -9.3, 0], "span": 16, "from": [0.3, -1, 0.3]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its spline end is the Span Driver's (../900-ToolInterface/912-002_SpanDriver.scad), which it replaces in the claw. The page opens cut on its axis, through the access bore. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

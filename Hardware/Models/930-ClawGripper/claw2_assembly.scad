@@ -1,138 +1,132 @@
 // 930-ClawGripper 2-finger assembly — placement model.
-// Places the 2-finger claw on the tool interface: the Claw Body on the Span Mount, a Claw Gear on each
-// pivot with its Pinion Bearing EXT in the body's two MR128s and the M3 x 16 that holds them, the Span
-// Driver on the drive pivot, and a Claw Finger on each pivot over the driver's head or the gear's nose,
-// each with its set screw. claw4_assembly.scad draws the 4-finger claw through this file's modules. The
-// tool interface itself, with the span XL-320 the Span Driver stands on, is
-// ../900-ToolInterface/tool_assembly.scad's, drawn through its modules.
+// Places the 2-finger claw on the tool interface: the Claw Body on the Span Mount, the Claw Pinion on the
+// span XL-320's spline, a Claw Gear on each pivot in its two MR128s, a Claw Finger on each gear's seat A
+// with its set screw, and the Claw Cap on the body's front face with its three bolts. claw4_assembly.scad
+// draws the 4-finger claw through this file's modules. The tool interface itself, with the span XL-320,
+// is ../900-ToolInterface/tool_assembly.scad's, drawn through its modules.
 //
 // FRAME. The tool interface's: the Roll Body's, the roll axis on +Z. Every part of this group stands in
 // the grip frame (tool_assembly.scad's grip_frame()); claw_params.scad gives the claw's layout along its y.
 //
 // PLACEMENT, each part by a feature it carries (specs/008.11, the claw gripper):
 //
-//   - The Claw Body's S1 over the Span Mount's column, its socket's ceiling on the column's top: it is
-//     drawn in the grip frame.
-//   - Each gear on its pivot, the drive's on the span axis and the follower's on its mirror; both drawn
-//     the same way up (claw_params.scad, THE FLIP).
-//   - Each EXT's keyed nose in its gear's K1, its spacer on the gear's +Y face, so that its shoulder is
-//     the inner MR128's face (claw_journal_y()); the MR128s in M1 against the shoulder between the seats.
-//   - The Span Driver on the span XL-320's spline, as steps 36-37 set it (span_driver_y()).
-//   - Each finger's socket over its pivot's nose, its mid-plane at claw_finger_mid(): the drive finger as
+//   - The Claw Body's S1 over the Span Mount's column, its socket's ceiling on the column's top, and the
+//     Claw Cap's rear face on the body's front face: both are drawn in the grip frame.
+//   - The Claw Pinion on the span XL-320's spline, as steps 36-37 set the Span Driver it stands in for
+//     (span_driver_y()), its teeth in phase with the drive sector closed.
+//   - Each gear on its pivot, its collars on its two MR128s' inner races: the drive's as drawn, the
+//     follower's turned claw_gear_turn() about its axis (claw_params.scad, THE FLIP).
+//   - The MR128s in their seats, the rear cheek's and the cap's, each face flush with its seat's mouth.
+//   - Each finger's hex over its gear's seat, its mid-plane at claw_finger_mid(): the drive finger as
 //     drawn, the follower's turned 180 deg about Z.
-//   - Each M3 bolt's head on its EXT's end face, its shank through the EXT into the gear's T1.
-//   - Each set screw in its finger's outer M1, its outer end flush with the hub, its tip in the nose's X1.
+//   - Each set screw in its finger's M1, its tip on the seat's flat.
+//   - Each cap bolt's head on the cap's front face, its thread in the body's T1.
 //
-// MOTION. OPEN, deg: the drive train turns +OPEN about +Y, the follower's -OPEN, and the span XL-320's
-// output turns with the drive train. 0 is closed, the tips' faces meeting on the roll axis.
+// MOTION. OPEN, deg: the drive pivot turns +OPEN about +Y, the follower -OPEN, and the pinion and the span
+// XL-320's output -claw_ratio() * OPEN. 0 is closed, the tips' rounds touching on the roll axis.
 //
-// NOT DRAWN. The M2.6 x 10 bolt that holds the Span Driver on the servo's spline (step 37).
+// NOT DRAWN. The M2.6 x 10 bolt that holds the Claw Pinion on the servo's spline (step 37).
 //
-// GEOMETRY. The printed parts are the binary mesh caches `render.rs 900-ToolInterface --meshes`,
-// `render.rs 920-ParallelGripper --meshes` and `render.rs 930-ClawGripper --meshes` build in each group's
-// out/asm/ (revised), so run all three first. Bearings are drawn at catalogue size as three parts each
-// (outer and inner race, shield): `part` draws one race alone, and the part lists name only the whole
-// bearing.
+// GEOMETRY. The printed parts are the binary mesh caches `render.rs 900-ToolInterface --meshes` and
+// `render.rs 930-ClawGripper --meshes` build in each group's out/asm/ (revised), so run both first.
+// Bearings are drawn at catalogue size as three parts each (outer and inner race, shield): `part` draws
+// one race alone, and the part lists name only the whole bearing.
 
 use <../900-ToolInterface/tool_assembly.scad>
 use <../900-ToolInterface/span_socket.scad>
 use <claw_params.scad>
 
-part = "all";   // "all", or one name from claw_parts(2) or claw_race_parts() for per-part export
+part = "all";   // "all", or one name from claw_parts(2) or claw_race_parts(2) for per-part export
 OPEN = 0;       // deg, 0 closed .. claw_open_max()
 
 $fn = 96;
 
 // --- Bought parts and fasteners ---------------------------------------------------------------------
-MR128       = [8, 12, 3.5];              // C-405: bore, OD, width
-MR128_RACES = [9.2, 10.8];               // inner race OD, outer race ID
-M3_BOLT     = [3, 5.5, 3];               // ISO 4762: d, head d, head h
-M3_LEN      = [16, 25];                  // C-620 with the EXT (2 fingers), with the Claw Axle (4 fingers)
-UNDER_HEAD  = [8.5, 18.5];               // under its head, y from the EXT's or the Axle's shoulder
-EXT_NOSE    = -2.000;                    // #920-006 N1's end, from its shoulder: the gear's K1 floor
-SET_SCREW   = [3, 6];                    // C-606 DIN 913: d, length
+M3_BOLT   = [3, 5.5, 3, 10];             // C-609 ISO 4762: d, head d, head h, length
+SET_SCREW = [3, 4];                      // C-618 DIN 916: d, length
 // A screw's length in a tapped hole is drawn at the pilot it cuts its thread in, as print_fit.scad draws
 // the pilot (fit_pin(d, FIT_TAP)), so that it meets the pilot line to line.
 function tapped(d) = fit_pin(d, fit_clearances("revised")[3]);
 
 // --- Frames -----------------------------------------------------------------------------------------
-// A pivot's train: s = 1 the drive (+X, +OPEN), s = -1 the follower; a part's y is the grip frame's.
-module train(s, open) grip_frame() translate([s * claw_pivot().x, 0, claw_pivot().y]) rotate([0, s * open, 0]) children();
-// A finger on its pivot: the follower's turned 180 deg about Z.
-module finger_on(s, outer, open) train(s, open) translate([0, claw_finger_mid(outer), 0]) rotate(s > 0 ? 0 : 180) children();
+// A pivot's frame: s = 1 the drive (+X, +OPEN), s = -1 the follower; a part's y is the grip frame's.
+module on_pivot(s, open) grip_frame() translate([s * claw_pivot().x, 0, claw_pivot().y]) rotate([0, s * open, 0]) children();
+// A finger on its pivot, on seat A or B: the follower's turned 180 deg about Z.
+module finger_on(s, b, open) on_pivot(s, open) translate([0, claw_finger_mid(b), 0]) rotate(s > 0 ? 0 : 180) children();
+// The pinion's frame, on the span axis.
+function pinion_turn(open) = -claw_ratio() * open;
+module on_pinion(open) grip_frame() translate([span_axis().x, 0, span_axis().y]) rotate([0, pinion_turn(open), 0]) children();
 
 // --- Parts ------------------------------------------------------------------------------------------
-module printed(id)        import(str("out/asm/", id, ".stl"), convexity = 10);
-module ext_printed()      import("../920-ParallelGripper/out/asm/920-006.stl", convexity = 10);
-module driver_printed()   import("../900-ToolInterface/out/asm/912-002.stl", convexity = 10);
+module printed(id) import(str("out/asm/", id, ".stl"), convexity = 10);
 
 SIDES = [["drive", 1], ["follow", -1]];
 
-// An M3 bolt in three parts: its head on the EXT's or the Axle's end, its shank through the bore, and
-// its thread in the gear's T1 from the K1 floor on.
-module bolt(n, s, open, piece) let(j = claw_journal_y(), u = j + UNDER_HEAD[n == 2 ? 0 : 1],
-                                   e = u - M3_LEN[n == 2 ? 0 : 1], k = j + EXT_NOSE)
-    color("#8a8f94") train(s, open) rotate([-90, 0, 0])
-        if (piece == "head") translate([0, 0, u]) cylinder(d = M3_BOLT[1], h = M3_BOLT[2], $fn = 72);
-        else if (piece == "shank") translate([0, 0, k]) cylinder(d = M3_BOLT[0], h = u - k, $fn = 72);
-        else translate([0, 0, e]) cylinder(d = tapped(M3_BOLT[0]), h = k - e, $fn = 48);   // T1's facets
+// A set screw in its finger's M1, from the seat's flat out to the hub's face, drawn at its pilot.
+module set_screw() translate([claw_hex_af() / 2, 0, 0]) rotate([0, 90, 0])
+    cylinder(d = tapped(SET_SCREW[0]), h = SET_SCREW[1], $fn = 48);
 
-// A set screw in its finger's outer hole, along the hub's radius away from the roll axis, wholly in
-// the tapped hole or in the nose's X1 beyond it, so drawn at its pilot. An inner finger's stands flush
-// with the hub; an outer finger's stops on the M3 bolt's shank in the Claw Axle's bore (#930-004 X1).
-module set_screw(s, outer, open)
-    let(y = claw_finger_mid(outer) + claw_screw()[1],
-        tip = outer ? M3_BOLT[0] / 2 : claw_hub_r() - SET_SCREW[1])
-    color("#8a8f94") train(s, open) translate([s > 0 ? tip : -tip - SET_SCREW[1], y, 0]) rotate([0, 90, 0])
-        cylinder(d = tapped(SET_SCREW[0]), h = SET_SCREW[1], $fn = 48);
+// The cap's M3 x 10s in three parts: the head on the cap's front face, the shank through the cap, and the
+// thread in the body's T1.
+module cap_bolts(piece) let(y = claw_cap_y(), e = y[1] - M3_BOLT[3])
+    color("#8a8f94") grip_frame() for (b = claw_cap_bolts()) translate([b.x, 0, b.y]) rotate([-90, 0, 0])
+        if (piece == "head") translate([0, 0, y[1]]) cylinder(d = M3_BOLT[1], h = M3_BOLT[2], $fn = 72);
+        else if (piece == "shank") translate([0, 0, y[0]]) cylinder(d = M3_BOLT[0], h = y[1] - y[0], $fn = 72);
+        else translate([0, 0, e]) cylinder(d = tapped(M3_BOLT[0]), h = y[0] - e, $fn = 48);
 
 RACES = ["outer", "inner", "shield"];
-module mr128(s, k, r, $fn = 360) let(y = claw_seats_y()[k][0])   // at 96 a race's chords stand inside its seat
-    grip_frame() translate([s * claw_pivot().x, y, claw_pivot().y]) rotate([-90, 0, 0]) race(MR128, MR128_RACES, r);
+// An MR128 at (x, z) in the grip frame, its -Y face at y0. At 96 a race's chords stand inside its seat.
+module mr128(xz, y0, r, $fn = 360)
+    grip_frame() translate([xz.x, y0, xz.y]) rotate([-90, 0, 0]) race(claw_mr128(), claw_mr128_ring(), r);
 
-// The part names: per side, its train's parts; the 4-finger claw takes the Axle and the outer fingers.
-function train_parts(n) = concat(["finger", "gear", "bolt_head", "bolt_shank", "bolt_thread", "screw", "inner", "outer"],
-                                 n == 2 ? ["ext"] : ["axle", "outer_finger", "outer_screw"]);
-function claw_parts(n) = concat(tool_parts(), ["claw_body", "span_driver"],
-                                [for (sd = SIDES, t = train_parts(n)) str(sd[0], "_", t)]);
-function claw_race_parts() = concat(tool_race_parts(),
-                                    [for (sd = SIDES, b = ["inner", "outer"], r = RACES) str(sd[0], "_", b, "_", r)]);
+// The bearings: per side its rear and front; the pinion's in the cap.
+function bearings() = let(p = claw_pivot())
+    [["drive_rear", [p.x, p.y], claw_rear_bearing_y()[0]], ["drive_front", [p.x, p.y], claw_front_bearing_y()[0]],
+     ["follow_rear", [-p.x, p.y], claw_rear_bearing_y()[0]], ["follow_front", [-p.x, p.y], claw_front_bearing_y()[0]],
+     ["pinion_bearing", span_axis(), claw_front_bearing_y()[0]]];
+
+// The part names: the body, cap, pinion and bolts; per side its gear, finger, screw (and the 4-finger
+// claw's second finger and screw); the bearings.
+function side_parts(n) = concat(["gear", "finger", "screw"], n == 2 ? [] : ["finger_b", "screw_b"]);
+function claw_parts(n) = concat(tool_parts(), ["claw_body", "claw_cap", "pinion", "cap_bolt_heads", "cap_bolt_shanks", "cap_bolt_threads"],
+                                [for (sd = SIDES, t = side_parts(n)) str(sd[0], "_", t)], [for (b = bearings()) b[0]]);
+function claw_race_parts(n) = concat(tool_race_parts(), [for (b = bearings(), r = RACES) str(b[0], "_", r)]);
 
 module claw_draw(p, n, open) {
-  tool_draw(p, open);   // the span servo's output turns with the drive train
-  if (p == "claw_body")   color("#c98a3a") grip_frame() printed("930-003");
-  if (p == "span_driver") color("#7a7a3a") train(1, open) translate([0, span_driver_y(), 0]) driver_printed();
+  tool_draw(p, pinion_turn(open));   // the span servo's output turns with the pinion
+  if (p == "claw_body")        color("#c98a3a") grip_frame() printed("930-003");
+  if (p == "claw_cap")         color("#b07a32") grip_frame() printed("930-005");
+  if (p == "pinion")           color("#7a7a3a") on_pinion(open) printed("930-004");
+  if (p == "cap_bolt_heads")   cap_bolts("head");
+  if (p == "cap_bolt_shanks")  cap_bolts("shank");
+  if (p == "cap_bolt_threads") cap_bolts("thread");
   for (sd = SIDES) let(s = sd[1], q = function(t) str(sd[0], "_", t)) {
-    if (p == q("finger"))       color("#3a6b8f") finger_on(s, false, open) printed("930-001");
-    if (p == q("outer_finger")) color("#3a6b8f") finger_on(s, true, open) printed("930-001");
-    if (p == q("gear"))         color("#6b8f3a") train(s, open) printed("930-002");
-    if (p == q("ext"))          color("#8f3a6b") train(s, open) translate([0, claw_journal_y(), 0]) ext_printed();
-    if (p == q("axle"))         color("#8f3a6b") train(s, open) translate([0, claw_journal_y(), 0]) printed("930-004");
-    if (p == q("bolt_head"))    bolt(n, s, open, "head");
-    if (p == q("bolt_shank"))   bolt(n, s, open, "shank");
-    if (p == q("bolt_thread"))  bolt(n, s, open, "thread");
-    if (p == q("screw"))        set_screw(s, false, open);
-    if (p == q("outer_screw"))  set_screw(s, true, open);
-    for (k = [0, 1]) let(b = ["inner", "outer"][k]) {
-      if (p == q(b)) color("#dcdcdc") for (r = RACES) mr128(s, k, r);
-      for (r = RACES) if (p == q(str(b, "_", r))) color("#dcdcdc") mr128(s, k, r);
-    }
+    if (p == q("gear"))     color("#6b8f3a") on_pivot(s, open) rotate([0, s > 0 ? 0 : -claw_gear_turn(), 0]) printed("930-002");
+    if (p == q("finger"))   color("#3a6b8f") finger_on(s, false, open) printed("930-001");
+    if (p == q("finger_b")) color("#3a6b8f") finger_on(s, true, open) printed("930-001");
+    if (p == q("screw"))    color("#8a8f94") finger_on(s, false, open) set_screw();
+    if (p == q("screw_b"))  color("#8a8f94") finger_on(s, true, open) set_screw();
+  }
+  for (b = bearings()) {
+    if (p == b[0]) color("#dcdcdc") for (r = RACES) mr128(b[1], b[2], r);
+    for (r = RACES) if (p == str(b[0], "_", r)) color("#dcdcdc") mr128(b[1], b[2], r);
   }
 }
 
 module claw_assembly(n, part, open) {
   for (p = claw_parts(n)) if (part == "all" || part == p) claw_draw(p, n, open);
-  for (p = claw_race_parts()) if (part == p) claw_draw(p, n, open);
+  for (p = claw_race_parts(n)) if (part == p) claw_draw(p, n, open);
 }
 
 // How the claw stands at OPEN, and its margins.
-module claw_echoes(n, open) {
+module claw_echoes(open) {
   echo(tip_gap = claw_tip_gap(open));
   echo(tip_gap_open = claw_tip_gap(claw_open_max()));
-  echo(gear_over_base_plate = claw_disc_margin());
-  echo(column_wall = claw_column_wall("revised"));
-  echo(bolt_in_tap = claw_teeth_y()[1] - (claw_journal_y() + UNDER_HEAD[n == 2 ? 0 : 1] - M3_LEN[n == 2 ? 0 : 1]));
+  echo(ratio = claw_ratio());
+  echo(servo_turn_open = claw_ratio() * claw_open_max());
+  echo(pinion_journal_wall = claw_pinion_wall("revised"));
+  echo(hubs_over_servo = claw_hub_over_servo());
 }
 
-claw_echoes(2, OPEN);
+claw_echoes(OPEN);
 claw_assembly(2, part, OPEN);
