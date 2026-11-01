@@ -7,6 +7,7 @@ use crate::config::{self, Check, GroupConfig};
 use crate::kinds::{self, Env};
 use crate::meshes::{self, MeshWork, Tools, OUT_DIR};
 use crate::plan::{closure, Graph, Job};
+use crate::reuse::Reuse;
 use crate::sched::{run_jobs, JobResult, Outcome, Status};
 use anyhow::{bail, Context, Result};
 use std::collections::HashMap;
@@ -103,7 +104,8 @@ fn load_group(args: &Args, models: &Path, g: &str, tools_for: ToolsFor) -> Resul
     if args.meshes {
         std::fs::create_dir_all(dir.join(OUT_DIR)).with_context(|| format!("creating {OUT_DIR} in {g}"))?;
     }
-    Ok((g.to_owned(), cfg, tools_for(&dir)?))
+    let tools = tools_for(&dir)?;
+    Ok((g.to_owned(), cfg, if args.rebuild { tools } else { Box::new(Reuse(tools)) }))
 }
 
 /// The groups that `loaded` names in `after` entries and has not loaded.
@@ -282,6 +284,15 @@ mod tests {
         let (text, code) = go(&dir, "g1").unwrap();
         assert_eq!(code, 1);
         assert!(text.contains("FAIL  g2/bad") && text.contains("SKIP  g1/top"), "{text}");
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn a_rebuild_runs_on_the_tools_themselves() {
+        let dir = models("rebuild", &[("g", G)]);
+        let (text, code) = go(&dir, "g --meshes --rebuild").unwrap();
+        assert_eq!(code, 0, "{text}");
+        assert!(text.contains("ALL 2 JOBS"), "{text}");
         std::fs::remove_dir_all(&dir).unwrap();
     }
 

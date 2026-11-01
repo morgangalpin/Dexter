@@ -17,6 +17,7 @@ pub mod kinds;
 pub mod meshes;
 pub mod plan;
 pub mod program;
+pub mod reuse;
 pub mod sched;
 
 use anyhow::{Context, Result};

@@ -457,6 +457,8 @@ echoes. A group's `render.json` holds only its own gates and checks. Three rules
 - **`render.rs` is cached by rust-script.** An edit to `render-check/` does not rebuild it. After changing
   the crate, run `rust-script --force render.rs ...` once, then `rust-script render.rs ...`; running
   `./render.rs` directly can use an older build. `700-Differential --verify` takes about 34 minutes.
+- **A render that nothing has changed is not run again**, so a repeat run takes seconds;
+  [009.3](../../specs/009.3-Render-Program.md#reusing-a-render) says when, and `--rebuild` runs them all.
 
 Parts render on an OpenSCAD development snapshot with the Manifold engine. Which binary runs, and that
 Manifold is the only engine, are owned by [009.3](../../specs/009.3-Render-Program.md#config-grouprenderjson).

@@ -17,6 +17,10 @@
 //! (a pose, such as a gripper's `OPEN`) in every export, and keeps that pose's
 //! meshes apart in `out/clash/NAME_VALUE/`.
 //!
+//! Parts export in parallel. `scadmesh clash` keeps each pair's result in
+//! `out/clash/pairs/`, under a digest of everything that can change it, so that
+//! the pairs a pose or an edit leaves alone are not measured again.
+//!
 //! `--reuse` keeps the meshes already in the mesh directory that are newer than
 //! every `.scad` in the directory, so a re-run after changing only a rule or a
 //! manifest takes seconds. Exits 1 when the check finds a violation.
@@ -30,11 +34,17 @@
 
 use anyhow::{bail, Context, Result};
 use render_check::meshes::BACKEND;
+use render_check::plan::{Graph, Job};
+use render_check::sched::{run_jobs, Outcome, Status};
 use render_check::{diagnostics, print_fits, run, Ctx};
 use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 
 const MESH_DIR: &str = "out/clash";
+
+/// Every pose's finished pairs, so that a pair that does not move between
+/// poses, or that an edit left alone, is measured once.
+const PAIR_DIR: &str = "out/clash/pairs";
 
 const USAGE: &str = "usage: assembly-clash.rs <assembly>.clash.json [--reuse] [--set NAME=VALUE ...]";
 
@@ -134,25 +144,28 @@ fn export_part(ctx: &Ctx, scad: &str, id: &str, out: &str, sets: &[String]) -> R
     Ok(())
 }
 
-/// Export every part not already fresh, returning how many were exported.
+/// Export every part not already fresh, all at once, returning how many were
+/// exported.
 fn export(ctx: &Ctx, scad: &str, ids: &[String], reuse: bool, sets: &[String]) -> Result<usize> {
     let sources = newest_source(&ctx.dir)?;
     let dir = mesh_dir(sets);
-    let mut made = 0;
-    for id in ids {
-        let out = format!("{dir}/{id}.stl");
-        if reuse && fresh(&ctx.dir.join(&out), sources) {
-            continue;
-        }
-        println!("  exporting {id}");
-        export_part(ctx, scad, id, &out, sets)?;
-        made += 1;
+    let path = |id: &str| format!("{dir}/{id}.stl");
+    let stale = ids.iter().filter(|id| !(reuse && fresh(&ctx.dir.join(path(id)), sources)));
+    let graph = Graph::new(stale.map(|id| Job::new(id)).collect())?;
+    let workers = std::thread::available_parallelism().map_or(1, |n| n.get());
+    let results = run_jobs(&graph, workers, false, |job| match export_part(ctx, scad, &job.id, &path(&job.id), sets) {
+        Ok(()) => Outcome { ok: true, output: format!("  exported {}\n", job.id) },
+        Err(e) => Outcome { ok: false, output: format!("{e:#}\n") },
+    });
+    results.iter().for_each(|r| print!("{}", r.output));
+    if results.iter().any(|r| r.status != Status::Passed) {
+        bail!("not every part exported");
     }
-    Ok(made)
+    Ok(results.len())
 }
 
 fn clash_args(manifest: &str, mesh_dir: &str, fits: (f64, f64, f64), extra: &[String]) -> Vec<String> {
-    let mut args: Vec<String> = ["clash", manifest, "--mesh-dir", mesh_dir].map(String::from).to_vec();
+    let mut args: Vec<String> = ["clash", manifest, "--mesh-dir", mesh_dir, "--cache", PAIR_DIR].map(String::from).to_vec();
     for (flag, v) in [("--slip", fits.0), ("--press", fits.1), ("--run", fits.2)] {
         args.extend([flag.to_string(), v.to_string()]);
     }
@@ -237,6 +250,7 @@ mod tests {
         let c = clash_args("m.json", MESH_DIR, (0.15, 0.05, 0.5), &["--spacing=0.1".to_string()]);
         assert_eq!(c[..4], ["clash", "m.json", "--mesh-dir", MESH_DIR]);
         assert!(c.windows(2).any(|w| w == ["--run", "0.5"]));
+        assert!(c.windows(2).any(|w| w == ["--cache", PAIR_DIR]));
         assert_eq!(c.last().unwrap(), "--spacing=0.1");
     }
 }
