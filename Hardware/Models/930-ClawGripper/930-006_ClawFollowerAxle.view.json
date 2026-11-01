@@ -1,0 +1,23 @@
+{
+  "title": "Claw Follower Axle",
+  "subtitle": "#930-006 · revised render of 930-006_ClawFollowerAxle.scad (designed, no reference mesh) · feature names",
+  "cut": ["x"],
+  "from": [-1, -0.4, 0.3],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#6b8f3a", "stl": "out/revised/930-006.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, -7.75, 3.95], "text": "J1 rear journal Ø8, in the body's MR128"},
+    {"at": [0, 2.5, 5.77], "text": "A1 seat, hex 10 across flats: the follower finger's box end"},
+    {"at": [0, 9.5, 5.77], "text": "A1 running on to C2, in place of the drive's sector"},
+    {"at": [1.5, 0, 2.6], "text": "H1 cross hole Ø3.3 along 60°: the drive's mirrored"},
+    {"at": [0, 17.319, 3.95], "text": "J2 front journal Ø8, in the cap's MR128"}
+  ],
+  "presets": [
+    {"label": "Along the axis", "at": [0, 4, 0], "span": 40, "from": [-1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. 930-002_ClawGear.scad draws it and gives its features: it is the drive's gear without the sector, since the fingers' hubs mesh with each other. The page opens cut on its axis. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

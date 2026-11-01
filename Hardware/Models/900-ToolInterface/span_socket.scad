@@ -74,6 +74,18 @@ module span_column_socket(cfg, floor) let(g = fit_clearances(cfg)[0], n = 6) {
             offset(r = SOCKET[1] - (i + 0.5) * h) span_socket_2d(g);
 }
 
+// S1F, for a base that reaches below the floor: the column's foot C2, the column's square growing at
+// 45 deg down to the base plate. Its corners' ridges slope at 1 in sqrt(2), so that sqrt(3) grows them by
+// FIT_SLIP along their normal, and its faces by more.
+FOOT = [10.783, 0.650, 5.500, 9.000];   // |x| + |y| bound at its bottom, corner radius, bottom z, top z
+
+module span_foot_2d(bound, r) hull() for (k = [0 : 3]) rotate(90 * k) translate([bound - r * sqrt(2), 0]) circle(r = r, $fn = 72);
+
+module span_column_foot(cfg) let(g = fit_clearances(cfg)[0] * sqrt(3)) hull() {
+    translate([0, 0, FOOT[2] - LAP]) linear_extrude(LAP) offset(delta = g) span_foot_2d(FOOT[0], FOOT[1]);
+    translate([0, 0, FOOT[3]]) linear_extrude(LAP) offset(delta = g) span_foot_2d(COLUMN[0], FOOT[1]);
+}
+
 // --- S2 -----------------------------------------------------------------------------------------
 
 STRAKE_SLOT = [5.500, 2.400];      // x, y: the reference's

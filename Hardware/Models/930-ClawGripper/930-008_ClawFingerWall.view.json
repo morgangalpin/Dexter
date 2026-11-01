@@ -1,0 +1,27 @@
+{
+  "title": "Claw Finger Wall",
+  "subtitle": "#930-008 · revised render of 930-008_ClawFingerWall.scad (designed, no reference mesh) · feature names",
+  "cut": ["y"],
+  "from": [0.3, 1, 0.6],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#c9c23a", "stl": "out/revised/930-008.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, 5, 57.4], "text": "W1 wall, an even 2.5, from upper pillar to upper pillar; the housing's outline, claw_shell_path()"},
+    {"at": [10, 0, 56.15], "text": "B1 blade slots ×2, y ±4, the fingers' swept area and its running fit, through the rear lip"},
+    {"at": [0, 0, 56.15], "text": "B1's centre tine, between the slots, its sides leaning with the blades"},
+    {"at": [20, 0, 51.5], "text": "B1's outer tine, one each side, from a slot's outer edge to the end lip"},
+    {"at": [0, 18.069, 55.6], "text": "R1 front lip, into the cap's groove"},
+    {"at": [0, -6.5, 55.6], "text": "R2 rear lip, into the body's rear groove"},
+    {"at": [24.2, 5, 46.4], "text": "L1 end lip, 1.5 long, into a groove in the pillar's blend; its inner face continues W1's"}
+  ],
+  "presets": [
+    {"label": "Outside, from the front", "at": [0, 6, 50], "span": 60, "from": [0.3, 1, 0.6]},
+    {"label": "Inside, from the rear", "at": [0, 6, 50], "span": 60, "from": [0.2, -0.8, -0.6]},
+    {"label": "An end lip, along y", "at": [23, 5, 47], "span": 12, "from": [0, 1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its outline is claw_gears.scad's, shared with the Claw Body and the Claw Cap, and its layout along y is claw_params.scad's. It prints standing on its front lip, open upward, with no supports. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

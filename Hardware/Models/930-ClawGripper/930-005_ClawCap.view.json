@@ -8,16 +8,18 @@
       {"id": "revised", "name": "config=\"revised\"", "color": "#b07a32", "stl": "out/revised/930-005.stl"}]}
   ],
   "labels": [
-    {"at": [18.75, 26.75, 48.6], "text": "M1 MR128 seat, drive pivot"},
-    {"at": [-18.75, 26.75, 48.6], "text": "M1 MR128 seat, follower pivot"},
-    {"at": [14.139, 26.75, 11.5], "text": "M1 MR128 seat, the pinion's"},
-    {"at": [0, 30, 16], "text": "H1 bolt holes ×3, on the body's T1"}
+    {"at": [10, 17.319, 51.2], "text": "M1 MR128 seat, drive pivot, blind under a 1 cover"},
+    {"at": [-10, 17.319, 51.2], "text": "M1 MR128 seat, follower pivot, blind under a 1 cover"},
+    {"at": [14.139, 17.319, 7.5], "text": "M1 MR128 seat, the pinion's, blind under a 1 cover"},
+    {"at": [0, 15.569, 55.5], "text": "G1 rim groove, tapered, unbroken round the outline, the rim of the body and the Claw Finger Wall in it"},
+    {"at": [21.7, 20.569, 42], "text": "H1 bolt holes ×4, in recesses, on the body's pillars"},
+    {"at": [-28, 20.569, 42], "text": "P1 plate on the outline, claw_shell_path(), the body's too; front edge filleted R1.5"}
   ],
   "presets": [
-    {"label": "Front face", "at": [0, 27.5, 30], "span": 70, "from": [0, 1, 0]},
-    {"label": "Seats, rear face", "at": [0, 27.5, 30], "span": 70, "from": [0.2, -1, 0.3]}
+    {"label": "Front face", "at": [0, 18.069, 32], "span": 70, "from": [0, 1, 0]},
+    {"label": "Inside, from the seam", "at": [0, 15.569, 32], "span": 70, "from": [0.2, -1, 0.3]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. One cap serves both claws; its outline and holes are claw_params.scad's, shared with the body's front face. Run render.rs --verify before building this page, because the render is its output."}
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its outline is claw_gears.scad's, shared with the Claw Body, and its bolts are claw_params.scad's. It prints standing on its front face, open upward, with no supports. Run render.rs --verify before building this page, because the render is its output."}
   ]
 }

@@ -8,19 +8,26 @@
       {"id": "revised", "name": "config=\"revised\"", "color": "#c98a3a", "stl": "out/revised/930-003.stl"}]}
   ],
   "labels": [
-    {"at": [0, -12.5, 33], "text": "R1 saddle over the upright plate and the span XL-320, cut by S3"},
-    {"at": [18.75, -8.5, 51], "text": "E1 rear cheek over the servo: an MR128 seat M1 on each pivot"},
-    {"at": [0, 1, 33], "text": "K1 keel under finger A's hubs, round the column socket S1 and strake slot S2"},
-    {"at": [-20, 15, 22], "text": "F1 front block, under the sectors, so that each gear passes over it"},
-    {"at": [14.139, 9.5, 10], "text": "P1 pinion slot, open downward"},
-    {"at": [0, 25, 16], "text": "T1 tapped holes for the cap's M3 × 10s"}
+    {"at": [20, -11, 34], "text": "U1 upper plate over the span XL-320: its flat bottom on the servo's side, its rear edge rounded R4 at the bottom"},
+    {"at": [10, -6, 45.18], "text": "M1 MR128 seats, blind: the bearings go in from the inside, under a 1 cover"},
+    {"at": [20, -3.6, 30], "text": "L1 shelf joining U1 to K1; the tongue under it in V1's groove"},
+    {"at": [-14, -1.1, 22], "text": "K1 lower plate, its rear face S3's"},
+    {"at": [0, 6.569, 25], "text": "C1 column sleeve round S1 and S2, flat in front, 1 in front of S1"},
+    {"at": [-28, 10, 30], "text": "W1 wall, 2.5 all round, its outline claw_shell_path(), the cap's too"},
+    {"at": [-26.5, 18, 42], "text": "R1 tapered rim, into the cap's groove, the wall's shoulder outside it"},
+    {"at": [0, 5, 56], "text": "O1 opening, pillar to pillar, y -4 to the seam: the Claw Finger Wall fills it"},
+    {"at": [24.2, 5, 46.4], "text": "G1 end grooves ×2, in the pillars' blends, open forward, for the wall's end lips"},
+    {"at": [0, -5, 55.5], "text": "G2 rear groove, behind the opening, for the wall's rear lip"},
+    {"at": [14.139, -1.1, 17.5], "text": "P1 pinion tunnel through K1: the pinion goes in from the front"},
+    {"at": [21.7, 15.569, 42], "text": "D1 pillars ×4, blended into W1 as rounded triangles, with T1 tapped for the cap's M3 × 10s"}
   ],
   "presets": [
-    {"label": "Front, the cap's face", "at": [0, 25, 22], "span": 80, "from": [0.2, 1, 0.3]},
-    {"label": "Rear cheek", "at": [0, -8.5, 40], "span": 70, "from": [0.2, -1, 0.3]},
-    {"label": "Underside", "at": [0, 8, 10], "span": 80, "from": [0.2, -0.3, -1]}
+    {"label": "Inside, from the front", "at": [0, 15.569, 32], "span": 80, "from": [0.2, 1, 0.3]},
+    {"label": "Rear", "at": [0, -8.5, 40], "span": 70, "from": [0.2, -1, 0.3]},
+    {"label": "Top, the opening", "at": [0, 5, 57], "span": 70, "from": [0.1, 0.3, 1]},
+    {"label": "Underside", "at": [10, 2, 7], "span": 60, "from": [0.3, 0.4, -1]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. One body serves both claws. Its socket on the Span Mount is ../900-ToolInterface/span_socket.scad's, shared with the Static Finger, and its layout along y is claw_params.scad's. It prints standing on its front face. The page opens cut on the roll axis's plane, through S1 and S2. Run render.rs --verify before building this page, because the render is its output."}
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its socket on the Span Mount is ../900-ToolInterface/span_socket.scad's, shared with the Static Finger, its outline is claw_gears.scad's, shared with the Claw Cap, and its layout along y is claw_params.scad's. It prints standing on the upper plate's rear face, open upward, with supports under the lower plate and the shelf only. The page opens cut on the roll axis's plane, through S1 and S2. Run render.rs --verify before building this page, because the render is its output."}
   ]
 }

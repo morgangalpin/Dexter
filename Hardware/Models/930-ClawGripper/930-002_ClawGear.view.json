@@ -10,16 +10,17 @@
   "labels": [
     {"at": [0, -7.75, 3.95], "text": "J1 rear journal Ø8, in the body's MR128"},
     {"at": [0, -5.75, 4.3], "text": "C1 collar Ø8.6, on the MR128's inner race"},
-    {"at": [0, 0, 5.77], "text": "A1 seat A, hex 10 across flats: every claw's finger"},
-    {"at": [0, 9.5, -18.75], "text": "G1 sector: 30-tooth pitch, module 1.25, teeth from 165° to 297°"},
-    {"at": [0, 19, 5.77], "text": "A2 seat B: the 4-finger claw's second finger"},
-    {"at": [0, 26.75, 3.95], "text": "J2 front journal Ø8, in the cap's MR128"}
+    {"at": [0, 2.5, 5.77], "text": "A1 seat, hex 10 across flats: the finger's box end"},
+    {"at": [-1.5, 0, 2.6], "text": "H1 cross hole Ø3.3 along 120°: the set screw through the seat"},
+    {"at": [0, 9.5, -21.25], "text": "G1 sector: 34-tooth pitch, module 1.25, 7 teeth from 257° to 320°, on a web R9"},
+    {"at": [0, 15.319, 4.3], "text": "C2 collar Ø8.6, on the cap's MR128"},
+    {"at": [0, 17.319, 3.95], "text": "J2 front journal Ø8, in the cap's MR128"}
   ],
   "presets": [
-    {"label": "Along the axis", "at": [0, 9.5, 0], "span": 45, "from": [1, 0, 0]},
-    {"label": "The sector's face", "at": [0, 9.5, 0], "span": 45, "from": [0, -1, 0]}
+    {"label": "Along the axis", "at": [0, 4, 0], "span": 45, "from": [1, 0, 0]},
+    {"label": "The sector's face", "at": [0, 9.5, -8], "span": 50, "from": [0, 1, 0]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. One gear serves both pivots of both claws: the follower's is this one turned 120° about its axis, which keeps its tooth pattern and its hexes (claw_params.scad, THE FLIP). The page opens cut on its axis. Run render.rs --verify before building this page, because the render is its output."}
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. This is the drive pivot's gear; the follower's axle (#930-006) is drawn by the same file without the sector. The page opens cut on its axis. Run render.rs --verify before building this page, because the render is its output."}
   ]
 }
