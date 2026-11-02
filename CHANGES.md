@@ -1634,6 +1634,7 @@ anything version 3 does not independently specify
 ### CR-3A23: Claw gripper designed in a 2-finger and a 4-finger build
 
 - **Affects:** [007.11](specs/007-Bill-of-Materials.md#00711-tool-interface--gripper),
+  [007.1 §Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
   [007.2 §Not in the build list](specs/007.2-Printed-Parts.md#not-in-the-build-list),
   [008.11 §Claw gripper](specs/008-Assembly.md#claw-gripper-alternate),
   [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
@@ -1645,19 +1646,43 @@ anything version 3 does not independently specify
   parts).
 - **Was:** The claw was the legacy Claw Finger (`#930-001`) and Finger Cap (`#930-002`), converted from
   their meshes, whose fixed finger was not in the model set.
-- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite, geared down 3:1 from
-  the span XL-320, in a 2-finger and a 4-finger build that share every part
+- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite, geared down 3.4:1 from
+  the span XL-320, in a closed housing, in a 2-finger and a 4-finger build
   ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A, `#930-001`
   is reassigned to the new Claw Finger and `#930-002` to the Claw Gear; `#930-003` Claw Body, `#930-004`
-  Claw Pinion and `#930-005` Claw Cap are new. The Claw Pinion takes the Span Driver's place on the servo's
+  Claw Pinion, `#930-005` Claw Cap, `#930-006` Claw Axle, `#930-007` Claw Follower Finger and `#930-008` Claw
+  Finger Wall are new, and `#930-009` to `#930-012` are the 4-finger build's longer body, wall, axle and pinion,
+  each drawn from the 2-finger part's source. The Claw Pinion takes the Span Driver's place on the servo's
   spline, drawing its spline end from `912-002_SpanDriver.scad`, which is otherwise unchanged. The legacy
   meshes move to `Reference/superseded/` under their published numbers. The
-  Static Finger's socket on the Span Mount moves into `span_socket.scad`, which the Claw Body shares; the
-  Static Finger renders identically. `assembly-clash.rs` takes `--set NAME=VALUE`, so that one clash file
-  checks an assembly at several poses.
+  Static Finger's socket on the Span Mount moves into `span_socket.scad`, which the Claw Body shares.
+  C-621, the M3 × 16 mm set screw that pins the fingers and the Claw Gear, is new. `assembly-clash.rs` takes `--set NAME=VALUE`, so that one clash file checks an assembly at several poses.
 - **Driver:** A gripper whose two fingers are both in the model set, for parts the parallel gripper's jaws
   do not suit, with as much shared between its builds and with the parallel gripper as the mount allows.
 - **Status:** `[Specified]`.
 - **Re-derive:** `rust-script render.rs 930-ClawGripper --verify`, then
   `rust-script assembly-clash.rs 930-ClawGripper/claw2_assembly.clash.json --set OPEN=<deg>` and the same for
   `claw4_assembly.clash.json`, at 0, 12 and 25.
+
+### CR-3A24: A gripper's base held by the span XL-320's two bolts
+
+- **Affects:** [007.2](specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711),
+  [008.11](specs/008-Assembly.md#00811-tool-interface--gripper) steps 26 and 46,
+  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
+  `900-ToolInterface/span_socket.scad`, `900-ToolInterface/912-001_SpanMount.scad`,
+  `900-ToolInterface/tool_assembly.scad`, `920-ParallelGripper/920-001_StaticFinger.scad`,
+  `920-ParallelGripper/gripper_assembly.scad`, `Hardware/Models/PART-INDEX.md`.
+- **Amends:** [CR-3A23](#cr-3a23-claw-gripper-designed-in-a-2-finger-and-a-4-finger-build) (the socket on the
+  Span Mount that it moved into `span_socket.scad`).
+- **Was:** The span XL-320's two M2 × 12 bolts went in from the Span Mount's face, their heads in its
+  counterbores, and the Static Finger was held by its fits on the Span Mount alone.
+- **Now:** The same two bolts go in through the gripper's base, `span_socket.scad`'s S4, and hold the base, the
+  Span Mount and the servo together. The Span Mount's counterbores are filled, `revised`. The Static Finger's
+  base is squared and its floor lowered to cover the bolts, and its hub's cylinder runs on round the whole
+  circle as a guard over the Pinion Gear's teeth. Steps 26 and 46 change to suit; the bolts stay in step 26
+  for the wiring steps and move at step 46. The assemblies draw each set of fasteners as one part.
+- **Driver:** The two bolts were already there, so they hold the base with no added part.
+- **Status:** `[Specified]`.
+- **Re-derive:** `rust-script render.rs 900-ToolInterface --verify`, `rust-script render.rs 920-ParallelGripper
+  --verify`, then `rust-script assembly-clash.rs 900-ToolInterface/tool_assembly.clash.json` and
+  `rust-script assembly-clash.rs 920-ParallelGripper/gripper_assembly.clash.json --set OPEN=<mm>` at 0, 10 and 20.

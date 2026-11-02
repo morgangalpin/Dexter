@@ -325,15 +325,22 @@ parts from #920-001 down and its Span Driver, on the same tool interface, built 
 
 | PBS # | Part | Type | 2-finger | 4-finger | Notes |
 |---|---|---|---|---|---|
-| #930-001 | Claw Finger | 3D print | 2 | 4 | One model for every finger |
-| #930-002 | Claw Gear | 3D print | 2 | 2 | One model for both pivots |
-| #930-003 | Claw Body | 3D print | 1 | 1 | One model for both claws |
-| #930-004 | Claw Pinion | 3D print | 1 | 1 | On the span XL-320's spline, in the Span Driver's place |
-| #930-005 | Claw Cap | 3D print | 1 | 1 | One model for both claws |
-| #920-004 | MR128 bearing | Off the shelf | 5 | 5 | Two per Claw Gear, one for the Claw Pinion |
-| — | M2.6 × 10 mm bolt | Off the shelf | 1 | 1 | Claw Pinion to the spline, the Span Driver's (008.11 step 37) |
-| — | M3 × 10 mm bolts | Off the shelf | 3 | 3 | Claw Cap to Claw Body ([C-609](007.1-Parts-Catalog.md#6-fasteners)) |
-| #642-006 | M3 × 4 mm set screws (grub, cup point) | Off the shelf | 2 | 4 | One per finger ([C-618](007.1-Parts-Catalog.md#6-fasteners)) |
+| #930-001 | Claw Finger | 3D print | 1 | 2 | The drive pivot's; with four, also the follower pivot's front finger |
+| #930-002 | Claw Gear | 3D print | 1 | 1 | On the drive axle, in both builds |
+| #930-003 | Claw Body | 3D print | 1 | 0 | |
+| #930-004 | Claw Pinion | 3D print | 1 | 0 | On the span XL-320's spline, in the Span Driver's place |
+| #930-005 | Claw Cap | 3D print | 1 | 1 | One model for both builds |
+| #930-006 | Claw Axle | 3D print | 2 | 0 | One model for both pivots |
+| #930-007 | Claw Follower Finger | 3D print | 1 | 2 | The follower pivot's; with four, also the drive pivot's front finger |
+| #930-008 | Claw Finger Wall | 3D print | 1 | 0 | Closes the Claw Body's wall round the blades |
+| #930-009 | Claw Body, 4-finger | 3D print | 0 | 1 | |
+| #930-010 | Claw Finger Wall, 4-finger | 3D print | 0 | 1 | |
+| #930-011 | Claw Axle, 4-finger | 3D print | 0 | 2 | One model for both pivots |
+| #930-012 | Claw Pinion, 4-finger | 3D print | 0 | 1 | On the span XL-320's spline, in the Span Driver's place |
+| #920-004 | MR128 bearing | Off the shelf | 5 | 5 | Two per axle, one for the pinion |
+| — | M2.6 × 10 mm bolt | Off the shelf | 1 | 1 | Pinion to the spline, the Span Driver's (008.11 step 37) |
+| — | M3 × 10 mm bolts | Off the shelf | 4 | 4 | Claw Cap to the body ([C-609](007.1-Parts-Catalog.md#6-fasteners)) |
+| — | M3 × 16 mm set screws (grub, cup point) | Off the shelf | 3 | 5 | One per finger, one for the Claw Gear ([C-621](007.1-Parts-Catalog.md#6-fasteners)) |
 
 Other optional alternates (baseline build qty 0): 3-Prong fingers, A6 Torque Link, skin/board
 brackets, gripper wire cover. Two pieces of yoga mat provide the finger grip pads.
