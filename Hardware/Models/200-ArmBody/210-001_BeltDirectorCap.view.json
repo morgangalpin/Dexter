@@ -1,7 +1,6 @@
 {
   "title": "Belt Director Cap",
   "subtitle": "#210-001 · 210-001_BeltDirectorCap.scad revised render · no reference mesh exists",
-  "cut": true,
   "from": [1, -1, 0.6],
   "groups": [
     {"name": "Renders", "role": "render.rs --verify", "parts": [

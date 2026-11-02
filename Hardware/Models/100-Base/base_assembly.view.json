@@ -1,7 +1,7 @@
 {
   "scad": "base_assembly.scad",
   "title": "Base stack",
-  "subtitle": "base_assembly.scad · 004's stack, the Stator Holder's flange on the Mount at z {holder_flange_z}, the Long on it · J1 drive closed from the End Cap, motor {motor_len} mm · orthographic, cut on XZ",
+  "subtitle": "base_assembly.scad · 004's stack, the Stator Holder's flange on the Mount at z {holder_flange_z}, the Long on it · J1 drive closed from the End Cap, motor {motor_len} mm · orthographic",
   "groups": [
     {"name": "Base", "role": "fixed", "parts": [
       {"id": "plate", "name": "Base Mounting Plate", "pn": "#110-004", "color": "#7d8794"},

@@ -1,7 +1,7 @@
 {
   "scad": "pivot_assembly.scad",
   "title": "Main Pivot stack",
-  "subtitle": "pivot_assembly.scad · the Base Motor End Cap on the J1 end, the Pivot Motor End Cap and the Pivot Code Disk on the J2 drum · orthographic, cut on XZ",
+  "subtitle": "pivot_assembly.scad · the Base Motor End Cap on the J1 end, the Pivot Motor End Cap and the Pivot Code Disk on the J2 drum · orthographic",
   "groups": [
     {"name": "Main Pivot", "role": "J1's turning body", "parts": [
       {"id": "pivot", "name": "Main Pivot, revised", "pn": "#300-001", "color": "#d4ad6b"},

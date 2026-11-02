@@ -1,7 +1,7 @@
 {
   "scad": "armbody_assembly.scad",
   "title": "Arm Body stack",
-  "subtitle": "armbody_assembly.scad · the Holder on the Balancers' lips, the belt directors in the lug columns · orthographic, cut on XZ",
+  "subtitle": "armbody_assembly.scad · the Holder on the Balancers' lips, the belt directors in the lug columns · orthographic",
   "groups": [
     {"name": "Arm Body", "role": "fixed", "parts": [
       {"id": "arm_body", "name": "Arm Body", "pn": "#200-001", "color": "#9aa7b4"},
