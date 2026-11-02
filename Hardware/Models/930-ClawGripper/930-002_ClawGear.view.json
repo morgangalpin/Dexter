@@ -1,26 +1,22 @@
 {
   "title": "Claw Gear",
   "subtitle": "#930-002 · revised render of 930-002_ClawGear.scad (designed, no reference mesh) · feature names",
-  "cut": ["x"],
   "from": [1, -0.4, 0.3],
   "groups": [
     {"name": "Renders", "role": "render.rs --verify", "parts": [
       {"id": "revised", "name": "config=\"revised\"", "color": "#6b8f3a", "stl": "out/revised/930-002.stl"}]}
   ],
   "labels": [
-    {"at": [0, -7.75, 3.95], "text": "J1 rear journal Ø8, in the body's MR128"},
-    {"at": [0, -5.75, 4.3], "text": "C1 collar Ø8.6, on the MR128's inner race"},
-    {"at": [0, 2.5, 5.77], "text": "A1 seat, hex 10 across flats: the finger's box end"},
-    {"at": [-1.5, 0, 2.6], "text": "H1 cross hole Ø3.3 along 120°: the set screw through the seat"},
-    {"at": [0, 9.5, -21.25], "text": "G1 sector: 34-tooth pitch, module 1.25, 7 teeth from 257° to 320°, on a web R9"},
-    {"at": [0, 15.319, 4.3], "text": "C2 collar Ø8.6, on the cap's MR128"},
-    {"at": [0, 17.319, 3.95], "text": "J2 front journal Ø8, in the cap's MR128"}
+    {"at": [0, 11.069, -21.25], "text": "G1 sector: 34-tooth pitch, module 1.25, 7 teeth from 257° to 320°, on a web R9"},
+    {"at": [0, 11.069, 5.8], "text": "X1 hex bore, 10 across flats grown by slip: over the Claw Axle's seat"},
+    {"at": [-4.5, 11.069, 7.79], "text": "M1's one mouth, on the web's far side at 120°: the screw goes in and comes out here, on the bench"},
+    {"at": [4.25, 11.069, -7.36], "text": "M1 set-screw hole, Ø2.6 tapped M3, along 300°: blind, stopped 8.5 from the pivot in the sector"}
   ],
   "presets": [
-    {"label": "Along the axis", "at": [0, 4, 0], "span": 45, "from": [1, 0, 0]},
-    {"label": "The sector's face", "at": [0, 9.5, -8], "span": 50, "from": [0, 1, 0]}
+    {"label": "Along the axis", "at": [0, 11, 0], "span": 45, "from": [1, 0, 0]},
+    {"label": "The sector's face", "at": [0, 11, -8], "span": 50, "from": [0, 1, 0]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. This is the drive pivot's gear; the follower's axle (#930-006) is drawn by the same file without the sector. The page opens cut on its axis. Run render.rs --verify before building this page, because the render is its output."}
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. The same part serves both builds, pinned on the drive pivot's Claw Axle. Run render.rs --verify before building this page, because the render is its output."}
   ]
 }

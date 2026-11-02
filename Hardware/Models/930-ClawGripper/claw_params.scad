@@ -4,14 +4,15 @@
 // THE CLAW. Two curved fingers turn about two pivots along the span axis's direction, set symmetrically
 // about the roll axis above the span XL-320, so that their straight shanks lean outward and their tips meet
 // on the roll axis. Each finger's hub is toothed where it meets the other's, so that the drive finger
-// (#930-001) turns the follower finger (#930-007) 1:1, equal and opposite. The drive pivot's Claw Gear
-// (#930-002) is a toothed sector in front of a hex seat, between two Ø8 journals, in one piece; the
-// follower pivot's Claw Follower Axle (#930-006) is the same without the sector. The Claw Pinion
-// (#930-004), one piece with the sleeve on the servo's spline, drives the sector at claw_ratio() : 1.
-// Each axle runs in an MR128 in the Claw Body's rear wall (#930-003) and another in the Claw Cap
-// (#930-005), the body's lid; the pinion runs on the servo's spline and in a third MR128
-// in the cap. A finger's closed hub, a hex bore, slides over its axle's seat, and one set screw passes
-// in from the hub's far side, through the seat, and on into the hub's other side.
+// (#930-001) turns the follower finger (#930-007) 1:1, equal and opposite. Each pivot has the same Claw
+// Axle (#930-006), a hex seat between two Ø8 journals, the follower's turned 60 deg on its hex, so that one
+// line of cross holes serves both pivots. The Claw Gear (#930-002), a toothed sector on a hex bore, is
+// pinned on the drive axle, and the Claw Pinion (#930-004), one piece with the sleeve on the servo's spline,
+// drives it at claw_ratio() : 1. Each axle runs in an MR128 in the Claw Body's rear wall (#930-003) and
+// another in the Claw Cap (#930-005), the body's lid; the pinion runs on the servo's spline and in a third
+// MR128 in the cap. A finger's closed hub, a hex bore, slides over its axle's seat, and one set screw passes
+// in from the hub's far side, through the seat, and on into the hub's other side; the gear's the same, in
+// from its web's far side.
 //
 // FRAME. The grip frame (../900-ToolInterface/span_socket.scad): the roll axis on +Z, every axis along +Y.
 // A finger, a gear and the pinion are each drawn in their own frame, whose origin is on its axis, whose y
@@ -23,8 +24,8 @@
 // hub's teeth: two gears mesh along the line between their pivots where a tooth of the drive at 180 + e
 // meets a gap of the follower at -e, which is where the mirror image of the drive's tooth would stand. So
 // the follower's teeth stand half a pitch off the drive's mirror image (claw_hub_tooth0()), and the two
-// fingers are two parts. Its set screw's line is the drive's mirrored, so the follower's axle is the
-// drive's gear without the sector, its cross hole mirrored.
+// fingers are two parts. Its set screw's line is the drive's mirrored, which is the drive's turned 60 deg,
+// a step of the hex, so the two axles are one part.
 //
 // MOTION. OPEN, deg: the drive pivot turns +OPEN about +Y (polar -OPEN), the follower -OPEN and the
 // pinion -claw_ratio() * OPEN; 0 is closed, the tips meeting on x = 0, and claw_open_max() is fully open.
@@ -135,13 +136,31 @@ COLLAR_T   = 0.500;
 KEEL_WALL  = 1.000;                              // the keel's wall in front of the column's socket
 
 function y_span(y0, t) = [y0, y0 + t];
-function claw_finger_y() = y_span(-FINGER_T / 2, FINGER_T);
+// The build: two fingers or four. A 4-finger part or assembly sets $claw_fingers = 4; a special variable,
+// because the assemblies use this file, and use carries no plain variable over.
+function claw_fingers() = is_undef($claw_fingers) ? 2 : $claw_fingers;
 // The keel's front face: the column's socket, its corner's round included, and the wall in front of it.
 function claw_keel_front() = span_column_reach("revised") + KEEL_WALL;
 function claw_teeth_y() = y_span(claw_keel_front() + FIT_RUN, GEAR_T);
-function claw_seat_y() = [claw_finger_y()[0] - FIT_RUN, claw_teeth_y()[0]];
-// Collar A behind the seat; collar B in front of the teeth, FIT_RUN between them and the cap.
-function claw_collar_y(b = false) = b ? y_span(claw_teeth_y()[1], COLLAR_T) : y_span(claw_seat_y()[0] - COLLAR_T, COLLAR_T);
+// The gear's mid-plane, where its set screw stands; the gear is the same part in both builds.
+function claw_gear_y() = let(t = claw_teeth_y()) (t[0] + t[1]) / 2;
+// A finger's hub along y, in its own frame: flush with the blade's rear face, on which the finger prints, and
+// all of its extra thickness forward of the blade.
+function claw_hub_y() = y_span(-BLADE_T / 2, FINGER_T);
+// Each pair of blades' mid-plane, rear to front: on the roll axis with two fingers. With four, about it,
+// so that the grip stays centred on the roll, the front pair being the rear pair turned 180 deg about the roll
+// axis: each pivot takes the other's finger, each hub's flush face is outward, and each hub's extra thickness
+// inward. The front pair's hubs stand in front of the sector, which the column keeps forward, by as much as the
+// 2-finger's stand behind it.
+function claw_pair_y() = let(t = claw_teeth_y(), y = t[0] + t[1]) claw_fingers() == 2 ? [0] : [-y, y];
+// The fingers' span along y, the blades' outer faces with four.
+function claw_finger_y() = let(p = claw_pair_y(), h = claw_hub_y()) claw_fingers() == 2 ? h : [p[0] + h[0], p[1] - h[0]];
+function claw_seat_y() = [claw_finger_y()[0] - FIT_RUN, claw_seat_front()];
+// Where the axle's seat ends and its front collar stands: at the gear's front face, or FIT_RUN in front of the
+// front pair's hubs.
+function claw_seat_front() = claw_fingers() == 2 ? claw_teeth_y()[1] : claw_finger_y()[1] + FIT_RUN;
+// Collar A behind the seat; collar B in front of it, FIT_RUN between it and the cap.
+function claw_collar_y(b = false) = b ? y_span(claw_seat_front(), COLLAR_T) : y_span(claw_seat_y()[0] - COLLAR_T, COLLAR_T);
 // The MR128s: the rear wall's behind collar A, the cap's in front of collar B.
 function claw_rear_bearing_y() = y_span(claw_collar_y()[0] - MR128[2], MR128[2]);
 function claw_front_bearing_y() = y_span(claw_collar_y(true)[1], MR128[2]);
@@ -156,9 +175,9 @@ function claw_cover_t() = COVER_T;
 // The blade's slot through the wall, y ±: FIT_RUN off the blade's faces.
 function claw_slot_y() = BLADE_T / 2 + FIT_RUN;
 // The Claw Finger Wall (#930-008), from the body's wall behind the blades to the seam, and the length of the
-// lip on each of its ends: the rim's section, shallower than the rim, into a groove in a pillar's blend.
+// lip on each of its ends: the rim's section, shallower than the rim, into a groove in an upper pillar's blend.
 WALL_LIP = 1.500;
-function claw_wall_y() = [-claw_slot_y(), claw_cap_y()[0]];
+function claw_wall_y() = [claw_pair_y()[0] - claw_slot_y(), claw_cap_y()[0]];
 function claw_wall_lip_l() = WALL_LIP;
 
 // A shoulder on a race: on the inner alone, halfway across its ring; on the outer alone, bored to the
@@ -172,13 +191,13 @@ function claw_mr128_ring() = MR128_RING;
 function claw_seat_d(cfg) = fit_bore(MR128[1], fit_clearances(cfg)[1]);
 // The cap's four M3 x 10 bolts (C-609), (x, z) on the seam, each in a pillar. The fingers' torque about
 // their axes reaches the housing as forces in the seam's plane on the three MR128s, so the bolts stand
-// round those, wide apart and close to them: outboard of each pivot, beside the pinion, and beyond the
-// column.
+// round those, wide apart and close to them: outboard of each pivot, beside the pinion, and mirrored, so that
+// the span bolts' heads (span_socket.scad's S4) have a clear line in from the front.
 BOLT = [3.000, 5.500, 3.000, 10.000];            // C-609 ISO 4762: d, head d, head h, length
 BOLT_SINK = 0.200;                               // the head under the cap's front face
 PILLAR_R  = 2.500;                               // a bolt's pillar, round its tapped hole
 function claw_cap_bolt() = BOLT;
-function claw_cap_bolts() = [[21.7, 42], [-21.7, 42], [24, 23], [-9.5, 19]];
+function claw_cap_bolts() = [[21.7, 42], [-21.7, 42], [23.7, 23.2], [-23.7, 23.2]];
 function claw_pillar_r() = PILLAR_R;
 // Where a bolt's head seats in its recess, and where its end stands in the body.
 function claw_bolt_seat_y() = claw_cap_y()[1] - BOLT[2] - BOLT_SINK;
@@ -194,14 +213,18 @@ function claw_rim_outer(t) = RIM[0] + claw_rim_fit() + RIM[2] * t;   // t 0 at t
 function claw_rim_inner(t) = SHELL_WALL - RIM[2] * t;
 function claw_groove_outer(t) = RIM[0] + RIM[2] * t;
 function claw_groove_inner(t) = SHELL_WALL + claw_rim_fit() - RIM[2] * t;
-// The Claw Body's floor, the Static Finger's, from which the Span Mount's socket is cut.
-function claw_floor() = 10.000;
+// The Claw Body's floor, the outline's level bottom, the wall under the pinion's room, from which the Span
+// Mount's socket is cut.
+function claw_floor() = span_axis().y - claw_pinion_tip_r() - FIT_RUN - SHELL_WALL;
 // The fillet on the housing's exposed edges, the wall all round its inside, and the fillet that blends a
 // pillar into that wall.
 function claw_edge_r() = 1.500;
 SHELL_WALL = 2.500;
 function claw_shell_wall() = SHELL_WALL;
-function claw_blend_r() = 3.000;
+// The +X side's arc's centre, the -X side's being its mirror: where the arc, drawn round all that the wall keeps,
+// stands as near both bolts as their bosses allow, its end on the hub's wall.
+function claw_shell_centre() = [3.750, 30.600];
+function claw_blend_r() = 5.000;
 // The housing's top: the wall over where the hubs' teeth reach, FIT_RUN off their swept tips, which stand
 // higher than the hubs' rounds, to z 54.871 as measured from the teeth at full travel.
 function claw_shell_top() = 54.900 + SHELL_WALL;
@@ -318,7 +341,7 @@ function claw_pillar_tips() = norm(claw_cap_bolts()[2] - claw_pivot()) - PILLAR_
 function claw_pillar_wall() = PILLAR_R - fit_pin(BOLT[0], FIT_TAP) / 2;
 function claw_rim_tip() = claw_rim_inner(1) - claw_rim_outer(1);
 
-assert(claw_keel_front() >= claw_finger_y()[1], "the sleeve's front stands behind the fingers' front");
+assert(claw_fingers() == 4 || claw_keel_front() >= claw_finger_y()[1], "the sleeve's front stands behind the fingers' front");
 assert(claw_pillar_sector_end() >= 0, str("the upper pillar stands ", claw_pillar_sector_end(), " off the sector's end"));
 assert(claw_pillar_hub() >= 0, str("the upper pillar stands ", claw_pillar_hub(), " off the hub's room"));
 assert(claw_pillar_teeth() >= 0, str("the lower pillar stands ", claw_pillar_teeth(), " off the teeth's room"));

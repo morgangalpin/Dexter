@@ -1,0 +1,24 @@
+{
+  "title": "Claw Axle",
+  "subtitle": "#930-006 · revised render of 930-006_ClawAxle.scad (designed, no reference mesh) · feature names",
+  "from": [1, -0.4, 0.3],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#6b8f3a", "stl": "out/revised/930-006.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, -6.25, 3.95], "text": "J1 rear journal Ø8, in the body's MR128"},
+    {"at": [0, -4.25, 4.3], "text": "C1 collar Ø8.6, on the MR128's inner race"},
+    {"at": [0, 2.5, 5.77], "text": "A1 seat, hex 10 across flats: the finger's box end and the gear's bore"},
+    {"at": [-1.5, 0, 2.6], "text": "H1 cross hole Ø3.3 along 120°: the finger's set screw through the seat"},
+    {"at": [-1.5, 11.069, 2.6], "text": "H2 cross hole Ø3.3 along 120°: the gear's set screw, spare on the follower pivot"},
+    {"at": [0, 15.319, 4.3], "text": "C2 collar Ø8.6, on the cap's MR128"},
+    {"at": [0, 17.319, 3.95], "text": "J2 front journal Ø8, in the cap's MR128"}
+  ],
+  "presets": [
+    {"label": "Along the axis", "at": [0, 5.5, 0], "span": 40, "from": [1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. The same part serves both pivots: on the follower's it stands turned 60° on its hex, which puts its cross holes on the follower finger's screw line. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

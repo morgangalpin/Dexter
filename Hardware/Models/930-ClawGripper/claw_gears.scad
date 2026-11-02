@@ -71,29 +71,37 @@ module claw_hub_2d(cfg, s = 1) intersection() {
 // by c, takes out the slivers between the two.
 module claw_finger_clear_2d(c = 0.600) offset(r = -c) offset(r = FIT_RUN + c) for (s = [-1, 1]) claw_sweep_2d(s);
 
-// A convex path's long sides bowed outward by `rise` of their length, in a parabola, so that they read
-// as gentle curves; its top and bottom stay straight, the bottom over the Span Mount's column foot.
-function bowed(path, rise = 0.060, least = 8, n = 12) = let(k = len(path))
-    [for (i = [0 : k - 1]) let(a = path[i], d = path[(i + 1) % k] - a, l = norm(d), m = [d.y, -d.x] / max(l, 1e-9))
-        each (l >= least && abs(m.x) > 0.5 ? [for (j = [0 : n - 1]) let(t = j / n) a + d * t + m * rise * l * 4 * t * (1 - t)] : [a])];
+// Where the fingers' cutouts leave a groove in the wall's rim filled: the cap's and the body's, FIT_SLIP off
+// the cut in the rim.
+module claw_groove_land_2d() offset(delta = -claw_rim_fit()) claw_finger_clear_2d();
 
-// The housing's outline in the grip frame's (x, z), the cap's and the body's: the hull of the walls round
-// the hubs and their teeth, the sector's swept arc, the pinion and the cap's bolts, its sides bowed. The arc's end is
-// rounded, so that the hull leaves it tangent.
-function claw_shell_path() = let(ccw = claw_shell_hull(), q = bowed(ccw)) ccw_polygon(select(q, hull(q)));
-function claw_shell_hull() = let(p = claw_pivot(), w = FIT_RUN + claw_shell_wall(), a = claw_sector_arc(), r = claw_sector_tip_r() + w,
-                                 lo = a[0] - claw_open_max(), e = 3.000, n = ceil((a[1] - lo) / 2),
-                                 pts = concat(move(p, circle(r = claw_hub_r() + w, $fn = 96)),
-                                              move([-p.x, p.y], circle(r = claw_hub_r() + w, $fn = 96)),
-                                              move(span_axis(), circle(r = claw_pinion_tip_r() + w, $fn = 96)),
-                                              [for (i = [0 : n]) let(t = lo + (a[1] - lo) * i / n) p + r * [cos(t), sin(t)]],
-                                              move(p + (r - e) * [cos(a[1]), sin(a[1])], circle(r = e, $fn = 48)),
-                                              [for (s = [-1, 1]) [s * p.x, claw_shell_top()]],
-                                              [for (b = claw_cap_bolts()) each move(b, circle(r = claw_bolt_boss(), $fn = 48))]))
-    ccw_polygon(select(pts, hull(pts)));
+// The housing's outline in the grip frame's (x, z), the cap's and the body's: symmetric about the roll axis, flat
+// along the top and along the bottom, under the Span Mount's bolts, each side one arc about its own centre
+// (claw_shell_centre()), and each corner rounded tangent to its flat and its arc.
+// What the walls keep round, as [centre, radius]: the hubs and their teeth, the pinion, the sector's swept tips
+// and the cap's bolts, on +X.
+function claw_shell_keep() = let(p = claw_pivot(), w = FIT_RUN + claw_shell_wall(), a = claw_sector_arc(), t = claw_sector_tip_r(),
+                                 lo = a[0] - claw_open_max(), n = ceil((a[1] - lo) / 2))
+    concat([[p, claw_hub_r() + w], [span_axis(), claw_pinion_tip_r() + w]],
+           [for (i = [0 : n]) let(u = lo + (a[1] - lo) * i / n) [p + t * [cos(u), sin(u)], w]],
+           [for (i = [0, 2]) [claw_cap_bolts()[i], claw_bolt_boss()]]);
+// The side's radius: the least that keeps them all.
+function claw_shell_r() = let(c = claw_shell_centre()) max([for (k = claw_shell_keep()) norm(k[0] - c) + k[1]]);
+// The corners' radii, bottom and top: the walls they turn round, the pinion's and the hub's.
+function claw_corner_r() = let(k = claw_shell_keep()) [k[1][1], k[0][1]];
+// A corner's centre, f below or above the flat at z (d = 1 or -1), inside the side's arc.
+function claw_corner_centre(z, d, f) = let(c = claw_shell_centre(), q = z + d * f) [c.x + sqrt((claw_shell_r() - f) ^ 2 - (q - c.y) ^ 2), q];
+// An arc about c from polar a0 to a1, in steps of 1 deg or less.
+function claw_arc(c, r, a0, a1) = let(n = ceil(a1 - a0)) [for (i = [0 : n]) let(t = a0 + (a1 - a0) * i / n) c + r * [cos(t), sin(t)]];
+// The +X side, from the bottom flat to the top one.
+function claw_shell_side() = let(c = claw_shell_centre(), f = claw_corner_r(), b = claw_corner_centre(claw_floor(), 1, f[0]),
+                                 t = claw_corner_centre(claw_shell_top(), -1, f[1]), bd = b - c, td = t - c,
+                                 ba = atan2(bd.y, bd.x), ta = atan2(td.y, td.x))
+    concat(claw_arc(b, f[0], -90, ba), claw_arc(c, claw_shell_r(), ba, ta), claw_arc(t, f[1], ta, 90));
+function claw_shell_path() = let(s = claw_shell_side()) deduplicate(concat(s, reverse(xflip(s))), closed = true);
 
 // The housing's inside in the grip frame's (x, z): the outline in by the wall, less the bolts' pillars, each
-// pillar blended into the wall as a rounded triangle.
+// pillar blended into the wall by a fillet tangent to both.
 module claw_cavity_2d() let(f = claw_blend_r()) offset(r = f) offset(delta = -f) difference() {
     offset(delta = -claw_shell_wall()) polygon(claw_shell_path());
     for (b = claw_cap_bolts()) translate(b) circle(r = claw_pillar_r(), $fn = 72);
@@ -109,10 +117,9 @@ module claw_tapered_ring(y, outer, inner) let(l = y[1] - y[0]) difference() {
 module claw_outline_taper(y, s) hull() for (t = [0, 1])
     multmatrix(AXIS_Y) translate([0, 0, y[t]]) linear_extrude(0.001) offset(delta = -s[t]) polygon(claw_shell_path());
 
-// The Claw Finger Wall's ends, s = 1 on +X: each a line normal to the straight of the wall between the
-// hub's round and the bolt's boss, tangent to the upper pillar on the side toward the blades.
-function claw_wall_normal(s) = let(b = claw_cap_bolts()[0], p = claw_pivot(), d = b - p, w = FIT_RUN + claw_shell_wall(),
-                                   a = atan2(d.y, d.x) + acos((claw_hub_r() + w - claw_bolt_boss()) / norm(d)))
+// The Claw Finger Wall's ends, s = 1 on +X: each a radius of the side's arc, tangent to the upper pillar on the
+// side toward the blades.
+function claw_wall_normal(s) = let(d = claw_cap_bolts()[0] - claw_shell_centre(), a = atan2(d.y, d.x) + asin(claw_pillar_r() / norm(d)))
     [s * cos(a), sin(a)];
 function claw_wall_along(s) = let(n = claw_wall_normal(s)) [-s * n.y, abs(n.x)];
 function claw_wall_end(s, f = 0) = claw_cap_bolts()[s > 0 ? 0 : 1] + (claw_pillar_r() + f) * claw_wall_along(s);
@@ -167,3 +174,4 @@ assert(claw_hub_root_r() <= root_radius(mod = claw_mod(), teeth = claw_hub_n(), 
 assert(near(claw_pinion_tip_r(), outer_radius(mod = claw_mod(), teeth = claw_pinion_n(), shorten = claw_pinion_shorten())),
        "the pinion's tip differs from BOSL2's");
 assert(claw_hub_r() < root_radius(mod = claw_mod(), teeth = claw_sector_n()), "the sector's web reaches its root");
+assert(claw_corner_centre(claw_shell_top(), -1, claw_corner_r()[1]).x >= claw_pivot().x - 0.5, "the top's flat stops short of the hub");

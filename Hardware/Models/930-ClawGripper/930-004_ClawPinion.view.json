@@ -1,7 +1,6 @@
 {
   "title": "Claw Pinion",
   "subtitle": "#930-004 · revised render of 930-004_ClawPinion.scad (designed, no reference mesh) · feature names",
-  "cut": ["x"],
   "from": [1, -0.4, 0.3],
   "groups": [
     {"name": "Renders", "role": "render.rs --verify", "parts": [
@@ -19,6 +18,6 @@
     {"label": "Spline end", "at": [0, -9.3, 0], "span": 16, "from": [0.3, -1, 0.3]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its spline end is the Span Driver's (../900-ToolInterface/912-002_SpanDriver.scad), which it replaces in the claw. The page opens cut on its axis, through the access bore. Run render.rs --verify before building this page, because the render is its output."}
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its spline end is the Span Driver's (../900-ToolInterface/912-002_SpanDriver.scad), which it replaces in the claw. Run render.rs --verify before building this page, because the render is its output."}
   ]
 }

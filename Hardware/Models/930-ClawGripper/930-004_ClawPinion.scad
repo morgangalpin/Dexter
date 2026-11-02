@@ -51,7 +51,9 @@ function seat_y() = ys()[5];             // the bolt head's seat, #912-002's C1 
 function front_y() = claw_journal_y(true)[1];
 
 // The layers from the bolt head's seat on, each [y span, section index].
-function layers() = [[[ys()[4], claw_teeth_y()[0]], 0], [claw_teeth_y(), 1], [claw_collar_y(true), 2],
+// The collar runs on from the teeth to the cap, which a long pinion's Ø11 would not, as the sector's tips
+// pass under it.
+function layers() = [[[ys()[4], claw_teeth_y()[0]], 0], [claw_teeth_y(), 1], [[claw_teeth_y()[1], claw_collar_y(true)[1]], 2],
                      [claw_journal_y(true), 3]];
 
 module pinion_layer_2d(i, cfg = config)

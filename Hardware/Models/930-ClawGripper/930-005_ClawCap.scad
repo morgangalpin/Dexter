@@ -1,11 +1,11 @@
 // #930-005 Claw Cap — parametric source.
 // The lid of the Claw Body (#930-003): a flat plate on the body's outline, so that the two read as one
-// piece. It carries the front MR128 (C-405) of the Claw Gear (#930-002), of the Claw Follower Axle
-// (#930-006) and of the Claw Pinion (#930-004), each in a blind seat under a thin cover, so that every
+// piece. It carries the front MR128 (C-405) of each Claw Axle (#930-006) and of the Claw Pinion
+// (#930-004), each in a blind seat under a thin cover, so that every
 // axis of the claw runs in bearings at both ends. A groove takes the tapered rim of the body and the Claw
 // Finger Wall (#930-008), which locates it across the seam and traps the wall. Nothing stands off its rear
-// face, so that the 4-finger build can reuse it. It goes on last, its MR128s pressed in from the inside,
-// over the axles' and the pinion's journals, and four M3 x 10 (C-609) hold it to the body's pillars.
+// face, so that it is one part in the 2-finger and 4-finger builds. It goes on last, its MR128s pressed in from
+// the inside, over the axles' and the pinion's journals, and four M3 x 10 (C-609) hold it to the body's pillars.
 // claw_params.scad owns its dimensions and gives the claw's mechanism.
 //
 // Designed, "revised" only: there is no reference mesh.
@@ -17,7 +17,8 @@
 //     P1  plate          y 15.569 .. 20.569, on claw_shell_path() (claw_gears.scad), its front face's edge
 //                        filleted R1.5, its rear face square on the seam
 //     G1  rim groove     round the outline, 1 in from it at the seam, 1.65 wide there and 1.35 at its end,
-//                        each face tapered 0.15, 2.65 deep; unbroken
+//                        each face tapered 0.15, 2.65 deep; filled at the blades' cutouts, FIT_SLIP in from
+//                        the cut in the wall's lip
 //     M1  MR128 seats ×3 Ø12 at y 15.569 .. 19.069 on both pivots and the span axis, open rearward; a
 //                        relief Ø10.2, 0.5 deep, in front of them; a cover of 1 over that, unbroken
 //     H1  bolt holes ×4 Ø3.3 through, on the body's T1, in Ø5.8 recesses 3.2 deep from the front face
@@ -48,9 +49,12 @@ module slab(y, lo = 0, hi = 0) multmatrix(AXIS_Y) translate([0, 0, y[0] - lo]) l
 module plate() let(y = claw_cap_y())
     multmatrix(AXIS_Y) translate([0, 0, y[0]]) offset_sweep(claw_shell_path(), height = y[1] - y[0], top = os_circle(r = claw_edge_r()));
 
-// G1, unbroken. The rim's end stands the fit off its end.
-module groove(cfg) let(s = seam(), f = claw_rim_fit(), l = claw_rim_l() + f, k = l / claw_rim_l())
+// G1, filled at the blades' cutouts, where the 4-finger build's front pair opens through the wall's lip and
+// the 2-finger's lip stops to match. The rim's end stands the fit off its end.
+module groove(cfg) let(s = seam(), f = claw_rim_fit(), l = claw_rim_l() + f, k = l / claw_rim_l()) difference() {
     claw_tapered_ring([s - LAP, s + l], [claw_groove_outer(0), claw_groove_outer(k)], [claw_groove_inner(0), claw_groove_inner(k)]);
+    slab([s, s + l], 1, 1) claw_groove_land_2d();
+}
 
 module seats(cfg) let(b = claw_front_bearing_y()) {
     slab(b, LAP, 0) for (a = axes()) translate(a) circle(d = claw_seat_d(cfg));
