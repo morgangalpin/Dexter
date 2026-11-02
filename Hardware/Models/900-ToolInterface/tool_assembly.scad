@@ -30,9 +30,10 @@
 //     with N1's nubs in their rivet holes, its tab holes on H2, so that its axis is E1's (steps 25-26).
 //     Its horn is off (step 24), and its spline is turned so that its teeth and key meet the Span
 //     Driver's B1 and K2 as a gripper's assembly places the driver (step 36).
-//   - The two M2 x 12 span bolts in H2 from V1's -X face, each head on its counterbore's floor, through
-//     the servo's tab, with an M2 washer in the tab's back counterbore and a nut on it (step 26). The
-//     file echoes how far each bolt ends beyond its nut, and how far each head stands under V1's face.
+//   - The two M2 x 12 span bolts through H2 and the servo's tab, with an M2 washer in the tab's back
+//     counterbore and a nut on it (step 26). With a gripper's base on the Span Mount, each comes in through
+//     the base (span_socket.scad's S4), its head on the base's seat; alone here, its head stands on V1's
+//     -X face. The file echoes how far each bolt ends beyond its nut through a base.
 //
 // NOT DRAWN. The Tool Interface Body (#900-001), which holds the roll XL-320's case (step 10). The case
 // would now place it: S1, x -38.04 .. -14.04 in the body's frame, is the case's 24 depth, its floor
@@ -46,11 +47,12 @@
 //
 // GEOMETRY. The printed parts are the binary mesh cache `render.rs 900-ToolInterface --meshes` builds
 // in out/asm/ (revised), so run it first. Bearings are drawn at catalogue size as three parts each
-// (outer and inner race, shield): `part` draws one race alone, and PARTS lists only the whole bearing.
+// (outer and inner race, shield): `part` draws one race alone, and PARTS lists the bearings as one part.
 // The XL-320s are ../c102_servo.scad's placement model, each drawn as two parts: its case, and its
 // output (the roll servo's horn, the span servo's bare spline), which turns on it.
 
 use <../c102_servo.scad>
+use <span_socket.scad>
 
 part = "all";   // "all", or one name from PARTS or RACE_PARTS for per-part export
 ROLL = 0;       // roll angle, deg
@@ -78,8 +80,8 @@ SPAN_TURN   = 235;                       // C-102's output turn: #912-002's K2 s
                                          // is 90 - 215 = 235 deg in the servo's (x, y), and on one of B1's teeth
 M2X12       = [2, 12, 3.8, 2];           // M2 x 12 socket head (ISO 4762): d, length, head d, head h
 V1_T        = 3.500;                     // #912-001 V1's thickness, x 3.743 .. 7.243
-H2_CBORE    = 2.150;                     // #912-001 H2's counterbore depth from V1's -X face (revised)
-SPAN_HEAD_Z = V1_T - H2_CBORE;           // under a span bolt's head, z in the servo's frame
+// Under a span bolt's head, z in the servo's frame: on a gripper's base's seat, or on V1's -X face.
+function span_head_z(seated) = seated ? span_bolt_seat_y() + SPAN_SERVO.x : V1_T;
 
 // --- Frames -----------------------------------------------------------------
 module roll_frame() rotate(ROLL) children();
@@ -126,28 +128,27 @@ module nut() difference() {
 // holes they stand in, so a pin or a thread in its own hole meets it line to line.
 module at_pcd(start) for (a = [start : 90 : start + 270]) rotate(a) translate([PCD_R, 0, 0]) children();
 
-// A bolt is two parts, its head and its shank, so that the shank's thread in B1 can be engaged while
-// the head is still held to its clearance in C1.
-module roll_bolt_heads() color("#8a8f94") rd_frame() at_pcd(45)
-  translate([0, 0, ROLL_BOLT[4] - ROLL_BOLT[3]]) cylinder(d = ROLL_BOLT[2], h = ROLL_BOLT[3], $fn = 72);
-module roll_bolt_shanks() color("#8a8f94") rd_frame() at_pcd(45)
-  translate([0, 0, ROLL_BOLT[4]]) cylinder(d = ROLL_BOLT[0], h = ROLL_BOLT[1], $fn = 72);
-module roll_washers() color("#b0b4b8") sm_frame() at_pcd(45) translate([0, 0, K1_FLOOR]) washer();
-module roll_nuts() color("#8a8f94") sm_frame() at_pcd(45) translate([0, 0, K1_FLOOR + M2_WASHER[2]]) nut();
+// A socket-head bolt [d, length, head d, head h], one solid: its head's underside at z 0, its shank along dir.
+module bolt(b, dir = 1) mirror([0, 0, dir > 0 ? 0 : 1]) rotate_extrude($fn = 72)
+  polygon([[0, -b[3]], [b[2] / 2, -b[3]], [b[2] / 2, 0], [b[0] / 2, 0], [b[0] / 2, b[1]], [0, b[1]]]);
+
+// The four roll bolts with their washers and nuts, one part.
+module roll_fasteners() {
+  color("#8a8f94") rd_frame() at_pcd(45) translate([0, 0, ROLL_BOLT[4]]) bolt(ROLL_BOLT);
+  color("#b0b4b8") sm_frame() at_pcd(45) translate([0, 0, K1_FLOOR]) washer();
+  color("#8a8f94") sm_frame() at_pcd(45) translate([0, 0, K1_FLOOR + M2_WASHER[2]]) nut();
+}
 module roll_pins() color("#c0c0c0") rd_frame() at_pcd(0) translate([0, 0, PIN[1]]) cylinder(d = PIN[0], h = PIN[2] - PIN[1], $fn = 48);
 
 // The span bolts (step 26), in the span servo's frame, its +Z out through V1: in the tab's two outer
 // holes, each washer on the floor of the tab's back counterbore.
 SPAN_WASHER_Z = c102_plate()[2] - c102_plate()[0];   // the back counterbore's floor
 module at_span_holes() for (h = [c102_tab_holes()[1], c102_tab_holes()[2]]) translate(h) children();
-module span_bolt_heads() color("#8a8f94") span_servo_frame() at_span_holes()
-  translate([0, 0, SPAN_HEAD_Z]) cylinder(d = M2X12[2], h = M2X12[3], $fn = 72);
-module span_bolt_shanks() color("#8a8f94") span_servo_frame() at_span_holes()
-  translate([0, 0, SPAN_HEAD_Z - M2X12[1]]) cylinder(d = M2X12[0], h = M2X12[1], $fn = 72);
-module span_washers() color("#b0b4b8") span_servo_frame() at_span_holes()
-  translate([0, 0, SPAN_WASHER_Z - M2_WASHER[2]]) washer();
-module span_nuts() color("#8a8f94") span_servo_frame() at_span_holes()
-  translate([0, 0, SPAN_WASHER_Z - M2_WASHER[2] - M2_NUT[1]]) nut();
+module span_fasteners(seated) span_servo_frame() at_span_holes() {
+  color("#8a8f94") translate([0, 0, span_head_z(seated)]) bolt(M2X12, -1);
+  color("#b0b4b8") translate([0, 0, SPAN_WASHER_Z - M2_WASHER[2]]) washer();
+  color("#8a8f94") translate([0, 0, SPAN_WASHER_Z - M2_WASHER[2] - M2_NUT[1]]) nut();
+}
 
 RACES = ["outer", "inner", "shield"];
 
@@ -168,21 +169,18 @@ module bearing_in(b, r, $fn = 360) {   // at 96 a race's chords stand inside its
 }
 module bearing(b) color("#dcdcdc") for (r = RACES) bearing_in(b, r);
 
-PARTS = ["roll_body", "roll_driver", "span_mount", "strake", "roll_lower", "roll_upper",
-         "roll_bolt_heads", "roll_bolt_shanks", "roll_washers", "roll_nuts", "roll_pins",
-         "roll_servo", "roll_horn", "span_servo", "span_spline",
-         "span_bolt_heads", "span_bolt_shanks", "span_washers", "span_nuts"];
+PARTS = ["roll_body", "roll_driver", "span_mount", "strake", "roll_bearings",
+         "roll_fasteners", "roll_pins", "roll_servo", "roll_horn", "span_servo", "span_spline",
+         "span_fasteners"];
 
 // For a gripper's assembly, which sees this file's modules and functions but not its variables.
 function tool_parts() = PARTS;
 function tool_race_parts() = RACE_PARTS;
 
-// One part; `span` turns the span servo's output on from SPAN_TURN, deg, as a gripper turns its driver.
-module tool_draw(p, span = 0) {
-  if (p == "roll_bolt_heads")  roll_bolt_heads();
-  if (p == "roll_bolt_shanks") roll_bolt_shanks();
-  if (p == "roll_washers")   roll_washers();
-  if (p == "roll_nuts")      roll_nuts();
+// One part; `span` turns the span servo's output on from SPAN_TURN, deg, as a gripper turns its driver, and
+// `seated` stands the span bolts' heads on a gripper's base's seat.
+module tool_draw(p, span = 0, seated = false) {
+  if (p == "roll_fasteners") roll_fasteners();
   if (p == "roll_pins")      roll_pins();
   if (p == "roll_body")      roll_body();
   if (p == "roll_driver")    roll_driver();
@@ -192,11 +190,8 @@ module tool_draw(p, span = 0) {
   if (p == "roll_horn")      roll_horn();
   if (p == "span_servo")     span_servo();
   if (p == "span_spline")    span_spline(span);
-  if (p == "span_bolt_heads")  span_bolt_heads();
-  if (p == "span_bolt_shanks") span_bolt_shanks();
-  if (p == "span_washers")   span_washers();
-  if (p == "span_nuts")      span_nuts();
-  for (b = BEARINGS) if (p == b) bearing(b);
+  if (p == "span_fasteners") span_fasteners(seated);
+  if (p == "roll_bearings")  for (b = BEARINGS) bearing(b);
   for (b = BEARINGS, r = RACES) if (p == str(b, "_", r)) color("#dcdcdc") bearing_in(b, r);
 }
 
@@ -207,8 +202,7 @@ echo(horn_under_flange = RD_FLANGE - RD_DROP - HORN_TOP);                // the 
 echo(horn_under_roll_heads = (ROLL_BOLT[4] - ROLL_BOLT[3] - RD_DROP) - HORN_TOP);
 echo(pins_above_roll_servo = (PIN[1] - RD_DROP) - ROLL_SERVO);           // the case's front face
 echo(rb_bolt_short_of_tab = (RB_CBORE - M2X12[1]) - (ROLL_SERVO - c102_plate()[0]));   // an M2 x 12 in H1
-echo(span_bolt_past_nut = (SPAN_WASHER_Z - M2_WASHER[2] - M2_NUT[1]) - (SPAN_HEAD_Z - M2X12[1]));
-echo(span_heads_under_v1 = H2_CBORE - M2X12[3]);   // under V1's -X face, in H2's counterbore
+echo(span_bolt_past_nut = (SPAN_WASHER_Z - M2_WASHER[2] - M2_NUT[1]) - (span_head_z(true) - M2X12[1]));   // through a base
 
 for (p = PARTS) if (part == "all" || part == p) tool_draw(p);
 for (p = RACE_PARTS) if (part == p) tool_draw(p);

@@ -33,7 +33,7 @@
 //                              fillets on both faces
 //     E1  eye                  Ø12 along X at (y 14.139, z 16), in V1's R9 lobe
 //     H2  servo bolt holes ×2  Ø2 along X at (y -9.861, z 10) and (y -9.861, z 22), each with a Ø4
-//                              counterbore 1.75 deep from V1's -X face
+//                              counterbore 1.75 deep from V1's -X face (previous only)
 //     C1  strake column        a square turned 45 deg, |x| + |y| <= 5.833, corners R1, z 4 .. 22.7,
 //                              on V1's -X side
 //     C2  column foot          the same square growing by √2 per mm down to z 4 (|x| + |y| <= 10.783),
@@ -55,9 +55,9 @@
 // FITS (revised). The strake slot S1 on the C-502 strip (.092" x .220", 2.337 x 5.588), which is
 // bonded: fit_bore at FIT_PRESS on both sides, 2.437 x 5.688 (the reference's 5.5 is 0.09 narrower
 // than the strip). H1 takes the M2 bolts and K1 their washers (Ø5): fit_bore(2, FIT_SLIP) = Ø2.3 and
-// fit_bore(5, FIT_SLIP) = Ø5.3. H2 takes the servo's M2 x 12 bolts, Ø2.3, and its counterbores their
-// heads (Ø3.8 x 2, step 26) at slip on both: Ø4.1, and 2.15 deep, so that the heads clear the Static
-// Finger, which slides on V1's -X face. E1 already clears the Span Driver's Ø11 flange by FIT_RUN
+// fit_bore(5, FIT_SLIP) = Ø5.3. H2 takes the servo's M2 x 12 bolts at slip, Ø2.3, and its counterbores
+// are filled: the bolts come in through a gripper's base, which seats their heads (span_socket.scad's
+// S4), so that they hold the base to V1 as well. E1 already clears the Span Driver's Ø11 flange by FIT_RUN
 // (probed, not redrawn). The span XL-320 is a bought part, and the features that meet it follow
 // ../c102_servo.scad: H2 stands under its tab holes, and N1 stands in its rivet holes at FIT_PRESS, on
 // the diameter and short of their floors. R1 (a seat on the Roll Driver's end, which the assembly's
@@ -103,8 +103,7 @@ LOBE_FILL = [3.330, 3.160];           // concave fillets onto the lobe, above an
 EYE_D     = 12.000;                   // E1
 SERVO_HOLES = [[-9.861, 10.000], [-9.861, 22.000]];   // H2 in (y, z)
 SERVO_BOLT  = 2.000;
-SERVO_CBORE = [4.000, 1.750];         // H2's counterbore: diameter (the reference's), depth from V1's -X face
-SERVO_HEAD  = 3.800;                  // the M2 x 12 bolt's head, which H2's counterbore takes
+SERVO_CBORE = [4.000, 1.750];         // H2's counterbore, previous only: diameter, depth from V1's -X face
 
 COLUMN    = [5.833, 1.000, 22.700];   // C1: |x| + |y| bound, corner radius, top
 FOOT      = [10.783, 0.650, 7.500];   // C2: bound at z 4, corner radius, top
@@ -123,7 +122,6 @@ ARCH_R     = 2.000;                   // K1's arch corners
 
 NUBS   = [[13.243, -3.861], [13.243, 14.139]];
 NUB    = [4.000, 7.000];              // N1: diameter, top z
-SERVO_HEAD_H = 2.000;                 // the M2 x 12 bolt's head height (ISO 4762)
 
 // The span XL-320 stands with its front face on V1's +X face, its axis on E1's and its -X side pads on
 // F1, so its servo-frame (x, y, z) is this frame's (z - E1's z, y - E1's y, V1's +X face - x).
@@ -137,9 +135,6 @@ function nub(cfg) = cfg == "revised" ? let(c = fit_clearances(cfg)[1])
 // H2: under the tab's two outer holes, in (y, z).
 function servo_holes(cfg) = cfg == "revised" ?
     [for (h = [c102_tab_holes()[1], c102_tab_holes()[2]]) [e1().x + h.y, e1().y + h.x]] : SERVO_HOLES;
-// H2's counterbore: diameter and depth, revised clearing the head by the slip fit on both.
-function servo_cbore(cfg) = cfg == "revised" ? let(c = fit_clearances(cfg)[0])
-    [fit_bore(SERVO_HEAD, c), SERVO_HEAD_H + c] : SERVO_CBORE;
 
 // --- 2D helpers --------------------------------------------------------------------------------
 
@@ -282,7 +277,7 @@ module upright_cutters(cfg) let(c = fit_clearances(cfg)) {
     translate([-1, LOBE[0].x, LOBE[0].y]) rotate([0, 90, 0]) cylinder(d = EYE_D, h = BIG);
     for (p = servo_holes(cfg)) translate([-1, p.x, p.y]) rotate([0, 90, 0]) {
         cylinder(d = fit_bore(SERVO_BOLT, c[0]), h = BIG, $fn = 48);
-        cylinder(d = servo_cbore(cfg).x, h = 1 + V1_X[0] + servo_cbore(cfg).y, $fn = 72);
+        if (cfg == "previous") cylinder(d = SERVO_CBORE.x, h = 1 + V1_X[0] + SERVO_CBORE.y, $fn = 72);
     }
 }
 

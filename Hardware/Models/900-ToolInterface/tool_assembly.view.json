@@ -6,8 +6,7 @@
     {"name": "Roll", "role": "the wrist's roll: the roll XL-320 turns the Roll Driver in the Roll Body", "parts": [
       {"id": "roll_body", "name": "Roll Body, revised", "pn": "#911-001", "color": "#d4ad6b"},
       {"id": "roll_driver", "name": "Roll Driver, revised", "pn": "#911-002", "color": "#2f6db5"},
-      {"id": "roll_lower", "name": "Lower 6703, in the lower seat", "pn": "6703", "color": "#dcdcdc"},
-      {"id": "roll_upper", "name": "Upper 6703, in the upper seat", "pn": "6703", "color": "#dcdcdc"},
+      {"id": "roll_bearings", "name": "Bearings: the two 6703s, in the Roll Body's seats", "pn": "6703", "color": "#dcdcdc"},
       {"id": "roll_servo", "name": "Roll XL-320's case, its front face on the Roll Body's bosses", "pn": "C-102", "color": "#3c4250"},
       {"id": "roll_horn", "name": "Roll XL-320's horn, on the Roll Driver's drive bosses", "pn": "C-102", "color": "#9aa3ad"}]},
     {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end, and the span XL-320 on it", "parts": [
@@ -15,15 +14,9 @@
       {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"},
       {"id": "span_servo", "name": "Span XL-320's case, on the upright plate and the drive nubs", "pn": "C-102", "color": "#3c4250"},
       {"id": "span_spline", "name": "Span XL-320's output spline and key, its horn off", "pn": "C-102", "color": "#9aa3ad"},
-      {"id": "span_bolt_heads", "name": "M2 × 12 bolts' heads, in the upright plate's counterbores", "pn": "M2 × 12", "color": "#8a8f94"},
-      {"id": "span_bolt_shanks", "name": "M2 × 12 bolts' shanks, through the plate and the servo's tab", "pn": "M2 × 12", "color": "#8a8f94"},
-      {"id": "span_washers", "name": "M2 washers, in the servo tab's back counterbores", "pn": "M2 washer", "color": "#b0b4b8"},
-      {"id": "span_nuts", "name": "M2 nuts, on the washers", "pn": "M2 nut", "color": "#8a8f94"}]},
+      {"id": "span_fasteners", "name": "M2 × 12 bolts, washers and nuts, through the upright plate and the servo's tab", "pn": "M2 × 12, M2 washer, M2 nut", "color": "#8a8f94"}]},
     {"name": "Roll fasteners", "role": "join the Roll Driver to the Span Mount and to the servo's horn", "parts": [
-      {"id": "roll_bolt_heads", "name": "M2 × 20 bolts' heads, in the Roll Driver's counterbores", "pn": "M2 × 20", "color": "#8a8f94"},
-      {"id": "roll_bolt_shanks", "name": "M2 × 20 bolts' shanks, threaded in the Roll Driver", "pn": "M2 × 20", "color": "#8a8f94"},
-      {"id": "roll_washers", "name": "M2 washers, in the Span Mount's pockets", "pn": "M2 washer", "color": "#b0b4b8"},
-      {"id": "roll_nuts", "name": "M2 nuts, on the washers", "pn": "M2 nut", "color": "#8a8f94"},
+      {"id": "roll_fasteners", "name": "M2 × 20 bolts, washers and nuts, on the roll bolt circle", "pn": "M2 × 20, M2 washer, M2 nut", "color": "#8a8f94"},
       {"id": "roll_pins", "name": "Satin pins, trimmed flush with the drive bosses", "pn": "#19 satin pin", "color": "#c0c0c0"}]}
   ],
   "labels": [
@@ -60,8 +53,7 @@
        {"text": "Roll XL-320's horn face, under the M2 × 20 bolts' heads", "value": "{horn_under_roll_heads}"},
        {"text": "Satin pins' ends, above the roll XL-320's front face", "value": "{pins_above_roll_servo}"},
        {"text": "Roll Body's M2 × 12 (step 22), short of the servo tab's back face", "value": "{rb_bolt_short_of_tab}", "warn": true},
-       {"text": "Span M2 × 12 bolts' heads, under the upright plate's face", "value": "{span_heads_under_v1}"},
-       {"text": "Span M2 × 12 bolts, past their nuts", "value": "{span_bolt_past_nut}"}],
+       {"text": "Span M2 × 12 bolts, past their nuts through a gripper's base", "value": "{span_bolt_past_nut}"}],
      "items": [
        "The Span Driver, as a gripper's assembly places it, stands partly inside the span XL-320's case: 920-ParallelGripper/gripper_assembly.view.json gives by how much"]},
     {"heading": "Not drawn",

@@ -4,10 +4,7 @@
     {"id": "roll_driver",          "kind": "printed", "side": "roll"},
     {"id": "span_mount",           "kind": "printed", "side": "roll"},
     {"id": "strake",               "kind": "bought",  "side": "roll"},
-    {"id": "roll_bolt_heads",      "kind": "fastener", "side": "roll"},
-    {"id": "roll_bolt_shanks",     "kind": "fastener", "side": "roll"},
-    {"id": "roll_washers",         "kind": "fastener", "side": "roll"},
-    {"id": "roll_nuts",            "kind": "fastener", "side": "roll"},
+    {"id": "roll_fasteners",       "kind": "fastener", "side": "roll"},
     {"id": "roll_pins",            "kind": "bought",  "side": "roll"},
     {"id": "roll_lower_inner",     "kind": "bought",  "side": "roll",  "bearing": "roll_lower", "race": "inner"},
     {"id": "roll_lower_outer",     "kind": "bought",  "side": "fixed", "bearing": "roll_lower", "race": "outer"},
@@ -19,21 +16,10 @@
     {"id": "roll_horn",            "kind": "bought",  "side": "roll"},
     {"id": "span_servo",           "kind": "bought",  "side": "roll"},
     {"id": "span_spline",          "kind": "bought",  "side": "span"},
-    {"id": "span_bolt_heads",      "kind": "fastener", "side": "roll"},
-    {"id": "span_bolt_shanks",     "kind": "fastener", "side": "roll"},
-    {"id": "span_washers",         "kind": "fastener", "side": "roll"},
-    {"id": "span_nuts",            "kind": "fastener", "side": "roll"}
+    {"id": "span_fasteners",       "kind": "fastener", "side": "roll"}
   ],
-  "engaged": [["roll_bolt_shanks", "roll_driver"], ["roll_pins", "roll_driver"],
+  "engaged": [["roll_fasteners", "roll_driver"], ["roll_pins", "roll_driver"],
               ["roll_servo", "roll_horn"], ["span_servo", "span_spline"]],
   "exceptions": [
-    {"pair": ["roll_driver", "roll_bolt_heads"], "at": [4.243, 4.243, 3.795], "radius": 2.5,
-     "reason": "911-002 C1 takes the M2 x 20 head at press, not slip, so that it keeps 0.50 of wall to the 6703's bore: 911-002_RollDriver.scad's FITS paragraph gives why"},
-    {"pair": ["roll_driver", "roll_bolt_heads"], "at": [-4.243, 4.243, 3.795], "radius": 2.5,
-     "reason": "911-002 C1 takes the M2 x 20 head at press, not slip, so that it keeps 0.50 of wall to the 6703's bore: 911-002_RollDriver.scad's FITS paragraph gives why"},
-    {"pair": ["roll_driver", "roll_bolt_heads"], "at": [-4.243, -4.243, 3.795], "radius": 2.5,
-     "reason": "911-002 C1 takes the M2 x 20 head at press, not slip, so that it keeps 0.50 of wall to the 6703's bore: 911-002_RollDriver.scad's FITS paragraph gives why"},
-    {"pair": ["roll_driver", "roll_bolt_heads"], "at": [4.243, -4.243, 3.795], "radius": 2.5,
-     "reason": "911-002 C1 takes the M2 x 20 head at press, not slip, so that it keeps 0.50 of wall to the 6703's bore: 911-002_RollDriver.scad's FITS paragraph gives why"}
   ]
 }

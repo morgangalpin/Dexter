@@ -16,7 +16,7 @@
     {"at": [8, 1.25, -1], "text": "G1 wire groove, y ±1.25, to z 0.5"},
     {"at": [3.743, 5, 15], "text": "V1 upright plate, x 3.743–7.243, z 4–26.2"},
     {"at": [5, 14.139, 22], "text": "E1 eye Ø12 along X at y 14.139, z 16"},
-    {"at": [6.5, -9.861, 11], "text": "H2 servo bolt hole Ø2 ×2, Ø4 counterbore 1.75 deep"},
+    {"at": [6.5, -9.861, 11], "text": "H2 servo bolt hole Ø2 ×2; the reference's Ø4 counterbore 1.75 deep, filled in the revised"},
     {"at": [-3, 2.833, 15], "text": "C1 strake column, |x| + |y| ≤ 5.833, z 4–22.7"},
     {"at": [-6.968, -2.4, 5], "text": "C2 column foot, 45° flare from z 7.5 to z 4"},
     {"at": [3.2, 3.67, 15], "text": "W1 column web, y = ±(x + 0.47), fillet R0.5"},
@@ -32,6 +32,6 @@
     {"label": "Column", "at": [0, 0, 14], "span": 26, "from": [-1, -1, 0.6]}
   ],
   "notes": [
-    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens S1 to the C-502 strip's press fit and H1, H2 and K1 to slip clearance, as the FITS paragraph of 912-001_SpanMount.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens S1 to the C-502 strip's press fit and H1, H2 and K1 to slip clearance, and fills H2's counterbores, as the FITS paragraph of 912-001_SpanMount.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
   ]
 }

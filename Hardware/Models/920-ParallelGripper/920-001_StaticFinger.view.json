@@ -11,9 +11,11 @@
       {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/920-001.stl", "shown": false}]}
   ],
   "labels": [
-    {"at": [-12.561, 1.939, 20], "text": "P1 plan, R10.561 corners, y ±12.5"},
-    {"at": [2, 12.492, 30], "text": "B1 base, z 10–34.5, y to 12.492"},
+    {"at": [-12.561, 1.939, 20], "text": "P1 plan, R10.561 corners, y ±12.5; revised, B1 squared to x −13.1, corners R2"},
+    {"at": [2, 12.492, 30], "text": "B1 base, z 10–34.5, y to 12.492; revised, its floor z 7.5"},
+    {"at": [-9.861, 12.492, 11.5], "text": "S4 revised: span bolt bores Ø4.1 ×2, to their heads' seats at y −1.093, Ø2.3 on through the plate"},
     {"at": [26.18, 15.2, 17.5], "text": "C1 shroud cone, R17 to R7"},
+    {"at": [14.139, 12.188, 2], "text": "G1 revised: the whole R17 circle, down to z 0.5, a guard either side of the gear's slot, clear of a cylinder R11.8 about the roll axis"},
     {"at": [19.437, 18.757, 21.264], "text": "R1 hash marks ×2, 1 wide, 0.61 proud"},
     {"at": [0, 0, 60], "text": "F1 finger, z 34–93.5, tapered on −X"},
     {"at": [-12.5, 0, 57], "text": "L1 lug, bore Ø21, outer R15.5, y ±1.939"},

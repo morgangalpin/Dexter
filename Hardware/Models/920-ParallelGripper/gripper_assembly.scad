@@ -15,7 +15,9 @@
 //   - The Static Finger's socket over the Span Mount's column, its ceiling on the column's top and its
 //     slot on the upright plate (step 46): the socket is the column's section turned -90 deg about Z,
 //     so its frame is the Span Mount's turned +90 deg and 1.5 lower. Its hub then stands on the Span
-//     Mount's eye axis, and its plate slot stands over the span XL-320's case and pads.
+//     Mount's eye axis, and its plate slot stands over the span XL-320's case and pads. The two M2 x 12
+//     span bolts come in from the Static Finger's front, each head on the seat at the end of its bore,
+//     through the finger's plate, the Span Mount's H2 and the servo's tab, into their nuts.
 //   - The MR128s on the EXT's journal and in the Static Finger's seats (step 41): the journal (#920-006
 //     J1) is 7.5 long, the two bearings' widths and the 0.5 shoulder between the seats, so each bearing
 //     stands against the shoulder.
@@ -46,7 +48,7 @@
 // GEOMETRY. The printed parts are the binary mesh caches `render.rs 900-ToolInterface --meshes` and
 // `render.rs 920-ParallelGripper --meshes` build in each group's out/asm/ (revised), so run both first.
 // Bearings are drawn at catalogue size as three parts each (outer and inner race, shield): `part` draws
-// one race alone, and PARTS lists only the whole bearing.
+// one race alone, and PARTS lists the bearings as one part.
 
 use <../900-ToolInterface/tool_assembly.scad>
 use <../900-ToolInterface/span_socket.scad>
@@ -89,17 +91,16 @@ module pinion_gear()    color("#3a6b8f") pinion_frame() gripper_printed("920-005
 module pinion_ext()     color("#8f3a6b") span_frame(EXT_Y) gripper_printed("920-006");
 module span_driver()    color("#7a7a3a") span_frame(DRIVER_Y) driver_printed();
 
-// The M3 bolt is two parts, head and shank, so that the shank's thread in the nut can be engaged while
-// the head is still held to its clearance on the EXT.
-module m3_bolt_head()  color("#8a8f94") hub_frame(EXT_Y + M3_BOLT[4]) rotate([-90, 0, 0])
-  cylinder(d = M3_BOLT[2], h = M3_BOLT[3], $fn = 72);
-module m3_bolt_shank() color("#8a8f94") hub_frame(EXT_Y + M3_BOLT[4] - M3_BOLT[1]) rotate([-90, 0, 0])
-  cylinder(d = M3_BOLT[0], h = M3_BOLT[1], $fn = 72);
-module m3_nut() color("#8a8f94") pinion_frame() translate([0, 0, M3_NUT[2] - M3_NUT[1]])
-  difference() {
+// The M3 bolt and its nut, one part.
+module m3_fasteners() color("#8a8f94") {
+  hub_frame(EXT_Y + M3_BOLT[4]) rotate([-90, 0, 0]) rotate_extrude($fn = 72)
+    polygon([[0, M3_BOLT[3]], [M3_BOLT[2] / 2, M3_BOLT[3]], [M3_BOLT[2] / 2, 0], [M3_BOLT[0] / 2, 0],
+             [M3_BOLT[0] / 2, -M3_BOLT[1]], [0, -M3_BOLT[1]]]);
+  pinion_frame() translate([0, 0, M3_NUT[2] - M3_NUT[1]]) difference() {
     rotate(90) cylinder(d = M3_NUT[0] / cos(30), h = M3_NUT[1], $fn = 6);   // corners on ±Y, as N1's
     translate([0, 0, -1]) cylinder(d = M3_BOLT[0], h = M3_NUT[1] + 2, $fn = 72);
   }
+}
 
 GRIP_BEARINGS = ["span_inner", "span_outer"];
 GRIP_RACES = ["outer", "inner", "shield"];
@@ -111,21 +112,19 @@ module grip_bearing_in(b, r, $fn = 360) {   // at 96 a race's chords stand insid
 }
 
 OWN_PARTS = ["static_finger", "dynamic_finger", "pinion_gear", "pinion_ext", "span_driver",
-             "span_inner", "span_outer", "m3_bolt_head", "m3_bolt_shank", "m3_nut"];
+             "span_bearings", "m3_fasteners"];
 PARTS = concat(tool_parts(), OWN_PARTS);
 RACE_PARTS = concat(tool_race_parts(), GRIP_RACE_PARTS);
 
 module draw(p) {
-  tool_draw(p, OPEN / PITCH_R * 180 / PI);   // the span servo's output turns with the Span Driver
+  tool_draw(p, OPEN / PITCH_R * 180 / PI, true);   // the span servo's output turns with the Span Driver
   if (p == "static_finger")  static_finger();
   if (p == "dynamic_finger") dynamic_finger();
   if (p == "pinion_gear")    pinion_gear();
   if (p == "pinion_ext")     pinion_ext();
   if (p == "span_driver")    span_driver();
-  if (p == "m3_bolt_head")   m3_bolt_head();
-  if (p == "m3_bolt_shank")  m3_bolt_shank();
-  if (p == "m3_nut")         m3_nut();
-  for (b = GRIP_BEARINGS) if (p == b) color("#dcdcdc") for (r = GRIP_RACES) grip_bearing_in(b, r);
+  if (p == "m3_fasteners")   m3_fasteners();
+  if (p == "span_bearings")  color("#dcdcdc") for (b = GRIP_BEARINGS, r = GRIP_RACES) grip_bearing_in(b, r);
   for (b = GRIP_BEARINGS, r = GRIP_RACES) if (p == str(b, "_", r)) color("#dcdcdc") grip_bearing_in(b, r);
 }
 

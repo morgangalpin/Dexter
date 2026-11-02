@@ -16,13 +16,19 @@
 //                         entry chamfered 0.3 at 45 deg
 //     S2  strake slot     the section span_strake_w(); each base draws its own slot of that section
 //     S3  plate slot      y < -3.743 (V1's +X face) below z 28, a tongue left in V1's notch, and y < -10.243
-//                         below z 29.5, the two ceilings joined at 45 deg back from the +X end x 23.139
+//                         below z 29.5, the two ceilings joined at 45 deg back from the +X end x 23.139; or,
+//                         flat, one ceiling at z 29.5
+//     S4  span bolts ×2   Ø2 along Y on the Span Mount's H2, (x -9.861, z 11.5 and 23.5), through a base's
+//                         plate, each head on the plate's front face, y -1.093, and a bore for it forward of
+//                         there: the span XL-320's two M2 x 12 hold the base, the plate, V1 and the servo
+//                         together, from inside the base
 //
 // FITS (revised). S1 slides over the column, a printed part: grown by FIT_SLIP. S2 takes the strake's top
 // (C-502, 2.337 x 5.588), bonded: fit_bore at FIT_PRESS. S3 slides over the upright plate: its +Y face and
 // +X end open by FIT_SLIP, so the plate's faces and its eye lobe clear the base. Beyond the plate, S3's
 // ceiling and its outer step stand over the span XL-320, a bought part: they follow ../c102_servo.scad's
-// case and pads, at FIT_PRESS. "previous" draws the Static Finger's reference.
+// case and pads, at FIT_PRESS. S4 takes the bolts and their heads at FIT_SLIP. "previous" draws the Static
+// Finger's reference.
 
 include <../print_fit.scad>
 use <../c102_servo.scad>
@@ -81,10 +87,20 @@ FOOT = [10.783, 0.650, 5.500, 9.000];   // |x| + |y| bound at its bottom, corner
 
 module span_foot_2d(bound, r) hull() for (k = [0 : 3]) rotate(90 * k) translate([bound - r * sqrt(2), 0]) circle(r = r, $fn = 72);
 
+// It runs FOOT_RUN straight on past the foot's top, where the foot's tighter corners stand outside S1's.
+FOOT_RUN = 0.200;
+
 module span_column_foot(cfg) let(g = fit_clearances(cfg)[0] * sqrt(3)) hull() {
     translate([0, 0, FOOT[2] - LAP]) linear_extrude(LAP) offset(delta = g) span_foot_2d(FOOT[0], FOOT[1]);
-    translate([0, 0, FOOT[3]]) linear_extrude(LAP) offset(delta = g) span_foot_2d(COLUMN[0], FOOT[1]);
+    translate([0, 0, FOOT[3] + FOOT_RUN]) linear_extrude(LAP) offset(delta = g) span_foot_2d(COLUMN[0], FOOT[1]);
 }
+
+// S1T, for a base that reaches below the roll bolts' ends (tool_assembly.scad's M2 x 20s): a hole round each end,
+// on the Span Mount's H1, FIT_SLIP off its side and its tip.
+ROLL_TIP = [6.000, 7.295];         // the bolts' circle's radius, and their ends' z
+
+module span_roll_bolt_tips(cfg) let(c = fit_clearances(cfg)[0]) for (a = [45 : 90 : 315]) rotate(a) translate([ROLL_TIP[0], 0, 0])
+    cylinder(d = fit_bore(2, c), h = ROLL_TIP[1] + c, $fn = 48);
 
 // --- S2 -----------------------------------------------------------------------------------------
 
@@ -118,13 +134,31 @@ function span_plate_step_at(cfg) = let(p = span_plate_slot_at(cfg), c = fit_clea
                                        z = cfg == "revised" ? span_axis().y + c102_case_dims()[0] + s[0] + c : PLATE_STEP[1])
     [cfg == "revised" ? TONGUE[0] + s[2][0][1] + c : PLATE_STEP[0], z, p[2] - (z - p[1])];
 
-// S3, from 1 below the base's floor z.
-module span_plate_slot(cfg, floor) let(p = span_plate_slot_at(cfg), q = span_plate_step_at(cfg)) difference() {
+// S3, from 1 below the base's floor z. A flat one stands its whole ceiling at the outer step's height, so that
+// a base can stay level over the servo and its pads, with nothing cut into its underside.
+module span_plate_slot(cfg, floor, flat = false) let(p = span_plate_slot_at(cfg), q = span_plate_step_at(cfg), z = flat ? q[1] : p[1]) difference() {
     union() {
-        along_y(-BIG, p[0]) polygon([[-BIG, floor - 1], [p[2], floor - 1], [p[2], p[1]], [-BIG, p[1]]]);
-        along_y(-BIG, q[0]) polygon([[-BIG, floor - 1], [p[2], floor - 1],
+        along_y(-BIG, p[0]) polygon([[-BIG, floor - 1], [p[2], floor - 1], [p[2], z], [-BIG, z]]);
+        if (!flat) along_y(-BIG, q[0]) polygon([[-BIG, floor - 1], [p[2], floor - 1],
             [p[2], p[1]], [q[2], q[1]], [-BIG, q[1]]]);
     }
     along_y(TONGUE[0], p[0] + 1) polygon([[-TONGUE[2], TONGUE[1]], [TONGUE[2], TONGUE[1]],
         [TONGUE[4], TONGUE[3]], [TONGUE[4], BIG], [-TONGUE[4], BIG], [-TONGUE[4], TONGUE[3]]]);
 }
+
+// --- S4 -----------------------------------------------------------------------------------------
+
+SPAN_BOLT = [2.000, 3.800];        // the span XL-320's M2 x 12 (ISO 4762): d, head d
+BASE_WALL = 2.500;                 // a base's plate in front of S3, under the bolts' heads
+
+// The bolts' (x, z), on the Span Mount's H2: the servo's tab's two outer holes.
+function span_bolts() = let(a = span_axis(), h = c102_tab_holes()) [for (i = [1, 2]) [a.x + h[i].y, a.y + h[i].x]];
+// Where a head seats in a base, under its head: the plate's front face, on S3's +Y face at the fit.
+function span_bolt_seat_y() = span_plate_slot_at("revised")[0] + BASE_WALL;
+
+// S4, the bolts' holes through a base's plate to S3, and each head's bore from its seat forward to y = mouth.
+module span_bolt_holes(cfg, mouth) let(c = fit_clearances(cfg)[0], s = span_bolt_seat_y()) for (b = span_bolts())
+    translate([b.x, 0, b.y]) rotate([-90, 0, 0]) {
+        translate([0, 0, s - BIG]) cylinder(d = fit_bore(SPAN_BOLT[0], c), h = BIG + LAP, $fn = 48);
+        translate([0, 0, s]) cylinder(d = fit_bore(SPAN_BOLT[1], c), h = mouth - s, $fn = 72);
+    }
