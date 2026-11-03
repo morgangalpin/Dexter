@@ -1,0 +1,61 @@
+{
+  "scad": "claw4_assembly.scad",
+  "title": "Claw gripper, 4 fingers",
+  "subtitle": "claw4_assembly.scad · the 4-finger claw on the tool interface stack: claw2_assembly.scad's, with its longer body, wall, axles and pinion, a second pair of fingers and the same Claw Gear and Claw Cap",
+  "groups": [
+    {"name": "Fingers", "role": "the claw's jaws: the drive finger turns the follower through their hubs' teeth, 1:1", "parts": [
+      {"id": "drive_finger", "name": "Claw Finger, the drive's, on the gear's seat", "pn": "#930-001", "color": "#3a6b8f"},
+      {"id": "drive_finger2", "name": "Claw Follower Finger, turned 180°, the front pair's on the drive axle", "pn": "#930-007", "color": "#3a6b8f"},
+      {"id": "follow_finger", "name": "Claw Follower Finger, on the follower axle's seat", "pn": "#930-007", "color": "#3a6b8f"},
+      {"id": "follow_finger2", "name": "Claw Finger, turned 180°, the front pair's on the follower axle", "pn": "#930-001", "color": "#3a6b8f"},
+      {"id": "drive_screws", "name": "M3 × 16 set screws, the drive axle's, in its fingers and the gear", "pn": "M3 × 16 set screw", "color": "#8a8f94"},
+      {"id": "follow_screws", "name": "M3 × 16 set screws, the follower axle's, in its fingers", "pn": "M3 × 16 set screw", "color": "#8a8f94"}]},
+    {"name": "Gears", "role": "the pinion drives the gear's sector 3.4:1", "parts": [
+      {"id": "claw_body", "name": "Claw Body, on the Span Mount's column and strake", "pn": "#930-009", "color": "#c98a3a"},
+      {"id": "claw_wall", "name": "Claw Finger Wall, in the body's opening, round the blades", "pn": "#930-010", "color": "#c9c23a"},
+      {"id": "claw_cap", "name": "Claw Cap, the body's lid, on the rim of the body and the wall", "pn": "#930-005", "color": "#b07a32"},
+      {"id": "pinion", "name": "Claw Pinion, on the span XL-320's spline", "pn": "#930-012", "color": "#7a7a3a"},
+      {"id": "drive_gear", "name": "Claw Gear, on the drive axle's seat, its sector on the pinion", "pn": "#930-002", "color": "#6b8f3a"},
+      {"id": "drive_axle", "name": "Claw Axle, the drive pivot's", "pn": "#930-011", "color": "#6b8f3a"},
+      {"id": "follow_axle", "name": "Claw Axle, the follower pivot's, turned 60° on its hex", "pn": "#930-011", "color": "#6b8f3a"},
+      {"id": "claw_bearings", "name": "Bearings: the five MR128s, each axle's in the rear wall and the cap, the pinion's in the cap", "pn": "MR128", "color": "#dcdcdc"},
+      {"id": "cap_fasteners", "name": "M3 × 10 bolts, the four that hold the cap to the body", "pn": "C-609", "color": "#8a8f94"}]},
+    {"name": "Span", "role": "the gripper's mount, bolted to the Roll Driver's end, and the span XL-320 on it", "parts": [
+      {"id": "span_mount", "name": "Span Mount, revised", "pn": "#912-001", "color": "#e0a458"},
+      {"id": "strake", "name": "Strake, in the Span Mount's slot", "pn": "C-502", "color": "#303030"},
+      {"id": "span_servo", "name": "Span XL-320's case", "pn": "C-102", "color": "#3c4250"},
+      {"id": "span_spline", "name": "Span XL-320's output spline and key", "pn": "C-102", "color": "#9aa3ad"},
+      {"id": "span_fasteners", "name": "M2 × 12 bolts, washers and nuts, through the upright plate and the servo's tab", "pn": "M2 × 12, M2 washer, M2 nut", "color": "#8a8f94"}]},
+    {"name": "Roll", "role": "the wrist's roll, as ../900-ToolInterface/tool_assembly.view.json shows it", "parts": [
+      {"id": "roll_body", "name": "Roll Body, revised", "pn": "#911-001", "color": "#d4ad6b", "shown": false},
+      {"id": "roll_driver", "name": "Roll Driver, revised", "pn": "#911-002", "color": "#2f6db5", "shown": false},
+      {"id": "roll_bearings", "name": "Bearings: the two 6703s", "pn": "6703", "color": "#dcdcdc", "shown": false},
+      {"id": "roll_servo", "name": "Roll XL-320's case", "pn": "C-102", "color": "#3c4250", "shown": false},
+      {"id": "roll_horn", "name": "Roll XL-320's horn", "pn": "C-102", "color": "#9aa3ad", "shown": false},
+      {"id": "roll_fasteners", "name": "M2 × 20 bolts, washers and nuts, on the roll bolt circle", "pn": "M2 × 20, M2 washer, M2 nut", "color": "#8a8f94", "shown": false},
+      {"id": "roll_pins", "name": "Satin pins", "pn": "#19 satin pin", "color": "#c0c0c0", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-20.638, 0, 62.68], "text": "The front pair's hubs in mesh, in front of the sector"},
+    {"at": [20.638, 0, 62.68], "text": "The rear pair's hubs in mesh, over the span XL-320"},
+    {"at": [-11, 10, 50], "text": "The sector, where it stands in the 2-finger, between the pairs"},
+    {"at": [-29.138, 0, 33.5], "text": "Claw Cap: the 2-finger's part, carried forward to this build's seam"},
+    {"at": [0, 0, 74.9], "text": "Claw Finger Wall: a blade slot at each end, the rear ones through its lip, the front ones open forward"},
+    {"at": [1.093, -9.861, 41], "text": "The span XL-320's M2 × 12 heads on the body's lower plate, reached from the front with the cap off"}
+  ],
+  "presets": [
+    {"label": "Whole claw", "at": [0, 0, 80], "span": 140, "from": [-1, -0.6, 0.4]},
+    {"label": "Housing", "at": [0, 0, 55], "span": 90, "from": [-0.8, -0.7, 0.6]},
+    {"label": "The finger wall", "at": [0, 0, 70], "span": 80, "from": [-0.3, 0.3, 1]},
+    {"label": "Rear, over the servo", "at": [20, 0, 45], "span": 80, "from": [1, -0.5, 0.5]},
+    {"label": "Underside", "at": [0, 0, 40], "span": 90, "from": [-0.5, -0.7, -0.6]}
+  ],
+  "notes": [
+    {"heading": "Placements",
+     "text": "claw2_assembly.scad owns the placement, and claw_params.scad the pairs' places. The tool interface stack under it is ../900-ToolInterface/tool_assembly.scad's. OPEN, in degrees at the fingers, opens the claw.",
+     "rows": [
+       {"text": "Tips' gap at this OPEN, mm", "value": "{tip_gap}"},
+       {"text": "Tips' gap fully open, mm", "value": "{tip_gap_open}"},
+       {"text": "Reduction, pinion to fingers", "value": "{ratio}"}]}
+  ]
+}

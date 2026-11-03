@@ -41,10 +41,18 @@ committed but does not yet reproduce its reference geometry.
 | DC-12 | [Wrist pulley rework](#wrist-pulley-rework) | P2 | J4/J5 drive parts | — | `[Specified]` ✔ closed |
 | DC-13 | [Base height and L1](#base-height-and-l1) | P2 | Kinematic accuracy | — | `[Specified]` ✔ closed |
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
+| DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
+| DC-16 | [Main Pivot placement](#main-pivot-placement) | P2 | Main Pivot fits, assembly review | The code disk's turn and the Pivot cap's, and what the disk's pegs engage | `[Provisional]` |
+| DC-17 | [End Arm bearing order](#end-arm-bearing-order) | P2 | End Arm Hub assembly | — | `[Specified]` ✔ closed |
+| DC-18 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | superseded by [DC-19](#strain-wave-drive-spacing) |
+| DC-19 | [Strain-wave drive spacing](#strain-wave-drive-spacing) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
+| DC-20 | [Gripper design](#gripper-design) | P2 | Gripper printing, tool interface assembly | — | `[Specified]` ✔ closed |
+| DC-21 | [Span XL-320 spline seat](#span-xl-320-spline-seat) | P2 | Every gripper assembly's clash check | Measuring a servo with its horn off; deferred until one is bought | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, and DC-13 are closed. Every
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, DC-13, DC-17, DC-19 and DC-20 are closed, and
+DC-18 is superseded by DC-19. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
-of work: **design authored here** (DC-14), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
+of work: **design authored here** (DC-14, DC-15, DC-16), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11, DC-21).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -174,8 +182,8 @@ are stated in its `.scad` file.
 
 [`render.rs --verify`](009.3-Render-Program.md) verifies the revised set: every
 revised part renders as one clean solid, the tooth counts are counted on the rendered meshes, the extents
-`diff_assembly.scad` places by agree with the renders, and Diff Body A's intersection with `#720-004` is
-empty. [`robot_assembly.scad`](../Hardware/Models/robot_assembly.scad) asserts Diff Body A inside the
+`diff_assembly.scad` places by agree with the renders. `assembly-clash.rs` holds `#720-004` the
+running clearance off Diff Body A. [`robot_assembly.scad`](../Hardware/Models/robot_assembly.scad) asserts Diff Body A inside the
 forearm skin in both configurations.
 
 **Definition of done — met:** the five parts re-cut in `config="revised"`, every part rendering as one
@@ -238,15 +246,17 @@ that follows from it ([006](006-Firmware-and-Calibration.md#firmware-defaults-de
 ## Base height and L1
 **DC-13 · P2 · Requirement: REQ-WS-6 · Specified in [003](003-Kinematics.md#link-lengths), [004](004-Mechanical-Architecture.md#base-mounting-plate)** — ✔ **closed**
 
-**Closed by analysis.** L1 is **231.50 mm**, the height of the J2 axis above the mounting face, specified
+**Closed by analysis.** L1 is **235.50 mm**, the height of the J2 axis above the mounting face, specified
 in [003 § Link lengths](003-Kinematics.md#link-lengths). It is set by the base stack specified in
 [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate), where every height rests
-on a face the next part seats on. The clamp is not in that stack, so it does not move L1, and the spigot
-the clamp fits has room for one. The firmware file's 235.20 mm is a
-height no seated stack of the build's parts produces; it is superseded, and
-[006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) carries the line to write. The
-evidence, and the doubled clamp withdrawn with it, are recorded in
-[CR-3A19](../CHANGES.md#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats).
+on a face the next part seats on, the Base Stator Holder's flange among them. The clamp is not in that
+stack, so it does not move L1, and the spigot the clamp fits has room for one. The firmware file's
+235.20 mm is the CAD chain's station with the flange added, on the CAD's shorter Base Long; it is
+superseded, and [006](006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins) carries the line
+to write. The evidence, and the doubled clamp withdrawn with it, are recorded in
+[CR-3A19](../CHANGES.md#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats),
+and the flange's place in the stack in
+[CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad).
 
 **Definition of done — met:** L1 specified against a stack of positive stops, and
 [003 § Link lengths](003-Kinematics.md#link-lengths) and the `LinkLengths` line reconciled to it.
@@ -434,14 +444,14 @@ meet.
 
 | # | Item | What is open | Consequence if wrong |
 |---|---|---|---|
-| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) — ✔ **closed by decision** | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"*, and **no manufacturer part number exists to recover.** The design's own CAD carries the motor as `NEMA17-48H` in seven `Reference/onshape-v1/` assemblies, but as an imported solid — `isStandardContent: false`, a single `documentId`, bodies named `Part 87`…`Part 96` — with no vendor, no number and no geometry in the mirror. That was the last place an identity could have been held, so the item closes the way [row j](#procurement-data) did: **StepperOnline `17HM19-2004S` is adopted as the part of record.** All three interface rows now hold. *Frame:* the three printed Motor End Caps (`#311-001`, `#312-001`, `#511-001`) and the Flex Spline Attach (`#630-005`) independently carry the same face — 4 × Ø3.19 / Ø3.49 at (±15.500, ±15.500), a **31.000 mm square** M3 pattern, around a **Ø22.49** / **Ø23.000** pilot-boss clearance — which is NEMA 17's face pattern to three decimals. *Shaft:* the Wave Gen Coupler `#630-004` takes it in a **Ø5.000 bore 16.0 mm deep**, and the wave generator itself runs on the coupler's Ø6 stub rather than the shaft ([C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)), with coupler depth set by a shop gauge ([008.3](008-Assembly.md#0083-harmonic-drive-motors) step 10), so the 1 mm the adopted part gives up against the legacy 25 mm is absorbed. *Body length:* **48 mm, and the earlier reading of this row was wrong.** It said no printed part bounds body length and that the figure was a ceiling checked once on a build. The End Cap does not in fact float on the motor: [008.4](008-Assembly.md#0084-main-pivot) fixes it to the Main Pivot before the motor is epoxied to it, making it a datum, and what body length then sets is the drive's axial station — a two-sided constraint, mechanism in [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step). The band on it is an assembly stack-up and is **not** recoverable from the manufacturer's drawing, which fixes the component set's internal geometry and says nothing about how far the mating parts may sit from nominal. *Torque:* **the 0.46 N·m against the legacy 0.52 turns out not to matter at all.** Both exceed what the strain-wave drive will accept: J2 reaches [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)'s start/stop rating at 0.30 N·m of motor torque, so payload is capped by the gearbox well below either motor's stall ([003 § Static gravity torque](003-Kinematics.md#static-gravity-torque)). The delta is margin over a limit neither part is allowed to reach | — |
-| b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record gave no fan dimension and no part number, only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`). **Both were measured and they agree on a 40 mm frame.** The CAD body is 40.000 × 40.000 × 10.800 with a Ø37.698 impeller bore and 4 × Ø3.394 holes on a 32.500 mm pitch — a representative envelope of the standard 40 × 40 × 10 fan, whose nominal pattern is 4 × Ø4.3 on 32.0 ± 0.3. The bracket's aperture is **40.000 mm square with R2.000 corners at its seating face, drafting to 38.0 mm** at the far face, which seats that frame and clears that bore. **The bracket carries no fan screw holes** — at a 32 mm pattern the fan's holes fall inside the aperture — so the fan is glued, not bolted. What the bracket *does* carry is two Ø2.99 holes 49.737 mm apart on integral 9 mm standoffs, and the Motor Control PCB carries eight Ø0.125″ holes in two columns **1.95″ = 49.53 mm** apart: the bracket is built for the stood-off position the wiki prescribes, over the PCB rather than on the drivers. Specified as Sunon `MF40101V1-1000U-A99` in [C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring), 12 V per the schematic's `J23` annotation and tolerant of 4.5–13.8 V, so [DC-7](#motor-control-pcb)'s rail reading cannot invalidate the choice | — |
+| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) — ✔ **closed by decision** | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"*, and **no manufacturer part number exists to recover.** The design's own CAD carries the motor as `NEMA17-48H` in seven `Reference/onshape-v1/` assemblies, but as an imported solid — `isStandardContent: false`, a single `documentId`, bodies named `Part 87`…`Part 96` — with no vendor, no number and no geometry in the mirror. That was the last place an identity could have been held, so the item closes the way [row j](#procurement-data) did: **StepperOnline `17HM19-2004S` is adopted as the part of record.** All three interface rows now hold. *Frame:* the three printed Motor End Caps (`#311-001`, `#312-001`, `#511-001`) and the Flex Spline Attach (`#630-005`) independently carry the same face — 4 × Ø3.19 / Ø3.49 at (±15.500, ±15.500), a **31.000 mm square** M3 pattern, around a **Ø22.49** / **Ø23.000** pilot-boss clearance — which is NEMA 17's face pattern to three decimals. *Shaft:* the Wave Gen Coupler `#630-004` takes it in a **Ø5.000 bore 16.0 mm deep**, and the wave generator runs on the coupler's stub rather than the shaft ([DC-19](#strain-wave-drive-spacing)), with coupler depth set by a shop gauge ([008.3](008-Assembly.md#0083-harmonic-drive-motors) step 10), so the 1 mm the adopted part gives up against the legacy 25 mm is absorbed. *Body length:* **48 mm, and the earlier reading of this row was wrong.** It said no printed part bounds body length and that the figure was a ceiling checked once on a build. The End Cap does not in fact float on the motor: [008.4](008-Assembly.md#0084-main-pivot) fixes it to the Main Pivot before the motor is epoxied to it, making it a datum, and what body length then sets is the drive's axial station — a two-sided constraint, mechanism in [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step). The band on it is an assembly stack-up and is **not** recoverable from the manufacturer's drawing, which fixes the component set's internal geometry and says nothing about how far the mating parts may sit from nominal. *Torque:* **the 0.46 N·m against the legacy 0.52 turns out not to matter at all.** Both exceed what the strain-wave drive will accept: J2 reaches [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)'s start/stop rating at 0.30 N·m of motor torque, so payload is capped by the gearbox well below either motor's stall ([003 § Static gravity torque](003-Kinematics.md#static-gravity-torque)). The delta is margin over a limit neither part is allowed to reach | — |
+| b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record gave no fan dimension and no part number, only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`). **Both were measured and they agree on a 40 mm frame.** The CAD body is 40.000 × 40.000 × 10.800 with a Ø37.698 impeller bore and 4 × Ø3.394 holes on a 32.500 mm pitch — a representative envelope of the standard 40 × 40 × 10 fan, whose nominal pattern is 4 × Ø4.3 on 32.0 ± 0.3. The bracket's aperture is **40.000 mm square with R2.000 corners at its seating face, drafting to 38.0 mm** at the far face, which seats that frame and clears that bore. **The original bracket carries no fan screw holes** — at a 32 mm pattern the fan's holes fall inside the aperture — so its fan is glued; the bracket's `config="revised"` adds corner pads that take four fan screws ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)). What the bracket *does* carry is two Ø2.99 holes 49.737 mm apart on integral 9 mm standoffs, and the Motor Control PCB carries eight Ø0.125″ holes in two columns **1.95″ = 49.53 mm** apart: the bracket is built for the stood-off position the wiki prescribes, over the PCB rather than on the drivers. Specified as Sunon `MF40101V1-1000U-A99` in [C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring), 12 V per the schematic's `J23` annotation and tolerant of 4.5–13.8 V, so [DC-7](#motor-control-pcb)'s rail reading cannot invalidate the choice | — |
 | c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) — ✔ **closed** | [007.5](007-Bill-of-Materials.md#0075-arm-body) typed them "Fabricate" against [008.5](008-Assembly.md#0085-arm-body)'s treatment of them as printed bodies. **The model set decides it: they are printed**, and both are in the HD STL print archive ([007.2 § Model file sources](007.2-Printed-Parts.md#model-file-sources)). Each measures as a shouldered sleeve — Ø11.000 × 0.5 mm head, Ø8.000 shank (17.000 Small, 27.000 Large), Ø4.700 blind core. **The measurement also corrects the fit's direction and settles the bearing:** Ø8.000 is the MR128 *bore*, so the bearings go onto the shank and their Ø12 races carry the belt, and the legacy build notes' alternative reading of "MR 125" is excluded — MR125's 5 mm bore will not go on a Ø8.000 shank. Both rows retyped `3D print`; [008.5](008-Assembly.md#0085-arm-body) step 8a now reads *onto* | — |
 | d | **Print parameters** ([007.2 § Print profile](007.2-Printed-Parts.md#print-profile)) — ✔ **published** | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment. **A profile is now derived from the features the parts have to hold**, each parameter stated with the geometry that sets it: the 0.539 mm land between `#730-002`'s encoder slots sets the nozzle, the Belt Director's 0.500 mm head sets the layer height, and the 2.5–7.0 mm bearing races set perimeter count and orientation. Machine qualification is a coupon, [`fit_coupon.scad`](../Hardware/Models/950-Tooling/fit_coupon.scad), carrying each print-fit class the parts draw; [007.2 § Print fits](007.2-Printed-Parts.md#print-fits) states which fits and why. The slot on it was re-specified under [row e](#procurement-data), the original having been drawn on a strip's section rather than on a slot. **Validating it needs a print**, which is [009.2](009.2-Test-Build-Manifest.md)'s, not this item's | — |
-| e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) — ✔ **closed** | **The two original mismatches are adjudicated, and neither is a missing row.** (α) `HDI-311-006C_J2StatorHolderCap_ConeDrive` is a real body — 83.032 mm square × 8.100, spanning z 7.900–16.000 in its own frame, stacked on `HDI-311-006B`'s −2.500–7.900 — but the printed `#200-002` runs **z 0–16.000 as one body**, occupying the cap's whole span, with the same internal bore profile (Ø49.98 stator seat low, Ø38 bore high). The CAD's two-body split is a modelling division of one printed part, so the BOM is not short a row. *What the comparison does turn up is that the `_ConeDrive` CAD pair is a different **revision** of `#200-002` from the printed mesh — 4 × Ø3.395 on r 22.000 against the mesh's 4 × Ø3.490 on r 21.500, and a Ø71.5 outer against the mesh's Ø65.0. The mesh is the geometry of record: it is what [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) was cross-checked against in [DC-1](#strain-wave-component-set).* (β) `HDI-610-006_MotorShaftCoupler`'s 4 instances are not a shortfall against `#630-004`'s 3: the CAD body is a 30 × 30 × 12 mm set-screw hub on a Ø5.1 bore and `#630-004` is a 16 × 18.5 × 23 mm wave generator on a Ø5.000 bore — **different parts**. The CAD name serves as a generic motor-shaft hub, and two of its four instances sit at the differential motors, which drive through GT2 pulleys and take no wave generator. The mapping is withdrawn from [007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies). **Four findings remained after that, all from [DC-2](#differential-detail-design) and all in the differential. All four are now closed, and each of the first three had been looking for the wrong kind of seat.** (ii) *The needle thrust stack — **closed**.* `#710-006` and its two AS0819 races are Ø19 over an Ø8 tube, and no bore in the Split Gear takes them — but a needle thrust bearing does not want a bore. It is a washer stack located by the shaft and carried by two **faces**, and both faces were already there: Diff Body B's Ø8 tube stands **10.423 mm proud** of `#710-001`'s base, whose annulus runs r 5.994–18.500, and the epoxied Diff Keeper closes the other side. The stack takes 4.0 mm of that protrusion and the keeper another 4.0. What hid it is that `diff_assembly.scad` butted the keeper straight onto the base, so the 4 mm the stack occupies read as no gap at all; the file now stands the keeper off and draws it. (iii) *The MR85 — **closed**.* Its **OD 8** is the race that seats, in the top 1.5 mm of `#720-002`'s Ø8 rod bore ([008.6](008-Assembly.md#0086-differential) step 19: 2.5 mm wide, ~1 mm proud). No Ø5 feature exists in the differential because the Ø5 race is the one that leaves it — the 700-series set ends at this part, at the top of the J4 axis. Placing it also **settled the one placement `diff_assembly.scad` had no measurement behind**: the CF rod cannot sit flush with that back face, it stops on the bearing, and the End Pulley moves with it ([008.6](008-Assembly.md#0086-differential) step 20). (iv) *The fifth 6703 — **closed**.* It is an **assembly bearing, not a running one**. `#710-001`'s Ø23 bore (z 4.000–8.750) and `#710-002`'s Ø17 stub (z 4.000–8.253) are that bearing's two race diameters exactly, and the void between them is its width plus 0.253 mm. [008.6](008-Assembly.md#0086-differential) presses it into the Top at step 5, **before** step 8 joins the halves and turns one against the other to clock the teeth; it carries that rotation, and thereafter stands as a ground Ø17/Ø23 concentricity bush. Its races turning together once the brads are driven is the finished state, not a defect. **(i) The five `#720-005` 60 × 4.4 × 1.5 mm CF strakes — closed. The row is withdrawn** from [007.6](007-Bill-of-Materials.md#0076-differential). Three independent records are silent on them: no step in [008.6](008-Assembly.md#0086-differential) places them, the upstream build notes [008](008-Assembly.md) descends from do not list them among the differential's parts, and **no slot in any of the nine printed parts will take one.** That last is the one that decides it, because each of those parts is a recreation gated against its reference mesh and each reproduces the slots it does have — `#710-001`'s three section at exactly 14.000 mm². `#720-001` Diff Gear Shaft is the part whose form invites them, a 60.600 mm printed tube carrying a pulley, which is the problem `#421-002` solves with three bonded strakes; sectioned along its axis it is Ø16.99 over a Ø9.99 bore with nothing cut into either wall. The search was widened before the row was dropped, and the forearm carries three slot families and no fourth: `#710-001`'s three at **5.600 × 2.500 mm**, `#421-002`'s three at **5.000 × 2.000 mm** running its full 72.500 mm, and the Axis Intersection Half's four at 14.546 mm² in section — all of them accounted for by a BOM row. **The cost of being wrong is five cuts, not a purchase** — [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) is cut from stock, and the withdrawal is what lets its stick drop from 48″ to 24″. *Adjacent to it, [008.6](008-Assembly.md#0086-differential) step 11 named the wrong half — the 25 mm strakes go in the **Top** — and is corrected.* *Reaching the slot dimensions also corrected the print-qualification coupon, which had been drawn on the C-503 strip's own section rather than on any slot the robot has ([007.2 § Print profile](007.2-Printed-Parts.md#print-profile)).* **(v) Placing the three closed items exposed a quantity error, and that is the finding with a cost at the bench.** The differential has **four** Ø12 MR128 seats — both ends of `#720-001`, one in each Split Gear half, all four pressed by [008.6](008-Assembly.md#0086-differential) steps 4–6 — against the **2** [007.6](007-Bill-of-Materials.md#0076-differential) listed. The row is corrected to 4 and [C-405](007.1-Parts-Catalog.md#4-bearings) to 14. An earlier pass had met this as a 15-vs-12 conflict and resolved it toward the short rows, re-deriving the aggregate **down** from the figure that was nearer right; [007.1's corrections table](007.1-Parts-Catalog.md#corrections-to-007) now records what actually happened. The 6703s are a separate, smaller case and it closes the same way: [007.6](007-Bill-of-Materials.md#0076-differential)'s five matched the five Ø23 seats in the differential's own parts, while step 2 presses a **sixth** into `#420-001` End Arm Hub that no subassembly counted — [007.7](007-Bill-of-Materials.md#0077-end-arm-hub)'s three are all consumed by the New Belt Pulley at [008.7](008-Assembly.md#0087-end-arm-hub) step 7. A subassembly's row is what its own steps consume, so the sixth belongs to the differential; [007.6](007-Bill-of-Materials.md#0076-differential) reads **6** and [C-404](007.1-Parts-Catalog.md#4-bearings) **11**. **Both counts are corroborated from outside the model set.** The same build notes list *4 MR128* and *6 6703* among the differential's parts — the pair of figures counting seats arrives at, reached independently, in the document [008.6](008-Assembly.md#0086-differential)'s steps descend from. The two BOM rows had been short against their own source all along | Two MR128 and one 6703 short at the bench |
+| e | **CAD-vs-BOM mismatches** ([007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies)) — ✔ **closed** | **The two original mismatches are adjudicated, and neither is a missing row.** (α) `HDI-311-006C_J2StatorHolderCap_ConeDrive` is a real body — 83.032 mm square × 8.100, spanning z 7.900–16.000 in its own frame, stacked on `HDI-311-006B`'s −2.500–7.900 — but the printed `#200-002` runs **z 0–16.000 as one body**, occupying the cap's whole span, with the same internal bore profile (Ø49.98 stator seat low, Ø38 bore high). The CAD's two-body split is a modelling division of one printed part, so the BOM is not short a row. *What the comparison does turn up is that the `_ConeDrive` CAD pair is a different **revision** of `#200-002` from the printed mesh — 4 × Ø3.395 on r 22.000 against the mesh's 4 × Ø3.490 on r 21.500, and a Ø71.5 outer against the mesh's Ø65.0. The mesh is the geometry of record: it is what [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) was cross-checked against in [DC-1](#strain-wave-component-set).* (β) `HDI-610-006_MotorShaftCoupler`'s 4 instances are not a shortfall against `#630-004`'s 3: the CAD body is a 30 × 30 × 12 mm set-screw hub on a Ø5.1 bore and `#630-004` is a 16 × 18.5 × 23 mm wave generator on a Ø5.000 bore — **different parts**. The CAD name serves as a generic motor-shaft hub, and two of its four instances sit at the differential motors, which drive through GT2 pulleys and take no wave generator. The mapping is withdrawn from [007.2](007.2-Printed-Parts.md#model-vs-bom-discrepancies). **Four findings remained after that, all from [DC-2](#differential-detail-design) and all in the differential. All four are now closed, and each of the first three had been looking for the wrong kind of seat.** (ii) *The needle thrust stack — **closed**.* `#710-006` and its two AS0819 races are Ø19 over an Ø8 tube, and no bore in the Split Gear takes them — but a needle thrust bearing does not want a bore. It is a washer stack located by the shaft and carried by two **faces**, and both faces were already there: Diff Body B's Ø8 tube stands **10.423 mm proud** of `#710-001`'s base, whose annulus runs r 5.994–18.500, and the epoxied Diff Keeper closes the other side. The stack takes 4.0 mm of that protrusion and the keeper another 4.0. What hid it is that `diff_assembly.scad` butted the keeper straight onto the base, so the 4 mm the stack occupies read as no gap at all; the file now stands the keeper off and draws it. **One keeper**, as the assembly video builds it: the build notes' second keeper clamped on the first, and a keeper snapped over the shaft end against the 6703 (which its Ø8 bore cannot pass), are withdrawn from [008.6](008-Assembly.md#0086-differential). `#710-003`'s other copy is the one [008.7](008-Assembly.md#0087-end-arm-hub) step 26 joins to the Front Panel, so it is counted in [007.7](007-Bill-of-Materials.md#0077-end-arm-hub). (iii) *The MR85 — **closed: withdrawn** from [007.6](007-Bill-of-Materials.md#0076-differential).* The build notes pressed one into `#720-002`'s flat back, in the Ø8 rod bore, but the differential's assembly video epoxies the CF rod into the axle with no bearing there, and nothing in the model set offers the bearing's Ø5 bore a shaft. The rod's end sits flush with that back face ([008.6](008-Assembly.md#0086-differential) step 18), which settles the one placement `diff_assembly.scad` had no measurement behind, and the End Pulley's with it. (iv) *The fifth 6703 — **closed**.* It is an **assembly bearing, not a running one**. `#710-001`'s Ø23 bore (z 4.000–8.750) and `#710-002`'s Ø17 stub (z 4.000–8.253) are that bearing's two race diameters exactly, and the void between them is its width plus 0.253 mm. [008.6](008-Assembly.md#0086-differential) presses it into the Top at step 5, **before** step 8 joins the halves and turns one against the other to clock the teeth; it carries that rotation, and thereafter stands as a ground Ø17/Ø23 concentricity bush. Its races turning together once the brads are driven is the finished state, not a defect. **(i) The five `#720-005` 60 × 4.4 × 1.5 mm CF strakes — closed. The row is withdrawn** from [007.6](007-Bill-of-Materials.md#0076-differential). Three independent records are silent on them: no step in [008.6](008-Assembly.md#0086-differential) places them, the upstream build notes [008](008-Assembly.md) descends from do not list them among the differential's parts, and **no slot in any of the nine printed parts will take one.** That last is the one that decides it, because each of those parts is a recreation gated against its reference mesh and each reproduces the slots it does have — `#710-001`'s three section at exactly 14.000 mm². `#720-001` Diff Gear Shaft is the part whose form invites them, a 60.600 mm printed tube carrying a pulley, which is the problem `#421-002` solves with three bonded strakes; sectioned along its axis it is Ø16.99 over a Ø9.99 bore with nothing cut into either wall. The search was widened before the row was dropped, and the forearm carries three slot families and no fourth: `#710-001`'s three at **5.600 × 2.500 mm**, `#421-002`'s three at **5.000 × 2.000 mm** running its full 72.500 mm, and the Axis Intersection Half's four at 14.546 mm² in section — all of them accounted for by a BOM row. **The cost of being wrong is five cuts, not a purchase** — [C-503](007.1-Parts-Catalog.md#c-503--carbon-fibre-strip-057--177) is cut from stock, and the withdrawal is what lets its stick drop from 48″ to 24″. *Adjacent to it, [008.6](008-Assembly.md#0086-differential) step 11 named the wrong half — the 25 mm strakes go in the **Top** — and is corrected.* *Reaching the slot dimensions also corrected the print-qualification coupon, which had been drawn on the C-503 strip's own section rather than on any slot the robot has ([007.2 § Print profile](007.2-Printed-Parts.md#print-profile)).* **(v) Placing the three closed items exposed a quantity error, and that is the finding with a cost at the bench.** The differential has **four** Ø12 MR128 seats — both ends of `#720-001`, one in each Split Gear half, all four pressed by [008.6](008-Assembly.md#0086-differential) steps 4–6 — against the **2** [007.6](007-Bill-of-Materials.md#0076-differential) listed. The row is corrected to 4 and [C-405](007.1-Parts-Catalog.md#4-bearings) to 14. An earlier pass had met this as a 15-vs-12 conflict and resolved it toward the short rows, re-deriving the aggregate **down** from the figure that was nearer right; [007.1's corrections table](007.1-Parts-Catalog.md#corrections-to-007) now records what actually happened. The 6703s are a separate, smaller case and it closes the same way: [007.6](007-Bill-of-Materials.md#0076-differential)'s five matched the five Ø23 seats in the differential's own parts, while step 2 presses a **sixth** into `#420-001` End Arm Hub that no subassembly counted — [007.7](007-Bill-of-Materials.md#0077-end-arm-hub)'s three are all consumed by the New Belt Pulley at [008.7](008-Assembly.md#0087-end-arm-hub) step 7. A subassembly's row is what its own steps consume, so the sixth belongs to the differential; [007.6](007-Bill-of-Materials.md#0076-differential) reads **6** and [C-404](007.1-Parts-Catalog.md#4-bearings) **11**. **Both counts are corroborated from outside the model set.** The same build notes list *4 MR128* and *6 6703* among the differential's parts — the pair of figures counting seats arrives at, reached independently, in the document [008.6](008-Assembly.md#0086-differential)'s steps descend from. The two BOM rows had been short against their own source all along | Two MR128 and one 6703 short at the bench |
 | f | **Defective model file** (`#710-002`, [007.2](007.2-Printed-Parts.md#differential--0076)) — ✔ **closed** | The file was **~1000× oversize** (exporter unit slip; its header read `STLB ASM 217.00.00.5800` vs neighbours' `220.00.00.0000`). The factor was detected as **exactly 1/1000** (`scadmesh scale --ref-dim 23.0`, zero residual against the 6703 seat), applied in place, and the corrected part verified against its mates: Ø23.000 6703 seat, Ø12.000 MR128 seat, Ø28.06 press bore receiving the Split Gear Top's Ø28.00, brad circle matching the Top's windows. Old SHA-256 `c20e30d1…a853af`, corrected `e746f42f…9cb3662`. The part now also has parametric source (`710-002_SplitGearBottom.scad`, [DC-2](#differential-detail-design)) | — |
 | g | **Misfiled model file** (`#200-001` Arm Body) — ✔ **closed** | `200-ArmBody/200-001_ArmBody.stl` held `ArmBodyFrontStrakeMED.stl` byte for byte (SHA-256 `c991b4e5…dcee1b`, 20 triangles, 4.9 × 9.9 × 32 mm) — the mirror had matched the archive's `ArmBody*` name prefix rather than the part. Replaced with `ArmBodyWEncode.stl` from [thing:3781990](https://www.thingiverse.com/thing:3781990) (SHA-256 `ad4e940d…1d86b4`, 11,946 triangles, 99.6 × 108.1 × 98.0 mm), confirmed to be the part by its 29 × 29 mm L2 tube socket agreeing with `HDI-310-001_ArmBody`'s to 0.011 mm ([DC-5](#link-member-lengths)). Unlike row f this was invisible to every check the manifest makes — the file was well-formed and the right size for *a* part. [Models § Known defects](../Hardware/Models/README.md#known-defects) records what that implies for the rest of the mirror | The largest printed part in the robot unprintable, and L2's seat depth uncheckable |
-| h | **L3's far end** — ✔ **closed** | **The part this row was opened on does not exist, and neither does the span.** [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) puts the L3 tube's far face 36.000 mm short of the J4 axis, and no file presented the face it butts. What presents it is **Diff Body A's own spigot** — a 20 × 20 R4 plug matching the End Arm Hub's in section and bore ([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)). The same plug stands at both ends of the one tube, so that end of Body A points back down the forearm; and the Diff End Pulley faces the elbow pulleys the belt reaches it from, which sends the J4 axis along world z. **That settles the question this row was blocked on, in [003 § DH model](003-Kinematics.md#denavithartenberg-model)'s favour** — J4 does run parallel to J3 — and it settles the quarter turn about that axis, which neither record addressed and which is what the spigot fixes. [004](004-Mechanical-Architecture.md#differential-interface)'s gripper-cover argument is withdrawn there, along with the four readings it produced. **What emptied the span was the landing, not a missing part.** `robot_assembly.scad` first put the differential's centre on the **J5** station, which stands the differential's own J4 axis **347.000 mm** from J3 against the **307.500 mm** [003 § Link lengths](003-Kinematics.md#link-lengths) specifies and the firmware carries to the micron. One axis crossing cannot sit at both wrist frames 39.500 mm apart, and the J5 frame is the one that is not on its axis. **Landed on the J4 axis at the J4 station, the specified 243.0 mm cut laps the spigot by 15.000 mm**, leaving 6.000 mm of its 21.000 mm standing proud of the tube's end, against the 16.0 mm of lap the same tube takes on the same plug at the hub. **Four readings fix that landing and not one of them is a bounding box.** (i) *The link length* — J3 → J4 measures 307.500 mm with the differential there and 347.000 mm without it. (ii) *The cut* — 243.0 mm laps 15.000 mm one way and falls 24.500 mm short the other, and it is fixed at the near end by the hub's counterbore, so it cannot absorb the difference. (iii) *The covers* — Body A falls inside `ENV_L3_SKIN` with 6.5335 mm to spare, where the other landing overruns that box by 30.500 mm and carries the differential into the gripper's. (iv) *The glue rig* — `950-Tooling/GlueRig_EndArmHubToDiff_A`/`_B` is catalogued at [007.2 § Tooling](007.2-Printed-Parts.md#tooling--glue-rigs) as holding the End Arm Hub to the differential over `#420-003`, and it carries one precision register at each end. At the hub: a **Ø22.971 boss** with four **Ø1.994** pins on r = 14.500, entering the hub's **Ø22.990** J3 bore and its four Ø4.995 holes at (±10.252, ±10.253). At the differential, **307.500 mm** away on a parallel axis: a **Ø16.971 boss**, which is a 6703's bore — the two bearings [007 § Aggregate](007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot) carries as *(+2 glue rig)* — whose Ø23 outer race then seats in Diff Body A's Ø23 6703 bore on the J4 axis. **The rig measures J3 to J4 directly, and as first exported it read 309.500 mm**: that excludes the 347.000 mm landing, missing it by 37.500 mm, and sits 2.000 mm beyond the 307.500 mm the kinematic records hold — one twentieth of the difference this reading has to decide, and it changes nothing this reading settles. The kinematic records are the design of record, so the jig is what moves: [CR-3A17](../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print) shortens `GlueRig_EndArmHubToDiff_B` by 2.000 mm across a prismatic stretch of its trough, clear of both registers and of the pair's lap, and the rig now holds the span [003 § Link lengths](003-Kinematics.md#link-lengths) specifies. The rig settles one thing on its own: **a jig that holds exactly two parts across this tube says the bonded span has exactly two ends**, which is what an intermediate part would contradict. **Withdrawn with the row:** the void `robot_assembly.scad` drew on the tube's section, [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)'s 283.5 mm alternative cut, and [004](004-Mechanical-Architecture.md#differential-interface)'s reading that the differential centre lands on the J5 station | A forearm built 39.500 mm long, around a part that does not exist |
+| h | **L3's far end** — ✔ **closed** | **The part this row was opened on does not exist, and neither does the span.** [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075) puts the L3 tube's far face 36.000 mm short of the J4 axis, and no file presented the face it butts. What presents it is **Diff Body A's own spigot** — a 20 × 20 R4 plug matching the End Arm Hub's in section and bore ([004 § Differential interface](004-Mechanical-Architecture.md#differential-interface)). The same plug stands at both ends of the one tube, so that end of Body A points back down the forearm; and the Diff End Pulley faces the elbow pulleys the belt reaches it from, which sends the J4 axis along world z. **That settles the question this row was blocked on, in [003 § DH model](003-Kinematics.md#denavithartenberg-model)'s favour** — J4 does run parallel to J3 — and it settles the quarter turn about that axis, which neither record addressed and which is what the spigot fixes. [004](004-Mechanical-Architecture.md#differential-interface)'s gripper-cover argument is withdrawn there, along with the four readings it produced. **What emptied the span was the landing, not a missing part.** `robot_assembly.scad` first put the differential's centre on the **J5** station, which stands the differential's own J4 axis **347.000 mm** from J3 against the **307.500 mm** [003 § Link lengths](003-Kinematics.md#link-lengths) specifies and the firmware carries to the micron. One axis crossing cannot sit at both wrist frames 39.500 mm apart, and the J5 frame is the one that is not on its axis. **Landed on the J4 axis at the J4 station, the specified 243.0 mm cut laps the spigot by 15.000 mm**, leaving 6.000 mm of its 21.000 mm standing proud of the tube's end, against the 16.0 mm of lap the same tube takes on the same plug at the hub. **Four readings fix that landing and not one of them is a bounding box.** (i) *The link length* — J3 → J4 measures 307.500 mm with the differential there and 347.000 mm without it. (ii) *The cut* — 243.0 mm laps 15.000 mm one way and falls 24.500 mm short the other, and it is fixed at the near end by the hub's counterbore, so it cannot absorb the difference. (iii) *The covers* — Body A falls inside `ENV_L3_SKIN` with 6.5335 mm to spare, where the other landing overruns that box by 30.500 mm and carries the differential into the gripper's. (iv) *The glue rig* — `950-Tooling/GlueRig_EndArmHubToDiff_A`/`_B` is catalogued at [007.2 § Tooling](007.2-Printed-Parts.md#tooling--glue-rigs) as holding the End Arm Hub to the differential over `#420-003`, and it carries one register at each end. At the hub: **four tubes in the four peg holes round the hub's J3 seat**, the holes the New Belt Pulley's pegs take. At the differential, on a parallel axis: **a boss in a 6703's bore** — the two bearings [007 § Aggregate](007-Bill-of-Materials.md#aggregate-hardware-quantities-whole-robot) carries as *(+2 glue rig)* — whose Ø23 outer race then seats in Diff Body A's 6703 bore on the J4 axis. Each half's header owns its dimensions and fits. **The rig measures J3 to J4 directly, and as first exported it read 309.500 mm**: that excludes the 347.000 mm landing, missing it by 37.500 mm, and sits 2.000 mm beyond the 307.500 mm the kinematic records hold — one twentieth of the difference this reading has to decide, and it changes nothing this reading settles. The kinematic records are the design of record, so the jig is what moves: [CR-3A17](../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print) shortens `GlueRig_EndArmHubToDiff_B` by 2.000 mm across a prismatic stretch of its trough, clear of both registers and of the pair's lap, and the rig now holds the span [003 § Link lengths](003-Kinematics.md#link-lengths) specifies. The rig settles one thing on its own: **a jig that holds exactly two parts across this tube says the bonded span has exactly two ends**, which is what an intermediate part would contradict. **Withdrawn with the row:** the void `robot_assembly.scad` drew on the tube's section, [C-505](007.1-Parts-Catalog.md#c-505--braided-carbon-fibre-square-tube-075)'s 283.5 mm alternative cut, and [004](004-Mechanical-Architecture.md#differential-interface)'s reading that the differential centre lands on the J5 station | A forearm built 39.500 mm long, around a part that does not exist |
 | i | **Superseded model file** (`#110-001` Base Mount Bottom) — ✔ **closed** | `100-Base/110-001_BaseMountBottom.stl` held the **previous version's un-bolted base**: 85.000 × 85.000 × 98.000 mm against the CAD part's 150 × 150 × 98, with **no fastener features at all**. Its six 60°-spaced features decompose under `scadmesh arcs` into six straight lines — 12.94 × 3.82 mm bonding pockets for the `#110-003` CF strakes — identifying it as exactly the *"6 legged aluminum strake base"* the wiki says the bolted base replaced ([010](010-Versioning.md#1-version-lineage)). Replaced from the CAD model's `BaseMountBottom_Bolted v9` (SHA-256 `ab267f07…c00d2bde`, 25,952 triangles, 150.000 × 150.000 × 98.000 mm), which carries the 8-hole robot-side pattern [DC-4](#base-plate) was opened to recover. Like row g this passed every check the manifest makes — the file was well-formed and plausible for *a* base | [DC-4](#base-plate) unclosable, and a base printed without the mounting holes the design bolts through |
 | j | **Power supply and its mating connector** ([C-103](007.1-Parts-Catalog.md#c-103--power-supply-36-v-dc), [C-715](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record named no supply model — the wiki gives only *"standard laptop power bricks ... rated at 36 volts, 4 amps"* — so [DC-8](#power-supply) closed on a rating and left the part open. C-103 then specified the supply as carrying a **DC barrel plug** while recommending MEAN WELL `GST160A36-R7B`, whose standard `-R7B` plug is a **KYCON `KPPX-4P` equivalent 4-pin DIN**: the two cannot mate, and C-715 was unorderable in consequence. **Closed by decision.** `GST160A36-R7B` is the supply of record and the inlet is its snap-and-lock mate, KYCON **`KPJX-PM-4S`** (48 V DC, 7.5 A per pin), specified in [005 § Power](005-Electronics-and-Control.md#power). A barrel inlet is rejected for the reason [005 § Power](005-Electronics-and-Control.md#power) gives. Two consequences follow — the inlet wire goes to **18 AWG** ([C-714](007.1-Parts-Catalog.md#7-electronics-and-wiring)), C-715's datasheet specifying #18 for its power pins where the previous version's 24 AWG is undersized for a 4 A rail; and an **IEC C13 line cord** ([C-718](007.1-Parts-Catalog.md#7-electronics-and-wiring)) joins the bill, the adapter having a C14 inlet and shipping without one | — |
 | k | **The Diff Gear Shaft's wall holes** (`#720-001`) — ✔ **closed by decision** | The reference mesh carries twelve Ø0.2 × 60.6 mm through-holes in the shaft wall. They are real voids, not a mesh artifact, and they are unbuildable ([`Hardware/Models/README.md`](../Hardware/Models/README.md#verifying-a-recreated-part-against-its-reference) holds the measurement). No part in the differential uses them, and no [008.6](008-Assembly.md#0086-differential) step touches them. **The built shaft is solid.** [007.2](007.2-Printed-Parts.md#differential--0076) states it as the part's print instruction, and [`720-001_DiffGearShaft.scad`](../Hardware/Models/700-Differential/720-001_DiffGearShaft.scad)'s `wall_holes` flag defaults off to match. The harness gates the solid render against the reference as it stands: [`render.rs --verify`](009.3-Render-Program.md) masks the ring the holes occupy, and with the holes off no check moves beyond the part's two stated tip-blunt deviations | A shaft printed in whichever state the renderer was last left in, and a slicer deciding a design question |
@@ -502,8 +512,9 @@ limits editing the design rather than ordering or printing it — this item's re
 and a mesh prints.
 [`Hardware/Models/README.md` § Formats](../Hardware/Models/README.md#formats-and-what-can-actually-be-edited)
 owns what each format allows. The OpenSCAD conversion has started where it mattered most: the differential
-set has full parametric source ([DC-2](#differential-detail-design)), and the `openscad-tools` measurement
-utilities built for it apply to every remaining mesh-only part.
+set has full parametric source ([DC-2](#differential-detail-design)), every part in `100-Base`,
+`200-ArmBody`, `300-Pivot`, `400-EndArm`, `500-ExternalGear`, `600-StrainWave`, `800-Harness`, `900-ToolInterface`, `920-ParallelGripper`, `930-ClawGripper` and `950-Tooling` has it ([CR-3A20](../CHANGES.md#cr-3a20-mesh-only-printed-parts-converted-to-openscad)), and the `openscad-tools`
+measurement utilities built for them apply to every remaining mesh-only part.
 
 **Definition of done:** (a) **done** — `17HM19-2004S` is the part of record in
 [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step) (see row a), its 48 mm body read as the
@@ -523,3 +534,244 @@ row j); (k) **done** — `#720-001` prints solid, and the `wall_holes` default m
 [the archives](#the-model-archives-are-a-single-point-of-failure)). **One item remains, and it is not a
 design question**: the coupon print. It does not block starting the long-lead items in
 [DC-1](#strain-wave-component-set). `[Provisional]`.
+
+## Arm Body placement
+**DC-15 · P2 · Requirement: REQ-STR-5 · Specified in [008.5](008-Assembly.md#0085-arm-body)**
+
+**Open:** where each part of the Arm Body stands. [008.5](008-Assembly.md#0085-arm-body) orders the
+operations and says what goes into what, and from which side ("front to back", "back to front"), but states no
+position along an axis for any part and ties neither direction to the frame of a model. No document owns one. The model set has no assembly
+for the arm body from CAD to confirm one against, so every part of
+[`armbody_assembly.scad`](../Hardware/Models/200-ArmBody/armbody_assembly.scad) is placed by a feature it
+carries, as an inference to be confirmed or replaced:
+
+- the Pivot Stator Holder's height in the bore and the span its flange stands over the Arm Body's top face;
+- the four Stator Balancers' position in the K1 slots, and the lip that bears on the holder;
+- the 6810's seat: 008.5 step 1 presses it "~38 mm" into the Arm Body, and the Arm Body's L1 ledge seats it at
+  z -7 .. 0;
+- each Belt Director's end-for-end direction and its MR128s' seats, in columns A, B and C, and the Belt Director
+  Caps on the upper bearings' inner races, the shanks ending flush with the bearings (B's lower plate is extended 0.7 so B and C stand as far apart);
+- the idler column D: the Idler Plug through both plates with its head on the upper one, the MR85 on it and the
+  Belt Director Pulley between the plates;
+- the Calibration Arrows (`#200-006`), for which no document says where they stand.
+
+**Definition of done:** each part's placement stated in [008.5](008-Assembly.md#0085-arm-body) or
+[004](004-Mechanical-Architecture.md) by the feature it is located from; the model's inferences replaced by
+those values; and the fits the part headers still defer (the Calibration Arrows' and the flap's holes) settled in the parts.
+`[Provisional]`.
+
+## Main Pivot placement
+**DC-16 · P2 · Requirement: REQ-STR-5 · Specified in [008.4](008-Assembly.md#0084-main-pivot)**
+
+**Open:** where three of the Main Pivot's parts stand about their axes. [008.4](008-Assembly.md#0084-main-pivot)
+says what goes onto what but fixes no turn about J2 and no part's position along it, and the model set has no
+assembly for the pivot from CAD to confirm one against. The seats along each axis follow from the parts'
+own faces, so [`pivot_assembly.scad`](../Hardware/Models/300-Pivot/pivot_assembly.scad) places each part
+by a feature it carries; these placements are inferences to be confirmed or replaced:
+
+- the Pivot Code Disk's turn about J2, which also places its two pegs. Its hub's top seats on the Main
+  Pivot's +X face, but 008.4 step 5 fixes no turn, so the model keeps the disk's own frame;
+- what the disk's pegs and their Ø1 holes engage. No document names a mate for them, and the Main Pivot's
+  +X face has no socket, so in the model the pegs' tops bear on that face in the hub's plane;
+- the Pivot Motor End Cap's turn about J2. Step 6 orients the cap's notch "toward the motor-wire hole".
+  The cap's four motor holes (Ø3.2, counterbored Ø6 on `#312-001`) line up with the Main Pivot's H5
+  (Ø3.0, an M3 tapping size) only at 45° + k·90°, so the model takes 45°, the turn nearest H2. That leaves
+  the wire channel's centre 6.2° short of H2's, still open into the Ø12 hole. 008.4 names no screws
+  into H5, so whether they run there is still to be confirmed;
+- the Base Motor End Cap's turn about J1. Step 6 leaves it free, so the model takes the turn that
+  [`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) gives the pivot, which keeps its
+  motor holes on H4.
+
+**Definition of done:** the disk's and the Pivot cap's turns stated in [008.4](008-Assembly.md#0084-main-pivot)
+by the feature each is located from, and the pegs' mate named; the model's inferences replaced by those
+values. `[Provisional]`.
+
+## End Arm bearing order
+**DC-17 · P2 · Requirement: buildability · Specified in [008.7](008-Assembly.md#0087-end-arm-hub)** — ✔ **closed by decision**
+
+**Found:** 008.7 fitted two MR128s at a step that could no longer reach their seats, its step 20 after
+the Cap was snapped on. [`endarm_assembly.scad`](../Hardware/Models/400-EndArm/endarm_assembly.scad)
+places each part by a feature it carries, and shows:
+
+- the End Arm Hub Cap's (`#420-002`) MR128 pocket opens into the hub, so its bearing goes in before the
+  Cap goes on;
+- the step named "the Internal Outer Pulley end", but the Internal Outer Pulley (`#421-001`) has no Ø12
+  seat. The Internal Inner Pulley (`#421-002`) has one, and it faces `#421-001` across the first Pulley
+  Spacer, so its bearing goes in before the two pulleys are joined.
+
+**Decided:** the step moves ahead of joining the pulleys, as 008.7 step 10, and names the Internal Inner
+Pulley. `[Specified]`.
+
+## Wave Gen Coupler stub
+**DC-18 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — **superseded by [DC-19](#strain-wave-drive-spacing)**,
+which replaces the hex body and solid stub decided below. The finding stands.
+
+**Found:** the Wave Gen Coupler's (`#630-004`) reference stub does not enter C-201's wave generator. It is
+Ø10.0 with a key 3.0 wide whose flat top stands 6.0 from the axis: a Cone Drive wave generator's input.
+C-201's takes a Ø6H7 bore with two set screws. Earlier readings took the key's 6.0 for a Ø6 stub; the
+reference has no Ø6 feature. The motor's Ø5 shaft ran through the stub, and a Ø6 stub has no room for it.
+
+**Decided:** `config="revised"` draws a solid Ø6 stub at the press fit, as long as the wave generator's
+bore is deep, and the shaft bore stops in the hex body.
+[`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
+dimensions and where each is taken from. `config="previous"` keeps the reference's stub. Superseded.
+
+## Strain-wave drive spacing
+**DC-19 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — ✔ **closed by decision**
+
+**Found:** with [DC-18](#wave-gen-coupler-stub)'s solid stub seated in the wave generator's hub, the
+coupler's blind bore ended about 1.5 short of the tip of C-101's 24 mm shaft
+([007.1 C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)), so either the shaft was cut or the
+coupler stood off it. The wave generator's Ø6 bore runs through its whole hub.
+
+**Decided (reviewer):** keep the standard shaft, uncut. The drive stands further from its motor, partly by
+moving the motor away from the drive, its Motor End Cap's seat deeper (`#311-001`, `#312-001`, `#511-001`),
+and partly by moving the drive away, the Flex Spline Attach (`#630-005`) thicker and the Stator Holder's
+floor further along it (`#110-002`, `#511-002`; for J2's `#200-002`, see below), until the coupler's blind bore, 1.0 past the shaft's tip, and its floor
+end the running clearance under the wave generator. The Wave Gen Coupler (`#630-004`) is one round piece
+from over the motor's boss, through the Attach, the flexspline's hub and the Flex Spline Cap, to just under
+the wave generator, with a Ø6 stub up the wave generator's bore past its two set screws. An M3 screw
+through a nut captured in the coupler grips the shaft's flat, reached through an access hole in the
+Attach, so the coupler can be taken off for maintenance. The Attach loses its spigot, since the nubs
+centre the hub, and its shaft ridge; the Cap's bore opens to pass the coupler.
+
+**Sized:** the spacing is **5.0 mm: 1.0 by moving the motor and 4.0 by moving the drive, in every joint**.
+The bore rule alone needs 3.0 in J1 and J2 and 3.7 in J3, whose hub face stands 0.687 nearer its motor.
+The grip sets the rest: its nut must sit on the shaft's flat, which starts 9.0 above the motor face, and
+the coupler's grip, which holds the nut and is wider than the hub's Ø11 bore, must stand the running
+clearance under the hub face in J3. J3 sets the split: its motor can move at most about 1.2 before the
+motor's Ø50.8 corners reach the lower 6810's Ø50 bore, so its Stator Holder seats the spline's flange on
+a boss inside the Mount Top's 6810 ([`exgear_assembly.scad`](../Hardware/Models/500-ExternalGear/exgear_assembly.scad)
+owns J3's figures), and the reviewer chose the same split for J1 and J2. Three consequences follow:
+
+- **The screw is an M3 × 4 grub screw.** A bolt's head on the grip would sweep through the six M2 hub
+  screws on Ø17 as the shaft turns.
+- **The coupler goes on the shaft before the Attach goes on the motor** ([008.3](008-Assembly.md#0083-harmonic-drive-motors)):
+  its grip cannot pass the hub's bore. It passes inside the M2 screws' heads as the Attach goes on.
+- **J2's holder floor does not move toward the opening.** With C-201 in place of the reference's drive,
+  the reference's `#200-002` floor stood 4.3 short of where the spline's flange lands, before any
+  spacing. The 4.0 takes up most of that, so the revised floor is 0.3 deeper than the reference's and
+  the wave generator's hub stays 0.3 inside the recess.
+
+[`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) owns the
+coupler's dimensions. [`630-005_FlexSplineAttach.scad`](../Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad)
+owns the Attach's, and asserts the coupler's running clearances and the deepest `hub_drop` they allow.
+[`base_assembly.scad`](../Hardware/Models/100-Base/base_assembly.scad) asserts J1's closure and the
+coupler's clearances to the wave generator, and
+[`armbody_assembly.scad`](../Hardware/Models/200-ArmBody/armbody_assembly.scad) asserts J2's.
+`[Specified]`.
+
+## Gripper design
+**DC-20 · P2 · Requirement: REQ-DOF-2 · Specified in [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) and [008.11](008-Assembly.md#00811-tool-interface--gripper)** — ✔ **closed**
+
+**Closed.** The tool interface carries several gripper options, each its own model group on the shared
+interface in `900-ToolInterface` (the Roll Body, Roll Driver, Span Mount and strake). The baseline build
+takes the **parallel gripper**, `920-ParallelGripper`, with the Span Driver; its Dynamic Finger, Pinion Gear
+and Pinion Bearing EXT are converted from their STEPs, and `gripper_assembly.scad` places it. The **claw** is an alternate, `930-ClawGripper`, at quantity 0 in
+[007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper), designed in the model set rather than
+converted (see [The claw](#the-claw) below).
+
+The record that led here: the model set held two grippers, and the records split between them:
+
+- **The claw.** `#920-002`'s mesh is a curved claw finger on a Ø8 shaft, driven through a socket by the
+  Span Driver's flat-sided head; `#920-003` Finger Cap and the Span Driver's mesh belong with it. The
+  [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) hardware (two MR128s, one M2 × 16 bolt
+  and washer) fits it, and [007.2](007.2-Printed-Parts.md#tool-interface-and-gripper--00711) lists the
+  parallel fingers as alternates at quantity 0.
+- **The parallel gripper.** The `.step`/`.f3d` filed as `#920-002` hold its rack finger
+  (`ParallelDynamicFinger`, 2020-03-12), as do the CAD IDs in 007.2 and the glTF's `TI1-420-00x` bodies.
+  [008.11](008-Assembly.md#00811-tool-interface--gripper) steps 38–47 build it, with a Pinion Gear, Pinion
+  Bearing EXT and an M3 × 16 bolt that 007.11 did not list.
+
+`#920-001` Static Finger exists only as the parallel gripper's (`ParallelStaticFinger`). Its MR128 seats
+stand on the claw mesh's hub axis, (x 14.139, z 17.5) along y in both files' frames, but the claw placed
+there runs its blade 517 mm³ into the Static Finger's body, so the claw is not a finger of this Static
+Finger; the part the claw works against is not in the model set. Where the Finger Cap sits is open too:
+on the claw's shaft end it would stand in the outer MR128's seat.
+
+The Pinion Bearing EXT's Ø8 journal is 7.5 long, two MR128s and the 0.5 shoulder between the Static
+Finger's seats, so both MR128s carry the parallel gripper's pinion; the Span Mount's Ø12 eye clears the Span
+Driver's Ø11 flange and holds no bearing.
+
+A gripper's base is held to the Span Mount by the span XL-320's own two M2 × 12 bolts, which go in through the
+base's plate, the Span Mount and the servo's tab, so that the base needs no fastener of its own and the
+Span Mount's face stays flat where the Static Finger slides on it. `900-ToolInterface/span_socket.scad` owns
+the holes (S4), which the Static Finger and the Claw Body share.
+
+The Span Driver's seat on the span XL-320's spline is open, in every gripper assembly, as
+[DC-21](#span-xl-320-spline-seat).
+
+### The claw
+The legacy claw finger and Finger Cap are retired, their meshes kept in `Reference/superseded/`
+([Models README](../Hardware/Models/README.md#reference)), and the claw is designed new: a pincer whose two
+curved fingers swing equal and opposite, geared down 3.4:1 from one span XL-320, until their tips meet on the
+roll axis, in a closed housing, built with two fingers or with four, two to a side
+([007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) gives the parts and quantities):
+
+- **A reduction off the span axis.** A Claw Pinion on the servo's spline, in the Span Driver's place,
+  drives a toothed sector, the Claw Gear, pinned on the drive axle. The fingers' hubs are toothed where they
+  meet, so that the drive finger turns the follower 1:1. The pivots stand above the servo, so each finger
+  keeps the legacy finger's reach from its pivot to its tip, and the tips stand higher than fingers on the
+  span axis would. The sector and the hubs carry teeth only over the arcs the travel uses.
+- **Supported at both ends.** Each Claw Axle runs in an MR128 in the Claw Body's upper plate and one in the
+  Claw Cap, and the pinion's front journal in a third MR128 in the cap. The Span Driver is unchanged: the claw
+  stands its own bearings, and the Claw Pinion takes the Span Driver's spline end from
+  `900-ToolInterface/912-002_SpanDriver.scad`.
+- **A closed housing.** The Claw Body is a hollow container with an even wall, each side a single circular
+  arc, and the Claw Cap is its flat lid, held by four bolts in pillars that blend into the wall in large
+  fillets. The Claw Finger Wall closes the wall round the blades, held between the two by tapered lips in
+  grooves. Every moving part is inside.
+- **Pinned on the bench.** A finger's hub is a closed hex bore on its axle's hex seat, pinned by one set
+  screw through the seat into the hub on both sides, so that the screw carries the torque in shear twice,
+  and the Claw Gear the same. The screws go in and come out only on the bench, so each axle goes into the
+  body with its finger and gear already on it.
+- **One axle, two fingers.** The hubs' teeth keep the fingers from being one part: the follower's is
+  the drive's mirrored, its teeth moved half a pitch to mesh. The fingers' curve is the legacy finger's. The
+  Claw Axle is one part on both pivots, the follower's turned 60° on its hex.
+- **Four fingers.** The pairs stand either side of the roll axis, so that the grip stays centred on it, and
+  the front pair is the rear pair turned 180° about the roll axis, each pivot taking the other's finger.
+  The fingers, the Claw Gear and the Claw Cap are the 2-finger's parts. The body, the wall, the axles and the
+  pinion are run on along the pivots: each is a part of its own, drawn from the 2-finger's source with
+  `$claw_fingers = 4`. This wall cannot pass the front blades, so it goes on the axles on the bench.
+- **The same mount as the parallel gripper.** The Claw Body takes the Static Finger's socket on the Span
+  Mount and its two bolts, both drawn from `900-ToolInterface/span_socket.scad`.
+
+`930-ClawGripper/claw_params.scad` owns the claw's dimensions and gives its mechanism, and
+`claw_gears.scad` draws its teeth and the housing's outline; `claw2_assembly.scad` and `claw4_assembly.scad` place the two builds on
+the tool interface, and their `.clash.json` files check them closed, half open and fully open with
+`assembly-clash.rs --set OPEN=<deg>`. The Claw Pinion's spline end is the Span Driver's, so it shares
+[DC-21](#span-xl-320-spline-seat), and nothing else.
+
+Known limits of the claw, to bench-test before building on it:
+
+- **Grip force.** The span XL-320's 0.39 N·m stall
+  ([C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo)), geared up 3.4 times on 77.3 mm
+  fingers, pinches about 8.6 N at each tip with two fingers and 4.3 N with four, against about 37 N at the
+  parallel gripper's 10.5 mm pinion. The claw is for light parts.
+- **The servo's travel.** The span servo turns 3.4 times the fingers' angle: 85° from closed to fully
+  open. The firmware commands the servo's angle, not the fingers'.
+- **Backlash.** The two meshes' slip backlash gives about 4.8 mm of play between the tips, taken up once the
+  fingers close on a part.
+- **The pinion's journal.** Its wall about the bolt's access bore is 1.05 mm, at the minimum printed wall.
+- **The body's end grooves.** The skin outside each groove for the wall's end lips is 1.0 mm at its free end,
+  the minimum printed wall with no margin.
+- **The 4-finger's weight.** Its body is about 60% heavier than the 2-finger's, on the same two XL-320s.
+
+**Definition of done:** **done** — 007.11, 007.2 and 008.11 name the parallel gripper; its Dynamic Finger is
+converted from its STEP; the claw is designed in both builds, listed as an alternate in 007.11 and built
+per [008.11 § Claw gripper](008-Assembly.md#claw-gripper-alternate). `[Specified]`.
+
+## Span XL-320 spline seat
+**DC-21 · P2 · Requirement: buildability · Specified in [007.1 C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) and [008.11](008-Assembly.md#00811-tool-interface--gripper)**
+
+**Open:** the Span Driver's seat, and the Claw Pinion's, on the span XL-320's spline. The driver's head
+bottoms in the gripper's drive slot, which stands its spline bore's mouth 2.075 mm inside the servo's case,
+so the clash check of every gripper assembly fails the driver against the case and the spline. No source
+gives the spline's length or any recess round it: ROBOTIS's STEP draws neither (`c102_servo.scad`'s
+SOURCES).
+
+**Definition of done:** a servo measured with its horn off (008.11 step 24): the spline's tooth count, its
+tip and root diameters and its height above the front face, the diameter and depth of any recess round it,
+the key's width and height, and where the connector of step 31 sits at the tab end; `c102_servo.scad` and
+the drivers' spline ends taken from those values; and every gripper assembly's clash check passing.
+Deferred until a servo is bought. `[Provisional]`.

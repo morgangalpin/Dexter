@@ -1,0 +1,36 @@
+{
+  "title": "Axis Intersection Half",
+  "subtitle": "#410-001 · reference mesh and 410-001_AxisIntersectionHalf.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Axis Intersection Half", "pn": "#410-001", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/410-001_AxisIntersectionHalf.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/410-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/410-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [32.5, 0, 6], "text": "R1 ring R32.5 about the axis, z 0…9"},
+    {"at": [23.5, 0, 5], "text": "R2 6807 pocket Ø47.0, z 2…9, open above"},
+    {"at": [21, 0, 1], "text": "R3 lip Ø42.0, z 0…2"},
+    {"at": [23.82, -33.37, 15], "text": "E1 tangents of H, 16.89° below ±X, down to y -57.5"},
+    {"at": [0, -39, 1.5], "text": "E2 teardrop, H within R39.0 at z 0…3, 45° cone to R40.0 at z 4"},
+    {"at": [18, -41, 4], "text": "E3 block's underside z 4, cut by the 45° plane y + z = -42 beyond"},
+    {"at": [28.76, -17.1, 15], "text": "E4 fin: the cusp of H less R1 above z 9, R0.5"},
+    {"at": [14.5, -45, 15], "text": "C1 L2 half-channel 29.0 wide, floor z 9.5, blind end y -37.5"},
+    {"at": [20, -57, 15], "text": "C2 channel end |x| ≤ 20.0, bottom edges chamfered 45° from (16, 4) to (20, 8)"},
+    {"at": [22.02, 30.31, 15], "text": "P1 posts ×2 on 54° and 126°, ±5.794 about the diagonal, out to r 37.47, outer corners R3.0"},
+    {"at": [20.75, 28.56, 15], "text": "S1 strake slots ×4 on ±54° and ±126°, 5.637 × 2.580, centred at r 34.016, through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, -12], "part": "ref", "span": 100, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, -12], "part": "ref", "span": 100, "from": [0, 0, -1]},
+    {"label": "Strake slot", "at": [20.75, 28.56, 24], "span": 16, "from": [0.5, 0.2, 1]},
+    {"label": "Channel end", "at": [0, -52, 8], "span": 30, "from": [1, -1, 0.7]},
+    {"label": "Fin", "at": [28.76, -17.1, 15], "span": 10, "from": [1, -0.3, 0.8]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one presses R2 on the 6807 and S1 on the C-502 strake (opening it tangentially), while C1 keeps the reference's 29.0 round the C-504 tube. The faces are bonded to the other half and to the strakes' ends, which take no clearance. The dimensions and fits are in 410-001_AxisIntersectionHalf.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

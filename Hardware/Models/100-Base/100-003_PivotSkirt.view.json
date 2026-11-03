@@ -1,0 +1,43 @@
+{
+  "title": "Pivot Skirt",
+  "subtitle": "#100-003 · reference mesh and 100-003_PivotSkirt.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1, 1.2],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Pivot Skirt", "pn": "#100-003", "color": "#9aa7b4", "stl": "../Reference/meshes/100-Base/100-003_PivotSkirt.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/100-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/100-003.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [47.0, -8, -17.1], "text": "S1 skirt R48–R50, y −26…0"},
+    {"at": [52.8, -20, -4.2], "text": "K1 slot 0°, 8.4 wide, y −26…−13"},
+    {"at": [32.8, -20, 37.7], "text": "K2 slots ±40°, 15.15 wide"},
+    {"at": [-25, -10, 48.5], "text": "F1 flange, z 45.44–48.5, to x −35.645"},
+    {"at": [12.355, -10, -47.2], "text": "E1 bottom end, plane x 12.355"},
+    {"at": [-20, 12, 42.21], "text": "O1 taper: core octagon apothem 29.483, 45° to y 20, knee R1 on the upper half"},
+    {"at": [0, 0.7, 49.25], "text": "O2 rim chamfer 45°, y 0…1.45"},
+    {"at": [31.0, 2.4, -31.0], "text": "O3 inner ridge and groove, y 0…4.5"},
+    {"at": [0, 17, 32.5], "text": "O4 collar, apothem 32.5–35.5"},
+    {"at": [-5, 11, 37], "text": "O5 collar slot"},
+    {"at": [-34.1, 6, 40.5], "text": "O6 end caps closing O5 (both ends)"},
+    {"at": [29.85, 12, 29.85], "text": "H1 screw boss ×3 (0°, ±45°): Ø11.9 boss, Ø6.2 (0°) / Ø5.9 (±45°), Ø3"},
+    {"at": [55, -3, 6], "text": "L1 lug, R5.17 corners, x to 55"},
+    {"at": [51.5, 15.7, 6], "text": "L2 lug hood, 45° face"},
+    {"at": [51.3, -20, 6], "text": "L3 lug pocket, R3 corners, with plug"},
+    {"at": [54.4, 11.6, 6], "text": "L4 bend round R1, L1 to L2 and down onto S1"}
+  ],
+  "presets": [
+    {"label": "Inside", "at": [20, -3, 0], "span": 105, "from": [-1, -0.5, 0.2]},
+    {"label": "Top", "at": [5, 0, 40], "span": 60, "from": [-0.3, 0.6, 1]},
+    {"label": "Lug", "at": [50, -3, 0], "span": 50, "from": [1, -0.6, 0.3]},
+    {"label": "Hood", "at": [45, 12, 0], "span": 40, "from": [1, 1, 0.2]},
+    {"label": "Slots, from below", "at": [35, -20, 0], "span": 80, "from": [0.6, -1, 0]},
+    {"label": "Bottom end", "at": [18, 0, -42], "span": 40, "from": [-0.4, -0.3, -1]}
+  ],
+  "notes": [
+    {"heading": "Frame", "text": "The skirt's axis is Y, through the origin. y = 0 is where the round skirt (S1) meets the octagonal frame (O1–O6), and the part spans y −26 to 20. Every surface of the frame is a fixed offset from one core octagon of apothem 29.483 about the Y axis. Toggle the section cut and drag y to 12 to see the collar (O4), its slot (O5) and the bosses (H1) in section."},
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one opens H1's Ø3 holes by the slip clearance. The skirt and frame profiles are gated separately in render.rs --verify, and the dimensions and fits are in 100-003_PivotSkirt.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

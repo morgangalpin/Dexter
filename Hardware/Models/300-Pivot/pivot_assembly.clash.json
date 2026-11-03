@@ -1,0 +1,21 @@
+{
+  "parts": [
+    {"id": "pivot",               "kind": "printed", "side": "turning"},
+    {"id": "code_disk",           "kind": "printed", "side": "turning"},
+    {"id": "j1_cap",              "kind": "printed", "side": "turning"},
+    {"id": "j2_cap",              "kind": "printed", "side": "turning"},
+    {"id": "j1_motor",            "kind": "bought",  "side": "turning"},
+    {"id": "j2_motor",            "kind": "bought",  "side": "turning"},
+    {"id": "bearing_j1_inner",    "kind": "bought",  "side": "turning", "bearing": "bearing_j1", "race": "inner"},
+    {"id": "bearing_j1_outer",    "kind": "bought",  "side": "fixed",   "bearing": "bearing_j1", "race": "outer"},
+    {"id": "bearing_j1_shield",   "kind": "bought",  "side": "fixed",   "bearing": "bearing_j1", "race": "shield"},
+    {"id": "bearing_j2_inner",    "kind": "bought",  "side": "turning", "bearing": "bearing_j2", "race": "inner"},
+    {"id": "bearing_j2_outer",    "kind": "bought",  "side": "arm",     "bearing": "bearing_j2", "race": "outer"},
+    {"id": "bearing_j2_shield",   "kind": "bought",  "side": "arm",     "bearing": "bearing_j2", "race": "shield"}
+  ],
+  "engaged": [],
+  "exceptions": [
+    {"pair": ["pivot", "code_disk"], "at": [35.5, 0, 11], "radius": 16,
+     "reason": "the hub's top is a seat on the Main Pivot's +X face, line to line; at the body's bottom the face's R2 edge round (B4) falls away from it, so the gap opens from nothing through the slip clearance across the round"}
+  ]
+}

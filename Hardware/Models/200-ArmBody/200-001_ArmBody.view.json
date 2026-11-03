@@ -1,0 +1,54 @@
+{
+  "title": "Arm Body",
+  "subtitle": "#200-001 · reference mesh and 200-001_ArmBody.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Arm Body", "pn": "#200-001", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/200-001_ArmBody.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/200-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/200-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-25.81, -25.81, 75], "text": "T1 tube R36.5, z −7 to 91"},
+    {"at": [-22.98, 22.98, 91], "text": "B1 bore Ø65.0, through; 6810 seats at each end"},
+    {"at": [0, -28, 2], "text": "L1 lower ledge Ø56.0, z 0–4"},
+    {"at": [0, 28, 51.5], "text": "L2 upper ledge Ø56.0, z 49–54, 45° chamfer from z 44.5"},
+    {"at": [35.516, 0, 91], "text": "K1 Stator Balancer slots ×4, 4 × 10 on r 35.516 (±Y from z −5.25)"},
+    {"at": [41.547, 0, 75], "text": "P1 ears ×4: K1 grown R4, R4 fillets to T1"},
+    {"at": [0, -48.533, 30], "text": "X1 boxes ±Y: |x| ≤ 20, face at y ±48.533"},
+    {"at": [0, -41, -2], "text": "C1 box envelope: cones r ≤ z + 43.533, r ≤ 99.033 − z"},
+    {"at": [14.5, -48.533, 27.75], "text": "Q1 L2 tube socket 29 × 29, floor y ±37.516, centre z 27.75"},
+    {"at": [17.25, -48.533, 44.379], "text": "M1 Ø2 tie holes ×4 along Y, through, x ±17.25, z 11.121 / 44.379"},
+    {"at": [17.25, -33, 11.121], "text": "N2 nut traps hex 4.1 AF on M1, bore to y ±35.533"},
+    {"at": [22.0, -29.1, 8], "text": "G1 R5 fillets, X1 walls to T1"},
+    {"at": [26.5, -26.5, 28], "text": "W1 windows, z 14.5–41: all but X1 and the ±X pillars"},
+    {"at": [-45, 22, -1], "text": "F1 encoder flap, z −7 to −1, R53.5 edge, R7 corners"},
+    {"at": [-38.118, 33.882, -1], "text": "H1 Ø3 ×2 (Ø4 cbore from z −2), H2 Ø1 ×2"},
+    {"at": [-40.64, 14.635, 82.75], "text": "A lug column: plates z 55.75–60.25, 77.25–82.75"},
+    {"at": [40.64, 14.635, 82.75], "text": "B lug column: plates z 65.75–70.25 (revised 65.05), 77.25–82.75"},
+    {"at": [-33.031, 38.547, 72.35], "text": "C lug column: plates z 55.65–60.25 (cone below 57.65), 68.25–72.35, web"},
+    {"at": [34.969, 51.547, 70.25], "text": "D idler column: plates z 55.65–60.25, 68.25–70.25 (Ø5), web"},
+    {"at": [20.5, 48, 64], "text": "E1 post, past the belt slot y 42.547–45.547"},
+    {"at": [-26.0, 46.3, 64], "text": "E2 post, past the belt slot"},
+    {"at": [18, 40, 54], "text": "D fill and fillets onto X1 (revised gives C the same)"},
+    {"at": [-20, -48.533, 50.5], "text": "X1 side top and bottom rounds R2 (revised), fading at the +Y fills and at G1; the front face stays sharp"},
+    {"at": [-19.7, 42.1, 54], "text": "C fill tip R0.5 (revised): both fillets run round it"},
+    {"at": [0, 44, 84.5], "text": "N1 collar: outline grown 4.0 on +Y, 45° flare z 79.5–83.5"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 5, 42], "span": 120, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 5, 42], "span": 120, "from": [0, 0, -1]},
+    {"label": "−Y box", "at": [0, -45, 28], "span": 70, "from": [0.3, -1, 0.2]},
+    {"label": "Lugs from +Y", "at": [0, 40, 66], "span": 60, "from": [0, 1, 0.3]},
+    {"label": "Under C and D", "at": [0, 40, 54], "span": 50, "from": [0, 0.6, -1]},
+    {"label": "D's corner", "at": [16.5, 42.4, 55.5], "span": 14, "from": [-1, 0.9, -0.5]},
+    {"label": "C's tip (revised)", "at": [-19, 40, 55], "span": 16, "from": [-1, 1, -0.75]},
+    {"label": "Encoder flap", "at": [-40, 25, -4], "span": 35, "from": [-0.6, 0.6, -1]}
+  ],
+  "notes": [
+    {"heading": "Frame", "text": "The J2 axis is +Z through the origin. The mesh is ArmBodyWEncode.stl from thing:3781990, in its own frame. The L2 tube seats in Q1 on either box."},
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised render differs under C's lower plate, which stands on a fill with fillets onto the +Y box, as D's does; at the -Y ear, which gets the +Y ear's fillet; and on X1, whose sides' top and bottom edges are rounded; its front faces keep sharp edges, with R2 corners for whatever mounts on them to match. The dimensions are in 200-001_ArmBody.scad's header."}
+  ]
+}

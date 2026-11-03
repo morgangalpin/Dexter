@@ -36,3 +36,10 @@ branch; it is not deleted until that revision is released.
 6. **Payload, speed, and reach envelope characterization.** Measure and publish the performance figures
    that [002-Requirements.md](002-Requirements.md) currently marks for confirmation, turning derived or
    the open performance numbers into measured ones.
+7. **Step-by-step 3D assembly instructions.** Each step is a section-viewer page
+   ([`Hardware/Models/README.md` § Viewing an assembly](../Hardware/Models/README.md#viewing-an-assembly)).
+   It shows the subassembly as the steps before it left it, plus the one part or few parts that the step
+   adds. An arrow shows where each new part goes, for example part A into slot B. Each page links to the
+   previous step and the next step, in the manner of a Lego or Ikea manual, and the pages follow
+   [008](008-Assembly.md)'s steps. **Precondition:** every part, every subassembly and the whole robot
+   are proven in the virtual assembly: converted, gated and clash-checked.

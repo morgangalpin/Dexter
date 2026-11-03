@@ -64,21 +64,18 @@ one holds are listed in [007.2 § Tooling](007.2-Printed-Parts.md#tooling--glue-
 
 ## 008.2 Base
 Parts: [007.2](007-Bill-of-Materials.md#0072-base).
-1. Open the eight bolt holes in the Base Mount Bottom flange to **Ø6.6 mm through with a Ø11.0 mm
-   counterbore** on the flange's upper face. As printed they are Ø6.000 with a Ø10.000 counterbore, which
-   is under size for M6 on both diameters.
-2. Bolt the Base Mounting Plate to the Base Mount Bottom with the 8 × M6 × 18 mm screws, driven **from
+1. Bolt the Base Mounting Plate to the Base Mount Bottom with the 8 × M6 × 18 mm screws, driven **from
    inside the base** — the heads seat in the flange counterbores, so the plate goes on before anything
    closes the base over them. Pattern and hole sizes:
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
-3. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
+2. Epoxy the 133 mm CF strakes into the Base Mount Bottom and Base Long, filling every other slot — the two
    parts slide together and lock.
-4. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
+3. When epoxying the Base Long, leave the strakes protruding ~6 mm (1/4") so the Base Code Disk has a surface
    to rest against.
-5. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washers, and nut,
+4. Bolt the plate to the work surface through its 4 × Ø6.6 mm corner holes with M6 bolt, washers, and nut,
    or clamp the same four corners to a T-slot table. The plate must be fixed down, not left resting —
    [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
-6. Assemble the Base Clamp: place an M3 nut in the hex pocket on one ear and thread in an M3 × 20 mm bolt
+5. Assemble the Base Clamp: place an M3 nut in the hex pocket on one ear and thread in an M3 × 20 mm bolt
    from the counterbored ear. The clamp is installed later, in [008.4](#0084-main-pivot) step 17.
 
 ## 008.3 Harmonic Drive Motors
@@ -92,26 +89,31 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
 2. Keep each strain-wave drive's top and bottom halves paired — they are matched at manufacture and are not
    interchangeable between drives.
 3. Remove first-layer print residue from the Flex Spline Attach.
-4. Lubricate, then press the flex spline's hub onto the Flex Spline Attach with a press: its Ø11 bore over
-   the spigot and its six holes over the nubs.
+4. Lubricate, then press the flex spline's hub onto the Flex Spline Attach with a press, its six holes over
+   the nubs.
 5. Separate them and inspect for print residue pushed into the attachment nubs during pressing; remove any.
 6. Clamp the hub, before the Attach goes on the motor, because the screw heads sit in its underside:
-   a. Refit the hub over the spigot and nubs.
+   a. Refit the hub over the nubs.
    b. Press an M2 nut into each of the Flex Spline Cap's six traps. Set the Cap inside the cup, its land
       down on the hub and its holes over the nubs.
-   c. Drive 6× M2 × 12 mm screws up through the Attach's head pockets, the nubs and the hub into the nuts,
+   c. Drive 6× M2 × 16 mm screws ([C-602](007.1-Parts-Catalog.md#6-fasteners)) up through the Attach's head pockets, the nubs and the hub into the nuts,
       cross-pattern, until snug.
-7. Secure the Flex Spline Attach to the motor with 4× M3 × 10 mm bolts (confirm size/qty against the build).
-8. Press M3 nuts into the Wave Gen Coupler, insert M3 × 8 mm hex bolts to retain them, then epoxy over the
-   nut heads to lock them; cure.
-9. Ream the Wave Gen Coupler and lubricate before sliding it onto the motor shaft.
-10. Use the wave-generator depth-setting tool to set the coupler depth on the shaft. The depth puts the wave
-    generator where the drive's drawing puts it against the flex spline: its hub's outer face the overall
-    axial length [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the
-    flex spline's mounting face. J3's Attach carries that face lower on its motor by its `hub_drop`, so a
-    tool that gauges from the motor face is reset for J3.
-11. Tighten the M3 × 8 mm hex bolts evenly (alternate a few turns each) until snug — do not over-tighten the
-    printed mount.
+7. Press an M3 nut up the Wave Gen Coupler's nut pocket from its open end, and start an M3 × 4 mm grub
+   screw ([C-618](007.1-Parts-Catalog.md#6-fasteners)) through the coupler's side hole into the nut, short of the bore.
+8. Ream the Wave Gen Coupler's shaft bore and lubricate it.
+9. Slide the coupler onto the motor shaft, stub outward, its grub screw over the shaft's flat. It goes on
+   before the Flex Spline Attach: its grip is wider than the flex spline hub's bore
+   ([DC-19](009-Design-Completion.md#strain-wave-drive-spacing)).
+10. Use the depth-setting tool to set the coupler's depth on the shaft: its bottom face the height
+    [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) gives
+    as `wgc_above_motor()` above the motor face, the same in every joint. Tighten the grub screw onto the
+    flat until snug — do not over-tighten the printed coupler.
+11. Secure the Flex Spline Attach to the motor over the coupler with 4× M3 × 12 mm socket-head screws
+    ([C-610](007.1-Parts-Catalog.md#6-fasteners)). Slide the wave generator onto the coupler's stub,
+    into the flex spline, with its hub's outer face the overall axial length
+    [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) gives beyond the flex spline's
+    mounting face, and tighten its two set screws on the stub. The coupler's grub screw stays reachable
+    through the Attach's access hole.
 12. Mount the drive's top half, its circular spline, in the joint's Stator Holder (`#110-002`, `#200-002` or
     `#511-002`, printed `config="revised"`):
     a. Press an M3 nut into each of the six hex pockets in the holder's back face and push it to the
@@ -138,7 +140,8 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
 8. Epoxy the motor bottoms, End Cap faces, and the strake-to-motor contact areas.
 9. Mount the Main Pivot onto the Base:
    a. From the Base Long's lower end, press a 6810 bearing into the lower bore until it stops on the bore's
-      shoulder, 35.5 mm (about 1½″) in (mallet + aluminum drift if it resists).
+      shoulder, whose depth [`120-001_BaseLong.scad`](../Hardware/Models/100-Base/120-001_BaseLong.scad)
+      gives (mallet + aluminum drift if it resists).
    b. Align the Base Code Disk with the 3 strakes and press to snap in.
    c. Push the Base Long, lower end up (wires up), onto the Main Pivot until the Base Motor End Cap's bearing
       bottoms in the Base Long's upper bore, flush with its top face.
@@ -150,12 +153,14 @@ Parts: [007.4](007-Bill-of-Materials.md#0074-main-pivot). Consumes 2× motor ass
     motor shaft.
 12. Prepare 3× M3 × 105 mm all-thread: apply threadlocker, thread an M3 nut flush at one end.
 13. Slide the Base Stator Holder fully onto the strakes.
-14. Slide the 3 all-thread rods into every other hole of the Base Stator Holder.
-15. Set the Base Long onto the Base Mount and rotate until the Main Pivot notch lines up with the rods.
+14. Slide the 3 all-thread rods into every other hole of the Base Stator Holder from the flange's face, so
+    each rod's nut seats in the flange's nut trap.
+15. Set the Base Long onto the Base Mount, the Base Stator Holder's flange between them, and rotate until the
+    Main Pivot notch lines up with the rods.
 16. Add a #6 washer and M3 nut onto each rod and tighten (all 3), keeping the notch aligned.
-17. Install the Base Clamp (from [008.2](#0082-base) step 6): remove the Base Long, slide the clamp onto the
-    Base Mount until it seats on the shoulder, reinstall the Base Long fully down on the Base Mount's top
-    face, and tighten the clamp — see
+17. Install the Base Clamp (from [008.2](#0082-base) step 5): remove the Base Long, slide the clamp onto the
+    Base Mount until it seats on the shoulder, reinstall the Base Long with the Base Stator Holder's flange fully
+    down on the Base Mount's top face, and tighten the clamp — see
     [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate). Measure the
     mounting-face-to-J2 height per
     [009.1 § 3.1](009.1-Performance-Characterization-Protocol.md#test-31-mounting-face-to-j2-axis).
@@ -219,20 +224,16 @@ wrist, which does not match `AxisCal` ([DC-12](009-Design-Completion.md#wrist-pu
 16. Lightly sand one end of the 96 mm CF rod; epoxy the Diff End Pulley 6 mm from the tip, protruding side
     toward the rod's long side.
 17. Confirm the 6703/MR128 bearings are seated so the shaft end protrudes ~1 mm past the 6703.
-18. Super-glue and snap the Diff Axle Keeper over the shaft end, against the 6703.
-19. Press the MR85 into the flat back of the Diff Gear Axle, ~1 mm proud. It seats by its **OD**, in the
-    same Ø8 bore the rod runs in — the Ø5 bore is the race that leaves this subassembly.
-20. Sand the other rod end and epoxy the Diff Gear Axle onto it. The rod **stops 1.5 mm short of that back
-    face**, on the MR85, which leaves 12.5 mm of Ø8 lap for the joint. That is why step 19 comes first: a
-    rod driven to the face leaves the bearing nowhere to go.
-21. Insert the CF rod through the Diff Gear Shaft until it stops.
-22. Hand-turn the Split Gear to confirm free rotation.
-23. Slide one AS thrust race over the wires and Diff Body B shaft, then the AXK0819, then the second race.
-    Epoxy only the chamfered edge of a Diff Keeper (apply sparingly with a nail), feed the wires through, and
-    join to Diff Body B. **The keeper does not butt the Split Gear** — the stack stands between them, on
+18. Sand the other rod end and epoxy the Diff Gear Axle onto it, the rod's end **flush with the axle's flat
+    back**. Nothing else goes in that bore ([DC-11(e)](009-Design-Completion.md#procurement-data)).
+19. Insert the CF rod through the Diff Gear Shaft until it stops.
+20. Hand-turn the Split Gear to confirm free rotation.
+21. Slide one AS thrust race over the wires and Diff Body B shaft, then the AXK0819, then the second race.
+    Epoxy only the chamfered edge of the Diff Keeper (apply sparingly with a nail), feed the wires through,
+    and join to Diff Body B. **The keeper does not butt the Split Gear** — the stack stands between them, on
     the shaft, bearing on the Split Gear Top's base face. Expect ~2.4 mm of shaft still proud of the
-    keeper once both are on ([DC-11(e)](009-Design-Completion.md#procurement-data)).
-24. Clamp a second Diff Keeper on top of the epoxied one until cured.
+    keeper once it is on. This is the differential's only Diff Keeper; the other joins the Front Panel at
+    [008.7](#0087-end-arm-hub) step 26 ([DC-11(e)](009-Design-Completion.md#procurement-data)).
 
 ## 008.7 End Arm Hub
 Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
@@ -249,20 +250,22 @@ Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
 8. Align the End Arm Hub's 4 back holes with the 4 nubs on the assembled New Belt Pulley and push together.
 9. Slide the Internal Outer Pulley onto the 113 mm stainless rod, set screws toward the rod's long end, and
    lock 3.1 mm from the end; tighten set screws incrementally and evenly.
-10. Slide a Pulley Spacer between the Internal Inner and Outer Pulleys and join them.
-11. Feed the rod/pulley through the End Arm Hub connection as far as it goes.
-12. Prepare 4× M3 × 107 mm all-thread: thread on 2 M3 nuts and 1 washer at one end, flush.
-13. Place the End Arm Code Disk on the outside of the Axis Intersection hub, raised side in.
-14. Thread one rod into the End Arm Hub until it protrudes slightly through the code disk; add an M3 washer
+10. Press one MR128 into the Internal Inner Pulley's pocket and another into the End Arm Hub Cap. Both
+    pockets are closed off later: the pulley's by step 11, the Cap's by step 20
+    ([DC-17](009-Design-Completion.md#end-arm-bearing-order)).
+11. Slide a Pulley Spacer between the Internal Inner and Outer Pulleys and join them.
+12. Feed the rod/pulley through the End Arm Hub connection as far as it goes.
+13. Prepare 4× M3 × 107 mm all-thread: thread on 2 M3 nuts and 1 washer at one end, flush.
+14. Place the End Arm Code Disk on the outside of the Axis Intersection hub, raised side in.
+15. Thread one rod into the End Arm Hub until it protrudes slightly through the code disk; add an M3 washer
     and jam nut.
-15. Add a second washer and jam nut with threadlocker, flush with the rod end. The External Inner Pulley must
+16. Add a second washer and jam nut with threadlocker, flush with the rod end. The External Inner Pulley must
     clear all 4 jam nuts and rods — a standard M3 nut is too thick and will foul the pulley.
-16. Epoxy 3 M3 nuts into the Internal Outer Pulley slots and 3 into the External Outer Pulley slots; cure.
-17. Thread 6 M3 × 6 mm set screws into the epoxied nuts, flush with the nut ends.
-18. Break the connection between the paired end nuts on each rod, add an M3 washer, and snug the inner nut
+17. Epoxy 3 M3 nuts into the Internal Outer Pulley slots and 3 into the External Outer Pulley slots; cure.
+18. Thread 6 M3 × 6 mm set screws into the epoxied nuts, flush with the nut ends.
+19. Break the connection between the paired end nuts on each rod, add an M3 washer, and snug the inner nut
     without over-tightening.
-19. Snap the End Arm Hub Cap into place.
-20. Press one MR128 into the Internal Outer Pulley end and another into the End Arm Hub Cap.
+20. Snap the End Arm Hub Cap into place.
 21. Slide the External Inner Pulley onto the stainless rod until it stops.
 22. Add the second Pulley Spacer, then the External Outer Pulley.
 23. Tighten the 3 External Outer Pulley set screws, applying pressure from both sides while tightening evenly.
@@ -286,12 +289,13 @@ and 13, while the drive is open.
    race runs free on the Flex Spline Attach's land.
 6. Replace the temporary bolts one at a time with M3 × 12 mm socket-head bolts and #6 washers, cross-pattern.
 7. Mount the strain-wave top in the Ex Gear Stator Holder ([008.3](#0083-harmonic-drive-motors) step 12).
+   This holder has no recess: the spline's flange stands on its boss, centred by the step in the pilot.
 8. Slide the Ex Gear Stator Holder onto the External Gear, its eight keys in the gear's slots, pressing while
    rotating the shaft until the keys bottom in the slots.
 9. Place M3 nuts into Nut Holder A/B, slide into the Ex Gear Mount (curvature sets orientation), seated to
    accept the all-thread.
 10. Feed the motor wires through the Ex Gear Mount hole, slide onto the strake holes, press hand-tight.
-11. Install 4× M3 × 12 mm socket-head bolts to secure the External Gear.
+11. Install 4× M3 × 10 mm socket-head bolts to secure the External Gear.
 12. Thread 2 M3 nuts onto one end of an M3 × 46 mm all-thread, tightened together.
 13. Press a 6810 into the Ex Gear Mount Top's bearing seat from the underside until it stops on the seat's
     shoulder. Fit the Mount Top over the External Gear, insert the all-thread, and tighten.
@@ -356,8 +360,8 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
 4. Press 2 6703 bearings into each side of the Roll Body.
 5. Clip the head off a 1" #19 satin pin, chuck it, and ream the 4 smallest holes on the bottom of the Roll
    Driver.
-6. Push 4 satin pins through the reamed holes ~6 mm proud, cut the heads, super-glue flush, trim and sand
-   smooth.
+6. Push 4 satin pins through the reamed holes ~6 mm proud, cut the heads, super-glue flush, trim the proud
+   ends flush with the drive bosses and sand smooth.
 7. Thread the 4 M2 × 20 mm bolts into the Roll Driver, leaving 2 diagonally-opposite bolts ~2 mm proud to
    engage the Span Mount holes.
 8. Press the Roll Driver's flat side into the non-flat side of the Roll Body, flush with the far 6703 (tap
@@ -388,7 +392,8 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
 23. Thread 4 M2 × 16 mm bolts through the remaining holes with M2 washers.
 24. On the Span Motor (#1), remove the center screw and its plastic driver.
 25. Align the motor driver with the Span Mount hole and push into the 2 nubs at the Span Mount base.
-26. Fasten with 2 M2 × 12 mm bolts (right of the Span Mount), M2 washers, and M2 nuts.
+26. Fasten for now with 2 M2 × 12 mm bolts (right of the Span Mount), M2 washers, and M2 nuts. Step 46, or the
+    claw's step 3, takes them out and drives them through the gripper's base.
 27. Solder the Roll Motor's remaining connector with the same color scheme, then feed the 3 wires through the
     right servo hole toward the top of the body.
 28. Trim to ~13 mm, strip ~6 mm; map top-to-bottom ground/power/data, this side mapping to blue/red/black
@@ -413,9 +418,54 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
     M3 × 16 mm bolt, loose enough to still turn freely.
 44. Turn the Span Driver until its flat faces forward, horseshoe toward you — the gripper's open position.
 45. Turn the Pinion Gear until the Pinion Bearing EXT hash aligns with the long hash on the Static Finger.
-46. Push the Static Finger onto the Span Mount so the 25 mm strake seats into its Span Mount hole.
+46. If the wires of step 31 are in the way at the motor's tab end, unplug that connector from the back of the
+    Span Motor first. Take out the 2 bolts of step 26 with their washers and nuts, keeping the Span Motor on
+    its nubs. Push the Static Finger onto the Span Mount so the 25 mm strake seats into its Span Mount hole.
+    Drive the 2 bolts back in through the two long bores in the Static Finger's front face, through the Span
+    Mount and the motor's tab, holding each washer and nut against the back of the tab from the motor's tab
+    end, with tweezers and a flathead as in step 18. Plug the connector back in if it was unplugged, and
+    repeat step 35's check.
 47. Slide the Dynamic Finger into the Static Finger and close fully.
 48. Cut two yoga-mat pieces to the finger inside faces and hot-glue them as grip pads.
+
+### Claw gripper (alternate)
+Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper), the claw table. These steps replace
+steps 36–48; steps 1–35 are unchanged. The 4-finger claw takes its own body, wall, axles and pinion from that
+table, and its differences are in *italics*.
+
+1. Turn the span motor's output until the key on its spline points 35° below the line from the span axis
+   toward the roll axis, the claw's closed position, and leave it there: it cannot be reached once the body
+   is on.
+2. Press an MR128 bearing into each of the two seats in the Claw Body's upper plate, and one into each of the
+   Claw Cap's three seats, both from the inside.
+3. As step 46 does for the Static Finger, unplug the connector if its wires are in the way, take out the 2
+   bolts of step 26 with their washers and nuts, and push the Claw Body onto the Span Mount. Drive the 2 bolts
+   back in from inside the body, through its lower plate, the Span Mount and the motor's tab, into the washers
+   and nuts, held as in step 46, then plug the connector back in and check the motor as step 46 does.
+4. Slide a Claw Finger onto a Claw Axle's hex seat, its blade's flush face to the rear, and line its tapped
+   hole up with the seat's cross hole. Drive an M3 × 16 mm set screw in from the hub's far side, through the
+   seat, until it stands 1 mm under the hub. Slide the Claw Gear onto the seat in front of the finger, its
+   sector on the side away from the blade and the longer run of its teeth past the screw hole on the same side
+   as the hub's teeth, and pin it the same way, in from its web's side. This is the drive pivot. *The
+   4-finger's axle has three cross holes: the finger takes the end hole farther from the middle one, and the
+   gear the middle one.*
+5. Pin a Claw Follower Finger onto the second axle the same way, with the axle turned so that the cross hole
+   lines up. This is the follower pivot, and the cross hole the gear would take stays empty.
+6. *Hold the two axles with their hubs' teeth meshed and their tips meeting, and slide the wall on over the
+   rear blades, from the front. Slide a front finger onto each axle, each pivot taking the other pivot's
+   part, its hub's flush face forward and its blade in the wall's front slot, and pin it as in step 4.*
+7. Hold the two pivots with their hubs' teeth meshed and their tips meeting, and slide them in from the
+   body's open front, the blades out through the opening in its wall and each axle's rear journal into its
+   MR128. *The wall goes in with them, its lips in the grooves at the opening's ends and behind it.*
+8. Slide the Claw Finger Wall in from the front along the opening, its lips in the grooves at the opening's
+   ends and behind it. *The 4-finger's is already in.*
+9. Holding the tips together, align the notch inside the Claw Pinion's bore with the key and push the pinion in
+   from the front through the tunnel in the body's lower plate onto the spline, its teeth meshing with the Claw
+   Gear's. Secure it with an M2.6 × 10 mm bolt dropped through the pinion's bore from its front end, snug, as
+   step 37.
+10. Fit the Claw Cap onto the body's front face, its MR128s over the two axles' and the pinion's front
+    journals, the rim and the wall's front lip in its groove, and bolt it with 4 M3 × 10 mm bolts.
+11. Hot-glue a yoga-mat pad to each finger's grip face, as step 48.
 
 ## 008.12 Firmware Configuration and Calibration
 Config: [006-Firmware-and-Calibration.md](006-Firmware-and-Calibration.md). Required before first use on a

@@ -1,0 +1,35 @@
+{
+  "title": "Claw Body",
+  "subtitle": "#930-003 · revised render of 930-003_ClawBody.scad (designed, no reference mesh) · feature names",
+  "from": [0.6, -1, 0.6],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#c98a3a", "stl": "out/revised/930-003.stl"}]}
+  ],
+  "labels": [
+    {"at": [20, -9.5, 34], "text": "U1 upper plate over the span XL-320: level underneath at the pads' height, with nothing cut into it"},
+    {"at": [10, -4.5, 45.18], "text": "M1 MR128 seats, blind: the bearings go in from the inside, under a 1 cover"},
+    {"at": [20, -3.6, 31], "text": "L1 shelf joining U1 to K1, raised with U1's underside; the tongue under it in V1's groove"},
+    {"at": [-14, -1.1, 22], "text": "K1 lower plate, its rear face S3's"},
+    {"at": [0, 6.569, 25], "text": "C1 column sleeve round S1 and S2, flat in front, 1 in front of S1"},
+    {"at": [-31.61, 10, 29.5], "text": "W1 wall, 2.5 all round, its outline claw_shell_path(), the cap's too: symmetric about the roll axis"},
+    {"at": [0, 10, 6.51], "text": "W1's level bottom, z 6.512, over the Span Mount's base plate"},
+    {"at": [-9.861, -1.093, 11.5], "text": "S4 span bolts ×2: the M2 × 12s go in from here, through K1, the Span Mount and the servo's tab, each head on K1's front face"},
+    {"at": [-27.18, 18.069, 42], "text": "R1 tapered rim, into the cap's groove, the wall's shoulder outside it"},
+    {"at": [0, 5, 56], "text": "O1 opening, pillar to pillar, y -4 to the seam: the Claw Finger Wall fills it"},
+    {"at": [25.05, 5, 46.88], "text": "G1 end grooves ×2, into the upper pillars' blends, open forward, for the wall's end lips"},
+    {"at": [0, -5, 55.5], "text": "G2 rear groove, behind the opening, for the wall's rear lip"},
+    {"at": [14.139, -1.1, 17.5], "text": "P1 pinion tunnel through K1: the pinion goes in from the front"},
+    {"at": [21.7, 15.569, 42], "text": "D1 pillars ×4, blended R5 into W1, with T1 tapped for the cap's M3 × 10s"}
+  ],
+  "presets": [
+    {"label": "Inside, from the front", "at": [0, 15.569, 32], "span": 80, "from": [0.2, 1, 0.3]},
+    {"label": "Rear", "at": [0, -7, 40], "span": 70, "from": [0.2, -1, 0.3]},
+    {"label": "Top, the opening", "at": [0, 5, 57], "span": 70, "from": [0.1, 0.3, 1]},
+    {"label": "Underside", "at": [0, 2, 7], "span": 80, "from": [0.3, -0.4, -1]},
+    {"label": "The span bolts' seats", "at": [-9.861, 3, 17.5], "span": 40, "from": [-0.2, 1, 0.2]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its socket on the Span Mount is ../900-ToolInterface/span_socket.scad's, shared with the Static Finger, its outline is claw_gears.scad's, shared with the Claw Cap, and its layout along y is claw_params.scad's. It prints standing on the upper plate's rear face, open upward, with supports under the lower plate and the shelf only. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Claw Axle, 4-finger",
+  "subtitle": "#930-011 · revised render of 930-011_Claw4Axle.scad (designed, no reference mesh) · feature names",
+  "from": [1, -0.4, 0.3],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#6b8f3a", "stl": "out/revised/930-011.stl"}]}
+  ],
+  "labels": [
+    {"at": [-1.5, -22.138, 2.6], "text": "H1 cross hole Ø3.3 along 120°: the rear pair's set screw"},
+    {"at": [-1.5, 11.069, 2.6], "text": "H2 cross hole Ø3.3 along 120°: the gear's set screw, spare on the follower pivot"},
+    {"at": [-1.5, 22.138, 2.6], "text": "H1 cross hole Ø3.3 along 120°: the front pair's set screw"}
+  ],
+  "presets": [
+    {"label": "Along the axis", "at": [0, 1.5, 0], "span": 70, "from": [1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. 930-006_ClawAxle.scad draws it and gives its features: it is #930-006 run on along y, and it serves both pivots in the same way. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

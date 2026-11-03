@@ -1,0 +1,35 @@
+{
+  "title": "Pivot Code Disk",
+  "subtitle": "#300-002 · reference mesh and 300-002_PivotCodeDisk.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Pivot Code Disk", "pn": "#300-002", "color": "#d4ad6b", "stl": "../Reference/meshes/300-Pivot/300-002_PivotCodeDisk.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/300-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/300-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-33.5, -33.5, 1.6], "text": "D1 outer edge Ø95.0"},
+    {"at": [-37.6, 13.7, 1.6], "text": "F1 top face z 1.6 (F2 flat face, z 0)"},
+    {"at": [0, -26.6, 6.2], "text": "B1 bore Ø53.2, through"},
+    {"at": [35.6, 0, 1.6], "text": "W1 window ×6, r 31.5…41.5, R4 corners"},
+    {"at": [17.8, 30.85, 1.6], "text": "spokes 6.0 wide on 30° + 60°k"},
+    {"at": [45, 0, 1.6], "text": "C1 code slit 3.8 × 0.8, ×180 at 2°"},
+    {"at": [-45, 0, 0], "text": "G1 underside groove Ø87.0–Ø93.0, 0.2 deep"},
+    {"at": [0, 29.5, 5], "text": "H1 hub Ø59 to z 6.2, 45° cone out to Ø63"},
+    {"at": [31.02, 17.91, 6.2], "text": "P1 peg Ø6, z 6.2, 45° flare; P2 hole Ø1"},
+    {"at": [0, 35.82, 6.2], "text": "P1 peg at 90°"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 100, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 100, "from": [0, 0, -1]},
+    {"label": "Slits", "at": [45, 0, 0.8], "span": 10, "from": [0.15, -0.3, 1]},
+    {"label": "Groove, from below", "at": [-45, 0, 0], "span": 10, "from": [-0.3, -0.3, -1]},
+    {"label": "Hub and pegs", "at": [20, 25, 4], "span": 50, "from": [0.3, -0.8, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one opens B1 by the slip clearance. The 2D profiles each layer is extruded from are gated separately in render.rs --verify, and the dimensions and fits are in 300-002_PivotCodeDisk.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

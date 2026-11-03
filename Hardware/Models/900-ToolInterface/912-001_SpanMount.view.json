@@ -1,0 +1,38 @@
+{
+  "title": "Span Mount",
+  "subtitle": "#912-001 · reference mesh and 912-001_SpanMount.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Span Mount", "pn": "#912-001", "color": "#d4ad6b", "stl": "../Reference/meshes/900-ToolInterface/912-001_SpanMount.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/912-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/912-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [10, 5, 4], "text": "F1 base plate, z 0–4"},
+    {"at": [-9.5, 0, -1], "text": "R1 underside ring, z −2.5–0, r 4–10.5 + z"},
+    {"at": [8, 1.25, -1], "text": "G1 wire groove, y ±1.25, to z 0.5"},
+    {"at": [3.743, 5, 15], "text": "V1 upright plate, x 3.743–7.243, z 4–26.2"},
+    {"at": [5, 14.139, 22], "text": "E1 eye Ø12 along X at y 14.139, z 16"},
+    {"at": [6.5, -9.861, 11], "text": "H2 servo bolt hole Ø2 ×2; the reference's Ø4 counterbore 1.75 deep, filled in the revised"},
+    {"at": [-3, 2.833, 15], "text": "C1 strake column, |x| + |y| ≤ 5.833, z 4–22.7"},
+    {"at": [-6.968, -2.4, 5], "text": "C2 column foot, 45° flare from z 7.5 to z 4"},
+    {"at": [3.2, 3.67, 15], "text": "W1 column web, y = ±(x + 0.47), fillet R0.5"},
+    {"at": [1.2, 0, 15], "text": "S1 strake slot 2.4 × 5.5, lead-in at the foot"},
+    {"at": [-5.243, 4.243, 1], "text": "H1 roll bolt hole Ø2 ×4 at r 6"},
+    {"at": [-5.993, 4.243, 2], "text": "K1 washer pocket Ø5 ×4, from z 2"},
+    {"at": [13.243, -3.861, 7], "text": "N1 drive nub Ø4 ×2, z 4–7"},
+    {"at": [-5.675, 9.83, 3.85], "text": "CH rim chamfer 0.3 × 45° on F1's circle, 98.5–268° round −X, revised only"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [3, 3, 4], "span": 40, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, 0, 0], "span": 28, "from": [0, 0, -1]},
+    {"label": "Upright plate", "at": [5, 3, 15], "span": 34, "from": [1, 0, 0]},
+    {"label": "Column", "at": [0, 0, 14], "span": 26, "from": [-1, -1, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens S1 to the C-502 strip's press fit and H1, H2 and K1 to slip clearance, fills H2's counterbores and cuts CH on F1's rim, as the FITS paragraph of 912-001_SpanMount.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

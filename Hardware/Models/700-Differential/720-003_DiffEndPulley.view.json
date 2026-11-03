@@ -1,0 +1,35 @@
+{
+  "title": "Diff End Pulley",
+  "subtitle": "#720-003 · reference mesh and 720-003_DiffEndPulley.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Diff End Pulley", "pn": "#720-003", "color": "#d4ad6b", "stl": "../Reference/meshes/700-Differential/720-003_DiffEndPulley.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/720-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/720-003.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -4, 23], "text": "B1 rod bore Ø8, through"},
+    {"at": [-5, 0, 22], "text": "L1 glue lobe ×3 to r 5.0, 45° entry from z 18.98"},
+    {"at": [5, 0, 18.25], "text": "O1 boss Ø10, z 17.5…18.5"},
+    {"at": [4.85, 0, 17.65], "text": "R1 boss roundover R0.5"},
+    {"at": [9.5, 0, 18.57], "text": "W1 web underside Ø20 at z 19, fillet down to the boss"},
+    {"at": [13, 0, 19.4], "text": "F1 bottom flange Ø26, z 19.0…19.75"},
+    {"at": [12, 0, 23.5], "text": "G1 40T GT2 band, root Ø23.4, tip Ø24.97, z 19.75…27.25 (revised 80T)"},
+    {"at": [13, 0, 27.5], "text": "F2 top flange Ø26, z 27.25…27.75"},
+    {"at": [4.75, 8.23, 23], "text": "S1 web slot ×3 at 120°, through, out to r 10"},
+    {"at": [8, 0, 27.75], "text": "T1 top face z 27.75"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 27.75], "span": 32, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0, 17.5], "span": 32, "from": [0, 0, -1]},
+    {"label": "Whole part", "at": [0, 0, 22.6], "span": 34, "from": [1, -1.2, 0.9]},
+    {"label": "Glue lobes and slot", "at": [0, 4, 22], "span": 20, "from": [0.3, -0.6, 1]},
+    {"label": "Teeth and flanges", "at": [12, 0, 23.5], "span": 14, "from": [1, -0.8, 0.5]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation of the 40T pulley, and the revised one draws the print fits listed in 720-003_DiffEndPulley.scad's header: the rod bore takes the press clearance, and the rim moves out to the 80T GT2 ring with the hub, flanges and web heights unchanged, so only the previous render is expected to match the reference's rim. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

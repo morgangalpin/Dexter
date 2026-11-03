@@ -1,0 +1,26 @@
+{
+  "title": "Belt Director Pulley",
+  "subtitle": "#210-002 · reference mesh and 210-002_BeltDirectorPulley.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1, 0.8],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Belt Director Pulley", "pn": "#210-002", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/210-002_BeltDirectorPulley.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/210-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/210-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [8.026, 0, -4.44], "text": "T1 teeth: 26T GT2, tip Ø16.05, grooves R0.61 on r 7.852, tip rounds R≈0.22"},
+    {"at": [8.656, 0, -0.744], "text": "F1 upper flange Ø17.31, z −1.257 to −0.744"},
+    {"at": [8.656, 0, -8.136], "text": "F2 lower flange Ø17.31, z −8.136 to −7.623"},
+    {"at": [0, 4.0, -0.744], "text": "B1 bore Ø8.0, through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, -4.44], "span": 20, "from": [0, 0, 1]},
+    {"label": "Teeth", "at": [7.5, 0, -4.44], "span": 6, "from": [0, 0, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render draws no fits yet; they wait for the arm body's assembly. The dimensions are in 210-002_BeltDirectorPulley.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

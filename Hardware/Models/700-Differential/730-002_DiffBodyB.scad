@@ -270,6 +270,21 @@ COLLAR = [
 // front_drop()), and its 6703 keeps its place on the journal's end.
 FRONT_DROP = front_drop();
 
+// The shaft lands, between the two seats. The shaft turns in them, and as
+// measured (Ø17.5) they stand 0.3 off the revised journal, and their R1 rounds
+// 0.37 off each 6703's inner ring at its face. "revised" bores them the running
+// clearance clear of the inner ring (diff_params.scad's inner_ring_od()), which
+// leaves the journal more than that, and drops the rounds: the steps at x 14.0
+// and 28.0 then run straight in to the land.
+LAND_R = config == "previous" ? 8.750 : inner_ring_od(BRG_6703) / 2 + RUN;
+LAND_IN = config == "previous"                     // from the -X step onto the land
+    ? concat([[9.750, 14.000 + FRONT_DROP]],
+             arcpts(9.750, 15.000 + FRONT_DROP, 1.000, 270, 180, 12))   // R1 into the shaft land
+    : [[LAND_R, 14.000 + FRONT_DROP]];
+LAND_OUT = config == "previous"                    // from the land onto the +X step
+    ? concat([[8.750, 27.000]], arcpts(9.750, 27.000, 1.000, 180, 90, 12))   // R1 out of it
+    : [[LAND_R, 28.000]];
+
 // The collar's conical inner wall, [r, x] at each end.
 INNER_WALL = [[15.483, CONE_X], [22.000, 39.200]];
 function inner_wall_r(x) = INNER_WALL[0][0] + (INNER_WALL[1][0] - INNER_WALL[0][0])
@@ -292,15 +307,13 @@ BORE = concat(
     arcpts(12.500, 9.000 + FRONT_SHIFT, 1.000 - PRESS, 270, 180, 12),   // R1 off the -X end face
     [[11.500 + PRESS,  13.800 + FRONT_DROP],   // Ø23.000 6703 seat
      [10.500,  13.800 + FRONT_DROP],
-     [10.500,  14.000 + FRONT_DROP],
-     [ 9.750,  14.000 + FRONT_DROP]],
-    arcpts(9.750, 15.000 + FRONT_DROP, 1.000, 270, 180, 12),   // R1 into the shaft land
-    [[ 8.750,  GROOVE_X[0]],                      // Ø17.500 shaft land
+     [10.500,  14.000 + FRONT_DROP]],
+    LAND_IN,
+    [[LAND_R, GROOVE_X[0]],                       // Ø17.500 shaft land
      [GROOVE_R, GROOVE_X[0]],                     // Ø22.000 bevel relief
      [GROOVE_R, GROOVE_X[1]],
-     [ 8.750,  GROOVE_X[1]],
-     [ 8.750,  27.000]],
-    arcpts(9.750, 27.000, 1.000, 180, 90, 12),    // R1 out of the shaft land
+     [LAND_R, GROOVE_X[1]]],
+    LAND_OUT,
     [[10.500,  28.000],
      [10.500,  BODY_B_REAR_SEAT],
      [11.500 + PRESS,  BODY_B_REAR_SEAT],   // Ø23.000 6703 seat

@@ -1046,3 +1046,584 @@ anything version 3 does not independently specify
     zones the gates grow. Each part's header lists its fits and classes, and `render-meshes.rs` builds in
     `config="revised"` unless told otherwise. The Models README recounts its parts and files and points to
     the `render-all.rs` files for the gates' figures.
+
+### CR-3A20: Mesh-only printed parts converted to OpenSCAD
+
+- **Affects:** [007.2](specs/007.2-Printed-Parts.md#printed-parts),
+  [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only),
+  [009 §Base height and L1](specs/009-Design-Completion.md#base-height-and-l1),
+  [009 §Main Pivot placement](specs/009-Design-Completion.md#main-pivot-placement),
+  [003 §Link lengths](specs/003-Kinematics.md#link-lengths),
+  [004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+  [006 §Firmware defaults](specs/006-Firmware-and-Calibration.md#firmware-defaults-defaultsmake_ins),
+  007.1 [C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step),
+  [008.2](specs/008-Assembly.md#0082-base), [008.4](specs/008-Assembly.md#0084-main-pivot),
+  [009.1](specs/009.1-Performance-Characterization-Protocol.md) and
+  [009.2](specs/009.2-Test-Build-Manifest.md),
+  [009 §Strain-wave drive spacing](specs/009-Design-Completion.md#strain-wave-drive-spacing),
+  [008.3](specs/008-Assembly.md#0083-harmonic-drive-motors),
+  007.1 [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) and
+  [§6 Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [007 §7.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors),
+  [§7.8](specs/007-Bill-of-Materials.md#0078-external-gear) and
+  [§7.11](specs/007-Bill-of-Materials.md#00711-tool-interface--gripper) with the aggregate quantities,
+  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
+  `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`,
+  `Hardware/Models/500-ExternalGear/exgear_assembly.scad`, `Hardware/Models/c101_motor.scad`,
+  `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
+  `Hardware/Models/MANIFEST.csv`, and each converted group below.
+  - `Hardware/Models/100-Base/`: `100-001_BaseClamp.scad`, `100-002_BaseCodeDisc.scad`,
+    `100-003_PivotSkirt.scad`, `110-001_BaseMountBottom.scad` with its generated floor table
+    `110-001_BaseMountBottom_floor.scad`, `120-001_BaseLong.scad` with its generated rib table
+    `120-001_BaseLong_rib.scad`, their `.view.json` sidecars, and the shared `base_dodecagon.scad` and
+    `window_round.scad` (new); `110-002_BaseStatorHolder.scad` and its `render.json` checks. Their meshes moved
+    to `Reference/meshes/100-Base/`.
+  - `Hardware/Models/300-Pivot/`: `300-001_MainPivot.scad`, `300-002_PivotCodeDisk.scad`,
+    `311-001_MotorEndCapBase.scad`, `312-001_MotorEndCapPivot.scad`, their `.view.json` sidecars,
+    `render.json`, and the assembly `pivot_assembly.scad` with its `.view.json` and `.clash.json` (new).
+    Their meshes moved to `Reference/meshes/300-Pivot/`.
+  - `Hardware/Models/400-EndArm/`: `410-002_NewBeltPulley.scad`, `410-003_EndArmCodeDisk.scad`,
+    `420-002_EndArmHubCap.scad`, `421-001_InternalOuterPulley.scad`, `421-002_InternalInnerPulley.scad`,
+    `421-006_PulleySpacer.scad`, `410-001_AxisIntersectionHalf.scad`, `420-001_EndArmHub.scad`,
+    `render.json`, and the assembly `endarm_assembly.scad` with its `.view.json` and `.clash.json` (new);
+    `external_pulley.scad`, `430-001_ExternalOuterPulley.scad` and
+    `430-002_ExternalInnerPulley.scad` (rewritten). Their meshes moved to `Reference/meshes/400-EndArm/`,
+    including the four of `410-001`, `420-001`, `430-001` and `430-002`.
+  - `Hardware/Models/500-ExternalGear/`: `510-001_ExternalGear.scad`,
+    `520-001_ExGearMount.scad`, `520-002_ExGearMountTop.scad`, `520-003_ExGearNutHold.scad`, their
+    `.view.json` sidecars and `render.json`; `exgear_assembly.scad` now `use`s every part of the group.
+    Their meshes moved to `Reference/meshes/500-ExternalGear/`.
+  - `Hardware/Models/800-Harness/`: `800-001_WireEntryLeft.scad`, `800-002_WireEntryRight.scad`,
+    `800-003_MainPivotPlugA.scad`, `800-004_MainPivotPlugB.scad`,
+    `800-005_FanBracket.scad`, `800-006_PCBBracket.scad`, `800-007_PCBSpacer.scad`,
+    `810-001_6PinStrainReliefTop.scad`, `810-002_6PinStrainReliefBottom.scad`,
+    `821_PhotointerrupterShroudBase_A.scad` and `_B.scad`, `822_PhotointerrupterShroudPivot_A.scad` and
+    `_B.scad`, `823_PhotointerrupterShroudEndArm.scad`, `824_PhotointerrupterShroudAngle.scad`,
+    `825_PhotointerrupterShroudRotate_A.scad` and `_B.scad`, their `.view.json` sidecars, the shared
+    `strain_relief_comb.scad`, `photo_shroud.scad`, `shroud_base.scad`, `shroud_pivot.scad`,
+    `photo_shroud_rotate.scad` and `render.json` (new). Their meshes moved to
+    `Reference/meshes/800-Harness/`, the End Arm shroud's repaired in place (README § Known defects).
+  - `Hardware/Models/print_fit.scad` (the tap class), `950-Tooling/fit_coupon.scad` (its M3 pilot),
+    and `700-Differential/730-001_DiffBodyA.scad` (what its pin holes take).
+  - `Hardware/Models/900-ToolInterface/`: `900-001_ToolInterfaceBody.scad`, `911-001_RollBody.scad`,
+    `911-002_RollDriver.scad`, `912-001_SpanMount.scad`, `912-002_SpanDriver.scad`, their `.view.json`
+    sidecars, `render.json`, and the assembly `tool_assembly.scad` with its `.view.json` and
+    `.clash.json`, and the XL-320 placement model `Hardware/Models/c102_servo.scad` it shares with the
+    gripper's assembly (new). Their meshes, STEPs and f3ds moved to `Reference/meshes/900-ToolInterface/`,
+    where `900-001_ToolInterfaceBody.stl` (new) is the reference mesh tessellated from the STEP.
+  - `Hardware/Models/920-ParallelGripper/` (new group): `920-001_StaticFinger.scad`,
+    `920-002_DynamicFinger.scad`, `920-005_PinionGear.scad`, `920-006_PinionBearingExt.scad`, their
+    `.view.json` sidecars, `render.json`, and the assembly `gripper_assembly.scad` with its `.view.json`
+    and `.clash.json`. Their STEPs and f3ds moved to `Reference/meshes/920-ParallelGripper/` (the Pinion
+    Gear's and Pinion Bearing EXT's from `900-ToolInterface/PinionGear.*` and `PinionGearExt.*`), where
+    `920-001_StaticFinger.stl` (new) is the reference mesh exported from the glTF and the other three
+    (new) are tessellated from their STEPs.
+  - `Hardware/Models/930-ClawGripper/` (new group, designed rather than converted): every file, that is,
+    `930-001` to `930-012` with their `.view.json` sidecars, `claw_params.scad`, `claw_gears.scad`,
+    `render.json`, and the assemblies `claw2_assembly.scad` and `claw4_assembly.scad` with their `.view.json`
+    and `.clash.json`. The legacy claw's meshes, published as `920-002_DynamicFinger.stl` and
+    `920-003_FingerCap.stl`, moved to `Reference/superseded/` under their published numbers.
+  - `Hardware/Models/900-ToolInterface/span_socket.scad` (new): the gripper's socket on the Span Mount,
+    shared by the Static Finger and the Claw Body.
+  - [007.1 §Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners) (C-621, new),
+    [007.2 §Not in the build list](specs/007.2-Printed-Parts.md#not-in-the-build-list),
+    [008.11](specs/008-Assembly.md#00811-tool-interface--gripper) steps 26 and 46, and
+    [008.11 §Claw gripper](specs/008-Assembly.md#claw-gripper-alternate).
+  - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
+    `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
+    `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
+    shared `arm_body_outline.scad` and `belt_director.scad` (new); `200-002_PivotStatorHolder.scad` and
+    `render.json`. Their meshes moved to `Reference/meshes/200-ArmBody/`.
+  - `Hardware/Models/600-StrainWave/`: `630-004_WaveGenCoupler.scad` and the `.view.json` sidecars of
+    `630-004`, `630-005` and `630-006` (new); `render.json`'s `parts` list and `630-004`'s checks. Its
+    mesh moved to `Reference/meshes/600-StrainWave/`.
+  - `Hardware/Models/700-Differential/`: every part file, their `.view.json` sidecars (new),
+    `diff_params.scad`, `diff_hardware.scad`, `diff_assembly.scad`, `diff_assembly.clash.json` (new) and
+    `render.json`; `Reference/meshes/700-Differential/710-001_SplitGearTop.stl` and
+    `710-002_SplitGearBottom.stl`, corrected in place.
+  - `Hardware/Models/950-Tooling/`: `GlueRig_ArmBodyToEndArmHub_A.scad`, `_B.scad` and `_C.scad`,
+    `GlueRig_ArmBodyToExGear.scad`, `GlueRig_EndArmHubToDiff_A.scad`, `GlueRig_EpoxyHolder.scad`,
+    `GlueRig_EpoxyPlunger.scad`, `830-001_SolderJig6PinHolder.scad` and `830-002_SolderJigLEDRig.scad`,
+    their `.view.json` sidecars where they have one, the shared `l2_rig_joint.scad`, `l3_rig_joint.scad` and
+    `lead_groove.scad`, and `render.json` (new); `GlueRig_EndArmHubToDiff_B.scad`, rewritten. Their meshes
+    moved to `Reference/meshes/950-Tooling/`.
+  - `Hardware/Models/gt2_pulley.scad` gains a second tooth form, `gt2_teeth_rounded_2d`.
+  - `Hardware/Models/end_cap_channel.scad` (new): the Motor End Caps' wire channel, motor pocket and
+    lug root fillets, taken out of `500-ExternalGear/511-001_ExGearMotorEndCap.scad`. The bore's round
+    now runs onto the channel's ceiling fillets as a ball that touches both surfaces, where it stood up
+    to 0.1 mm off the fillet in a lip. The channel now runs on until it meets a lug or opens into the
+    notch, and the lugs' root fillets run up onto its seat rounds, as both references have them; it
+    stopped at the notch floor, leaving the fillets as a ledge under it. In `revised` the channel's
+    sides are rounded into the bore, as its ceiling is, down to the seat, and #511-001's raised seat
+    pockets the lugs' corner rounds as well as the motor's square.
+  - `Hardware/Models/600-StrainWave/630-005_FlexSplineAttach.scad` and its `render.json` checks.
+  - `Hardware/Models/600-StrainWave/c201_spline_seat.scad`: C-201's flexspline and wave-generator
+    envelopes.
+  - `Hardware/Models/render-check/` gains the `outline` check kind, which checks a profile across any
+    axis, and renders on Manifold only (`lib.rs`, `config.rs`, `meshes.rs`, `kinds.rs` and their tests;
+    [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson)). `100-Base/render.json` and
+    `300-Pivot/render.json` carry the gates, probes and fits of the converted parts;
+    `300-Pivot/render.json` is new.
+  - `Hardware/Models/assembly-clash.rs`: Manifold only, and `--set NAME=VALUE` to check an assembly at
+    several poses.
+- **Amends:** [CR-3A19](#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats)
+  (L1 = 231.50 mm, with the Base Long seated on the Base Mount Bottom).
+- **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
+  as a mesh, so changing one meant re-deriving it. The base stack seated the Base Long directly on the Base
+  Mount Bottom's top face, and L1 was 231.50 mm. Parts rendered on OpenSCAD 2021.01's CGAL, and a part
+  opted into an OpenSCAD Nightly's Manifold engine with `"engine": "manifold"`. The claw was a legacy
+  finger and Finger Cap whose fixed finger was not in the model set. The span XL-320's two M2 × 12 bolts
+  went in from the Span Mount's face, their heads in its counterbores, and the Static Finger was held by
+  its fits on the Span Mount alone.
+- **Now:** Each converted part is a `.scad` with two configurations. `config="previous"` recreates the
+  mesh and is gated on `scadmesh dist` at ±0.15 mm against it. `config="revised"` draws the part's print
+  fits from `print_fit.scad`. Each part's header owns its measured dimensions and fit list, and a view
+  sidecar names its features on the reference mesh and overlays the two renders on it.
+  - **100-Base:** the Base Clamp (`#100-001`). Its bolt hole, nut trap and head counterbore take the slip
+    clearance in `revised`. The reference's Ø74.500 bore cut 0.53 mm into each strake's outer corners,
+    which a flat strake's face puts outside the spigot, and 0.05 mm into the spigot, so `revised` moves
+    the whole ring outward until its bore clears the corners by the press clearance; the bolt flexes it
+    onto them ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate)).
+    `robot_assembly.scad` draws the clamp from source.
+  - **100-Base:** the Base Code Disc (`#100-002`), drawn as two 2D profiles and extruded. Each
+    profile is gated on its own against the mesh's section (`scadmesh outline`) before the part's
+    `dist` gate. Its bore takes the slip clearance on the Base Stator Holder's body in `revised`.
+  - **100-Base:** the Pivot Skirt (`#100-003`), a region split:
+    - the round skirt is one section extruded along its axis;
+    - the octagonal frame is one profile swept along an open octagon path, which `outline_gate`
+      checks across the flange;
+    - the lug and its hood are each a 2D section extruded along its own leg.
+
+    Its three screw holes take the slip clearance in `revised`. What its collar, slots and lug pocket
+    mate with is not recorded, so they take none.
+  - **100-Base:** the Base Mount Bottom (`#110-001`), a region split:
+    - the tower and spigot are one revolved profile;
+    - the flange is the arms' outline swept up with its round, and each gusset is a convex core grown
+      by a ball, so its top edges are rolling-ball rounds;
+    - the windows' rounds are lofted rolling-ball cutters;
+    - the tower's floor is a measured surface, sampled from the mesh over half a 60° sector and
+      mirrored, with exact cutters for every bore, counterbore and window through it.
+
+    Its mounting holes take the slip clearance on the M6 screw's shank and head in `revised`, so 008.2
+    no longer opens them at assembly
+    ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate)). `revised`
+    also trims the twelve z 24.000 plateaus the mesh carries on the floor beside its hub holes.
+    Its strake slots already clear the strakes, and its spigot is clamped. What its bores and hub holes
+    mate with is not recorded; they take their fits once virtual assembly shows it. Its mesh is coarse
+    (the tower's facets lie 0.226 inside the circle), so its `dist` gate is ±0.25.
+    `robot_assembly.scad` draws it from source, and the `plate` check of `100-Base/render.json` reads its mesh from
+    `Reference/meshes/100-Base/` to check the Base Mounting Plate's holes against.
+  - **100-Base:** the Base Long (`#120-001`), built side by side:
+    - one side of its rounded dodecagon is mirrored into a pair, and the pairs are patterned round
+      the axis, each corner rounded by an edge mask;
+    - each pair's two windows are elliptical prisms with lofted rolling-ball rounds on both faces;
+    - its six ribs are lofted through sections measured from the mesh.
+
+    Its bearing bores take the press clearance on the 6810s in `revised`, and the 28 mm the lower
+    bearing is pushed through to its seat takes the slip clearance. Its strake slots and all-thread
+    holes already clear what passes through them. Its outline is the Base Stator Holder's flange's,
+    so both now take it from `base_dodecagon.scad`. Its windows' rounds and the Base Mount Bottom's
+    share `window_round.scad`. 008.4 takes the lower bore's depth from its header (35.0 mm, not
+    35.5). `robot_assembly.scad` draws it from source. It is the first part rendered with OpenSCAD's
+    Manifold engine: OpenSCAD 2021.01's CGAL asserts on its windows' cuts and drops them
+    ([Checking a group](Hardware/Models/README.md#checking-a-group)).
+  - **100-Base:** the Base Stator Holder's flange is in the base stack. The base's virtual assembly
+    (`base_assembly.scad`, checked by `assembly-clash.rs`) put the flange, which is the Base Long's own
+    outline, across the joint where the Base Long seated on the Base Mount Bottom, with the all-thread
+    ends in the Mount and the flange's rim in the Base Clamp. The holder now seats on the Mount's top
+    face and the Base Long on its flange, which raises everything above by the flange's 4.000 mm:
+    **L1 = 235.50 mm** ([004 § Base mounting plate](specs/004-Mechanical-Architecture.md#base-mounting-plate),
+    [003 §Link lengths](specs/003-Kinematics.md#link-lengths)). The firmware file's 235.20 mm, which
+    CR-3A19 found no seated stack to produce, is the CAD chain's 231.200 mm with the flange added. The
+    stack fixes J1's holder, so J1's drive closes through it: the revised holder's flange stands
+    further along its body, where a 48 mm motor closes the stack
+    ([C-101](specs/007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)). The all-threads do not
+    thread into the Mount: each rod's lower nut is captured in the flange's face.
+  - **300-Pivot:** the Main Pivot (`#300-001`), a region split: the body is its outline swept with its
+    top edges rounded, cut at the +X end by four chamfers, and its +X face rounded all round by the
+    chamfered section swept to it; the J1 and J2 ends are one drum-and-windows pattern turned 45°, and
+    the flange is a revolved profile. Where rounds and fillets meet, each is the rolling ball the
+    reference was made with, lofted along its centre's path in the reference's order, and the rounds
+    that fade out have their setbacks measured by angle. `revised` clears what the base assembly's
+    clash check found it closer than its class to: the drum's underside stands the running clearance
+    above the Base Code Disc, and the side faces, and the J1 drum with them, stand the slip clearance
+    back from the Pivot Skirt's collar all the way up, but for a pad at each of the skirt's three
+    screws, which is a seat. The disc's thickness and the collar's span come from the two parts' files.
+    `base_assembly.scad` draws it from the `render.rs --meshes` build of its revised render and `robot_assembly.scad` from
+    source. Its five side-hole nut traps take the same M3 nut and are drawn one size in both configs,
+    although the reference's -135° trap is 0.2 mm larger. Its `previous` config passes the `dist` gate.
+  - **300-Pivot:** the Base Motor End Cap (`#311-001`): its notched outline, with the bore and the motor
+    holes, extruded full height; a cylinder cut above the land's foot for the step, and the motor's
+    square cut below the seat for the lugs; then the wire channel, shared with the Ex Gear Motor End Cap,
+    and the edges. Its lugs' corners, and the seat's edges at the three notches the channel does not
+    open into, are rounded on a notch 0.15 mm narrower, and its root fillets are R0.5, as the reference
+    has them. `revised` presses the land into the upper 6810 and the lugs onto the motor, trims
+    the lugs' root fillets off the motor's square rear edge, which they stood on, and trims the seat
+    back the press clearance off the motor's rear face, where the bore's round ran out on it. Its seat is at
+    z -1.700, not the -1.766 `base_assembly.scad` placed the motor on, so the motor and J1's drive stand
+    0.066 mm higher and the revised Base Stator Holder's flange rises 0.066 mm more.
+    `base_assembly.scad` reads the seat and the land from the part's file and draws its revised render.
+    It draws the 6810 envelopes at 360 facets, so their bore's chords stay within the clash check's
+    facet slack of the land.
+  - **300-Pivot:** the Pivot Code Disk (`#300-002`), drawn as two 2D profiles and extruded, as the Base
+    Code Disc is, with the hub and each peg revolved. The windows' corners are rounded by an opening of
+    the annulus between the spokes. Its bore takes the slip clearance on the Ø53 J2 drum in `revised`.
+  - **300-Pivot:** the Pivot Motor End Cap (`#312-001`) is the Base Motor End Cap with two features
+    changed: its outline's radius and the motor holes' counterbores. `312-001_MotorEndCapPivot.scad`
+    includes `311-001_MotorEndCapBase.scad` and sets those two, so the fits and every shared feature have
+    one source.
+  - **300-Pivot:** the pivot's virtual assembly (`pivot_assembly.scad`, checked by `assembly-clash.rs`)
+    places the Code Disk on the J2 drum, each Motor End Cap on its end with its 6810 and C-101, from the
+    `render.rs --meshes` build. It found the Main Pivot's flange standing 0.01 mm proud of the +X face
+    the disk's hub seats on, so the flange now ends on that face. The turns about J2 that no document
+    fixes are tracked as [DC-16](specs/009-Design-Completion.md#main-pivot-placement). The Pivot cap was
+    first turned to aim its wire channel straight at H2. That put its motor holes 6.2° off the pivot's H5,
+    so it now takes the turn nearest H2 that lines them up.
+  - **300-Pivot:** the Main Pivot's revised strake slots and nut traps are probed against their mates, as
+    007.2 requires. The tight S1 slot on 180° fitted the C-501 strip line to line across its width, and
+    the H6 traps stood 0.05 off the M3 nut where the slip fit needs 0.15. `revised` opens both to their
+    fits. The slots and holes that the reference already draws wider keep their size, and probes hold them
+    open. The Pivot Code Disk's 180 slits, six windows and bore are counted and measured on its render.
+  - **400-EndArm:** the New Belt Pulley (`#410-002`), a region split into a revolved hub and a revolved web,
+    with two 100T tooth rings of `gt2_pulley.scad`, four windows cut through the web and four pegs. Each
+    window is one outline of arcs, because an opening of the flanks' lens rounded far past the tip.
+  - **400-EndArm:** the End Arm Code Disk (`#410-003`), two constant sections extruded once each, as
+    `#300-002`'s are, with a revolved hub. Each of its 157 slits is cut as the hull of its sections at the
+    upper layer's two faces, since the slits are drafted. They are the gaps between bars of constant
+    width, so each slit widens outward.
+  - **400-EndArm:** the End Arm Hub Cap (`#420-002`), one 2D section extruded once, with one revolved
+    cutter for the stepped bore. The section's two sizes of concave round are two closings: the wheel
+    inside the ring by R3, then the whole by R1.15.
+  - **400-EndArm:** the Internal Outer and Inner Pulleys (`#421-001`, `#421-002`) and the Pulley Spacer
+    (`#421-006`), each a revolved meridional profile. The pulleys add a 40T tooth ring of `gt2_pulley.scad`
+    and cut their nut slots and set-screw holes, or strake slots. Both pulleys and the New Belt Pulley carry
+    `gt2_pulley.scad`'s rounded-tip GT2 form, not the plain one of the differential's pulleys; their
+    sections fit it to a fraction of the plain form's miss. `421-002_InternalInnerPulley.dwg` is not a
+    source: it is another revision, with five strake slots. The count stays 40T
+    ([004 § Wrist and differential](specs/004-Mechanical-Architecture.md#wrist-and-differential-j4j5)),
+    and `robot_assembly.scad` draws the two pulleys from source.
+  - **400-EndArm:** the Axis Intersection Half (`#410-001`), plan sections extruded along Z, with two 45 deg
+    faces cut by half-spaces and the channel's end a chamfered section extruded along Y. The 6807 pocket,
+    the lip, the L2 half-channel and the four strake slots are cut through everything afterwards.
+  - **400-EndArm:** the End Arm Hub (`#420-001`), three 2D layers extruded once each, with one revolved
+    cutter for the 6703 seat and one YZ section for the tube's counterbore. Its reference is two
+    overlapping bodies: the hub, and the spigot with an I-shaped stub inside the hub. The spigot's bore
+    is therefore blind at the counterbore's floor. The dist gate holds it against
+    `420-001_EndArmHub.bodies-unioned.stl` (new), the two bodies unioned beside the unchanged original,
+    since no render can lie on surfaces inside a solid (`Hardware/Models/README.md` § Known defects says
+    how it was made). `robot_assembly.scad` draws the hub from source with `use`.
+  - **400-EndArm:** the External Outer and Inner Pulleys (`#430-001`, `#430-002`) and
+    `external_pulley.scad` are rewritten as parametric parts: each is a revolved profile with the
+    shared 90T band, three windows and its nut or strake slots. `previous` was the reference mesh
+    imported unchanged and is now a recreation of it, gated against the mesh; `revised` keeps that body
+    inside `R_CUT` and adds the 108T rim. The mesh imports and the slow minkowski hub fits are gone, the
+    fits are drawn on the features, and the group's verify runs in seconds instead of about fifteen
+    minutes.
+  - **400-EndArm:** `400-EndArm/render.json` is new. It holds every part's checks, and the External
+    pulleys' render, fits and 108T count jobs moved from `700-Differential/render.json`.
+  - **400-EndArm:** `endarm_assembly.scad` places the group about J3 as 008.7 builds it, with its 6807,
+    6703 and MR128 bearings split into races, the C-502 and C-503 strakes, the stainless tube, the rods
+    and stubs of the L2 and L3 tubes; `assembly-clash.rs` checks it. What it found is fixed in the
+    revised parts: the faces of `#410-002`, `#410-003` and `#421-001` that bear on an inner race are
+    rebated clear of its shield; the floor of the Cap's (`#420-002`) MR128 pocket, which touched both
+    races, is relieved under the inner one; the External Inner Pulley's (`#430-002`) counterbore takes the slip fit on
+    the Internal Inner Pulley's journal; and the Pulley Spacer's (`#421-006`) hub is 0.45 shorter,
+    because the stack from the Cap's MR128 to the hub's 6703 was that much too long with the 6703 on
+    its seat. The manifest's exceptions give the reason for each place accepted as drawn. The assembly
+    also showed that 008.7 fitted two MR128s too late to reach their seats; they now go in at step 10,
+    the Internal Inner Pulley's rather than the Outer's, and steps 10–19 become 11–20
+    ([DC-17](specs/009-Design-Completion.md#end-arm-bearing-order)).
+    `robot_assembly.scad` now draws all ten parts in the frames this assembly gives them, so the
+    Axis Intersection Halves and the code disk leave its UNPLACED list, and the Internal and External
+    pulleys are turned end for end into the hub, where the CAD export had left them above it.
+  - `c101_motor.scad` owns the C-101's body length as `c101_len()`, which the base, external gear and
+    pivot assemblies read.
+  - **500-ExternalGear:** the Nut Holders (`#520-003`, `#520-004`), drawn as two 2D profiles and
+    extruded: the plate with the all-thread hole, and the nut trap above it. The reference held both
+    holders, mirror images of each other, in one mesh. `520-003_ExGearNutHold.scad` is now the one source
+    for both, and `holder` chooses A, B or both. Their curved face is the Ex Gear Mount's R38 bore.
+    `revised` draws the slip fits on the M3 all-thread hole and the nut trap.
+  - **500-ExternalGear:** the Ex Gear Mount Top (`#520-002`), a stack of 2D profiles, each extruded: the
+    block under the plate with its rebate and pockets, and the plate with the seat's three steps. The
+    block's face is the Ex Gear Mount's R38 bore. `revised` draws the press fit on the 6810's outer race in
+    the Ø65 seat and the slip fit on the M3 all-threads. `exgear_assembly.scad` draws the part from its
+    source, `ex_gear_mount_top("revised")`, and reads the seat from `mount_top_seat()`, where it imported
+    the mesh.
+  - **500-ExternalGear:** the External Gear (`#510-001`), a region split: one revolved profile for the
+    body, the 100-tooth GT2 ring (`gt2_teeth_rounded_2d`) extruded on each band, a closed groove (G1)
+    cut where the mesh was pinched, and the eight key slots. `revised` draws the press fits of the two
+    6810s. The socket above the upper bearing keeps its size, because the Stator Holder draws that fit.
+    `exgear_assembly.scad` draws the gear from its source, `external_gear("revised")`, and reads its seats
+    from accessor functions such as `gear_lower_shoulder()`, where it imported the mesh. The
+    `gear-fit-511-002` check in `render.json` reads the gear's mesh from `Reference/meshes/`.
+  - **500-ExternalGear:** the Ex Gear Mount (`#520-001`), a region split: the floor, column, bridge and
+    frame, each extruded from plan or side profiles. The front's S profile is turned about the bore's
+    axis. Three blends are made by rolling a ball: an opening under the bridge, a closing at the lower
+    plate, and a closing where the floor's tongue runs out into the column's side round on the slope, its
+    side filleted R20 in plan into the round's line. `revised` draws the slip fits on the screws, the
+    all-threads and the Nut Holder slots, and the press fits on the motors' pilots.
+    `exgear_assembly.scad` draws the part from its source, `ex_gear_mount("revised")`, and reads `mount_boss_top()` and `mount_floor_top()`.
+  - **500-ExternalGear:** `exgear_assembly.scad` now `use`s every part of the group. It draws the Nut
+    Holders A and B in the Mount's slots, with an M3 nut in each trap. It draws the two M3 x 46
+    all-threads with their locknuts on the Mount Top, and the four M3 x 10 screws up through the Mount's
+    floor into the End Cap's nuts. It draws the revised Wave Gen Coupler (`#630-004`) and the six M2 x 16
+    hub screws. Each 6810 is split into races. `exgear_assembly.clash.json` checks the whole stack with
+    `assembly-clash.rs`, and its exceptions state their reasons: the seat rounds and the coupler's bore on
+    the shaft. What the check found is fixed in `revised`:
+    - the Mount's slot back wall stands slip off the holder's flat end;
+    - the Mount Top's block, tab and rebate stand slip off the Mount's back blocks and column step;
+    - the Mount Top's plate no longer reaches 0.27 mm into the back blocks;
+    - the Mount Top's shoulder (B2) and the gear's bore (B3) stand the running clearance off the 6810
+      inner races that turn past them;
+    - the Nut Holders' trap floor is back at 1.2 mm.
+
+    J3 takes its share of the coupler's spacing
+    ([DC-19](specs/009-Design-Completion.md#strain-wave-drive-spacing)) as 1.0 mm motor-down and
+    4.0 mm drive-up, the split every joint now takes, because the motor's Ø50.8 corners must stop above
+    the lower 6810's Ø50 bore. The End Cap's seat rises 2.0 mm in all, and its nut traps deepen to 4.0 mm for M3 x 10
+    screws, since an M3 x 12 would reach the motor. The Stator Holder seats the spline's flange on a boss
+    that rises into the Mount Top 6810's bore, with no recess, and counterbores its spigot's end over the
+    Attach's land. The End Cap screws' heads stand 1.0 mm below the floor (`endcap_screw_head_proud`),
+    echoed for review. 007 §7.8 and 007.1 §6 move those four screws from C-610 to C-609.
+  - **600-StrainWave:** C-201's flexspline cup is drawn to measurement: round at its closed end,
+    tapering to the oval the wave generator holds it in at the teeth. The wave generator fills that
+    oval at the flexspline's phase, and the circular spline's bore meets the teeth band's major axis.
+    The Base Stator Holder's bore clears the cup by more than the running clearance, which the guessed
+    Ø34.4 cup did not.
+  - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
+    motor's square front edge, which they stood on. The reference bore's Ø5.0 ridge, which gripped the
+    motor's shaft line to line, goes with the shaft from the revised Attach
+    ([DC-19](specs/009-Design-Completion.md#strain-wave-drive-spacing)).
+  - **600-StrainWave:** the Wave Gen Coupler (`#630-004`) is two extruded 2D layers, the hex body and
+    the keyed stub, each gated by `outline`, with the nut pockets cut as one section extruded across
+    the axis. The reference's stub is a Cone Drive wave generator's Ø10 keyed input, which C-201's Ø6H7
+    bore does not take; earlier readings took the key's 6.0 for a Ø6 band, and 007.1 is corrected. The
+    revised render's solid Ø6 stub on the hex
+    ([DC-18](specs/009-Design-Completion.md#wave-gen-coupler-stub)) left the coupler short of C-101's
+    standard shaft, and is superseded by the reviewer's decision
+    ([DC-19](specs/009-Design-Completion.md#strain-wave-drive-spacing)): the revised coupler is one
+    round piece, gripping the shaft's flat with an M3 grub screw in a captured nut, and each J1/J2 drive
+    stands further from its motor to take it. The revised Motor End Caps (`#311-001`, `#312-001`) seat the
+    motor deeper; the Flex Spline Attach is thicker, opens its centre round the coupler with an access hole
+    to the grub screw, and drops its spigot; the Flex Spline Cap's bore opens; the Base and Pivot Stator
+    Holders (`#110-002`, `#200-002`) are shorter. `base_assembly.scad` draws the coupler and the six M2
+    hub screws, which become M2 × 16, and the clash manifest puts the coupler and the wave generator on the
+    shaft's side. 008.3 puts the coupler on the shaft before the Attach. J3's parts follow in 500. The bill
+    follows in 007 §7.3 and §7.8 and 007.1 §6: the hub screws move from C-601 to C-602; the coupler's two
+    M3 × 8 hex cap bolts (C-608, retired) become one M3 × 4 grub screw (C-618, new) and one M3 nut; and
+    J3's four Attach screws, which §7.8 did not count, join C-610. At the stub's root the coupler's
+    body rises to the stub as a cone and its shaft bore's end corner is rounded, for strength over the
+    shaft's tip, and the assemblies draw its grub screw and nut.
+  - **200-ArmBody:** the Stator Balancer (`#200-003`, an L section extruded), the Idler Plug
+    (`#210-001`/`#210-003`, revolved), both Belt Directors (`#210-004`, `#210-005`, one revolved sleeve in
+    `belt_director.scad` at two lengths), the Belt Director Pulley (`#210-002`, two flanges and a tooth
+    ring, the ring gated by `outline`) and the Calibration Arrows (`#200-006`, a revolved hub and cup with
+    the arm and post extruded, the arm's top edges chamfered). Their fits, and the pulley's teeth against
+    the pulleys it routes between, wait for the arm body's virtual assembly, so `revised` draws none yet.
+    The pulley's teeth are not the 40T pulleys' plain round groove but a narrower groove rounded into the
+    tip, so `gt2_pulley.scad` carries both forms. The Pivot Stator Holder's flange is the Arm Body's own
+    outline, so both take it from `arm_body_outline.scad`.
+  - **200-ArmBody, the Arm Body (`#200-001`):** a region split in `200-001_ArmBody.scad`: the tube and ears,
+    the boxes cut by the cone envelope, the windows, the encoder flap, the four lug columns as
+    sandwiches of extruded plates and webs with one stepped hole each, the collar, and the cuts. D's
+    fill and its fillets are balls rolled along each edge, each one smooth skin of its section at
+    stations along the edge, the ball eased down round D's corner; the +Y ear has its R1 fillet onto
+    the box's cone, which the -Y ear lacks in the reference. `revised` gives C the same fillets as D
+    (its edge turning the corner onto the box's side as D's does), and both ears their fillet along
+    the cone's edge with the tube, where `previous` keeps the cone under C's plate. The mesh held a zero-width slit between a plate and the tube, closed in place (README
+    § Known defects). `dist` is held at 0.65 and not 0.15: three joins between the fillets stay 0.4
+    to 0.47 off the mesh, where the CAD blends and a ball's path does not. `robot_assembly.scad`
+    draws the part from the source.
+  - **200-ArmBody, the solid revolves:** the dist gates of the Idler Plug and both Belt Directors failed
+    once they moved off 2021.01 (**Render engine**, below). Each
+    profile has an edge on the axis, which the snapshot revolves into zero-area facets that `dist`
+    measures inside the part (README, "A revolve with an edge on the axis"). `belt_director.scad`'s
+    `solid_revolve()` now draws those three parts and the Belt Director Cap, and the gates read 0.003,
+    0.004 and 0.005 mm.
+  - **700-Differential** was already `.scad`; it is brought to the same checks. Each part has a view
+    sidecar. The Split Gear halves' references were two solids each, never united, and 710-002's also
+    held a zero-thickness sheet; both are corrected in place (`Hardware/Models/README.md` § Known
+    defects). Five parts are now gated on `dist` at ±0.15 mm: 710-001 to 710-004 and 720-003, with
+    710-002's `previous` keeping its reference's off-axis wire bore. 710-001's `compare` check, which
+    the united mesh's new seams defeat, is replaced by its `dist` gate. 720-001, 720-002
+    and 730-002 stay on `compare`, and `render.json` says why. Diff Body A's four constant sections
+    and the End Pulley's tooth band are gated by `outline`. The fits 007.2 requires and nothing
+    probed are probed: the shaft's rear journal and MR128 seat, Body B's +X 6703 seat, the Shaft
+    Pulley's spline bore, and the Code Disk's and Body A's wider holes.
+  - **700-Differential:** the virtual assembly (`diff_assembly.scad`) is checked by
+    `assembly-clash.rs`, each bearing drawn as its two rings and shield, which end where
+    `diff_params.scad`'s race model puts them. Its pairwise `interference` checks, which the clash
+    manifest covers, are gone; `keepout-730-002` stays, because it covers every turn of the gears. The
+    check found running faces too close to parts that turn past them, and `revised` clears each: the
+    shaft's three inner-race shoulders and the Diff Gear Axle's boss reached onto a shield, and are
+    turned to `inner_shoulder_d()`; the MR128 shoulders stood 0.4 off the inner ring, so
+    `shoulder_bore()` now also clears it; Body B's shaft lands stood 0.3 off the shaft, and the
+    shaft's collar 0.25 above Body A's plate. The Split Gear Top's 6703 pocket, which narrowed at its
+    mouth, is bored straight. The two halves' bonded joint, the brads, the Split Gear's assembly 6703,
+    the thrust race on Body B's tube and the boss's chamfer by the MR128 shield are recorded as
+    exceptions, each with its reason. The assembly now draws the three CF strakes, and the clash
+    check covers them. Matched against the differential's assembly video, two of
+    [008.6](specs/008-Assembly.md#0086-differential)'s steps are withdrawn
+    ([DC-11(e)](specs/009-Design-Completion.md#procurement-data)). **The MR85 in the Diff Gear Axle's
+    back** goes, with its [007.6](specs/007-Bill-of-Materials.md#0076-differential) row: the rod is
+    epoxied flush with that face, and the End Pulley moves with it. **The second Diff Keeper** goes
+    too, along with the keeper the steps snapped over the shaft end. The differential takes one
+    keeper, and the other moves to [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub) for the
+    Front Panel. The steps after them are renumbered.
+  - **800-Harness:** the Main Pivot Plug (`#800-003`, `#800-004`) is one turned profile cut to its
+    half, with the wire pocket under the flange: a 45° gable at full width outside the spigot, only
+    6.0 wide inside it. `800-003_MainPivotPlugA.scad` owns both halves; `800-004_MainPivotPlugB.scad`
+    includes it, selects B and gains the radial wire channel. `revised` draws the spigot's slip fit in
+    the Main Pivot's Ø14 H1 bore.
+  - **800-Harness:** the Fan Bracket (`#800-005`) and the PCB Bracket (`#800-006`) are each a plan
+    profile extruded, checked by `outline` gates; the Fan Bracket's aperture steps through a 45° taper
+    to its lip, and `revised` opens the fan's 40 × 40 seat by the press fit. The reference glues the
+    fan; `revised` instead drops the taper and lip and fills the seat's corners with flush triangular
+    pads, through which four standard Ø5 × 10 flat-head fan screws
+    ([C-619](specs/007.1-Parts-Catalog.md#6-fasteners), new), sunk in countersinks, cut their thread
+    in the fan's holes ([C-716](specs/007.1-Parts-Catalog.md#7-electronics-and-wiring)).
+    `fan_hardware.scad` draws the fan and its screws as stand-ins, which the bracket's view shows in
+    place, and the `render` check gains `defines` to export them. The
+    unused MR85 in [007.7](specs/007-Bill-of-Materials.md#0077-end-arm-hub), which no step of
+    [008.7](specs/008-Assembly.md#0087-end-arm-hub) fits, is dropped. The PCB Spacer
+    (`#800-007`) is a tube. The brackets' M3 holes, which the screws thread themselves into, take a
+    new fourth class in `print_fit.scad`, **tap**: a pilot drawn 0.20 per side under the screw, Ø2.6
+    for M3 ([007.2 § Print fits](specs/007.2-Printed-Parts.md#print-fits)). The fit coupon gains an M3
+    pilot to qualify it. The holes the reference already draws wider than their class are probed open.
+  - **800-Harness:** the 6-pin strain reliefs (`#810-001`, `#810-002`) are a plate and a comb, whose
+    section `strain_relief_comb.scad` owns for both; the Bottom adds its rails. They seat on each
+    other and grip the wires, so no print fit applies and `revised` draws the reference.
+  - **800-Harness:** the Wire Entry (`#800-001`, `#800-002`) is a saddle drawn in its own frame,
+    turned 45° to the pipe, with the pipe's bore carried on into the saddle's bore by its own section
+    in the saddle's back face. Its chamfer and the rounds at the channel's crease are lofted along their
+    edges. `800-002_WireEntryRight.scad` includes the Left's source and mirrors it. The saddle's mate
+    is open ([DC-14](specs/009-Design-Completion.md#power-inlet-mounting)), so no fit is drawn.
+  - **800-Harness:** the photointerrupter shrouds are stacks of sections about their code disk's
+    axis, with the emitter's and detector's bores cut through them as runs of sections (round, flanged,
+    slit, keyed, coned) that `photo_shroud.scad` owns for every shroud. `revised` opens a bore drawn
+    line to line on a T-1 package's body by the press fit; bores the reference draws wider, and the
+    counterbores round the flanges, keep their size, and the #19 nails keep their drive fit. The Angle
+    shroud's (`#824`) two pegs locate it in Diff Body A's Ø3.99 pin holes, and `revised` narrows them
+    by the slip fit. The halves
+    of each pair take what they share from one include (`shroud_base.scad`, `shroud_pivot.scad`,
+    `photo_shroud_rotate.scad`).
+  - **800-Harness:** the Rotate shroud's clip (`#825` A) clamps Diff Body B's Ø31 shell, and its flats
+    meet that part's flats at y ±12.46; `revised` opens the clip's bore by the slip fit.
+  - **800-Harness:** the End Arm shroud (`#823`) is a region split of a revolved half shell, its front
+    skin, and the opto block lofted between its plans. The voids, the keyhole and the beam bores are
+    cut from it. Its fillets are balls rolled along each edge. The mesh held a skin of the shell inside the
+    block's pocket, cut away in place (README § Known defects). `dist` is held at 0.6 and not 0.15:
+    the blends stand up to 0.58 off the mesh where the CAD's blend is not a ball's path. The beam
+    bores already clear the T-1 packages, so `revised` draws no fit.
+  - **950-Tooling:** the ten jigs are drawn as 2D layers, each extruded once and lapping `SEAM_LAP` into
+    the next. The L2 rig's three parts share their joint outline (`l2_rig_joint.scad`), the L3 rig's two
+    share their joint and span (`l3_rig_joint.scad`), and the solder jigs share their lead groove
+    (`lead_groove.scad`). `GlueRig_EndArmHubToDiff_B` no longer imports the superseded mesh: it draws the
+    corrected part directly and states the span once, as `L3_SPAN` (307.500). The superseded mesh stays in
+    `Reference/superseded/` as the record of the part as shipped.
+  - **950-Tooling, fits:** a rig meets the parts it holds as the robot's own mating parts do
+    ([007.2](specs/007.2-Printed-Parts.md#tooling--glue-rigs)). `config="revised"` draws the slip fit on
+    the L2 rig's boss, collar and key, the Ex Gear rig's ring, keys and M3 holes, and the L3 rig's tab,
+    rim and four tubes, which enter the End Arm Hub's peg holes as the New Belt Pulley's pegs do. It
+    draws the press fit on the L3 rig's boss in its 6703 and on the L2 rig's ear slots, which are
+    #410-001's strake slots, at their size and on their centres. The Epoxy Holder, the Epoxy Plunger and
+    both solder jigs have no mate dimensions on record, so `revised` is `previous`. The survey corrects
+    the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
+  - **900-ToolInterface:** the Roll Driver (`#911-002`) is a stack of constant sections taken from its
+    STEP, which is the same revision as the STL. `revised` presses its Ø17 shaft into the two 6703s,
+    and sizes the bolt heads' counterbores at press, not slip, so that each keeps the reference's 0.50 of
+    wall to the lower 6703's bore (slip would leave 0.40, narrower than one extrusion line), and its drive bosses at press in the roll XL-320's horn holes. The flange keeps the reference's thickness, because the roll
+    XL-320's horn stands 0.3 under it. The
+    Span Driver (`#912-002`) is a stack of sections with the spline end's round revolved; `revised`
+    presses its spline bore and key slot onto the XL-320's output and opens the M2.6 bolt hole and counterbore
+    to slip. Its STEP is a different revision (its head, key slot and counterbore differ), so the STL is
+    the source. The Span Mount (`#912-001`) is a region split. Its STEP is a different
+    revision (the underside ring is 1.5 deep where the STL's is 2.5), so the STL is the source. `revised`
+    opens the strake slot to the C-502 strip's press fit, the reference's slot being 0.09 narrower than
+    the strip, the bolt holes and washer pockets to slip, fills the servo bolts' counterbores
+    (**Gripper mount**, below), presses the span XL-320's nubs in its rivet holes, short of their floors,
+    and chamfers the base plate's round 0.3 on its top edge, so that the Pinion Gear's tips run past it at
+    the running clearance. The Roll Body (`#911-001`) has only an STL,
+    which is the source. It is a region split whose windows' and slot's rounds are lofted by
+    `100-Base/window_round.scad`; `revised` presses the 6703s' seats and the roll XL-320's rim, and opens the bolt holes and
+    counterbores to slip. The parallel gripper is the baseline
+    ([DC-20](specs/009-Design-Completion.md#gripper-design)); the claw, published as the Dynamic Finger
+    `#920-002` and Finger Cap `#920-003`, is retired and designed new (**930-ClawGripper**, below).
+    The parallel gripper's moving parts had no mesh, so each is gated against its STEP tessellated by
+    `scadmesh tessellate`. The Pinion Gear (`#920-005`) is a stack of sections with involute teeth and
+    revolved chamfers; `revised` opens its drive slot, nut trap, bolt hole and key recess to slip, drops
+    the 0.5 collar that slip would leave a 0.25 wall in, and chamfers the teeth's top corner 0.5 so that
+    they run 0.5 clear of the Static Finger's hub slot. The Pinion Bearing EXT (`#920-006`) is a stack of
+    sections; `revised` presses its journal into the MR128s, opens its bore and keyed nose to slip, and
+    carries the dropped collar as a spacer at the nose's root. The Dynamic Finger (`#920-002`) is a
+    region split of its STEP, with the slit the Static Finger's reference carries mirrored and closed in
+    its own ([Known defects](Hardware/Models/README.md#known-defects)); `revised` opens the rail's faces
+    that bear in the T-slot to slip and sets the rack's flanks back by the slip clearance, since both
+    STEPs draw the mesh with no backlash. The Static Finger (`#920-001`) is a
+    region split of its STEP. It had no mesh, so it is gated against the glTF body, with the 0.008 mm
+    slit that body and the STEP both carry at the lug boss's root closed in place
+    ([Known defects](Hardware/Models/README.md#known-defects)); `revised` presses the MR128 seats and the strake slot, opens the column socket and the
+    plate slot to slip, and stands the plate slot off the span XL-320 at press. The Tool Interface Body (`#900-001`) is a region split of its STEP, whose lobe
+    pockets' rims are rolled onto the top cone by a ball. It had no mesh either, so it is gated against
+    its STEP tessellated by `scadmesh tessellate`; `revised` opens the M3 and M2 bolt holes and nut traps
+    to slip and the servo pocket to press. `tool_assembly.scad` places the roll stack, the Span Mount
+    and both XL-320s (`c102_servo.scad`), but not the body (its header gives why), each part by a
+    feature it carries, with the roll bolts, washers, nuts and satin pins and the span servo's bolts;
+    `920-ParallelGripper/gripper_assembly.scad` places the parallel gripper on it the same way, with its
+    MR128s and its M3 bolt and nut. The revised parts that meet an XL-320 take its dimensions from `c102_servo.scad`, which no servo has
+    yet been measured against, and the satin pins are trimmed flush with the Roll Driver's drive bosses
+    (008.11 step 6). `assembly-clash.rs` passes the tool interface. The gripper fails only where the
+    Span Driver's bore stands inside the span XL-320's case, which waits on measuring the servo's spline
+    (`gripper_assembly.scad`'s header gives why). A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
+    Pinion Gear's and the rack's 12 teeth each.
+  - **930-ClawGripper:** the claw is designed: a pincer whose curved fingers swing equal and opposite,
+    geared down 3.4:1 from the span XL-320, in a closed housing, in a 2-finger and a 4-finger build
+    ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A,
+    `#930-001` is the Claw Finger and `#930-002` the Claw Gear; `#930-003` Claw Body, `#930-004` Claw
+    Pinion, `#930-005` Claw Cap, `#930-006` Claw Axle, `#930-007` Claw Follower Finger and `#930-008`
+    Claw Finger Wall are new, and `#930-009` to `#930-012` are the 4-finger build's longer body, wall,
+    axle and pinion, each drawn from the 2-finger part's source. The Claw Pinion takes the Span Driver's
+    place on the servo's spline, drawing its spline end from `912-002_SpanDriver.scad`. C-621, the
+    M3 × 16 mm set screw that pins the fingers and the Claw Gear, is new. `claw2_assembly.scad` and
+    `claw4_assembly.scad` are checked closed, half open and fully open; they fail only where the
+    Span Driver's does, at the span XL-320's spline.
+  - **Gripper mount:** the gripper's socket on the Span Mount is `span_socket.scad`, which the Static
+    Finger and the Claw Body share. The span XL-320's two M2 × 12 bolts go in through the gripper's base
+    (the socket's S4) and hold the base, the Span Mount and the servo together, so the base needs no
+    fastener of its own. The Static Finger's base is squared and its floor lowered to cover the bolts,
+    and its hub's cylinder runs on round the whole circle as a guard over the Pinion Gear's teeth.
+    008.11 steps 26 and 46 change to suit: the bolts stay in step 26 for the wiring steps and move at
+    step 46, with the span connector unplugged if its wires are in the way. The assemblies draw each set
+    of fasteners as one part.
+  - **Render engine:** every part and check renders on one OpenSCAD development snapshot's Manifold
+    engine, found through `$OPENSCAD`; CGAL is retired, and `render.json` refuses an `engine` field.
+    Manifold reads a hand-built solid's winding and keeps a shared face as a wall, where CGAL forgave
+    both, so the parts were fixed rather than excused:
+    - two hand-built solids were inside out, `110-001`'s floor (`floor_body()`) and the end caps' side
+      blend (`end_cap_channel.scad`, `side_blend()`), and are now wound outward; `311-001` and
+      `511-001` pass their dist gates at 0.149 and 0.119 mm, as on CGAL;
+    - `110-001`'s flange was cut on the tower's own facets, so its inner face lay on the tower's face.
+      The arms now reach `FLANGE_LAP` inside the tower (its comment gives the figures): dist 0.220 mm
+      against 0.25;
+    - `100-003`'s L1 and L2, and L3's two parts, each met on the plane where L2 starts. L1 and L3's
+      part in it now run `SEAM_LAP` past the plane (its comment gives the figures): dist 0.045 mm
+      against 0.15;
+    - `710-001`'s Manifold render is CGAL's surface with fewer triangles, so its miss was `compare`
+      reading vertex rings in the reference's tooth toes that only CGAL's tessellation had matched. The
+      clone check now ignores those rings (its note gives the figures) and reads 0.058 mm.
+
+    `Hardware/Models/README.md` (*A shared face is not a join*) owns the rule these fixes follow.
+- **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
+  Manifold, because BOSL2's `fillet()`, `join_prism()`, `offset_sweep()` and `minkowski`-based rounding
+  are slow on CGAL, and CGAL asserts on the tangent cutters a fillet makes; one engine, so that no part
+  drifts onto one the gates no longer exercise. The claw, for parts the parallel gripper's jaws do not
+  suit, with both fingers in the model set. The gripper mount, because the span servo's two bolts were
+  already there.
+- **Status:** `[Specified]`. Every mesh-only printed part is converted. The Span Driver's and the Claw
+  Pinion's seat on the span XL-320's spline stays open until a servo is measured
+  ([DC-21](specs/009-Design-Completion.md#span-xl-320-spline-seat)).
+- **Re-derive:** Install a development snapshot as `Hardware/Models/README.md` describes, then run
+  `rust-script --force render.rs all --verify` once, so that `render.rs` is rebuilt against the crate,
+  and `cargo test` in `render-check/`. Run `render.rs <group> --verify` after editing a part, and
+  `assembly-clash.rs` on each `.clash.json`, with `--set OPEN=<value>` at closed, half open and fully
+  open for the gripper assemblies. Print each converted part from `config="revised"`.

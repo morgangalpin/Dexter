@@ -80,7 +80,7 @@ the arm**. The order in firmware is **L5 first, L1 last**.
 
 | Link | Span | Value | Version 1 | Delta from version 1 |
 |---|---|---|---|---|
-| L1 | Base mount → J2 axis | **231.50 mm** | 228.60 mm | +2.90 mm |
+| L1 | Base mount → J2 axis | **235.50 mm** | 228.60 mm | +6.90 mm |
 | L2 | J2 → J3 axis | 339.09 mm | 320.68 mm | +18.42 mm |
 | L3 | J3 → J4 axis | 307.50 mm | 330.20 mm | −22.70 mm |
 | L4 | J4 axis → J5 station | **39.50 mm** | 50.80 mm | −11.30 mm |
@@ -103,7 +103,7 @@ station on the model's arm axis, `y`, with an offset across it in `z`:
 
 | Span | Along the arm | Across the arm | Link length |
 |---|---|---|---|
-| Base mount → J2 | 231.200 mm | +55.000 mm | **L1 = 231.50 mm** — the printed stack |
+| Base mount → J2 | 231.200 mm | +55.000 mm | **L1 = 235.50 mm** — the printed stack |
 | J2 → J3 | 339.0945 mm | +10.000 mm | L2 = 339.09 mm ✔ |
 | J3 → J4 | 307.5000 mm | −47.000 mm | L3 = 307.50 mm ✔ |
 | J4 → J5 | 39.5000 mm | −20.000 mm | **L4 = 39.50 mm** |
@@ -114,8 +114,11 @@ represented in a five-length model. **L4 follows from that convention as 39.50 m
 `59500` is the J4 → J5 span's two components added together (39.500 + 20.000); it is neither the along-arm
 component nor the 44.275 mm distance between the two stations.
 
-**L1 is the printed stack's height.** The CAD's Base Long body is 0.300 mm shorter than the printed
-`#120-001`, so the built J2 axis stands 0.300 mm above the chain station; the stack is specified in
+**L1 is the printed stack's height.** The CAD chain seats the Base Long directly on the Base Mount
+Bottom, without the Base Stator Holder's 4.000 mm flange between them, and its Base Long body is 0.300 mm
+shorter than the printed `#120-001`. The built J2 axis therefore stands 4.300 mm above the chain station.
+The firmware file's `235200` is the chain station with the flange added and the CAD's Long; L1 differs from
+it by the Long's 0.300 mm. The stack is specified in
 [004 § Base mounting plate](004-Mechanical-Architecture.md#base-mounting-plate).
 
 **Design notes.**

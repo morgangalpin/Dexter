@@ -1,0 +1,27 @@
+{
+  "title": "L2 Glue Rig Key",
+  "subtitle": "Glue rig · reference mesh and GlueRig_ArmBodyToEndArmHub_C.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "L2 Glue Rig Key", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/GlueRig_ArmBodyToEndArmHub_C.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/rig-l2-c.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/rig-l2-c.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-0.068, 195.016, 15], "text": "K1 key 50 × 50 side, z 10 to 20"},
+    {"at": [24.932, 170.016, 15], "text": "K1 key lip notch 10 × 10, mid-side"},
+    {"at": [-0.068, 170.016, 20], "text": "K1 key top face z 20"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 170], "part": "ref", "span": 80, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 170], "part": "ref", "span": 80, "from": [0, 0, -1]},
+    {"label": "Key, oblique", "at": [0, 170, 15], "span": 70, "from": [0.5, -1, 0.7]},
+    {"label": "Notch", "at": [25, 170, 15], "span": 25, "from": [1, -0.5, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one draws the print fits listed in GlueRig_ArmBodyToEndArmHub_C.scad's header, which also owns the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

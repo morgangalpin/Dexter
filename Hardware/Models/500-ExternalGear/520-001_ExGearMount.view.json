@@ -1,0 +1,46 @@
+{
+  "title": "Ex Gear Mount",
+  "subtitle": "#520-001 · reference mesh and 520-001_ExGearMount.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Ex Gear Mount", "pn": "#520-001", "color": "#d4ad6b", "stl": "../Reference/meshes/500-ExternalGear/520-001_ExGearMount.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/520-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/520-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [37.335, 0, 4], "text": "F1 floor: disc R38 and tongue, z 0 … 4"},
+    {"at": [0, 11, 4], "text": "H1 Ø22 on the drive axis"},
+    {"at": [-30, 0, 0], "text": "W1 wire channel 12.8 wide, z 0 … 2"},
+    {"at": [22.65, 0, 4], "text": "S1 slot 12.8 × 3.3 (×4)"},
+    {"at": [15.5, 15.5, 6], "text": "B1 boss, cone r 5 → 3; M1 Ø3.2, Ø7 counterbore below"},
+    {"at": [-38.0, 0, 10], "text": "C1 column face: the bore R38 about (−0.655, 0)"},
+    {"at": [-50.0, 20, 8], "text": "C5 45° slope, R3 onto the sides"},
+    {"at": [-70.384, 0, 40], "text": "C2 back, x −70.384; K1 CF tube channel 29 × 29"},
+    {"at": [-64.1, 0, 73.2], "text": "C3 slant up to the C4 top step"},
+    {"at": [-50.0, 19.0, 76], "text": "C6 groove 1.0 deep, z 75 up"},
+    {"at": [-35.0, 25.0, 52], "text": "D1 bridge, R5 fillets under it; blend at the column's corner"},
+    {"at": [-31.5, 25.0, 66], "text": "FRONT_S: S profile to R41 and the R3 top round"},
+    {"at": [-24.346, 60, 66], "text": "P2 lower motor plate, z 62 … 70"},
+    {"at": [-45.346, 53.5, 101], "text": "G1 Ø22 in P3 (Ø18 lip), Ø23 in P2"},
+    {"at": [-60.846, 69, 101], "text": "G2 M3 holes, Ø3 / Ø7"},
+    {"at": [-26.0, 64, 101], "text": "P3 top plate: inner edge R16 about G1, R5.5 about G2"},
+    {"at": [-47.2, 75.5, 85], "text": "E1 wall, z 70 … 93.5"},
+    {"at": [-56.9, 23, 101], "text": "E2 back block"},
+    {"at": [-45.0, 10, 69.5], "text": "N1 Nut Holder slot, z 65.5 … 69.5"},
+    {"at": [-46.278, 10, 77.5], "text": "H2 all-thread hole Ø3"}
+  ],
+  "presets": [
+    {"label": "Front", "at": [-40, 0, 50], "span": 170, "from": [1, -0.3, 0.3]},
+    {"label": "Back", "at": [-40, 0, 50], "span": 170, "from": [-1, -0.4, 0.3]},
+    {"label": "Underside", "at": [-20, 0, 0], "span": 110, "from": [0.2, -0.3, -1]},
+    {"label": "Column's corner", "at": [-35, 20, 60], "span": 30, "from": [1, 0.6, 0.2]},
+    {"label": "Nut Holder slot", "at": [-45, 10, 67.5], "span": 25, "from": [1, 0.3, 0.4]},
+    {"label": "Motor box", "at": [-47, 53.5, 80], "span": 60, "from": [-1, 0.5, 0.6]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation; the revised one draws the slip fits on the screws, all-threads and Nut Holders and the press fit on the motors' pilots in the top plates. The plan profiles are gated separately in render.rs --verify, and the dimensions and fits are in 520-001_ExGearMount.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

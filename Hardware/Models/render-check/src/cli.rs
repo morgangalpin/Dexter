@@ -13,9 +13,10 @@ pub struct Args {
     pub jobs: Option<usize>,
     pub only: Option<String>,
     pub fail_fast: bool,
+    pub rebuild: bool,
 }
 
-pub const USAGE: &str = "usage: render.rs <group-dir | all> [--meshes] [--verify] [--config previous|revised] [--jobs N] [--only ID] [--fail-fast]";
+pub const USAGE: &str = "usage: render.rs <group-dir | all> [--meshes] [--verify] [--config previous|revised] [--jobs N] [--only ID] [--fail-fast] [--rebuild]";
 
 fn value(it: &mut impl Iterator<Item = String>, flag: &str) -> Result<String> {
     it.next().with_context(|| format!("{flag} needs a value\n{USAGE}"))
@@ -29,12 +30,13 @@ fn positive(text: &str) -> Result<usize> {
 /// `--verify` is implied.
 pub fn parse_args(args: impl IntoIterator<Item = String>) -> Result<Args> {
     let mut it = args.into_iter();
-    let mut a = Args { target: String::new(), meshes: false, verify: false, config: "revised".into(), jobs: None, only: None, fail_fast: false };
+    let mut a = Args { target: String::new(), meshes: false, verify: false, config: "revised".into(), jobs: None, only: None, fail_fast: false, rebuild: false };
     while let Some(arg) = it.next() {
         match arg.as_str() {
             "--meshes" => a.meshes = true,
             "--verify" => a.verify = true,
             "--fail-fast" => a.fail_fast = true,
+            "--rebuild" => a.rebuild = true,
             "--config" => a.config = value(&mut it, "--config")?,
             "--only" => a.only = Some(value(&mut it, "--only")?),
             "--jobs" => a.jobs = Some(positive(&value(&mut it, "--jobs")?)?),
@@ -77,6 +79,12 @@ mod tests {
         let a = parse("700-Differential/ --config previous --jobs 4 --only mesh-710-001 --fail-fast").unwrap();
         assert_eq!(a.target, "700-Differential");
         assert_eq!((a.config.as_str(), a.jobs, a.only.as_deref(), a.fail_fast), ("previous", Some(4), Some("mesh-710-001"), true));
+    }
+
+    #[test]
+    fn renders_are_reused_unless_a_rebuild_is_asked_for() {
+        assert!(!parse("g").unwrap().rebuild);
+        assert!(parse("g --rebuild").unwrap().rebuild);
     }
 
     #[test]

@@ -1,0 +1,29 @@
+{
+  "title": "Photointerrupter Shroud Base B",
+  "subtitle": "#821-B · reference mesh and 821_PhotointerrupterShroudBase_B.scad renders · what differs between them",
+  "cut": false,
+  "from": [0.6, -1, 0.8],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Photointerrupter Shroud Base B", "pn": "#821-B", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/821_PhotointerrupterShroudBase_B.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/821-B.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/821-B.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 5, 7], "text": "P1 plate x -11.462…20.533, y -8…10.943, z 0…7"},
+    {"at": [0, -6, 1.75], "text": "R1 rabbet: the -y edge at y -6 below z 3.5"},
+    {"at": [15.533, 1.898, 7], "text": "H1 screw hole Ø3.5, cone to Ø6.0 counterbore"},
+    {"at": [-8.462, 1.898, 7], "text": "H1 counterbore Ø6.0, tangent to the -x face"},
+    {"at": [12.012, -3.5, 7], "text": "N1 nail holes Ø1.5 at y -3.5, through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [4.5, 1.5, 7], "span": 40, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [4.5, 1.5, 0], "span": 40, "from": [0.3, -0.5, -1]},
+    {"label": "Rabbet", "at": [4.5, -6, 2], "span": 35, "from": [0.2, -1, -0.2]},
+    {"label": "Screw holes", "at": [15.5, 1.9, 5], "span": 25, "from": [0.3, -0.6, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation; the revised one is identical, because no fit is drawn (the screw holes and the nail holes already clear their fasteners). Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

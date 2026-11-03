@@ -1,0 +1,33 @@
+{
+  "title": "Internal Inner Pulley",
+  "subtitle": "#421-002 · reference mesh and 421-002_InternalInnerPulley.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Internal Inner Pulley", "pn": "#421-002", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/421-002_InternalInnerPulley.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/421-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/421-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [8.5, 0, -20], "text": "J1 tube Ø17.0, z -42.5…16.5"},
+    {"at": [8.99, 0, 17.75], "text": "J2 boss Ø17.98, z 16.5…19.0"},
+    {"at": [12.987, 0, 19.25], "text": "F1 lower flange Ø25.974, z 19.0…19.5, chamfered to Ø25.0"},
+    {"at": [11.6975, 0, 24.5], "text": "T1 40T GT2 band, tip Ø24.968, root Ø23.395"},
+    {"at": [13, 0, 29.75], "text": "F2 upper flange Ø26.0, z 29.5…30.0"},
+    {"at": [4.5, 0, 0], "text": "B1 bore Ø9.0, through"},
+    {"at": [6, 0, 28], "text": "B2 MR128 pocket Ø12.0, z 25.8…30.0, 45° cone to the bore"},
+    {"at": [2.5, 7, -42.4], "text": "S1 strake slots ×3, 5.0 × 2.0 at r 6.091…8.091, through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 35, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 35, "from": [0, 0, -1]},
+    {"label": "Pocket", "at": [0, 0, 28], "span": 24, "from": [0.3, -0.5, 1]},
+    {"label": "Strake slots, from below", "at": [2.5, 7, -42.5], "span": 16, "from": [0.3, -0.3, -1]},
+    {"label": "Teeth", "at": [11.7, 0, 24.5], "span": 8, "from": [1, -0.3, 0.4]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one presses J1 and B2 on their bearings; B1 and S1 already stand off their mates and keep their size, and the tooth count stays 40T. The dimensions and fits are in 421-002_InternalInnerPulley.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

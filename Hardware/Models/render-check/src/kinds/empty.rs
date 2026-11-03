@@ -65,7 +65,7 @@ mod tests {
         let f = fake("Current top level object is empty.\n");
         let o = check("interference", pair(), &f);
         assert!(o.ok && o.output.contains("730-001 and 720-004 do not overlap (revised)"), "{}", o.output);
-        let want = "openscad -o out/i.stl -D config=\"revised\" -D geometry=\"scad\" -D interference=[\"730-001\",\"720-004\"] asm.scad";
+        let want = "openscad --backend=manifold -o out/i.stl -D config=\"revised\" -D geometry=\"scad\" -D interference=[\"730-001\",\"720-004\"] asm.scad";
         assert_eq!(f.calls(), vec![want]);
     }
 
@@ -83,6 +83,6 @@ mod tests {
         let f = fake("Current top level object is empty.\n");
         let v = json!({"label": "clear of the teeth", "scad": "b.scad", "out": "out/k.stl", "config": "revised", "defines": ["keepout_check=true"]});
         assert!(check("keepout", v, &f).ok);
-        assert_eq!(f.calls(), vec!["openscad -o out/k.stl -D config=\"revised\" -D keepout_check=true b.scad"]);
+        assert_eq!(f.calls(), vec!["openscad --backend=manifold -o out/k.stl -D config=\"revised\" -D keepout_check=true b.scad"]);
     }
 }

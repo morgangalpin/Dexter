@@ -1,0 +1,34 @@
+{
+  "title": "Photointerrupter Shroud, Rotate: body",
+  "subtitle": "#825 A · reference mesh and 825_PhotointerrupterShroudRotate_A.scad renders · what differs between them",
+  "cut": false,
+  "from": [-1, -1.2, 0.8],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Rotate shroud body", "pn": "#825 A", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/825_PhotointerrupterShroudRotate_A.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/825-A.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/825-A.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -30.191, -12], "text": "W1 wall, back face y -30.191, disk side r 27.05 about the z axis"},
+    {"at": [0, -20.5, -11], "text": "T1 tab, arc r 20.5, wedge ±20°, z -14.5…-8.5"},
+    {"at": [-3.296, -23.013, -8.5], "text": "B1 beam bore Ø3.0, Ø3.1 in the revised render (press fit)"},
+    {"at": [3.059, -23.048, -14.5], "text": "B2 Ø4.0 counterbore for the T-1's flange, z -14.5…-13.5"},
+    {"at": [-2.095, -28.62, -6.5], "text": "N1 nail hole Ø1.0 (drive fit), z -24…-6.5"},
+    {"at": [0, -30.0, -31], "text": "N2 neck: three rounds under the wall, R5.02 into the clip"},
+    {"at": [-5.9, 0, -58.5], "text": "C1 hoop, bore r 15.5 (15.65 in the revised render), outer r 18.5"},
+    {"at": [-7.7, -17.0, -45], "text": "C2 chamfer 1.5 on the hoop's outer end edge"},
+    {"at": [0, 11.99, -52.04], "text": "C3 bar 4.0 wide on the -45° ray"},
+    {"at": [0, 14.0, -30.3], "text": "C1 tip, flat at y 12.46"}
+  ],
+  "presets": [
+    {"label": "Side", "at": [0, -12, -32], "span": 70, "from": [1, 0, 0]},
+    {"label": "Block", "at": [0, -25, -14], "span": 28, "from": [-0.6, -1, 0.9]},
+    {"label": "Clip", "at": [0, 0, -45], "span": 50, "from": [-1, -0.8, 0.5]},
+    {"label": "Underside", "at": [0, 0, -45], "span": 55, "from": [0.4, 0.3, -1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the clip's bore from r 15.5 to 15.65 (slip, on Diff Body B's printed shell) and the Ø3.0 beam bores to Ø3.1 (press, on the T-1 body); the counterbores, the nail holes and everything else keep their size. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

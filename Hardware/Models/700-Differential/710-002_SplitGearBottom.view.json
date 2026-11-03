@@ -1,0 +1,35 @@
+{
+  "title": "Split Gear Bottom",
+  "subtitle": "#710-002 · reference mesh and 710-002_SplitGearBottom.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Split Gear Bottom", "pn": "#710-002", "color": "#d4ad6b", "stl": "../Reference/meshes/700-Differential/710-002_SplitGearBottom.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/710-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/710-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -6.5, 4.2], "text": "B1 bottom bore lip Ø13, z 4…4.5"},
+    {"at": [0, -5.25, 5.5], "text": "F1 45° funnel down to the wire bore"},
+    {"at": [0, -4.25, 10], "text": "W1 wire bore Ø8.5, z 6.5…13.5"},
+    {"at": [0, -6, 15], "text": "M1 MR128 seat Ø12, z 13.5…17"},
+    {"at": [0, -9, 19], "text": "L1 sleeve bore Ø18, z 17…21"},
+    {"at": [0, -8.5, 6], "text": "S1 wire-guide stub Ø17, z 4…8.25"},
+    {"at": [0, -13.5, 10.9], "text": "O1 body wall Ø27, to z 11 (wall Ø24–27 up to z 22)"},
+    {"at": [0, -11.05, 9.87], "text": "O2 convex flank from the stub to the Ø27 wall"},
+    {"at": [13.5, 0, 12.75], "text": "H1 brad hole ×4 Ø1.5 at z 12.75, floored at Ø24"},
+    {"at": [0, -15.3, 24], "text": "T1 inner-half bevel teeth, 20T, crown z 18.5…27.37"}
+  ],
+  "presets": [
+    {"label": "Whole part", "at": [0, 0, 15], "span": 45, "from": [1, -1.2, 0.9]},
+    {"label": "Bottom", "at": [0, 0, 4], "span": 32, "from": [0.2, -0.3, -1]},
+    {"label": "Stub and flank", "at": [0, -10, 8], "span": 16, "from": [0.3, -1, 0.3]},
+    {"label": "Brad hole", "at": [13.5, 0, 12.75], "span": 10, "from": [1, -0.5, 0.4]},
+    {"label": "Bevel teeth", "at": [0, -14, 24], "span": 22, "from": [0.3, -1, 0.7]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, with the wire bore at the reference's measured offset, and the revised one draws the print fits listed in 710-002_SplitGearBottom.scad's header: the press clearance on the MR128 seat, the stub and the crown's Ø23 bore, the shoulders bored to the bearings' outer races, and the wire bore concentric. The dimensions are in that header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

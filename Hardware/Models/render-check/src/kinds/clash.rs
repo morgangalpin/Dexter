@@ -3,7 +3,7 @@
 //!
 //! OpenSCAD reports an empty intersection by refusing to export it; a seat,
 //! where two parts share a face, exports a surface with no volume. Both are
-//! clear. A CGAL failure returns one operand as the result, so its output says
+//! clear. A failed boolean returns one operand as the result, so its output says
 //! nothing about the pair, and the check fails rather than measure it.
 //!
 //! Fields: `scad`, `a`, `b`, `out`.
@@ -44,7 +44,7 @@ mod tests {
         let o = check("clash", fields(), &f);
         assert!(o.ok && o.output.contains("stator clear of attach"), "{}", o.output);
         assert_eq!(f.calls()[0], "remove out/clash.stl");
-        assert_eq!(f.calls()[1], "openscad -o out/clash.stl -D clash=[\"stator\",\"attach\"] asm.scad");
+        assert_eq!(f.calls()[1], "openscad --backend=manifold -o out/clash.stl -D clash=[\"stator\",\"attach\"] asm.scad");
     }
 
     #[test]

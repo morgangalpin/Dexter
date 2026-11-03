@@ -47,6 +47,18 @@ pub trait Tools: Send + Sync {
     fn ensure_parent(&self, _path: &str) -> Result<()> {
         Ok(())
     }
+    /// A file's modification time in nanoseconds and its size, if it is there.
+    fn stat(&self, _path: &str) -> Option<(u64, u64)> {
+        None
+    }
+    /// Write `text` to `path`.
+    fn write(&self, _path: &str, _text: &str) -> Result<()> {
+        Ok(())
+    }
+    /// What tells the OpenSCAD these tools run from another.
+    fn openscad_id(&self) -> String {
+        String::new()
+    }
 }
 
 impl Tools for Ctx {
@@ -69,6 +81,20 @@ impl Tools for Ctx {
         }
     }
 
+    fn stat(&self, path: &str) -> Option<(u64, u64)> {
+        let meta = std::fs::metadata(self.dir.join(path)).ok()?;
+        let time = meta.modified().ok()?.duration_since(std::time::UNIX_EPOCH).ok()?;
+        Some((time.as_nanos() as u64, meta.len()))
+    }
+
+    fn write(&self, path: &str, text: &str) -> Result<()> {
+        std::fs::write(self.dir.join(path), text).with_context(|| format!("writing {path}"))
+    }
+
+    fn openscad_id(&self) -> String {
+        format!("{} {:?}", self.openscad, self.stat(&self.openscad))
+    }
+
     fn openscad(&self, args: &[&str]) -> Result<Run> {
         run(&self.openscad, args, &self.dir)
     }
@@ -79,6 +105,57 @@ impl Tools for Ctx {
 
     fn size(&self, path: &str) -> Result<u64> {
         Ok(std::fs::metadata(self.dir.join(path)).with_context(|| format!("reading the size of {path}"))?.len())
+    }
+}
+
+/// The backend every render runs on, named to OpenSCAD so that a snapshot
+/// whose own default differs still renders on Manifold.
+pub const BACKEND: &str = "--backend=manifold";
+
+/// A toolset whose every OpenSCAD run is on Manifold.
+pub struct Manifold<'a>(pub &'a dyn Tools);
+
+impl Tools for Manifold<'_> {
+    fn openscad(&self, args: &[&str]) -> Result<Run> {
+        let mut full = vec![BACKEND];
+        full.extend(args);
+        self.0.openscad(&full)
+    }
+
+    fn scadmesh(&self, args: &[&str]) -> Result<(bool, Value)> {
+        self.0.scadmesh(args)
+    }
+
+    fn size(&self, path: &str) -> Result<u64> {
+        self.0.size(path)
+    }
+
+    fn read(&self, path: &str) -> Result<String> {
+        self.0.read(path)
+    }
+
+    fn exists(&self, path: &str) -> bool {
+        self.0.exists(path)
+    }
+
+    fn remove(&self, path: &str) {
+        self.0.remove(path)
+    }
+
+    fn ensure_parent(&self, path: &str) -> Result<()> {
+        self.0.ensure_parent(path)
+    }
+
+    fn stat(&self, path: &str) -> Option<(u64, u64)> {
+        self.0.stat(path)
+    }
+
+    fn write(&self, path: &str, text: &str) -> Result<()> {
+        self.0.write(path, text)
+    }
+
+    fn openscad_id(&self) -> String {
+        self.0.openscad_id()
     }
 }
 
@@ -173,7 +250,7 @@ pub fn build_part(tools: &dyn Tools, id: &str, scad: &str, config: &str) -> Resu
 
 /// Run one mesh job, reporting its line or its failure.
 pub fn mesh_outcome(tools: &dyn Tools, work: &MeshWork, config: &str) -> Outcome {
-    match build_part(tools, &work.id, &work.scad, config) {
+    match build_part(&Manifold(tools), &work.id, &work.scad, config) {
         Ok(line) => Outcome { ok: true, output: format!("  {} ... {line}\n", work.id) },
         Err(e) => Outcome { ok: false, output: format!("  {} ... FAILED\n{e:#}\n", work.id) },
     }
@@ -318,5 +395,81 @@ mod tests {
         assert!(ctx.openscad(&["x"]).is_err());
         assert!(ctx.scadmesh(&["x"]).is_err());
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_context_reads_writes_and_removes_files_in_its_group() {
+        let dir = std::env::temp_dir().join(format!("render-check-files-{}", std::process::id()));
+        let ctx = Ctx { dir: dir.clone(), openscad: String::new(), scadmesh: String::new() };
+        ctx.ensure_parent("sub/f.txt").unwrap();
+        std::fs::write(dir.join("sub/f.txt"), "text").unwrap();
+        assert!(ctx.exists("sub/f.txt"));
+        assert_eq!(ctx.read("sub/f.txt").unwrap(), "text");
+        ctx.remove("sub/f.txt");
+        assert!(!ctx.exists("sub/f.txt") && ctx.read("sub/f.txt").is_err());
+        assert!(ctx.ensure_parent("").is_ok());
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_context_measures_and_writes_files_and_names_its_openscad() {
+        let dir = std::env::temp_dir().join(format!("render-check-stat-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let ctx = Ctx { dir: dir.clone(), openscad: "os".into(), scadmesh: String::new() };
+        ctx.write("f.txt", "abc").unwrap();
+        let (time, size) = ctx.stat("f.txt").unwrap();
+        assert!(time > 0 && size == 3);
+        assert_eq!(ctx.stat("missing.txt"), None);
+        assert!(ctx.write("no/such/dir.txt", "x").is_err());
+        assert_eq!(ctx.openscad_id(), "os None");
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_engine_wrapper_passes_files_through() {
+        let dir = std::env::temp_dir().join(format!("render-check-wrap-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let ctx = Ctx { dir: dir.clone(), openscad: "os".into(), scadmesh: String::new() };
+        let t = Manifold(&ctx);
+        t.write("f.txt", "ab").unwrap();
+        assert_eq!(t.stat("f.txt").map(|s| s.1), Some(2));
+        assert_eq!(t.openscad_id(), ctx.openscad_id());
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn a_toolset_without_files_measures_nothing() {
+        struct Bare;
+        impl Tools for Bare {
+            fn openscad(&self, _: &[&str]) -> Result<Run> {
+                bail!("unused")
+            }
+            fn scadmesh(&self, _: &[&str]) -> Result<(bool, Value)> {
+                bail!("unused")
+            }
+            fn size(&self, _: &str) -> Result<u64> {
+                bail!("unused")
+            }
+        }
+        assert!(Bare.stat("f").is_none() && Bare.write("f", "x").is_ok() && Bare.openscad_id().is_empty());
+    }
+
+    #[test]
+    fn a_toolset_without_files_reads_nothing() {
+        struct NoFiles;
+        impl Tools for NoFiles {
+            fn openscad(&self, _: &[&str]) -> Result<Run> {
+                bail!("unused")
+            }
+            fn scadmesh(&self, _: &[&str]) -> Result<(bool, Value)> {
+                bail!("unused")
+            }
+            fn size(&self, _: &str) -> Result<u64> {
+                bail!("unused")
+            }
+        }
+        NoFiles.remove("f");
+        assert!(!NoFiles.exists("f") && NoFiles.read("f").is_err());
+        assert!(NoFiles.openscad(&[]).is_err() && NoFiles.scadmesh(&[]).is_err() && NoFiles.size("f").is_err());
     }
 }

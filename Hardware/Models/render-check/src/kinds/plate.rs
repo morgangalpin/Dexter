@@ -120,7 +120,7 @@ mod tests {
         let o = check("plate", fields(), &f);
         assert!(o.ok, "{}", o.output);
         assert!(o.output.contains("robot-side 2 holes, worst offset 0.010 mm"), "{}", o.output);
-        assert_eq!(f.calls()[1], "openscad -o out/p.dxf -D PROJECT=1 p.scad");
+        assert_eq!(f.calls()[1], "openscad --backend=manifold -o out/p.dxf -D PROJECT=1 p.scad");
     }
 
     #[test]

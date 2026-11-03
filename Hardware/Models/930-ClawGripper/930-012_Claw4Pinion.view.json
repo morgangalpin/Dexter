@@ -1,0 +1,20 @@
+{
+  "title": "Claw Pinion, 4-finger",
+  "subtitle": "#930-012 · revised render of 930-012_Claw4Pinion.scad (designed, no reference mesh) · feature names",
+  "from": [1, -0.4, 0.3],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#7a7a3a", "stl": "out/revised/930-012.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, 9.5, 7.99], "text": "G1 pinion: 10 teeth, module 1.25, profile-shifted 0.415"},
+    {"at": [0, 20, 4.3], "text": "C1 collar Ø8.6, run on from the teeth to the cap"},
+    {"at": [0, 28.388, 3.95], "text": "J1 journal Ø8 in the cap's MR128, its wall 1.05 about A1"}
+  ],
+  "presets": [
+    {"label": "Along the axis", "at": [0, 10, 0], "span": 55, "from": [1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. 930-004_ClawPinion.scad draws it and gives its features: it is #930-004 with its collar run on, as the cap stands further forward in this build. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

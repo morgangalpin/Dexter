@@ -16,13 +16,13 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #100-001 | Base Clamp | 1 | `100-001_BaseClamp.stl` |  |
-| #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.stl` |  |
-| #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.stl` | ⚠️ |
-| #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.stl` | ⚠️ |
-| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline in `revised` |
+| #100-001 | Base Clamp | 1 | `100-001_BaseClamp.scad` | print fits on the bolt in `revised` |
+| #100-002 | Base Code Disc | 1 | `100-002_BaseCodeDisc.scad` | print fit on the bore in `revised` |
+| #100-003 | Pivot Skirt | 1 | `100-003_PivotSkirt.scad` | ⚠️; print fits on the screw holes in `revised` |
+| #110-001 | Base Mount Bottom | 1 | `110-001_BaseMountBottom.scad` | ⚠️; print fits on the mounting holes in `revised` |
+| #110-002 | Base Stator Holder | 1 | `110-002_BaseStatorHolder.scad` | seats the C-201 spline, with the flange 2.7 nearer the floor (DC-19), in `revised` |
 | #110-004 | Base Mounting Plate | 1 | `110-004_BaseMountingPlate.scad` | machined, not printed |
-| #120-001 | Base Long | 1 | `120-001_BaseLong.stl` |  |
+| #120-001 | Base Long | 1 | `120-001_BaseLong.scad` | print fits on the bearing bores in `revised` |
 
 ## 200-ArmBody — Arm body and belt directors
 
@@ -30,15 +30,15 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.stl` |  |
-| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised` |
-| #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.stl` |  |
-| #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.stl` |  |
-| #210-001 | Belt Director Caps | 3 | `210-001_IdlerPlug.stl` | ⚠️ |
-| #210-002 | Belt Director Pulley | 1 | `210-002_BeltDirectorPulley.stl` |  |
-| #210-003 | Idler Plug | 1 | `210-001_IdlerPlug.stl` | ⚠️ |
-| #210-004 | Small Belt Director | 2 | `210-004_SmallBeltDirector.stl` |  |
-| #210-005 | Large Belt Director | 1 | `210-005_LargeBeltDirector.stl` |  |
+| #200-001 | Arm Body | 1 (+1 tooling) | `200-001_ArmBody.scad` | `revised` fillets C onto the +Y box as D is, and the -Y ear onto its box as the +Y ear is, opens A and takes D through, and draws its print fits, the upper 6810's press bore from L2 up among them (the flap holes wait) |
+| #200-002 | Pivot Stator Holder | 1 | `200-002_PivotStatorHolder.scad` | seats the C-201 spline in `revised`, its floor 0.3 deeper, where J2's drive closes on it (DC-19), and its body at the slip fit to the Arm Body's Ø65.1 bore |
+| #200-003 | Stator Balancer | 4 | `200-003_StatorBalancer.scad` | draws no fits of its own; the Arm Body's K1 and the holder's ear slot carry them |
+| #200-006 | Calibration Arrows | 2 | `200-006_CalibrationArrows.scad` | fits wait for the arm body's assembly |
+| #210-001 | Belt Director Caps | 3 | `210-001_BeltDirectorCap.scad` | `revised` only: no reference mesh exists; Ø9.5 x 2.0 disc, 5.0 mm plug |
+| #210-002 | Belt Director Pulley | 1 | `210-002_BeltDirectorPulley.scad` | `revised` bores Ø8.1 for the MR85 |
+| #210-003 | Idler Plug | 1 | `210-003_IdlerPlug.scad` | `revised` is the tube the D column's through hole takes, Ø11 x 2.0 head; its reference mesh is `210-001_IdlerPlug.stl` |
+| #210-004 | Small Belt Director | 2 | `210-004_SmallBeltDirector.scad` | `revised`: Ø9.5 x 2.0 head, shank 16.7 at the press clearance |
+| #210-005 | Large Belt Director | 1 | `210-005_LargeBeltDirector.scad` | `revised`: Ø9.5 x 2.0 head, shank 26.0 at the press clearance |
 
 ## 300-Pivot — Main pivot and motor end caps
 
@@ -46,10 +46,10 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #300-001 | Main Pivot | 1 | `300-001_MainPivot.stl` |  |
-| #300-002 | Pivot Code Disk | 1 | `300-002_PivotCodeDisk.stl` |  |
-| #311-001 | Motor End Cap (Base) | 1 | `311-001_MotorEndCapBase.stl` |  |
-| #312-001 | Motor End Cap (Pivot) | 1 | `312-001_MotorEndCapPivot.stl` |  |
+| #300-001 | Main Pivot | 1 | `300-001_MainPivot.scad` | clears the code disc and the skirt's collar in `revised` |
+| #300-002 | Pivot Code Disk | 1 | `300-002_PivotCodeDisk.scad` | `revised` opens the bore by the slip clearance on the J2 drum |
+| #311-001 | Motor End Cap (Base) | 1 | `311-001_MotorEndCapBase.scad` | press fits on the 6810 and the motor, and the seat raised 1.0 (DC-19), in `revised` |
+| #312-001 | Motor End Cap (Pivot) | 1 | `312-001_MotorEndCapPivot.scad` | `include`s #311-001's source with its own outline and counterbores; press fits on the 6810 and the motor in `revised` |
 
 ## 400-EndArm — End arm hub and pulleys
 
@@ -57,16 +57,16 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #410-001 | Axis Intersection Half | 2 (+2 tooling) | `410-001_AxisIntersectionHalf.stl` |  |
-| #410-002 | New Belt Pulley | 1 | `410-002_NewBeltPulley.stl` |  |
-| #410-003 | End Arm Code Disk | 1 | `410-003_EndArmCodeDisk.stl` |  |
-| #420-001 | End Arm Hub | 1 (+1 tooling) | `420-001_EndArmHub.stl` | ⚠️ |
-| #420-002 | End Arm Hub Cap | 1 | `420-002_EndArmHubCap.stl` |  |
-| #421-001 | Internal Outer Pulley | 1 | `421-001_InternalOuterPulley.stl` |  |
-| #421-002 | Internal Inner Pulley | 1 | `421-002_InternalInnerPulley.stl` |  |
-| #421-006 | Pulley Spacer | 2 | `421-006_PulleySpacer.stl` |  |
-| #430-001 | External Outer Pulley | 1 | `430-001_ExternalOuterPulley.scad` | 108T in `revised` |
-| #430-002 | External Inner Pulley | 1 | `430-002_ExternalInnerPulley.scad` | 108T in `revised` |
+| #410-001 | Axis Intersection Half | 2 (+2 tooling) | `410-001_AxisIntersectionHalf.scad` | `revised` presses the 6807 pocket and the strake slots; the channel keeps the reference's size |
+| #410-002 | New Belt Pulley | 1 | `410-002_NewBeltPulley.scad` | `revised` presses the journals and the 6703 pockets and slips the rod holes and pegs |
+| #410-003 | End Arm Code Disk | 1 | `410-003_EndArmCodeDisk.scad` | `revised` slips the rod holes on the M3 all-thread |
+| #420-001 | End Arm Hub | 1 (+1 tooling) | `420-001_EndArmHub.scad` | ⚠️ `revised` presses the 6703 seat, the spigot and the tube's counterbore and slips the cap's opening |
+| #420-002 | End Arm Hub Cap | 1 | `420-002_EndArmHubCap.scad` | `revised` presses the MR128 pocket and slips the rod holes |
+| #421-001 | Internal Outer Pulley | 1 | `421-001_InternalOuterPulley.scad` | 40T in both configs; `revised` presses the bore on the tube and slips the nut slots and set-screw holes |
+| #421-002 | Internal Inner Pulley | 1 | `421-002_InternalInnerPulley.scad` | 40T in both configs; `revised` presses the journal and the MR128 pocket; the strake slots and bore already clear their mates |
+| #421-006 | Pulley Spacer | 2 | `421-006_PulleySpacer.scad` | `revised` is `previous`: the bore already stands the press clearance off the tube |
+| #430-001 | External Outer Pulley | 1 | `430-001_ExternalOuterPulley.scad` | 108T in `revised`; `previous` is a parametric recreation of the 90T mesh |
+| #430-002 | External Inner Pulley | 1 | `430-002_ExternalInnerPulley.scad` | 108T in `revised`; `previous` is a parametric recreation of the 90T mesh |
 
 ## 500-ExternalGear — External gear and mount
 
@@ -74,13 +74,13 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #510-001 | External Gear | 1 | `510-001_ExternalGear.stl` |  |
-| #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat deepened in `revised` |
-| #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.scad` | seats the C-201 spline in `revised`; floor lowered to close J3's stack |
-| #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.stl` |  |
-| #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.stl` |  |
-| #520-003 | Nut Holder A | 1 | `520-003_ExGearNutHold.stl` | ⚠️ |
-| #520-004 | Nut Holder B | 1 | `520-003_ExGearNutHold.stl` | ⚠️ |
+| #510-001 | External Gear | 1 | `510-001_ExternalGear.scad` | `revised` presses both 6810s into their seats |
+| #511-001 | Ex Gear Motor End Cap | 1 | `511-001_ExGearMotorEndCap.scad` | seat and nut traps deepened in `revised` |
+| #511-002 | Ex Gear Stator Holder | 1 | `511-002_ExGearStatorHolder.scad` | seats the C-201 spline on a boss in `revised`, where J3's stack closes; spigot's end counterbored over the Attach |
+| #520-001 | Ex Gear Mount | 1 (+1 tooling) | `520-001_ExGearMount.scad` | `revised`: slip fits on the screws, the all-threads and the Nut Holder slots; press fits on the motors' pilots |
+| #520-002 | Ex Gear Mount Top | 1 | `520-002_ExGearMountTop.scad` | `revised` presses the 6810 into its seat and slips the all-threads |
+| #520-003 | Nut Holder A | 1 | `520-003_ExGearNutHold.scad` | `holder="A"`; `revised` draws slip fits on the all-thread and the nut |
+| #520-004 | Nut Holder B | 1 | `520-003_ExGearNutHold.scad` | `holder="B"`, A's mirror image; `revised` draws slip fits on the all-thread and the nut |
 
 ## 600-StrainWave — Strain-wave drive adapters
 
@@ -88,9 +88,9 @@ matches rest on naming convention alone. Check the geometry before committing fi
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.stl` |  |
-| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare removed and C-201 hub seated in `revised`; J3 sets `hub_drop` |
-| #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.scad` | C-201 hub clamped in `revised` |
+| #630-004 | Wave Gen Coupler | 3 | `630-004_WaveGenCoupler.scad` | one round piece in `revised`: a grub-screw grip on the shaft's flat and a Ø6 stub up C-201's wave generator bore (DC-19), with its fits |
+| #630-005 | Flex Spline Attach | 3 | `630-005_FlexSplineAttach.scad` | flare and ridge removed, hub face raised for the Wave Gen Coupler (DC-19) and C-201 hub seated in `revised`; J3 sets `hub_drop` |
+| #630-006 | Flex Spline Cap | 3 | `630-006_FlexSplineCap.scad` | C-201 hub clamped and the bore opened over the Wave Gen Coupler in `revised` |
 
 ## 700-Differential — Differential
 
@@ -104,16 +104,16 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #710-001 | Split Gear Top | 1 | `710-001_SplitGearTop.scad` | rendered |
-| #710-002 | Split Gear Bottom | 1 | `710-002_SplitGearBottom.scad` | rendered |
-| #710-003 | Diff Keeper | 2 | `710-003_DiffKeeper.scad` | rendered |
-| #710-004 | Rotate Code Disk | 1 | `710-004_RotateCodeDisk.scad` | rendered |
-| #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.scad` | rendered |
-| #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.scad` | rendered |
-| #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.scad` | rendered |
+| #710-001 | Split Gear Top | 1 | `710-001_SplitGearTop.scad` | rendered; `dist`-gated |
+| #710-002 | Split Gear Bottom | 1 | `710-002_SplitGearBottom.scad` | rendered; `dist`-gated |
+| #710-003 | Diff Keeper | 2 | `710-003_DiffKeeper.scad` | rendered; `dist`-gated |
+| #710-004 | Rotate Code Disk | 1 | `710-004_RotateCodeDisk.scad` | rendered; `dist`-gated |
+| #720-001 | Diff Gear Shaft | 1 | `720-001_DiffGearShaft.scad` | rendered; `compare`-gated (blunted tips) |
+| #720-002 | Diff Gear Axle | 1 | `720-002_DiffGearAxle.scad` | rendered; `compare`-gated (reference sheet) |
+| #720-003 | Diff End Pulley | 1 | `720-003_DiffEndPulley.scad` | rendered; `dist`- and `outline`-gated |
 | #720-004 | Diff Shaft Pulley | 1 | `720-004_DiffShaftPulley.scad` | rendered, `revised` only |
-| #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.scad` | rendered |
-| #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.scad` | rendered |
+| #730-001 | Diff Body A | 1 | `730-001_DiffBodyA.scad` | rendered; `dist`- and `outline`-gated |
+| #730-002 | Diff Body B | 1 | `730-002_DiffBodyB.scad` | rendered; `compare`-gated (not yet a faithful recreation) |
 
 ## 800-Harness — Wire harness
 
@@ -121,35 +121,66 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #800-001 | Wire Entry Left | 1 | `800-001_WireEntryLeft.stl` |  |
-| #800-002 | Wire Entry Right | 1 | `800-002_WireEntryRight.stl` |  |
-| #800-003 | Main Pivot Plug A | 1 | `800-003_MainPivotPlugA.stl` |  |
-| #800-004 | Main Pivot Plug B | 1 | `800-004_MainPivotPlugB.stl` |  |
-| #800-005 | Fan Bracket | 1 | `800-005_FanBracket.stl` |  |
-| #800-006 | PCB Bracket | 2 | `800-006_PCBBracket.stl` |  |
-| #800-007 | PCB Spacer | 4 | `800-007_PCBSpacer.stl` |  |
-| #810-001 | 6-pin strain relief, top | 10 | `810-001_6PinStrainReliefTop.stl` |  |
-| #810-002 | 6-pin strain relief, bottom | 10 | `810-002_6PinStrainReliefBottom.stl` |  |
-| #821 | Photointerrupter shroud — base | 1 | `821_PhotointerrupterShroudBase_A.stl` | ⚠️ |
-| #822 | Photointerrupter shroud — pivot | 1 | `822_PhotointerrupterShroudPivot_A.stl` | ⚠️ |
-| #823 | Photointerrupter shroud — end arm | 1 | `823_PhotointerrupterShroudEndArm.stl` |  |
-| #824 | Photointerrupter shroud — angle | 1 | `824_PhotointerrupterShroudAngle.stl` |  |
-| #825 | Photointerrupter shroud — rotate | 1 | `825_PhotointerrupterShroudRotate_A.stl` | ⚠️ |
+| #800-001 | Wire Entry Left | 1 | `800-001_WireEntryLeft.scad` |  |
+| #800-002 | Wire Entry Right | 1 | `800-002_WireEntryRight.scad` | `include`s #800-001's source and draws its mirror image |
+| #800-003 | Main Pivot Plug A | 1 | `800-003_MainPivotPlugA.scad` | slip fit in the Main Pivot's H1 bore in `revised` |
+| #800-004 | Main Pivot Plug B | 1 | `800-004_MainPivotPlugB.scad` | `include`s #800-003's source and selects B, with the wire channel; slip fit as A's |
+| #800-005 | Fan Bracket | 1 | `800-005_FanBracket.scad` | press fit on the fan, and flush corner pads, countersunk for its four screws, in `revised`; `fan_hardware.scad` draws the fan and screws as stand-ins |
+| #800-006 | PCB Bracket | 2 | `800-006_PCBBracket.scad` |  |
+| #800-007 | PCB Spacer | 4 | `800-007_PCBSpacer.scad` |  |
+| #810-001 | 6-pin strain relief, top | 10 | `810-001_6PinStrainReliefTop.scad` | comb shared with #810-002 (`strain_relief_comb.scad`) |
+| #810-002 | 6-pin strain relief, bottom | 10 | `810-002_6PinStrainReliefBottom.scad` | comb shared with #810-001 |
+| #821 | Photointerrupter shroud — base | 1 | `821_PhotointerrupterShroudBase_A.scad` | ⚠️ |
+| #822 | Photointerrupter shroud — pivot | 1 | `822_PhotointerrupterShroudPivot_A.scad` | ⚠️; press fits on the T-1 packages in `revised` |
+| #823 | Photointerrupter shroud — end arm | 1 | `823_PhotointerrupterShroudEndArm.scad` | measured against its mesh as repaired in place ([README § Known defects](README.md#known-defects)) |
+| #824 | Photointerrupter shroud — angle | 1 | `824_PhotointerrupterShroudAngle.scad` | press fits on the T-1 packages in `revised` |
+| #825 | Photointerrupter shroud — rotate | 1 | `825_PhotointerrupterShroudRotate_A.scad` | ⚠️; slip fit of the clip on Diff Body B and press fits on the T-1 packages in `revised` |
 
-## 900-ToolInterface — Tool interface and gripper
+## 900-ToolInterface — Tool interface
 
 [007.2 §](../../specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711)
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #900-001 | Tool Interface Body | 1 | `900-001_ToolInterfaceBody.f3d` |  |
-| #911-001 | Roll Body | 1 | `911-001_RollBody.stl` |  |
-| #911-002 | Roll Driver | 1 | `911-002_RollDriver.stl` |  |
-| #912-001 | Span Mount | 1 | `912-001_SpanMount.stl` |  |
-| #912-002 | Span Driver | 1 | `912-002_SpanDriver.stl` |  |
-| #920-001 | Static Finger | 1 | `920-001_StaticFinger.f3d` | ⚠️ |
-| #920-002 | Dynamic Finger | 1 | `920-002_DynamicFinger.stl` |  |
-| #920-003 | Finger Cap | 1 | `920-003_FingerCap.stl` |  |
+| #900-001 | Tool Interface Body | 1 | `900-001_ToolInterfaceBody.scad` | ⚠️ `revised` opens the M3 and M2 bolt holes and nut traps to slip and presses the servo pocket |
+| #911-001 | Roll Body | 1 | `911-001_RollBody.scad` | `revised` presses the 6703s' seats and the roll XL-320's rim, and opens the bolt holes and counterbores to slip |
+| #911-002 | Roll Driver | 1 | `911-002_RollDriver.scad` | `revised` presses the shaft into the two 6703s and sizes the bolt heads' counterbores and the horn's drive bosses at press |
+| #912-001 | Span Mount | 1 | `912-001_SpanMount.scad` | `revised` opens the strake slot to the strip's press fit and the bolt holes and washer pockets to slip, sizes the span XL-320's nubs at press, and fills the servo bolts' counterbores |
+| #912-002 | Span Driver | 1 | `912-002_SpanDriver.scad` | `revised` presses the spline bore and key slot onto the XL-320's output and opens the M2.6 bolt hole and counterbore to slip |
+
+## 920-ParallelGripper — Parallel gripper (baseline)
+
+[007.2 §](../../specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711)
+
+| PBS # | Part | Qty | File | |
+|---|---|---|---|---|
+| #920-001 | Static Finger | 1 | `920-001_StaticFinger.scad` | ⚠️ `revised` presses the MR128 seats and the strake slot, opens the column socket and plate slot to slip, stands the plate slot off the span XL-320 at press, takes the span XL-320's two bolts through its squared base, and guards the Pinion Gear's teeth |
+| #920-002 | Dynamic Finger | 1 | `920-002_DynamicFinger.scad` | ⚠️ `revised` opens the rail's bearing faces in the T-slot to slip and gives the rack teeth slip backlash |
+| #920-005 | Pinion Gear | 1 | `920-005_PinionGear.scad` | ⚠️ `revised` opens the drive slot, nut trap, bolt hole and key recess to slip, moves the spacer collar onto the EXT, and chamfers the teeth's top corner |
+| #920-006 | Pinion Bearing EXT | 1 | `920-006_PinionBearingExt.scad` | ⚠️ `revised` presses the journal into the two MR128s and opens the bolt bore and keyed nose to slip, and carries the spacer collar from the Pinion Gear |
+
+## 930-ClawGripper — Claw gripper (alternate, quantity 0)
+
+[007.2 §](../../specs/007.2-Printed-Parts.md#not-in-the-build-list)
+
+| PBS # | Part | Qty | File | |
+|---|---|---|---|---|
+| #930-001 | Claw Finger | 0 | `930-001_ClawFinger.scad` | Designed, `revised` only: opens the hex bore to slip on a Claw Axle's seat, thins the hub's teeth by slip backlash, and taps the set-screw hole |
+| #930-002 | Claw Gear | 0 | `930-002_ClawGear.scad` | Designed, `revised` only: opens the hex bore to slip on a Claw Axle's seat, thins the sector's teeth by slip backlash, and taps the set-screw hole |
+| #930-003 | Claw Body | 0 | `930-003_ClawBody.scad` | Designed, `revised` only: presses the MR128 seats, takes the Static Finger's fits on the Span Mount, taps the cap's holes, stands its grooves and rim at slip, and runs the moving parts clear |
+| #930-004 | Claw Pinion | 0 | `930-004_ClawPinion.scad` | Designed, `revised` only: the Span Driver's spline end and its fits, the teeth thinned by slip backlash, and the journal pressed into the cap's MR128 |
+| #930-005 | Claw Cap | 0 | `930-005_ClawCap.scad` | Designed, `revised` only: presses the three MR128 seats, stands its groove at slip, and opens the bolt holes to slip |
+| #930-006 | Claw Axle | 0 | `930-006_ClawAxle.scad` | Designed, `revised` only: presses the journals into the MR128s and opens the cross holes to slip |
+| #930-007 | Claw Follower Finger | 0 | `930-007_ClawFollowerFinger.scad` | `930-001_ClawFinger.scad` with `SIDE = "follow"`: the drive finger mirrored, its hub's teeth moved half a pitch |
+| #930-008 | Claw Finger Wall | 0 | `930-008_ClawFingerWall.scad` | Designed, `revised` only: stands its lips at slip in the grooves, and the blades at running clearance |
+| #930-009 | Claw Body, 4-finger | 0 | `930-009_Claw4Body.scad` | `930-003_ClawBody.scad` with `$claw_fingers = 4` |
+| #930-010 | Claw Finger Wall, 4-finger | 0 | `930-010_Claw4FingerWall.scad` | `930-008_ClawFingerWall.scad` with `$claw_fingers = 4` |
+| #930-011 | Claw Axle, 4-finger | 0 | `930-011_Claw4Axle.scad` | `930-006_ClawAxle.scad` with `$claw_fingers = 4` |
+| #930-012 | Claw Pinion, 4-finger | 0 | `930-012_Claw4Pinion.scad` | `930-004_ClawPinion.scad` with `$claw_fingers = 4` |
+
+Quantities for the 2-finger and the 4-finger claw are
+[007.11](../../specs/007-Bill-of-Materials.md#00711-tool-interface--gripper)'s; `claw_params.scad` holds the
+dimensions the parts share, and `claw_gears.scad` draws their teeth and the housing's outline.
 
 ## 950-Tooling — Tooling
 
@@ -157,26 +188,25 @@ shared stem.
 
 | PBS # | Part | Qty | File | |
 |---|---|---|---|---|
-| #830-001 | Solder jig — 6-pin holder | 2 | `830-001_SolderJig6PinHolder.stl` |  |
-| #830-002 | Solder jig — LED rig | 1 | `830-002_SolderJigLEDRig.stl` |  |
+| #830-001 | Solder jig — 6-pin holder | 2 | `830-001_SolderJig6PinHolder.scad` | `revised` is `previous`: the lead grooves rest a bought header, with no fit; shares `lead_groove.scad` with #830-002 |
+| #830-002 | Solder jig — LED rig | 1 | `830-002_SolderJigLEDRig.scad` | `revised` is `previous`; shares `lead_groove.scad` with #830-001 |
 
 ## One geometry, two part numbers
 
-Two files each satisfy two BOM lines. They are stored once, under the lower number:
+One file satisfies two BOM lines. It is stored once, under the lower number:
 
 | File | Also serves | Status |
 |---|---|---|
-| `200-ArmBody/210-001_IdlerPlug.stl` | #210-003 Idler Plug | No file named "Belt Director Cap" exists in any archive; `IdlerPlug` is the assumed geometry ([008.5](../../specs/008-Assembly.md) presses caps in behind the bearings). Whether #210-001 and #210-003 are one part or two is **unresolved** |
-| `500-ExternalGear/520-003_ExGearNutHold.stl` | #520-004 Nut Holder B | Only one `ExGearNutHold` geometry exists for the two BOM lines |
+| `500-ExternalGear/520-003_ExGearNutHold.scad` | #520-004 Nut Holder B | The source draws both holders, B as A's mirror image, chosen by `holder` |
 
 ## Parts shipped as an A/B pair
 
 [007.2](../../specs/007.2-Printed-Parts.md) counts one photointerrupter shroud per joint, but three of them
 ship as two halves. **Both halves must be printed.** They are stored as `_A` and `_B`:
 
-- `800-Harness/821_PhotointerrupterShroudBase_A.stl` + `_B.stl`
-- `800-Harness/822_PhotointerrupterShroudPivot_A.stl` + `_B.stl`
-- `800-Harness/825_PhotointerrupterShroudRotate_A.stl` + `_B.stl`
+- `800-Harness/821_PhotointerrupterShroudBase_A.scad` + `_B.scad` (body and the plate it stands on)
+- `800-Harness/822_PhotointerrupterShroudPivot_A.scad` + `_B.scad` (the halves either side of the code disk)
+- `800-Harness/825_PhotointerrupterShroudRotate_A.scad` + `_B.scad` (the clip with its tab, and the cap over the tab)
 
 ## Flagged rows
 
@@ -195,13 +225,21 @@ ship as two halves. **Both halves must be printed.** They are stored as `_A` and
 - **#420-001 End Arm Hub** — `EndArmHubJoined` was selected. `EndAxisHubXLSolidDeCant` was the other
   candidate and has been discarded; recover it from
   [thing:3781990](https://www.thingiverse.com/thing:3781990) if the hub does not fit.
-- **#920-001 Static Finger** — **No mesh exists in any archive.** It ships only as `.f3d` and `.step`.
-  Export an STL from `900-ToolInterface/920-001_StaticFinger.step` before printing. This is the one part in
-  the build list that cannot be sliced as delivered.
+- **#900-001 Tool Interface Body** — No mesh was ever published, but the `.scad` renders it. Its
+  reference mesh is its STEP, tessellated; the [header](900-ToolInterface/900-001_ToolInterfaceBody.scad)
+  gives how.
+- **#920-001 Static Finger** — No mesh was ever published, but the `.scad` renders it. Its reference
+  mesh is exported from the glTF body; the [header](920-ParallelGripper/920-001_StaticFinger.scad) gives how.
+- **#920-002 Dynamic Finger, #920-005 Pinion Gear and #920-006 Pinion Bearing EXT** — No mesh was ever
+  published; each reference mesh is its STEP, tessellated.
+- **#930-001 to #930-012, the claw** — Designed, with no reference mesh. The legacy claw finger and Finger
+  Cap they replace, published as `920-002_DynamicFinger.stl` and `920-003_FingerCap.stl`, are retired to
+  `Reference/superseded/` under their published numbers; see
+  [009 § The claw](../../specs/009-Design-Completion.md#the-claw).
 
 ## Glue-rig jigs
 
-`950-Tooling/` holds eight jig bodies shipped in the HD sets:
+`950-Tooling/` holds eight jig bodies shipped in the HD sets, every one a `.scad`:
 
 `GlueRig_ArmBodyToEndArmHub_A/B/C`, `GlueRig_ArmBodyToExGear`, `GlueRig_EndArmHubToDiff_A/B`,
 `GlueRig_EpoxyHolder`, `GlueRig_EpoxyPlunger`
@@ -210,10 +248,12 @@ Each is a trough that holds both ends of one bonded CF span at its finished spac
 the span each one jigs in
 [007.2's tooling section](../../specs/007.2-Printed-Parts.md#tooling--glue-rigs).
 
-`GlueRig_EndArmHubToDiff_B` is the one that is not the shipped mesh. Its `.scad` is the source of record
-and the `.stl` is rendered from it: the file shortens the shipped body by 2.000 mm so the pair holds the
-specified L3 span ([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)), and the mesh it edits is kept as
-`Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`.
+Their meshes are in `Reference/meshes/950-Tooling/`. `GlueRig_EndArmHubToDiff_B` is the one that is not the
+shipped mesh. Its `.scad` is the source of record: it draws the part directly, with the specified L3 span
+([CR-3A17](../../CHANGES.md#cr-3a17-dc-11-resolved-to-a-coupon-print)) stated once as `L3_SPAN` in
+`l3_rig_joint.scad`. Its reference in `Reference/meshes/950-Tooling/` is the corrected part, 2.000 mm
+shorter than the shipped body, and the shipped mesh is kept as
+`Reference/superseded/GlueRig_EndArmHubToDiff_B_span309500.stl`, the record of the part as shipped.
 
 ## Print-fit coupon
 

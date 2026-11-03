@@ -75,7 +75,6 @@ BRG_6703  = [17, 23, 4];    // #620-003, 5 seats in the differential's own parts
                             //   and a 6th that 008.6 step 2 puts in #420-001
 BRG_MR128 = [8, 12, 3.5];   // #620-002, 4 seats: shaft ends, and one per Split
                             //   Gear half. Both counts corrected under DC-11(e)
-BRG_MR85  = [5, 8, 2.5];    // #620-001, into the Diff Gear Axle's back bore
 THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 
 // The bore of a shoulder that bears on a bearing's OUTER race: halfway across
@@ -83,18 +82,37 @@ THRUST_AXK0819 = [8, 19, 2];   // #710-006 needle thrust; 2x AS0819 races 8x19x1
 // race and brakes the bearing it locates. In "revised" every such shoulder is
 // bored to this; "previous" keeps the reference's own bores. Body A's Ø20
 // waist under its 6703 was already bored to it.
-function shoulder_bore(spec) = (spec[0] + spec[1]) / 2;
+// A shoulder at that bore must also stand the running clearance off the inner
+// ring, which turns past it: an MR128's section is too narrow for both at
+// halfway, so its shoulders are bored to the clearance instead.
+function shoulder_bore(spec) =
+    max((spec[0] + spec[1]) / 2, inner_ring_od(spec) + 2 * RUN);
+
+// The diameter of a shoulder that bears on a bearing's INNER race alone:
+// halfway across the inner ring, so its edge stands clear of the shield, which
+// turns with the outer race. In "revised" every such shoulder is turned to
+// this; "previous" keeps the reference's own diameters.
+function inner_shoulder_d(spec) = (spec[0] + inner_ring_od(spec)) / 2;
+
+// Where a bearing's rings end, for the faces that have to clear them. Each ring
+// takes BRG_RING of the bearing's section and the shield the middle between
+// them, as 300-Pivot's 6810 stand-ins have it; the catalogue's own ring
+// diameters are not recorded in this project. diff_hardware.scad draws the
+// clash check's stand-in races to these, and a running face that turns past a
+// ring stands RUN off it.
+BRG_RING = 0.3;
+function inner_ring_od(spec) = spec[0] + BRG_RING * (spec[1] - spec[0]);
+function outer_ring_id(spec) = spec[1] - BRG_RING * (spec[1] - spec[0]);
 
 L3_TUBE_ID  = 20.07;        // C-505 L3 tube's inside dimension, over Body A's
                             //   20 x 20 arm spigot
 CF_ROD_D    = 8;            // #720-006 CF rod OD
 CF_ROD_ID   = 6;            // #720-006 CF rod bore; the tool conductors' path
 CF_ROD_LEN  = 96;           // reference: cut length, set by 008.6 not by geometry
-STRAKE_25   = [25, 5.6, 2.5];   // #710-005, 3x. The slots are in the Split
-                                //   Gear TOP, and are drawn 5.600 x 2.500 for
-                                //   a 5.588 x 2.337 strip -- 0.012 mm across
-                                //   the width, the robot's tightest bond fit
-                                //   (007.1 C-502). 008.6 step 11 named the
+STRAKE_25   = [25, 5.588, 2.337];   // #710-005, 3x: length, and C-502's
+                                //   .220 x .092 in strip section. The slots
+                                //   are in the Split Gear TOP (710-001 sizes
+                                //   them from this). 008.6 step 11 named the
                                 //   Bottom, which carries no slot - DC-11(e)
 // #720-005 (5x 60 x 4.4 x 1.5) was listed in 007.6. No assembly step places
 // it, no part here carries a slot that would take it, and the build record

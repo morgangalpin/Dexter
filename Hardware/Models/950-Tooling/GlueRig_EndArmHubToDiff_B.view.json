@@ -1,0 +1,33 @@
+{
+  "title": "L3 Glue Rig B",
+  "subtitle": "Glue rig · reference mesh and GlueRig_EndArmHubToDiff_B.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "L3 Glue Rig B", "color": "#d4ad6b", "stl": "../Reference/meshes/950-Tooling/GlueRig_EndArmHubToDiff_B.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/rig-l3-b.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/rig-l3-b.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [319.635, 0, 20.5], "text": "H1 head R29 about E"},
+    {"at": [302.135, 0, 20.5], "text": "B1 bore Ø23.0, plate only"},
+    {"at": [317.635, 0, 15.5], "text": "R1 rim R25 to R29, z 13 to 18"},
+    {"at": [303.388, 10.253, 16.5], "text": "T1 tube Ø5.0 ×4, z 15 to 18"},
+    {"at": [301.888, 10.253, 20.5], "text": "T2 tube bore Ø2.0 ×4"},
+    {"at": [200, 20.706, 20.5], "text": "P1 bar |y| ≤ 20.7"},
+    {"at": [200, 12.5, 20.5], "text": "W1 window x 145.9 to 251.4, |y| ≤ 12.5"},
+    {"at": [133.287, 3, 20.5], "text": "Notch 10 × 6 at the joint x 128.3"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [210, 0], "part": "ref", "span": 220, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [210, 0], "part": "ref", "span": 220, "from": [0, 0, -1]},
+    {"label": "Hub register", "at": [290, 0, 18], "span": 80, "from": [0.3, -0.8, 0.6]},
+    {"label": "Hub register, from below", "at": [290, 0, 15], "span": 80, "from": [0.3, -0.5, -1]},
+    {"label": "Notch", "at": [133, 0, 20.5], "span": 40, "from": [0.3, -1, 0.7]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one draws the print fits listed in GlueRig_EndArmHubToDiff_B.scad's header, which also owns the dimensions. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

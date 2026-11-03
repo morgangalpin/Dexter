@@ -1,0 +1,35 @@
+{
+  "title": "Ex Gear Mount Top",
+  "subtitle": "#520-002 · reference mesh and 520-002_ExGearMountTop.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1.2, -0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Ex Gear Mount Top", "pn": "#520-002", "color": "#d4ad6b", "stl": "../Reference/meshes/500-ExternalGear/520-002_ExGearMountTop.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/520-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/520-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [38.654, 0, 97], "text": "T1 plate z 93 … 101; O1 disc R38.654"},
+    {"at": [-18.595, -33.888, 97], "text": "O1 −y line, tangent to the disc"},
+    {"at": [-20.926, 32.5, 97], "text": "O1 +y line, meets the disc 4° short of tangent"},
+    {"at": [32.5, 0, 93], "text": "B1 6810 seat Ø65.0, z 93 … 100"},
+    {"at": [27.5, 0, 100.25], "text": "B2 shoulder Ø55.0, z 100 … 100.5"},
+    {"at": [25.5, 0, 101], "text": "B3 top bore Ø51.0: the circular spline turns in it"},
+    {"at": [-38.654, 0, 85], "text": "K1 block z 77.5 … 93, its face the Mount's R38 bore"},
+    {"at": [-35.234, 15.756, 85], "text": "K1 R3 round onto the side"},
+    {"at": [-55.9, 0, 77.5], "text": "K2 rebate x −57.901 … −53.901 below z 81.5"},
+    {"at": [-57.901, 10, 87.5], "text": "P1 pocket 1.377 deep, y 6 … 14, z 85.5 … 89.5 (×2)"},
+    {"at": [-46.278, -10, 77.5], "text": "H1 all-thread hole Ø3.0 (×2), z 77.5 … 101"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [-10, 0], "part": "ref", "span": 100, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [-10, 0], "part": "ref", "span": 100, "from": [0, 0, -1]},
+    {"label": "Block, from −x", "at": [-50, 0, 88], "span": 50, "from": [-1, -0.4, -0.3]},
+    {"label": "Seat in section", "at": [30, 0, 97], "span": 20, "from": [0.2, -1, 0.1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation; the revised one draws B1's press fit on the 6810 and H1's slip fit on the all-threads. Each layer's 2D profile is gated separately in render.rs --verify, and the dimensions and fits are in 520-002_ExGearMountTop.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

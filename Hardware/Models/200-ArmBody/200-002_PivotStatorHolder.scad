@@ -10,19 +10,31 @@
 //                         give way to the shared spline seat
 //                         (../600-StrainWave/c201_spline_seat.scad), and the
 //                         bore behind the seat closes from Ø38 to Ø36 so the
-//                         nut pockets keep a wall to it.
+//                         nut pockets keep a wall to it; and the floor and
+//                         the back face stand where J2's drive closes on
+//                         them, DRIVE_SHIFT toward the opening (negative:
+//                         0.3 deeper). The holder's flange is held on the
+//                         Stator Balancers' lips, so the floor must meet the
+//                         spline's flange where C-101, the Flex Spline
+//                         Attach and C-201 put it, from the Pivot Motor End
+//                         Cap in the L1 6810. With C-201 the reference's
+//                         floor stood 4.3 short of that; the Wave Gen
+//                         Coupler's spacing (DC-19 in
+//                         specs/009-Design-Completion.md) then moved the
+//                         drive 4.0 of it further from the motor, which
+//                         leaves 0.3. armbody_assembly.scad asserts the
+//                         closure.
 //
 // FRAME. The reference's own: the axis on +Z, the recess opening at z = 0,
-// its floor at z = 11.000, the back face at 16.000.
+// its floor at z = 11.000 (revised 11.300), the back face at 16.000 (revised
+// 16.300).
 //
 // Measured from the reference (scadmesh slice/arcs/profile). Everything is
 // fourfold about the axis except the screw holes, which are twofold:
 //
 //     feature                      value                  z span
-//     flange                       R36.5, four ears on 0/90/180/270
-//                                  to 41.547 with R4 corners, R4
-//                                  fillets into the R36.5      0 .. 2
-//     ear slots                    10.0 x 4.0, r 33.516 .. 37.516   0 .. 2
+//     flange, with its ear slots   the Arm Body's outline  0 .. 2
+//                                  (arm_body_outline.scad)
 //     body                         Ø65.0                  2 .. 16
 //     recess                       Ø50.0                  0 .. 11
 //     bore                         Ø38.0                  11 .. 16
@@ -39,7 +51,9 @@
 //
 // FITS (../print_fit.scad), revised only:
 //
-//     body, in the Arm Body's Ø65 bore      slip: both are printed
+//     body, in the Arm Body's bore, which   slip: both are printed
+//       is the upper 6810's press bore
+//       (Ø65.1)
 //     ear slots, on the Stator Balancers'   slip: both are printed
 //       3.9 x 9.9 shanks
 //     recess, on the spline's flange        press, the seat's pilot press
@@ -51,6 +65,7 @@
 // the drive's torque. Each slot opens about its own centre.
 
 include <../print_fit.scad>
+include <arm_body_outline.scad>
 use <../600-StrainWave/c201_spline_seat.scad>
 
 /* [Configuration] */
@@ -63,58 +78,53 @@ epsilon = 0.01;
 
 FLOOR         = 11.000;
 BACK          = 16.000;
-FLANGE        = [36.500, 2.000];   // radius, top
-EAR           = [37.547, 5.031, 4.000];   // corner centres' x and ±y, their radius
-SLOT          = [33.516, 37.516, 5.000];  // inner and outer radius, half-width
-SHANK         = [3.900, 9.900];    // a Stator Balancer's shank: radial, across
+FLANGE_TOP    = 2.000;             // the flange's outline is arm_body_outline.scad's
+SHANK        = [3.900, 9.900];    // a Stator Balancer's shank: radial, across
 BODY_D        = 65.000;
 RECESS_D      = 50.000;
 BORE_D        = [38.000, 36.000];  // previous, revised
 PEG_CIRCLE_R  = 21.500;
 PEG           = [3.500, 2.000];    // OD, bore
 SCREW_D       = 3.000;
+DRIVE_SHIFT   = -0.300;            // revised: the floor and the back face this far toward the opening (here away from it)
 
-function pivot_floor() = FLOOR;
+function shift(cfg) = cfg == "previous" ? 0 : DRIVE_SHIFT;
+function pivot_floor(cfg = config) = FLOOR - shift(cfg);
+function pivot_back(cfg = config) = BACK - shift(cfg);
 
 // --- 2D outlines -----------------------------------------------------------
-module concave_fillet(r) offset(r = -r) offset(delta = r) children();
-
 function slip(cfg) = fit_clearances(cfg)[0];
 function press(cfg) = fit_clearances(cfg)[1];
 
 // An ear slot's [radial, across] size: the measured slot, or the shank's
 // section plus the slip clearance, whichever is larger.
-function slot_size(cfg) = [max(SLOT[1] - SLOT[0], fit_bore(SHANK[0], slip(cfg))),
-                           max(2 * SLOT[2], fit_bore(SHANK[1], slip(cfg)))];
+function slot_size(cfg) = [max(ARM_BODY_SLOT[1] - ARM_BODY_SLOT[0], fit_bore(SHANK[0], slip(cfg))),
+                           max(2 * ARM_BODY_SLOT[2], fit_bore(SHANK[1], slip(cfg)))];
 
 module flange_2d(cfg)
     difference() {
-        concave_fillet(EAR[2]) union() {
-            circle(r = FLANGE[0]);
-            for (a = [0 : 90 : 270]) rotate(a)
-                offset(r = EAR[2]) translate([FLANGE[0] - EAR[2] - 1, -EAR[1]])
-                    square([EAR[0] - FLANGE[0] + EAR[2] + 1, 2 * EAR[1]]);
-        }
-        for (a = [0 : 90 : 270]) rotate(a) translate([(SLOT[0] + SLOT[1]) / 2, 0]) square(slot_size(cfg), center = true);
+        arm_body_outline_2d();
+        arm_body_slots_2d(slot_size(cfg));
     }
 
 // --- Part ------------------------------------------------------------------
 module body(cfg) {
-    linear_extrude(FLANGE[1]) flange_2d(cfg);
-    cylinder(d = fit_pin(BODY_D, slip(cfg)), h = BACK);
+    linear_extrude(FLANGE_TOP) flange_2d(cfg);
+    cylinder(d = fit_pin(fit_bore(BODY_D, press(cfg)), slip(cfg)), h = pivot_back(cfg));
 }
 
 module turned_cuts(cfg) {
-    translate([0, 0, -epsilon]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = FLOOR + epsilon);
-    translate([0, 0, FLOOR - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = BACK - FLOOR + 2 * epsilon);
+    f = pivot_floor(cfg);
+    translate([0, 0, -epsilon]) cylinder(d = cfg == "previous" ? RECESS_D : seat_recess_d(press(cfg)), h = f + epsilon);
+    translate([0, 0, f - epsilon]) cylinder(d = cfg == "previous" ? BORE_D[0] : BORE_D[1], h = pivot_back(cfg) - f + 2 * epsilon);
 }
 
-module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE[1]])
-    cylinder(d = PEG[0], h = FLOOR - FLANGE[1] + epsilon, $fn = 48);
+module pegs() for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE_TOP])
+    cylinder(d = PEG[0], h = FLOOR - FLANGE_TOP + epsilon, $fn = 48);
 
 module peg_and_screw_cuts() {
-    for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE[1] - epsilon])
-        cylinder(d = PEG[1], h = BACK - FLANGE[1] + 2 * epsilon, $fn = 48);
+    for (a = [0 : 90 : 270]) rotate(a) translate([PEG_CIRCLE_R, 0, FLANGE_TOP - epsilon])
+        cylinder(d = PEG[1], h = BACK - FLANGE_TOP + 2 * epsilon, $fn = 48);
     for (a = [-45, 135]) rotate(a) translate([PEG_CIRCLE_R, 0, FLOOR - epsilon])
         cylinder(d = SCREW_D, h = BACK - FLOOR + 2 * epsilon, $fn = 48);
 }
@@ -127,9 +137,10 @@ module pivot_stator_holder(cfg = config) {
         difference() {
             body(cfg);
             turned_cuts(cfg);
-            translate([0, 0, FLOOR]) mirror([0, 0, 1]) spline_seat_cuts(BACK - FLOOR, press(cfg), slip(cfg));
+            translate([0, 0, pivot_floor(cfg)]) mirror([0, 0, 1])
+                spline_seat_cuts(pivot_back(cfg) - pivot_floor(cfg), press(cfg), slip(cfg));
         }
 }
 
 pivot_stator_holder();
-echo(seat_floor = FLOOR);
+echo(seat_floor = pivot_floor());

@@ -89,7 +89,17 @@ fn strings(v: &Value, key: &str) -> Result<Option<Vec<String>>> {
     }
 }
 
+/// Every render runs on Manifold, so an entry that still names an engine is
+/// refused rather than read as if it rendered elsewhere.
+fn no_engine(v: &Value) -> Result<()> {
+    if !v["engine"].is_null() {
+        bail!("\"engine\" is no longer read: every part and check renders on Manifold: {v}");
+    }
+    Ok(())
+}
+
 fn part(v: &Value) -> Result<Part> {
+    no_engine(v)?;
     Ok(Part {
         id: req_str(v, "id")?,
         scad: req_str(v, "scad")?,
@@ -107,6 +117,7 @@ fn writes(v: &Value) -> Result<Vec<String>> {
 }
 
 fn check(v: &Value) -> Result<Check> {
+    no_engine(v)?;
     let id = req_str(v, "id")?;
     let weight = match &v["weight"] {
         Value::Null => 1,
@@ -208,6 +219,13 @@ mod tests {
         assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "weight": 0}]}"#).contains("weight"));
         assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "after": [1]}]}"#).contains("non-string"));
         assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "after": "b"}]}"#).contains("not an array"));
+    }
+
+    #[test]
+    fn an_entry_that_names_an_engine_is_refused() {
+        let bad = |t: &str| parse(t).unwrap_err().to_string();
+        assert!(bad(r#"{"parts": [{"id": "a", "scad": "a.scad", "engine": "cgal"}]}"#).contains("renders on Manifold"));
+        assert!(bad(r#"{"checks": [{"id": "a", "kind": "k", "engine": "manifold"}]}"#).contains("renders on Manifold"));
     }
 
     #[test]

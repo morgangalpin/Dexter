@@ -1,0 +1,40 @@
+{
+  "title": "Static Finger",
+  "subtitle": "#920-001 · reference mesh and 920-001_StaticFinger.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Static Finger", "pn": "#920-001", "color": "#d4ad6b", "stl": "../Reference/meshes/920-ParallelGripper/920-001_StaticFinger.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/920-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/920-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-12.561, 1.939, 20], "text": "P1 plan, R10.561 corners, y ±12.5; revised, B1 squared to x −13.1, corners R2"},
+    {"at": [2, 12.492, 30], "text": "B1 base, z 10–34.5, y to 12.492; revised, its floor z 7.5"},
+    {"at": [-9.861, 12.492, 11.5], "text": "S4 revised: span bolt bores Ø4.1 ×2, to their heads' seats at y −1.093, Ø2.3 on through the plate"},
+    {"at": [26.18, 15.2, 17.5], "text": "C1 shroud cone, R17 to R7"},
+    {"at": [14.139, 12.188, 2], "text": "G1 revised: the whole R17 circle, down to z 0.5, a guard either side of the gear's slot, clear of a cylinder R11.8 about the roll axis"},
+    {"at": [19.437, 18.757, 21.264], "text": "R1 hash marks ×2, 1 wide, 0.61 proud"},
+    {"at": [0, 0, 60], "text": "F1 finger, z 34–93.5, tapered on −X"},
+    {"at": [-12.5, 0, 57], "text": "L1 lug, bore Ø21, outer R15.5, y ±1.939"},
+    {"at": [-28.3, 12.5, 46.5], "text": "L2 lug boss, flare to y 12.5"},
+    {"at": [-3, 2.833, 15], "text": "S1 column socket, z 10–24.2"},
+    {"at": [2.75, 0, 28], "text": "S2 strake slot 5.5 × 2.4"},
+    {"at": [-8, -6, 28], "text": "S3 plate slot, y < −3.743, ceiling z 28"},
+    {"at": [7.639, 0, 15], "text": "U1 hub slot, x 7.639–20.639, round R6.5"},
+    {"at": [1.389, 8, 15], "text": "K1 pinion pocket, R12.75 about the hub"},
+    {"at": [-5, 6, 24.7], "text": "T1 rack T-slot along X, y 2.757–9.757"},
+    {"at": [20.139, 12, 17.5], "text": "M1 MR128 seat Ø12, shoulder Ø11.2"}
+  ],
+  "presets": [
+    {"label": "Underside", "at": [8, -2, 10], "span": 50, "from": [0, 0, -1]},
+    {"label": "Hub", "at": [14.139, 12, 17.5], "span": 50, "from": [0, 1, 0.2]},
+    {"label": "Lug", "at": [-12.5, 6, 46.5], "span": 60, "from": [-1, 1, 0.3]},
+    {"label": "Finger", "at": [-6, 0, 55], "span": 100, "from": [-1, 0, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The reference is the glTF body of the part, since no mesh of it was ever published, with its design slit closed, as the GATE paragraph of 920-001_StaticFinger.scad's header gives. The previous render is the dist-gated recreation. The revised one gives the MR128 seats and the strake slot their press fit and the column socket its slip fit, as the FITS paragraph of the header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

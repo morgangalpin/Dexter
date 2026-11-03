@@ -1,0 +1,33 @@
+{
+  "title": "Roll Body",
+  "subtitle": "#911-001 · reference mesh and 911-001_RollBody.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [-1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Roll Body", "pn": "#911-001", "color": "#d4ad6b", "stl": "../Reference/meshes/900-ToolInterface/911-001_RollBody.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/911-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/911-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [8.25, 14.289, 6], "text": "R1 ring OD 33, z 3.5–16.5"},
+    {"at": [11.5, 0, 5], "text": "S1 bearing seat Ø23 ×2, 4 deep from each face"},
+    {"at": [0, -10, 11], "text": "S2 shoulder Ø20, z 7.5–12.5"},
+    {"at": [2, 13, 10], "text": "W1 window Ø4 ×7 at z 10, edges rounded R1"},
+    {"at": [0, -29, 8], "text": "B1 block, x ±12.5, end at y −29"},
+    {"at": [6.965, -17.25, 8], "text": "E1 slot 13.93 × 5.76, rounds R1.5"},
+    {"at": [12.5, -20, -1], "text": "F1 foot rim, z −2–0, 2 wall"},
+    {"at": [2, -24, -0.5], "text": "P1 boss Ø5 ×3, z −0.5–0"},
+    {"at": [7, -24, 8], "text": "H1 bolt hole Ø2 ×3, Ø4 counterbore from z 13.5"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, -8, 16], "span": 70, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, -12, 0], "span": 60, "from": [0, 0, -1]},
+    {"label": "Windows", "at": [0, 0, 10], "span": 40, "from": [0.6, 1, 0.8]},
+    {"label": "Slot", "at": [0, -17.25, 8], "span": 36, "from": [0, -0.4, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one presses the 6703s into S1 and opens H1 and its counterbores to slip clearance, as the FITS paragraph of 911-001_RollBody.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

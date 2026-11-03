@@ -1,0 +1,33 @@
+{
+  "title": "Wire Entry (Right)",
+  "subtitle": "#800-002 · reference mesh and 800-002_WireEntryRight.scad renders · what differs between them",
+  "cut": false,
+  "from": [1, -1, 0.7],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Wire Entry (Right)", "pn": "#800-002", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/800-002_WireEntryRight.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/800-002.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/800-002.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [7.5, 0, 22], "text": "P1 pipe R7.5 outer, R5.0 bore, to z 30"},
+    {"at": [9, -11.3, 13.1], "text": "S1 saddle x 0…18, back face at y_S 5.303"},
+    {"at": [16, -9, -2], "text": "L1 legs x 14…18, y_S on to -12.697"},
+    {"at": [9, -10.6, 6.9], "text": "B1 saddle bore R7.069 about x, centre (y_S -2.696, z_S 5.304)"},
+    {"at": [2.5, -2.33, 5.16], "text": "T1 turned channel from P1 into B1"},
+    {"at": [0, 5, 2.5], "text": "R1 R3 crease: fillet at the floor"},
+    {"at": [0, -5, 12.5], "text": "R1 R3 crease: round at the roof"},
+    {"at": [7.5, 0, 7.5], "text": "C1 pipe chamfer 1.5 x 1.5 at the back face"}
+  ],
+  "presets": [
+    {"label": "Overview", "at": [9, -3, 8], "span": 50, "from": [1, -1, 0.7]},
+    {"label": "Back face", "at": [9, 0, 7.5], "span": 35, "from": [0, 1, 0.3]},
+    {"label": "Saddle bore", "at": [9, -6, 2], "span": 35, "from": [1, -0.4, 0.3]},
+    {"label": "Split plane", "at": [0, -3, 8], "span": 45, "from": [-1, 0, 0.1]},
+    {"label": "Legs", "at": [16, -7, 0], "span": 30, "from": [0.5, -0.6, -1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation; the revised one is identical, because no fit is drawn (the saddle mate is open, DC-14). The part is the mirror image of #800-001 in x = 0. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

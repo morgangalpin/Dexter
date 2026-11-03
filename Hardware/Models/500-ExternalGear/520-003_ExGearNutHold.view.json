@@ -1,0 +1,30 @@
+{
+  "title": "Nut Holders A and B",
+  "subtitle": "#520-003 / #520-004 · reference mesh and 520-003_ExGearNutHold.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Nut Holders A and B", "pn": "#520-003 / #520-004", "color": "#d4ad6b", "stl": "../Reference/meshes/500-ExternalGear/520-003_ExGearNutHold.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/520-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/520-003.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-10.0, 6.0, 1.75], "text": "Holder A (#520-003), y 6 … 14"},
+    {"at": [-10.0, 34.0, 1.75], "text": "Holder B (#520-004), A mirrored about y 20"},
+    {"at": [-2.623, 10.0, 3.5], "text": "O1 straight face x −2.623"},
+    {"at": [-16.55, 10.0, 3.5], "text": "C1 curved face R38 about (−53.245, 20): the Mount's bore"},
+    {"at": [-7.623, 10.0, 0.0], "text": "H1 all-thread hole Ø3.0, z 0 … 1.2"},
+    {"at": [-7.623, 12.7, 3.5], "text": "N1 nut trap 5.4 AF, z 1.2 … 3.5"},
+    {"at": [-17.92, 6.0, 3.5], "text": "T1 thickness 3.5"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [-10, 20], "part": "ref", "span": 32, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [-10, 20], "part": "ref", "span": 32, "from": [0, 0, -1]},
+    {"label": "Holder A", "at": [-10, 10, 1.75], "span": 18, "from": [0.6, -0.8, 0.9]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation of both holders; the revised one opens H1 and N1 to the slip fit on the M3 all-thread and nut. Each layer's 2D profile is gated separately in render.rs --verify, and the dimensions and fits are in 520-003_ExGearNutHold.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

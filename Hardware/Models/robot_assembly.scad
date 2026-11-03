@@ -102,7 +102,7 @@
 // 16.0 mm of lap at the hub and 15.000 mm here, and nothing is drawn for the
 // span because nothing is missing from it.
 //
-// RENDERING IT. A preview needs nothing but this file. A full render asks CGAL
+// RENDERING IT. A preview needs nothing but this file. A full render asks OpenSCAD
 // for a closed solid of everything drawn, the nine meshes 700-Differential/
 // imports included, so it needs the cache that render.rs --meshes
 // builds, which makes each mesh renderable as it goes: the render program's header
@@ -120,6 +120,23 @@ use <700-Differential/diff_assembly.scad>
 // same `-D config=` switch as the differential (DC-12).
 use <400-EndArm/430-001_ExternalOuterPulley.scad>
 use <400-EndArm/430-002_ExternalInnerPulley.scad>
+use <400-EndArm/420-001_EndArmHub.scad>
+use <400-EndArm/421-001_InternalOuterPulley.scad>
+use <400-EndArm/421-002_InternalInnerPulley.scad>
+use <400-EndArm/410-001_AxisIntersectionHalf.scad>
+use <400-EndArm/410-002_NewBeltPulley.scad>
+use <400-EndArm/410-003_EndArmCodeDisk.scad>
+use <400-EndArm/420-002_EndArmHubCap.scad>
+use <400-EndArm/421-006_PulleySpacer.scad>
+// The End Arm's part frames about J3, from its own assembly (endarm_assembly.scad § STACK).
+use <400-EndArm/endarm_assembly.scad>
+// Converted base parts are sources too, drawn in the same configuration.
+use <100-Base/100-001_BaseClamp.scad>
+use <100-Base/110-001_BaseMountBottom.scad>
+use <100-Base/120-001_BaseLong.scad>
+use <100-Base/110-002_BaseStatorHolder.scad>
+use <300-Pivot/300-001_MainPivot.scad>
+use <200-ArmBody/200-001_ArmBody.scad>
 
 /* [View] */
 // The differential subassembly, on the landing WRIST_BASIS states.
@@ -175,11 +192,12 @@ TOOL_STN = [54.815, 939.8440,  -2.000];   // Link6, the tool roll frame
 //     where the other station leaves it 24.500 mm short of the spigot's tip;
 //   - Body A falls inside ENV_L3_SKIN, where the other station overruns that
 //     box by 30.500 mm and carries the differential into ENV_GRIPPER;
-//   - 950-Tooling's End Arm Hub -> differential glue rig, which registers a
-//     Ø22.971 boss in the hub's own Ø22.990 J3 bore and a Ø16.971 boss -- a
-//     6703's bore, its Ø23 race seating in Body A -- at the far end. That
-//     measures J3 to J4 directly, and as exported it read 309.500 mm: it
-//     misses 347.000 by 37.500 mm and stood 2.000 mm beyond 307.500. CR-3A17
+//   - 950-Tooling's End Arm Hub -> differential glue rig, which registers
+//     four Ø5.000 tubes in the hub's four Ø5.000 peg holes round its J3
+//     seat, and a Ø17.000 boss -- a 6703's bore, its Ø23 race seating in
+//     Body A -- at the far end. That measures J3 to J4 directly, and as
+//     exported it read 309.500 mm: it misses 347.000 by 37.500 mm and stood
+//     2.000 mm beyond 307.500. CR-3A17
 //     shortens the rig's B half by that residue, so it holds 307.500 now.
 //
 // WRIST_BASIS says where the differential frame's own x, y and z go in this
@@ -292,28 +310,33 @@ ENV_C    = [0.45, 0.55, 0.70, 0.22];
 // ---------------------------------------------------------------------------
 
 // The base stack, from specs/004 § Base mounting plate. Each part seats on a
-// face of the one below it: the long member on the base mount's top face, and
-// the Main Pivot's base on the 6810 that sits flush in the long member's top.
-// The clamp is not in the stack — it seats on the mount's 82.000 shoulder,
-// below the top face, and sets no height. L1 is the sum.
+// face of the one below it: the Stator Holder's flange on the base mount's top
+// face, the long member on the flange, and the Main Pivot's base on the 6810
+// that sits flush in the long member's top. The clamp is not in the stack — it
+// seats on the mount's 82.000 shoulder, below the top face, and sets no
+// height. L1 is the sum.
 BASE_SEAT_Y   = 98.000;   // #110-001 top face
+HOLDER_FLANGE = holder_flange("revised");    // #110-002 flange: back, face, in its own z
+BASE_LONG_SEAT = BASE_SEAT_Y + HOLDER_FLANGE[1] - HOLDER_FLANGE[0];
 BASE_LONG_H   = 96.000;   // #120-001, the printed part
 PIVOT_J2_H    = 37.500;   // #300-001, J2 axis above its base
-BASE_LONG_TOP = BASE_SEAT_Y + BASE_LONG_H;
+BASE_LONG_TOP = BASE_LONG_SEAT + BASE_LONG_H;
 L1_BUILT      = BASE_LONG_TOP + PIVOT_J2_H;
-assert(abs(L1_BUILT - 231.500) < 1e-6, "the base stack no longer sums to specs/003's L1");
+assert(abs(L1_BUILT - 235.500) < 1e-6, "the base stack no longer sums to specs/003's L1");
 
 // Base group. All three sit on the J1 axis, which is this frame's y, and each
 // model is drawn with that axis on its own z — so one quarter turn about x
 // serves all three and only the height along the arm differs. The heights are
 // the stack's: the base mount's foot on y = 0, the clamp's underside on its
-// shoulder at y = 82.000, the long member's on the mount's top face.
+// shoulder at y = 82.000, the Stator Holder turned over with its flange's face
+// on the mount's top face, and the long member's underside on the flange.
 module place_base() {
     color(PRINT_C) {
-        xrot(-90) import("100-Base/110-001_BaseMountBottom.stl", convexity = 8);
-        back( 82) xrot(-90) import("100-Base/100-001_BaseClamp.stl", convexity = 8);
+        xrot(-90) base_mount_bottom();
+        back( 82) xrot(-90) base_clamp();
+        back(BASE_SEAT_Y + HOLDER_FLANGE[1]) xrot(-90) xrot(180) base_stator_holder("revised");
         // The model's own z runs -28.000..68.000.
-        back(BASE_SEAT_Y + 28) xrot(-90) import("100-Base/120-001_BaseLong.stl", convexity = 8);
+        back(BASE_LONG_SEAT + 28) xrot(-90) base_long();
     }
 }
 
@@ -328,12 +351,13 @@ module place_base() {
 // Two revisions of one part. It is placed on the mating plane, where it meets
 // the long member, so the difference shows at the far end instead of being
 // split between the two ends. That plane is the printed long member's top,
-// 0.300 mm above the J1 station because the CAD body is that much shorter, so
-// this part's J2 bore stands the same 0.300 mm above the J2 station; every
-// part above it stays on the CAD chain.
+// 4.300 mm above the J1 station: the CAD chain has no Stator Holder flange
+// under its long member, and its long member is 0.300 mm shorter. This part's
+// J2 bore stands the same 4.300 mm above the J2 station, while every part
+// above it stays on the CAD chain, so the Arm Body sits that far low against
+// it (the base stack echo below reports it).
 module place_main_pivot() {
-    color(PRINT_C) back(BASE_LONG_TOP) xrot(-90) zrot(-90)
-        import("300-Pivot/300-001_MainPivot.stl", convexity = 8);
+    color(PRINT_C) back(BASE_LONG_TOP) xrot(-90) zrot(-90) main_pivot("revised");
 }
 
 // Arm Body. Already drawn in a frame parallel to this one: its own z is this
@@ -345,34 +369,39 @@ module place_main_pivot() {
 // The CAD body runs 23.4 mm further along the arm than the model. That end is
 // the cone-drive boss, which the printed part does not carry.
 module place_arm_body() {
-    color(PRINT_C) translate([0, J2_STN.y, 62.000])
-        import("200-ArmBody/200-001_ArmBody.stl", convexity = 8);
+    color(PRINT_C) translate([0, J2_STN.y, 62.000]) arm_body("revised");
 }
 
-// End Arm group. The models in 400-EndArm/ that sit on the J3 axis share one
-// frame, which is what lets one transform place them all: each is centred on
-// its own (x, y) = (0, 0) to within 0.01 mm, and the hub — which is not,
-// because its spigot runs out along the arm — puts that same origin on the J3
-// axis.
+// End Arm group. The End Arm Hub's own frame carries the group: its origin is
+// on the J3 axis, and 400-EndArm/endarm_assembly.scad places every other part
+// of the group in it by a feature each part carries (the halves on their
+// 6807s, the New Belt Pulley's pegs in the hub, the two belt channels by the
+// axial stack). Its frame modules are used here as they are, so the group is
+// drawn as it assembles, and not where the CAD export left each mesh.
 //
 // The transform is fixed by the hub and checked by two of its features. The
 // model's x is this frame's y and its z is this frame's z, so the mapping is a
 // quarter turn about z; the offsets follow from the CAD body's extents. Placed
 // that way the hub's own x = 0 lands on the J3 station and its spigot axis, at
 // its own z = -25.000, lands on z = 36.000 — which is where specs/004
-// § Differential interface independently puts the L3 tube.
-//
-// 410-001_AxisIntersectionHalf is NOT in this frame and is not drawn here; see
-// UNPLACED.
+// § Differential interface independently puts the L3 tube. The halves' L2
+// channel lands on z 90.000, 0.250 above the Arm Body socket's L2_TUBE_Z.
 module in_end_arm() { translate([0, J3_STN.y, 61.000]) zrot(90) children(); }
 
 module place_end_arm() {
     color(PRINT_C) in_end_arm() {
-        import("400-EndArm/420-001_EndArmHub.stl", convexity = 8);
-        import("400-EndArm/421-001_InternalOuterPulley.stl", convexity = 8);
-        import("400-EndArm/421-002_InternalInnerPulley.stl", convexity = 8);
-        external_outer_pulley();
-        external_inner_pulley();
+        end_arm_hub();
+        ai_frame(0) axis_intersection_half();
+        ai_frame(1) axis_intersection_half();
+        pulley_frame() new_belt_pulley();
+        disk_frame() end_arm_code_disk();
+        cap_frame() end_arm_hub_cap();
+        int_outer_frame() internal_outer_pulley();
+        int_inner_frame() internal_inner_pulley();
+        spacer_frame(0) pulley_spacer();
+        spacer_frame(1) pulley_spacer();
+        ext_inner_frame() external_inner_pulley();
+        ext_outer_frame() external_outer_pulley();
     }
 }
 
@@ -469,16 +498,16 @@ arm();
 // position is chosen that looks right.
 // ---------------------------------------------------------------------------
 UNPLACED = [
-  ["#410-001 Axis Intersection Half x2",
-   "holds the L2 tube's far end 37.500 mm from the J3 axis, but its model is not in the End Arm group's frame and its own channel has not been located"],
-  ["#100-002, #300-002, #410-003 code disks",
+  ["#100-002, #300-002 code disks",
    "each on its joint's axis, but the seat that sets its height is unmeasured"],
-  ["600-StrainWave, stator holders, motor end caps",
-   "the drives at J1, J2 and J3; no mating feature measured yet"],
+  ["600-StrainWave, the J2 and J3 stator holders, motor end caps",
+   "the drives at J1, J2 and J3, but for the Base Stator Holder, which is in the base stack; no mating feature measured yet"],
   ["500-ExternalGear, 6 parts",
-   "the CAD body places the mount low on the base, well off the arm axis; the model's frame has not been matched to it"],
-  ["800-Harness 18 parts, 900-ToolInterface, 950-Tooling",
-   "harness, gripper and build fixtures"],
+   "the CAD body places the mount low on the base, well off the arm axis; the model's frame has not been matched to it. Two features will fix it: the Mount's four S1 strake slots (centre r 22.65 on 0 + 90k deg) take strakes on the Main Pivot's r 22.797 pattern (008.8 step 10), which puts the drive axis on that joint's, and its K1 channel bonds over #520-006 from the Arm Body (GlueRig_ArmBodyToExGear). Neither the height along the strakes nor the turn about the axis is measured"],
+  ["800-Harness, 14 part numbers (17 files)",
+   "harness parts placed by 008.10 against parts not yet in this file: plugs in the Main Pivot's H1; PCB brackets on the L2 1\" tube 37.5 mm above the Arm Body joint; fan bracket on the Motor Control PCB; shrouds on each joint's code disk (#825's clip on Diff Body B's Ø31 shell); wire entry's mate open (DC-14)"],
+  ["900-ToolInterface, 920-ParallelGripper, 930-ClawGripper, 950-Tooling",
+   "tool interface, grippers and build fixtures"],
 ];
 
 echo(str("base stack: L1 = ", L1_BUILT, " mm; the J2 station is at ", J2_STN.y,

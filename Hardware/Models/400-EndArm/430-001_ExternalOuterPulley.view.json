@@ -1,0 +1,33 @@
+{
+  "title": "External Outer Pulley",
+  "subtitle": "#430-001 · reference mesh and 430-001_ExternalOuterPulley.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "External Outer Pulley", "pn": "#430-001", "color": "#d4ad6b", "stl": "../Reference/meshes/400-EndArm/430-001_ExternalOuterPulley.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/430-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/430-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [4, 0, 28], "text": "B1 bore Ø8.0, through the web"},
+    {"at": [19, 0, 32], "text": "W1 web z 23.5…32.0, bore to rim"},
+    {"at": [0, 24, 26], "text": "R1 rim, inner R24.0; R24.987 at z 22.5, chamfered to R24.0 at z 23.5"},
+    {"at": [29.487, 0, 22.75], "text": "F1 flanges R29.487 at z 22.5…23.0 and R29.5 at z 31.5…32.0"},
+    {"at": [28.397, 0, 27], "text": "T1 90T GT2 band, z 24.0…30.5, tip R28.397, a tooth on 0°"},
+    {"at": [19, 2, 28], "text": "O1 windows ×3 on 60° + 120° k, r 14.0…24.0, between spokes 4.0 wide on 0° + 120° k"},
+    {"at": [-6.4, 0, 29.5], "text": "N1 nut slots ×3, r 5.15…7.65 × 5.5, open at the underside, roof z 29.5"},
+    {"at": [-10, 0, 28], "text": "S1 set-screw holes ×3 Ø3.0 at z 26.5, from the bore out through the rim"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0], "part": "ref", "span": 65, "from": [0, 0, 1]},
+    {"label": "Bottom", "at": [0, 0], "part": "ref", "span": 65, "from": [0, 0, -1]},
+    {"label": "Nut slot", "at": [-6.4, 0, 26], "span": 14, "from": [-0.3, 0.3, -1]},
+    {"label": "Window", "at": [12, 17, 28], "span": 24, "from": [0.3, 0.5, 1]},
+    {"label": "Teeth", "at": [28.4, 0, 27], "span": 8, "from": [1, -0.3, 0.4]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated 90T recreation, and the revised one is the 108T pulley of DC-12, as external_pulley.scad's header explains: it keeps the web and the inner 2 mm of the rim, adds the 108T rim, presses B1 on the Ø8 stainless tube and slips N1 on the M3 nut and S1 on the M3 set screw. The dimensions and fits are in 430-001_ExternalOuterPulley.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

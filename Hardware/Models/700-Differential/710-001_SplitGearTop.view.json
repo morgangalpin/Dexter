@@ -1,0 +1,35 @@
+{
+  "title": "Split Gear Top",
+  "subtitle": "#710-001 · reference mesh and 710-001_SplitGearTop.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Split Gear Top", "pn": "#710-001", "color": "#d4ad6b", "stl": "../Reference/meshes/700-Differential/710-001_SplitGearTop.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/710-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/710-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-18.5, 0, 2], "text": "B1 body Ø37.0, z -1…7"},
+    {"at": [0, -6, 1], "text": "M1 MR128 seat Ø12, z -1…3"},
+    {"at": [0, -4.25, 3.5], "text": "W1 web bore Ø8.5, z 3…4"},
+    {"at": [0, -11.5, 6.5], "text": "S1 6703 seat Ø23, z 4…8.75"},
+    {"at": [-18.99, 0, 7.5], "text": "C1 stop collar Ø37.98, z 7…8"},
+    {"at": [0, -17.5, 10], "text": "K1 cage tube Ø35, Ø28 cavity inside"},
+    {"at": [12.37, 12.37, 13], "text": "W2 window ×4 at 45° + 90°k, 7.0 wide, z 11.5…14.5"},
+    {"at": [17.5, 0, 12.25], "text": "H1 brad hole ×4 Ø1.497 at z 12.25 (revised 12.75)"},
+    {"at": [0, 14.25, -1], "text": "X1 strake slot ×3 at 90° + 120°k, 5.6 × 2.5, to z 8"},
+    {"at": [0, -18.8, 20], "text": "T1 outer-half bevel teeth, 20T, crown from z 15.45"}
+  ],
+  "presets": [
+    {"label": "Whole part", "at": [0, 0, 11], "span": 55, "from": [1, -1.2, 0.9]},
+    {"label": "Underside", "at": [0, 0, 0], "span": 50, "from": [0.2, -0.3, -1]},
+    {"label": "Window and brad hole", "at": [14, 8, 12.5], "span": 18, "from": [1, -1, 0.6]},
+    {"label": "Bevel teeth", "at": [0, -17, 20], "span": 20, "from": [0.3, -1, 0.7]},
+    {"label": "Strake slots", "at": [0, 14.25, 0], "span": 14, "from": [0.3, 0.4, -1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, and the revised one draws the print fits listed in 710-001_SplitGearTop.scad's header: the press clearance on the MR128 and 6703 seats and the strake slots, the web bored to the bearing's outer race, and the brad hole on the shared axis. The dimensions are in that header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

@@ -16,6 +16,11 @@
 //     FIT_RUN      a gap between two parts that turn past each other and
 //                  must never touch, such as a housing and a gear's teeth
 //
+// A fourth class is drawn under its mate's size, not over it:
+//
+//     FIT_TAP      a pilot a screw cuts its own thread into, drawn as
+//                  fit_pin(the screw's nominal, FIT_TAP)
+//
 // The classes, their members and exclusions, and how a machine is qualified
 // against these values are owned by specs/007.2 § Print fits; the coupon that
 // qualifies them is 950-Tooling/fit_coupon.scad.
@@ -27,12 +32,13 @@
 FIT_SLIP  = 0.15;
 FIT_PRESS = 0.05;
 FIT_RUN   = 0.50;
+FIT_TAP   = 0.20;
 
 // A hole or bore that takes a mate of diameter d, and a pin or shaft that
 // goes into one, with clearance c per side.
 function fit_bore(d, c) = d + 2 * c;
 function fit_pin(d, c) = d - 2 * c;
 
-// The clearances a part draws in configuration cfg: [slip, press, run].
+// The clearances a part draws in configuration cfg: [slip, press, run, tap].
 function fit_clearances(cfg) =
-    cfg == "previous" ? [0, 0, 0] : [FIT_SLIP, FIT_PRESS, FIT_RUN];
+    cfg == "previous" ? [0, 0, 0, 0] : [FIT_SLIP, FIT_PRESS, FIT_RUN, FIT_TAP];

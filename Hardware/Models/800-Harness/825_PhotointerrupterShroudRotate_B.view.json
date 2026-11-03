@@ -1,0 +1,27 @@
+{
+  "title": "Photointerrupter Shroud, Rotate: top half",
+  "subtitle": "#825 B · reference mesh and 825_PhotointerrupterShroudRotate_B.scad renders · what differs between them",
+  "cut": false,
+  "from": [-1, -1.2, 0.8],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Rotate shroud top half", "pn": "#825 B", "color": "#d4ad6b", "stl": "../Reference/meshes/800-Harness/825_PhotointerrupterShroudRotate_B.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/825-B.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/825-B.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, -25, -1], "text": "P1 block z -6.5…-1, wedge outline, back corners chamfered 1.5"},
+    {"at": [-3.296, -23.013, -1], "text": "B1 beam bore: Ø4.0 counterbore, Ø3.0 (3.1 in the revised render), 0.70 slit"},
+    {"at": [3.059, -23.048, -6.5], "text": "B2 slit 0.70 wide, laid radial, z -6.5…-6.1"},
+    {"at": [-2.095, -28.62, -1], "text": "N1 nail hole Ø1.0 (drive fit), through"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, -25, -1], "span": 24, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, -25, -6.5], "span": 24, "from": [0.2, 0.3, -1]},
+    {"label": "Oblique", "at": [0, -25, -4], "span": 24, "from": [-0.6, -1, 0.9]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens the Ø3.0 beam bore to Ø3.1 (press, on the T-1 body); the counterbore, the slit and the nail holes keep their size. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

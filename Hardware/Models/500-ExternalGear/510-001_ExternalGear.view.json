@@ -1,0 +1,40 @@
+{
+  "title": "External Gear",
+  "subtitle": "#510-001 · reference mesh and 510-001_ExternalGear.scad renders · feature names for the conversion · the axis is the mesh's x",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "External Gear", "pn": "#510-001", "color": "#d4ad6b", "stl": "../Reference/meshes/500-ExternalGear/510-001_ExternalGear.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/510-001.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/510-001.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [-32.263, 0, -35.263], "text": "E1 lower end, Ø70.527 to x −30.263"},
+    {"at": [-27.0, 0, -36.977], "text": "O1 lower rim Ø73.954"},
+    {"at": [-19.0, 0, -35.3], "text": "O2 cone to r 33.723"},
+    {"at": [-12.7, 0, -33.723], "text": "O3 collar, 45° down to the band"},
+    {"at": [-3.7, 0, -31.572], "text": "T1 lower band: 100T GT2, tip Ø63.144"},
+    {"at": [3.7, 0, -33.5], "text": "F1 flange r 33.5, 45° chamfers"},
+    {"at": [10.5, 0, -31.572], "text": "T2 upper band, the same ring"},
+    {"at": [19.8, 0, -33.723], "text": "O4 collar, then a 45° cone"},
+    {"at": [20.4, 0, 32.9], "text": "G1 crack closed at its mouth (the pinched tangency)"},
+    {"at": [34.0, 0, -36.977], "text": "O5 upper rim Ø73.954"},
+    {"at": [44.25, 34.1, 0], "text": "K1 key slot ×8, 4.0 wide, face at 34.1"},
+    {"at": [44.25, -23.0, -23.0], "text": "E2 notched end; B4 socket Ø65"},
+    {"at": [-28.0, 0, 32.5], "text": "B1 lower 6810 seat Ø65, to x −24.763"},
+    {"at": [-18.7, 0, 29.2], "text": "B2 Ø62 shoulder, cone in to the bore"},
+    {"at": [0, 0, 27.5], "text": "B3 bore Ø55"},
+    {"at": [28.7, 0, 32.5], "text": "B4 upper 6810 seat Ø65, from x 25.243"}
+  ],
+  "presets": [
+    {"label": "Side", "at": [6, 0, 0], "span": 90, "from": [0, -1, 0]},
+    {"label": "Notched end", "at": [44, 0, 0], "span": 80, "from": [1, 0, 0]},
+    {"label": "Teeth", "at": [-3.7, 0, -31.5], "span": 12, "from": [0.2, -0.3, -1]},
+    {"label": "Crack", "at": [20.4, 0, -33.0], "span": 6, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation; the revised one draws the press fits of the two 6810s in B1 and in B4 under the upper bearing. The band and socket sections are gated separately in render.rs --verify, and the dimensions and fits are in 510-001_ExternalGear.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

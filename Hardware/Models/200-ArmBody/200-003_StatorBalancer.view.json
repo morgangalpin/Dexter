@@ -1,0 +1,24 @@
+{
+  "title": "Stator Balancer",
+  "subtitle": "#200-003 · reference mesh and 200-003_StatorBalancer.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1, 0.6],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Stator Balancer", "pn": "#200-003", "color": "#9aa7b4", "stl": "../Reference/meshes/200-ArmBody/200-003_StatorBalancer.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/200-003.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/200-003.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [0, 4.95, 90], "text": "S1 shank 3.9 × 9.9, z 86–96"},
+    {"at": [4.9, 4.95, 97], "text": "L1 lip 1.0 × 9.9 on +X, z 96–98"}
+  ],
+  "presets": [
+    {"label": "Side", "at": [2.45, 4.95, 92], "span": 16, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Frame", "text": "The mesh sits in the Arm Body's assembly frame (z 86–98). The shank stands in a K1 slot of the Arm Body and in the Pivot Stator Holder's ear slot."},
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation, so it should hide the mesh entirely. The revised render draws no fits yet; they wait for the arm body's assembly. The dimensions are in 200-003_StatorBalancer.scad's header. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}
