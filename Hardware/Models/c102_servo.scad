@@ -15,10 +15,16 @@
 // 24 x 36 x 27 (W x H x D). The e-Manual gives no other dimension, so the features are the CAD model's
 // XL-320, the glTF body `TI1-000-001_DynamixelXL-320-3 v1` of dde/HDIMeterModel.gltf (exported with
 // `scadmesh gltf --node 112 --frame 112 --scale 1000`; its origin is the case's mid-depth), which fills
-// the envelope exactly: 21 + two 1.5 pads wide, 36 high, a 24 case and a 3 horn deep. The glTF draws no
-// spline, so the spline is the Span Driver's reference bore, its only mate. No dimension has been
-// measured on a servo: DIMENSIONS below are where a measurement goes, each with its source, and the
-// revised parts that mate the servo follow them.
+// the envelope exactly: 21 + two 1.5 pads wide, 36 high, a 24 case and a 3 horn deep. ROBOTIS's own STEP
+// (the e-Manual's Drawings, `XL-320.stp`, product DC10_A_DUMMY, 2014-04-07; the case's mid-depth at its
+// origin, so this frame is its z less 12) agrees with every case, plate, hole, pad and horn value below to
+// 0.05, apart from details no part mates: the pads' outer corners chamfered on the outline's line, 0.3
+// rounds on the plates' edges, blind Ø4 holes in the sides at y 0 and -18, z -12, and 0.7 bosses between
+// the back pads. It is a dummy too: the horn is fused to the front face and it draws no spline, key,
+// centre screw or connector, and nothing between the plates at the tab end. So the spline is the Span
+// Driver's reference bore, its only mate. No dimension has been measured on a servo: DIMENSIONS below
+// are where a measurement goes, each with its source, and the revised parts that mate the servo follow
+// them.
 //
 // The span servo's spline is pressed into the Span Driver's B1, which `config="revised"` sizes from
 // c102_spline() grown by FIT_PRESS per flank (#912-002's FITS), so the press is drawn as that clearance,
