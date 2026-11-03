@@ -117,6 +117,17 @@ function claw_sector_tip_r() = MOD * (SECTOR_N / 2 + 1);
 function claw_hub_tip_r() = MOD * (HUB_N / 2 + 1);
 function claw_hub_root_r() = MOD * (HUB_N / 2 - 1.25);
 function claw_pinion_tip_r() = MOD * (PINION_N / 2 + 1 + claw_pinion_shift() - claw_pinion_shorten());
+// The sector's tip land, deg either side of its tooth's centre: the involute's half-angle at the tip circle,
+// the tooth thinned by the backlash along the pitch circle, as BOSL2 thins it.
+function claw_sector_land(cfg) = let(rp = MOD * SECTOR_N / 2, aa = acos(rp * cos(PA) / claw_sector_tip_r()))
+    90 / SECTOR_N - claw_gear_backlash(cfg) / (2 * rp) * 180 / PI + (inv(PA) - inv(aa)) * 180 / PI;
+// How near the sector's tips come to the span axis with the claw closed, the pose the pinion goes in at: the
+// tooth nearest the line of centres, at its land's nearest point to that line; where the land spans the line,
+// as it does here, the centre distance less the tip radius.
+function claw_sector_reach(cfg) = let(p = claw_sector_pitch(), d = claw_pinion_dir(), t = claw_sector_tooth0(),
+                                      e = abs(t + p * round((d - t) / p) - d), off = max(0, e - claw_sector_land(cfg)),
+                                      c = claw_pinion_dist(), r = claw_sector_tip_r())
+    sqrt(c ^ 2 + r ^ 2 - 2 * c * r * cos(off));
 
 // A wedge from the origin over the polar arc a, out to r: what a run of teeth is cut to.
 module claw_wedge_2d(a, r) let(n = ceil((a[1] - a[0]) / 2))
@@ -240,7 +251,9 @@ HEX_AF  = 10.000;                                // the seats, across flats; a v
 JOURNAL = MR128[0];                              // in the MR128s, at FIT_PRESS
 
 function claw_hex_af() = HEX_AF;
-function claw_shank_d() = 11.000;                // the pinion's, off its teeth: #912-002's flange's
+// The pinion's, off its teeth, and the widest of it that passes the sector on the way in: FIT_SLIP inside
+// the sector's nearest tip (claw_sector_reach()), rounded down to 0.1.
+function claw_shank_d() = floor(20 * (claw_sector_reach("revised") - FIT_SLIP)) / 10;
 function claw_journal_d(cfg) = fit_pin(JOURNAL, fit_clearances(cfg)[1]);
 // The hex across flats, grown by c on every face; its flats face ±X.
 module claw_hex_2d(c = 0) rotate(30) circle(r = (HEX_AF / 2 + c) / cos(30), $fn = 6);

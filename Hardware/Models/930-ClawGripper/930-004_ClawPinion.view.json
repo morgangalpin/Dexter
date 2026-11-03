@@ -7,10 +7,10 @@
       {"id": "revised", "name": "config=\"revised\"", "color": "#7a7a3a", "stl": "out/revised/930-004.stl"}]}
   ],
   "labels": [
-    {"at": [0, -7.8, 3.9], "text": "E1 spline end: #912-002's L1 .. L4, on the span XL-320's spline"},
+    {"at": [0, -7.8, 3.9], "text": "E1 spline end: #912-002's L1 .. L4, on the span XL-320's spline, its Ø11 flange cut to S1"},
     {"at": [0, -1.493, 2.9], "text": "The M2.6 bolt head's seat, at the end of A1"},
     {"at": [0, 9.5, 7.99], "text": "G1 pinion: 10 teeth, module 1.25, profile-shifted 0.415"},
-    {"at": [0, 2, 5.5], "text": "S1 shank Ø11"},
+    {"at": [0, 2, 5.3], "text": "S1 shank Ø10.6: 0.188 inside the sector's nearest tip, which it passes on the way in"},
     {"at": [0, 17.319, 3.95], "text": "J1 journal Ø8 in the cap's MR128, its wall 1.05 about A1"}
   ],
   "presets": [

@@ -43,7 +43,7 @@
 //                        up to the shelf's top, z 32.05, over S2
 //     M1  MR128 seats   Ø12 at y -8 .. -4.5 on each pivot, open forward; a relief Ø10.2, 0.5 deep, behind
 //                        them; a cover of 1 over that, unbroken
-//     P1  pinion tunnel  R6 about the span axis, through K1
+//     P1  pinion tunnel  R5.8 about the span axis, through K1, FIT_RUN off the pinion's shank
 //     S1  column socket  span_socket.scad's, from the bottom z 6.512, its mouth flared at 45 deg round the
 //                        column's foot C2
 //     S1T roll bolts ×4  span_socket.scad's hole round each M2 x 20's end, in S1's mouth
