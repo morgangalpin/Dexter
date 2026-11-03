@@ -95,6 +95,13 @@
        {"label": "E1 open at the running clearance", "at": [5.5, 14.139, 21.75], "solid": false},
        {"label": "E1 wall within 0.3", "at": [5.5, 14.139, 22.3], "solid": true}
      ]},
+    {"kind": "probes", "id": "probes-912-001-ch", "part": "912-001 (revised)",
+     "stl": "out/revised/912-001.stl", "after": ["render-912-001"],
+     "note": "The rim chamfer CH (leg 0.3 at 45 deg) on F1's circle at 120 deg, where the Pinion Gear's tips pass: material 0.1 inside the chamfer's face at its middle, and open 0.1 past it, inside the square edge the previous config keeps.",
+     "items": [
+       {"label": "CH material inside the face", "at": [-5.6395, 9.7679, 3.7793], "solid": true},
+       {"label": "CH open past the face", "at": [-5.7102, 9.8904, 3.9207], "solid": false}
+     ]},
     {"kind": "outline", "id": "outline-912-002-L1", "part": "912-002", "config": "previous",
      "scad": "912-002_SpanDriver.scad", "out": "out/2d/912-002-L1.svg", "layer": "L1",
      "reference": "912-002_SpanDriver.stl", "axis": "y", "at": 3.7, "tol": 0.15,

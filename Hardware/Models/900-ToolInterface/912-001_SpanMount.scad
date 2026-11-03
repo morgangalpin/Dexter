@@ -46,6 +46,9 @@
 //     K1  washer pockets ×4    Ø5 on H1 from z 2: on -X a dome R2.5 centred at z 7.9; on +X flat at
 //                              z 10 and open through V1 as an arch 5 wide, top z 10 with R2 corners
 //     N1  drive nubs ×2        Ø4, z 4 .. 7, at (13.243, -3.861) and (13.243, 14.139)
+//     CH  rim chamfer          revised only: 45 deg, leg 0.3, on F1's circle's top edge where it stands
+//                              bare, round -X between its two fillets' tangent points (98.5 .. 268.0
+//                              deg); it stops square at each, onto the fillets' uncut edges
 //
 //     V1's outline in (y, z): the left edge y -12.561 up to a corner R1.703 at (-10.857, 22.912), a
 //     33.2 deg chamfer up to (-8.923, 26.2), the top z 26.2, a notch from ±6.015 at z 22.7 to ±6.633 at
@@ -61,7 +64,9 @@
 // (probed, not redrawn). The span XL-320 is a bought part, and the features that meet it follow
 // ../c102_servo.scad: H2 stands under its tab holes, and N1 stands in its rivet holes at FIT_PRESS, on
 // the diameter and short of their floors. R1 (a seat on the Roll Driver's end, which the assembly's
-// clash check reads as planar) keeps the reference's size.
+// clash check reads as planar) keeps the reference's size. The Pinion Gear's tips (#920-005, r 12.25
+// about E1's axis) run past F1's circle's top edge and need FIT_RUN, which the square edge misses (0.41
+// at the C1 chamfer's top corner): CH cuts it 0.3 at 45 deg, which leaves 0.52 to CH's top edge.
 
 include <../print_fit.scad>
 use <../c102_servo.scad>
@@ -84,6 +89,7 @@ CORNERS5  = [[3.366, -7.561], [11.243, -7.561], [11.243, 14.200]];   // F1's R5 
 CORNER2   = [2.000, 17.200];                    // F1's R2 corner, its left edge x 0
 FILLET_TOP = 2.000;        // F1's concave fillet onto the circle, top left
 FILLET_BOT = 2.500;        //   and bottom left
+RIM_CHAMFER = 0.300;       // CH's leg, 45 deg (revised only)
 
 RING      = [4.000, 10.500, 2.500];   // R1: inner r, outer r at z 0, depth
 GROOVE    = [1.250, 0.500];           // G1: half-width, top z
@@ -281,6 +287,21 @@ module upright_cutters(cfg) let(c = fit_clearances(cfg)) {
     }
 }
 
+// CH's arc, from and to angles about the axis: F1's circle between the tangent points of its fillets,
+// the top one onto the block's left edge x 0, the bottom one onto the R5 corner at CORNERS5[0].
+function rim_arc() = let(t = PLATE_R + FILLET_TOP, b = PLATE_R + FILLET_BOT, p = CORNERS5[0], pr = norm(p))
+    [atan2(sqrt(t * t - FILLET_TOP * FILLET_TOP), -FILLET_TOP),
+     360 + atan2(p.y, p.x) - acos((b * b + pr * pr - pow(5 + FILLET_BOT, 2)) / (2 * b * pr))];
+
+// CH: a 45 deg triangle revolved about the axis, its face run on past both of F1's faces, clipped to
+// rim_arc() by a wedge.
+module rim_chamfer() let(a = rim_arc(), c = RIM_CHAMFER, n = 12)
+    intersection() {
+        rotate_extrude() polygon([[PLATE_R - c - 1, PLATE_T + 1], [PLATE_R + 1, PLATE_T + 1], [PLATE_R + 1, PLATE_T - c - 1]]);
+        translate([0, 0, PLATE_T - c - 2]) linear_extrude(c + 4)
+            polygon(concat([[0, 0]], [for (i = [0 : n]) 2 * BIG * [cos(a[0] + i * (a[1] - a[0]) / n), sin(a[0] + i * (a[1] - a[0]) / n)]]));
+    }
+
 // --- the part ------------------------------------------------------------------------------------
 
 module span_mount(cfg = config)
@@ -296,6 +317,7 @@ module span_mount(cfg = config)
         strake_slot(cfg);
         bolt_cutters(cfg);
         upright_cutters(cfg);
+        if (cfg == "revised") rim_chamfer();
     }
 
 // F1's section between the pockets' floor and its top (z 2 .. 4): the outline less S1 and K1.
