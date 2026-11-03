@@ -103,7 +103,7 @@ Flex Spline Attach, measure its motor's body length, set it as `MOTOR_LEN` in
 8. Ream the Wave Gen Coupler's shaft bore and lubricate it.
 9. Slide the coupler onto the motor shaft, stub outward, its grub screw over the shaft's flat. It goes on
    before the Flex Spline Attach: its grip is wider than the flex spline hub's bore
-   ([DC-600-2](009-Design-Completion.md#strain-wave-drive-spacing)).
+   ([DC-19](009-Design-Completion.md#strain-wave-drive-spacing)).
 10. Use the depth-setting tool to set the coupler's depth on the shaft: its bottom face the height
     [`630-004_WaveGenCoupler.scad`](../Hardware/Models/600-StrainWave/630-004_WaveGenCoupler.scad) gives
     as `wgc_above_motor()` above the motor face, the same in every joint. Tighten the grub screw onto the
@@ -252,7 +252,7 @@ Parts: [007.7](007-Bill-of-Materials.md#0077-end-arm-hub).
    lock 3.1 mm from the end; tighten set screws incrementally and evenly.
 10. Press one MR128 into the Internal Inner Pulley's pocket and another into the End Arm Hub Cap. Both
     pockets are closed off later: the pulley's by step 11, the Cap's by step 20
-    ([DC-400-1](009-Design-Completion.md#end-arm-bearing-order)).
+    ([DC-17](009-Design-Completion.md#end-arm-bearing-order)).
 11. Slide a Pulley Spacer between the Internal Inner and Outer Pulleys and join them.
 12. Feed the rod/pulley through the End Arm Hub connection as far as it goes.
 13. Prepare 4× M3 × 107 mm all-thread: thread on 2 M3 nuts and 1 washer at one end, flush.

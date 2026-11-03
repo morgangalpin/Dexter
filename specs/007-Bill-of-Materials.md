@@ -309,7 +309,7 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 | #912-001 | Span Mount | 3D print | 1 | |
 | #912-002 | Span Driver | 3D print | 1 | |
 | #912-003 | 28 × 5.6 × 2.5 mm CF strake | Fabricate | 1 | Cut from [C-502](007.1-Parts-Catalog.md#c-502--carbon-fibre-strip-092--220) — .092″ × .220″ stock |
-| #920-001 | Static Finger | 3D print | 1 | Parallel gripper ([DC-900-1](009-Design-Completion.md#gripper-design)) |
+| #920-001 | Static Finger | 3D print | 1 | Parallel gripper ([DC-20](009-Design-Completion.md#gripper-design)) |
 | #920-002 | Dynamic Finger | 3D print | 1 | Rack finger, in the Static Finger's T-slot |
 | #920-005 | Pinion Gear | 3D print | 1 | |
 | #920-006 | Pinion Bearing EXT | 3D print | 1 | |
@@ -320,7 +320,7 @@ previous version's Motor Control PCB ([DC-7](009-Design-Completion.md#motor-cont
 
 Optional alternate (baseline build qty 0): the **claw gripper**, in place of the parallel gripper's
 parts from #920-001 down and its Span Driver, on the same tool interface, built with two fingers or with four
-([DC-900-1](009-Design-Completion.md#gripper-design); built per
+([DC-20](009-Design-Completion.md#gripper-design); built per
 [008.11 § Claw gripper](008-Assembly.md#claw-gripper-alternate)):
 
 | PBS # | Part | Type | 2-finger | 4-finger | Notes |

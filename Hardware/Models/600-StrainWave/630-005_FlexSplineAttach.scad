@@ -10,7 +10,7 @@
 //   config = "revised"  — the flare below the land removed, so the land runs
 //                         to the motor face; the hub face raised by SPACING
 //                         for the Wave Gen Coupler (#630-004), whose body
-//                         runs up through this part (DC-600-2 in
+//                         runs up through this part (DC-19 in
 //                         specs/009-Design-Completion.md); the hub interface
 //                         cut for C-201's flexspline; and the hub face
 //                         lowered by hub_drop. What sets hub_drop, and why
@@ -114,7 +114,7 @@
 // CBORE_RISE): in J1 and J2 the #6 washers under the motor screws sit there
 // and overhang the land over the far 6810's inner race, 0.2 off its face.
 // The race stays where it was while the motor moves 1.0 of SPACING away from
-// the drive (DC-600-2), and the floors rise with the motor. An M3 x 12
+// the drive (DC-19), and the floors rise with the motor. An M3 x 12
 // (C-610) then runs 3.0 past the motor face, less its #6 washer, as the
 // reference's M3 x 10 ran 2.0 (008.3 step 11).
 
@@ -158,7 +158,7 @@ MOTOR_PITCH   = 31.000;
 MOTOR_HOLE_D  = 3.500;
 CBORE         = [10.300, 7.000];   // diameter, floor
 // Revised hub interface, for c201_spline_seat.scad's flexspline hub.
-SPACING       = 5.000;             // the hub face raised for the coupler; 1.0 of it is the motor's move (DC-600-2)
+SPACING       = 5.000;             // the hub face raised for the coupler; 1.0 of it is the motor's move (DC-19)
 CBORE_RISE    = 1.000;             // revised: the counterbore floors raised with the motor (see the header)
 HEAD_RAISE    = 1.000;             // the head seat raised, for an M2 x 16
 HUB_CLEAR     = 0.200;             // nub tops under the hub's inner face

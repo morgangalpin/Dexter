@@ -19,7 +19,7 @@
 //                         Attach and C-201 put it, from the Pivot Motor End
 //                         Cap in the L1 6810. With C-201 the reference's
 //                         floor stood 4.3 short of that; the Wave Gen
-//                         Coupler's spacing (DC-600-2 in
+//                         Coupler's spacing (DC-19 in
 //                         specs/009-Design-Completion.md) then moved the
 //                         drive 4.0 of it further from the motor, which
 //                         leaves 0.3. armbody_assembly.scad asserts the

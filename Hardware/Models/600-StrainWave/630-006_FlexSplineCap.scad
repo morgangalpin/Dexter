@@ -31,7 +31,7 @@
 // the Attach's fill the hub's holes. Its traps are 2.0 deep, so the nut sits
 // below the face and an M2 x 16 passes through it at the longest path, J1's
 // and J2's. Its bore passes the Wave Gen Coupler's (#630-004) body, which
-// turns inside it (DC-600-2 in specs/009-Design-Completion.md).
+// turns inside it (DC-19 in specs/009-Design-Completion.md).
 //
 //     body                         Ø25.0                  0 .. 3.5
 //     land                         Ø22.0                  3.5 .. 4

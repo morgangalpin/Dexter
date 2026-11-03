@@ -1118,10 +1118,17 @@ anything version 3 does not independently specify
     Gear's and Pinion Bearing EXT's from `900-ToolInterface/PinionGear.*` and `PinionGearExt.*`), where
     `920-001_StaticFinger.stl` (new) is the reference mesh exported from the glTF and the other three
     (new) are tessellated from their STEPs.
-  - `Hardware/Models/930-ClawGripper/` (new group): `930-001_ClawFinger.scad` and
-    `930-002_FingerCap.scad`, their `.view.json` sidecars and `render.json`. Their meshes, published as
-    `920-002_DynamicFinger.stl` and `920-003_FingerCap.stl`, moved to `Reference/meshes/930-ClawGripper/`
-    under the new numbers.
+  - `Hardware/Models/930-ClawGripper/` (new group, designed rather than converted): every file, that is,
+    `930-001` to `930-012` with their `.view.json` sidecars, `claw_params.scad`, `claw_gears.scad`,
+    `render.json`, and the assemblies `claw2_assembly.scad` and `claw4_assembly.scad` with their `.view.json`
+    and `.clash.json`. The legacy claw's meshes, published as `920-002_DynamicFinger.stl` and
+    `920-003_FingerCap.stl`, moved to `Reference/superseded/` under their published numbers.
+  - `Hardware/Models/900-ToolInterface/span_socket.scad` (new): the gripper's socket on the Span Mount,
+    shared by the Static Finger and the Claw Body.
+  - [007.1 §Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners) (C-621, new),
+    [007.2 §Not in the build list](specs/007.2-Printed-Parts.md#not-in-the-build-list),
+    [008.11](specs/008-Assembly.md#00811-tool-interface--gripper) steps 26 and 46, and
+    [008.11 §Claw gripper](specs/008-Assembly.md#claw-gripper-alternate).
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1153,14 +1160,21 @@ anything version 3 does not independently specify
   - `Hardware/Models/600-StrainWave/c201_spline_seat.scad`: C-201's flexspline and wave-generator
     envelopes.
   - `Hardware/Models/render-check/` gains the `outline` check kind, which checks a profile across any
-    axis, and the `engine` field of a part or check, which renders it with an OpenSCAD Nightly's Manifold
-    engine ([009.3](specs/009.3-Render-Program.md)). `100-Base/render.json` and `300-Pivot/render.json`
-    carry the gates, probes and fits of the converted parts; `300-Pivot/render.json` is new.
+    axis, and renders on Manifold only (`lib.rs`, `config.rs`, `meshes.rs`, `kinds.rs` and their tests;
+    [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson)). `100-Base/render.json` and
+    `300-Pivot/render.json` carry the gates, probes and fits of the converted parts;
+    `300-Pivot/render.json` is new.
+  - `Hardware/Models/assembly-clash.rs`: Manifold only, and `--set NAME=VALUE` to check an assembly at
+    several poses.
 - **Amends:** [CR-3A19](#cr-3a19-l1-specified-from-the-base-stack-the-doubled-clamp-withdrawn-6810s-allocated-to-their-seats)
   (L1 = 231.50 mm, with the Base Long seated on the Base Mount Bottom).
 - **Was:** Every printed part outside the differential, the wrist pulleys and the drive seats existed only
   as a mesh, so changing one meant re-deriving it. The base stack seated the Base Long directly on the Base
-  Mount Bottom's top face, and L1 was 231.50 mm.
+  Mount Bottom's top face, and L1 was 231.50 mm. Parts rendered on OpenSCAD 2021.01's CGAL, and a part
+  opted into an OpenSCAD Nightly's Manifold engine with `"engine": "manifold"`. The claw was a legacy
+  finger and Finger Cap whose fixed finger was not in the model set. The span XL-320's two M2 × 12 bolts
+  went in from the Span Mount's face, their heads in its counterbores, and the Static Finger was held by
+  its fits on the Span Mount alone.
 - **Now:** Each converted part is a `.scad` with two configurations. `config="previous"` recreates the
   mesh and is gated on `scadmesh dist` at ±0.15 mm against it. `config="revised"` draws the part's print
   fits from `print_fit.scad`. Each part's header owns its measured dimensions and fit list, and a view
@@ -1318,7 +1332,7 @@ anything version 3 does not independently specify
     its seat. The manifest's exceptions give the reason for each place accepted as drawn. The assembly
     also showed that 008.7 fitted two MR128s too late to reach their seats; they now go in at step 10,
     the Internal Inner Pulley's rather than the Outer's, and steps 10–19 become 11–20
-    ([DC-400-1](specs/009-Design-Completion.md#end-arm-bearing-order)).
+    ([DC-17](specs/009-Design-Completion.md#end-arm-bearing-order)).
     `robot_assembly.scad` now draws all ten parts in the frames this assembly gives them, so the
     Axis Intersection Halves and the code disk leave its UNPLACED list, and the Internal and External
     pulleys are turned end for end into the hub, where the CAD export had left them above it.
@@ -1364,7 +1378,7 @@ anything version 3 does not independently specify
     - the Nut Holders' trap floor is back at 1.2 mm.
 
     J3 takes its share of the coupler's spacing
-    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)) as 1.0 mm motor-down and
+    ([DC-19](specs/009-Design-Completion.md#strain-wave-drive-spacing)) as 1.0 mm motor-down and
     4.0 mm drive-up, the split every joint now takes, because the motor's Ø50.8 corners must stop above
     the lower 6810's Ø50 bore. The End Cap's seat rises 2.0 mm in all, and its nut traps deepen to 4.0 mm for M3 x 10
     screws, since an M3 x 12 would reach the motor. The Stator Holder seats the spline's flange on a boss
@@ -1379,15 +1393,15 @@ anything version 3 does not independently specify
   - **600-StrainWave:** the revised Flex Spline Attach (`#630-005`) trims its lugs' root fillets off the
     motor's square front edge, which they stood on. The reference bore's Ø5.0 ridge, which gripped the
     motor's shaft line to line, goes with the shaft from the revised Attach
-    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)).
+    ([DC-19](specs/009-Design-Completion.md#strain-wave-drive-spacing)).
   - **600-StrainWave:** the Wave Gen Coupler (`#630-004`) is two extruded 2D layers, the hex body and
     the keyed stub, each gated by `outline`, with the nut pockets cut as one section extruded across
     the axis. The reference's stub is a Cone Drive wave generator's Ø10 keyed input, which C-201's Ø6H7
     bore does not take; earlier readings took the key's 6.0 for a Ø6 band, and 007.1 is corrected. The
     revised render's solid Ø6 stub on the hex
-    ([DC-600-1](specs/009-Design-Completion.md#wave-gen-coupler-stub)) left the coupler short of C-101's
+    ([DC-18](specs/009-Design-Completion.md#wave-gen-coupler-stub)) left the coupler short of C-101's
     standard shaft, and is superseded by the reviewer's decision
-    ([DC-600-2](specs/009-Design-Completion.md#strain-wave-drive-spacing)): the revised coupler is one
+    ([DC-19](specs/009-Design-Completion.md#strain-wave-drive-spacing)): the revised coupler is one
     round piece, gripping the shaft's flat with an M3 grub screw in a captured nut, and each J1/J2 drive
     stands further from its motor to take it. The revised Motor End Caps (`#311-001`, `#312-001`) seat the
     motor deeper; the Flex Spline Attach is thicker, opens its centre round the coupler with an access hole
@@ -1421,7 +1435,7 @@ anything version 3 does not independently specify
     to 0.47 off the mesh, where the CAD blends and a ball's path does not. `robot_assembly.scad`
     draws the part from the source.
   - **200-ArmBody, the solid revolves:** the dist gates of the Idler Plug and both Belt Directors failed
-    once [CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine) moved them off 2021.01. Each
+    once they moved off 2021.01 (**Render engine**, below). Each
     profile has an edge on the axis, which the snapshot revolves into zero-area facets that `dist`
     measures inside the part (README, "A revolve with an edge on the axis"). `belt_director.scad`'s
     `solid_revolve()` now draws those three parts and the Belt Director Cap, and the gates read 0.003,
@@ -1523,17 +1537,18 @@ anything version 3 does not independently specify
     Span Driver (`#912-002`) is a stack of sections with the spline end's round revolved; `revised`
     presses its spline bore and key slot onto the XL-320's output and opens the M2.6 bolt hole and counterbore
     to slip. Its STEP is a different revision (its head, key slot and counterbore differ), so the STL is
-    the source. The claw's Finger Cap (`#930-002`, published as `#920-003`) is a disc with one hole, which `revised` opens to the M2
-    bolt's slip clearance. The Span Mount (`#912-001`) is a region split. Its STEP is a different
+    the source. The Span Mount (`#912-001`) is a region split. Its STEP is a different
     revision (the underside ring is 1.5 deep where the STL's is 2.5), so the STL is the source. `revised`
     opens the strake slot to the C-502 strip's press fit, the reference's slot being 0.09 narrower than
-    the strip, the bolt holes, washer pockets and servo bolts' counterbores to slip, with the counterbores deep enough that the heads clear the Static Finger, and the span XL-320's nubs to press in its rivet holes, short of their floors. The Roll Body (`#911-001`) has only an STL,
+    the strip, the bolt holes and washer pockets to slip, fills the servo bolts' counterbores
+    (**Gripper mount**, below), presses the span XL-320's nubs in its rivet holes, short of their floors,
+    and chamfers the base plate's round 0.3 on its top edge, so that the Pinion Gear's tips run past it at
+    the running clearance. The Roll Body (`#911-001`) has only an STL,
     which is the source. It is a region split whose windows' and slot's rounds are lofted by
     `100-Base/window_round.scad`; `revised` presses the 6703s' seats and the roll XL-320's rim, and opens the bolt holes and
-    counterbores to slip. The claw finger, published as the Dynamic Finger `#920-002`, is the Claw Finger
-    `#930-001` in its own group, since the parallel gripper is the baseline
-    ([DC-900-1](specs/009-Design-Completion.md#gripper-design)). It is a stack of sections from its mesh;
-    `revised` presses the shaft into the MR128s and opens the socket to slip on the Span Driver's head.
+    counterbores to slip. The parallel gripper is the baseline
+    ([DC-20](specs/009-Design-Completion.md#gripper-design)); the claw, published as the Dynamic Finger
+    `#920-002` and Finger Cap `#920-003`, is retired and designed new (**930-ClawGripper**, below).
     The parallel gripper's moving parts had no mesh, so each is gated against its STEP tessellated by
     `scadmesh tessellate`. The Pinion Gear (`#920-005`) is a stack of sections with involute teeth and
     revolved chamfers; `revised` opens its drive slot, nut trap, bolt hole and key recess to slip, drops
@@ -1561,130 +1576,54 @@ anything version 3 does not independently specify
     Span Driver's bore stands inside the span XL-320's case, which waits on measuring the servo's spline
     (`gripper_assembly.scad`'s header gives why). A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
     Pinion Gear's and the rack's 12 teeth each.
+  - **930-ClawGripper:** the claw is designed: a pincer whose curved fingers swing equal and opposite,
+    geared down 3.4:1 from the span XL-320, in a closed housing, in a 2-finger and a 4-finger build
+    ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A,
+    `#930-001` is the Claw Finger and `#930-002` the Claw Gear; `#930-003` Claw Body, `#930-004` Claw
+    Pinion, `#930-005` Claw Cap, `#930-006` Claw Axle, `#930-007` Claw Follower Finger and `#930-008`
+    Claw Finger Wall are new, and `#930-009` to `#930-012` are the 4-finger build's longer body, wall,
+    axle and pinion, each drawn from the 2-finger part's source. The Claw Pinion takes the Span Driver's
+    place on the servo's spline, drawing its spline end from `912-002_SpanDriver.scad`. C-621, the
+    M3 × 16 mm set screw that pins the fingers and the Claw Gear, is new. `claw2_assembly.scad` and
+    `claw4_assembly.scad` are checked closed, half open and fully open; they fail only where the
+    Span Driver's does, at the span XL-320's spline.
+  - **Gripper mount:** the gripper's socket on the Span Mount is `span_socket.scad`, which the Static
+    Finger and the Claw Body share. The span XL-320's two M2 × 12 bolts go in through the gripper's base
+    (the socket's S4) and hold the base, the Span Mount and the servo together, so the base needs no
+    fastener of its own. The Static Finger's base is squared and its floor lowered to cover the bolts,
+    and its hub's cylinder runs on round the whole circle as a guard over the Pinion Gear's teeth.
+    008.11 steps 26 and 46 change to suit: the bolts stay in step 26 for the wiring steps and move at
+    step 46, with the span connector unplugged if its wires are in the way. The assemblies draw each set
+    of fasteners as one part.
+  - **Render engine:** every part and check renders on one OpenSCAD development snapshot's Manifold
+    engine, found through `$OPENSCAD`; CGAL is retired, and `render.json` refuses an `engine` field.
+    Manifold reads a hand-built solid's winding and keeps a shared face as a wall, where CGAL forgave
+    both, so the parts were fixed rather than excused:
+    - two hand-built solids were inside out, `110-001`'s floor (`floor_body()`) and the end caps' side
+      blend (`end_cap_channel.scad`, `side_blend()`), and are now wound outward; `311-001` and
+      `511-001` pass their dist gates at 0.149 and 0.119 mm, as on CGAL;
+    - `110-001`'s flange was cut on the tower's own facets, so its inner face lay on the tower's face.
+      The arms now reach `FLANGE_LAP` inside the tower (its comment gives the figures): dist 0.220 mm
+      against 0.25;
+    - `100-003`'s L1 and L2, and L3's two parts, each met on the plane where L2 starts. L1 and L3's
+      part in it now run `SEAM_LAP` past the plane (its comment gives the figures): dist 0.045 mm
+      against 0.15;
+    - `710-001`'s Manifold render is CGAL's surface with fewer triangles, so its miss was `compare`
+      reading vertex rings in the reference's tooth toes that only CGAL's tessellation had matched. The
+      clone check now ignores those rings (its note gives the figures) and reads 0.058 mm.
+
+    `Hardware/Models/README.md` (*A shared face is not a join*) owns the rule these fixes follow.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
-- **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
-- **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
-  after editing a part.
-
-### CR-3A21: Every part renders on OpenSCAD's Manifold engine
-
-- **Affects:** [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson),
-  `Hardware/Models/render-check/` (`lib.rs`, `meshes.rs` and the check kinds' tests),
-  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `100-Base/render.json`,
-  `200-ArmBody/render.json`, `300-Pivot/render.json`, and the headers of `120-001_BaseLong.scad`,
-  `300-001_MainPivot.scad` and `311-001_MotorEndCapBase.scad`.
-- **Amends:** [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad) (the `engine` field).
-- **Was:** Parts rendered on OpenSCAD 2021.01's CGAL. A part opted into an OpenSCAD Nightly's Manifold
-  engine with `"engine": "manifold"`, found through `$OPENSCAD_MANIFOLD`.
-- **Now:** One OpenSCAD development snapshot renders everything, found through `$OPENSCAD`. `engine`
-  selects its `--backend`. Manifold is the default, so the `"engine": "manifold"` fields are gone,
-  and `"cgal"` is the opt-out.
-  - Two hand-built solids were inside out: `110-001`'s floor (`floor_body()`) and the end caps' side
-    blend (`end_cap_channel.scad`, `side_blend()`). CGAL forgives an inside-out solid; Manifold
-    subtracts it from the union. Both are now wound outward. `311-001` and `511-001` now pass their
-    dist gates on Manifold at 0.149 and 0.119 mm, the same as on CGAL.
-  - `110-001` and `710-001` missed their gates on Manifold, so they and their own checks named `"cgal"`
-    until [CR-3A22](#cr-3a22-cgal-retired).
-  - `100-003`'s dist gate failed on both of the snapshot's engines; [CR-3A22](#cr-3a22-cgal-retired)
-    closes it on Manifold.
-  - `200-ArmBody`'s parts render on Manifold, and its outlines, fits and assembly clash check pass.
-    The dist gates of `210-003` (2.997 mm), `210-004` and `210-005` (0.250 mm each) fail with the same
-    figures on CGAL, so the engine does not cause them;
-    [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad)'s solid-revolves entry closes them.
-- **Driver:** Fillets. BOSL2's `fillet()`, `join_prism()`, `offset_sweep()` and `minkowski`-based
-  rounding are slow on CGAL, and CGAL asserts on the tangent cutters a fillet makes.
-- **Status:** `[Specified]`.
-- **Re-derive:** Install a snapshot as `Hardware/Models/README.md` describes, then run
-  `rust-script --force render.rs ... --verify` once, so `render.rs` is rebuilt against the crate.
-
-### CR-3A22: CGAL retired
-
-- **Affects:** [009.3 §Config](specs/009.3-Render-Program.md#config-grouprenderjson),
-  `Hardware/Models/render-check/` (`config.rs`, `meshes.rs`, `kinds.rs` and their tests),
-  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `100-Base/render.json`,
-  `300-Pivot/render.json`, `700-Differential/render.json`, `110-001_BaseMountBottom.scad`,
-  `100-003_PivotSkirt.scad`, `710-001_SplitGearTop.scad`, and comments in `120-001_BaseLong.scad`,
-  `300-001_MainPivot.scad`, `base_assembly.scad`, `robot_assembly.scad` and
-  `GlueRig_EndArmHubToDiff_B.scad`.
-- **Amends:** [CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine) (the `"cgal"` opt-out).
-- **Was:** A part or check could name `"engine": "cgal"`, and `110-001` and `710-001` did. `100-003`'s
-  dist gate failed on both engines.
-- **Now:** Every part and check renders on Manifold, and `render.json` refuses an `engine` field. All
-  three parts pass on Manifold:
-  - `110-001`: the flange was cut on the tower's own facets, so its inner face lay exactly on the
-    tower's face, and Manifold kept the shared face as a wall inside each arm. The arms now reach
-    `FLANGE_LAP` inside the tower (its comment gives the figures): dist 0.220 mm against
-    0.25.
-  - `100-003`: L1 and L2, and L3's two parts, each met on the plane where L2 starts, and Manifold kept
-    both shared faces as a wall across the lug. L1 and L3's part in it now run `SEAM_LAP` past the
-    plane (its comment gives the figures): dist 0.045 mm against 0.15.
-  - `300-Pivot`: the CGAL notes in `300-001`, `311-001`, `312-001`, `pivot_assembly.scad`, the two cap view
-    sidecars and the `dist-312-001` check are gone. All 20 jobs of `render.rs 300-Pivot --verify` pass on
-    Manifold, `312-001` included, whose channel seam came from `side_blend()` ([CR-3A21](#cr-3a21-every-part-renders-on-openscads-manifold-engine)).
-  - `710-001`: the Manifold render is CGAL's surface with fewer triangles, so its miss was `compare`
-    reading vertex rings in the reference's tooth toes that only CGAL's tessellation had matched. The
-    clone check now ignores those rings (its note gives the figures) and reads 0.058 mm on both engines.
-  The rule these fixes follow is owned by `Hardware/Models/README.md` (*A shared face is not a join*).
-- **Driver:** One engine to keep working. With every part passing on Manifold, the opt-out only let a
-  part drift onto an engine that is slow on fillets and that the gates no longer exercise.
-- **Status:** `[Specified]`.
-- **Re-derive:** `cargo test` in `render-check/`, then `rust-script --force render.rs <group> --verify`
-  for 100-Base, 300-Pivot and 700-Differential.
-
-### CR-3A23: Claw gripper designed in a 2-finger and a 4-finger build
-
-- **Affects:** [007.11](specs/007-Bill-of-Materials.md#00711-tool-interface--gripper),
-  [007.1 §Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
-  [007.2 §Not in the build list](specs/007.2-Printed-Parts.md#not-in-the-build-list),
-  [008.11 §Claw gripper](specs/008-Assembly.md#claw-gripper-alternate),
-  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
-  `Hardware/Models/930-ClawGripper/` (every file), `900-ToolInterface/span_socket.scad` (new),
-  `900-ToolInterface/tool_assembly.scad`, `900-ToolInterface/912-002_SpanDriver.scad`,
-  `920-ParallelGripper/920-001_StaticFinger.scad`, `920-ParallelGripper/gripper_assembly.scad`,
-  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`.
-- **Amends:** [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad) (the claw's two converted
-  parts).
-- **Was:** The claw was the legacy Claw Finger (`#930-001`) and Finger Cap (`#930-002`), converted from
-  their meshes, whose fixed finger was not in the model set.
-- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite, geared down 3.4:1 from
-  the span XL-320, in a closed housing, in a 2-finger and a 4-finger build
-  ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A, `#930-001`
-  is reassigned to the new Claw Finger and `#930-002` to the Claw Gear; `#930-003` Claw Body, `#930-004`
-  Claw Pinion, `#930-005` Claw Cap, `#930-006` Claw Axle, `#930-007` Claw Follower Finger and `#930-008` Claw
-  Finger Wall are new, and `#930-009` to `#930-012` are the 4-finger build's longer body, wall, axle and pinion,
-  each drawn from the 2-finger part's source. The Claw Pinion takes the Span Driver's place on the servo's
-  spline, drawing its spline end from `912-002_SpanDriver.scad`, which is otherwise unchanged. The legacy
-  meshes move to `Reference/superseded/` under their published numbers. The
-  Static Finger's socket on the Span Mount moves into `span_socket.scad`, which the Claw Body shares.
-  C-621, the M3 × 16 mm set screw that pins the fingers and the Claw Gear, is new. `assembly-clash.rs` takes `--set NAME=VALUE`, so that one clash file checks an assembly at several poses.
-- **Driver:** A gripper whose two fingers are both in the model set, for parts the parallel gripper's jaws
-  do not suit, with as much shared between its builds and with the parallel gripper as the mount allows.
-- **Status:** `[Specified]`.
-- **Re-derive:** `rust-script render.rs 930-ClawGripper --verify`, then
-  `rust-script assembly-clash.rs 930-ClawGripper/claw2_assembly.clash.json --set OPEN=<deg>` and the same for
-  `claw4_assembly.clash.json`, at 0, 12 and 25.
-
-### CR-3A24: A gripper's base held by the span XL-320's two bolts
-
-- **Affects:** [007.2](specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711),
-  [008.11](specs/008-Assembly.md#00811-tool-interface--gripper) steps 26 and 46,
-  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
-  `900-ToolInterface/span_socket.scad`, `900-ToolInterface/912-001_SpanMount.scad`,
-  `900-ToolInterface/tool_assembly.scad`, `920-ParallelGripper/920-001_StaticFinger.scad`,
-  `920-ParallelGripper/gripper_assembly.scad`, `Hardware/Models/PART-INDEX.md`.
-- **Amends:** [CR-3A23](#cr-3a23-claw-gripper-designed-in-a-2-finger-and-a-4-finger-build) (the socket on the
-  Span Mount that it moved into `span_socket.scad`).
-- **Was:** The span XL-320's two M2 × 12 bolts went in from the Span Mount's face, their heads in its
-  counterbores, and the Static Finger was held by its fits on the Span Mount alone.
-- **Now:** The same two bolts go in through the gripper's base, `span_socket.scad`'s S4, and hold the base, the
-  Span Mount and the servo together. The Span Mount's counterbores are filled, `revised`. The Static Finger's
-  base is squared and its floor lowered to cover the bolts, and its hub's cylinder runs on round the whole
-  circle as a guard over the Pinion Gear's teeth. The Span Mount's base plate is chamfered 0.3 on its round's
-  top edge, `revised`, so that the Pinion Gear's tips run past it at the running clearance. Steps 26 and 46
-  change to suit; the bolts stay in step 26 for the wiring steps and move at step 46, with the span
-  connector unplugged if its wires are in the way. The assemblies draw each set of fasteners as one part.
-- **Driver:** The two bolts were already there, so they hold the base with no added part.
-- **Status:** `[Specified]`.
-- **Re-derive:** `rust-script render.rs 900-ToolInterface --verify`, `rust-script render.rs 920-ParallelGripper
-  --verify`, then `rust-script assembly-clash.rs 900-ToolInterface/tool_assembly.clash.json` and
-  `rust-script assembly-clash.rs 920-ParallelGripper/gripper_assembly.clash.json --set OPEN=<mm>` at 0, 10 and 20.
+  Manifold, because BOSL2's `fillet()`, `join_prism()`, `offset_sweep()` and `minkowski`-based rounding
+  are slow on CGAL, and CGAL asserts on the tangent cutters a fillet makes; one engine, so that no part
+  drifts onto one the gates no longer exercise. The claw, for parts the parallel gripper's jaws do not
+  suit, with both fingers in the model set. The gripper mount, because the span servo's two bolts were
+  already there.
+- **Status:** `[Specified]`. Every mesh-only printed part is converted. The Span Driver's and the Claw
+  Pinion's seat on the span XL-320's spline stays open until a servo is measured
+  ([DC-21](specs/009-Design-Completion.md#span-xl-320-spline-seat)).
+- **Re-derive:** Install a development snapshot as `Hardware/Models/README.md` describes, then run
+  `rust-script --force render.rs all --verify` once, so that `render.rs` is rebuilt against the crate,
+  and `cargo test` in `render-check/`. Run `render.rs <group> --verify` after editing a part, and
+  `assembly-clash.rs` on each `.clash.json`, with `--set OPEN=<value>` at closed, half open and fully
+  open for the gripper assemblies. Print each converted part from `config="revised"`.

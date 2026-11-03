@@ -43,15 +43,16 @@ committed but does not yet reproduce its reference geometry.
 | DC-14 | [Power inlet mounting](#power-inlet-mounting) | P2 | Harness assembly | A mounting home for the panel receptacle | `[Provisional]` |
 | DC-15 | [Arm Body placement](#arm-body-placement) | P2 | Arm Body fits, assembly review | Every part's placement in the Arm Body | `[Provisional]` |
 | DC-16 | [Main Pivot placement](#main-pivot-placement) | P2 | Main Pivot fits, assembly review | The code disk's turn and the Pivot cap's, and what the disk's pegs engage | `[Provisional]` |
-| DC-400-1 | [End Arm bearing order](#end-arm-bearing-order) | P2 | End Arm Hub assembly | — | `[Specified]` ✔ closed |
-| DC-600-1 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | superseded by [DC-600-2](#strain-wave-drive-spacing) |
-| DC-600-2 | [Strain-wave drive spacing](#strain-wave-drive-spacing) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
-| DC-900-1 | [Gripper design](#gripper-design) | P2 | Gripper printing, tool interface assembly | — | `[Specified]` ✔ closed |
+| DC-17 | [End Arm bearing order](#end-arm-bearing-order) | P2 | End Arm Hub assembly | — | `[Specified]` ✔ closed |
+| DC-18 | [Wave Gen Coupler stub](#wave-gen-coupler-stub) | P2 | J1–J3 drives | — | superseded by [DC-19](#strain-wave-drive-spacing) |
+| DC-19 | [Strain-wave drive spacing](#strain-wave-drive-spacing) | P2 | J1–J3 drives | — | `[Specified]` ✔ closed |
+| DC-20 | [Gripper design](#gripper-design) | P2 | Gripper printing, tool interface assembly | — | `[Specified]` ✔ closed |
+| DC-21 | [Span XL-320 spline seat](#span-xl-320-spline-seat) | P2 | Every gripper assembly's clash check | Measuring a servo with its horn off; deferred until one is bought | `[Provisional]` |
 
-**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, DC-13, DC-400-1, DC-600-2 and DC-900-1 are closed, and
-DC-600-1 is superseded by DC-600-2. Every
+**Completion progress.** DC-1, DC-2, DC-3, DC-4, DC-5, DC-6, DC-8, DC-12, DC-13, DC-17, DC-19 and DC-20 are closed, and
+DC-18 is superseded by DC-19. Every
 other item has been narrowed to the gap named in the table above, and each of those gaps is one of two kinds
-of work: **design authored here** (DC-14, DC-15, DC-16), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11).
+of work: **design authored here** (DC-14, DC-15, DC-16), or **a check on a physical build** (DC-7, DC-9, DC-10, DC-11, DC-21).
 DC-11 owes the model set neither a part nor a link, and all that is left of it is a coupon printed on the
 machine that will print the robot. DC-2 — the largest single piece of work in
 the set — is authored as parametric OpenSCAD source; all seven recreated parts now render as one clean
@@ -443,7 +444,7 @@ meet.
 
 | # | Item | What is open | Consequence if wrong |
 |---|---|---|---|
-| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) — ✔ **closed by decision** | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"*, and **no manufacturer part number exists to recover.** The design's own CAD carries the motor as `NEMA17-48H` in seven `Reference/onshape-v1/` assemblies, but as an imported solid — `isStandardContent: false`, a single `documentId`, bodies named `Part 87`…`Part 96` — with no vendor, no number and no geometry in the mirror. That was the last place an identity could have been held, so the item closes the way [row j](#procurement-data) did: **StepperOnline `17HM19-2004S` is adopted as the part of record.** All three interface rows now hold. *Frame:* the three printed Motor End Caps (`#311-001`, `#312-001`, `#511-001`) and the Flex Spline Attach (`#630-005`) independently carry the same face — 4 × Ø3.19 / Ø3.49 at (±15.500, ±15.500), a **31.000 mm square** M3 pattern, around a **Ø22.49** / **Ø23.000** pilot-boss clearance — which is NEMA 17's face pattern to three decimals. *Shaft:* the Wave Gen Coupler `#630-004` takes it in a **Ø5.000 bore 16.0 mm deep**, and the wave generator runs on the coupler's stub rather than the shaft ([DC-600-2](#strain-wave-drive-spacing)), with coupler depth set by a shop gauge ([008.3](008-Assembly.md#0083-harmonic-drive-motors) step 10), so the 1 mm the adopted part gives up against the legacy 25 mm is absorbed. *Body length:* **48 mm, and the earlier reading of this row was wrong.** It said no printed part bounds body length and that the figure was a ceiling checked once on a build. The End Cap does not in fact float on the motor: [008.4](008-Assembly.md#0084-main-pivot) fixes it to the Main Pivot before the motor is epoxied to it, making it a datum, and what body length then sets is the drive's axial station — a two-sided constraint, mechanism in [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step). The band on it is an assembly stack-up and is **not** recoverable from the manufacturer's drawing, which fixes the component set's internal geometry and says nothing about how far the mating parts may sit from nominal. *Torque:* **the 0.46 N·m against the legacy 0.52 turns out not to matter at all.** Both exceed what the strain-wave drive will accept: J2 reaches [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)'s start/stop rating at 0.30 N·m of motor torque, so payload is capped by the gearbox well below either motor's stall ([003 § Static gravity torque](003-Kinematics.md#static-gravity-torque)). The delta is margin over a limit neither part is allowed to reach | — |
+| a | **Stepper motor identity** ([C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)) — ✔ **closed by decision** | The legacy list gives only *"25 mm shaft, 0.9°, 0.52 N·m"*, and **no manufacturer part number exists to recover.** The design's own CAD carries the motor as `NEMA17-48H` in seven `Reference/onshape-v1/` assemblies, but as an imported solid — `isStandardContent: false`, a single `documentId`, bodies named `Part 87`…`Part 96` — with no vendor, no number and no geometry in the mirror. That was the last place an identity could have been held, so the item closes the way [row j](#procurement-data) did: **StepperOnline `17HM19-2004S` is adopted as the part of record.** All three interface rows now hold. *Frame:* the three printed Motor End Caps (`#311-001`, `#312-001`, `#511-001`) and the Flex Spline Attach (`#630-005`) independently carry the same face — 4 × Ø3.19 / Ø3.49 at (±15.500, ±15.500), a **31.000 mm square** M3 pattern, around a **Ø22.49** / **Ø23.000** pilot-boss clearance — which is NEMA 17's face pattern to three decimals. *Shaft:* the Wave Gen Coupler `#630-004` takes it in a **Ø5.000 bore 16.0 mm deep**, and the wave generator runs on the coupler's stub rather than the shaft ([DC-19](#strain-wave-drive-spacing)), with coupler depth set by a shop gauge ([008.3](008-Assembly.md#0083-harmonic-drive-motors) step 10), so the 1 mm the adopted part gives up against the legacy 25 mm is absorbed. *Body length:* **48 mm, and the earlier reading of this row was wrong.** It said no printed part bounds body length and that the figure was a ceiling checked once on a build. The End Cap does not in fact float on the motor: [008.4](008-Assembly.md#0084-main-pivot) fixes it to the Main Pivot before the motor is epoxied to it, making it a datum, and what body length then sets is the drive's axial station — a two-sided constraint, mechanism in [C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step). The band on it is an assembly stack-up and is **not** recoverable from the manufacturer's drawing, which fixes the component set's internal geometry and says nothing about how far the mating parts may sit from nominal. *Torque:* **the 0.46 N·m against the legacy 0.52 turns out not to matter at all.** Both exceed what the strain-wave drive will accept: J2 reaches [C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)'s start/stop rating at 0.30 N·m of motor torque, so payload is capped by the gearbox well below either motor's stall ([003 § Static gravity torque](003-Kinematics.md#static-gravity-torque)). The delta is margin over a limit neither part is allowed to reach | — |
 | b | **Cooling fan** ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)) — ✔ **closed** | The design record gave no fan dimension and no part number, only a printed Fan Bracket (`#800-005`) and a CAD body (`HDI-730-005_Fan`). **Both were measured and they agree on a 40 mm frame.** The CAD body is 40.000 × 40.000 × 10.800 with a Ø37.698 impeller bore and 4 × Ø3.394 holes on a 32.500 mm pitch — a representative envelope of the standard 40 × 40 × 10 fan, whose nominal pattern is 4 × Ø4.3 on 32.0 ± 0.3. The bracket's aperture is **40.000 mm square with R2.000 corners at its seating face, drafting to 38.0 mm** at the far face, which seats that frame and clears that bore. **The original bracket carries no fan screw holes** — at a 32 mm pattern the fan's holes fall inside the aperture — so its fan is glued; the bracket's `config="revised"` adds corner pads that take four fan screws ([C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring)). What the bracket *does* carry is two Ø2.99 holes 49.737 mm apart on integral 9 mm standoffs, and the Motor Control PCB carries eight Ø0.125″ holes in two columns **1.95″ = 49.53 mm** apart: the bracket is built for the stood-off position the wiki prescribes, over the PCB rather than on the drivers. Specified as Sunon `MF40101V1-1000U-A99` in [C-716](007.1-Parts-Catalog.md#7-electronics-and-wiring), 12 V per the schematic's `J23` annotation and tolerant of 4.5–13.8 V, so [DC-7](#motor-control-pcb)'s rail reading cannot invalidate the choice | — |
 | c | **Belt Director type** ([#210-004/005](007.2-Printed-Parts.md#arm-body-and-belt-directors--0075)) — ✔ **closed** | [007.5](007-Bill-of-Materials.md#0075-arm-body) typed them "Fabricate" against [008.5](008-Assembly.md#0085-arm-body)'s treatment of them as printed bodies. **The model set decides it: they are printed**, and both are in the HD STL print archive ([007.2 § Model file sources](007.2-Printed-Parts.md#model-file-sources)). Each measures as a shouldered sleeve — Ø11.000 × 0.5 mm head, Ø8.000 shank (17.000 Small, 27.000 Large), Ø4.700 blind core. **The measurement also corrects the fit's direction and settles the bearing:** Ø8.000 is the MR128 *bore*, so the bearings go onto the shank and their Ø12 races carry the belt, and the legacy build notes' alternative reading of "MR 125" is excluded — MR125's 5 mm bore will not go on a Ø8.000 shank. Both rows retyped `3D print`; [008.5](008-Assembly.md#0085-arm-body) step 8a now reads *onto* | — |
 | d | **Print parameters** ([007.2 § Print profile](007.2-Printed-Parts.md#print-profile)) — ✔ **published** | Layer height, wall count, infill, and orientation were never published — the originals were produced on Markforged equipment. **A profile is now derived from the features the parts have to hold**, each parameter stated with the geometry that sets it: the 0.539 mm land between `#730-002`'s encoder slots sets the nozzle, the Belt Director's 0.500 mm head sets the layer height, and the 2.5–7.0 mm bearing races set perimeter count and orientation. Machine qualification is a coupon, [`fit_coupon.scad`](../Hardware/Models/950-Tooling/fit_coupon.scad), carrying each print-fit class the parts draw; [007.2 § Print fits](007.2-Printed-Parts.md#print-fits) states which fits and why. The slot on it was re-specified under [row e](#procurement-data), the original having been drawn on a strip's section rather than on a slot. **Validating it needs a print**, which is [009.2](009.2-Test-Build-Manifest.md)'s, not this item's | — |
@@ -586,7 +587,7 @@ by the feature each is located from, and the pegs' mate named; the model's infer
 values. `[Provisional]`.
 
 ## End Arm bearing order
-**DC-400-1 · P2 · Requirement: buildability · Specified in [008.7](008-Assembly.md#0087-end-arm-hub)** — ✔ **closed by decision**
+**DC-17 · P2 · Requirement: buildability · Specified in [008.7](008-Assembly.md#0087-end-arm-hub)** — ✔ **closed by decision**
 
 **Found:** 008.7 fitted two MR128s at a step that could no longer reach their seats, its step 20 after
 the Cap was snapped on. [`endarm_assembly.scad`](../Hardware/Models/400-EndArm/endarm_assembly.scad)
@@ -602,7 +603,7 @@ places each part by a feature it carries, and shows:
 Pulley. `[Specified]`.
 
 ## Wave Gen Coupler stub
-**DC-600-1 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — **superseded by [DC-600-2](#strain-wave-drive-spacing)**,
+**DC-18 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — **superseded by [DC-19](#strain-wave-drive-spacing)**,
 which replaces the hex body and solid stub decided below. The finding stands.
 
 **Found:** the Wave Gen Coupler's (`#630-004`) reference stub does not enter C-201's wave generator. It is
@@ -616,9 +617,9 @@ bore is deep, and the shaft bore stops in the hex body.
 dimensions and where each is taken from. `config="previous"` keeps the reference's stub. Superseded.
 
 ## Strain-wave drive spacing
-**DC-600-2 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — ✔ **closed by decision**
+**DC-19 · P2 · Requirement: buildability · Specified in [007.1 C-201](007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set)** — ✔ **closed by decision**
 
-**Found:** with [DC-600-1](#wave-gen-coupler-stub)'s solid stub seated in the wave generator's hub, the
+**Found:** with [DC-18](#wave-gen-coupler-stub)'s solid stub seated in the wave generator's hub, the
 coupler's blind bore ended about 1.5 short of the tip of C-101's 24 mm shaft
 ([007.1 C-101](007.1-Parts-Catalog.md#c-101--nema-17-stepper-09step)), so either the shaft was cut or the
 coupler stood off it. The wave generator's Ø6 bore runs through its whole hub.
@@ -661,7 +662,7 @@ coupler's clearances to the wave generator, and
 `[Specified]`.
 
 ## Gripper design
-**DC-900-1 · P2 · Requirement: REQ-DOF-2 · Specified in [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) and [008.11](008-Assembly.md#00811-tool-interface--gripper)** — ✔ **closed**
+**DC-20 · P2 · Requirement: REQ-DOF-2 · Specified in [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper) and [008.11](008-Assembly.md#00811-tool-interface--gripper)** — ✔ **closed**
 
 **Closed.** The tool interface carries several gripper options, each its own model group on the shared
 interface in `900-ToolInterface` (the Roll Body, Roll Driver, Span Mount and strake). The baseline build
@@ -697,13 +698,8 @@ base's plate, the Span Mount and the servo's tab, so that the base needs no fast
 Span Mount's face stays flat where the Static Finger slides on it. `900-ToolInterface/span_socket.scad` owns
 the holes (S4), which the Static Finger and the Claw Body share.
 
-One item is open, in every gripper assembly: the Span Driver's seat on the span XL-320's spline. Its head
-bottoms in the gripper's drive slot, which stands its spline bore's mouth 2.075 mm inside the servo's case,
-and the clash check fails the driver against the case and the spline. No source gives the spline's length or
-any recess round it: ROBOTIS's STEP draws neither (`c102_servo.scad`'s SOURCES). It closes on measuring a
-servo with its horn off (step 24): the spline's tooth count, its tip and root diameters and its height above
-the front face, the diameter and depth of any recess round it, the key's width and height, and where the
-connector of step 31 sits at the tab end.
+The Span Driver's seat on the span XL-320's spline is open, in every gripper assembly, as
+[DC-21](#span-xl-320-spline-seat).
 
 ### The claw
 The legacy claw finger and Finger Cap are retired, their meshes kept in `Reference/superseded/`
@@ -743,8 +739,8 @@ roll axis, in a closed housing, built with two fingers or with four, two to a si
 `930-ClawGripper/claw_params.scad` owns the claw's dimensions and gives its mechanism, and
 `claw_gears.scad` draws its teeth and the housing's outline; `claw2_assembly.scad` and `claw4_assembly.scad` place the two builds on
 the tool interface, and their `.clash.json` files check them closed, half open and fully open with
-`assembly-clash.rs --set OPEN=<deg>`. The Claw Pinion's spline end is the Span Driver's, so it shares the
-open item above, and nothing else.
+`assembly-clash.rs --set OPEN=<deg>`. The Claw Pinion's spline end is the Span Driver's, so it shares
+[DC-21](#span-xl-320-spline-seat), and nothing else.
 
 Known limits of the claw, to bench-test before building on it:
 
@@ -764,3 +760,18 @@ Known limits of the claw, to bench-test before building on it:
 **Definition of done:** **done** — 007.11, 007.2 and 008.11 name the parallel gripper; its Dynamic Finger is
 converted from its STEP; the claw is designed in both builds, listed as an alternate in 007.11 and built
 per [008.11 § Claw gripper](008-Assembly.md#claw-gripper-alternate). `[Specified]`.
+
+## Span XL-320 spline seat
+**DC-21 · P2 · Requirement: buildability · Specified in [007.1 C-102](007.1-Parts-Catalog.md#c-102--dynamixel-xl-320-smart-servo) and [008.11](008-Assembly.md#00811-tool-interface--gripper)**
+
+**Open:** the Span Driver's seat, and the Claw Pinion's, on the span XL-320's spline. The driver's head
+bottoms in the gripper's drive slot, which stands its spline bore's mouth 2.075 mm inside the servo's case,
+so the clash check of every gripper assembly fails the driver against the case and the spline. No source
+gives the spline's length or any recess round it: ROBOTIS's STEP draws neither (`c102_servo.scad`'s
+SOURCES).
+
+**Definition of done:** a servo measured with its horn off (008.11 step 24): the spline's tooth count, its
+tip and root diameters and its height above the front face, the diameter and depth of any recess round it,
+the key's width and height, and where the connector of step 31 sits at the tab end; `c102_servo.scad` and
+the drivers' spline ends taken from those values; and every gripper assembly's clash check passing.
+Deferred until a servo is bought. `[Provisional]`.

@@ -178,7 +178,7 @@
     {"kind": "render", "id": "render-511-002", "config": "revised",
      "scad": "511-002_ExGearStatorHolder.scad", "out": "out/revised/511-002.stl"},
     {"kind": "probes", "id": "seat-511-002", "part": "511-002 (revised) seat:", "stl": "out/revised/511-002.stl", "after": ["render-511-002"],
-     "note": "The seat kind's probes, at the revised floor (z -7.0, facing -z), but for its press recess: the floor stands on a boss inside the Mount Top 6810's bore, so the pilot alone centres the spline (DC-600-2 in J3). Then the boss and the end's counterbore over the Attach's land, each the running clearance off its mate, and the rim.",
+     "note": "The seat kind's probes, at the revised floor (z -7.0, facing -z), but for its press recess: the floor stands on a boss inside the Mount Top 6810's bore, so the pilot alone centres the spline (DC-19 in J3). Then the boss and the end's counterbore over the Attach's land, each the running clearance off its mate, and the rim.",
      "items": [
        {"label": "floor, material under it", "at": [23.0, 0.0, -6.9], "solid": true},
        {"label": "floor, void over it", "at": [23.0, 0.0, -7.1], "solid": false},

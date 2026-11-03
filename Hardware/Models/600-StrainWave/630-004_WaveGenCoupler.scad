@@ -7,7 +7,7 @@
 //                         reamed onto the shaft and held by two M3 x 8 hex
 //                         bolts in M3 nuts, under a keyed Ø10 stub.
 //   config = "revised"  — one round piece for C-201 (see REVISED), with the
-//                         print fits below. Decision: DC-600-2 in
+//                         print fits below. Decision: DC-19 in
 //                         specs/009-Design-Completion.md.
 //
 // FRAME. The axis on +Z and the bottom face at z = 0 in both configurations.
@@ -92,7 +92,7 @@
 // B2's rounded end out to R5 is 2.47, about R3's own wall round B2 (2.45). R5
 // starts at R3's top edge, so nothing is cut from R3, and its top is as high as
 // J3 allows: J3's wave generator stands nearest the coupler, and there R5's top
-// is the running clearance under it (DC-600-2). R3 and R5 are the same in every
+// is the running clearance under it (DC-19). R3 and R5 are the same in every
 // joint. B2's round starts 0.2 past the shaft's tip,
 // so a square-ended shaft still goes fully home; C-101 gives no tip chamfer.
 //
@@ -105,7 +105,7 @@
 // 9.5 as the shaft turns, through the M2 screws' shanks at r 7.5 to 9.5. It is
 // driven through the Attach's access hole, and the screw goes in the same
 // way. R2 stands 0.5 under the hub's face in J3, whose hub face is the lowest
-// (DC-600-2). R2 is wider than the hub's bore, so the coupler goes on the shaft
+// (DC-19). R2 is wider than the hub's bore, so the coupler goes on the shaft
 // before the Attach goes on the motor (008.3).
 //
 // FITS (../print_fit.scad). Each draws its class clearance per side over its

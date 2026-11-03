@@ -70,7 +70,7 @@
 //                                                        accepts that edge
 //
 // This part has no Ø12 seat: the MR128 across the first Pulley Spacer is the
-// Internal Inner Pulley's (008.7 step 10; specs/009 DC-400-1).
+// Internal Inner Pulley's (008.7 step 10; specs/009 DC-17).
 
 include <../gt2_pulley.scad>
 include <../print_fit.scad>

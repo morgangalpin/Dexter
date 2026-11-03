@@ -13,7 +13,7 @@
 //                         flange stands FLANGE_RISE further along the body
 //                         from the recess floor (negative: 2.7 nearer it,
 //                         since the Wave Gen Coupler's spacing moved the
-//                         drive 4.0 toward the flange, DC-600-2 in
+//                         drive 4.0 toward the flange, DC-19 in
 //                         specs/009-Design-Completion.md, from the 1.3 a
 //                         48 mm motor set before). The flange is clamped in the
 //                         base stack (specs/004 § Base mounting plate), so

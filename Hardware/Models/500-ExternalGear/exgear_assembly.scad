@@ -47,7 +47,7 @@
 //     revised), which lowers the motor, the Attach and the drive with it.
 //     1.0 of it keeps the upper 6810's inner race above the motor face,
 //     where the motor's corners reach past the Attach's R25 land. The other
-//     1.0 is J3's motor-side share of the coupler's spacing (DC-600-2), and
+//     1.0 is J3's motor-side share of the coupler's spacing (DC-19), and
 //     it is all J3 has: those corners are turned to Ø50.8, so the motor's
 //     rear cannot pass into the lower 6810's Ø50 bore, and
 //     motor_above_lower_6810 leaves it 0.2 above.
@@ -86,7 +86,7 @@
 // motor's shaft with its bottom wgc_above_motor() over the motor face, where
 // the 008.3 step 10 tool sets it, and its grub screw on the shaft's flat. It
 // runs up through the Attach, the flexspline's hub and the Cap into the wave
-// generator, whose bore takes its stub. The echoes below hold DC-600-2's
+// generator, whose bore takes its stub. The echoes below hold DC-19's
 // clearances for J3: the coupler's shoulder under the wave generator and its
 // grip under the hub face by at least the running clearance, its stub past
 // the wave generator's set screws by 1.5, and its bore's blind end past the

@@ -93,7 +93,7 @@
      "scad": "311-001_MotorEndCapBase.scad", "out": "out/revised/311-001.stl"},
     {"kind": "probes", "id": "probes-311-001", "part": "311-001 (revised)",
      "stl": "out/revised/311-001.stl", "after": ["render-311-001"],
-     "note": "The revised #311-001: the seat and the lugs 1.0 up into the cap (DC-600-2), the seat at z -0.65 and the lugs' foot at z -5.7; the root fillets trimmed off the lugs' faces, the channel's sides rounded into the bore (the point lies 0.06 inside the sharp edge, 0.9 above the seat), the channel stopped at the lug's corner, and the step left as drawn.",
+     "note": "The revised #311-001: the seat and the lugs 1.0 up into the cap (DC-19), the seat at z -0.65 and the lugs' foot at z -5.7; the root fillets trimmed off the lugs' faces, the channel's sides rounded into the bore (the point lies 0.06 inside the sharp edge, 0.9 above the seat), the channel stopped at the lug's corner, and the step left as drawn.",
      "items": [
        {"label": "no root fillet on a lug's face", "at": [21.1, 10.0, -0.8], "solid": false},
        {"label": "wire channel open at +X", "at": [15.0, 0.0, 0.0], "solid": false},

@@ -66,7 +66,7 @@
 // lugs and every feature drawn from the seat (the lugs' roots and bottom
 // edges, the root fillets, the bore's round, the channel): the motor stands
 // that much further from its drive, the motor's share of the spacing the
-// Wave Gen Coupler (#630-004) takes (DC-600-2 in
+// Wave Gen Coupler (#630-004) takes (DC-19 in
 // specs/009-Design-Completion.md). The motor's rear is then at z -0.700,
 // cap_seat("revised"). The seat itself is trimmed
 // back up by the press clearance over that.
