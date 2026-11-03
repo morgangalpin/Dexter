@@ -697,8 +697,13 @@ base's plate, the Span Mount and the servo's tab, so that the base needs no fast
 Span Mount's face stays flat where the Static Finger slides on it. `900-ToolInterface/span_socket.scad` owns
 the holes (S4), which the Static Finger and the Claw Body share.
 
-One clearance of the parallel gripper is open: at `OPEN=20` the Pinion Gear's teeth stand 0.408 mm off the
-Span Mount, under the 0.5 mm running clearance.
+One item is open, in every gripper assembly: the Span Driver's seat on the span XL-320's spline. Its head
+bottoms in the gripper's drive slot, which stands its spline bore's mouth 2.075 mm inside the servo's case,
+and the clash check fails the driver against the case and the spline. No source gives the spline's length or
+any recess round it: ROBOTIS's STEP draws neither (`c102_servo.scad`'s SOURCES). It closes on measuring a
+servo with its horn off (step 24): the spline's tooth count, its tip and root diameters and its height above
+the front face, the diameter and depth of any recess round it, the key's width and height, and where the
+connector of step 31 sits at the tab end.
 
 ### The claw
 The legacy claw finger and Finger Cap are retired, their meshes kept in `Reference/superseded/`
@@ -738,8 +743,8 @@ roll axis, in a closed housing, built with two fingers or with four, two to a si
 `930-ClawGripper/claw_params.scad` owns the claw's dimensions and gives its mechanism, and
 `claw_gears.scad` draws its teeth and the housing's outline; `claw2_assembly.scad` and `claw4_assembly.scad` place the two builds on
 the tool interface, and their `.clash.json` files check them closed, half open and fully open with
-`assembly-clash.rs --set OPEN=<deg>`. Where the Claw Pinion's spline end disagrees with the servo's assumed
-spline is the Span Driver's, the parallel gripper's open item, unchanged.
+`assembly-clash.rs --set OPEN=<deg>`. The Claw Pinion's spline end is the Span Driver's, so it shares the
+open item above, and nothing else.
 
 Known limits of the claw, to bench-test before building on it:
 
@@ -752,8 +757,6 @@ Known limits of the claw, to bench-test before building on it:
 - **Backlash.** The two meshes' slip backlash gives about 4.8 mm of play between the tips, taken up once the
   fingers close on a part.
 - **The pinion's journal.** Its wall about the bolt's access bore is 1.05 mm, at the minimum printed wall.
-- **The pinion's way in.** Going in with the claw closed, its Ø11 shank overlaps the sector's nearest tooth
-  tip by 0.012 mm, well under the print's tolerance: a rub, not a stop.
 - **The body's end grooves.** The skin outside each groove for the wall's end lips is 1.0 mm at its free end,
   the minimum printed wall with no margin.
 - **The 4-finger's weight.** Its body is about 60% heavier than the 2-finger's, on the same two XL-320s.

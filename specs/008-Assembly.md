@@ -418,11 +418,13 @@ Parts: [007.11](007-Bill-of-Materials.md#00711-tool-interface--gripper).
     M3 × 16 mm bolt, loose enough to still turn freely.
 44. Turn the Span Driver until its flat faces forward, horseshoe toward you — the gripper's open position.
 45. Turn the Pinion Gear until the Pinion Bearing EXT hash aligns with the long hash on the Static Finger.
-46. Take out the 2 bolts of step 26 with their washers and nuts, keeping the Span Motor on its nubs. Push the
-    Static Finger onto the Span Mount so the 25 mm strake seats into its Span Mount hole. Drive the 2 bolts
-    back in through the two long bores in the Static Finger's front face, through the Span Mount and the
-    motor's tab, holding each washer and nut against the back of the tab from the motor's tab end, with
-    tweezers and a flathead as in step 18.
+46. If the wires of step 31 are in the way at the motor's tab end, unplug that connector from the back of the
+    Span Motor first. Take out the 2 bolts of step 26 with their washers and nuts, keeping the Span Motor on
+    its nubs. Push the Static Finger onto the Span Mount so the 25 mm strake seats into its Span Mount hole.
+    Drive the 2 bolts back in through the two long bores in the Static Finger's front face, through the Span
+    Mount and the motor's tab, holding each washer and nut against the back of the tab from the motor's tab
+    end, with tweezers and a flathead as in step 18. Plug the connector back in if it was unplugged, and
+    repeat step 35's check.
 47. Slide the Dynamic Finger into the Static Finger and close fully.
 48. Cut two yoga-mat pieces to the finger inside faces and hot-glue them as grip pads.
 
@@ -436,10 +438,10 @@ table, and its differences are in *italics*.
    is on.
 2. Press an MR128 bearing into each of the two seats in the Claw Body's upper plate, and one into each of the
    Claw Cap's three seats, both from the inside.
-3. Take out the 2 bolts of step 26 with their washers and nuts, keeping the Span Motor on its nubs. Push the
-   Claw Body onto the Span Mount, as step 46 pushes the Static Finger, and drive the 2 bolts back in from
-   inside the body, through its lower plate, the Span Mount and the motor's tab, into the washers and nuts,
-   held as in step 46.
+3. As step 46 does for the Static Finger, unplug the connector if its wires are in the way, take out the 2
+   bolts of step 26 with their washers and nuts, and push the Claw Body onto the Span Mount. Drive the 2 bolts
+   back in from inside the body, through its lower plate, the Span Mount and the motor's tab, into the washers
+   and nuts, held as in step 46, then plug the connector back in and check the motor as step 46 does.
 4. Slide a Claw Finger onto a Claw Axle's hex seat, its blade's flush face to the rear, and line its tapped
    hole up with the seat's cross hole. Drive an M3 × 16 mm set screw in from the hub's far side, through the
    seat, until it stands 1 mm under the hub. Slide the Claw Gear onto the seat in front of the finger, its

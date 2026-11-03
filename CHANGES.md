@@ -1679,8 +1679,10 @@ anything version 3 does not independently specify
 - **Now:** The same two bolts go in through the gripper's base, `span_socket.scad`'s S4, and hold the base, the
   Span Mount and the servo together. The Span Mount's counterbores are filled, `revised`. The Static Finger's
   base is squared and its floor lowered to cover the bolts, and its hub's cylinder runs on round the whole
-  circle as a guard over the Pinion Gear's teeth. Steps 26 and 46 change to suit; the bolts stay in step 26
-  for the wiring steps and move at step 46. The assemblies draw each set of fasteners as one part.
+  circle as a guard over the Pinion Gear's teeth. The Span Mount's base plate is chamfered 0.3 on its round's
+  top edge, `revised`, so that the Pinion Gear's tips run past it at the running clearance. Steps 26 and 46
+  change to suit; the bolts stay in step 26 for the wiring steps and move at step 46, with the span
+  connector unplugged if its wires are in the way. The assemblies draw each set of fasteners as one part.
 - **Driver:** The two bolts were already there, so they hold the base with no added part.
 - **Status:** `[Specified]`.
 - **Re-derive:** `rust-script render.rs 900-ToolInterface --verify`, `rust-script render.rs 920-ParallelGripper
