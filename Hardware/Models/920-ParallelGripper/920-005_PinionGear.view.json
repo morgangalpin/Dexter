@@ -1,0 +1,31 @@
+{
+  "title": "Pinion Gear",
+  "subtitle": "#920-005 · reference mesh and 920-005_PinionGear.scad renders · feature names for the conversion",
+  "cut": false,
+  "from": [1, -1.2, 0.9],
+  "groups": [
+    {"name": "Reference", "role": "mesh", "parts": [
+      {"id": "ref", "name": "Pinion Gear", "pn": "#920-005", "color": "#d4ad6b", "stl": "../Reference/meshes/920-ParallelGripper/920-005_PinionGear.stl"}]},
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "previous", "name": "config=\"previous\"", "color": "#4f86c6", "stl": "out/920-005.stl", "shown": false},
+      {"id": "revised", "name": "config=\"revised\"", "color": "#d99a45", "stl": "out/revised/920-005.stl", "shown": false}]}
+  ],
+  "labels": [
+    {"at": [12.25, 0, 4], "text": "G1 teeth ×12, module 1.75, 20°, tips Ø24.500, z 0–6"},
+    {"at": [11.25, 0, 1], "text": "C1 chamfer 45°, r 10.25 at z 0 to the tips at z 2"},
+    {"at": [0, -6, -4], "text": "H1 boss Ø12.000, z −5.5–0"},
+    {"at": [0, 5.5, -3.75], "text": "D1 drive slot, flats x ±3.5, open toward +Y, z −5.5 to −2"},
+    {"at": [2.75, 0, -0.5], "text": "N1 nut trap, hex 5.500 across flats, z −2 to 1.3"},
+    {"at": [1.5, 0, 3], "text": "B1 bolt hole Ø3.000, z 1.3–4.5"},
+    {"at": [0, -4, 5.5], "text": "K1 key recess, Ø8 arc, flats x ±3, point toward −Y, z 4.5–6.5"},
+    {"at": [4.4, 0, 6.25], "text": "R1 collar Ø8.800, z 6–6.5 (previous only)"}
+  ],
+  "presets": [
+    {"label": "Top", "at": [0, 0, 6.5], "span": 28, "from": [0, 0, 1]},
+    {"label": "Underside", "at": [0, 0, -5.5], "span": 28, "from": [0.3, 0.4, -1]},
+    {"label": "Side", "at": [0, 0, 0.5], "span": 30, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "Toggle the reference against either render. The previous render is the dist-gated recreation. The revised one opens D1, N1, B1 and K1 by the slip fit and drops R1, as the FITS and COLLAR paragraphs of 920-005_PinionGear.scad's header gives. Run render.rs --verify before building this page, because the renders are its output."}
+  ]
+}

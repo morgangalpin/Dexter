@@ -1,7 +1,6 @@
 {
   "title": "Small Belt Director",
   "subtitle": "#210-004 · reference mesh and 210-004_SmallBeltDirector.scad renders · feature names for the conversion",
-  "cut": true,
   "from": [1, -1, 0.6],
   "groups": [
     {"name": "Reference", "role": "mesh", "parts": [

@@ -1064,8 +1064,10 @@ anything version 3 does not independently specify
   [008.3](specs/008-Assembly.md#0083-harmonic-drive-motors),
   007.1 [C-201](specs/007.1-Parts-Catalog.md#c-201--521-strain-wave-component-set) and
   [§6 Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
-  [007 §7.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors) and
-  [§7.8](specs/007-Bill-of-Materials.md#0078-external-gear),
+  [007 §7.3](specs/007-Bill-of-Materials.md#0073-harmonic-drive-motors),
+  [§7.8](specs/007-Bill-of-Materials.md#0078-external-gear) and
+  [§7.11](specs/007-Bill-of-Materials.md#00711-tool-interface--gripper) with the aggregate quantities,
+  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
   `Hardware/Models/robot_assembly.scad`, `Hardware/Models/100-Base/base_assembly.scad`,
   `Hardware/Models/500-ExternalGear/exgear_assembly.scad`, `Hardware/Models/c101_motor.scad`,
   `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`,
@@ -1103,6 +1105,23 @@ anything version 3 does not independently specify
     `Reference/meshes/800-Harness/`, the End Arm shroud's repaired in place (README § Known defects).
   - `Hardware/Models/print_fit.scad` (the tap class), `950-Tooling/fit_coupon.scad` (its M3 pilot),
     and `700-Differential/730-001_DiffBodyA.scad` (what its pin holes take).
+  - `Hardware/Models/900-ToolInterface/`: `900-001_ToolInterfaceBody.scad`, `911-001_RollBody.scad`,
+    `911-002_RollDriver.scad`, `912-001_SpanMount.scad`, `912-002_SpanDriver.scad`, their `.view.json`
+    sidecars, `render.json`, and the assembly `tool_assembly.scad` with its `.view.json` and
+    `.clash.json`, and the XL-320 placement model `Hardware/Models/c102_servo.scad` it shares with the
+    gripper's assembly (new). Their meshes, STEPs and f3ds moved to `Reference/meshes/900-ToolInterface/`,
+    where `900-001_ToolInterfaceBody.stl` (new) is the reference mesh tessellated from the STEP.
+  - `Hardware/Models/920-ParallelGripper/` (new group): `920-001_StaticFinger.scad`,
+    `920-002_DynamicFinger.scad`, `920-005_PinionGear.scad`, `920-006_PinionBearingExt.scad`, their
+    `.view.json` sidecars, `render.json`, and the assembly `gripper_assembly.scad` with its `.view.json`
+    and `.clash.json`. Their STEPs and f3ds moved to `Reference/meshes/920-ParallelGripper/` (the Pinion
+    Gear's and Pinion Bearing EXT's from `900-ToolInterface/PinionGear.*` and `PinionGearExt.*`), where
+    `920-001_StaticFinger.stl` (new) is the reference mesh exported from the glTF and the other three
+    (new) are tessellated from their STEPs.
+  - `Hardware/Models/930-ClawGripper/` (new group): `930-001_ClawFinger.scad` and
+    `930-002_FingerCap.scad`, their `.view.json` sidecars and `render.json`. Their meshes, published as
+    `920-002_DynamicFinger.stl` and `920-003_FingerCap.stl`, moved to `Reference/meshes/930-ClawGripper/`
+    under the new numbers.
   - `Hardware/Models/200-ArmBody/`: `200-001_ArmBody.scad`, `200-003_StatorBalancer.scad`, `200-006_CalibrationArrows.scad`,
     `210-001_IdlerPlug.scad`, `210-002_BeltDirectorPulley.scad`, `210-004_SmallBeltDirector.scad`,
     `210-005_LargeBeltDirector.scad`, their `.view.json` sidecars and `200-001_ArmBody.view.json`, the
@@ -1496,6 +1515,52 @@ anything version 3 does not independently specify
     #410-001's strake slots, at their size and on their centres. The Epoxy Holder, the Epoxy Plunger and
     both solder jigs have no mate dimensions on record, so `revised` is `previous`. The survey corrects
     the L3 rig's B half, which has a Ø23.000 hole about the hub axis, not a boss.
+  - **900-ToolInterface:** the Roll Driver (`#911-002`) is a stack of constant sections taken from its
+    STEP, which is the same revision as the STL. `revised` presses its Ø17 shaft into the two 6703s,
+    and sizes the bolt heads' counterbores at press, not slip, so that each keeps the reference's 0.50 of
+    wall to the lower 6703's bore (slip would leave 0.40, narrower than one extrusion line), and its drive bosses at press in the roll XL-320's horn holes. The flange keeps the reference's thickness, because the roll
+    XL-320's horn stands 0.3 under it. The
+    Span Driver (`#912-002`) is a stack of sections with the spline end's round revolved; `revised`
+    presses its spline bore and key slot onto the XL-320's output and opens the M2.6 bolt hole and counterbore
+    to slip. Its STEP is a different revision (its head, key slot and counterbore differ), so the STL is
+    the source. The claw's Finger Cap (`#930-002`, published as `#920-003`) is a disc with one hole, which `revised` opens to the M2
+    bolt's slip clearance. The Span Mount (`#912-001`) is a region split. Its STEP is a different
+    revision (the underside ring is 1.5 deep where the STL's is 2.5), so the STL is the source. `revised`
+    opens the strake slot to the C-502 strip's press fit, the reference's slot being 0.09 narrower than
+    the strip, the bolt holes, washer pockets and servo bolts' counterbores to slip, with the counterbores deep enough that the heads clear the Static Finger, and the span XL-320's nubs to press in its rivet holes, short of their floors. The Roll Body (`#911-001`) has only an STL,
+    which is the source. It is a region split whose windows' and slot's rounds are lofted by
+    `100-Base/window_round.scad`; `revised` presses the 6703s' seats and the roll XL-320's rim, and opens the bolt holes and
+    counterbores to slip. The claw finger, published as the Dynamic Finger `#920-002`, is the Claw Finger
+    `#930-001` in its own group, since the parallel gripper is the baseline
+    ([DC-900-1](specs/009-Design-Completion.md#gripper-design)). It is a stack of sections from its mesh;
+    `revised` presses the shaft into the MR128s and opens the socket to slip on the Span Driver's head.
+    The parallel gripper's moving parts had no mesh, so each is gated against its STEP tessellated by
+    `scadmesh tessellate`. The Pinion Gear (`#920-005`) is a stack of sections with involute teeth and
+    revolved chamfers; `revised` opens its drive slot, nut trap, bolt hole and key recess to slip, drops
+    the 0.5 collar that slip would leave a 0.25 wall in, and chamfers the teeth's top corner 0.5 so that
+    they run 0.5 clear of the Static Finger's hub slot. The Pinion Bearing EXT (`#920-006`) is a stack of
+    sections; `revised` presses its journal into the MR128s, opens its bore and keyed nose to slip, and
+    carries the dropped collar as a spacer at the nose's root. The Dynamic Finger (`#920-002`) is a
+    region split of its STEP, with the slit the Static Finger's reference carries mirrored and closed in
+    its own ([Known defects](Hardware/Models/README.md#known-defects)); `revised` opens the rail's faces
+    that bear in the T-slot to slip and sets the rack's flanks back by the slip clearance, since both
+    STEPs draw the mesh with no backlash. The Static Finger (`#920-001`) is a
+    region split of its STEP. It had no mesh, so it is gated against the glTF body, with the 0.008 mm
+    slit that body and the STEP both carry at the lug boss's root closed in place
+    ([Known defects](Hardware/Models/README.md#known-defects)); `revised` presses the MR128 seats and the strake slot, opens the column socket and the
+    plate slot to slip, and stands the plate slot off the span XL-320 at press. The Tool Interface Body (`#900-001`) is a region split of its STEP, whose lobe
+    pockets' rims are rolled onto the top cone by a ball. It had no mesh either, so it is gated against
+    its STEP tessellated by `scadmesh tessellate`; `revised` opens the M3 and M2 bolt holes and nut traps
+    to slip and the servo pocket to press. `tool_assembly.scad` places the roll stack, the Span Mount
+    and both XL-320s (`c102_servo.scad`), but not the body (its header gives why), each part by a
+    feature it carries, with the roll bolts, washers, nuts and satin pins and the span servo's bolts;
+    `920-ParallelGripper/gripper_assembly.scad` places the parallel gripper on it the same way, with its
+    MR128s and its M3 bolt and nut. The revised parts that meet an XL-320 take its dimensions from `c102_servo.scad`, which no servo has
+    yet been measured against, and the satin pins are trimmed flush with the Roll Driver's drive bosses
+    (008.11 step 6). `assembly-clash.rs` passes the tool interface. The gripper fails only where the
+    Span Driver's bore stands inside the span XL-320's case, which waits on measuring the servo's spline
+    (`gripper_assembly.scad`'s header gives why). A `counts` check holds the Roll Body's seven windows, the Span Driver's 20 spline teeth, and the
+    Pinion Gear's and the rack's 12 teeth each.
 - **Driver:** [009 §Most of the robot is mesh-only](specs/009-Design-Completion.md#most-of-the-robot-is-mesh-only).
 - **Status:** `[Specified]` for each converted part. The conversion continues one group at a time.
 - **Re-derive:** Print each converted part from `config="revised"`. Run `render.rs <group> --verify`
@@ -1565,3 +1630,61 @@ anything version 3 does not independently specify
 - **Status:** `[Specified]`.
 - **Re-derive:** `cargo test` in `render-check/`, then `rust-script --force render.rs <group> --verify`
   for 100-Base, 300-Pivot and 700-Differential.
+
+### CR-3A23: Claw gripper designed in a 2-finger and a 4-finger build
+
+- **Affects:** [007.11](specs/007-Bill-of-Materials.md#00711-tool-interface--gripper),
+  [007.1 §Fasteners](specs/007.1-Parts-Catalog.md#6-fasteners),
+  [007.2 §Not in the build list](specs/007.2-Printed-Parts.md#not-in-the-build-list),
+  [008.11 §Claw gripper](specs/008-Assembly.md#claw-gripper-alternate),
+  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
+  `Hardware/Models/930-ClawGripper/` (every file), `900-ToolInterface/span_socket.scad` (new),
+  `900-ToolInterface/tool_assembly.scad`, `900-ToolInterface/912-002_SpanDriver.scad`,
+  `920-ParallelGripper/920-001_StaticFinger.scad`, `920-ParallelGripper/gripper_assembly.scad`,
+  `Hardware/Models/assembly-clash.rs`, `Hardware/Models/README.md`, `Hardware/Models/PART-INDEX.md`.
+- **Amends:** [CR-3A20](#cr-3a20-mesh-only-printed-parts-converted-to-openscad) (the claw's two converted
+  parts).
+- **Was:** The claw was the legacy Claw Finger (`#930-001`) and Finger Cap (`#930-002`), converted from
+  their meshes, whose fixed finger was not in the model set.
+- **Now:** The claw is designed: a pincer whose curved fingers swing equal and opposite, geared down 3.4:1 from
+  the span XL-320, in a closed housing, in a 2-finger and a 4-finger build
+  ([009 §The claw](specs/009-Design-Completion.md#the-claw)). Within the unreleased revision 3A, `#930-001`
+  is reassigned to the new Claw Finger and `#930-002` to the Claw Gear; `#930-003` Claw Body, `#930-004`
+  Claw Pinion, `#930-005` Claw Cap, `#930-006` Claw Axle, `#930-007` Claw Follower Finger and `#930-008` Claw
+  Finger Wall are new, and `#930-009` to `#930-012` are the 4-finger build's longer body, wall, axle and pinion,
+  each drawn from the 2-finger part's source. The Claw Pinion takes the Span Driver's place on the servo's
+  spline, drawing its spline end from `912-002_SpanDriver.scad`, which is otherwise unchanged. The legacy
+  meshes move to `Reference/superseded/` under their published numbers. The
+  Static Finger's socket on the Span Mount moves into `span_socket.scad`, which the Claw Body shares.
+  C-621, the M3 × 16 mm set screw that pins the fingers and the Claw Gear, is new. `assembly-clash.rs` takes `--set NAME=VALUE`, so that one clash file checks an assembly at several poses.
+- **Driver:** A gripper whose two fingers are both in the model set, for parts the parallel gripper's jaws
+  do not suit, with as much shared between its builds and with the parallel gripper as the mount allows.
+- **Status:** `[Specified]`.
+- **Re-derive:** `rust-script render.rs 930-ClawGripper --verify`, then
+  `rust-script assembly-clash.rs 930-ClawGripper/claw2_assembly.clash.json --set OPEN=<deg>` and the same for
+  `claw4_assembly.clash.json`, at 0, 12 and 25.
+
+### CR-3A24: A gripper's base held by the span XL-320's two bolts
+
+- **Affects:** [007.2](specs/007.2-Printed-Parts.md#tool-interface-and-gripper--00711),
+  [008.11](specs/008-Assembly.md#00811-tool-interface--gripper) steps 26 and 46,
+  [009 §Gripper design](specs/009-Design-Completion.md#gripper-design),
+  `900-ToolInterface/span_socket.scad`, `900-ToolInterface/912-001_SpanMount.scad`,
+  `900-ToolInterface/tool_assembly.scad`, `920-ParallelGripper/920-001_StaticFinger.scad`,
+  `920-ParallelGripper/gripper_assembly.scad`, `Hardware/Models/PART-INDEX.md`.
+- **Amends:** [CR-3A23](#cr-3a23-claw-gripper-designed-in-a-2-finger-and-a-4-finger-build) (the socket on the
+  Span Mount that it moved into `span_socket.scad`).
+- **Was:** The span XL-320's two M2 × 12 bolts went in from the Span Mount's face, their heads in its
+  counterbores, and the Static Finger was held by its fits on the Span Mount alone.
+- **Now:** The same two bolts go in through the gripper's base, `span_socket.scad`'s S4, and hold the base, the
+  Span Mount and the servo together. The Span Mount's counterbores are filled, `revised`. The Static Finger's
+  base is squared and its floor lowered to cover the bolts, and its hub's cylinder runs on round the whole
+  circle as a guard over the Pinion Gear's teeth. The Span Mount's base plate is chamfered 0.3 on its round's
+  top edge, `revised`, so that the Pinion Gear's tips run past it at the running clearance. Steps 26 and 46
+  change to suit; the bolts stay in step 26 for the wiring steps and move at step 46, with the span
+  connector unplugged if its wires are in the way. The assemblies draw each set of fasteners as one part.
+- **Driver:** The two bolts were already there, so they hold the base with no added part.
+- **Status:** `[Specified]`.
+- **Re-derive:** `rust-script render.rs 900-ToolInterface --verify`, `rust-script render.rs 920-ParallelGripper
+  --verify`, then `rust-script assembly-clash.rs 900-ToolInterface/tool_assembly.clash.json` and
+  `rust-script assembly-clash.rs 920-ParallelGripper/gripper_assembly.clash.json --set OPEN=<mm>` at 0, 10 and 20.

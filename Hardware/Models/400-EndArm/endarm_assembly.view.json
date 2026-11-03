@@ -1,7 +1,7 @@
 {
   "scad": "endarm_assembly.scad",
   "title": "End Arm stack",
-  "subtitle": "endarm_assembly.scad · the elbow about J3: the Axis Intersection on L2, the hub and New Belt Pulley on L3, and the two belt channels on their shafts · orthographic, cut on XZ",
+  "subtitle": "endarm_assembly.scad · the elbow about J3: the Axis Intersection on L2, the hub and New Belt Pulley on L3, and the two belt channels on their shafts · orthographic",
   "groups": [
     {"name": "L2 side", "role": "fixed to the arm body", "parts": [
       {"id": "ai_a", "name": "Axis Intersection Half, lower", "pn": "#410-001", "color": "#9aa7b4"},

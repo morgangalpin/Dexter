@@ -1,0 +1,27 @@
+{
+  "title": "Claw Finger",
+  "subtitle": "#930-001 · revised render of 930-001_ClawFinger.scad (designed, no reference mesh) · feature names",
+  "from": [0.3, -1, 0.2],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#3a6b8f", "stl": "out/revised/930-001.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, 1.5, -9], "text": "H1 hub R9, 10 thick (y -3.5 .. 6.5), round off its teeth, its rear face flush with the blade's, on which the finger prints"},
+    {"at": [-9.95, 0, -0.98], "text": "G1 hub teeth, 16-tooth pitch, module 1.25: they turn the follower finger"},
+    {"at": [0, 0, 5.8], "text": "X1 hex bore, 10 across flats grown by slip: the box end over the Claw Axle's seat"},
+    {"at": [-3.5, 0, 6.06], "text": "M1 set-screw hole, Ø2.6 tapped M3, along 120°: blind, stopped 8.5 from the pivot under the blade"},
+    {"at": [4.5, 0, -7.79], "text": "M1's one mouth, on the hub's far side at 300°: the screw goes in and comes out here, on the bench"},
+    {"at": [0.67, 0, 30.25], "text": "B1 shank, 7 thick, 7 wide, its centreline 3.97 inward of the pivot, leaned 8.8° outward; its edges filleted R1"},
+    {"at": [-6.96, 0, 5.71], "text": "B1's root, filleted R2 onto the hub: the fillet ends at 140.625°, where the follower's teeth end"},
+    {"at": [-2, 0, 70], "text": "B1 arc: the legacy finger's curve, grip face R20.277 over 66.4°"},
+    {"at": [-10, 0, 77.03], "text": "T1 tip round R3.5: on the roll axis when the claw is closed"}
+  ],
+  "presets": [
+    {"label": "Hub, teeth and box end", "at": [0, 0, 0], "span": 28, "from": [0.3, -1, 0.3]},
+    {"label": "Tip", "at": [-6, 0, 74], "span": 26, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. Its dimensions are claw_params.scad's and its features 930-001_ClawFinger.scad's header's. This is the drive finger; the follower's (#930-007) is drawn by the same file, mirrored, its hub's teeth moved half a pitch (claw_params.scad, THE MIRROR). Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

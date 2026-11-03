@@ -1,0 +1,38 @@
+{
+  "parts": [
+    {"id": "roll_body",            "kind": "printed", "side": "fixed"},
+    {"id": "roll_driver",          "kind": "printed", "side": "roll"},
+    {"id": "span_mount",           "kind": "printed", "side": "roll"},
+    {"id": "strake",               "kind": "bought",  "side": "roll"},
+    {"id": "roll_fasteners",       "kind": "fastener", "side": "roll"},
+    {"id": "roll_pins",            "kind": "bought",  "side": "roll"},
+    {"id": "roll_lower_inner",     "kind": "bought",  "side": "roll",  "bearing": "roll_lower", "race": "inner"},
+    {"id": "roll_lower_outer",     "kind": "bought",  "side": "fixed", "bearing": "roll_lower", "race": "outer"},
+    {"id": "roll_lower_shield",    "kind": "bought",  "side": "fixed", "bearing": "roll_lower", "race": "shield"},
+    {"id": "roll_upper_inner",     "kind": "bought",  "side": "roll",  "bearing": "roll_upper", "race": "inner"},
+    {"id": "roll_upper_outer",     "kind": "bought",  "side": "fixed", "bearing": "roll_upper", "race": "outer"},
+    {"id": "roll_upper_shield",    "kind": "bought",  "side": "fixed", "bearing": "roll_upper", "race": "shield"},
+    {"id": "roll_servo",           "kind": "bought",  "side": "fixed"},
+    {"id": "roll_horn",            "kind": "bought",  "side": "roll"},
+    {"id": "span_servo",           "kind": "bought",  "side": "roll"},
+    {"id": "span_spline",          "kind": "bought",  "side": "span"},
+    {"id": "span_fasteners",       "kind": "fastener", "side": "roll"},
+    {"id": "static_finger",        "kind": "printed", "side": "roll"},
+    {"id": "dynamic_finger",       "kind": "printed", "side": "roll"},
+    {"id": "pinion_gear",          "kind": "printed", "side": "span"},
+    {"id": "pinion_ext",           "kind": "printed", "side": "span"},
+    {"id": "span_driver",          "kind": "printed", "side": "span"},
+    {"id": "m3_fasteners",         "kind": "fastener", "side": "span"},
+    {"id": "span_inner_inner",     "kind": "bought",  "side": "span",  "bearing": "span_inner", "race": "inner"},
+    {"id": "span_inner_outer",     "kind": "bought",  "side": "roll",  "bearing": "span_inner", "race": "outer"},
+    {"id": "span_inner_shield",    "kind": "bought",  "side": "roll",  "bearing": "span_inner", "race": "shield"},
+    {"id": "span_outer_inner",     "kind": "bought",  "side": "span",  "bearing": "span_outer", "race": "inner"},
+    {"id": "span_outer_outer",     "kind": "bought",  "side": "roll",  "bearing": "span_outer", "race": "outer"},
+    {"id": "span_outer_shield",    "kind": "bought",  "side": "roll",  "bearing": "span_outer", "race": "shield"}
+  ],
+  "engaged": [["roll_fasteners", "roll_driver"], ["roll_pins", "roll_driver"],
+              ["dynamic_finger", "pinion_gear"],
+              ["roll_servo", "roll_horn"], ["span_servo", "span_spline"]],
+  "exceptions": [
+  ]
+}

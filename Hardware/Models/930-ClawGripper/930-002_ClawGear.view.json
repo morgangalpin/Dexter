@@ -1,0 +1,22 @@
+{
+  "title": "Claw Gear",
+  "subtitle": "#930-002 · revised render of 930-002_ClawGear.scad (designed, no reference mesh) · feature names",
+  "from": [1, -0.4, 0.3],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#6b8f3a", "stl": "out/revised/930-002.stl"}]}
+  ],
+  "labels": [
+    {"at": [0, 11.069, -21.25], "text": "G1 sector: 34-tooth pitch, module 1.25, 7 teeth from 257° to 320°, on a web R9"},
+    {"at": [0, 11.069, 5.8], "text": "X1 hex bore, 10 across flats grown by slip: over the Claw Axle's seat"},
+    {"at": [-4.5, 11.069, 7.79], "text": "M1's one mouth, on the web's far side at 120°: the screw goes in and comes out here, on the bench"},
+    {"at": [4.25, 11.069, -7.36], "text": "M1 set-screw hole, Ø2.6 tapped M3, along 300°: blind, stopped 8.5 from the pivot in the sector"}
+  ],
+  "presets": [
+    {"label": "Along the axis", "at": [0, 11, 0], "span": 45, "from": [1, 0, 0]},
+    {"label": "The sector's face", "at": [0, 11, -8], "span": 50, "from": [0, 1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. The same part serves both builds, pinned on the drive pivot's Claw Axle. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

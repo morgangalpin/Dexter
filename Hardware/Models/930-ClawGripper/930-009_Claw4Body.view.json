@@ -1,0 +1,23 @@
+{
+  "title": "Claw Body, 4-finger",
+  "subtitle": "#930-009 · revised render of 930-009_Claw4Body.scad (designed, no reference mesh) · feature names",
+  "from": [0.6, -1, 0.6],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#c98a3a", "stl": "out/revised/930-009.stl"}]}
+  ],
+  "labels": [
+    {"at": [14.139, -14, 29.55], "text": "U1 upper plate, level over the span XL-320 and its pads"},
+    {"at": [10, -26.638, 45.18], "text": "M1 MR128 seats, blind, at this build's rear wall"},
+    {"at": [0, 5, 56], "text": "O1 opening, from behind the rear blades to the seam: the 4-finger wall fills it, already on the axles"},
+    {"at": [-9.861, -1.093, 11.5], "text": "S4 span bolts ×2, as in #930-003"},
+    {"at": [-27.18, 29.139, 42], "text": "R1 tapered rim, at this build's seam; the same Claw Cap goes on it"}
+  ],
+  "presets": [
+    {"label": "Inside, from the front", "at": [0, 26.6, 32], "span": 80, "from": [0.2, 1, 0.3]},
+    {"label": "Underside", "at": [0, 0, 7], "span": 90, "from": [0.3, -0.4, -1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. 930-003_ClawBody.scad draws it and gives its features; it is #930-003 run on along y, as claw_params.scad's claw_pair_y() sets. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

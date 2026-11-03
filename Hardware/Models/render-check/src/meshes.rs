@@ -47,6 +47,18 @@ pub trait Tools: Send + Sync {
     fn ensure_parent(&self, _path: &str) -> Result<()> {
         Ok(())
     }
+    /// A file's modification time in nanoseconds and its size, if it is there.
+    fn stat(&self, _path: &str) -> Option<(u64, u64)> {
+        None
+    }
+    /// Write `text` to `path`.
+    fn write(&self, _path: &str, _text: &str) -> Result<()> {
+        Ok(())
+    }
+    /// What tells the OpenSCAD these tools run from another.
+    fn openscad_id(&self) -> String {
+        String::new()
+    }
 }
 
 impl Tools for Ctx {
@@ -67,6 +79,20 @@ impl Tools for Ctx {
             Some(p) => std::fs::create_dir_all(p).with_context(|| format!("creating the directory of {path}")),
             None => Ok(()),
         }
+    }
+
+    fn stat(&self, path: &str) -> Option<(u64, u64)> {
+        let meta = std::fs::metadata(self.dir.join(path)).ok()?;
+        let time = meta.modified().ok()?.duration_since(std::time::UNIX_EPOCH).ok()?;
+        Some((time.as_nanos() as u64, meta.len()))
+    }
+
+    fn write(&self, path: &str, text: &str) -> Result<()> {
+        std::fs::write(self.dir.join(path), text).with_context(|| format!("writing {path}"))
+    }
+
+    fn openscad_id(&self) -> String {
+        format!("{} {:?}", self.openscad, self.stat(&self.openscad))
     }
 
     fn openscad(&self, args: &[&str]) -> Result<Run> {
@@ -118,6 +144,18 @@ impl Tools for Manifold<'_> {
 
     fn ensure_parent(&self, path: &str) -> Result<()> {
         self.0.ensure_parent(path)
+    }
+
+    fn stat(&self, path: &str) -> Option<(u64, u64)> {
+        self.0.stat(path)
+    }
+
+    fn write(&self, path: &str, text: &str) -> Result<()> {
+        self.0.write(path, text)
+    }
+
+    fn openscad_id(&self) -> String {
+        self.0.openscad_id()
     }
 }
 
@@ -371,6 +409,49 @@ mod tests {
         assert!(!ctx.exists("sub/f.txt") && ctx.read("sub/f.txt").is_err());
         assert!(ctx.ensure_parent("").is_ok());
         std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_context_measures_and_writes_files_and_names_its_openscad() {
+        let dir = std::env::temp_dir().join(format!("render-check-stat-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let ctx = Ctx { dir: dir.clone(), openscad: "os".into(), scadmesh: String::new() };
+        ctx.write("f.txt", "abc").unwrap();
+        let (time, size) = ctx.stat("f.txt").unwrap();
+        assert!(time > 0 && size == 3);
+        assert_eq!(ctx.stat("missing.txt"), None);
+        assert!(ctx.write("no/such/dir.txt", "x").is_err());
+        assert_eq!(ctx.openscad_id(), "os None");
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn the_engine_wrapper_passes_files_through() {
+        let dir = std::env::temp_dir().join(format!("render-check-wrap-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let ctx = Ctx { dir: dir.clone(), openscad: "os".into(), scadmesh: String::new() };
+        let t = Manifold(&ctx);
+        t.write("f.txt", "ab").unwrap();
+        assert_eq!(t.stat("f.txt").map(|s| s.1), Some(2));
+        assert_eq!(t.openscad_id(), ctx.openscad_id());
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn a_toolset_without_files_measures_nothing() {
+        struct Bare;
+        impl Tools for Bare {
+            fn openscad(&self, _: &[&str]) -> Result<Run> {
+                bail!("unused")
+            }
+            fn scadmesh(&self, _: &[&str]) -> Result<(bool, Value)> {
+                bail!("unused")
+            }
+            fn size(&self, _: &str) -> Result<u64> {
+                bail!("unused")
+            }
+        }
+        assert!(Bare.stat("f").is_none() && Bare.write("f", "x").is_ok() && Bare.openscad_id().is_empty());
     }
 
     #[test]

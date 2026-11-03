@@ -1,0 +1,21 @@
+{
+  "title": "Claw Finger Wall, 4-finger",
+  "subtitle": "#930-010 · revised render of 930-010_Claw4FingerWall.scad (designed, no reference mesh) · feature names",
+  "from": [0.3, 1, 0.6],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#c9c23a", "stl": "out/revised/930-010.stl"}]}
+  ],
+  "labels": [
+    {"at": [8, -22.138, 56.15], "text": "B1 rear blade slots ×2, open through the rear lip"},
+    {"at": [8, 22.138, 56.15], "text": "B1 front blade slots ×2, open through the front lip"},
+    {"at": [8, 0, 57], "text": "The solid run between the pairs: it cannot pass the front blades, so the wall goes on the axles on the bench"}
+  ],
+  "presets": [
+    {"label": "Outside, from the front", "at": [0, 2, 50], "span": 80, "from": [0.3, 1, 0.6]},
+    {"label": "Top", "at": [0, 2, 57], "span": 80, "from": [0, 0, 1]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. 930-008_ClawFingerWall.scad draws it and gives its features. The rear fingers go on the axles, the wall slides over them from the front, the front fingers are pinned on, and the whole unit slides into the body. Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

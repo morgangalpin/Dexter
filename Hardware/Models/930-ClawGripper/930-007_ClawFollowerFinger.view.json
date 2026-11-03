@@ -1,0 +1,25 @@
+{
+  "title": "Claw Follower Finger",
+  "subtitle": "#930-007 · revised render of 930-007_ClawFollowerFinger.scad (designed, no reference mesh) · feature names",
+  "from": [-0.3, -1, 0.2],
+  "groups": [
+    {"name": "Renders", "role": "render.rs --verify", "parts": [
+      {"id": "revised", "name": "config=\"revised\"", "color": "#3a6b8f", "stl": "out/revised/930-007.stl"}]}
+  ],
+  "labels": [
+    {"at": [9.95, 0, 0.98], "text": "G1 hub teeth: the drive finger's mirrored and moved half a pitch, so that the two mesh"},
+    {"at": [3.5, 0, 6.06], "text": "M1 set-screw hole along 60°, blind under the blade: the drive's mirrored"},
+    {"at": [-4.5, 0, -7.79], "text": "M1's one mouth, on the hub's far side at 240°: the screw goes in and comes out here, on the bench"},
+    {"at": [0, 0, 5.8], "text": "X1 hex bore over the follower axle's seat"},
+    {"at": [-0.67, 0, 30.25], "text": "B1 shank, its centreline 3.97 inward of the pivot, leaned 8.8° outward; its edges filleted R1"},
+    {"at": [6.96, 0, 5.71], "text": "B1's root, filleted R2 onto the hub: the fillet ends at 39.375°, where the teeth end"},
+    {"at": [10, 0, 77.03], "text": "T1 tip round R3.5: on the roll axis when the claw is closed"}
+  ],
+  "presets": [
+    {"label": "Hub, teeth and box end", "at": [0, 0, 0], "span": 28, "from": [-0.3, -1, 0.3]},
+    {"label": "Tip", "at": [6, 0, 74], "span": 26, "from": [0, -1, 0]}
+  ],
+  "notes": [
+    {"heading": "Comparing", "text": "The claw is designed, not converted, so this part has no reference mesh and only its revised render is shown. 930-001_ClawFinger.scad draws it and gives its features; it is the drive finger mirrored about x = 0, as its motion is, but for its hub's teeth (claw_params.scad, THE MIRROR). Run render.rs --verify before building this page, because the render is its output."}
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "scad": "diff_assembly.scad",
   "title": "Wrist differential",
-  "subtitle": "diff_assembly.scad · config {config} · geometry {geometry} · J4 at {j4_ang}° · orthographic, cut on XZ",
+  "subtitle": "diff_assembly.scad · config {config} · geometry {geometry} · J4 at {j4_ang}° · orthographic",
   "groups": [
     {"name": "Body A", "role": "static, the wrist frame", "parts": [
       {"id": "730-001", "name": "Diff Body A", "pn": "#730-001", "color": "#9aa3ad"},

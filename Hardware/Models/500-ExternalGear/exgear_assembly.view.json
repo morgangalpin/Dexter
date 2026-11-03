@@ -1,7 +1,7 @@
 {
   "scad": "exgear_assembly.scad",
   "title": "External gear stack",
-  "subtitle": "exgear_assembly.scad · J3 at a {motor_len} mm motor body · orthographic, cut on XZ",
+  "subtitle": "exgear_assembly.scad · J3 at a {motor_len} mm motor body · orthographic",
   "groups": [
     {"name": "Frame", "role": "fixed", "parts": [
       {"id": "mount", "name": "Ex Gear Mount", "pn": "#520-001", "color": "#9aa7b4"},
